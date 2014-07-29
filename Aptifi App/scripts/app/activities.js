@@ -2,7 +2,7 @@ var app = app || {};
 
 app.Activities = (function () {
     'use strict'
-    
+ var activitiesDataSource;   
     var validator;
 	   // Activities model
 	    var activitiesModel = (function () {	
@@ -63,7 +63,7 @@ app.Activities = (function () {
         // Activities data source. The Backend Services dialect of the Kendo UI DataSource component
         // supports filtering, sorting, paging, and CRUD operations.
 
-            var activitiesDataSource = new kendo.data.DataSource({
+            activitiesDataSource = new kendo.data.DataSource({
             type: 'everlive',
             schema: {
                 model: activityModel
@@ -114,7 +114,11 @@ app.Activities = (function () {
         			}   
     				
                };
+            
+                                    console.log(activitiesDataSource);
 				    return {
+                        
+
     		        				activities: activitiesDataSource
         			};
         }());
@@ -275,7 +279,7 @@ app.Activities = (function () {
 
 	                template = kendo.template($("#activityTemplate").html());
 					$("#activities-listview").append(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
-
+					kendo.bind($('#activityTemplate'), activitiesDataSource);
                     //}
                  }
        		}else{
@@ -449,9 +453,9 @@ var notification;
         };
         
         
-	        var onComboChange = function(){
+	    var onComboChange = function(){
                  //$("#activities-listview").empty();
-            	 var dataSource;
+            	 //var activities;
        		  var selectData = $("#groupSelect").data("kendoComboBox");    
            	  var groupSelected = selectData.value();
     		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
@@ -461,18 +465,16 @@ var notification;
     			             app.Activities.activities.filter({
 							                	
         	    								});
-                           }else{
+                           }else{		
                                                 app.Activities.activities.filter({
 							                	field: 'Group',
                 								operator: 'eq',
                 								value: groupSelected
         	    								});
                                 }
-                
-    		   //kendo.bind(activities-listview, activities, kendo.mobile.ui);
-	                
-                
-                    	         
+
+                      kendo.bind($('#activityTemplate'), activitiesDataSource);                              
+                                    	         
    		 //var $notificationContainer = $('#activities-listview');
             //$notificationContainer.empty();
            // var notificationModel1 = (function () { 
@@ -639,6 +641,7 @@ var notification;
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };
+
 
         return {
             activities: activitiesModel.activities,

@@ -188,9 +188,9 @@
             <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png" />
         </div>-->
        		 <div class="activity-content">
-       		     <h2 class="person-name">${Title}</h2>
-       		     <span class="time-span" >${CreatedAtFormatted()}</span>
-       		     <a class="user-share-txt">${Message}</a>
+       		     <h2 id="activityTemplateTitle" class="person-name">${Title}</h2>
+       		     <span id="activityTemplateDate" class="time-span" >${CreatedAtFormatted()}</span>
+       		     <a id="activityTemplateMessage" class="user-share-txt">${Message}</a>
        		 </div>
 		    </div>
 		</script>

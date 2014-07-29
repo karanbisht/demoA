@@ -105,8 +105,8 @@ app.Activity = (function () {
                 {
                 login:'or',
                 filters:[
-                    	                { field: 'UserId', operator: 'eq', value: cUserId },
-                                        { field: 'UserId', operator: 'eq', value: adminId }
+                    	                { field: 'UserId', operator: 'eq', value: adminId },
+                                        { field: 'UserId', operator: 'eq', value: cUserId }
 
                         ]
     			 }
