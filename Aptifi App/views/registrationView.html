@@ -1,0 +1,31 @@
+<div data-role="view" id="view-all-activities" data-layout="default" class="activities-view" data-model="app.registration"
+     data-init="app.registration.regInit" data-show="app.registration.addNewRegistration" >
+    <div data-role="header">
+        <div data-role="navbar">
+            Registration
+            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-bind="click:goToIndex">Back</a>
+            <a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: addNewRegistration">Add</a>
+        </div>
+    </div>
+    
+    <div>
+          <form>
+                <ul data-role="listview" data-style="inset">
+                    <li class="username"><input type="text" class="k-textbox" id="regFirstName" placeholder="First Name" required validationMessage="Please Enter First Name!" /></li>
+                    <li class="password"><input type="text" class="k-textbox" id="regLastName" placeholder="Last Name" required validationMessage="Please Enter Last Name!" /></li>
+                    <li class="password"><input type="email" class="k-textbox" id="regEmail" placeholder="Email" required validationMessage="Please Enter Email! " /></li>
+                    <li class="username"><input type="text" pattern="[0-9]*" class="k-textbox" id="regMobile" placeholder="Mobile No" maxlength="10" required validationMessage="Please Enter Mobile Number!" /></li>
+                    <li class="username"><input type="password" id="regPassword" class="k-textbox" placeholder="Password" required validationMessage="Please Enter Password!" /></li>
+                </ul>
+          </form>    
+    </div>  
+            <ol class="reg-group-wrp">
+                <li>
+                    <span id="login" data-role="touch"  style="float:right;margin-left:10px;" data-bind="events: { tap: register }">
+                        <a data-role="button" class="k-button" type="submit" style="background-color:#33539E">Next</a>
+                    </span>
+                </li>
+            </ol>
+
+
+</div>
