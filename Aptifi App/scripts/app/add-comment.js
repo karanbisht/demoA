@@ -25,8 +25,7 @@ app.AddComment = (function () {
             validator.hideMessages();
         };
         
-        var saveComment = function () {
-            
+        var saveComment = function () {    
             // Validating of the required fields
             if (validator.validate()) {
                 
@@ -34,9 +33,9 @@ app.AddComment = (function () {
                 var comments = app.Comments.comments;
                 var comment = comments.add();
                 
-                comment.Comment = $newComment.val();
+                comment.ReplyText = $newComment.val();
                 comment.UserId = app.Users.currentUser.get('data').Id;
-                comment.ActivityId = app.Activity.activity().Id;
+                comment.NotificationId = app.Activity.activity().Id;
                 
                 comments.one('sync', function () {
                     app.mobileApp.navigate('#:back');
