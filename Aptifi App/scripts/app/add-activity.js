@@ -1,7 +1,3 @@
-/**
- * AddActivity view model
- */
-
 var app = app || {};
 
 app.AddActivity = (function () {
@@ -12,14 +8,12 @@ app.AddActivity = (function () {
         var $newStatus;
         var validator;
         
-        var init = function () {
-            
+        var init = function () {            
             validator = $('#enterStatus').kendoValidator().data('kendoValidator');
             $newStatus = $('#newStatus');
         };
         
         var show = function () {
-            
             // Clear field on view show
             $newStatus.val('');
             validator.hideMessages();
