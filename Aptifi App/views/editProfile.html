@@ -1,0 +1,28 @@
+<div data-role="view" id="share" data-layout="default" data-transition="overlay:down" class="add-comment-view"
+    data-init="app.AddComment.init" data-show="app.AddComment.show" data-model="app.AddComment">
+   
+    <div data-role="header">
+        <div data-role="navbar">
+          <span>Edit Profile</span>
+          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a> 
+         </div>
+    </div>
+
+    	
+    <div id="enterComment" class="share-form-wrp" data-role="listview" data-style="inset">
+        <ul data-role="listview" data-style="inset">
+                    <li class="username"><input type="text" id="name" placeholder="Name" data-bind="text: me.get('data').DisplayName" required validationMessage="Username is required!" /></li>
+                    <li class="username"><input type="text" id="name" placeholder="Email" data-bind="text: me.get('data').Email" required validationMessage="Username is required!" /></li>
+                    <li class="username"><input type="text" id="name" placeholder="Mobile" data-bind="text: me.get('data').MobileNo" required validationMessage="Username is required!" /></li>
+                    <li class="username"><input type="text" id="name" placeholder="Group" data-bind="text: me.get('data').Group" required validationMessage="Username is required!" /></li>
+                    <li class="username"><input type="text" id="name" placeholder="Organisation" data-bind="text: me.get('data').Organisation" required validationMessage="Username is required!" /></li>
+         
+         </ul>
+        
+                <li>
+                    <span id="login" data-role="touch" data-bind="events: { tap: editProfileButton }">
+                        <a data-role="button" class="btn btn-login">Save</a>
+                    </span>
+                </li>
+    </div>
+</div>

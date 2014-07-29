@@ -1,3 +1,33 @@
+
+.parentView{
+    margin:10px 0px 10px 20px ;
+    list-style:none;
+}
+
+.outerSelect{
+    width:100%;
+    text-align:left;
+    
+}
+
+.reg-Button{
+    margin-top:35px;
+}
+
+.myfooter{
+    display:inline;
+}
+
+.popMoreButton{
+    position:relative;
+    color:#a9aeb3;
+    padding:5px;
+    list-style:none;
+    box-shadow:0px 0px 4px #39393a;
+    line-height:20pt;
+    overflow:hidden;
+}
+
 .cf {
     zoom: 1;
 }
@@ -150,6 +180,15 @@
     background-color: #1bbc9b;
 }
 
+
+#friendsApp .register{
+    background-color: #33539E;
+}
+.register{
+    background-color: #33539E;
+}
+
+
 #friendsApp .signup-view .btn-signup,
 #friendsApp .btn-delete {
     display: block;
@@ -181,7 +220,7 @@
     background-image: url(images/icon-adsf.png);
 }
 
-#friendsApp .km-header .nav-button {
+#friendsApp .header .nav-button {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -193,44 +232,49 @@
     background-repeat: no-repeat;
 }
 
-#friendsApp .km-header .nav-button-back {
+#friendsApp .header .nav-button-back {
     background-image: url(images/icon-arrow_left.png);
     background-position: .65em 50%;
 }
 
-#friendsApp .km-header .nav-button-add {
+#friendsApp .header .nav-button-add {
     background-image: url(images/icon-add.png);
 }
 
-#friendsApp .km-header .nav-button-cancel,
-#friendsApp .km-header .nav-button-post {
+
+#friendsApp .header .nav-button-cancel,
+#friendsApp .header .nav-button-post {
     width: auto;
     height: 2.5em;
     font-size: .85rem;
     line-height: 2.5em;
 }
 
+
+/* KARAN */
+
+
 /* App Header */
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .km-header {
+#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header {
     min-height: 20px;
     background-color: #2d3e50;
 }
 
-#friendsApp.km-flat .km-header .km-navbar {
+#friendsApp.km-flat .header .km-navbar {
     min-height: 3.15em;
 }
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .km-header .km-navbar {
+#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-navbar {
     min-height: 4.5em;
 }
 
-#friendsApp.km-flat .km-header .km-view-title {
+#friendsApp.km-flat .header .km-view-title {
     margin-top: .4em;
     font-size: 1rem;
 }
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .km-header .km-view-title {
+#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-view-title {
   margin-top: .4em;
 }
 
@@ -295,6 +339,17 @@
 
 #login-form .password:before {
     background-image: url(images/icon-password.png);
+}
+
+.regColor{
+    background-color:#33539E;
+}
+.reg-group-wrp{
+    margin: -1em 1em 0;
+    padding: 0;
+    margin-top:20px;
+    list-style-type: none;
+    text-align: center; 
 }
 
 #friendsApp .welcome-scrn .group-wrp {
@@ -411,6 +466,23 @@
     color: #34495e;
 }
 
+.pageLayoutClass .km-list > li {
+     overflow: visible;
+    padding: .75em 0;
+    border-width: 0 0 1px;
+    border-color: #eaeced;
+    background-color: #fff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #34495e;
+}
+
+.pageLayoutClass .comments-wrp {
+    margin-top: 1em;
+    border-top: 1px solid #eaeced;
+}
+
+
 #friendsApp .activity-view .comments-wrp {
     margin-top: 1em;
     border-top: 1px solid #eaeced;
@@ -454,6 +526,16 @@
     color: #3598db;
     font-size: 1.1rem;
 }
+
+
+.noti-title {
+    overflow: hidden;
+    width: 90%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
 
 #friendsApp .person-name {
     overflow: hidden;
@@ -535,10 +617,20 @@
     resize: none;
 }
 
-#friendsApp .activity-view .km-footer {
+#friendsApp .user-share-noti textarea {
+    float: none;
+    margin: 0;
+    padding: .75em 1em;
+    min-height: 3em;
+    height: 18.5em;
+    background-color: #f5f7f8;
+    resize: none;
+}
+
+/*#friendsApp .activity-view .km-footer {
     padding: 0 1em 1em;
     background: #fff none;
-}
+}*/
 
 #friendsApp .add-activity-view .km-leftitem,
 #friendsApp .add-comment-view .km-leftitem {
@@ -604,12 +696,12 @@
         background-size: 21px 20px;
     }
 
-    #friendsApp .km-header .nav-button-back {
+    #friendsApp .header .nav-button-back {
         background-image: url(images/icon-arrow_left@2x.png);
         background-size: 9px 20px;
     }
 
-    #friendsApp .km-header .nav-button-add {
+    #friendsApp .header .nav-button-add {
         background-image: url(images/icon-add@2x.png);
         background-size: 23px 23px;
     }
