@@ -260,7 +260,7 @@ app.Activities = (function () {
         var offlineTestQuerySuccess = function(tx, results) {
             $("#activities-listview").empty();
 			var count = results.rows.length;
-			if (count != 0) {
+			if (count !== 0) {
 				for (var i = 0; i < count; i++) {
 					var Title = results.rows.item(i).Title;
 					var Message = results.rows.item(i).Message;
