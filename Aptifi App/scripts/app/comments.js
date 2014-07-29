@@ -1,27 +1,27 @@
 /**
  * Comments view model
  */
-
 var app = app || {};
 
 app.Comments = (function () {
-    'use strict'
-
+   
+	var data;
     var commentsViewModel = (function () {
-        
+        var profileUserId;
+        var adminId = app.getAdminId();
         var commentModel = {
             id: 'Id',
             fields: {
-                Comment: {
-                    field: 'Comment',
+                ReplyText: {
+                    field: 'ReplyText',
                     defaultValue: ''
                 },
                 CreatedAt: {
                     field: 'CreatedAt',
                     defaultValue: new Date()
                 },
-                ActivityId: {
-                    field: 'ActivityId',
+                NotificationId: {
+                    field: 'NotificationId',
                     defaultValue: null
                 },
                 UserId: {
@@ -30,18 +30,15 @@ app.Comments = (function () {
                 }
             },
             CreatedAtFormatted: function () {
-
                 return app.helper.formatDate(this.get('CreatedAt'));
             },
             User: function () {
-
                 var userId = this.get('UserId');
-
+                profileUserId= userId;
                 var user = $.grep(app.Users.users(), function (e) {
                     return e.Id === userId;
                 })[0];
-
-                return user ? user.DisplayName : 'Anonymous';
+                return user ? user.DisplayName : 'Anonymous';    
             }
         };
         
@@ -51,9 +48,17 @@ app.Comments = (function () {
                 model: commentModel
             },
             transport: {
-                typeName: 'Comments'
+                typeName: 'NotificationReply'
             },
-            serverFiltering: true,
+             filter: {
+    			// leave data items which are "Food" or "Tea"
+			    logic: "or",
+			    filters: [
+     				 { field: "UserId", operator: "eq", value: profileUserId },
+				      { field: "UserId", operator: "eq", value: adminId }
+    					 ]
+			  },
+            //serverFiltering: true,
             change: function (e) {
 
                 if (e.items && e.items.length > 0) {
@@ -64,15 +69,20 @@ app.Comments = (function () {
                 } else {
                     $('#comments-listview').empty();
                 }
+
             },
             sort: { field: 'CreatedAt', dir: 'desc' }
         });
+    	
+        console.log(commentsDataSource.data().length);
         
         return {
             comments: commentsDataSource
         };
         
     }());
+    
+    
     
     return commentsViewModel;
 
