@@ -3,22 +3,27 @@ var app = app || {};
 app.groupDetail = (function () {
 
  var MemberDataSource;    
+    var GroupName;
      var UsersModel = (function () {                 
        var UserModel = {
             id: 'Id',
             fields: {
-                ModifiedAt: {
-                    field: 'ModifiedAt',
+                CreatedAt: {
+                    field: 'CreatedAt',
                     defaultValue: new Date()
                 },
                 DisplayName: {
                     field: 'DisplayName',
                     defaultValue: ''
+                },
+                Email: {
+                    field: 'Email',
+                    defaultValue:''
                 }
             },
            
 	          CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('ModifiedAt'));
+        	        return app.helper.formatDate(this.get('CreatedAt'));
     	        }
    	       };        
         
@@ -35,12 +40,12 @@ app.groupDetail = (function () {
                 
             change: function (e) {
                 if (e.items && e.items.length > 0) {
-                    $('#no-notification-span').hide();
+                    $('#no-Group-span').hide();
                 } else {
-                    $('#no-notification-span').show();
+                    $('#no-Group-span').show();
                 }
             },
-             sort: { field: 'ModifiedAt', dir: 'desc' }    
+             sort: { field: 'CreatedAt', dir: 'desc' }    
 	        });
                
 	        return {
@@ -72,9 +77,9 @@ app.groupDetail = (function () {
         var showGroupNotification = function(){
         
               var activitiesDataSource;
-            console.log(GroupName);
-            app.MenuPage=false;
-            app.mobileApp.navigate('#groupNotificationShow');
+              console.log(GroupName);
+              app.MenuPage=false;
+              app.mobileApp.navigate('#groupNotificationShow');
    	  
     		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
                   		//notificationModel();
@@ -100,9 +105,11 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             
-                      //if(GroupName==='All'){
-    			             app.Activities.activities.filter({
-							                	
+            //if(GroupName==='All'){
+    			             app.groupDetail.userData.filter({
+							                	field: 'Group',
+                								operator: 'eq',
+                								value: GroupName   	    				        	
         	    								});
                            /*}else{		
                                                 app.Activities.activities.filter({
@@ -111,14 +118,53 @@ app.groupDetail = (function () {
                 								value: GroupName
         	    								});
                            }*/
+           kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
+        };
+        
+        var addMemberToGroup = function(){
+            app.MenuPage=false;
+            app.mobileApp.navigate('#addMemberToGroup');
+              app.groupDetail.userData.filter({
+							                	field: 'Group',
+                								operator: 'neq',
+                								value: GroupName   	    				        	
+        	    								});
+                                  kendo.bind($('#Member-Add-template'), MemberDataSource);  
+         };
+        
+        var addMemberToGroupFunc = function(){
 
-                      kendo.bind($('#groupMemberTemplate'), MemberDataSource);    
+            var val = [];
+		        $(':checkbox:checked').each(function(i){
+          	  val[i] = $(this).val();
+        	});
+                       
+    	      $.each(val,function(i,dataValue){  
+            
+        	  });	
+           
+          app.showAlert("Member Added to Group","Notification");
+        };
+        
+        var removeMemberFromGroup = function(){
+            
+            app.MenuPage=false;
+            app.mobileApp.navigate('#removeMemberFromGroup');
+            app.groupDetail.userData.filter({
+							                	field: 'Group',
+                								operator: 'eq',
+                								value: GroupName   	    				        	
+        	    								});
+              kendo.bind($('#Member-Delete-template'), MemberDataSource);  
         };
            
            return {
            init: init,
            show: show,
            userData:UsersModel.userData,
+           addMemberToGroup:addMemberToGroup,
+           addMemberToGroupFunc:addMemberToGroupFunc,
+           removeMemberFromGroup:removeMemberFromGroup,    
            showGroupNotification:showGroupNotification,
            showGroupMembers:showGroupMembers    
            };
