@@ -1,0 +1,27 @@
+ <div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show">            
+       <div data-role="header">           
+               <div data-role="navbar">           
+                    Delete Groups
+                   <a class="nav-button nav-button-back hide-text" data-align="left"  data-role="backbutton">Back</a>
+    	     </div>
+	    </div>
+	
+	 		 
+    	     <div id="example">
+        		 <ul data-template="row-template" data-bind="source: groupData"></ul>
+    	 	</div> 
+     
+         
+           <li>
+                    <span id="login" data-role="touch" data-bind="events: { tap: deleteGroupFunc }" style="padding:10px;float:right;">
+                        <a data-role="button" class="btn btn-login">Delete</a>
+                    </span>
+           </li>
+</div> 
+     
+   <script id="row-template" type="text/x-kendo-template">
+    <li class="deleteGroupShow">
+        <input type="checkbox" name="chkValue" value="${Id}" data-bind="checked: selected"/>
+        <label >${Name}</label>
+    </li>	
+   </script>

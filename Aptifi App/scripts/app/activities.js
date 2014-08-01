@@ -2,6 +2,7 @@ var app = app || {};
 
 app.Activities = (function () {
     'use strict'
+ var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  var activitiesDataSource;   
     var validator;
 	   // Activities model
@@ -109,49 +110,66 @@ app.Activities = (function () {
 								app.deleteQuery(tx, query);
                   for (var i = 0; i < len; i++) {
 				               //console.log(notifiactionData[i]); // displays "Chai"                     
-    	       		var query = 'INSERT INTO GetNotification (Title, Message,CreatedAt) VALUES ("'+ data[i].Title+'","'+data[i].Message+'","'+ data[i].CreatedAt +'")';
-					   app.insertQuery(tx,query);  	
+    	       		var queryNotification = 'INSERT INTO GetNotification (Title, Message,CreatedAt) VALUES ("'+ data[i].Title+'","'+data[i].Message+'","'+ data[i].CreatedAt +'")';
+					   app.insertQuery(tx,queryNotification);  	
         			}   
     				
                };
-            
-                                    console.log(activitiesDataSource);
-				    return {
-                        
-
+           
+                       console.log(activitiesDataSource);
+				    return {          
     		        				activities: activitiesDataSource
         			};
         }());
 
-		
-   
- /*     insertRecord = function(t) {
-    
-        app.db.transaction(function(tx) {
-        var cDate = new Date();
-        tx.executeSql("INSERT INTO GetNotification(Title, Message , CreatedAt) VALUES (?,?)",
-                      [t, cDate],
-                      app.onSuccess,
-                      app.onError);
-    
-        });
-    }*/
-    
 
-    var notificationModel = (function () {                 
-       var notiModel = {
+   
+    
+     var GroupsModel = (function () {                 
+       var GroupModel = {
             id: 'Id',
             fields: {
-                Message: {
-                    field: 'Message',
-                    defaultValue: ''
-                },
-                Title :{
-                    field: 'Title',
-                    defaultValue: ''  
-                },
                 CreatedAt: {
                     field: 'CreatedAt',
+                    defaultValue: new Date()
+                },
+                Name: {
+                    field: 'Name',
+                    defaultValue: null
+                }
+            },
+	            CreatedAtFormatted: function () {
+        	        return app.helper.formatDate(this.get('CreatedAt'));
+    	        }
+	       };        
+        
+	        var groupDataSource = new kendo.data.DataSource({
+            type: 'everlive',
+	           schema: {
+                model: GroupModel
+            },
+
+            transport: {
+                // Required by Backend Services
+                typeName: 'Group'
+            },
+               
+             sort: { field: 'CreatedAt', dir: 'desc' }    
+	        });
+               
+	        return {
+            	groupData: groupDataSource
+        	};
+	}());
+    
+    
+    
+    var UsersModel = (function () {                 
+       var UserModel = {
+            id: 'Id',
+            fields: {
+                ModifiedAt: {
+                    field: 'ModifiedAt',
                     defaultValue: new Date()
                 },
                 UserId: {
@@ -159,20 +177,29 @@ app.Activities = (function () {
                     defaultValue: null
                 }
             },
-	            CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('CreatedAt'));
+           
+            User: function () {
+                var userId = this.get('UserId');
+                var user = $.grep(app.Users.users(), function (e) {
+                    return e.Id === userId;
+                })[0];
+                return user ? user.DisplayName : 'Anonymous';    
+            },
+           
+	          CreatedAtFormatted: function () {
+        	        return app.helper.formatDate(this.get('ModifiedAt'));
     	        }
-       };        
+   	       };        
         
-	        var notificationDataSource = new kendo.data.DataSource({
+	        var userDataSource = new kendo.data.DataSource({
             type: 'everlive',
 	           schema: {
-                model: notiModel
+                model: UserModel
             },
 
             transport: {
                 // Required by Backend Services
-                typeName: 'GetNotification'
+                typeName: 'NotificationReply'
             },
                 
             change: function (e) {
@@ -181,14 +208,16 @@ app.Activities = (function () {
                 } else {
                     $('#no-notification-span').show();
                 }
-            }
+            },
+             sort: { field: 'ModifiedAt', dir: 'desc' }    
 	        });
-        
-                	       
+               
 	        return {
-            	notifyMe: notificationDataSource
+            	userData: userDataSource
         	};
 	}());
+    
+    
     
     // Activities view model
     var activitiesViewModel = (function () {
@@ -196,10 +225,9 @@ app.Activities = (function () {
         // Navigate to activityView When some activity is selected
         var loginType;
         var $newNotification;
-        var init = function () {       
-            
-            app.MenuPage=true;  
-            
+        
+        var init = function () {        
+            app.MenuPage=true;      
             validator = $('#enterNotification').kendoValidator().data('kendoValidator');
             $newNotification = $('#newNotification');
             
@@ -209,31 +237,41 @@ app.Activities = (function () {
   					typeName: 'Group'
    				              }
 			});
+            
       	    $("#groupSelect").kendoComboBox({
   				dataSource: dataSource,
   				dataTextField: "Name",
   				dataValueField: "Name",
                   change: onComboChange
-		  	});   
+		  	});
+	            $("#groupSelectAdmin").kendoComboBox({
+  				dataSource: dataSource,
+  				dataTextField: "Name",
+  				dataValueField: "Name",
+                  change: onAdminComboChange
+		  	});
                $("#groupSelectNotification").kendoComboBox({
   				dataSource: dataSource,
   				dataTextField: "Name",
   				dataValueField: "Name",
                   change: onChangeNotiGroup
-		  	});
+		  	});            
         };
         
-        var show = function(e){
+
+         var show = function(e){
               app.MenuPage=true; 
               $newNotification.val('');
               validator.hideMessages();
             
             loginType = e.view.params.LoginType;
+       
             if(loginType==='Admin'){
              $("#aboutUsView").hide();
              $("#settingView").hide();
              $("#websiteView").hide();
-             $("#callUsView").hide();   
+             $("#callUsView").hide();
+             $("#replyUserView").show();   
              $("#sendNotificationView").show();
              $("#manageGroupView").show();   
             }
@@ -248,14 +286,7 @@ app.Activities = (function () {
             }        
         };
         
-        var bShow = function(){    
-          /*if(app.checkConnection())  {
-              app.showAlert("You Connected with Internet","Notification");
-          }else{
-              app.showAlert("You are not Connected with Internet","Notification");
-          }*/
-        };
-        
+
         var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
 			app.selectQuery(tx, query, offlineTestQuerySuccess);
@@ -302,6 +333,11 @@ app.Activities = (function () {
             app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
         
+        var groupSelected = function (e) {
+            console.log("karan Bisht"+e);
+			app.MenuPage=false;	
+            app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
+        };
          
         var offlineActivitySelected = function (i) {
             console.log(i);
@@ -328,6 +364,24 @@ app.Activities = (function () {
             window.open('http://www.sakshay.in','_blank');
         };
         
+        var addGroupFunc = function(){            
+            var newGroupValue = $("#newGroup").val();
+                        
+			var data = el.data('Group');
+            data.create({ 'Name' : newGroupValue },
+    
+            function(data){
+        		//alert(JSON.stringify(data));
+                app.showAlert("Group Added Successfully","Notification");
+    		},
+    
+            function(error){
+                    app.showAlert("Please try again later","Notification");
+                //alert(JSON.stringify(error));
+    		});
+                app.mobileApp.navigate('#:back');
+        };
+        
         var makeCall = function(){
             app.MenuPage=false;
             document.location.href = 'tel:+91-971-781-8898';
@@ -340,9 +394,52 @@ app.Activities = (function () {
              document.location.href="#infoDiv";
         };
         
+        var replyUser = function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/userReplyView.html');
+        };
+        
+        var manageGroup =function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/groupListPage.html');           
+        };
+        
+        var addGroup = function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/addGroup.html');    
+        };
+        
+        var deleteGroup = function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/deleteGroup.html');    
+        };
+        
         var setting = function(){
              app.MenuPage=false;
              document.location.href="#settingDiv";
+        };
+        
+        var deleteGroupFunc = function(){
+            //var data = $('input:checkbox:checked').val();
+			var val = [];
+		        $(':checkbox:checked').each(function(i){
+          	  val[i] = $(this).val();
+        	});
+            
+            var arrLength=val.length;
+            var delVal =0;
+            
+          $.each(val,function(i,dataValue){  
+            var data = el.data('Group');
+			data.destroySingle({ Id: dataValue },    		
+	            function(){
+				        delVal++;
+   			 },
+ 			   function(error){
+			    });
+          });	
+           
+           	  app.showAlert("Group Deleted Successfully","Notification");
         };
         
         var sendNotification = function(){
@@ -354,7 +451,8 @@ app.Activities = (function () {
             
         };
         
-         var sendNotificationMessage = function () {     
+         
+        var sendNotificationMessage = function () {     
             if (validator.validate()) {
                 var group=onChangeNotiGroup();
                 console.log(group);
@@ -366,7 +464,8 @@ app.Activities = (function () {
 					    function(data){
 					        app.showAlert("Notification Send Sucessfully","Notification");
 					    },
-					
+
+                
                 		function(error){
 					        app.showAlert(JSON.stringify(error));
     					});
@@ -375,7 +474,7 @@ app.Activities = (function () {
   			              var conditions = {
     								'User.Group': group
 							};
-var notification;
+				var notification;
                 
                 if(group==='All' || group==='' ){
 
@@ -453,6 +552,28 @@ var notification;
         };
         
         
+        
+        var onAdminComboChange = function(){
+       		  var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
+           	  var groupSelected = selectData.value();
+    		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
+                  		//notificationModel();
+        
+            			   if(groupSelected==='All'){
+    			             app.Activities.activities.filter({
+							                	
+        	    								});
+                           }else{		
+                                                app.Activities.activities.filter({
+							                	field: 'Group',
+                								operator: 'eq',
+                								value: groupSelected
+        	    								});
+                                }
+
+                      kendo.bind($('#activityTemplate'), activitiesDataSource);                              
+			};
+        
 	    var onComboChange = function(){
                  //$("#activities-listview").empty();
             	 //var activities;
@@ -473,7 +594,7 @@ var notification;
         	    								});
                                 }
 
-                      kendo.bind($('#activityTemplate'), activitiesDataSource);                              
+                      kendo.bind($('#activityTemplate'), activitiesDataSource);
                                     	         
    		 //var $notificationContainer = $('#activities-listview');
             //$notificationContainer.empty();
@@ -600,7 +721,7 @@ var notification;
   				dataTextField: "Name",
   				dataValueField: "Name",
                   change: onComboChange
-		  });   
+		  	});   
              
              
          /*    
@@ -645,13 +766,21 @@ var notification;
 
         return {
             activities: activitiesModel.activities,
-            notifyMe:notificationModel.notifyMe,
+            groupData:GroupsModel.groupData,
+            userData:UsersModel.userData,
             activitySelected: activitySelected,
+            groupSelected:groupSelected,
             notificationSelected:notificationSelected,
             CreatedAtFormatted:CreatedAtFormatted,
+            addGroupFunc:addGroupFunc,
             sendNotificationMessage:sendNotificationMessage,
             inAppBrowser:inAppBrowser,
+            deleteGroupFunc:deleteGroupFunc,
+            manageGroup:manageGroup,
+            addGroup:addGroup,
+            deleteGroup:deleteGroup,
             makeCall:makeCall,
+            replyUser:replyUser,
             initNotifi:initNotifi,
             sendNotification:sendNotification,
             showNotifi:showNotifi,
@@ -660,7 +789,6 @@ var notification;
             info:info,
             init:init,
             show:show,
-            bShow:bShow,
             refreshButton:refreshButton,
             logout: logout
         };

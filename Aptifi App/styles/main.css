@@ -527,6 +527,13 @@
     font-size: 1.1rem;
 }
 
+.deleteGroupShow {
+    display: block;
+    margin: 0 0 .5em;
+    color: #3598db;
+    font-size: 1.1rem;
+    border-bottom: 10px solid #f5f7f8;
+}
 
 .noti-title {
     overflow: hidden;
