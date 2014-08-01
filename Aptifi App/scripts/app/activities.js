@@ -109,21 +109,18 @@ app.Activities = (function () {
 						        var query = "DELETE FROM GetNotification";
 								app.deleteQuery(tx, query);
                   for (var i = 0; i < len; i++) {
-				               //console.log(notifiactionData[i]); // displays "Chai"                     
     	       		var queryNotification = 'INSERT INTO GetNotification (Title, Message,CreatedAt) VALUES ("'+ data[i].Title+'","'+data[i].Message+'","'+ data[i].CreatedAt +'")';
 					   app.insertQuery(tx,queryNotification);  	
         			}   
     				
                };
            
-                       console.log(activitiesDataSource);
+ 				console.log(activitiesDataSource);
 				    return {          
-    		        				activities: activitiesDataSource
+    		        	activities: activitiesDataSource
         			};
         }());
-
-
-   
+    
     
      var GroupsModel = (function () {                 
        var GroupModel = {
@@ -150,7 +147,6 @@ app.Activities = (function () {
             },
 
             transport: {
-                // Required by Backend Services
                 typeName: 'Group'
             },
                
@@ -397,6 +393,40 @@ app.Activities = (function () {
         var replyUser = function(){
             app.MenuPage=false;	
             app.mobileApp.navigate('views/userReplyView.html');
+            var tempArray=[];
+            var dataLength;
+            var uniqueLength;
+            var MemberDataSource;
+            console.log(app.Activities.userData);
+            
+           app.Activities.userData.fetch(function(){
+					  var view = app.Activities.userData.view();
+                      console.log(view);
+					  dataLength = view.length;
+		               for(var i=0;i<dataLength;i++){
+                           var pos = $.inArray(view[i].UserId, tempArray);
+                           console.log(pos);
+							if (pos === -1) {
+								   tempArray.push(view[i].UserId);
+   								//console.log(uniqueLabel + " added to array[]");
+							 } //else {
+ 							//	  console.log("label " + uniqueLabel + " already exists at index "+ pos);
+							 //}
+                				//arrayUId.push(view[i].Id);
+                                console.log("hello"+tempArray);
+                            	uniqueLength=tempArray.length;
+				         }
+                                //console.log("Final Result"+ tempArray );
+      	 });  
+            
+              for(var i=0;i<uniqueLength;i++){     		
+                 app.groupDetail.userData.filter({
+					field: 'Id',
+                	operator: 'eq',
+                    value: tempArray[i]
+	     		});
+               }
+             kendo.bind($('#userTemplate'), MemberDataSource);     
         };
         
         var manageGroup =function(){
@@ -414,11 +444,13 @@ app.Activities = (function () {
             app.mobileApp.navigate('views/deleteGroup.html');    
         };
         
+
         var setting = function(){
              app.MenuPage=false;
              document.location.href="#settingDiv";
         };
         
+
         var deleteGroupFunc = function(){
             //var data = $('input:checkbox:checked').val();
 			var val = [];
@@ -432,11 +464,14 @@ app.Activities = (function () {
           $.each(val,function(i,dataValue){  
             var data = el.data('Group');
 			data.destroySingle({ Id: dataValue },    		
-	            function(){
-				        delVal++;
+	        
+              function(){
+				  delVal++;
    			 },
- 			   function(error){
+ 		
+              function(error){
 			    });
+          
           });	
            
            	  app.showAlert("Group Deleted Successfully","Notification");

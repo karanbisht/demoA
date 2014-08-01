@@ -145,9 +145,10 @@ app.groupDetail = (function () {
            
           app.showAlert("Member Added to Group","Notification");
         };
+
         
-        var removeMemberFromGroup = function(){
-            
+        var removeMemberFromGroup = function(){   
+        
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');
             app.groupDetail.userData.filter({
@@ -157,12 +158,22 @@ app.groupDetail = (function () {
         	    								});
               kendo.bind($('#Member-Delete-template'), MemberDataSource);  
         };
+        
+        var userMessageTab = function(e){
+            app.MenuPage=false;	
+            
+            console.log(e.data.uid);
+            
+            //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
+
+        };
            
            return {
            init: init,
            show: show,
            userData:UsersModel.userData,
            addMemberToGroup:addMemberToGroup,
+           userMessageTab:userMessageTab,    
            addMemberToGroupFunc:addMemberToGroupFunc,
            removeMemberFromGroup:removeMemberFromGroup,    
            showGroupNotification:showGroupNotification,
