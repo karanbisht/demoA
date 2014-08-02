@@ -4,8 +4,9 @@ app.groupDetail = (function () {
 
  var MemberDataSource;    
     var GroupName;
+    
      var UsersModel = (function () {                 
-       var UserModel = {
+     var UserModel = {
             id: 'Id',
             fields: {
                 CreatedAt: {
@@ -25,7 +26,7 @@ app.groupDetail = (function () {
 	          CreatedAtFormatted: function () {
         	        return app.helper.formatDate(this.get('CreatedAt'));
     	        }
-   	       };        
+   	       };
         
 	        MemberDataSource = new kendo.data.DataSource({
             type: 'everlive',
@@ -124,13 +125,14 @@ app.groupDetail = (function () {
         var addMemberToGroup = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#addMemberToGroup');
-              app.groupDetail.userData.filter({
+            app.groupDetail.userData.filter({
 							                	field: 'Group',
                 								operator: 'neq',
                 								value: GroupName   	    				        	
         	    								});
                                   kendo.bind($('#Member-Add-template'), MemberDataSource);  
          };
+
         
         var addMemberToGroupFunc = function(){
 
@@ -159,14 +161,71 @@ app.groupDetail = (function () {
               kendo.bind($('#Member-Delete-template'), MemberDataSource);  
         };
         
-        var userMessageTab = function(e){
-            app.MenuPage=false;	
-            
-            console.log(e.data.uid);
-            
-            //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
 
-        };
+        
+		        var userMessageTab = function(e){
+        		    var tempArray= [];
+            		app.MenuPage=false;	
+            		var activity;
+                    var uniqueLength;
+                    var activitiesDataSource;
+                    var notificationId=[],notificationMessage=[],notificationTitle=[];
+
+                    console.log(e.data.uid);
+            		activity = app.groupDetail.userData.getByUid(e.data.uid);
+            		console.log(activity);
+            		console.log(activity.Id);
+   	  	  
+                                app.mobileApp.navigate('views/adminMessageReply.html');
+    	                        app.Activities.userData.filter({
+							                	field: 'UserId',
+                								operator: 'eq',
+                								value: activity.Id
+        	    								});
+            
+    	         app.Activities.userData.fetch(function(){
+					 var view = app.Activities.userData.view();
+                      console.log(view);
+					  dataLength = view.length;
+		             
+                     for(var i=0;i<dataLength;i++){
+                           var pos = $.inArray(view[i].NotificationId, tempArray);
+                           console.log(pos);
+							if (pos === -1) {
+								   tempArray.push(view[i].NotificationId);
+   				
+							 } 
+ 					           console.log("hello"+tempArray);
+                            	uniqueLength=tempArray.length;
+                         console.log(uniqueLength);
+				     }                 
+      		 });
+               
+
+                    for(var j=0;j<uniqueLength;j++){               
+                     app.Activities.activities.filter({
+												field: 'Id',
+                               				 operator: 'eq',
+                								value: tempArray[j]
+        	    								});
+                        
+                    app.Activities.activities.fetch(function(){
+   						 var view = app.Activities.activities.view();
+   						 notificationId.push(view[j].Id);
+	                        notificationMessage.push(view[j].Message);
+                            notificationTitle.push(view[j].Title);                    
+                            console.log(view);
+					  	  dataLength = view.length;
+						
+                    });
+                         
+                    console.log(notificationMessage);
+                    console.log(notificationTitle);
+            	}
+                                  
+                    
+					//kendo.bind($('#userDetailTemplate'), activitiesDataSource); 
+       };
            
            return {
            init: init,

@@ -22,7 +22,6 @@ app.Activity = (function () {
       };
         
         
-        
         var data;          
         var len = null;
         var getReplyPost = function(){
@@ -98,20 +97,19 @@ app.Activity = (function () {
            // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
              
             if (app.checkConnection()) {                          
-            app.Comments.comments.filter({
-                logic: 'and',
-			    filters: [
-                                      { field: 'NotificationId', operator: 'eq', value: activity.Id },
+            app.Comments.comments.filter([                
+              {"logic":"or",
+		         "filters":[
+             	{
+					field: 'UserId', operator: 'eq', value: adminId },
+        	     {
+    	            field: 'UserId', operator: 'eq', value: cUserId }
+	            ]},
+       
                 {
-                login:'or',
-                filters:[
-                    	                { field: 'UserId', operator: 'eq', value: adminId },
-                                        { field: 'UserId', operator: 'eq', value: cUserId }
-
-                        ]
-    			 }
-    				]
-        	    });
+					field: 'NotificationId', operator: 'eq', value: activity.Id}
+			    ]);
+        	
                 
             kendo.bind(e.view.element, activity, kendo.mobile.ui);
            }else{

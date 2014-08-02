@@ -50,14 +50,6 @@ app.Comments = (function () {
             transport: {
                 typeName: 'NotificationReply'
             },
-             filter: {
-    			// leave data items which are "Food" or "Tea"
-			    logic: "or",
-			    filters: [
-     				 { field: "UserId", operator: "eq", value: profileUserId },
-				      { field: "UserId", operator: "eq", value: adminId }
-    					 ]
-			  },
             //serverFiltering: true,
             change: function (e) {
 
