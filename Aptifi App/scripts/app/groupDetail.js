@@ -169,7 +169,7 @@ app.groupDetail = (function () {
             		var activity;
                     var uniqueLength;
                     var activitiesDataSource;
-                    var notificationId=[],notificationMessage=[],notificationTitle=[];
+                     notificationId=[],notificationMessage=[],notificationTitle=[];
 
                     console.log(e.data.uid);
             		activity = app.groupDetail.userData.getByUid(e.data.uid);
@@ -183,7 +183,8 @@ app.groupDetail = (function () {
                 								value: activity.Id
         	    								});
             
-    	         app.Activities.userData.fetch(function(){
+    	    
+                    app.Activities.userData.fetch(function(){
 					 var view = app.Activities.userData.view();
                       console.log(view);
 					  dataLength = view.length;
@@ -197,49 +198,50 @@ app.groupDetail = (function () {
 							 } 
  					           console.log("hello"+tempArray);
                             	uniqueLength=tempArray.length;
-                         console.log(uniqueLength);
+ 		                        console.log(uniqueLength);
 				     }                 
       		 });
                
+//console.log(app.Activities.activities);
 
-                    for(var j=0;j<uniqueLength;j++){               
-                     app.Activities.activities.filter({
+                    for(var j=0;j<uniqueLength;j++){                                  
+
+                        app.Activities.activities.filter({
 												field: 'Id',
                                				 operator: 'eq',
-                								value: tempArray[j]
-        	    								});
-                        
-                    app.Activities.activities.fetch(function(){
+                 							   value: tempArray[j]
+        	    							});
+                                                   
+            	}
+                    
+                  	app.Activities.activities.fetch(function(){
    						 var view = app.Activities.activities.view();
-   						 notificationId.push(view[j].Id);
-	                        notificationMessage.push(view[j].Message);
-                            notificationTitle.push(view[j].Title);                    
+   						 notificationId.push(view.Id);
+	                        notificationMessage.push(view.Message);
+                            notificationTitle.push(view.Title);                    
                             console.log(view);
 					  	  dataLength = view.length;
-						
-                    });
+					    });
                          
                     console.log(notificationMessage);
                     console.log(notificationTitle);
-            	}
-                                  
-                    
+
+                                                      
 					//kendo.bind($('#userDetailTemplate'), activitiesDataSource); 
        };
            
-           return {
-           init: init,
-           show: show,
-           userData:UsersModel.userData,
-           addMemberToGroup:addMemberToGroup,
-           userMessageTab:userMessageTab,    
-           addMemberToGroupFunc:addMemberToGroupFunc,
-           removeMemberFromGroup:removeMemberFromGroup,    
-           showGroupNotification:showGroupNotification,
-           showGroupMembers:showGroupMembers    
-           };
-        
-    
+    	       return {
+        	   init: init,
+           	show: show,
+           	userData:UsersModel.userData,
+           	addMemberToGroup:addMemberToGroup,
+           	userMessageTab:userMessageTab,    
+          	 addMemberToGroupFunc:addMemberToGroupFunc,
+           	removeMemberFromGroup:removeMemberFromGroup,    
+           	showGroupNotification:showGroupNotification,
+           	showGroupMembers:showGroupMembers    
+           	};
+            
            }());
     
     return groupDetailViewModel;
