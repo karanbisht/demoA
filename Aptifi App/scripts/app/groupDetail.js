@@ -4,6 +4,7 @@ app.groupDetail = (function () {
 
  var MemberDataSource;    
     var GroupName;
+     var el = new Everlive('wKkFz2wbqFe4Gj0s');   
     
      var UsersModel = (function () {                 
      var UserModel = {
@@ -121,6 +122,7 @@ app.groupDetail = (function () {
                            }*/
            kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
+
         
         var addMemberToGroup = function(){
             app.MenuPage=false;
@@ -130,27 +132,49 @@ app.groupDetail = (function () {
                 								operator: 'neq',
                 								value: GroupName   	    				        	
         	    								});
-                                  kendo.bind($('#Member-Add-template'), MemberDataSource);  
+             kendo.bind($('#Member-Add-template'), MemberDataSource); 
+            
+   
          };
 
         
-        var addMemberToGroupFunc = function(){
 
+        var addMemberToGroupFunc = function(){
+			var successFlag = false;
             var val = [];
 		        $(':checkbox:checked').each(function(i){
           	  val[i] = $(this).val();
+                    //console.log(val[i]);
         	});
-                       
-    	      $.each(val,function(i,dataValue){  
             
+                                   
+            $.each(val,function(i,dataValue){  
+            console.log(dataValue);
+                  
+                var data = el.data('Users');
+	
+                data.update({ 'Group': 'Testing' }, // data
+					    { 'Id': dataValue }, // filter
+                  
+                function(data){      
+                      successFlag=true;
+                },
+
+                 function(error){
+ 					successFlag=false;
+                 });
+                
         	  });	
-           
-          app.showAlert("Member Added to Group","Notification");
+            
+    	       if(successFlag){
+        		  	app.showAlert("Member Added to Group","Notification");               
+	           }else{
+             		 app.showAlert("Error ","Notification");
+               }
         };
 
         
-        var removeMemberFromGroup = function(){   
-        
+        var removeMemberFromGroup = function(){           
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');
             app.groupDetail.userData.filter({
@@ -158,7 +182,7 @@ app.groupDetail = (function () {
                 								operator: 'eq',
                 								value: GroupName   	    				        	
         	    								});
-              kendo.bind($('#Member-Delete-template'), MemberDataSource);  
+            kendo.bind($('#Member-Delete-template'), MemberDataSource); 
         };
         
 
@@ -169,7 +193,8 @@ app.groupDetail = (function () {
             		var activity;
                     var uniqueLength;
                     var activitiesDataSource;
-                     notificationId=[],notificationMessage=[],notificationTitle=[];
+                    
+                    notificationId=[],notificationMessage=[],notificationTitle=[];
 
                     console.log(e.data.uid);
             		activity = app.groupDetail.userData.getByUid(e.data.uid);
@@ -184,52 +209,40 @@ app.groupDetail = (function () {
         	    								});
             
     	    
-                    app.Activities.userData.fetch(function(){
-					 var view = app.Activities.userData.view();
-                      console.log(view);
-					  dataLength = view.length;
+                 
+                    	app.Activities.userData.fetch(function(){
+					 		var view = app.Activities.userData.view();
+                      	   console.log(view);
+					  	   dataLength = view.length;
 		             
-                     for(var i=0;i<dataLength;i++){
-                           var pos = $.inArray(view[i].NotificationId, tempArray);
-                           console.log(pos);
-							if (pos === -1) {
+                     
+                          for(var i=0;i<dataLength;i++){
+                     	      var pos = $.inArray(view[i].NotificationId, tempArray);
+                         	  console.log(pos);
+								if (pos === -1) {
 								   tempArray.push(view[i].NotificationId);
    				
-							 } 
+								 } 
  					           console.log("hello"+tempArray);
                             	uniqueLength=tempArray.length;
- 		                        console.log(uniqueLength);
-				     }                 
-      		 });
-               
-//console.log(app.Activities.activities);
+ 		                        console.log(uniqueLength);   
+                            }                 
+          		  		});
 
-                    for(var j=0;j<uniqueLength;j++){                                  
-
-                        app.Activities.activities.filter({
-												field: 'Id',
-                               				 operator: 'eq',
-                 							   value: tempArray[j]
-        	    							});
-                                                   
-            	}
                     
-                  	app.Activities.activities.fetch(function(){
-   						 var view = app.Activities.activities.view();
-   						 notificationId.push(view.Id);
-	                        notificationMessage.push(view.Message);
-                            notificationTitle.push(view.Title);                    
-                            console.log(view);
-					  	  dataLength = view.length;
-					    });
-                         
-                    console.log(notificationMessage);
-                    console.log(notificationTitle);
+						 for(var i=0;i<uniqueLength;i++){     		
+				                 app.Activities.activities.filter({
+							 	field: 'Id',
+                			 	operator: 'eq',
+                    			 value: tempArray[i]
+					     		});
+                			}
+                                                                                       
+                            kendo.bind($('#userDetailTemplate'), activitiesDataSource);               
+     
+       			 };
 
-                                                      
-					//kendo.bind($('#userDetailTemplate'), activitiesDataSource); 
-       };
-           
+	           
     	       return {
         	   init: init,
            	show: show,

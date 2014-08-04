@@ -205,6 +205,7 @@ app.Activities = (function () {
                     $('#no-notification-span').show();
                 }
             },
+                
              sort: { field: 'ModifiedAt', dir: 'desc' }    
 	        });
                
@@ -369,13 +370,15 @@ app.Activities = (function () {
             function(data){
         		//alert(JSON.stringify(data));
                 app.showAlert("Group Added Successfully","Notification");
+                $("#newGroup").val();
+                app.mobileApp.navigate('views/groupListPage.html');
     		},
     
             function(error){
                     app.showAlert("Please try again later","Notification");
                 //alert(JSON.stringify(error));
     		});
-                app.mobileApp.navigate('#:back');
+  
         };
         
         var makeCall = function(){
