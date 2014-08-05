@@ -32,25 +32,25 @@
     </ol>
     
     <script>
-
-      $(document).ready(function() {
+	      $(document).ready(function() {
                     // create ComboBox from input HTML element
                     $("#selectOrgData").kendoComboBox({
-                        dataTextField: "text",
-                        dataValueField: "value",
-                        dataSource: [
-                            { text: "Sakshay", value: "Sakshay" },
-                            { text: "Infosys", value: "Infosys" },
-                            { text: "TCS", value: "TCS" },
-                            { text: "Wipro", value: "Wipro" }
-                        ],
+                        dataTextField: "status.org_name",
+                        dataValueField: "status.pid",
+   					 dataSource: {
+				            transport: {
+                				read: {
+                    				dataType: "json",
+                 				   url: "http://54.85.208.215/webservice/organisation/getOrg"
+                						}
+            						}
+        				},
                         filter: "contains",
                         suggest: true
                         //index: 0
                     });
-
               
-          
+                       
                    $("#selectGroupData").kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
@@ -82,7 +82,7 @@
     */
 
 
-</script>
+	</script>
     
 </div>
 

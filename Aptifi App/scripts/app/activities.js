@@ -4,7 +4,7 @@ app.Activities = (function () {
     'use strict'
  var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  var activitiesDataSource;   
-    var validator;
+ var validator;
 	   // Activities model
 	    var activitiesModel = (function () {	
 		var data; 
@@ -361,26 +361,7 @@ app.Activities = (function () {
             window.open('http://www.sakshay.in','_blank');
         };
         
-        var addGroupFunc = function(){            
-            var newGroupValue = $("#newGroup").val();
-                        
-			var data = el.data('Group');
-            data.create({ 'Name' : newGroupValue },
-    
-            function(data){
-        		//alert(JSON.stringify(data));
-                app.showAlert("Group Added Successfully","Notification");
-                $("#newGroup").val();
-                app.mobileApp.navigate('views/groupListPage.html');
-    		},
-    
-            function(error){
-                    app.showAlert("Please try again later","Notification");
-                //alert(JSON.stringify(error));
-    		});
-  
-        };
-        
+                
         var makeCall = function(){
             app.MenuPage=false;
             document.location.href = 'tel:+91-971-781-8898';
@@ -437,48 +418,14 @@ app.Activities = (function () {
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         
-        var addGroup = function(){
-            app.MenuPage=false;	
-            app.mobileApp.navigate('views/addGroup.html');    
-        };
-        
-        var deleteGroup = function(){
-            app.MenuPage=false;	
-            app.mobileApp.navigate('views/deleteGroup.html');    
-        };
-        
-
+      
         var setting = function(){
              app.MenuPage=false;
              document.location.href="#settingDiv";
         };
         
 
-        var deleteGroupFunc = function(){
-            //var data = $('input:checkbox:checked').val();
-			var val = [];
-		        $(':checkbox:checked').each(function(i){
-          	  val[i] = $(this).val();
-        	});
-            
-            var arrLength=val.length;
-            var delVal =0;
-            
-          $.each(val,function(i,dataValue){  
-            var data = el.data('Group');
-			data.destroySingle({ Id: dataValue },    		
-	        
-              function(){
-				  delVal++;
-   			 },
- 		
-              function(error){
-			    });
-          
-          });	
-           
-           	  app.showAlert("Group Deleted Successfully","Notification");
-        };
+        
         
         var sendNotification = function(){
             app.MenuPage=false;
@@ -817,13 +764,12 @@ app.Activities = (function () {
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,
             CreatedAtFormatted:CreatedAtFormatted,
-            addGroupFunc:addGroupFunc,
+          
             sendNotificationMessage:sendNotificationMessage,
             inAppBrowser:inAppBrowser,
-            deleteGroupFunc:deleteGroupFunc,
+           
             manageGroup:manageGroup,
-            addGroup:addGroup,
-            deleteGroup:deleteGroup,
+          
             makeCall:makeCall,
             replyUser:replyUser,
             initNotifi:initNotifi,
