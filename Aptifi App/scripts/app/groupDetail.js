@@ -227,7 +227,7 @@ app.groupDetail = (function () {
                             	uniqueLength=tempArray.length;
  		                        console.log(uniqueLength);   
                             }                 
-          		  		});
+          		  	});
 
                     
 						 for(var i=0;i<uniqueLength;i++){     		
@@ -236,10 +236,14 @@ app.groupDetail = (function () {
                 			 	operator: 'eq',
                     			 value: tempArray[i]
 					     		});
-                			}
-                                                                                       
-                            kendo.bind($('#userDetailTemplate'), activitiesDataSource);               
-     
+
+                                 // for(var i=0;i<dataLength;i++){
+                           	  // var pos = $.inArray(view[i].UserId, tempArray);
+                             	 
+                                // template = kendo.template($("#userDetailTemplate").html());
+								//$("#userDetail-listview").append(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
+								//kendo.bind($('#userDetailTemplate'), activitiesDataSource);
+                           }                                                                                                              
        			 };
 
 	           

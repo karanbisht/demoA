@@ -790,17 +790,24 @@ app.Activities = (function () {
         var logout = function () {
         navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
-               	 	app.helper.logout()
-            			.then(navigateHome, function (err) {
-
-                            
-                            app.showError(err.message);
+           var db = app.getDb();
+                    
+               	 db.transaction(updateLoginStatus, app.onError, app.onSuccess);	
+                    app.helper.logout()
+            			
+                    .then(navigateHome, function (err) {                                           
+                        app.showError(err.message);
                 		navigateHome();
             		});
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };
 
+        
+        var updateLoginStatus = function(tx){       
+            var query = "DELETE FROM LoginInfo";
+			app.deleteQuery(tx, query);
+        };
 
         return {
             activities: activitiesModel.activities,

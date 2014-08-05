@@ -105,24 +105,60 @@ var app = (function (win) {
     
         
 	var createTable = function(tx) {
-    	//app.db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS GetNotification (Id INTEGER , Title TEXT, Message TEXT , CreatedAt TEXT )');        
-            tx.executeSql('CREATE TABLE IF NOT EXISTS NotificationReply (Id INTEGER , ReplyText TEXT,UserNameField TEXT,NotificationId TEXT,CreatedAt TEXT,UserId TEXT)');
-    	//});
+        console.log("DB");
+   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LoginInfo(UserId INTEGER ,UserName TEXT,Email TEXT,MobileNo INTEGER,Password TEXT,Group TEXT)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS GetNotification(Id INTEGER ,Title TEXT,Message TEXT,CreatedAt TEXT)');        
+            tx.executeSql('CREATE TABLE IF NOT EXISTS NotificationReply(Id INTEGER ,ReplyText TEXT,UserNameField TEXT,NotificationId TEXT,CreatedAt TEXT,UserId TEXT)');
+
 	};	
     
     
+    var goToCheckOfflineData = function(){
+         console.log("1");
+        db = getDb();
+		db.transaction(offlineQueryLoginDB,  app.onError, app.onSuccess);
+    };
+    
+    
+    var offlineQueryLoginDB = function(tx){
+            console.log("2");
+    	    var query = 'SELECT * FROM LoginInfo';
+			selectQuery(tx, query, offlineLoginQuerySuccess);
+    };
+    
+    
+    var offlineLoginQuerySuccess = function(tx, results) {
+	count = results.rows.length;
+         console.log(count);
+	if (count !== 0) {
+		 var Group = results.rows.item(0).Group;
+        console.log(Group);
+         app.mobileApp.navigate('views/activitiesView.html?LoginType=' + Group);
+        
+    	} else {
+			
+          app.mobileApp.navigate('#welcome');
+	
+    	}
+	
+	};
+   
     var selectQuery = function(tx,query,successFunction){
 		tx.executeSql(query, [], successFunction, onError);
 	};
 
-     var insertQuery = function(tx,query){
+    var insertQuery = function(tx,query){
 		tx.executeSql(query);	
 	};
     
-    var deleteQuery = function(tx,deleteQuery){
-		tx.executeSql(deleteQuery);
+    var deleteQuery = function(tx,delQuery){
+		tx.executeSql(delQuery);
 	};
+    
+    var updateQuery = function(tx,updateQue){
+		tx.executeSql(updateQue);
+    };
    
     
    var onSuccess = function() {
@@ -144,7 +180,7 @@ var app = (function (win) {
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.NONE]     = 'No network connection';		
 
-        	if (states[networkState] == 'No network connection') {
+        	if (states[networkState] === 'No network connection') {
            	return  false;    
 	    	}else{
     	       return  true;
@@ -152,10 +188,12 @@ var app = (function (win) {
     };
     
     // Handle device back button tap
+
     var onBackKeyDown = function(e) { 
     //var pathname = window.location.pathname;
     //var pageNama = pathname.slice(-10);
      if(app.userPosition){        
+        	e.preventDefault();
         	e.preventDefault();
         		navigator.notification.confirm('Do you really want to exit?', function (confirmed) {
             var exit = function () {
@@ -192,7 +230,7 @@ var app = (function (win) {
      var navigateHome = function () {
             app.MenuPage=false;
             app.mobileApp.navigate('#welcome');
-        };
+     };
     
     var onDeviceReady = function() {
         // Handle "backbutton" event
@@ -207,7 +245,7 @@ var app = (function (win) {
         }
         
         // Initialize AppFeedback
-        if (app.isKeySet(appSettings.feedback.apiKey)) {
+        /*if (app.isKeySet(appSettings.feedback.apiKey)) {
             try {
                 feedback.initialize(appSettings.feedback.apiKey);
             } catch (err) {
@@ -216,7 +254,7 @@ var app = (function (win) {
             }
         } else {
             console.log('Telerik AppFeedback API key is not set. You cannot use feedback service.');
-        }
+        }*/
         
         /*var networkState = navigator.connection.type;
         if (networkState === 'No network connection') {
@@ -230,8 +268,10 @@ var app = (function (win) {
         
             openDb();
         	var db = getDb();
-  		  db.transaction(createTable , onError , onSuccess);
+  		  db.transaction(createTable , onError , goToCheckOfflineData);
       };
+    
+   
     
     
     // Handle "deviceready" event
@@ -405,11 +445,14 @@ var app = (function (win) {
         statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
 
     // Initialize KendoUI mobile application
+
+    
     var mobileApp = new kendo.mobile.Application(document.body, {
+        											 initial: "#welcome",
                                                      transition: 'slide',
                                                      statusBarStyle: statusBarStyle,
                                                      skin: 'flat'
-                                                 });
+                                                 	});
 
     var getYear = (function () {
         return new Date().getFullYear();
@@ -421,10 +464,12 @@ var app = (function (win) {
         onSuccess:onSuccess,
         onError:onError,
         getDb:getDb,
+        goToCheckOfflineData:goToCheckOfflineData,
         validateMobile:validateMobile,
         validateEmail:validateEmail,
         selectQuery:selectQuery,
         deleteQuery:deleteQuery,
+        updateQuery:updateQuery,
         getAdminId:getAdminId,
         insertQuery:insertQuery,
         showConfirm: showConfirm,
