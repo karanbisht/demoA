@@ -38,6 +38,13 @@ var app = (function (win) {
         return true;
     });
     
+    var devicePlatform = function(){
+        return device.platform;
+    };
+    
+    var deviceUuid = function(){
+        return device.uuid;
+    };
     
 
     // Global confirm dialog
@@ -467,6 +474,8 @@ var app = (function (win) {
         goToCheckOfflineData:goToCheckOfflineData,
         validateMobile:validateMobile,
         validateEmail:validateEmail,
+        devicePlatform:devicePlatform, 
+        deviceUuid:deviceUuid,
         selectQuery:selectQuery,
         deleteQuery:deleteQuery,
         updateQuery:updateQuery,

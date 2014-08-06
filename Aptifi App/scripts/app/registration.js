@@ -2,6 +2,8 @@ var app = app || {};
 
 app.registration = (function () {
     'use strict'
+    
+    
 
     // Activities view model
     var registrationViewModel = (function () {
@@ -75,24 +77,42 @@ app.registration = (function () {
         }
         
         var regDone = function(){
-                  var selectOrg = $("#selectOrgData").data("kendoComboBox");
-				  var selectGroup = $("#selectGroupData").data("kendoComboBox");
+            var selectOrg = $("#selectOrgData").data("kendoComboBox");
+		    var selectGroup = $("#selectGroupData").data("kendoComboBox");
 			            
-            var selectedOrg = selectOrg.value();
-            var selectedGroup = selectGroup.value();
+            var org_id = selectOrg.value();            
+            var cmbGroup = selectGroup.value();
             
-         if (selectedOrg == "") {
+        /* if (selectedOrg === "") {
 				app.showAlert("Please select your Organisation.","Validation Error");
-         }else if (selectedGroup == "") {
+         }else if (selectedGroup === "") {
 				app.showAlert("Please select your Group.","Validation Error");
-         }else{
-            var userFirstName=$regFirstName.val();
-            var userPassword=$regPassword.val();
-            var userLastName=$regLastName.val();
-            var userEmail=$regEmail.val();
-            var userMobile=$regMobile.val();
-        
+         }else{*/
+            var fname=$regFirstName.val();
+            var password=$regPassword.val();
+            var lname=$regLastName.val();
+            var email=$regEmail.val();
+            var mobile=$regMobile.val();
+        	var device_type = app.devicePlatform();
+            var device_id = app.deviceUuid();
+             console.log(device_type+"||"+device_id);
+             
+             var dataSourceRegistration = new kendo.data.DataSource({
+			 transport: {
+    			read:  {
+      			url: "http://54.85.208.215/webservice/customer/customerRegistration",
+    			  dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  type: 'POST',
+                  data: {fname:fname ,lname:lname,email:email, password:password,mobile:mobile,cmbGroup:cmbGroup,device_id:device_id,device_type:device_type,org_id:org_id} 
+             	   }
+ 				 }
+    	   	});
+	            
             
+            console.log(dataSourceRegistration);
+            console.log(dataSourceRegistration.read());
+             
+/*            
             app.everlive.Users.register(
                 userEmail,
                 userPassword,{Email:userEmail,DisplayName:userFirstName,Organisation:selectedOrg,Group:selectedGroup,MobileNo:userMobile}
@@ -107,16 +127,19 @@ app.registration = (function () {
            
             alert("Your Detail follows"+userFirstName+"#"+userPassword+"#"+ userLastName +"#"+ userEmail +"#"+ userMobile +"#"+ selectedOrg +"#"+ selectedGroup);
          
-        	}   
+        	   
+             */
+            //}
         };
-   
+        
+    
         return {
             regInit: regInit,
             addNewRegistration: addNewRegistration,
             regDone: regDone,
             goToIndex:goToIndex,
             clearSelectOrganisation:clearSelectOrganisation,
-           // selectedOrg:selectedOrg,
+            // selectedOrg:selectedOrg,
             //selectedGroup:selectedGroup,
             register: register
         };

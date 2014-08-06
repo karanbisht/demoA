@@ -12,13 +12,13 @@
   		<li class="parentView">
               <img src="styles/images/habicon.png" height="42" width="42"  style="margin-left:-25px ;">
                    <!-- <select data-role="dropdownlist" data-bind="source: organisationData, value: organisationInit" data-text-field="name"  data-value-field="value" ></select> -->
-              <input id="selectOrgData"  placeholder="Select Organisation " />
+              <input id="selectOrgData" />
  		 </li>
                   
           <li class="parentView">  
                <img src="styles/images/group.png" height="42" width="42" style="margin-left:-25px ;">
                    <!--<select data-role="dropdownlist" data-bind="source: groupData, value: groupInit" data-text-field="name"  data-value-field="value" ></select>-->
-                 <input id="selectGroupData" placeholder="Select Group" />
+                 <input id="selectGroupData" />
           </li>
         </ul>   
      </div>               
@@ -31,26 +31,62 @@
                 </li>
     </ol>
     
-    <script>
-	      $(document).ready(function() {
+    
+    
+    <script type="text/javascript">
+
+      $(document).ready(function() {
+          
+          
                     // create ComboBox from input HTML element
-                    $("#selectOrgData").kendoComboBox({
-                        dataTextField: "status.org_name",
-                        dataValueField: "status.pid",
-   					 dataSource: {
-				            transport: {
-                				read: {
-                    				dataType: "json",
-                 				   url: "http://54.85.208.215/webservice/organisation/getOrg"
-                						}
-            						}
-        				},
+                /*    $("#selectOrgData").kendoComboBox({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        dataSource: [
+                            { text: "Sakshay", value: "Sakshay" },
+                            { text: "Infosys", value: "Infosys" },
+                            { text: "TCS", value: "TCS" },
+                            { text: "Wipro", value: "Wipro" }
+                        ],
                         filter: "contains",
                         suggest: true
                         //index: 0
-                    });
-              
-                       
+                    });*/
+					
+          
+          var organisationDS = new kendo.data.DataSource({
+            transport: {
+                type: "json",
+        		serverFiltering: true,
+                read: {
+                    url: "http://54.85.208.215/webservice/organisation/getOrg",  //Note the URL path!
+                    dataType: "json",
+                    type: 'POST'
+                }
+            },
+            schema: {
+                model: {
+                    fields: {
+                        pid: { type: "number" },
+                        org_name: { type: "string" }
+                    }
+                }
+              }
+       	 });
+
+        $("#selectOrgData").kendoComboBox({
+            placeholder: "Select Organisation",
+            dataTextField: "org_name",
+            dataValueField: "pid",
+            dataSource: organisationDS,
+            change: onChangeOrganisation
+        });         
+          
+           $("#selectGroupData").kendoComboBox({
+            placeholder: "Select Group"
+           });
+                
+          /*
                    $("#selectGroupData").kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
@@ -65,6 +101,43 @@
                         //index: 0
                     });
           
+          */
+          
+           var onChangeOrganisation = function(){
+             console.log("hello");
+       		  var selectData = $("#selectGroupData").data("kendoComboBox");    
+           	  var orgSelected = selectData.value();
+    		            
+             
+             var groupDS = new kendo.data.DataSource({
+            transport: {
+                type: "json",
+        		serverFiltering: true,
+                read: {
+                    url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgSelected,  //Note the URL path!
+                    dataType: "json",
+                    type: 'POST'
+                }
+            },
+            schema: {
+                model: {
+                    fields: {
+                        pid: { type: "number" },
+                        group_name: { type: "string" }
+                    }
+                }
+              }
+       	 });
+
+        $("#selectGroupData").kendoComboBox({
+            placeholder: "Select Group",
+            dataTextField: "group_name",
+            dataValueField: "pid",
+            dataSource: groupDS
+        });
+                   
+             };
+
           });
     
     /*var selectOrgModel = kendo.observable({      
