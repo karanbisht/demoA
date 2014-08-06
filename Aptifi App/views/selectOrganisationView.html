@@ -54,7 +54,7 @@
                     });*/
 					
           
-          var organisationDS = new kendo.data.DataSource({
+/*          var organisationDS = new kendo.data.DataSource({
             transport: {
                 type: "json",
         		serverFiltering: true,
@@ -73,18 +73,126 @@
                 }
               }
        	 });
+          
+          var data = organisationDS.read();
+          console.log(data);
+          
+		/*var checkingDS = [
+		{ org_name: 'countryName' , pid :'1' },
+		{ org_name: 'name' , pid :'2' },
+		{ org_name: 'population' , pid :'3' },
+		{ org_name: 'continentCode' , pid :'4' }
+		];*/
 
-        $("#selectOrgData").kendoComboBox({
+          
+        //  var DSCheck = {"status":[{"orgData":[{"pid":"1","org_name":"Sakshay1","org_email":"ravi@chamri1a.com","org_ph":"1234567890","org_url":"http:\/\/www.sakshay.in","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"","org_status":"A","addDT":"2014-07-09","last_modified_dt":"2014-07-29 15:35:38"},{"pid":"2","org_name":"Airtel","org_email":"airtel@airtel.com","org_ph":"9312934547","org_url":"www.airtel.com","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"My Description","org_status":"A","addDT":"2014-07-29","last_modified_dt":"2014-07-30 17:26:37"},{"pid":"3","org_name":"IDEA Cellular","org_email":"idea@cellular.com","org_ph":"9911991199","org_url":"www.ideacellular.com","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"dfsfsdfds","org_status":"A","addDT":"2014-07-30","last_modified_dt":"2014-07-30 17:12:14"}]}]};
+        
+  /*         var DSCheck = [{"pid":"1","org_name":"Sakshay1","org_email":"ravi@chamri1a.com","org_ph":"1234567890","org_url":"http:\/\/www.sakshay.in","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"","org_status":"A","addDT":"2014-07-09","last_modified_dt":"2014-07-29 15:35:38"},{"pid":"2","org_name":"Airtel","org_email":"airtel@airtel.com","org_ph":"9312934547","org_url":"www.airtel.com","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"My Description","org_status":"A","addDT":"2014-07-29","last_modified_dt":"2014-07-30 17:26:37"},{"pid":"3","org_name":"IDEA Cellular","org_email":"idea@cellular.com","org_ph":"9911991199","org_url":"www.ideacellular.com","org_location":null,"org_logo":null,"org_industry":"0","org_desc":"dfsfsdfds","org_status":"A","addDT":"2014-07-30","last_modified_dt":"2014-07-30 17:12:14"}];
+          
+          $("#selectOrgData").kendoComboBox({
             placeholder: "Select Organisation",
             dataTextField: "org_name",
             dataValueField: "pid",
-            dataSource: organisationDS,
+            dataSource: DSCheck,
             change: onChangeOrganisation
         });         
+          
+          
+          
           
            $("#selectGroupData").kendoComboBox({
             placeholder: "Select Group"
            });
+          
+          
+          
+    */      
+          
+           $("#selectGroupData").kendoComboBox({
+            placeholder: "Select Group"
+           });
+
+          
+ 	         $("#selectOrgData").kendoComboBox({
+                    placeholder: "Select Organisation",
+                    dataTextField: "org_name", 
+                    dataValueField: "pid ", 
+                    dataSource: {
+                        serverFiltering: true,
+                        type: "json",
+                        transport: {
+                            read: "http://54.85.208.215/webservice/organisation/getOrg"
+                         },
+                         schema: {
+                             data: function(response) {
+                                 console.log(response);
+                                                        
+                                 var dropDownListData = [];
+                                 $.each(response, function(i, country) {
+                                     var orgLength=country[0].orgData.length;
+                                   for(var j=0;j<orgLength;j++){
+                                     dropDownListData.push({
+                                         pid: country[0].orgData[j].pid,
+                                         org_name: country[0].orgData[j].org_name
+                                     });
+                                   }
+                                 });
+                                 return dropDownListData;
+                             }
+                         },
+                    },
+                  change: function(){
+       			   var selectedVal = this.value();
+                      onChangeOrganisation(selectedVal);
+				    }
+                  
+                });
+          
+          
+        			
+                
+
+          
+          
+                 var onChangeOrganisation = function(e){
+         			console.log(e);
+       			  //var selectData = $("#selectGroupData").data("kendoComboBox");    
+           		  //var orgSelected = selectData.value();
+    		            
+                  $("#selectGroupData").kendoComboBox({
+                    placeholder: "Select Group",
+                    dataTextField: "group_name", 
+                    dataValueField: "pid ", 
+                    dataSource: {
+                        serverFiltering: true,
+                        type: "json",
+                        transport: {
+                            read: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+e,
+                         },
+                         schema: {
+                             data: function(response) {
+                                 console.log(response);
+                                                        
+                                 var dropDownListData = [];
+                                 $.each(response, function(i, country) {
+                                     var orgLength=country[0].grpData.length;
+                                   for(var j=0;j<orgLength;j++){
+                                     dropDownListData.push({
+                                         pid: country[0].grpData[j].pid,
+                                         group_name: country[0].grpData[j].group_name
+                                     });
+                                   }
+                                 });
+                                 return dropDownListData;
+                             }
+                         },
+        	           }                  
+    	            });
+	                                        
+    	         };
+
+          
+          
                 
           /*
                    $("#selectGroupData").kendoComboBox({
@@ -103,42 +211,8 @@
           
           */
           
-           var onChangeOrganisation = function(){
-             console.log("hello");
-       		  var selectData = $("#selectGroupData").data("kendoComboBox");    
-           	  var orgSelected = selectData.value();
-    		            
-             
-             var groupDS = new kendo.data.DataSource({
-            transport: {
-                type: "json",
-        		serverFiltering: true,
-                read: {
-                    url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgSelected,  //Note the URL path!
-                    dataType: "json",
-                    type: 'POST'
-                }
-            },
-            schema: {
-                model: {
-                    fields: {
-                        pid: { type: "number" },
-                        group_name: { type: "string" }
-                    }
-                }
-              }
-       	 });
-
-        $("#selectGroupData").kendoComboBox({
-            placeholder: "Select Group",
-            dataTextField: "group_name",
-            dataValueField: "pid",
-            dataSource: groupDS
-        });
-                   
-             };
-
-          });
+           
+	          });
     
     /*var selectOrgModel = kendo.observable({      
          

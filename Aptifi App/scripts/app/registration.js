@@ -82,35 +82,53 @@ app.registration = (function () {
 			            
             var org_id = selectOrg.value();            
             var cmbGroup = selectGroup.value();
-            
-        /* if (selectedOrg === "") {
+             console.log(org_id);
+             console.log(cmbGroup);
+          
+         if (org_id === "") {
 				app.showAlert("Please select your Organisation.","Validation Error");
-         }else if (selectedGroup === "") {
+         }else if (cmbGroup === "") {
 				app.showAlert("Please select your Group.","Validation Error");
-         }else{*/
+         }else{
             var fname=$regFirstName.val();
             var password=$regPassword.val();
             var lname=$regLastName.val();
             var email=$regEmail.val();
             var mobile=$regMobile.val();
-        	var device_type = app.devicePlatform();
-            var device_id = app.deviceUuid();
-             console.log(device_type+"||"+device_id);
+        	var deviceName = app.devicePlatform();
+            var device_type;
+  
+             if(deviceName==='Android'){
+                device_type ='AN';
+             }else if(deviceName==='ios'){
+                device_type='AP';
+             }
              
-             var dataSourceRegistration = new kendo.data.DataSource({
-			 transport: {
-    			read:  {
+ 	           var device_id = app.deviceUuid();
+     	       console.log(device_type+"||"+device_id);
+                          
+            //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
+             
+          
+         var dataSourceRegistration = new kendo.data.DataSource({
+             transport:{
+    			read:{
       			url: "http://54.85.208.215/webservice/customer/customerRegistration",
     			  dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   type: 'POST',
-                  data: {fname:fname ,lname:lname,email:email, password:password,mobile:mobile,cmbGroup:cmbGroup,device_id:device_id,device_type:device_type,org_id:org_id} 
-             	   }
- 				 }
-    	   	});
+                  data: {fname:fname ,lname:lname,email:email, password:password,mobile:mobile,cmbGroup:cmbGroup,device_id:device_id,device_type:device_type,org_id:org_id}
+             	}
+ 			},    
+             schema: {
+                             data: function(response) {
+                                 console.log(response);                                                        
+                             }
+                     }
+    	     });
 	            
             
-            console.log(dataSourceRegistration);
-            console.log(dataSourceRegistration.read());
+            //console.log(dataSourceRegistration);
+            //console.log(dataSourceRegistration.read());
              
 /*            
             app.everlive.Users.register(
@@ -129,7 +147,7 @@ app.registration = (function () {
          
         	   
              */
-            //}
+           }
         };
         
     

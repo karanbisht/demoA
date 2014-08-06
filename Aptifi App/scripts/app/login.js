@@ -15,17 +15,13 @@ app.Login = (function () {
         
         var isAnalytics = analytics.isAnalytics();
                
-        var init = function () {
-               
+        var init = function () {            
             app.userPosition=true;
             if (!app.isKeySet(appSettings.everlive.apiKey)) {
                 app.mobileApp.navigate('views/noApiKey.html', 'fade');
             }
-
             $loginUsername = $('#loginUsername');
-            $loginPassword = $('#loginPassword');
-
-            
+            $loginPassword = $('#loginPassword');            
         };
 
         var show = function () {
@@ -81,6 +77,7 @@ app.Login = (function () {
                 }
                 return app.Users.load();
             })
+                
             .then(function () {
                 app.userPosition=false;
                 app.everlive.Users.currentUser()
@@ -95,6 +92,7 @@ app.Login = (function () {
 			    });
 
             })  
+                
             .then(null,
                   function (err) {
                       if(err.message===null){
