@@ -104,27 +104,36 @@ app.registration = (function () {
                 device_type='AP';
              }
              
- 	           var device_id = app.deviceUuid();
-     	       console.log(device_type+"||"+device_id);
+ 	         var device_id = app.deviceUuid();
+     	     console.log(device_type+"||"+device_id);
                           
             //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
              
-          
-         var dataSourceRegistration = new kendo.data.DataSource({
-             transport:{
+     
+             
+         	var dataSourceRegistration = new kendo.data.DataSource({
+
+            transport:{
     			read:{
+                  contentType: "application/json; charset=utf-8",
       			url: "http://54.85.208.215/webservice/customer/customerRegistration",
     			  dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  type: 'POST',
-                  data: {fname:fname ,lname:lname,email:email, password:password,mobile:mobile,cmbGroup:cmbGroup,device_id:device_id,device_type:device_type,org_id:org_id}
+                  type: "POST",
+                  data: {fname:fname ,lname:lname,email:email, password:password,mobile:mobile,cmbGroup:cmbGroup,device_id:device_id,device_type:device_type,org_id:org_id}                         
              	}
  			},    
+                 
              schema: {
-                             data: function(response) {
-                                 console.log(response);                                                        
-                             }
-                     }
+                           data: function (data) {
+              				  alert(data);   /*Data Return Successfully*/
+				                return data;
+    	        			}
+	                    }
     	     });
+             
+             dataSourceRegistration.fetch(function() {
+						console.log(dataSourceRegistration);
+             });
 	            
             
             //console.log(dataSourceRegistration);
@@ -143,9 +152,7 @@ app.registration = (function () {
                 app.showError(err.message);
             });
            
-            alert("Your Detail follows"+userFirstName+"#"+userPassword+"#"+ userLastName +"#"+ userEmail +"#"+ userMobile +"#"+ selectedOrg +"#"+ selectedGroup);
-         
-        	   
+            alert("Your Detail follows"+userFirstName+"#"+userPassword+"#"+ userLastName +"#"+ userEmail +"#"+ userMobile +"#"+ selectedOrg +"#"+ selectedGroup);	   
              */
            }
         };
