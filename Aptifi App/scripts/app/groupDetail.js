@@ -5,7 +5,7 @@ app.groupDetail = (function () {
  var MemberDataSource;    
     var GroupName;
     var selectedGroupId;
-    
+    var selectedGroupDesc;
      var el = new Everlive('wKkFz2wbqFe4Gj0s');   
     
      var UsersModel = (function () {    
@@ -143,7 +143,9 @@ app.groupDetail = (function () {
             console.log(activity.group_name);
 			GroupName = activity.group_name;
             selectedGroupId = activity.pid;
+            selectedGroupDesc = activity.group_description;
             console.log(selectedGroupId);
+            console.log(selectedGroupDesc);
             
 
         };
@@ -202,6 +204,61 @@ app.groupDetail = (function () {
            kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
 
+        var showUpdateGroupView = function(){
+            app.MenuPage=false;
+            app.mobileApp.navigate('#updateGroupInfo');      
+               
+            $("#editGroupName").val(GroupName);
+            $("#editGroupDesc").val(selectedGroupDesc);
+        };
+        
+        var saveUpdatedGroupVal = function(){
+            
+         var group_status = 'A';
+         var org_id=1; 
+         var group_name = $("#editGroupName").val();     
+         var group_description = $("#editGroupDesc").val();
+            
+         var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
+                      console.log(selectedGroupId);
+            
+         var dataSourceaddGroup = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/saveGroup/"+selectedGroupId,
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataSaveGroup
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          });  
+	            
+           dataSourceaddGroup.fetch(function() {
+              var loginDataView = dataSourceaddGroup.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
+                               if(addGroupData.status[0].Msg==='Success'){                                
+									app.showAlert("Group Updated Successfully","Notification");
+				        	        app.mobileApp.navigate('views/groupListPage.html');
+                               }else{
+                                  app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });
+        };
         
         var addMemberToGroup = function(){
             app.MenuPage=false;
@@ -335,7 +392,9 @@ app.groupDetail = (function () {
           	 addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
            	showGroupNotification:showGroupNotification,
-           	showGroupMembers:showGroupMembers    
+           	showGroupMembers:showGroupMembers,
+               showUpdateGroupView:showUpdateGroupView ,
+               saveUpdatedGroupVal:saveUpdatedGroupVal    
            	};
             
            }());

@@ -456,9 +456,9 @@ app.Activities = (function () {
     					});
                 */
                
-  			              var conditions = {
-    								'User.Group': group
-							};
+  			  var conditions = {
+    				'User.Group': group
+				};
 				var notification;
                 
                 if(group==='All' || group==='' ){
@@ -474,8 +474,7 @@ app.Activities = (function () {
                         	        Message:notificationValue  
 							};
                 }
-				
-                
+				                
                 		$.ajax({
     						type: "POST",
 						    url: 'http://api.everlive.com/v1/wKkFz2wbqFe4Gj0s/Push/Notifications',

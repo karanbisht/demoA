@@ -44,7 +44,8 @@ app.GroupList = (function () {
                                      groupDataShow.push({
                                          pid: groupValue[0].grpData[j].pid,
                                          group_name: groupValue[0].grpData[j].group_name,
-                                         add:groupValue[0].grpData[j].add
+                                         add:groupValue[0].grpData[j].add,
+                                         group_description:groupValue[0].grpData[j].group_description
 
 
                                      });
@@ -113,10 +114,6 @@ app.GroupList = (function () {
           //  function(error){
            //         app.showAlert("Please try again later","Notification");
     	//	});
- 		 
-          
-            
-            
          
 		 var group_status = 'A';
          var org_id=1; 
@@ -148,10 +145,9 @@ app.GroupList = (function () {
           });  
 	            
            dataSourceaddGroup.fetch(function() {
-                         var loginDataView = dataSourceaddGroup.data();
-						   $.each(loginDataView, function(i, addGroupData) {
-                                   console.log(addGroupData.status[0].Msg);
-                               
+              var loginDataView = dataSourceaddGroup.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
                                if(addGroupData.status[0].Msg==='Success'){                                
 									app.showAlert("Group Added Successfully","Notification");
 				        	        app.mobileApp.navigate('views/groupListPage.html');
@@ -159,7 +155,7 @@ app.GroupList = (function () {
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
                                
-                          });
+                  });
   		 });
             
             
@@ -189,8 +185,8 @@ app.GroupList = (function () {
 			    });
           
           });
-             app.mobileApp.navigate('views/groupListPage.html');
-             app.showAlert("Group Deleted Successfully","Notification");
+        		     app.mobileApp.navigate('views/groupListPage.html');
+		             app.showAlert("Group Deleted Successfully","Notification");
          };
                 
                 
