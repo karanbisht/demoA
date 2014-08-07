@@ -169,6 +169,7 @@
                         transport: {
                             read: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+e,
                          },
+                         template: "<input type='checkbox' id='chk_fabric_#=data.DataValue #' onclick='UpdateIdinHF(this);' value='#=data.DataValue #' name='fabric' />" + " " + "${ data.DataText }", 
                          schema: {
                              data: function(response) {
                                  console.log(response);

@@ -33,7 +33,18 @@ app.Login = (function () {
        
         // Authenticate to use Backend Services as a particular user
         var login = function () {
+			 
+            var deviceName = app.devicePlatform();
+            var device_type;
 
+             if(deviceName==='Android'){
+                device_type ='AN';
+             }else if(deviceName==='iOS'){
+                device_type='AP';
+             }
+             
+ 	        var device_id = app.deviceUuid();
+            
             var username = $loginUsername.val();
             var password = $loginPassword.val();
 
@@ -44,6 +55,54 @@ app.Login = (function () {
 			} else if (password === "Password" || password === "") {
 				app.showAlert("Please enter Password.", "Validation Error");
 			} else {
+            
+           
+        console.log(username+"||"+password+"||"+device_id+"||"+device_type);
+        var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type}
+                      
+            
+          var dataSourceLogin = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/customerLogin",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataLogin
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          });  
+	            
+           dataSourceLogin.fetch(function() {
+                         var loginDataView = dataSourceLogin.data();
+						   $.each(loginDataView, function(i, loginData) {
+                                   console.log(loginData.status[0].Msg);
+                               
+                               if(loginData.status[0].Msg==='Sucess'){
+                                   
+								var dataSend = loginData.status[0].CustomerData[0].user_type;
+															                                   
+                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend);
+                               }else{
+                                  app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                          });
+  		 });
+             
+                
+                
             //username = 'ravi@chamria.com';
             //password = 'password';
             
@@ -69,6 +128,7 @@ app.Login = (function () {
             
             // Authenticate using the username and password
             
+                /*
             app.everlive.Users.login(username, password)
             .then(function () {
                 // EQATEC analytics monitor - track login type
@@ -103,7 +163,7 @@ app.Login = (function () {
                       //show();
                   }
             );
-                		
+               */ 		
           }
         };
         

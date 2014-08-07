@@ -263,7 +263,7 @@ app.Activities = (function () {
             
             loginType = e.view.params.LoginType;
        
-            if(loginType==='Admin'){
+            if(loginType==='C'){
              $("#aboutUsView").hide();
              $("#settingView").hide();
              $("#websiteView").hide();
@@ -384,7 +384,7 @@ app.Activities = (function () {
             console.log(app.Activities.userData);
             
            app.Activities.userData.fetch(function(){
-					  var view = app.Activities.userData.view();
+					  var view = app.Activities.userData.view()
                       console.log(view);
 					  dataLength = view.length;
 		               for(var i=0;i<dataLength;i++){
@@ -467,7 +467,7 @@ app.Activities = (function () {
                               Title: titleValue ,
                               Message:notificationValue  
 							};    
-                }else{
+              	  }else{
                      			 notification = {
 								    Filter: JSON.stringify(conditions),
                                     Title: titleValue ,
@@ -529,12 +529,12 @@ app.Activities = (function () {
                  */
         	//};
         
-        
-        var onChangeNotiGroup = function(){
-             var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
-             var groupSelectedNoti = selectDataNoti.value();
-            return groupSelectedNoti;
-        };
+       
+        	var onChangeNotiGroup = function(){
+            	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
+             	var groupSelectedNoti = selectDataNoti.value();
+             	return groupSelectedNoti;
+       	 };
         
         
         
@@ -559,6 +559,7 @@ app.Activities = (function () {
                       kendo.bind($('#activityTemplate'), activitiesDataSource);                              
 			};
         
+        
 	    var onComboChange = function(){
                  //$("#activities-listview").empty();
             	 //var activities;
@@ -568,9 +569,10 @@ app.Activities = (function () {
                   		//notificationModel();
         
             			   if(groupSelected==='All'){
-    			             app.Activities.activities.filter({
+    			              app.Activities.activities.filter({
 							                	
-        	    								});
+                                 
+        	    			  });
                            }else{		
                                                 app.Activities.activities.filter({
 							                	field: 'Group',

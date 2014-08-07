@@ -4,31 +4,99 @@ app.groupDetail = (function () {
 
  var MemberDataSource;    
     var GroupName;
+    var selectedGroupId;
+    
      var el = new Everlive('wKkFz2wbqFe4Gj0s');   
     
-     var UsersModel = (function () {                 
+     var UsersModel = (function () {    
+         
      var UserModel = {
             id: 'Id',
             fields: {
-                CreatedAt: {
-                    field: 'CreatedAt',
-                    defaultValue: new Date()
-                },
-                DisplayName: {
-                    field: 'DisplayName',
+                mobile: {
+                    field: 'mobile',
                     defaultValue: ''
                 },
-                Email: {
-                    field: 'Email',
+                first_name: {
+                    field: 'first_name',
+                    defaultValue: ''
+                },
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
                     defaultValue:''
                 }
             },
            
-	          CreatedAtFormatted: function () {
+	          /*CreatedAtFormatted: function () {
         	        return app.helper.formatDate(this.get('CreatedAt'));
-    	        }
-   	       };
-        
+    	        }*/
+   	};
+         
+         
+        MemberDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/1",
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+                model: UserModel,
+                
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].customerData.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         customerID: groupValue[0].customerData[j].customerID,
+                                         first_name: groupValue[0].customerData[j].first_name,
+                                         last_name: groupValue[0].customerData[j].last_name,
+                                         email:groupValue[0].customerData[j].email,
+                                         mobile:groupValue[0].customerData[j].mobile
+                                         
+
+
+                                     });
+                                   }
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+	               }
+
+            },
+            error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }
+	        
+    	    });
+	               
+	        return {
+	            	userData: MemberDataSource
+        	};
+         
+         
+         
+         
+         
+         
+         
+        /*
 	        MemberDataSource = new kendo.data.DataSource({
             type: 'everlive',
 	           schema: {
@@ -53,6 +121,7 @@ app.groupDetail = (function () {
 	        return {
             	userData: MemberDataSource
         	};
+         */
 	}());
 
    
@@ -70,9 +139,13 @@ app.groupDetail = (function () {
             activityUid = e.view.params.uid;
             console.log(activityUid);
             // Get current activity (based on item uid) from Activities model
-            activity = app.Activities.groupData.getByUid(activityUid);
-            console.log(activity.Name);
-			GroupName = activity.Name;
+            activity = app.GroupList.groupListData.getByUid(activityUid);
+            console.log(activity.group_name);
+			GroupName = activity.group_name;
+            selectedGroupId = activity.pid;
+            console.log(selectedGroupId);
+            
+
         };
            
            
@@ -107,8 +180,13 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             
+            
+            
+            
+           
             //if(GroupName==='All'){
-    			             app.groupDetail.userData.filter({
+    			             
+            /*app.groupDetail.userData.filter({
 							                	field: 'Group',
                 								operator: 'eq',
                 								value: GroupName   	    				        	
@@ -120,6 +198,7 @@ app.groupDetail = (function () {
                 								value: GroupName
         	    								});
                            }*/
+            
            kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
 

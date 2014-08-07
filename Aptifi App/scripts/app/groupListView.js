@@ -9,32 +9,62 @@ app.GroupList = (function () {
        var GroupListModel = {
             id: 'Id',
             fields: {
-                CreatedAt: {
-                    field: 'CreatedAt',
+                add: {
+                    field: 'add',
                     defaultValue: new Date()
                 },
-                Name: {
-                    field: 'Name',
+                group_name: {
+                    field: 'group_name',
                     defaultValue: null
                 }
             },
 	            CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('CreatedAt'));
+        	        return app.helper.formatDate(this.get('add'));
     	        }
 	       };        
         
 	        groupListDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: GroupListModel
-            },
-
             transport: {
-                typeName: 'Group'
+               read: {
+                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/1",
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+                model: GroupListModel,
+                
+                  data: function(data)
+  	             {	console.log(data);
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].grpData.length;
+                                   for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         pid: groupValue[0].grpData[j].pid,
+                                         group_name: groupValue[0].grpData[j].group_name,
+                                         add:groupValue[0].grpData[j].add
+
+
+                                     });
+                                   }
+                                 });
+                       
+                       console.log(groupDataShow);
+                       return groupDataShow;
+                       
+	               }
+
             },
-               
-             sort: { field: 'CreatedAt', dir: 'desc' }    
-	        });
+            error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           },       
+             sort: { field: 'add', dir: 'desc' }    
+	       });
                
 	        return {
             	groupListData: groupListDataSource
@@ -70,22 +100,70 @@ app.GroupList = (function () {
                 
          
         var addGroupFunc = function(){            
-            var newGroupValue = $("#newGroup").val();             
-			var data = el.data('Group');
-            data.create({ 'Name' : newGroupValue },
-    
-            function(data){
-        		//alert(JSON.stringify(data));
-                app.showAlert("Group Added Successfully","Notification");
-                //$("#group-listview").data("kendoListView").groupListDataSource.read();
-                app.mobileApp.navigate('views/groupListPage.html');
-    		},
-    
-            function(error){
-                    app.showAlert("Please try again later","Notification");
-                //alert(JSON.stringify(error));
-    		});
-  
+         
+             
+            var group_name = $("#newGroup").val();     
+            var group_description = $("#newGroupDesc").val();
+			//var data = el.data('Group');
+            //data.create({ 'Name' : newGroupValue },  
+           // function(data){
+             //   app.showAlert("Group Added Successfully","Notification");
+             //   app.mobileApp.navigate('views/groupListPage.html');
+    	//	},
+          //  function(error){
+           //         app.showAlert("Please try again later","Notification");
+    	//	});
+ 		 
+          
+            
+            
+         
+		 var group_status = 'A';
+         var org_id=1; 
+            
+         var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
+                      
+            
+         var dataSourceaddGroup = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/saveGroup",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataSaveGroup
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          });  
+	            
+           dataSourceaddGroup.fetch(function() {
+                         var loginDataView = dataSourceaddGroup.data();
+						   $.each(loginDataView, function(i, addGroupData) {
+                                   console.log(addGroupData.status[0].Msg);
+                               
+                               if(addGroupData.status[0].Msg==='Success'){                                
+									app.showAlert("Group Added Successfully","Notification");
+				        	        app.mobileApp.navigate('views/groupListPage.html');
+                               }else{
+                                  app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                          });
+  		 });
+            
+            
+            
         };
  
         

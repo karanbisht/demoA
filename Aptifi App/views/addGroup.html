@@ -10,7 +10,15 @@
   		 <ul data-role="listview" data-style="inset">
                 <li class="username"><input type="text" id="newGroup" placeholder="Enter New Group Name" required validationMessage="Username is required!" /></li>
            </ul>     
+         	
          
+         <div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
+        	 <div class="user-share">
+	             <textarea id="newGroupDesc" placeholder="Write Group description here (Optional) ?"></textarea>    
+             </div>
+	    </div>
+         
+          
            <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: addGroupFunc }" style="padding:10px;float:right;">
                         <a data-role="button" class="btn btn-login">Add Group</a>
