@@ -4,7 +4,7 @@ app.GroupList = (function () {
 
  var el = new Everlive('wKkFz2wbqFe4Gj0s');  
  var groupListDataSource;   
-
+ //var orgId = localStorage.getItem("orgDataId");
    var GroupsListModel = (function () {                 
        var GroupListModel = {
             id: 'Id',
@@ -17,11 +17,11 @@ app.GroupList = (function () {
                     field: 'group_name',
                     defaultValue: null
                 }
-            },
+              },
 	            CreatedAtFormatted: function () {
         	        return app.helper.formatDate(this.get('add'));
     	        }
-	       };        
+   	       };        
         
 	        groupListDataSource = new kendo.data.DataSource({
             transport: {
@@ -45,16 +45,13 @@ app.GroupList = (function () {
                                          pid: groupValue[0].grpData[j].pid,
                                          group_name: groupValue[0].grpData[j].group_name,
                                          add:groupValue[0].grpData[j].add,
-                                         group_description:groupValue[0].grpData[j].group_description
-
-
+                                         group_desc:groupValue[0].grpData[j].group_desc
                                      });
                                    }
                                  });
                        
                        console.log(groupDataShow);
-                       return groupDataShow;
-                       
+                       return groupDataShow;                       
 	               }
 
             },

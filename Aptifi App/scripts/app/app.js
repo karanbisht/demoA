@@ -199,38 +199,26 @@ var app = (function (win) {
     var onBackKeyDown = function(e) { 
     //var pathname = window.location.pathname;
     //var pageNama = pathname.slice(-10);
+        alert(app.userPosition);
+        alert(app.MenuPage);
+        
      if(app.userPosition){        
         	e.preventDefault();
-        	e.preventDefault();
-        		navigator.notification.confirm('Do you really want to exit?', function (confirmed) {
-            var exit = function () {
-                navigator.app.exitApp();
-            };
-            
+        		navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
             	if (confirmed === true || confirmed === 1) {
-               	 // Stop EQATEC analytics monitor on app exit
-                	if (analytics.isAnalytics()) {
-                    	analytics.Stop();
-                	}
-                	AppHelper.logout().then(exit, exit);
+                    navigator.app.exitApp();
             	}
-        	}, 'Exit', ['OK', 'Cancel']);
-        
+        	}, 'Exit', ['OK', 'Cancel']);        
         }else if(app.MenuPage){
-        
              navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
-               	 	AppHelper.logout()
-            			.then(navigateHome, function (err) {
-                         app.showError(err.message);
-                		navigateHome();
-            		});
+ 	             	window.location.href = "index.html";
             	}
         	}, 'Logout', ['OK', 'Cancel']);
             
   	  }else {
         navigator.app.backHistory();
-			    }
+		}
 
     };
 
@@ -321,7 +309,8 @@ var app = (function (win) {
 
         // Current user logout
         logout: function () {
-            return el.Users.logout();
+            //return el.Users.logout();
+             window.location.href('index.html');        
         }
     };
     

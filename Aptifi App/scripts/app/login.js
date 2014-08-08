@@ -26,8 +26,8 @@ app.Login = (function () {
 
         var show = function () {
             app.userPosition=true;
-            $loginUsername.val('');
-            $loginPassword.val('');
+             $('#loginUsername').val('');
+             $('#loginPassword').val('');
         };
         
        
@@ -45,9 +45,12 @@ app.Login = (function () {
              
  	        var device_id = app.deviceUuid();
             
-            var username = $loginUsername.val();
-            var password = $loginPassword.val();
+            var username = $("#loginUsername").val();
+            var password = $("#loginPassword").val();
 
+            console.log(username);
+            console.log(password);
+            
             if (username === "Email" || username === "") {
 				app.showAlert("Please enter your Email.", "Validation Error");
 			} else if (!app.validateEmail(username)) {
@@ -86,19 +89,27 @@ app.Login = (function () {
 	            
            dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
+               			var orgDataId = [];
 						   $.each(loginDataView, function(i, loginData) {
-                                   console.log(loginData.status[0].Msg);
+                               console.log(loginData.status[0].Msg);
                                
                                if(loginData.status[0].Msg==='Sucess'){
                                    
 								var dataSend = loginData.status[0].CustomerData[0].user_type;
-															                                   
-                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend);
+                                var userId = loginData.status[0].CustomerData[0].pid;   
+								var joinGroupInfo=loginData.status[0].joinedGroup[0];
+                                   
+                                  $.each(joinGroupInfo, function(i, org) {
+                                     orgDataId.push(org.orgID);
+                                 });
+                                   
+                                 localStorage.setItem("UserOrgID",orgDataId);
+                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId);
                                }else{
                                   app.showAlert(loginData.status[0].Msg ,'Notification'); 
                                }
                                
-                          });
+                  });
   		 });
              
                 
@@ -212,7 +223,7 @@ app.Login = (function () {
         // function used for registration
         
         var registration = function() {
-            //alert("welcome to user registration");  
+            app.userPosition=false;
             app.mobileApp.navigate('views/registrationView.html');           
         };
 

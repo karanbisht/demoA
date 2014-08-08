@@ -143,7 +143,7 @@ app.groupDetail = (function () {
             console.log(activity.group_name);
 			GroupName = activity.group_name;
             selectedGroupId = activity.pid;
-            selectedGroupDesc = activity.group_description;
+            selectedGroupDesc = activity.group_desc;
             console.log(selectedGroupId);
             console.log(selectedGroupDesc);
             
@@ -213,7 +213,7 @@ app.groupDetail = (function () {
         };
         
         var saveUpdatedGroupVal = function(){
-            
+            console.log(selectedGroupId);
          var group_status = 'A';
          var org_id=1; 
          var group_name = $("#editGroupName").val();     

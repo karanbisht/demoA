@@ -218,52 +218,90 @@ app.Activities = (function () {
     
     // Activities view model
     var activitiesViewModel = (function () {
-        app.userPosition=false;
         // Navigate to activityView When some activity is selected
-        var loginType;
+        var loginType,userId;
         var $newNotification;
         
         var init = function () {        
-            app.MenuPage=true;      
+            app.MenuPage=true;
+            app.userPosition=false;
             validator = $('#enterNotification').kendoValidator().data('kendoValidator');
             $newNotification = $('#newNotification');
             
-            var dataSource = new kendo.data.DataSource({
-  					type: 'everlive',   
-  					transport: {
-  					typeName: 'Group'
-   				              }
-			});
+          var comboGroupListDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/1",
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {               
+                  data: function(data)
+  	             {	console.log(data);
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].grpData.length;
+                                   for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         pid: groupValue[0].grpData[j].pid,
+                                         group_name: groupValue[0].grpData[j].group_name,
+                                         add:groupValue[0].grpData[j].add,
+                                         group_desc:groupValue[0].grpData[j].group_desc
+                                     });
+                                   }
+                                 });
+                       
+                       console.log(groupDataShow);
+                       return groupDataShow;                       
+	               }
+
+            },
+            error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           },       
+             sort: { field: 'add', dir: 'desc' }    
+	       });
+               
+	                 
+            
             
       	    $("#groupSelect").kendoComboBox({
-  				dataSource: dataSource,
-  				dataTextField: "Name",
-  				dataValueField: "Name",
+  				dataSource: comboGroupListDataSource,
+  				dataTextField: "group_name",
+  				dataValueField: "pid",
                   change: onComboChange
 		  	});
 	            $("#groupSelectAdmin").kendoComboBox({
-  				dataSource: dataSource,
-  				dataTextField: "Name",
-  				dataValueField: "Name",
+  				dataSource: comboGroupListDataSource,
+  				dataTextField: "group_name",
+  				dataValueField: "pid",
                   change: onAdminComboChange
 		  	});
                $("#groupSelectNotification").kendoComboBox({
-  				dataSource: dataSource,
-  				dataTextField: "Name",
-  				dataValueField: "Name",
+  				dataSource: comboGroupListDataSource,
+  				dataTextField: "group_name",
+  				dataValueField: "pid",
                   change: onChangeNotiGroup
 		  	});            
         };
         
 
          var show = function(e){
-              app.MenuPage=true; 
+               app.MenuPage=true;
+               app.userPosition=false;
+             
               $newNotification.val('');
               validator.hideMessages();
             
             loginType = e.view.params.LoginType;
-       
-            if(loginType==='C'){
+       	 userId = e.view.params.UserId;
+             console.log(userId);
+            if(userId==='24'){
              $("#aboutUsView").hide();
              $("#settingView").hide();
              $("#websiteView").hide();
@@ -314,6 +352,7 @@ app.Activities = (function () {
                    	$("#activities-listview").html("You are Currently Offline and data not available in local storage");
                }
         };
+        
         
  
         var CreatedAtFormatted = function(value){
@@ -737,25 +776,12 @@ app.Activities = (function () {
         // Logout user
         var logout = function () {
         navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
-            	if (checkLogout === true || checkLogout === 1) {
-           var db = app.getDb();
-                    
-               	 db.transaction(updateLoginStatus, app.onError, app.onSuccess);	
-                    app.helper.logout()
-            			
-                    .then(navigateHome, function (err) {                                           
-                        app.showError(err.message);
-                		navigateHome();
-            		});
+            	if (checkLogout === true || checkLogout === 1) {                    
+                    window.location.href = "index.html";
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };
 
-        
-        var updateLoginStatus = function(tx){       
-            var query = "DELETE FROM LoginInfo";
-			app.deleteQuery(tx, query);
-        };
 
         return {
             activities: activitiesModel.activities,
@@ -764,13 +790,10 @@ app.Activities = (function () {
             activitySelected: activitySelected,
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,
-            CreatedAtFormatted:CreatedAtFormatted,
-          
+            CreatedAtFormatted:CreatedAtFormatted,          
             sendNotificationMessage:sendNotificationMessage,
-            inAppBrowser:inAppBrowser,
-           
+            inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
-          
             makeCall:makeCall,
             replyUser:replyUser,
             initNotifi:initNotifi,
