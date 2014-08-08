@@ -199,8 +199,8 @@ var app = (function (win) {
     var onBackKeyDown = function(e) { 
     //var pathname = window.location.pathname;
     //var pageNama = pathname.slice(-10);
-        alert(app.userPosition);
-        alert(app.MenuPage);
+        //alert(app.userPosition);
+        //alert(app.MenuPage);
         
      if(app.userPosition){        
         	e.preventDefault();
