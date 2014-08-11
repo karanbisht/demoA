@@ -4,7 +4,10 @@ app.GroupList = (function () {
 
  var el = new Everlive('wKkFz2wbqFe4Gj0s');  
  var groupListDataSource;   
- //var orgId = localStorage.getItem("orgDataId");
+ var orgId = localStorage.getItem("UserOrgID");
+    
+    console.log(orgId);
+    
    var GroupsListModel = (function () {                 
        var GroupListModel = {
             id: 'Id',
@@ -26,7 +29,7 @@ app.GroupList = (function () {
 	        groupListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/1",
+                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   

@@ -7,6 +7,7 @@ app.groupDetail = (function () {
     var selectedGroupId;
     var selectedGroupDesc;
      var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+    console.log(selectedGroupId);
     
      var UsersModel = (function () {    
          
