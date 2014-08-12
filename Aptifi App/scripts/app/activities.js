@@ -100,9 +100,8 @@ app.Activities = (function () {
      		           data = activitiesDataSource.data();
             			len = data.length;
             			console.log(data.length);
-                        var db = app.getDb();             
-						db.transaction(insertNotification, app.onError, app.onSuccess);
-        				//db.transaction(insertNotification, errorCB, successCB);
+                        //var db = app.getDb();             
+						//db.transaction(insertNotification, app.onError, app.onSuccess);
     			    });
             
               var insertNotification = function(tx){

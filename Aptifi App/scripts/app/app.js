@@ -14,10 +14,11 @@ var emulatorMode = false;
 
 var app = (function (win) {
     'use strict';
-
+	
     // Global error handling
     
     //var userPosition;
+    var pushNotification;
     
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
@@ -233,11 +234,67 @@ var app = (function (win) {
 
         navigator.splashscreen.hide();
         fixViewResize();
-		enablePushNotifications();
+
+        //openDb();
+        //var db = getDb();
+  	  //db.transaction(createTable , onError , goToCheckOfflineData);
+		//enablePushNotifications();
         
-        if (analytics.isAnalytics()) {
-            analytics.Start();
+        /*
+        try 
+				{ 
+                	pushNotification = window.plugins.pushNotification;
+                	if (device.platform === 'android' || device.platform === 'Android') {
+						//$("#app-status-ul").append('<li>registering android</li>');
+                    	pushNotification.register(successHandler, errorHandler, {"senderID":790452394475,"ecb":"onNotificationGCM"});		// required!
+					} else {
+						//$("#app-status-ul").append('<li>registering iOS</li>');
+                    	pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});	// required!
+                	}
+                }
+				catch(err) 
+				{ 
+					var txt="There was an error on this page.\n\n"; 
+					txt+="Error description: " + err.message + "\n\n"; 
+					alert(txt); 
+				}
+       */
+        
+        
+        
+         if (device.platform === "iOS") {
+            pushNotification.register(apnSuccessfulRegistration,
+            apnFailedRegistration, {
+                "badge": "true",
+                "sound": "true",
+                "alert": "true",
+                "ecb": "pushCallbacks.onNotificationAPN"
+            });
+ 
+        } else {
+            //register for GCM
+            pushNotification.register(
+ 
+            function(id) {
+                console.log("###Successfully sent request for registering with GCM.");
+                //set GCM notification callback
+                addCallback('onNotificationGCM', onNotificationGCM);
+            },
+ 
+            function(error) {
+                console.log("###Error " + error.toString());
+            }, {
+                "senderID": "790452394475",
+                "ecb": "pushCallbacks.onNotificationGCM"
+            });
         }
+    };
+        
+        
+        /*if (analytics.isAnalytics()) {
+            analytics.Start();
+        }*/
+        
         
         // Initialize AppFeedback
         /*if (app.isKeySet(appSettings.feedback.apiKey)) {
@@ -261,11 +318,9 @@ var app = (function (win) {
           );
          }*/
         
-            openDb();
-        	var db = getDb();
-  		  db.transaction(createTable , onError , goToCheckOfflineData);
-      };
-    
+      
+//      };
+     
    
     
     
@@ -314,8 +369,151 @@ var app = (function (win) {
         }
     };
     
+        
+    var addCallback = function addCallback(key, callback) {
+        if (window.pushCallbacks === undefined) {
+            window.pushCallbacks = {}
+        }
+        window.pushCallbacks[key] = callback;
+    };
+ 
+    var pushNotification = window.plugins.pushNotification;
+ 
+    var apnSuccessfulRegistration = function(token) {
+        alert(token);
+        //sendTokenToServer(token.toString(16));
+        addCallback('onNotificationAPN', onNotificationAPN);
+    }
+ 
+    var apnFailedRegistration = function(error) {
+        alert("Error: " + error.toString());
+    }
+ 
+    //the function is a callback when a notification from APN is received
+    var onNotificationAPN = function(e) {
+        alert(e);
+        //getPromotionFromServer();
+    };
+ 
+    //the function is a callback for all GCM events
+    var onNotificationGCM = function onNotificationGCM(e) {
+        switch (e.event) {
+            case 'registered':
+                if (e.regid.length > 0) {
+                    //your GCM push server needs to know the regID before it can push to this device
+                    //you can store the regID for later use here
+                    console.log('###token received');
+                    alert(e.regid);
+                    //sendTokenToServer(e.regid);
+                }
+                break;
+            case 'message':
+                //getPromotionFromServer();
+                alert('message');
+            	break;
+            case 'error':
+                alert('GCM error = ' + e.msg);
+                break;
+            default:
+                alert('An unknown GCM event has occurred.');
+                break;
+        }
+    }
+    
+    
+    
+    /*
+         onNotificationAPN=function(e) {
+             alert("IOS"+e);
+                if (e.alert) {
+                     $("#app-status-ul").append('<li>push-notification: ' + e.alert + '</li>');
+                     navigator.notification.alert(e.alert);
+                }
+                    
+                if (e.sound) {
+                    var snd = new Media(e.sound);
+                    snd.play();
+                }
+                
+                if (e.badge) {
+                    pushNotification.setApplicationIconBadgeNumber(successHandler, e.badge);
+                }
+            };
+            
+            // handle GCM notifications for Android
+
+    onNotificationGCM = function(e) {
+              alert(e.event);
+                //$("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
+                
+                switch( e.event )
+                {
+                    case 'registered':
+					if ( e.regid.length > 0 )
+					{
+						$("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
+						// Your GCM push server needs to know the regID before it can push to this device
+						// here is where you might want to send it the regID for later use.
+						console.log("regID = " + e.regid);
+					}
+                    break;
+                    
+                    case 'message':
+                    	// if this flag is set, this notification happened while we were in the foreground.
+                    	// you might want to play a sound to get the user's attention, throw up a dialog, etc.
+                    	if (e.foreground)
+                    	{
+							$("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+							
+							// if the notification contains a soundname, play it.
+							var my_media = new Media("/android_asset/www/"+e.soundname);
+							my_media.play();
+						}
+						else
+						{	// otherwise we were launched because the user touched a notification in the notification tray.
+							if (e.coldstart)
+								$("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
+							else
+							$("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
+						}
+							
+						$("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
+						$("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
+                    break;
+                    
+                    case 'error':
+						$("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
+                    break;
+                    
+                    default:
+						$("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
+                    break;
+                }
+            };
+            
+            tokenHandler = function(result) {
+                
+                alert(result);
+                
+                //$("#app-status-ul").append('<li>token: '+ result +'</li>');
+                // Your iOS push server needs to know the token before it can push to this device
+                // here is where you might want to send it the token for later use.
+            };
+			
+            var successHandler = function(result) {
+                console.log(result);
+                //$("#app-status-ul").append('<li>success:'+ result +'</li>');
+            };
+            
+            var errorHandler = function(error) {
+                 console.log(error);
+                //$("#app-status-ul").append('<li>error:'+ error +'</li>');
+            };
 
     
+    */
+    
+ /*   
          var onAndroidPushReceived = function(args) {
              //alert('Android notification received: ' + JSON.stringify(args)); 
              //alert(JSON.stringify(args.message));
@@ -376,6 +574,7 @@ var app = (function (win) {
                     function(initResult) {
                         //$("#tokenLink").attr('href', 'mailto:test@example.com?subject=Push Token&body=' + initResult.token);
                         //alert(successText + "Checking registration status...");
+                        console.log(currentDevice.getRegistration());
                         return currentDevice.getRegistration();
                     },
                     function(err) {
@@ -402,7 +601,7 @@ var app = (function (win) {
     
     	var registerInEverlive = function() {
             var currentDevice = el.push.currentDevice();
-            //alert(currentDevice.pushToken);
+            alert(currentDevice.pushToken);
             if (!currentDevice.pushToken) currentDevice.pushToken = "some token";
             el.push.currentDevice()
                 .register({ Age: 15 })
@@ -436,6 +635,7 @@ var app = (function (win) {
                 );
         };
     
+*/
     
     var os = kendo.support.mobileOS,
         statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
@@ -475,16 +675,16 @@ var app = (function (win) {
         mobileApp: mobileApp,
         checkConnection:checkConnection,
         helper: AppHelper,
-        registerInEverlive:registerInEverlive,
-        disablePushNotifications:disablePushNotifications,
-        updateRegistration:updateRegistration,
-        enablePushNotifications:enablePushNotifications,
-        _onDeviceRegistrationUpdated:_onDeviceRegistrationUpdated,
-        _onDeviceIsNotInitialized:_onDeviceIsNotInitialized,
-        _onDeviceIsNotRegistered:_onDeviceIsNotRegistered,
-        onAndroidPushReceived:onAndroidPushReceived,
-        onIosPushReceived:onIosPushReceived,
-        _onDeviceIsRegistered:_onDeviceIsRegistered,
+        //registerInEverlive:registerInEverlive,
+        //disablePushNotifications:disablePushNotifications,
+        //updateRegistration:updateRegistration,
+        //enablePushNotifications:enablePushNotifications,
+        //_onDeviceRegistrationUpdated:_onDeviceRegistrationUpdated,
+        //_onDeviceIsNotInitialized:_onDeviceIsNotInitialized,
+        //_onDeviceIsNotRegistered:_onDeviceIsNotRegistered,
+        //onAndroidPushReceived:onAndroidPushReceived,
+        //onIosPushReceived:onIosPushReceived,
+        //_onDeviceIsRegistered:_onDeviceIsRegistered,
         everlive: el,
         getYear: getYear
     };

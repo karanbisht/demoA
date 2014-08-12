@@ -2,101 +2,12 @@ var app = app || {};
 
 app.groupDetail = (function () {
 
- var MemberDataSource;    
+
     var GroupName;
     var selectedGroupId;
     var selectedGroupDesc;
      var el = new Everlive('wKkFz2wbqFe4Gj0s');   
-    console.log(selectedGroupId);
-    
-     var UsersModel = (function () {    
-         
-     var UserModel = {
-            id: 'Id',
-            fields: {
-                mobile: {
-                    field: 'mobile',
-                    defaultValue: ''
-                },
-                first_name: {
-                    field: 'first_name',
-                    defaultValue: ''
-                },
-                email: {
-                    field: 'email',
-                    defaultValue:''
-                },
-                last_name: {
-                    field: 'last_name',
-                    defaultValue:''
-                }
-            },
-           
-	          /*CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('CreatedAt'));
-    	        }*/
-   	};
-         
-         
-        MemberDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/1",
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {
-                model: UserModel,
-                
-                 data: function(data)
-  	             {
-                       console.log(data);
-                       
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].customerData.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         customerID: groupValue[0].customerData[j].customerID,
-                                         first_name: groupValue[0].customerData[j].first_name,
-                                         last_name: groupValue[0].customerData[j].last_name,
-                                         email:groupValue[0].customerData[j].email,
-                                         mobile:groupValue[0].customerData[j].mobile
-                                         
-
-
-                                     });
-                                   }
-                                 });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-	               }
-
-            },
-            error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           }
-	        
-    	    });
-	               
-	        return {
-	            	userData: MemberDataSource
-        	};
-         
-         
-         
-         
-         
-         
-         
+            
         /*
 	        MemberDataSource = new kendo.data.DataSource({
             type: 'everlive',
@@ -123,7 +34,7 @@ app.groupDetail = (function () {
             	userData: MemberDataSource
         	};
          */
-	}());
+	
 
    
     var groupDetailViewModel = (function () {
@@ -146,9 +57,7 @@ app.groupDetail = (function () {
             selectedGroupId = activity.pid;
             selectedGroupDesc = activity.group_desc;
             console.log(selectedGroupId);
-            console.log(selectedGroupDesc);
-            
-
+            console.log(selectedGroupDesc);            
         };
            
            
@@ -184,6 +93,82 @@ app.groupDetail = (function () {
             app.mobileApp.navigate('#groupMemberShow');         
             
             
+            var UserModel = kendo.data.Model.define({
+            id: 'Id',
+            fields: {
+                mobile: {
+                    field: 'mobile',
+                    defaultValue: ''
+                },
+                first_name: {
+                    field: 'first_name',
+                    defaultValue: ''
+                },
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
+                    defaultValue:''
+                }
+              }
+            });
+           
+         
+         
+        var MemberDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/1",
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+                model: UserModel,
+                
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].customerData.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         customerID: groupValue[0].customerData[j].customerID,
+                                         first_name: groupValue[0].customerData[j].first_name,
+                                         last_name: groupValue[0].customerData[j].last_name,
+                                         email:groupValue[0].customerData[j].email,
+                                         mobile:groupValue[0].customerData[j].mobile
+                                     });
+                                   }
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+	               }
+
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });
+	               
+	         MemberDataSource.fetch(function() {
+                             
+             });
+
+             kendo.bind($('#groupMemberTemplate'), MemberDataSource);
+            
             
             
            
@@ -202,7 +187,7 @@ app.groupDetail = (function () {
         	    								});
                            }*/
             
-           kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
+           //kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
 
         var showUpdateGroupView = function(){
@@ -387,8 +372,7 @@ app.groupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
-           	userData:UsersModel.userData,
-           	addMemberToGroup:addMemberToGroup,
+               addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
