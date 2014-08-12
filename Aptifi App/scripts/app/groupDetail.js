@@ -163,10 +163,7 @@ app.groupDetail = (function () {
 	        
     	    });
 	               
-	         MemberDataSource.fetch(function() {
-                             
-             });
-
+	      
              kendo.bind($('#groupMemberTemplate'), MemberDataSource);
             
             
@@ -372,6 +369,7 @@ app.groupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
+               userData:showGroupMembers.MemberDataSource,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,

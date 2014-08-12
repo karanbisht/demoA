@@ -79,10 +79,11 @@ app.registration = (function () {
         var regDone = function(){
             var selectOrg = $("#selectOrgData").data("kendoComboBox");
 		    var selectGroup = $("#selectGroupData").data("kendoComboBox");
-			var cmbGroup = [];            
+			var cmbGroup ; //= [];            
             var org_id = selectOrg.value();            
-            cmbGroup.push(selectGroup.value());
+            //cmbGroup.push(selectGroup.value());
             
+            cmbGroup = selectGroup.value();
              console.log(org_id);
              console.log(cmbGroup);
           
@@ -106,14 +107,15 @@ app.registration = (function () {
                 device_type='AP';
              }
              
- 	         var device_id = app.deviceUuid();
-     	     console.log(device_type +"||"+ device_id);
+             var device_id = localStorage.getItem("deviceTokenID");
+    	     //console.log(device_type +"||"+ device_id);
                           
             //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
             
-          var jsonData = {"fname":fname ,"lname":lname,"email":email, "password":password,"mobile":mobile,"cmbGroup":cmbGroup,"device_id":device_id,"device_type":device_type,"org_id":org_id}
-          console.log(jsonData);               
-             
+          var jsonData = {"fname":fname,"lname":lname,"email":email,"password":password,"mobile":mobile,"cmbGroup":cmbGroup,"device_id":device_id,"device_type":device_type,"org_id":org_id};
+          
+             console.log(jsonData);               
+             //alert(fname +"||"+lname+"||"+email+"||"+password+"||"+mobile+"||"+cmbGroup+"||"+device_id+"||"+device_type+"||"+org_id);
           var dataSourceRegistration = new kendo.data.DataSource({
                transport: {
                read: {
@@ -142,8 +144,10 @@ app.registration = (function () {
 						   $.each(registrationDataView, function(i, regData) {
                                    console.log(regData.status[0].Msg);
                                
-                               if(regData.status[0].Msg==='Sucess'){                                  
-                                  app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
+                               if(regData.status[0].Msg==='Sucess'){              
+                                  app.showAlert("Registration Successful"); 
+                                     app.mobileApp.navigate('index.html');
+                                  //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{
                                   app.showAlert(regData.status[0].Msg ,'Notification'); 
                                }

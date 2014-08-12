@@ -51,10 +51,10 @@ app.Login = (function () {
             console.log(username);
             console.log(password);
             
-            if (username === "Email" || username === "") {
-				app.showAlert("Please enter your Email.", "Validation Error");
-			} else if (!app.validateEmail(username)) {
-				app.showAlert("Please enter a valid Email.", "Validation Error");
+            if (username === "Mobile No" || username === "") {
+				app.showAlert("Please enter your Mobile No.", "Validation Error");
+			} else if (!app.validateMobile(username)) {
+				app.showAlert("Please enter a valid Mobile No.", "Validation Error");
 			} else if (password === "Password" || password === "") {
 				app.showAlert("Please enter Password.", "Validation Error");
 			} else {

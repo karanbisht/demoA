@@ -27,8 +27,7 @@ S                <li class="reg-Button">
                         <a data-role="button" class="btn btn-login">Update Group</a>
                     </span>
                 </li>
-			</ol>	
-           
+			</ol>	           
       </div> 
 
    
@@ -91,7 +90,7 @@ S                <li class="reg-Button">
 	  </div>
 	
 	 <div>
-    	<ul id="groupMember-listview" data-style="inset" data-role="listview" data-template="groupMemberTemplate" ></ul>
+    	<ul id="groupMember-listview" data-style="inset" data-role="listview" data-template="groupMemberTemplate" data-bind="source: userData"></ul>
          <p id="no-Group-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	 </p>
@@ -196,9 +195,7 @@ S                <li class="reg-Button">
             <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png" />
         </div>-->
        		 <div class="activity-content">
-       		     <h2 id="activityTemplateTitle" class="person-name">${Title}</h2>
-       		     <span id="activityTemplateDate" class="time-span" >${CreatedAtFormatted()}</span>
-       		     <a id="activityTemplateMessage" class="user-share-txt">${Message}</a>
+       		     <h2 id="activityTemplateTitle" class="person-name">"HELLO"</h2>
        		 </div>
 		    </div>
 	</script>

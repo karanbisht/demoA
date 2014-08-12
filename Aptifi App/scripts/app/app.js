@@ -18,7 +18,6 @@ var app = (function (win) {
     // Global error handling
     
     //var userPosition;
-    var pushNotification;
     
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
@@ -261,8 +260,11 @@ var app = (function (win) {
        */
         
         
-        
-         if (device.platform === "iOS") {
+            var pushNotification = window.plugins.pushNotification;
+		    console.log(window.plugins);
+
+
+        if (device.platform === "iOS") {
             pushNotification.register(apnSuccessfulRegistration,
             apnFailedRegistration, {
                 "badge": "true",
@@ -288,6 +290,7 @@ var app = (function (win) {
                 "ecb": "pushCallbacks.onNotificationGCM"
             });
         }
+        
     };
         
         
@@ -365,11 +368,11 @@ var app = (function (win) {
         // Current user logout
         logout: function () {
             //return el.Users.logout();
-             window.location.href('index.html');        
+             window.location.href('index.html');
         }
     };
     
-        
+       
     var addCallback = function addCallback(key, callback) {
         if (window.pushCallbacks === undefined) {
             window.pushCallbacks = {}
@@ -377,21 +380,20 @@ var app = (function (win) {
         window.pushCallbacks[key] = callback;
     };
  
-    var pushNotification = window.plugins.pushNotification;
  
     var apnSuccessfulRegistration = function(token) {
-        alert(token);
+        console.log(token);
         //sendTokenToServer(token.toString(16));
         addCallback('onNotificationAPN', onNotificationAPN);
     }
  
     var apnFailedRegistration = function(error) {
-        alert("Error: " + error.toString());
+        console.log("Error: " + error.toString());
     }
  
     //the function is a callback when a notification from APN is received
     var onNotificationAPN = function(e) {
-        alert(e);
+        console.log(e);
         //getPromotionFromServer();
     };
  
@@ -403,7 +405,8 @@ var app = (function (win) {
                     //your GCM push server needs to know the regID before it can push to this device
                     //you can store the regID for later use here
                     console.log('###token received');
-                    alert(e.regid);
+                    //alert("TokenID Received" + e.regid);
+                    localStorage.setItem("deviceTokenID",e.regid);
                     //sendTokenToServer(e.regid);
                 }
                 break;
@@ -418,7 +421,7 @@ var app = (function (win) {
                 alert('An unknown GCM event has occurred.');
                 break;
         }
-    }
+    };
     
     
     
