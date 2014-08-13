@@ -101,6 +101,7 @@ app.registration = (function () {
             var device_type;
 
              console.log(deviceName);
+             
              if(deviceName==='Android'){
                 device_type ='AN';
              }else if(deviceName==='iOS'){
@@ -108,6 +109,7 @@ app.registration = (function () {
              }
              
              var device_id = localStorage.getItem("deviceTokenID");
+             console.log(device_id);
     	     //console.log(device_type +"||"+ device_id);
                           
             //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
@@ -145,7 +147,7 @@ app.registration = (function () {
                                    console.log(regData.status[0].Msg);
                                
                                if(regData.status[0].Msg==='Sucess'){              
-                                  app.showAlert("Registration Successful"); 
+                                  app.showAlert("Registration Successful","Notification"); 
                                      app.mobileApp.navigate('index.html');
                                   //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{

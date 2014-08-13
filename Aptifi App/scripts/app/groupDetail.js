@@ -166,15 +166,24 @@ app.groupDetail = (function () {
             
             MemberDataSource.fetch(function() {
                 
-                });
+ 		   });
 	
          
-            $("#groupMember-listview").kendoListView({
-        		dataSource: MemberDataSource,
-       		 template: kendo.template($("#groupMemberTemplate").html()),
-        		autoBind: true
-			 });
+    	        $("#groupMember-listview").kendoListView({
+        			dataSource: MemberDataSource,
+       			 template: kendo.template($("#groupMemberTemplate").html()),
+        			autoBind: true
+				});
             
+            
+                $("#deleteMemberData").kendoListView({
+        			dataSource: MemberDataSource,
+       			 template: kendo.template($("#Member-Delete-template").html()),
+        			autoBind: true
+				});
+           
+                     
+                // kendo.bind($('#deleteMemberData'), MemberDataSource);      
            
             //if(GroupName==='All'){
     			             
@@ -193,6 +202,8 @@ app.groupDetail = (function () {
             
            //kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
+        
+        
 
         var showUpdateGroupView = function(){
             app.MenuPage=false;
@@ -200,6 +211,16 @@ app.groupDetail = (function () {
                
             $("#editGroupName").val(GroupName);
             $("#editGroupDesc").val(selectedGroupDesc);
+        };
+        
+        var manageGroup =function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/groupListPage.html');           
+        };
+        
+        var sendNotification = function(){
+            app.MenuPage=false;
+            app.mobileApp.navigate('views/sendNotification.html');
         };
         
         var saveUpdatedGroupVal = function(){
@@ -253,13 +274,14 @@ app.groupDetail = (function () {
         var addMemberToGroup = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#addMemberToGroup');
-            app.groupDetail.userData.filter({
+            
+            /*app.groupDetail.userData.filter({
 							                	field: 'Group',
                 								operator: 'neq',
                 								value: GroupName   	    				        	
         	    								});
              kendo.bind($('#Member-Add-template'), MemberDataSource); 
-            
+            */
    
          };
 
@@ -303,15 +325,17 @@ app.groupDetail = (function () {
         var removeMemberFromGroup = function(){           
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');
+            
+            /*
             app.groupDetail.userData.filter({
 							                	field: 'Group',
                 								operator: 'eq',
                 								value: GroupName   	    				        	
         	    								});
             kendo.bind($('#Member-Delete-template'), MemberDataSource); 
+            */
         };
         
-
         
 		        var userMessageTab = function(e){
         		    var tempArray= [];
@@ -351,7 +375,7 @@ app.groupDetail = (function () {
 								 } 
  					           console.log("hello"+tempArray);
                             	uniqueLength=tempArray.length;
- 		                        console.log(uniqueLength);   
+ 		                       console.log(uniqueLength);   
                             }                 
           		  	});
 
@@ -376,6 +400,8 @@ app.groupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
+               manageGroup:manageGroup,    
+               sendNotification:sendNotification,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,

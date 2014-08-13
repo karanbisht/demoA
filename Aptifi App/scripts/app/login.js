@@ -43,7 +43,8 @@ app.Login = (function () {
                 device_type='AP';
              }
              
- 	        var device_id = app.deviceUuid();
+			var device_id = localStorage.getItem("deviceTokenID");
+            console.log(device_id);
             
             var username = $("#loginUsername").val();
             var password = $("#loginPassword").val();

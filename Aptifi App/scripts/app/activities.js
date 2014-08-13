@@ -467,7 +467,8 @@ app.Activities = (function () {
         
         var sendNotification = function(){
             app.MenuPage=false;
-            document.location.href="#sendNotificationDiv";
+            //document.location.href="#sendNotificationDiv";
+            app.mobileApp.navigate('views/sendNotification.html');           
         };
         
         var refreshButton = function(){
