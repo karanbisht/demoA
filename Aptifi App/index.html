@@ -57,7 +57,7 @@
             <h1 class="app-name center-text">Aptifi </h1>
             <form id="login-form">
                 <ul data-role="listview" data-style="inset">
-                    <li class="username"><input type="text" id="loginUsername" placeholder="Mobile No"  /></li>
+                    <li class="username"><input type="text" id="loginUsername" maxlength="10" pattern="[0-9]*" placeholder="Mobile No"  /></li>
                     <li class="password"><input type="password" id="loginPassword" placeholder="Password"  /></li>
                     <span style="float:right" class="forgetText" data-bind="click: forgetPass">forget Password ?</span>
                 </ul>

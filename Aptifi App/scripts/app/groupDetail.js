@@ -93,7 +93,8 @@ app.groupDetail = (function () {
             app.mobileApp.navigate('#groupMemberShow');         
             
             
-            var UserModel = kendo.data.Model.define({
+                  
+            var UserModel ={
             id: 'Id',
             fields: {
                 mobile: {
@@ -112,22 +113,21 @@ app.groupDetail = (function () {
                     field: 'last_name',
                     defaultValue:''
                 }
-              }
-            });
-           
-         
-         
+               }
+             };
+            
         var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/1",
+                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/"+selectedGroupId,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
               	}
               },
        	 schema: {
-                model: UserModel,
+               model: UserModel,
+                
                 
                  data: function(data)
   	             {
@@ -161,12 +161,19 @@ app.groupDetail = (function () {
                	function () { }, "Notification", 'OK');
            	}
 	        
-    	    });
-	               
-	      
-             kendo.bind($('#groupMemberTemplate'), MemberDataSource);
+    	    });         
+         
             
-            
+            MemberDataSource.fetch(function() {
+                
+                });
+	
+         
+            $("#groupMember-listview").kendoListView({
+        		dataSource: MemberDataSource,
+       		 template: kendo.template($("#groupMemberTemplate").html()),
+        		autoBind: true
+			 });
             
            
             //if(GroupName==='All'){
@@ -369,7 +376,6 @@ app.groupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
-               userData:showGroupMembers.MemberDataSource,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,
