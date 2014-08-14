@@ -10,7 +10,7 @@ app.sendNotification = (function () {
       var $notificationDesc;          
                 
     	var init = function () {				                 
-		   app.MenuPage=true;
+           app.MenuPage=false;
            app.userPosition=false;
            validator = $('#enterNotification').kendoValidator().data('kendoValidator');
            $notificationDesc = $('#notificationDesc'); 
@@ -145,10 +145,20 @@ app.sendNotification = (function () {
 	            
            
            dataSourceSendNotification.fetch(function() {
-                       //var loginDataView = dataSourceLogin.data();
-               		//var orgDataId = [];
-					
-  		 });
+                   
+           var sendNotificationDataView = dataSourceSendNotification.data();
+						   $.each(sendNotificationDataView, function(i, notification) {
+                               console.log(notification.status[0].Msg);
+                               
+                               if(notification.status[0].Msg==='Success'){
+                                 app.showAlert("Notification Send Successfully ","Notification");  
+                               }else{
+                                  app.showAlert(notification.status[0].Msg ,'Notification'); 
+                               }
+                           });
+               
+               
+           });
 
                 
         };

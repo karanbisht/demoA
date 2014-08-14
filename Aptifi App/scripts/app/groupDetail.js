@@ -171,21 +171,30 @@ app.groupDetail = (function () {
  		   });
 	
          
-    	        $("#groupMember-listview").kendoListView({
-        			dataSource: MemberDataSource,
-       			 template: kendo.template($("#groupMemberTemplate").html()),
-        			autoBind: true
-				});
+    	    $("#groupMember-listview").kendoListView({
+        		dataSource: MemberDataSource,
+       		 template: kendo.template($("#groupMemberTemplate").html()),
+        		autoBind: true
+			});
+            
+             $("#deleteMemberData").kendoListView({
+  		    template: kendo.template($("#Member-Delete-template").html()),    		
+     		 dataSource: MemberDataSource,
+        		schema: {
+           		model:  UserModel
+				}			 
+		     });
             
             
-                $("#deleteMemberData").kendoListView({
-        			dataSource: MemberDataSource,
-       			 template: kendo.template($("#Member-Delete-template").html()),
-        			autoBind: true
-				});
-           
+            /*
+              $("#deleteMemberData").kendoListView({
+        		dataSource: MemberDataSource,
+       		 template: kendo.template($("#Member-Delete-template").html()),
+        		autoBind: true
+			});
+           */
                      
-                // kendo.bind($('#deleteMemberData'), MemberDataSource);      
+               //kendo.bind($('#deleteMemberData'), MemberDataSource);      
            
             //if(GroupName==='All'){
     			             
@@ -410,7 +419,7 @@ app.groupDetail = (function () {
         	   init: init,
            	show: show,
                manageGroup:manageGroup,    
-                   deleteMember:deleteMember,
+               deleteMember:deleteMember,
                sendNotification:sendNotification,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    

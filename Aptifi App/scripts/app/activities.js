@@ -300,7 +300,7 @@ app.Activities = (function () {
             loginType = e.view.params.LoginType;
        	 userId = e.view.params.UserId;
              console.log(userId);
-            if(userId==='11'){
+            if(userId==='11' || userId==='13'){
              $("#aboutUsView").hide();
              $("#settingView").hide();
              $("#websiteView").hide();

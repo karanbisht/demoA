@@ -114,7 +114,7 @@
                     Add Members To Group
                    <a class="nav-button nav-button-back hide-text" data-align="left"  data-role="backbutton">Back</a>
     	     </div>
-	    </div>
+	   </div>
 	
 	 		 
     	     <div id="example">
@@ -140,7 +140,7 @@
 	      </div>
 		 		 
     	<div id="example">
-        	 <ul id="deleteMemberData" style="border:none;padding:10px;" data-template="Member-Delete-template"></ul>
+        	 <ul id="deleteMemberData" style="border:none;padding:10px;" data-template="Member-Delete-template" ></ul>
     	</div>     
          
         <li>
@@ -153,12 +153,10 @@
 
 
 
-   <script id="Member-Delete-template" type="text/x-kendo-template" data-role="touch" data-bind="events: { tap: deleteMember }">
+   <script  type="text/x-kendo-template" id="Member-Delete-template" data-role="touch" data-bind="events: { tap: deleteMember }">
        <li class="deleteGroupShow">   	
        	 <input type="checkbox" name="chkValue" value="${mobile}" data-bind="checked: selected" />
         	<label >${first_name}</label>
-       
-            <a id="activityTemplateMessage" class="user-share-txt">( ${mobile} )</a>
        </li>	
    </script>
 

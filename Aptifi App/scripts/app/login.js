@@ -98,7 +98,8 @@ app.Login = (function () {
                                    
 								var dataSend = loginData.status[0].CustomerData[0].user_type;
                                 var userId = loginData.status[0].CustomerData[0].pid;   
-								var joinGroupInfo=loginData.status[0].joinedGroup[0];
+								//alert(userId);
+                                   var joinGroupInfo=loginData.status[0].joinedGroup[0];
                                    
                                   $.each(joinGroupInfo, function(i, org) {
                                      orgDataId.push(org.orgID);
@@ -183,7 +184,7 @@ app.Login = (function () {
         
         var saveLoginInfo = function(data){
            UserInfoData=data;
-            console.log(UserInfoData);
+           console.log(UserInfoData);
            var db = app.getDb();
 	       db.transaction(saveLoginInfoValue, app.onError, app.onSuccess);
         };
