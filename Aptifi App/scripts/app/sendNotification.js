@@ -14,6 +14,25 @@ app.sendNotification = (function () {
            app.userPosition=false;
            validator = $('#enterNotification').kendoValidator().data('kendoValidator');
            $notificationDesc = $('#notificationDesc'); 
+             
+         
+            
+               $("#notificationType").kendoComboBox({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        dataSource: [
+                            { text: "Promotion", value: "P" },
+                            { text: "Invitaion", value: "V" },
+                            { text: "Information", value: "I" },
+                            { text: "Reminder", value: "R" },
+                            { text: "Alert", value: "A" }
+                        ],
+                        filter: "contains",
+                        placeholder: "Select Notification Type",
+                        suggest: true
+                        //index: 0
+                    });
+
            //$("#groupSelectNotification").kendoComboBox();
         };
                                 
@@ -86,7 +105,10 @@ app.sendNotification = (function () {
                 var group=onChangeNotiGroup();
                 cmbGroup.push(group);
                 console.log(cmbGroup);
-				var type='P';
+				
+                var selectedType = $("#notificationType").data("kendoComboBox");
+                var type=selectedType.value();
+             
                 var cmmt_allow = 0;
                 var notificationValue = $notificationDesc.val();
                 var titleValue = $("#notificationTitleValue").val();

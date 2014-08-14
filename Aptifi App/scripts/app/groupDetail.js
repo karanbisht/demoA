@@ -6,8 +6,10 @@ app.groupDetail = (function () {
     var GroupName;
     var selectedGroupId;
     var selectedGroupDesc;
-     var el = new Everlive('wKkFz2wbqFe4Gj0s');   
-            
+    var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+          
+    
+    
         /*
 	        MemberDataSource = new kendo.data.DataSource({
             type: 'everlive',
@@ -337,6 +339,13 @@ app.groupDetail = (function () {
         };
         
         
+         var deleteMember = function (e) {
+            console.log(e.data.uid);
+			app.MenuPage=false;	
+            //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
+        };
+        
+        
 		        var userMessageTab = function(e){
         		    var tempArray= [];
             		app.MenuPage=false;	
@@ -401,6 +410,7 @@ app.groupDetail = (function () {
         	   init: init,
            	show: show,
                manageGroup:manageGroup,    
+                   deleteMember:deleteMember,
                sendNotification:sendNotification,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    

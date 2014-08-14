@@ -153,7 +153,7 @@
 
 
 
-   <script id="Member-Delete-template" type="text/x-kendo-template">
+   <script id="Member-Delete-template" type="text/x-kendo-template" data-role="touch" data-bind="events: { tap: deleteMember }">
        <li class="deleteGroupShow">   	
        	 <input type="checkbox" name="chkValue" value="${mobile}" data-bind="checked: selected" />
         	<label >${first_name}</label>
