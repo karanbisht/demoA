@@ -34,7 +34,7 @@
 	</div>    
 
 
- <div data-role="view" id="groupNotificationShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show">
+ <div data-role="view" id="groupNotificationShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" >
       <div data-role="header">        
            <div data-role="navbar">      
                Group Notification
@@ -140,24 +140,23 @@
 	      </div>
 		 		 
     	<div id="example">
-        	 <ul id="deleteMemberData" style="border:none;padding:10px;" data-template="Member-Delete-template" ></ul>
+        	 <div id="deleteMemberData" style="border:none;padding:10px;" data-template="Member-Delete-template"></div>
     	</div>     
          
         <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: removeMemberFromGroup }" style="padding:10px;float:right;">
+                    <span id="login" data-role="touch" data-bind="events: { tap: removeMemberClick}" style="padding:10px;float:right;">
                         <a data-role="button" style="background-color:#33539E">Delete</a>
                     </span>
-         </li>
+        </li>
 </div>
 
 
 
 
-   <script  type="text/x-kendo-template" id="Member-Delete-template" data-role="touch" data-bind="events: { tap: deleteMember }">
-       <li class="deleteGroupShow">   	
-       	 <input type="checkbox" name="chkValue" value="${mobile}" data-bind="checked: selected" />
-        	<label >${first_name}</label>
-       </li>	
+   <script  type="text/x-kendo-template" id="Member-Delete-template">     
+       <div class="deleteGroupShow">   	       	
+        	<label >${first_name}<input type="checkbox" value="${customerID}" /></label>
+       </div>
    </script>
 
 
@@ -165,7 +164,7 @@
      
    <script id="Member-Add-template" type="text/x-kendo-template">
        <li class="deleteGroupShow">
-    	    <input type="checkbox" name="chkValue" value="${mobile}" data-bind="checked: selected"/>
+    	    <input type="checkbox" name="chkValue" value="${customerID}" data-bind="checked: selected"/>
         	<label >${first_name}</label>
 	   </li>	       
    </script>

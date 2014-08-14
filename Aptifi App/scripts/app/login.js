@@ -91,6 +91,7 @@ app.Login = (function () {
            dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
                			var orgDataId = [];
+               			var userAllGroupId = [];
 						   $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
@@ -103,7 +104,10 @@ app.Login = (function () {
                                    
                                   $.each(joinGroupInfo, function(i, org) {
                                      orgDataId.push(org.orgID);
+                                     userAllGroupId.push(org.groupId);  
                                  });
+                                   
+                                   console.log(userAllGroupId);
                                    
                                  localStorage.setItem("UserOrgID",orgDataId);
                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId);

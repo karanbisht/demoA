@@ -49,6 +49,7 @@ app.groupDetail = (function () {
            
            
         var show = function (e) {
+             app.MenuPage=false;
 		    console.log("show function");
             activityUid = e.view.params.uid;
             console.log(activityUid);
@@ -64,16 +65,15 @@ app.groupDetail = (function () {
            
            
         var showGroupNotification = function(){
-        
+        	 app.MenuPage=false;
               var activitiesDataSource;
               console.log(GroupName);
-              app.MenuPage=false;
-              app.mobileApp.navigate('#groupNotificationShow');
+               app.mobileApp.navigate('#groupNotificationShow');
    	  
     		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
                   		//notificationModel();
         
-            			   if(GroupName==='All'){
+            			   /*if(GroupName==='All'){
     			             app.Activities.activities.filter({
 							                	
         	    								});
@@ -83,9 +83,9 @@ app.groupDetail = (function () {
                 								operator: 'eq',
                 								value: GroupName
         	    								});
-                           }
+                           }*/
 
-                      kendo.bind($('#groupDetailTemplate'), activitiesDataSource);     
+                     // kendo.bind($('#groupDetailTemplate'), activitiesDataSource);     
         };
            
            
@@ -336,7 +336,6 @@ app.groupDetail = (function () {
         var removeMemberFromGroup = function(){           
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');
-            
             /*
             app.groupDetail.userData.filter({
 							                	field: 'Group',
@@ -348,11 +347,63 @@ app.groupDetail = (function () {
         };
         
         
-         var deleteMember = function (e) {
-            console.log(e.data.uid);
-			app.MenuPage=false;	
-            //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
+                 
+        var removeMemberClick = function(){
+	         var orgId = localStorage.getItem("UserOrgID"); 
+                  console.log(orgId);    
+             var customer = [];
+		    
+            $(':checkbox:checked').each(function(i){
+          	  customer[i] = $(this).val();
+        	});
+            
+
+            console.log(customer);            
+			
+            //var jsonDataDeleteMember = {"customer":customer ,"organisation":orgId,"group":selectedGroupId}
+                        
+            var dataSourceDeleteMember = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/removeUser/"+customer+"/"+orgId+"/"+selectedGroupId,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   //data: jsonDataDeleteMember
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          
+         });  
+	            
+           dataSourceDeleteMember.fetch(function() {
+              var loginDataView = dataSourceDeleteMember.data();
+				  $.each(loginDataView, function(i, deleteGroupData) {
+                      console.log(deleteGroupData.status[0].Msg);           
+                               if(deleteGroupData.status[0].Msg==='Success'){                                
+									app.showAlert("Member Deleted Successfully","Notification");
+				        	        //app.mobileApp.navigate('views/groupListPage.html');
+                               }else{
+                                  app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });
+
+            
+            
         };
+        
         
         
 		        var userMessageTab = function(e){
@@ -419,8 +470,8 @@ app.groupDetail = (function () {
         	   init: init,
            	show: show,
                manageGroup:manageGroup,    
-               deleteMember:deleteMember,
                sendNotification:sendNotification,
+                   removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,
