@@ -543,12 +543,22 @@
 }
 
 
-
+/*
 #friendsApp .person-name {
     overflow: hidden;
     width: 70%;
     text-overflow: ellipsis;
     white-space: nowrap;
+}*/
+
+
+#friendsApp .activities-view .person-name,
+#friendsApp .add-activity-view .person-name,
+#friendsApp .add-comment-view .person-name {
+    overflow: hidden;
+    width: 70%;
+    text-overflow: ellipsis;
+    white-space: nowrap;    
 }
 
 #friendsApp .activity-content .time-span {

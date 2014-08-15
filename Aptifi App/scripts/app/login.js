@@ -107,10 +107,14 @@ app.Login = (function () {
                                      userAllGroupId.push(org.groupId);  
                                  });
                                    
-                                   console.log(userAllGroupId);
-                                   
+                                   console.log(userAllGroupId+"||"+userId);
+                                 
+                                 localStorage.setItem("UserID",userId); 
                                  localStorage.setItem("UserOrgID",orgDataId);
-                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId);
+                                 localStorage.setItem("UserGroupID",userAllGroupId);
+
+                                   
+                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId);
                                }else{
                                   app.showAlert(loginData.status[0].Msg ,'Notification'); 
                                }

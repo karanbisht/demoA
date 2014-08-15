@@ -3,8 +3,6 @@ var app = app || {};
 app.registration = (function () {
     'use strict'
     
-    
-
     // Activities view model
     var registrationViewModel = (function () {
         var $regFirstName;
@@ -148,7 +146,7 @@ app.registration = (function () {
                                
                                if(regData.status[0].Msg==='Sucess'){              
                                   app.showAlert("Registration Successful","Notification"); 
-                                     app.mobileApp.navigate('index.html');
+                                     window.location.href = "index.html";
                                   //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{
                                   app.showAlert(regData.status[0].Msg ,'Notification'); 

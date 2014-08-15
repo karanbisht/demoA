@@ -203,7 +203,7 @@ app.GroupList = (function () {
                       console.log(deleteGroupData.status[0].Msg);           
                                if(deleteGroupData.status[0].Msg==='Success'){                                
 									app.showAlert("Group Deleted Successfully","Notification");
-				        	        //app.mobileApp.navigate('views/groupListPage.html');
+				        	        app.mobileApp.navigate('views/groupListPage.html');
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }

@@ -152,6 +152,14 @@ app.sendNotification = (function () {
                                
                                if(notification.status[0].Msg==='Success'){
                                  app.showAlert("Notification Send Successfully ","Notification");  
+                                   $("#notificationTitleValue").val('');            
+						            $("#notificationDesc").val('');
+                                   
+                                     $("#notificationType").data("kendoComboBox").value("");
+             						$("#groupforNotification").data("kendoComboBox").value("");
+            
+  
+                                   
                                }else{
                                   app.showAlert(notification.status[0].Msg ,'Notification'); 
                                }

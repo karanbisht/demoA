@@ -2,29 +2,40 @@ var app = app || {};
 
 app.Activities = (function () {
     'use strict'
- var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+ //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+ 
  var activitiesDataSource;   
  var validator;
+ var loginType,groupId,userId;
+    
+        var orgId = localStorage.getItem("UserOrgID");                              
+     
+
 	   // Activities model
 	    var activitiesModel = (function () {	
 		var data; 
-            var activityModel = {
+		var groupId = localStorage.getItem("UserGroupID");
+ 	   var userId = localStorage.getItem("UserID");	
+     
+              console.log("karan"+groupId+"||"+userId+"||"+orgId);            
+   var activityModel = {
+
             id: 'Id',
             fields: {
-                Message: {
-                    field: 'Message',
+                message: {
+                    field: 'message',
                     defaultValue: ''
                 },
-                Title :{
-                    field: 'Title',
+                title :{
+                    field: 'title',
                     defaultValue: ''  
                 },
                 CreatedAt: {
-                    field: 'CreatedAt',
+                    field: 'send_date',
                     defaultValue: new Date()
                 },
-                UserId: {
-                    field: 'UserId',
+                notification_id: {
+                    field: 'notification_id',
                     defaultValue: null
                 }                  
             },
@@ -38,60 +49,63 @@ app.Activities = (function () {
                 return app.helper.resolvePictureUrl(this.get('Picture'));
             },*/
             
-            User: function () {
-                var userId = this.get('UserId');
-                var user = $.grep(app.Users.users(), function (e) {
-                    return e.Id === userId;
-                })[0];
-
-                /*return user ? {
-                    DisplayName: user.DisplayName,
-                    PictureUrl: app.helper.resolveProfilePictureUrl(user.Picture)
-                } : {
-                    DisplayName: 'Anonymous',
-                    PictureUrl: app.helper.resolveProfilePictureUrl()
-                };*/
-            },
             
             isVisible: function () {
                 var currentUserId = app.Users.currentUser.data.Id;
                 var userId = this.get('UserId');
                 return currentUserId === userId;
             }
-        };
-            
+          };
+             
+             
+          var activitiesDataSource = new kendo.data.DataSource({
 
-        // Activities data source. The Backend Services dialect of the Kendo UI DataSource component
-        // supports filtering, sorting, paging, and CRUD operations.
-
-            activitiesDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-            schema: {
-                model: activityModel
-            },
             transport: {
-                // Required by Backend Services
-                  typeName: 'GetNotification'
-            },
-                
-              pageSize: '100',
-              page: 1,
-			  serverPaging: true,
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+groupId +"&customer_id="+userId,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+               model: activityModel,
+                                
+                 data: function(data)
+  	             {
+                       console.log(data);
                
-            change: function (e) {
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].sentNotification.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         attached: groupValue[0].sentNotification[j].attached,
+                                         message: groupValue[0].sentNotification[j].message,
+                                         notification_id: groupValue[0].sentNotification[j].notification_id,
+                                         send_date:groupValue[0].sentNotification[j].send_date,
+                                         title:groupValue[0].sentNotification[j].title,
+                                         type:groupValue[0].sentNotification[j].type
 
-                if (e.items && e.items.length > 0) {
-                    $('#no-activities-span').hide();
-                } else {
-                    $('#no-activities-span').show();
-                }
+                                     });
+                                   }
+                                 });
+                       		console.log('karan');	
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+                       
+                       }                       
             },
-                
-            //onrequestend: function (e) {
-        		//insertRecord();
-		    //},
-            sort: { field: 'CreatedAt', dir: 'desc' }
-	        });            
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });                    
             
             //var arr = [];
         	    var len =null;
@@ -218,7 +232,7 @@ app.Activities = (function () {
     // Activities view model
     var activitiesViewModel = (function () {
         // Navigate to activityView When some activity is selected
-        var loginType,userId;
+      
         var $newNotification;
         
         var init = function () {        
@@ -230,7 +244,7 @@ app.Activities = (function () {
           var comboGroupListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/1",
+                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -266,9 +280,7 @@ app.Activities = (function () {
              sort: { field: 'add', dir: 'desc' }    
 	       });
                
-	                 
-            
-            
+	                                        
       	    $("#groupSelect").kendoComboBox({
   				dataSource: comboGroupListDataSource,
   				dataTextField: "group_name",
@@ -281,34 +293,71 @@ app.Activities = (function () {
   				dataValueField: "pid",
                   change: onAdminComboChange
 		  	});
-               $("#groupSelectNotification").kendoComboBox({
+               
+            /*$("#groupSelectNotification").kendoComboBox({
   				dataSource: comboGroupListDataSource,
   				dataTextField: "group_name",
   				dataValueField: "pid",
                   change: onChangeNotiGroup
-		  	});            
+		    });
+            */
         };
         
 
          var show = function(e){
-               app.MenuPage=true;
-               app.userPosition=false;
+           app.MenuPage=true;
+           app.userPosition=false;
              
               $newNotification.val('');
               validator.hideMessages();
             
             loginType = e.view.params.LoginType;
        	 userId = e.view.params.UserId;
-             console.log(userId);
+            groupId =e.view.params.GroupId;
+             
+            console.log(userId+"||"+groupId);
+             
             if(userId==='11' || userId==='13'){
-             $("#aboutUsView").hide();
+             /*$("#aboutUsView").hide();
              $("#settingView").hide();
              $("#websiteView").hide();
-             $("#callUsView").hide();
+             $("#callUsView").hide();*/
              $("#replyUserView").show();   
              $("#sendNotificationView").show();
              $("#manageGroupView").show();   
             }
+                    
+            
+            /*
+              $("#deleteMemberData").kendoListView({
+        		dataSource: MemberDataSource,
+       		 template: kendo.template($("#Member-Delete-template").html()),
+        		autoBind: true
+			});
+           */
+                     
+               //kendo.bind($('#deleteMemberData'), MemberDataSource);      
+           
+            //if(GroupName==='All'){
+    			             
+            /*app.groupDetail.userData.filter({
+							                	field: 'Group',
+                								operator: 'eq',
+                								value: GroupName   	    				        	
+        	    								});
+                           /*}else{		
+                                                app.Activities.activities.filter({
+							                	field: 'Group',
+                								operator: 'eq',
+                								value: GroupName
+        	    								});
+                           }*/
+            
+           //kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
+         
+
+             
+
            
             if (app.checkConnection()) {
                   //$('#no-activities-span').hide();
@@ -363,7 +412,7 @@ app.Activities = (function () {
         };
         
         var activitySelected = function (e) {
-            //console.log(e.data.uid);
+            console.log(e.data.uid);
 			app.MenuPage=false;	
             app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
@@ -421,7 +470,7 @@ app.Activities = (function () {
             var MemberDataSource;
             console.log(app.Activities.userData);
             
-           app.Activities.userData.fetch(function(){
+           /*app.Activities.userData.fetch(function(){
 					  var view = app.Activities.userData.view()
                       console.log(view);
 					  dataLength = view.length;
@@ -449,6 +498,7 @@ app.Activities = (function () {
 	     		});
                }
              kendo.bind($('#userTemplate'), MemberDataSource);     
+            */
         };
         
         var manageGroup =function(){

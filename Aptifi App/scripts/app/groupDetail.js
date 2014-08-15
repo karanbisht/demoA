@@ -69,6 +69,99 @@ app.groupDetail = (function () {
               var activitiesDataSource;
               console.log(GroupName);
                app.mobileApp.navigate('#groupNotificationShow');
+            
+            
+            var activityNotificationModel = {
+            id: 'Id',
+            fields: {
+                message: {
+                    field: 'message',
+                    defaultValue: ''
+                },
+                title :{
+                    field: 'title',
+                    defaultValue: ''  
+                },
+                CreatedAt: {
+                    field: 'send_date',
+                    defaultValue: new Date()
+                },
+                notification_id: {
+                    field: 'notification_id',
+                    defaultValue: null
+                }                  
+            },
+            
+                 
+            CreatedAtFormatted: function () {
+                return app.helper.formatDate(this.get('CreatedAt'));
+            }
+            
+          };
+             
+             
+          var notificationListDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+selectedGroupId,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {
+               model: activityNotificationModel,
+                                
+                 data: function(data)
+  	             {
+                       console.log(data);
+               
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].sentNotification.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         attached: groupValue[0].sentNotification[j].attached,
+                                         message: groupValue[0].sentNotification[j].message,
+                                         notification_id: groupValue[0].sentNotification[j].notification_id,
+                                         send_date:groupValue[0].sentNotification[j].send_date,
+                                         title:groupValue[0].sentNotification[j].title,
+                                          type:groupValue[0].sentNotification[j].type
+
+                                     });
+                                   }
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+                       
+                       }                       
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            notificationListDataSource.fetch(function() {
+                
+ 		   });
+	
+                     
+             
+             $("#groupDetail-listview").kendoListView({
+  		    template: kendo.template($("#groupDetailTemplate").html()),    		
+     		 dataSource: notificationListDataSource,
+        		schema: {
+           		model:  activityNotificationModel
+				}			 
+		     });
+
    	  
     		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
                   		//notificationModel();
@@ -392,7 +485,7 @@ app.groupDetail = (function () {
                       console.log(deleteGroupData.status[0].Msg);           
                                if(deleteGroupData.status[0].Msg==='Success'){                                
 									app.showAlert("Member Deleted Successfully","Notification");
-				        	        //app.mobileApp.navigate('views/groupListPage.html');
+				        	        app.mobileApp.navigate('#groupMemberShow');
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }

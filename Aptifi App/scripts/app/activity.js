@@ -17,7 +17,7 @@ app.Activity = (function () {
         
       var init = function () {
                  if (app.checkConnection()) {  
-		 			 getReplyPost();
+		 			 //getReplyPost();
                   }             
       };
         
@@ -81,8 +81,8 @@ app.Activity = (function () {
         
 
         var show = function (e) {
-            var cUserId = app.Users.currentUser.get('data').Id;
-            var adminId = localStorage.getItem("adminId");
+            //var cUserId = app.Users.currentUser.get('data').Id;
+            //var adminId = localStorage.getItem("adminId");
 
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
@@ -95,8 +95,9 @@ app.Activity = (function () {
             activity = app.Activities.activities.getByUid(activityUid);
             console.log(activity);
            // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
-             
-            if (app.checkConnection()) {                          
+            kendo.bind(e.view.element, activity, kendo.mobile.ui);
+            
+            /*if (app.checkConnection()) {                          
             app.Comments.comments.filter([                
               {"logic":"or",
 		         "filters":[
@@ -117,6 +118,7 @@ app.Activity = (function () {
                var db = app.getDb();
 			   db.transaction(offlineQueryReplyDB, app.onError, offlineReplyDBSuccess);  
            }
+            */1
         };
                
         var offlineQueryReplyDB = function(tx){

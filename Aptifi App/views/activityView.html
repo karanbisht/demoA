@@ -6,15 +6,16 @@
             <a class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>
         </div>
     </div>
-
+<!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
+    
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">
-        <!--<div class="user-avatar">
-            <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png" />
-        </div>-->
+        <div class="user-avatar">
+            <img src="styles/images/notification1.png" />
+        </div>
         <div class="activity-content">
-            <h2 id="personName" class="person-name" data-bind='text:Title'></h2>
-            <span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>
-            <span id="activityText" data-bind="text: Message" class="user-share-txt"></span>
+            <h2 id="personName" class="person-name" data-bind='text:title'></h2>
+            <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
+            <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
             <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
             <div class="comments-wrp">
                 <ul id="comments-listview" data-template="commentsTemplate"></ul>
