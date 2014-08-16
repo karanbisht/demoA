@@ -212,7 +212,11 @@ var app = (function (win) {
         }else if(app.MenuPage){
              navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
- 	             	window.location.href = "index.html";
+                     app.mobileApp.pane.loader.show();    
+
+                    setTimeout(function() {
+                   	 window.location.href = "index.html";
+                   }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
             

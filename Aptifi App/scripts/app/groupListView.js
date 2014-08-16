@@ -6,7 +6,7 @@ app.GroupList = (function () {
  var groupListDataSource;   
  var orgId = localStorage.getItem("UserOrgID");
     
-    console.log(orgId);
+ //console.log(orgId);
     
    var GroupsListModel = (function () {                 
        var GroupListModel = {

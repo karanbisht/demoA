@@ -60,6 +60,9 @@ app.Login = (function () {
 				app.showAlert("Please enter Password.", "Validation Error");
 			} else {
             
+                 app.mobileApp.pane.loader.show();
+                
+                 //app.mobileApp.pane.loader.hide();
            
         console.log(username+"||"+password+"||"+device_id+"||"+device_type);
         var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type}
@@ -83,8 +86,10 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
+               app.mobileApp.pane.loader.hide();
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
+               
            }               
           });  
 	            

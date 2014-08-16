@@ -8,14 +8,14 @@ app.Activities = (function () {
  var validator;
  var loginType,groupId,userId;
     
-        var orgId = localStorage.getItem("UserOrgID");                              
-     
-
+        
+    var orgId = localStorage.getItem("UserOrgID");                              
+    
 	   // Activities model
 	    var activitiesModel = (function () {	
 		var data; 
-		var groupId = localStorage.getItem("UserGroupID");
- 	   var userId = localStorage.getItem("UserID");	
+		var groupId1 = localStorage.getItem("UserGroupID");
+ 	   var userId1 = localStorage.getItem("UserID");	
      
               console.log("karan"+groupId+"||"+userId+"||"+orgId);            
    var activityModel = {
@@ -62,7 +62,7 @@ app.Activities = (function () {
 
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+groupId +"&customer_id="+userId,
+                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+groupId1 +"&customer_id="+userId1,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -307,6 +307,7 @@ app.Activities = (function () {
          var show = function(e){
            app.MenuPage=true;
            app.userPosition=false;
+           app.mobileApp.pane.loader.hide();
              
               $newNotification.val('');
               validator.hideMessages();
@@ -503,6 +504,7 @@ app.Activities = (function () {
         
         var manageGroup =function(){
             app.MenuPage=false;	
+            //app.mobileApp.pane.loader.show();
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         
@@ -825,9 +827,13 @@ app.Activities = (function () {
     	         
         // Logout user
         var logout = function () {
+
         navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {                    
-                    window.location.href = "index.html";
+                   app.mobileApp.pane.loader.show();    
+                   setTimeout(function() {
+                   	 window.location.href = "index.html";
+                   }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };

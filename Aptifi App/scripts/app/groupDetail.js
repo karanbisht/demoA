@@ -6,8 +6,8 @@ app.groupDetail = (function () {
     var GroupName;
     var selectedGroupId;
     var selectedGroupDesc;
-    var el = new Everlive('wKkFz2wbqFe4Gj0s');   
-          
+    var custFromGroup= [];
+    var el = new Everlive('wKkFz2wbqFe4Gj0s');          
     
     
         /*
@@ -49,7 +49,9 @@ app.groupDetail = (function () {
            
            
         var show = function (e) {
-             app.MenuPage=false;
+            app.MenuPage=false;
+            app.mobileApp.pane.loader.hide();
+            
 		    console.log("show function");
             activityUid = e.view.params.uid;
             console.log(activityUid);
@@ -151,12 +153,11 @@ app.groupDetail = (function () {
             notificationListDataSource.fetch(function() {
                 
  		   });
-	
-                     
-             
-             $("#groupDetail-listview").kendoListView({
+
+             $("#groupDetail-listview").kendoMobileListView({
   		    template: kendo.template($("#groupDetailTemplate").html()),    		
      		 dataSource: notificationListDataSource,
+              pullToRefresh: true,
         		schema: {
            		model:  activityNotificationModel
 				}			 
@@ -183,12 +184,14 @@ app.groupDetail = (function () {
            
            
            
+
+        
+        
         var showGroupMembers = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             
-            
-                  
+                           
             var UserModel ={
             id: 'Id',
             fields: {
@@ -234,7 +237,10 @@ app.groupDetail = (function () {
                                      console.log(orgLength);
                             
                                      for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
+                                      var dataVal = groupValue[0].customerData[j].customerID;
+                                         custFromGroup.push(dataVal);
+                                         
+                                         groupDataShow.push({
                                          customerID: groupValue[0].customerData[j].customerID,
                                          first_name: groupValue[0].customerData[j].first_name,
                                          last_name: groupValue[0].customerData[j].last_name,
@@ -264,10 +270,10 @@ app.groupDetail = (function () {
  		   });
 	
          
-    	    $("#groupMember-listview").kendoListView({
+    	    $("#groupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#groupMemberTemplate").html()),
-        		autoBind: true
+                pullToRefresh: true, 
 			});
             
              $("#deleteMemberData").kendoListView({
@@ -378,6 +384,97 @@ app.groupDetail = (function () {
         var addMemberToGroup = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#addMemberToGroup');
+            var orgId = localStorage.getItem("UserOrgID"); 
+            
+        var addUserModel ={
+            id: 'Id',
+            fields: {
+                mobile: {
+                    field: 'mobile',
+                    defaultValue: ''
+                },
+                first_name: {
+                    field: 'first_name',
+                    defaultValue: ''
+                },
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
+                    defaultValue:''
+                }
+             }
+          };
+            
+        var addMemberDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/organisation/getCustomer/"+orgId,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+            
+       	 schema: {
+               model: addUserModel,
+                  
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                       var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     var orgLength=groupValue[0].orgData.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                         
+                                     var pos = $.inArray(groupValue[0].orgData[j].cust_id, custFromGroup);
+                         	 			 console.log(pos);
+									if (pos === -1) {
+					
+                                    
+                                     groupDataShow.push({
+                                         customerID: groupValue[0].orgData[j].cust_id,
+                                         first_name: groupValue[0].orgData[j].cust_fname,
+                                         last_name: groupValue[0].orgData[j].cust_lname,
+                                         email:groupValue[0].orgData[j].cust_email,
+                                         mobile:groupValue[0].orgData[j].mobile
+                                     });
+                                    }
+                                   }
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+	 		              
+                       
+                 }
+
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            addMemberDataSource.fetch(function() {
+                
+ 		   });
+	
+         
+    	    $("#addMemberData").kendoListView({
+        		dataSource: addMemberDataSource,
+       		 template: kendo.template($("#Member-Add-template").html()),
+                pullToRefresh: true, 
+			});
+            
             
             /*app.groupDetail.userData.filter({
 							                	field: 'Group',
@@ -387,8 +484,16 @@ app.groupDetail = (function () {
              kendo.bind($('#Member-Add-template'), MemberDataSource); 
             */
    
-         };
+   
+        };
 
+        
+        var groupNotificationSelected = function (e) {
+            alert("hello");
+			app.MenuPage=false;	
+            //alert(e.data.uid);
+            app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
+        };
         
 
         var addMemberToGroupFunc = function(){
@@ -399,8 +504,48 @@ app.groupDetail = (function () {
                     //console.log(val[i]);
         	});
             
+              var jsonDataAddMember = {"customer":val ,"organisation":password,"group":device_id}
+                    
+              var dataSourceDeleteMember = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/addCustomertoGroup",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataAddMember
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          
+         });  
+	            
+           dataSourceDeleteMember.fetch(function() {
+              var loginDataView = dataSourceDeleteMember.data();
+				  $.each(loginDataView, function(i, deleteGroupData) {
+                      console.log(deleteGroupData.status[0].Msg);           
+                               if(deleteGroupData.status[0].Msg==='Success'){                                
+									app.showAlert("Member Deleted Successfully","Notification");
+				        	        app.mobileApp.navigate('#groupMemberShow');
+                               }else{
+                                  app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });        
+                        
                                    
-            $.each(val,function(i,dataValue){  
+            /*$.each(val,function(i,dataValue){  
             console.log(dataValue);
                   
                 var data = el.data('Users');
@@ -422,7 +567,8 @@ app.groupDetail = (function () {
         		  	app.showAlert("Member Added to Group","Notification");               
 	           }else{
              		 app.showAlert("Error ","Notification");
-               }
+               }*/
+            
         };
 
         
@@ -564,7 +710,8 @@ app.groupDetail = (function () {
            	show: show,
                manageGroup:manageGroup,    
                sendNotification:sendNotification,
-                   removeMemberClick:removeMemberClick,
+               groupNotificationSelected:groupNotificationSelected,    
+               removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
           	 addMemberToGroupFunc:addMemberToGroupFunc,
