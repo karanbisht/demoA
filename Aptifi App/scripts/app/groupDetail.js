@@ -7,6 +7,7 @@ app.groupDetail = (function () {
     var selectedGroupId;
     var selectedGroupDesc;
     var custFromGroup= [];
+    var orgId = localStorage.getItem("UserOrgID");
     var el = new Everlive('wKkFz2wbqFe4Gj0s');          
     
     
@@ -384,8 +385,7 @@ app.groupDetail = (function () {
         var addMemberToGroup = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#addMemberToGroup');
-            var orgId = localStorage.getItem("UserOrgID"); 
-            
+                       
         var addUserModel ={
             id: 'Id',
             fields: {
@@ -434,8 +434,7 @@ app.groupDetail = (function () {
                                      var pos = $.inArray(groupValue[0].orgData[j].cust_id, custFromGroup);
                          	 			 console.log(pos);
 									if (pos === -1) {
-					
-                                    
+					                                    
                                      groupDataShow.push({
                                          customerID: groupValue[0].orgData[j].cust_id,
                                          first_name: groupValue[0].orgData[j].cust_fname,
@@ -496,17 +495,20 @@ app.groupDetail = (function () {
         };
         
 
+        
         var addMemberToGroupFunc = function(){
 			var successFlag = false;
+            
             var val = [];
 		        $(':checkbox:checked').each(function(i){
           	  val[i] = $(this).val();
                     //console.log(val[i]);
         	});
             
-              var jsonDataAddMember = {"customer":val ,"organisation":password,"group":device_id}
+            
+            var jsonDataAddMember = {"customer":val ,"organisation":orgId,"group":selectedGroupId}
                     
-              var dataSourceDeleteMember = new kendo.data.DataSource({
+            var dataSourceAddMember = new kendo.data.DataSource({
                transport: {
                read: {
                    url: "http://54.85.208.215/webservice/group/addCustomertoGroup",
@@ -530,15 +532,15 @@ app.groupDetail = (function () {
           
          });  
 	            
-           dataSourceDeleteMember.fetch(function() {
-              var loginDataView = dataSourceDeleteMember.data();
-				  $.each(loginDataView, function(i, deleteGroupData) {
-                      console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Member Deleted Successfully","Notification");
+           dataSourceAddMember.fetch(function() {
+              var loginDataView = dataSourceAddMember.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
+                               if(addGroupData.status[0].Msg==='Customer saved to group'){                                
+									app.showAlert("Member Added Successfully","Notification");
 				        	        app.mobileApp.navigate('#groupMemberShow');
                                }else{
-                                  app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
+                                  app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
                                
                   });

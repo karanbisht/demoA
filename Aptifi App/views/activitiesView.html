@@ -26,14 +26,13 @@
 	    	   <b>You have no Notification for you.</b>
     	 </p>
  	</div> 
-
-   
-   <div data-role="footer">
-        <div data-role="tabstrip">
-            <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
+   <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
             <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
             <a id="aboutUsView" data-icon="info" data-role="button" data-bind="click: about">About Us</a>
             <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
+   
+   <div data-role="footer">
+        <div data-role="tabstrip" id="tabStripVal">
             <a id="manageGroupView" data-icon="organize" data-role="button" data-bind="click: manageGroup" style="display:none" >Manage Groups</a>
             <a id="replyUserView" data-icon="reply" data-role="button" data-bind="click: replyUser" style="display:none" >Reply User</a>
             <a id="sendNotificationView" data-icon="action" data-role="button" data-bind="click: sendNotification" style="display:none" >Send Notification</a>
@@ -120,7 +119,7 @@
 	<div data-role="header">
         <div data-role="navbar">
            Send Notification
-         <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
+            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
          </div>
     </div>
     <hr/>
@@ -131,9 +130,9 @@
     </div>
 
 
-    <ul data-role="listview" data-style="inset" style="margin-top:25px">
+  <ul data-role="listview" data-style="inset" style="margin-top:25px">
         <li class="username"><input type="text" class="k-textbox" id="inputValue" placeholder="Notification Title"/></li>
-    </ul>
+  </ul>
 
 			    
     

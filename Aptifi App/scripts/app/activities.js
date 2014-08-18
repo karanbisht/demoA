@@ -14,11 +14,13 @@ app.Activities = (function () {
 	   // Activities model
 	    var activitiesModel = (function () {	
 		var data; 
-		var groupId1 = localStorage.getItem("UserGroupID");
+		//var groupId1 = localStorage.getItem("UserGroupID");
+        var groupId1=2;    
  	   var userId1 = localStorage.getItem("UserID");	
      
-              console.log("karan"+groupId+"||"+userId+"||"+orgId);            
-   var activityModel = {
+              console.log("karan"+groupId1+"||"+userId1+"||"+orgId);            
+
+            var activityModel = {
 
             id: 'Id',
             fields: {
@@ -98,12 +100,16 @@ app.Activities = (function () {
                        
                        }                       
             },
-	            error: function (e) {
+	            
+              error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
             	   navigator.notification.alert("Please check your internet connection.",
                	function () { }, "Notification", 'OK');
-           	}
+           	
+              },
+             
+              sort: { field: 'send_date', dir: 'desc' }
 	        
     	    });                    
             
@@ -327,8 +333,8 @@ app.Activities = (function () {
              $("#sendNotificationView").show();
              $("#manageGroupView").show();   
             }
-                    
             
+                        
             /*
               $("#deleteMemberData").kendoListView({
         		dataSource: MemberDataSource,

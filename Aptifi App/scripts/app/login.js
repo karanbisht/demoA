@@ -231,7 +231,48 @@ app.Login = (function () {
 			} else if (!app.validateEmail(forgetEmail)) {
 				  app.showAlert("Please enter a valid Email.", "Validation Error");
 			}else{
-				app.showAlert('Your Password Send to your Mail','Notification');
+               
+                  var jsonData = {"email":forgetEmail};   
+                  var dataSourceRegistration = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/user/forgot_password",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonData
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           } 
+           });  
+	            
+           dataSourceRegistration.fetch(function() {
+				        var registrationDataView = dataSourceRegistration.data();
+						   $.each(registrationDataView, function(i, regData) {
+                                   console.log(regData.status[0].Msg);
+                               
+                               if(regData.status[0].Msg==='An email has been sent to reset your password.'){              
+                                  app.showAlert("An email has been sent to reset your password.","Notification"); 
+                                     window.location.href = "index.html";
+                                  //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
+                               }else{
+                                  app.showAlert(regData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                          });
+
+  		  });
+
             }
         };
         
