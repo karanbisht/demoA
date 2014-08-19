@@ -774,20 +774,22 @@ app.Activities = (function () {
              
             console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
              
-            $("#userEmailId").val(userEmail); 
-            $("#userMobileNo").val(userMobile);
-            $("#userlname").val(userlName);
-            $("#userfname").val(userfName); 
+            $("#userEmailId").html(userEmail); 
+            $("#userMobileNo").html(userMobile);
+            $("#userlname").html(userlName);
+            $("#userfname").html(userfName); 
              
-            for(var x=0; x< userOrgName.length;x++){
+            for(var x=0; x < userOrgName.length;x++){
                 document.getElementById("orgData").innerHTML += '<li>'+userOrgName[x]+'</li>';   
             } 
  
-			 for(var x=0; x< userGropuName.length;x++){
-                   document.getElementById("groupData").innerHTML += '<li>'+ userGropuName[x]+'</li>';
-				}
-             console.log(userId+"||"+groupId);
+			for(var y=0; y < userGropuName.length;y++){
+                document.getElementById("groupData").innerHTML += '<li>'+ userGropuName[y]+'</li>';
+			}
+
+           console.log(userId+"||"+groupId);
            // $("#notification-listview").data("kendoMobileListView").refresh()
+
         };
         
     	         
