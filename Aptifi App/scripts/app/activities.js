@@ -7,7 +7,12 @@ app.Activities = (function () {
  var activitiesDataSource;   
  var validator;
  var loginType,groupId,userId;
-    
+  var userlName;
+            var userfName;
+            var userMobile;
+            var userEmail;
+            var userOrgName;
+            var userGropuName;   
         
     var orgId = localStorage.getItem("UserOrgID");                              
     
@@ -318,21 +323,15 @@ app.Activities = (function () {
             loginType = e.view.params.LoginType;
        	 userId = e.view.params.UserId;
             groupId =e.view.params.GroupId;
-            var userlName =e.view.params.userlName;
-            var userfName =e.view.params.userfName;
-            var userMobile =e.view.params.userMobile;
-            var userEmail =e.view.params.userEmail;
-            var userOrgName =e.view.params.userOrgName;
-            var userAllGroupId =e.view.params.userAllGroupId;
+            
+             userlName =e.view.params.userlName;
+             userfName =e.view.params.userfName;
+             userMobile =e.view.params.userMobile;
+             userEmail =e.view.params.userEmail;
+             userOrgName =e.view.params.userOrgName;
+             userGropuName =e.view.params.userGropuName;
              
-             
-             
-            $("#userEmailId").val(userEmail); 
-            $("#userMobileNo").val(userMobile);
-            $("#userlname").val(userlName);
-            $("#userfname").val(userfName); 
-             
-            console.log(userId+"||"+groupId);
+          
              
             if(loginType==='O'){
              $("#replyUserView").show();   
@@ -768,41 +767,26 @@ app.Activities = (function () {
         
           var initNotifi = function () {       
       	    app.MenuPage=false; 
-          	var dataSource = new kendo.data.DataSource({
-  					type: 'everlive',   
-  					transport: {
-  					typeName: 'Group'
-   				              }
-						});
-		
-      	    $("#groupSelect").width(105).kendoComboBox({
-  				dataSource: dataSource,
-  				dataTextField: "Name",
-  				dataValueField: "Name",
-                  change: onComboChange
-		  	});   
-             
-             
-         /*    
-			     // working for getting values from content type    
-        		var el = new Everlive('wKkFz2wbqFe4Gj0s');
-				var data = el.data('GetNotification');
-				data.get()
-            	//data.get(query)
-    					.then(function(data){
-    //    					alert(JSON.stringify(data.result[0].Message +" Title -: "+ data.result[0].Title));
-          					alert(JSON.stringify(data));
-    
-    					},
-    
-            			function(error){
-  			      		alert(JSON.stringify(error));
-    					});
-        */  
-	        };
+          		        };
         
         var showNotifi = function(){
             app.MenuPage=false;
+             
+            console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
+             
+            $("#userEmailId").val(userEmail); 
+            $("#userMobileNo").val(userMobile);
+            $("#userlname").val(userlName);
+            $("#userfname").val(userfName); 
+             
+            for(var x=0; x< userOrgName.length;x++){
+                document.getElementById("orgData").innerHTML += '<li>'+userOrgName[x]+'</li>';   
+            } 
+ 
+			 for(var x=0; x< userGropuName.length;x++){
+                   document.getElementById("groupData").innerHTML += '<li>'+ userGropuName[x]+'</li>';
+				}
+             console.log(userId+"||"+groupId);
            // $("#notification-listview").data("kendoMobileListView").refresh()
         };
         
