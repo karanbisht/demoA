@@ -14,7 +14,7 @@ var emulatorMode = false;
 
 var app = (function (win) {
     'use strict';
-	
+    
     // Global error handling
     
     //var userPosition;
@@ -237,37 +237,10 @@ var app = (function (win) {
 
         navigator.splashscreen.hide();
         fixViewResize();
-
-        //openDb();
-        //var db = getDb();
-  	  //db.transaction(createTable , onError , goToCheckOfflineData);
-		//enablePushNotifications();
-        
-        /*
-        try 
-				{ 
-                	pushNotification = window.plugins.pushNotification;
-                	if (device.platform === 'android' || device.platform === 'Android') {
-						//$("#app-status-ul").append('<li>registering android</li>');
-                    	pushNotification.register(successHandler, errorHandler, {"senderID":790452394475,"ecb":"onNotificationGCM"});		// required!
-					} else {
-						//$("#app-status-ul").append('<li>registering iOS</li>');
-                    	pushNotification.register(tokenHandler, errorHandler, {"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"});	// required!
-                	}
-                }
-				catch(err) 
-				{ 
-					var txt="There was an error on this page.\n\n"; 
-					txt+="Error description: " + err.message + "\n\n"; 
-					alert(txt); 
-				}
-       */
-        
-        
-            var pushNotification = window.plugins.pushNotification;
-		    console.log(window.plugins);
-
-
+                
+         var pushNotification = window.plugins.pushNotification;
+		 console.log(window.plugins);
+           
         if (device.platform === "iOS") {
             pushNotification.register(apnSuccessfulRegistration,
             apnFailedRegistration, {
@@ -279,8 +252,7 @@ var app = (function (win) {
  
         } else {
             //register for GCM
-            pushNotification.register(
- 
+            pushNotification.register( 
             function(id) {
                 console.log("###Successfully sent request for registering with GCM.");
                 //set GCM notification callback
@@ -294,43 +266,8 @@ var app = (function (win) {
                 "ecb": "pushCallbacks.onNotificationGCM"
             });
         }
-        
     };
         
-        
-        /*if (analytics.isAnalytics()) {
-            analytics.Start();
-        }*/
-        
-        
-        // Initialize AppFeedback
-        /*if (app.isKeySet(appSettings.feedback.apiKey)) {
-            try {
-                feedback.initialize(appSettings.feedback.apiKey);
-            } catch (err) {
-                console.log('Something went wrong:');
-                console.log(err);
-            }
-        } else {
-            console.log('Telerik AppFeedback API key is not set. You cannot use feedback service.');
-        }*/
-        
-        /*var networkState = navigator.connection.type;
-        if (networkState === 'No network connection') {
-                     navigator.notification.alert(
-          'No active connection found!',
-          oppenSettings,
-          'Network ',
-         'OK'
-          );
-         }*/
-        
-      
-//      };
-     
-   
-    
-    
     // Handle "deviceready" event
     document.addEventListener('deviceready', onDeviceReady, false);
     // Handle "orientationchange" event
@@ -375,8 +312,8 @@ var app = (function (win) {
              window.location.href('index.html');
         }
     };
+        
     
-       
     var addCallback = function addCallback(key, callback) {
         if (window.pushCallbacks === undefined) {
             window.pushCallbacks = {}
@@ -416,7 +353,7 @@ var app = (function (win) {
                 break;
             case 'message':
                 //getPromotionFromServer();
-                alert('message');
+                alert('hello2');
             	break;
             case 'error':
                 alert('GCM error = ' + e.msg);
@@ -425,224 +362,8 @@ var app = (function (win) {
                 alert('An unknown GCM event has occurred.');
                 break;
         }
-    };
+    };  
     
-    
-    
-    /*
-         onNotificationAPN=function(e) {
-             alert("IOS"+e);
-                if (e.alert) {
-                     $("#app-status-ul").append('<li>push-notification: ' + e.alert + '</li>');
-                     navigator.notification.alert(e.alert);
-                }
-                    
-                if (e.sound) {
-                    var snd = new Media(e.sound);
-                    snd.play();
-                }
-                
-                if (e.badge) {
-                    pushNotification.setApplicationIconBadgeNumber(successHandler, e.badge);
-                }
-            };
-            
-            // handle GCM notifications for Android
-
-    onNotificationGCM = function(e) {
-              alert(e.event);
-                //$("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
-                
-                switch( e.event )
-                {
-                    case 'registered':
-					if ( e.regid.length > 0 )
-					{
-						$("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
-						// Your GCM push server needs to know the regID before it can push to this device
-						// here is where you might want to send it the regID for later use.
-						console.log("regID = " + e.regid);
-					}
-                    break;
-                    
-                    case 'message':
-                    	// if this flag is set, this notification happened while we were in the foreground.
-                    	// you might want to play a sound to get the user's attention, throw up a dialog, etc.
-                    	if (e.foreground)
-                    	{
-							$("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
-							
-							// if the notification contains a soundname, play it.
-							var my_media = new Media("/android_asset/www/"+e.soundname);
-							my_media.play();
-						}
-						else
-						{	// otherwise we were launched because the user touched a notification in the notification tray.
-							if (e.coldstart)
-								$("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
-							else
-							$("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
-						}
-							
-						$("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
-						$("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
-                    break;
-                    
-                    case 'error':
-						$("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
-                    break;
-                    
-                    default:
-						$("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
-                    break;
-                }
-            };
-            
-            tokenHandler = function(result) {
-                
-                alert(result);
-                
-                //$("#app-status-ul").append('<li>token: '+ result +'</li>');
-                // Your iOS push server needs to know the token before it can push to this device
-                // here is where you might want to send it the token for later use.
-            };
-			
-            var successHandler = function(result) {
-                console.log(result);
-                //$("#app-status-ul").append('<li>success:'+ result +'</li>');
-            };
-            
-            var errorHandler = function(error) {
-                 console.log(error);
-                //$("#app-status-ul").append('<li>error:'+ error +'</li>');
-            };
-
-    
-    */
-    
- /*   
-         var onAndroidPushReceived = function(args) {
-             //alert('Android notification received: ' + JSON.stringify(args)); 
-             //alert(JSON.stringify(args.message));
-             //alert(JSON.stringify(args.payload.message));
-    	    };
-        
-        	var onIosPushReceived = function(args) {
-            //alert('iOS notification received: ' + JSON.stringify(args)); 
-        	};
-         
-         var _onDeviceIsRegistered = function() {
-           // $("#initializeButton").hide();
-           // $("#registerButton").hide();
-           // $("#unregisterButton").show();
-           // alert(successText + "Device is registered in Telerik BackEnd Services and can receive push notifications.");
-        };
-        
-        var _onDeviceIsNotRegistered = function() {
-            //$("#unregisterButton").hide();
-        	//$("#registerButton").show();
-            //alert(successText + "Device is not registered in Telerik BackEnd Services. Tap the button below to register it.");
-        };
-        
-        var _onDeviceIsNotInitialized = function() {
-            // $("#unregisterButton").hide();
-            // $("#initializeButton").show();
-            //alert("Device unregistered.<br /><br />Push token was invalidated and device was unregistered from Telerik BackEnd Services. No push notifications will be received.");
-        };
-        
-        var _onDeviceRegistrationUpdated = function() {
-            //alert("Device registration updated.");
-        };
-    
-    
-    
-    	 var enablePushNotifications = function () {
-            //Initialization settings    
-            var pushSettings = {
-                android: {
-                    senderID: androidProjectNumber
-                },
-                iOS: {
-                    badge: "true",
-                    sound: "true",
-                    alert: "true"
-                },
-                notificationCallbackAndroid : onAndroidPushReceived,
-                notificationCallbackIOS: onIosPushReceived
-            }
-            
-            //$("#initializeButton").hide();
-            //$("#messageParagraph").text("Initializing push notifications...");
-         
-            var currentDevice = el.push.currentDevice(emulatorMode);
-            
-            currentDevice.enableNotifications(pushSettings)
-                .then(
-                    function(initResult) {
-                        //$("#tokenLink").attr('href', 'mailto:test@example.com?subject=Push Token&body=' + initResult.token);
-                        //alert(successText + "Checking registration status...");
-                        console.log(currentDevice.getRegistration());
-                        return currentDevice.getRegistration();
-                    },
-                    function(err) {
-                       //alert("ERROR!<br /><br />An error occured while initializing the device for push notifications.<br/><br/>" + err.message);
-                    }
-                ).then(
-                    function(registration) {                        
-                        _onDeviceIsRegistered();                      
-                    },
-                    function(err) {                        
-                        if(err.code === 801) {
-                            _onDeviceIsNotRegistered();      
-                        }
-                        else {                        
-                         //alert("ERROR!<br /><br />An error occured while checking device registration status: <br/><br/>" + err.message);
-                        }
-                    }
-                );
-         			registerInEverlive();
-        };
-    
-    
-    
-    
-    	var registerInEverlive = function() {
-            var currentDevice = el.push.currentDevice();
-            alert(currentDevice.pushToken);
-            if (!currentDevice.pushToken) currentDevice.pushToken = "some token";
-            el.push.currentDevice()
-                .register({ Age: 15 })
-                .then(
-                    _onDeviceIsRegistered,
-                    function(err) {
-                       // alert('REGISTER ERROR: ' + JSON.stringify(err));
-                    }
-                );
-        };
-        
-        var disablePushNotifications = function() {
-            el.push.currentDevice()
-                .disableNotifications()
-                .then(
-                    _onDeviceIsNotInitialized,
-                    function(err) {
-                      //  alert('UNREGISTER ERROR: ' + JSON.stringify(err));
-                    }
-                );
-        };
-        
-        var updateRegistration = function() {
-            el.push.currentDevice()
-                .updateRegistration({ Age: 16 })
-                .then(
-                    _onDeviceRegistrationUpdated,
-                    function(err) {
-                      //  alert('UPDATE ERROR: ' + JSON.stringify(err));
-                    }
-                );
-        };
-    
-*/
     
     var os = kendo.support.mobileOS,
         statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';

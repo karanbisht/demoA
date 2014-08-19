@@ -12,7 +12,8 @@ app.Login = (function () {
         var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
         var $loginUsername;
         var $loginPassword;
-        
+        var userOrgName=[];
+        var userGropuName=[];
         var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
@@ -52,11 +53,12 @@ app.Login = (function () {
             console.log(username);
             console.log(password);
             
-            if (username === "Mobile No" || username === "") {
-				app.showAlert("Please enter your Mobile No.", "Validation Error");
-			} else if (!app.validateMobile(username)) {
-				app.showAlert("Please enter a valid Mobile No.", "Validation Error");
-			} else if (password === "Password" || password === "") {
+            //if (username === "Mobile No" || username === "") {
+				//app.showAlert("Please enter your Mobile No.", "Validation Error");
+			//} else if (!app.validateMobile(username)) {
+				//app.showAlert("Please enter a valid Mobile No.", "Validation Error");
+			//} else 
+            if (password === "Password" || password === "") {
 				app.showAlert("Please enter Password.", "Validation Error");
 			} else {
             
@@ -103,25 +105,46 @@ app.Login = (function () {
                                if(loginData.status[0].Msg==='Sucess'){
                                    
 								var dataSend = loginData.status[0].CustomerData[0].user_type;
-                                var userId = loginData.status[0].CustomerData[0].pid;   
+                                var userId = loginData.status[0].CustomerData[0].pid;
+                                var userfName = loginData.status[0].CustomerData[0].cust_fname;
+                                var userlName = loginData.status[0].CustomerData[0].cust_lname;   
+                                var userEmail = loginData.status[0].CustomerData[0].cust_email; 
+                                var userMobile = loginData.status[0].CustomerData[0].mobile; 
+                                   
 								//alert(userId);
-                                   var joinGroupInfo=loginData.status[0].joinedGroup[0];
+														
+                                 var groupNumber =loginData.status[0].joinedGroup.length;
+                                
+                                for(var k=0;k<groupNumber;k++){   
+                                 var joinGroupInfo=loginData.status[0].joinedGroup[k];
+                                  
+         
+                                 	$.each(joinGroupInfo, function(i, org) {
+                                     	orgDataId.push(org.orgID);
+                                     	userAllGroupId.push(org.groupId);
+                                         userGropuName.push(org.groupName);
+                                          
+                                         var pos = $.inArray(org.orgName, userOrgName);
+                         	 			 console.log(pos);
+									if (pos === -1) {
+                                        		userOrgName.push(org.orgName);
+                                        }
+                                         
+	                                 });
+                                 }   
                                    
-                                  $.each(joinGroupInfo, function(i, org) {
-                                     orgDataId.push(org.orgID);
-                                     userAllGroupId.push(org.groupId);  
-                                 });
-                                   
-                                   console.log(userAllGroupId+"||"+userId);
-                                 
+                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);
+                                 localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
                                  localStorage.setItem("UserID",userId); 
-                                 localStorage.setItem("UserOrgID",orgDataId);
+                                 localStorage.setItem("UserOrgID",1);//orgDataId);
                                  localStorage.setItem("UserGroupID",userAllGroupId);
 
                                    
-                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId);
+                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
+                                   +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);
                                }else{
                                   app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                                                  app.mobileApp.pane.loader.hide();
                                }
                                
                   });

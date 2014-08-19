@@ -244,8 +244,6 @@ app.Activities = (function () {
         var init = function () {        
             app.MenuPage=true;
             app.userPosition=false;
-            validator = $('#enterNotification').kendoValidator().data('kendoValidator');
-            $newNotification = $('#newNotification');
             
           var comboGroupListDataSource = new kendo.data.DataSource({
             transport: {
@@ -315,57 +313,35 @@ app.Activities = (function () {
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
              
-              $newNotification.val('');
-              validator.hideMessages();
+              
             
             loginType = e.view.params.LoginType;
        	 userId = e.view.params.UserId;
             groupId =e.view.params.GroupId;
+            var userlName =e.view.params.userlName;
+            var userfName =e.view.params.userfName;
+            var userMobile =e.view.params.userMobile;
+            var userEmail =e.view.params.userEmail;
+            var userOrgName =e.view.params.userOrgName;
+            var userAllGroupId =e.view.params.userAllGroupId;
+             
+             
+             
+            $("#userEmailId").val(userEmail); 
+            $("#userMobileNo").val(userMobile);
+            $("#userlname").val(userlName);
+            $("#userfname").val(userfName); 
              
             console.log(userId+"||"+groupId);
              
-            if(userId==='11' || userId==='13'){
-             /*$("#aboutUsView").hide();
-             $("#settingView").hide();
-             $("#websiteView").hide();
-             $("#callUsView").hide();*/
+            if(loginType==='O'){
              $("#replyUserView").show();   
              $("#sendNotificationView").show();
-             $("#manageGroupView").show();   
+             $("#manageGroupView").show();
+             $("#upperTab").hide();   
             }
-            
-                        
-            /*
-              $("#deleteMemberData").kendoListView({
-        		dataSource: MemberDataSource,
-       		 template: kendo.template($("#Member-Delete-template").html()),
-        		autoBind: true
-			});
-           */
                      
-               //kendo.bind($('#deleteMemberData'), MemberDataSource);      
-           
-            //if(GroupName==='All'){
-    			             
-            /*app.groupDetail.userData.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName   	    				        	
-        	    								});
-                           /*}else{		
-                                                app.Activities.activities.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName
-        	    								});
-                           }*/
-            
-           //kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
-         
-
              
-
-           
             if (app.checkConnection()) {
                   //$('#no-activities-span').hide();
                      //show(e);

@@ -1,9 +1,10 @@
         <div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show">
-            <div data-role="header">        
-               <div data-role="navbar">     
-                   Notification
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>
-					<!--<input id="groupSelect" placeholder="Select Group" style="text-align:center;margin-right:10%;"/>--?
+         <div data-role="header">        
+              <div data-role="navbar">     
+                   Chat
+             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>
+					
+                <!--<input id="groupSelect" placeholder="Select Group" style="text-align:center;margin-right:10%;"/>--?
 
                 <!-- <select id="group" placeholder="Group" style="width:28%;border-radius:8px;border:none;margin-right:10px;padding:0px 3px 0px 3px;">
                 <option>All</option>
@@ -13,11 +14,20 @@
                 <option>SEO</option>
                 </select>  -->
                    
-          <!--<a data-align="center"><input data-role="search" placeholder="Search" style="height:30px;border-radius:6px;text-align:center;padding:3px;width:40%;"/></a>-->
-	          <a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
-           <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" href="views/addActivityView.html">Add</a>-->   
-    	     </div>
-	    </div>
+	           <!--<a data-align="center"><input data-role="search" placeholder="Search" style="height:30px;border-radius:6px;text-align:center;padding:3px;width:40%;"/></a>-->
+		          <a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>  
+        	   <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" href="views/addActivityView.html">Add</a>-->                      
+              </div>              
+                            
+             <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #979C94">
+	           		<a data-icon="history" href="#view-all-activities">Notification</a>
+					   <a data-icon="globe" href="#organisationDiv">Organisation</a>
+        	    	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
+             </div>     
+
+	     </div>
+            
+          
 <!--data-append-on-refresh="true"-->	
 
      <div>
@@ -32,7 +42,7 @@
             <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
    
    <div data-role="footer">
-        <div data-role="tabstrip" id="tabStripVal">
+        <div data-role="tabstrip">
             <a id="manageGroupView" data-icon="organize" data-role="button" data-bind="click: manageGroup" style="display:none" >Manage Groups</a>
             <a id="replyUserView" data-icon="reply" data-role="button" data-bind="click: replyUser" style="display:none" >Reply User</a>
             <a id="sendNotificationView" data-icon="action" data-role="button" data-bind="click: sendNotification" style="display:none" >Send Notification</a>
@@ -75,22 +85,18 @@
 	   </div>   
 	</div>
 
-<div data-role="view" id="view-all-notification"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.initNotifi" data-show="app.Activities.showNotifi">
+
+<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.initNotifi" data-show="app.Activities.showNotifi">
     <div data-role="header">
         <div data-role="navbar">
-          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Log out</a>
-          <input id="groupSelect" placeholder="Group" style="width: 105px"/>
-          <!--  <select id="group" placeholder="Group" style="width:28%;border-radius:8px;border:none;margin-right:10px;padding:0px 3px 0px 3px;">
-                <option>All</option>
-                <option>Developer</option>
-                <option>R&D</option>
-                <option>Sales</option>
-                <option>SEO</option>
-          </select>-->  
-          <a data-align="center"><input data-role="search" placeholder="Search" style="height:30px;border-radius:6px;text-align:center;padding:3px;width:40%;"/></a>  
-          <a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
-           <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" href="views/addActivityView.html">Add</a>-->   
+          Organisation  
+          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
          </div>
+         <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #979C94">
+       		<a data-icon="history" href="#view-all-activities">Notification</a>
+			   <a data-icon="globe" href="#organisationDiv">Organisation</a>
+        	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
+         </div>     
     </div>
 	
     <div>
@@ -100,59 +106,99 @@
     	</p>
  	</div> 
     
-    <div data-role="footer">
-        <div data-role="tabstrip">
-            <a data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            <a data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            <a  data-icon="info" data-role="button" data-bind="click: about">About Us</a>
-            <a data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>
-        </div>
-   </div>
     
 </div>
 
 
 
-
-
-<div data-role="view" id="sendNotificationDiv" data-model="app.Activities">
-	<div data-role="header">
+<div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-init="app.Activities.initNotifi" data-show="app.Activities.showNotifi">
+    <div data-role="header">
         <div data-role="navbar">
-           Send Notification
-            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
-         </div>
-    </div>
-    <hr/>
-
-    <div>
-        <p>Select Group to send Notification to particular group</p>
-        <span style="margin-left:12px;"><input id="groupSelectNotification" placeholder="Select Group"/></span>
-    </div>
-
-
-  <ul data-role="listview" data-style="inset" style="margin-top:25px">
-        <li class="username"><input type="text" class="k-textbox" id="inputValue" placeholder="Notification Title"/></li>
-  </ul>
-
-			    
-    
-    
-    <div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
-         <!--<div class="user-avatar">
-            <img data-bind="attr:{src: me.get('data').PictureUrl}" alt="styles/images/avatar.png" />
-        </div>-->
-        <!--<h2 class="person-name" data-bind="text: me.get('data').DisplayName">Me</h2>-->
-        <div class="user-share">
-            <textarea id="newNotification" placeholder="Write Message to Send ?" required validationMessage="Please Enter Notification Message!"></textarea>
+          Profile
+          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
         </div>
+         <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #979C94">
+       		<a data-icon="history" href="#view-all-activities">Notification</a>
+			   <a data-icon="globe" href="#organisationDiv">Organisation</a>
+        	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
+         </div>     
+
     </div>
+	
+    <div id="tabstrip-profile">
+      <ul data-role="listview" data-style="inset" data-type="group">
+        <li>
+            <ul>
+                <li><h2>Carine <span>Callahan</span></h2><img src="styles/images/userProfile.png" /></li>
+                <li>Email <span class="sales-up" id="userEmailId"></span></li>
+                <li>Mobile No <span class="sales-up" id="userMobileNo"></span></li>
+            </ul>
+        </li>
+
+        <li>
+            <ul>
+                <li style="text-align:center">Organisation</li>
+  
+            </ul>
+        </li>
+  
+        <li>
+            <ul>
+                <li style="text-align:center">Groups</li>
+
+            </ul>
+        </li>
+        
+    </ul>
+        
+    </div> 
     
-    <div data-role="footer">
-        <div data-role="tabstrip">
-            <a data-role="button" data-bind="click: sendNotificationMessage">Send Notification</a>
-        </div>
-   </div>   
+    
 </div>
+
+
+<style scoped>
+    #tabstrip-profile h2 {
+        display: inline-block;
+        font-size: 1.1em;
+        margin: 1.5em 0 0 .7em;
+    }
+    #tabstrip-profile h2 span {
+        display: block;
+        clear: both;
+        font-size: 1.8em;
+        margin: .1em 0 0 0;
+    }
+    #tabstrip-profile img {
+        width: 5em;
+        height: 5em;
+        float: left;
+        margin: 1em;
+        border: 1px solid rgba(0,0,0,.2);
+        -webkit-border-radius: 4em;
+        border-radius: 4em;
+    }
+
+    .sales-down,
+    .sales-hold,
+    .sales-up,
+    .value {
+        float: right;
+    }
+    .sales-up { color: green; }
+    .sales-down { color: red; }
+    .sales-hold { color: blue; }
+    .value { color: #bbb; }
+</style>
+
+
+
+
+
+
+
+
+
 
 
 

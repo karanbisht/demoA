@@ -1,8 +1,7 @@
 var app = app || {};
 
-app.GroupList = (function () {
+app.userGroupList = (function () {
 
- var el = new Everlive('wKkFz2wbqFe4Gj0s');  
  var groupListDataSource;   
  var orgId = localStorage.getItem("UserOrgID");
     
@@ -163,68 +162,7 @@ app.GroupList = (function () {
         
 
                 
-        var deleteGroupFunc = function(){
-            var orgId = localStorage.getItem("UserOrgID"); 
-            //var data = $('input:checkbox:checked').val();
-			var groupID = [];
-		        $(':checkbox:checked').each(function(i){
-          	  groupID[i] = $(this).val();
-        	});
-            
-            console.log(groupID);
-            
-             var dataSourceDeleteMember = new kendo.data.DataSource({
-               transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/delete/"+groupID+"/"+orgId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   //data: jsonDataDeleteMember
-           	}
-           },
-           schema: {
-               data: function(data)
-               {	console.log(data);
-               	return [data];
-               }
-           },
-           error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           }                         
-         });  
-	            
-           dataSourceDeleteMember.fetch(function() {
-              var loginDataView = dataSourceDeleteMember.data();
-				  $.each(loginDataView, function(i, deleteGroupData) {
-                      console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Deleted Successfully","Notification");
-				        	        app.mobileApp.navigate('views/groupListPage.html');
-                               }else{
-                                  app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
-                               }
-                               
-                  });
-  		 });
 
-            
-            
-          /*$.each(val,function(i,dataValue){  
-            var data = el.data('Group');
-			data.destroySingle({ Id: dataValue },    		
-	        
-              function(){
-				  delVal++;
-   			 },
- 		
-              function(error){
-			    });
-          
-          });*/
-            
          };
                 
                 
@@ -232,10 +170,6 @@ app.GroupList = (function () {
         	   init: init,
            	show: show,
                groupSelected:groupSelected,
-	           deleteGroupFunc:deleteGroupFunc,
-               addGroup:addGroup,
-               deleteGroup:deleteGroup,
-               addGroupFunc:addGroupFunc,                        
                groupListData:GroupsListModel.groupListData
           };
            

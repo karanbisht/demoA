@@ -11,6 +11,8 @@ app.registration = (function () {
         var $regLastName;
         var $regEmail;
         var backToRegPage=false;
+        var varifiCode;
+        var regClickButton;
         
          var regInit = function () {
                  app.userPosition=false;
@@ -18,7 +20,9 @@ app.registration = (function () {
              	$regPassword=$('#regPassword');            
              	$regLastName=$('#regLastName');
              	$regEmail=$('#regEmail');
-             	$regMobile=$('#regMobile');        
+             	$regMobile=$('#regMobile'); 
+             
+             
          };
         
         // Navigate to activityView When some activity is selected
@@ -41,6 +45,7 @@ app.registration = (function () {
         }
 
         var register = function(){
+         regClickButton=0;   
 		 backToRegPage=true;   
          var firstName = $regFirstName.val();
          var lastName = $regLastName.val();
@@ -73,8 +78,10 @@ app.registration = (function () {
             backToRegPage=false;    
             app.mobileApp.navigate('index.html');
         }
+
         
-        var regDone = function(){
+        var clickforValificationCode = function(){            
+            if(regClickButton===0){
             var selectOrg = $("#selectOrgData").data("kendoComboBox");
 		    var selectGroup = $("#selectGroupData").data("kendoComboBox");
 			var cmbGroup ; //= [];            
@@ -82,13 +89,75 @@ app.registration = (function () {
             //cmbGroup.push(selectGroup.value());
             
             cmbGroup = selectGroup.value();
-             console.log(org_id);
-             console.log(cmbGroup);
+            console.log(org_id);
+            console.log(cmbGroup);
           
          if (org_id === "") {
 				app.showAlert("Please select your Organisation.","Validation Error");
          }else if (cmbGroup === "") {
 				app.showAlert("Please select your Group.","Validation Error");
+         }else{
+          var mobile=$regMobile.val();
+              varifiCode = genRand(0,9);
+         	 //alert(varifiCode);
+              varifiCode = varifiCode.toString();
+                                           
+          var dataSourceValidation = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+91"+mobile+"&tempid=21429&F1="+varifiCode+"&response=Y"
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           } 
+           });  
+	            
+           dataSourceValidation.fetch(function() {
+				        var registrationDataView = dataSourceValidation.data();
+						       console.log(registrationDataView);
+               		    	app.showAlert("The Verification Code will be sent to this number ("+mobile+")." , "Notification");
+               				$("#validationRow").show();
+               				regClickButton=1;
+                          });          
+          }
+        }else{
+            regDone();
+        }        
+      };
+        
+         var genRand = function() {      	
+             return Math.floor(Math.random()*89999+10000);		   
+         };
+
+        
+        var regDone = function(){
+            var selectOrg = $("#selectOrgData").data("kendoComboBox");
+		    var selectGroup = $("#selectGroupData").data("kendoComboBox");
+			var cmbGroup ; //= [];            
+            var org_id = selectOrg.value();            
+            var validateCode = $("#validationCodeId").val();
+            //cmbGroup.push(selectGroup.value());
+            validateCode=validateCode.toString();
+            cmbGroup = selectGroup.value();
+            console.log(org_id);
+            console.log(cmbGroup);
+          
+            console.log(validateCode+"||"+varifiCode);
+            
+         if (validateCode === "" || validateCode === "Verification Code" ) {
+				app.showAlert("Please enter Verification Code.","Validation Error");
+         }else if (validateCode !== varifiCode) {
+				app.showAlert("Please enter Correct Verification Code.","Validation Error");
          }else{
             var fname=$regFirstName.val();
             var password=$regPassword.val();
@@ -97,8 +166,8 @@ app.registration = (function () {
             var mobile=$regMobile.val();
         	var deviceName = app.devicePlatform();
             var device_type;
-
-             console.log(deviceName);
+             
+            console.log(deviceName);
              
              if(deviceName==='Android'){
                 device_type ='AN';
@@ -107,14 +176,20 @@ app.registration = (function () {
              }
              
              var device_id = localStorage.getItem("deviceTokenID");
-             console.log(device_id);00
+             console.log(device_id);
     	     //console.log(device_type +"||"+ device_id);
                           
-            //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
+
+             
+             //http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+919717818898&tempid=21429&F1=23456&response=Y
+             
+             
+             
+             //http://54.85.208.215/webservice/customer/customerRegistration?fname=karan&lname=bisht&email=karan@gmail.com&password=123456&mobile=9717818898&cmbGroup=1&device_id=e0908060g38bde8e6740011221af335301010333&device_type=AN&org_id=1
             
           var jsonData = {"fname":fname,"lname":lname,"email":email,"password":password,"mobile":mobile,"cmbGroup":cmbGroup,"device_id":device_id,"device_type":device_type,"org_id":org_id};
-          
-             console.log(jsonData);               
+                        
+          console.log(jsonData);               
              //alert(fname +"||"+lname+"||"+email+"||"+password+"||"+mobile+"||"+cmbGroup+"||"+device_id+"||"+device_type+"||"+org_id);
           var dataSourceRegistration = new kendo.data.DataSource({
                transport: {
@@ -139,7 +214,7 @@ app.registration = (function () {
            } 
            });  
 	            
-           dataSourceRegistration.fetch(function() {
+	             dataSourceRegistration.fetch(function() {
 				        var registrationDataView = dataSourceRegistration.data();
 						   $.each(registrationDataView, function(i, regData) {
                                    console.log(regData.status[0].Msg);
@@ -154,8 +229,8 @@ app.registration = (function () {
                                
                           });
 
-  		  });
-             
+  			  });
+	             
             //console.log(dataSourceRegistration);
             //console.log(dataSourceRegistration.read());
              
@@ -181,6 +256,7 @@ app.registration = (function () {
         return {
             regInit: regInit,
             addNewRegistration: addNewRegistration,
+            clickforValificationCode:clickforValificationCode,
             regDone: regDone,
             goToIndex:goToIndex,
             clearSelectOrganisation:clearSelectOrganisation,

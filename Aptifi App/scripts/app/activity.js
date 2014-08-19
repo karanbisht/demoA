@@ -84,6 +84,11 @@ app.Activity = (function () {
             //var cUserId = app.Users.currentUser.get('data').Id;
             //var adminId = localStorage.getItem("adminId");
 
+            var userIype = localStorage.getItem("UserType");	
+            if(userIype==="O"){
+                $("#replyButton").hide();
+            }
+            
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
@@ -96,29 +101,6 @@ app.Activity = (function () {
             console.log(activity);
            // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
             kendo.bind(e.view.element, activity, kendo.mobile.ui);
-            
-            /*if (app.checkConnection()) {                          
-            app.Comments.comments.filter([                
-              {"logic":"or",
-		         "filters":[
-             	{
-					field: 'UserId', operator: 'eq', value: adminId },
-        	     {
-    	            field: 'UserId', operator: 'eq', value: cUserId }
-	            ]},
-       
-                {
-					field: 'NotificationId', operator: 'eq', value: activity.Id}
-			    ]);
-        	
-                
-            kendo.bind(e.view.element, activity, kendo.mobile.ui);
-           }else{
-               console.log("Offine inside");
-               var db = app.getDb();
-			   db.transaction(offlineQueryReplyDB, app.onError, offlineReplyDBSuccess);  
-           }
-            */1
         };
                
         var offlineQueryReplyDB = function(tx){
