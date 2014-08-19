@@ -570,14 +570,22 @@ app.Activities = (function () {
         };
         
         var orgShow = function(){
-          var orgDataSource= [];
+          app.MenuPage=false;
             
-          orgDataSource.push({title:groupValue[0].sentNotification[j].title});
-                                    
-          $("#organisation-listview").kendoMobileListView({
+          var orgDataSource= [];   
+          var userOrgName = localStorage.getItem("userOrgName"); 
+          console.log(userOrgName);
+          
+          //studentAnswerArray[i] = answerString.toString().split(',');
+            
+          orgDataSource.push({userOrgName:userOrgName});                                   
+          
+           $("#organisation-listview").kendoMobileListView({
   		    template: kendo.template($("#orgTemplate").html()),    		
      		 dataSource: orgDataSource
-		     });  
+		   });
+            
+            
         };
         
 
@@ -792,7 +800,7 @@ app.Activities = (function () {
             for(var x=0; x < userOrgName.length;x++){
                 document.getElementById("orgData").innerHTML += userOrgName[x];   
             } 
- 
+            
 			for(var y=0; y < userGropuName.length;y++){
                 document.getElementById("groupData").innerHTML += userGropuName[y];
 			}
