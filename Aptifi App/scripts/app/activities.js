@@ -19,8 +19,8 @@ app.Activities = (function () {
 	   // Activities model
 	    var activitiesModel = (function () {	
 		var data; 
-		//var groupId1 = localStorage.getItem("UserGroupID");
-        var groupId1=2;    
+		var groupId1 = localStorage.getItem("UserGroupID");
+        //var groupId1=2;    
  	   var userId1 = localStorage.getItem("UserID");	
      
               console.log("karan"+groupId1+"||"+userId1+"||"+orgId);            
@@ -238,8 +238,7 @@ app.Activities = (function () {
         	};
 	}());
     
-    
-    
+        
     // Activities view model
     var activitiesViewModel = (function () {
         // Navigate to activityView When some activity is selected
@@ -317,9 +316,7 @@ app.Activities = (function () {
            app.MenuPage=true;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
-             
-              
-            
+                                     
             loginType = e.view.params.LoginType;
        	 userId = e.view.params.UserId;
             groupId =e.view.params.GroupId;
@@ -351,7 +348,6 @@ app.Activities = (function () {
             }        
         };
         
-
         var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
 			app.selectQuery(tx, query, offlineTestQuerySuccess);
@@ -382,9 +378,7 @@ app.Activities = (function () {
                    	$("#activities-listview").html("You are Currently Offline and data not available in local storage");
                }
         };
-        
-        
- 
+                 
         var CreatedAtFormatted = function(value){
             return app.helper.formatDate(value);
         };
@@ -429,8 +423,7 @@ app.Activities = (function () {
             app.MenuPage=false;
             window.open('http://www.sakshay.in','_blank');
         };
-        
-                
+                        
         var makeCall = function(){
             app.MenuPage=false;
             document.location.href = 'tel:+91-971-781-8898';
@@ -489,14 +482,10 @@ app.Activities = (function () {
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         
-      
         var setting = function(){
              app.MenuPage=false;
              document.location.href="#settingDiv";
-        };
-        
-
-        
+        };       
         
         var sendNotification = function(){
             app.MenuPage=false;
@@ -578,6 +567,17 @@ app.Activities = (function () {
         
         var info = function(){
             
+        };
+        
+        var orgShow = function(){
+          var orgDataSource= [];
+            
+          orgDataSource.push({title:groupValue[0].sentNotification[j].title});
+                                    
+          $("#organisation-listview").kendoMobileListView({
+  		    template: kendo.template($("#orgTemplate").html()),    		
+     		 dataSource: orgDataSource
+		     });  
         };
         
 
@@ -767,28 +767,35 @@ app.Activities = (function () {
         
           var initNotifi = function () {       
       	    app.MenuPage=false; 
-          		        };
+          };
         
         var showNotifi = function(){
             app.MenuPage=false;
              
             console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
-             
+             $("#orgData").val('');
+             $("#groupData").val('');
+            
+            
+             var userlName = localStorage.getItem("userlName");
+             var userfName = localStorage.getItem("userfName");
+             var userEmail = localStorage.getItem("userEmail");
+             var userGropuName = localStorage.getItem("userGropuName"); 
+             var userOrgName = localStorage.getItem("userOrgName");
+             var userMobile = localStorage.getItem("userMobile");
+            
             $("#userEmailId").html(userEmail); 
             $("#userMobileNo").html(userMobile);
             $("#userlname").html(userlName);
             $("#userfname").html(userfName); 
              
             for(var x=0; x < userOrgName.length;x++){
-                document.getElementById("orgData").innerHTML += '<li>'+userOrgName[x]+'</li>';   
+                document.getElementById("orgData").innerHTML += userOrgName[x];   
             } 
  
 			for(var y=0; y < userGropuName.length;y++){
-                document.getElementById("groupData").innerHTML += '<li>'+ userGropuName[y]+'</li>';
+                document.getElementById("groupData").innerHTML += userGropuName[y];
 			}
-
-           console.log(userId+"||"+groupId);
-           // $("#notification-listview").data("kendoMobileListView").refresh()
 
         };
         
@@ -825,6 +832,7 @@ app.Activities = (function () {
             showNotifi:showNotifi,
 			about:about,
             setting:setting,
+            orgShow:orgShow,
             info:info,
             init:init,
             show:show,

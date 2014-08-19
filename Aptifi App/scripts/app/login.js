@@ -138,6 +138,14 @@ app.Login = (function () {
                                  localStorage.setItem("UserID",userId); 
                                  localStorage.setItem("UserOrgID",1);//orgDataId);
                                  localStorage.setItem("UserGroupID",userAllGroupId);
+                                   
+                                 localStorage.setItem("userlName",userlName); 
+                                 localStorage.setItem("userfName",userfName);//orgDataId);
+                                 localStorage.setItem("userMobile",userMobile);  
+                                 localStorage.setItem("userEmail",userEmail); 
+                                 localStorage.setItem("userGropuName",userGropuName);//orgDataId);
+                                 localStorage.setItem("userOrgName",userOrgName);  
+
 
                                    
                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName

@@ -86,7 +86,7 @@
 	</div>
 
 
-<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities">
+<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.Activities" data-show="app.Activities.orgShow">
     <div data-role="header">
         <div data-role="navbar">
           Organisation  
@@ -100,7 +100,7 @@
     </div>
 	
     <div>
-      <ul id="notification-listview" data-style="inset" data-role="listview" data-template="notificationTemplate"  data-bind="source: notifyMe"></ul>
+      <ul id="organisation-listview" data-style="inset" data-role="listview" data-template="orgTemplate"></ul>
     	<p id="no-notification-span" hidden="hidden" class="no-items-msg">
     	   <b>You have no Notification yet.</b>
     	</p>
@@ -143,15 +143,15 @@
 
         <li>
             <ul>
-                <li style="text-align:center">Organisation</li>
-  				<div id="orgData"></div>
+                <li style="text-align:center;font-weight:bold;color:#1B205E">Organisation</li>
+  			  <li id="orgData"></li>
             </ul>
         </li>
   
         <li>
             <ul>
-                <li style="text-align:center">Groups</li>
-				<div id="groupData"></div>
+                <li style="text-align:center;font-weight:bold;color:#1B205E">Groups</li>
+				<li id="groupData"></li>
             </ul>
         </li>
         
@@ -251,16 +251,13 @@
 
 
 	<!-- Activities ListView Template -->
-		<script type="text/x-kendo-template" id="notificationTemplate">
+		<script type="text/x-kendo-template" id="orgTemplate">
     		<div data-role="touch"  data-bind="events: { tap: notificationSelected }" class="cf">
     	<div class="user-avatar">
 		    <img src="styles/images/notification1.png" />
     	</div>
-	
-    			<div class="activity-content">
+	    			<div class="activity-content">
            		 <h2 class="person-name" >${Title}</h2>
-        		    <span class="time-span">${CreatedAtFormatted()}</span>
-        		    <a class="user-share-txt">${Message}</a>
         		</div>
     		</div>
 		</script>
