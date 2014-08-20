@@ -66,8 +66,8 @@ app.Login = (function () {
                 
                  //app.mobileApp.pane.loader.hide();
            
-        console.log(username+"||"+password+"||"+device_id+"||"+device_type);
-        var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type}
+       		 console.log(username+"||"+password+"||"+device_id+"||"+device_type);
+        		var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type}
                       
             
           var dataSourceLogin = new kendo.data.DataSource({
@@ -102,23 +102,30 @@ app.Login = (function () {
 						   $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
-                               if(loginData.status[0].Msg==='Sucess'){
+                      if(loginData.status[0].Msg==='Sucess'){
                                    
 								var dataSend = loginData.status[0].CustomerData[0].user_type;
                                 var userId = loginData.status[0].CustomerData[0].pid;
+                                 if(dataSend==='O'){
+                                var userfName = loginData.status[0].CustomerData[0].org_name;
+                                var userlName = '';//loginData.status[0].CustomerData[0].cust_lname;   
+                                var userEmail = loginData.status[0].CustomerData[0].org_email; 
+                                var userMobile = loginData.status[0].CustomerData[0].org_ph; 
+                                     
+                                  localStorage.setItem("UserOrgID",userId);
+								  localStorage.setItem("userOrgName",userfName);  
+    
+                                 }else{
                                 var userfName = loginData.status[0].CustomerData[0].cust_fname;
                                 var userlName = loginData.status[0].CustomerData[0].cust_lname;   
                                 var userEmail = loginData.status[0].CustomerData[0].cust_email; 
                                 var userMobile = loginData.status[0].CustomerData[0].mobile; 
-                                   
-								//alert(userId);
-														
-                                 var groupNumber =loginData.status[0].joinedGroup.length;
+								var groupNumber =loginData.status[0].joinedGroup.length;	
                                 
                                 for(var k=0;k<groupNumber;k++){   
-                                 var joinGroupInfo=loginData.status[0].joinedGroup[k];
-                                  
-         
+                                    
+                                 	var joinGroupInfo=loginData.status[0].joinedGroup[k];
+                                           
                                  	$.each(joinGroupInfo, function(i, org) {
                                      	orgDataId.push(org.orgID);
                                      	userAllGroupId.push(org.groupId);
@@ -127,35 +134,160 @@ app.Login = (function () {
                                          var pos = $.inArray(org.orgName, userOrgName);
                          	 			 console.log(pos);
 									if (pos === -1) {
-                                        		userOrgName.push(org.orgName);
+                                       		userOrgName.push(org.orgName);
                                         }
                                          
 	                                 });
                                  }   
-                                   
-                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);
+ 
+                                     localStorage.setItem("UserOrgID",orgDataId);
+                                     localStorage.setItem("UserGroupID",userAllGroupId);
+                           	      localStorage.setItem("userOrgName",userOrgName);  
+
+                                 
+                              } 
+                          
                                  localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
                                  localStorage.setItem("UserID",userId); 
-                                 localStorage.setItem("UserOrgID",1);//orgDataId);
-                                 localStorage.setItem("UserGroupID",userAllGroupId);
+
+
                                    
+														
+
+                                
+                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
+
+                                         
                                  localStorage.setItem("userlName",userlName); 
                                  localStorage.setItem("userfName",userfName);//orgDataId);
                                  localStorage.setItem("userMobile",userMobile);  
                                  localStorage.setItem("userEmail",userEmail); 
                                  localStorage.setItem("userGropuName",userGropuName);//orgDataId);
-                                 localStorage.setItem("userOrgName",userOrgName);  
+
 
 
                                    
                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
                                    +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);
-                               }else{
-                                  app.showAlert(loginData.status[0].Msg ,'Notification'); 
-                                                  app.mobileApp.pane.loader.hide();
-                               }
                                
-                  });
+                   }else if(loginData.status[0].Msg==='Authentication Required'){
+                        
+                       
+                       
+            var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type ,"authentication":1}
+                                 
+          var dataSourceLogin = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/customerLogin",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataLogin
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               app.mobileApp.pane.loader.hide();
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');               
+           }               
+          });  
+	            
+           dataSourceLogin.fetch(function() {
+                         var loginDataView = dataSourceLogin.data();
+               			var orgDataId = [];
+               			var userAllGroupId = [];
+						   $.each(loginDataView, function(i, loginData) {
+                               console.log(loginData.status[0].Msg);
+                               
+                      if(loginData.status[0].Msg==='Sucess'){
+                                   
+								var dataSend = loginData.status[0].CustomerData[0].user_type;
+                                var userId = loginData.status[0].CustomerData[0].pid;
+                                 if(dataSend==='O'){
+    	                            var userfName = loginData.status[0].CustomerData[0].org_name;
+        	                        var userlName = '';//loginData.status[0].CustomerData[0].cust_lname;   
+            	                    var userEmail = loginData.status[0].CustomerData[0].org_email; 
+                	                var userMobile = loginData.status[0].CustomerData[0].org_ph; 
+                                     
+                                  localStorage.setItem("UserOrgID",userId);
+								  localStorage.setItem("userOrgName",userfName);  
+    
+                                 }else{
+        	                        var userfName = loginData.status[0].CustomerData[0].cust_fname;
+    	                            var userlName = loginData.status[0].CustomerData[0].cust_lname;   
+            	                    var userEmail = loginData.status[0].CustomerData[0].cust_email; 
+                	                var userMobile = loginData.status[0].CustomerData[0].mobile; 
+									var groupNumber =loginData.status[0].joinedGroup.length;	
+                                
+                                for(var k=0;k<groupNumber;k++){   
+                                    
+                                 	var joinGroupInfo=loginData.status[0].joinedGroup[k];
+                                           
+                                 	$.each(joinGroupInfo, function(i, org) {
+                                     	orgDataId.push(org.orgID);
+                                     	userAllGroupId.push(org.groupId);
+                                         userGropuName.push(org.groupName);
+                                          
+                                         var pos = $.inArray(org.orgName, userOrgName);
+                         	 			 console.log(pos);
+									if (pos === -1) {
+                                       		userOrgName.push(org.orgName);
+                                        }
+                                         
+	                                 });
+                                 }   
+ 
+                                     localStorage.setItem("UserOrgID",orgDataId);
+                                     localStorage.setItem("UserGroupID",userAllGroupId);
+                           	      localStorage.setItem("userOrgName",userOrgName);  
+
+                                 
+                              } 
+                          
+                                 localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
+                                 localStorage.setItem("UserID",userId); 
+													
+                                
+                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
+
+                                         
+                                 localStorage.setItem("userlName",userlName); 
+                                 localStorage.setItem("userfName",userfName);//orgDataId);
+                                 localStorage.setItem("userMobile",userMobile);  
+                                 localStorage.setItem("userEmail",userEmail); 
+                                 localStorage.setItem("userGropuName",userGropuName);//orgDataId);
+
+
+
+
+                                   
+                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
+                                   +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);                
+                                   
+                     }else{ 
+                      app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                      app.mobileApp.pane.loader.hide();
+                     }
+                               
+                });
+  		 });
+
+                                
+                                   
+                     }else{ 
+                      app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                      app.mobileApp.pane.loader.hide();
+                     }
+                               
+                });
   		 });
              
                 

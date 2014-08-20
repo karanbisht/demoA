@@ -438,42 +438,7 @@ app.Activities = (function () {
         
         var replyUser = function(){
             app.MenuPage=false;	
-            app.mobileApp.navigate('views/userReplyView.html');
-            var tempArray=[];
-            var dataLength;
-            var uniqueLength;
-            var MemberDataSource;
-            console.log(app.Activities.userData);
-            
-           /*app.Activities.userData.fetch(function(){
-					  var view = app.Activities.userData.view()
-                      console.log(view);
-					  dataLength = view.length;
-		               for(var i=0;i<dataLength;i++){
-                           var pos = $.inArray(view[i].UserId, tempArray);
-                           console.log(pos);
-							if (pos === -1) {
-								   tempArray.push(view[i].UserId);
-   								//console.log(uniqueLabel + " added to array[]");
-							 } //else {
- 							//	  console.log("label " + uniqueLabel + " already exists at index "+ pos);
-							 //}
-                				//arrayUId.push(view[i].Id);
-                                console.log("hello"+tempArray);
-                            	uniqueLength=tempArray.length;
-				         }
-                                //console.log("Final Result"+ tempArray );
-      	 });  
-            
-              for(var i=0;i<uniqueLength;i++){     		
-                 app.groupDetail.userData.filter({
-					field: 'Id',
-                	operator: 'eq',
-                    value: tempArray[i]
-	     		});
-               }
-             kendo.bind($('#userTemplate'), MemberDataSource);     
-            */
+            app.mobileApp.navigate('views/userReplyView.html');                         
         };
         
         var manageGroup =function(){

@@ -639,10 +639,7 @@ app.groupDetail = (function () {
                                }
                                
                   });
-  		 });
-
-            
-            
+  		 });    
         };
         
         
@@ -667,22 +664,19 @@ app.groupDetail = (function () {
                 								operator: 'eq',
                 								value: activity.Id
         	    								});
-            
-    	    
+                    
                  
                     	app.Activities.userData.fetch(function(){
 					 		var view = app.Activities.userData.view();
                       	   console.log(view);
 					  	   dataLength = view.length;
-		             
-                     
+		                                  
                           for(var i=0;i<dataLength;i++){
                      	      var pos = $.inArray(view[i].NotificationId, tempArray);
                          	  console.log(pos);
 								if (pos === -1) {
 								   tempArray.push(view[i].NotificationId);
-   				
-								 } 
+								} 
  					           console.log("hello"+tempArray);
                             	uniqueLength=tempArray.length;
  		                       console.log(uniqueLength);   
