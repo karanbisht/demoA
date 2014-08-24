@@ -29,12 +29,24 @@ app.Login = (function () {
             app.userPosition=true;
              $('#loginUsername').val('');
              $('#loginPassword').val('');
+            //window.plugins.toast.showShortBottom('klkkkkkkk' , app.onSuccess , app.onError);
+
+            //app.showNativeAlert();
         };
         
+        
+        var checkEnter = function (e) {
+            if (e.keyCode === 13) {
+                login();
+                $(e.target).blur();
+            }
+        };
+
+
        
         // Authenticate to use Backend Services as a particular user
-        var login = function () {
-			 
+
+        var login = function () {		 
             var deviceName = app.devicePlatform();
             var device_type;
 
@@ -67,7 +79,7 @@ app.Login = (function () {
                  //app.mobileApp.pane.loader.hide();
            
        		 console.log(username+"||"+password+"||"+device_id+"||"+device_type);
-        		var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type}
+        		var jsonDataLogin = {"username":username ,"password":password,"device_id":123456, "device_type":device_type}
                       
             
           var dataSourceLogin = new kendo.data.DataSource({
@@ -143,20 +155,13 @@ app.Login = (function () {
                                      localStorage.setItem("UserOrgID",orgDataId);
                                      localStorage.setItem("UserGroupID",userAllGroupId);
                            	      localStorage.setItem("userOrgName",userOrgName);  
-
-                                 
+       
                               } 
                           
                                  localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
                                  localStorage.setItem("UserID",userId); 
-
-
-                                   
-														
-
                                 
-                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
-
+                                console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
                                          
                                  localStorage.setItem("userlName",userlName); 
                                  localStorage.setItem("userfName",userfName);//orgDataId);
@@ -164,9 +169,7 @@ app.Login = (function () {
                                  localStorage.setItem("userEmail",userEmail); 
                                  localStorage.setItem("userGropuName",userGropuName);//orgDataId);
 
-
-
-                                   
+                                  
                                  app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
                                    +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);
                                
@@ -174,7 +177,7 @@ app.Login = (function () {
                         
                        
                        
-            var jsonDataLogin = {"username":username ,"password":password,"device_id":device_id, "device_type":device_type ,"authentication":1}
+            var jsonDataLogin = {"username":username ,"password":password,"device_id":123456, "device_type":device_type ,"authentication":1}
                                  
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
@@ -265,11 +268,7 @@ app.Login = (function () {
                                  localStorage.setItem("userEmail",userEmail); 
                                  localStorage.setItem("userGropuName",userGropuName);//orgDataId);
 
-
-
-
-                                   
-                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
+                          app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
                                    +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);                
                                    
                      }else{ 
@@ -278,10 +277,7 @@ app.Login = (function () {
                      }
                                
                 });
-  		 });
-
-                                
-                                   
+  		 });                                  
                      }else{ 
                       app.showAlert(loginData.status[0].Msg ,'Notification'); 
                       app.mobileApp.pane.loader.hide();
@@ -425,7 +421,7 @@ app.Login = (function () {
                                    console.log(regData.status[0].Msg);
                                
                                if(regData.status[0].Msg==='An email has been sent to reset your password.'){              
-                                  app.showAlert("An email has been sent to reset your password.","Notification"); 
+                                     app.showAlert("An email has been sent to reset your password.","Notification"); 
                                      window.location.href = "index.html";
                                   //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{
@@ -452,6 +448,7 @@ app.Login = (function () {
             show: show,
             getYear: app.getYear,
             login: login,
+            checkEnter:checkEnter,
             forgetPass: forgetPass,
             sendForgetMail:sendForgetMail,
             goToIndex:goToIndex,

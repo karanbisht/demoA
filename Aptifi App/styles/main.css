@@ -479,13 +479,13 @@
 
 .pageLayoutClass .comments-wrp {
     margin-top: 1em;
-    border-top: 1px solid #eaeced;
+    /*border-top: 1px solid #eaeced;*/
 }
 
 
 #friendsApp .activity-view .comments-wrp {
     margin-top: 1em;
-    border-top: 1px solid #eaeced;
+    /*border-top: 1px solid #eaeced;*/
 }
 
 #friendsApp .activities-view .km-list > li:first-child {
@@ -722,4 +722,75 @@
         background-image: url(images/icon-add@2x.png);
         background-size: 23px 23px;
     }
+}
+
+
+
+.chatTitle {
+    margin-top:-10px;
+    margin-right:10px;
+    color: #3598db;
+    font-size: 1.1rem;
+}
+
+.commentContent {
+    position: relative;
+    padding-left: 3em;
+    padding-right:10px;
+    font-size: .85rem;
+}
+
+.commentContent .person-name{
+    font-weight: 600;
+}
+
+.commentContent .person-name {
+    display: block;
+    margin: 0 0 .5em;
+    color: #3598db;
+    font-size: 1.1rem;
+}
+
+.commentContent .time-span {
+    position: absolute;
+    top: 12px;
+    right: 0;
+    color: #6c7884;
+    text-transform: uppercase;
+    font-size: .6rem;
+    margin-right:2px;
+}
+
+.commentContent .user-share-txt {
+    font-size: .75rem;
+}
+
+.orgNameList {
+    display: block;
+    margin: 0 0 .5em;
+    color: #8F9297;
+    font-size: 1rem;
+    
+    overflow: hidden;
+    width: 70%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+   
+    font-weight: 600;
+    
+}
+
+
+ .orgContentMsg {
+    color: #D3D8DC;
+    font-size: .75rem;
+}
+
+.divBagVal{
+  background-color:#01AE00;
+  float:right;
+  width:25px;
+  height:25px;
+  border-radius:12px;
+  color:#ffffff;
 }

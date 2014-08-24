@@ -158,14 +158,7 @@ app.userGroupList = (function () {
             
                         
         };
- 
-        
-
-                
-
-         };
-                
-                
+                 
     	 return {
         	   init: init,
            	show: show,

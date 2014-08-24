@@ -10,7 +10,6 @@ app.userReplyNotificationList = (function () {
                       
       };
          
-
       var show = function(e){
 	    
          custId = e.view.params.cust_id;

@@ -18,6 +18,8 @@ var app = (function (win) {
     // Global error handling
     
     //var userPosition;
+    var db;
+    
     
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
@@ -46,8 +48,7 @@ var app = (function (win) {
         return device.uuid;
     };
     
-
-    // Global confirm dialog
+	// Global confirm dialog
     var showConfirm = function(message, title, callback) {
         navigator.notification.confirm(message, callback || function () {
         }, title, ['OK', 'Cancel']);
@@ -80,6 +81,24 @@ var app = (function (win) {
         }
     };
     
+/*    var showNativeAlert = function () {
+            if (!this.checkSimulator()) {
+	            window.plugins.toast.showShortBottom('klkkkkkkk' , app.onSuccess , app.onError);
+            }
+    };
+    
+    var checkSimulator = function() {
+            if (window.navigator.simulator === true) {
+                alert('This plugin is not available in the simulator.');
+                return true;
+            } else if (window.plugins.toast === undefined) {
+                alert('Plugin not found. Maybe you are running in AppBuilder Companion app which currently does not support this plugin.');
+                return true;
+            } else {
+                return false;
+            }
+        };
+*/    
     var getAdminId = function(){
       var dataSource = new kendo.data.DataSource({
 			  type: 'everlive',
@@ -96,63 +115,61 @@ var app = (function (win) {
                       localStorage.setItem("adminId",view[0].Id);
 			});  
     };
+
     
-    function getDb(){
-		return window.openDatabase("AptifiDB", "1.0", "Cordova Demo", 50000000);
-    };
     
-    var openDb = function() {
+    /*var openDb = function() {
     	if (window.sqlitePlugin !== undefined) {
     	    app.db = window.sqlitePlugin.openDatabase("AptifiDB");
 	    } else {
         	// For debugging in simulator fallback to native SQL Lite
         	app.db = window.openDatabase("AptifiDB", "1.0", "Cordova Demo", 50000000);    
     	}
-	};
+	};*/
     
-        
-	var createTable = function(tx) {
-        console.log("DB");
-   
-            tx.executeSql('CREATE TABLE IF NOT EXISTS LoginInfo(UserId INTEGER ,UserName TEXT,Email TEXT,MobileNo INTEGER,Password TEXT,Group TEXT)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS GetNotification(Id INTEGER ,Title TEXT,Message TEXT,CreatedAt TEXT)');        
-            tx.executeSql('CREATE TABLE IF NOT EXISTS NotificationReply(Id INTEGER ,ReplyText TEXT,UserNameField TEXT,NotificationId TEXT,CreatedAt TEXT,UserId TEXT)');
 
-	};	
-    
-    
-    var goToCheckOfflineData = function(){
-         console.log("1");
-        db = getDb();
-		db.transaction(offlineQueryLoginDB,  app.onError, app.onSuccess);
+    function getDb(){
+		return window.openDatabase("AptifiDB", "1.0", "Cordova Demo", 50000000);
     };
+                
+	var createDB = function(tx) {
+            	
+			tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN_INFO(USER_ID INTEGER,EMAIL TEXT,PASSWORD TEXT,USER_NAME TEXT,GENDER TEXT , MOBILE INTEGER, PHOTO TEXT,LOGIN_STATUS INTEGER)');//1 for currently log in 0 or null for currently log out        
+            //tx.executeSql('CREATE TABLE IF NOT EXISTS GetNotification(Id INTEGER ,Title TEXT,Message TEXT,CreatedAt TEXT)');        
+            //tx.executeSql('CREATE TABLE IF NOT EXISTS NotificationReply(Id INTEGER ,ReplyText TEXT,UserNameField TEXT,NotificationId TEXT,CreatedAt TEXT,UserId TEXT)');
+    };	
     
-    
-    var offlineQueryLoginDB = function(tx){
-            console.log("2");
-    	    var query = 'SELECT * FROM LoginInfo';
-			selectQuery(tx, query, offlineLoginQuerySuccess);
-    };
-    
-    
-    var offlineLoginQuerySuccess = function(tx, results) {
-	count = results.rows.length;
-         console.log(count);
-	if (count !== 0) {
-		 var Group = results.rows.item(0).Group;
-        console.log(Group);
-         app.mobileApp.navigate('views/activitiesView.html?LoginType=' + Group);
         
-    	} else {
-			
-          app.mobileApp.navigate('#welcome');
-	
-    	}
+    var checkForLoginStatus = function(){
+        	db = getDb();
+			db.transaction(loginStatusQuery, errorCB, loginStatusQuerySuccess);
+    };
+    
+    var loginStatusQuery = function(tx){
+        	var query = 'SELECT * FROM LOGIN_INFO';
+			selectQuery(tx, query, loginResultSuccess);       
+    };
+    
+    var loginResultSuccess = function(tx, results) {
+		var count = results.rows.length;
+   	 console.log("Storage "+count);
+		if (count !== 0) {
+			var loginStatus = results.rows.item(0).LOGIN_STATUS;
+            app.mobileApp.navigate('views/activitiesView.html');
+            localStorage.setItem("loginStatusCheck",1);
+        } else {		
+            app.mobileApp.navigate('#welcome');
+            localStorage.setItem("loginStatusCheck",1);
+        }
+    };
+
+    var loginStatusQuerySuccess= function(){
 	
 	};
-   
+
+       
     var selectQuery = function(tx,query,successFunction){
-		tx.executeSql(query, [], successFunction, onError);
+		tx.executeSql(query, [], successFunction, errorCB);
 	};
 
     var insertQuery = function(tx,query){
@@ -165,18 +182,18 @@ var app = (function (win) {
     
     var updateQuery = function(tx,updateQue){
 		tx.executeSql(updateQue);
-    };
-   
+    };  
     
-   var onSuccess = function() {
-     console.log("Your SQLite query was successful!");
-   };
-
-   var onError = function(e) {
-    console.log("SQLite Error: " + e.message);
-   };
+    var errorCB = function(err) {
+ 		console.log("Error processing SQL: " + err);
+	};
     
-     var checkConnection= function() {
+	// Transaction success callback
+	var successCB =function(){
+		console.log("success DB Function!");
+	};
+    
+    var checkConnection= function() {
         var networkState = navigator.connection.type;
         var states = {};
         states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -197,8 +214,8 @@ var app = (function (win) {
     // Handle device back button tap
 
     var onBackKeyDown = function(e) { 
-    //var pathname = window.location.pathname;
-    //var pageNama = pathname.slice(-10);
+	    //var pathname = window.location.pathname;
+   	 //var pageNama = pathname.slice(-10);
         //alert(app.userPosition);
         //alert(app.MenuPage);
         
@@ -209,7 +226,7 @@ var app = (function (win) {
                     navigator.app.exitApp();
             	}
         	}, 'Exit', ['OK', 'Cancel']);        
-        }else if(app.MenuPage){
+     }else if(app.MenuPage){
              navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
                      app.mobileApp.pane.loader.show();    
@@ -234,7 +251,6 @@ var app = (function (win) {
     var onDeviceReady = function() {
         // Handle "backbutton" event
         document.addEventListener('backbutton', onBackKeyDown, false);
-
         navigator.splashscreen.hide();
         fixViewResize();
                 
@@ -266,8 +282,12 @@ var app = (function (win) {
                 "ecb": "pushCallbacks.onNotificationGCM"
             });
         }
+        var db = getDb();
+		db.transaction(createDB, errorCB, checkForLoginStatus);
     };
-        
+    
+      
+    
     // Handle "deviceready" event
     document.addEventListener('deviceready', onDeviceReady, false);
     // Handle "orientationchange" event
@@ -303,8 +323,14 @@ var app = (function (win) {
 
         // Date formatter. Return date in d.m.yyyy format
         formatDate: function (dateString) {
-            return kendo.toString(new Date(dateString), 'MMM d, yyyy');
+            var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+            var month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            var today = new Date(dateString);
+			return kendo.toString(days[today.getDay()] +','+ today.getDate() +' '+ month[today.getMonth()]);
+            //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
         },
+        
+        
 
         // Current user logout
         logout: function () {
@@ -370,13 +396,27 @@ var app = (function (win) {
 
     // Initialize KendoUI mobile application
 
+    var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
-    var mobileApp = new kendo.mobile.Application(document.body, {
+    var mobileApp;
+    if(loginStatusCheck==='0'){
+    mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
                                                      transition: 'slide',
                                                      statusBarStyle: statusBarStyle,
+         											layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});
+   }else{
+    mobileApp = new kendo.mobile.Application(document.body, {
+        											 initial: "#welcome1",
+                                                     transition: 'slide',
+                                                     statusBarStyle: statusBarStyle,
+         											layout: "tabstrip-layout",										
+                                                     skin: 'flat'
+                                                 	});
+       
+        }
 
     var getYear = (function () {
         return new Date().getFullYear();
@@ -385,10 +425,11 @@ var app = (function (win) {
     return {
         showAlert: showAlert,
         showError: showError,
-        onSuccess:onSuccess,
-        onError:onError,
+        errorCB:errorCB,
+        successCB:successCB,
+        //checkSimulator:checkSimulator,
+        //showNativeAlert:showNativeAlert,
         getDb:getDb,
-        goToCheckOfflineData:goToCheckOfflineData,
         validateMobile:validateMobile,
         validateEmail:validateEmail,
         devicePlatform:devicePlatform, 

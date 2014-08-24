@@ -52,7 +52,7 @@ app.registration = (function () {
          var password= $regPassword.val();
          var email = $regEmail.val();
          var mobile = $regMobile.val();
-       
+      /* 
          if (firstName === "First Name" || firstName === "") {
 				app.showAlert("Please enter your First Name.","Validation Error");
          }else if (lastName === "Last Name" || lastName === "") {
@@ -70,8 +70,9 @@ app.registration = (function () {
 		 } else if (password.length<6) {
 				app.showAlert("Please Enter Password Six Characters.","Validation Error");	
 		 } else {   
+            */
             app.mobileApp.navigate('views/selectOrganisationView.html');
-         }
+        // }
       };
         
         var goToIndex = function(){

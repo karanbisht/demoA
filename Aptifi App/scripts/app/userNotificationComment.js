@@ -49,7 +49,7 @@ app.userNotiComment = (function () {
             var message = e.view.params.message;
             var title = e.view.params.title;
             
-            console.log(message+"||"+title);
+            //console.log(message+"||"+title);
             
             $("#personName").html(title);
             $("#activityText").html(message);

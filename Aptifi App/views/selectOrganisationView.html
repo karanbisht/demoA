@@ -20,14 +20,33 @@
                    <!--<select data-role="dropdownlist" data-bind="source: groupData, value: groupInit" data-text-field="name"  data-value-field="value" ></select>-->
                  <input id="selectGroupData" />
           </li>                   
-        </ul>  
+        </ul>     
+     </div>    
+    
+    
+    <div  id="validationRow" style="background-color:#F5F5F5; margin:10px; border-radius:6px; padding:0px 10px 20px 10px;">
+    <div style="background-color:#313C50;color:#ffffff;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
+       Verification
+    </div>
+    
+    <div style="text-align:center;color:#313C50;padding-top:10px;">
+        Validation Code send to your registered Mobile Number . Please use this Validation Code to continue with the Registration.
         
-        <ul data-role="listview" data-style="inset" style="display:none;" id="validationRow">
-          <li style="color:#1B205E;">Validation Code -:</li>
-          <li class="username"  style="float:right"><input type="text" class="k-textbox" id="validationCodeId" placeholder="Verification Code" /></li> 
-        </ul>            
+        <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
+           <li class="username" style="padding-top:15px;border:2px solid #313C50" >
+               <input type="text" class="k-textbox" id="validationCodeId" placeholder="Verification Code" style="border-radius:6px;text-align:center;"/>               
+           </li> 
+        </ul>
+    </div>
+         <ol class="reg-group-wrp">
+                <li>
+                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforValificationCode }">
+                        <a data-role="button" style="background-color:#33539E">Done</a>
+                    </span>
+                </li>
+    </ol>
+ </div>
 
-     </div>               
     
     <ol class="reg-group-wrp">
                 <li>

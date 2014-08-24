@@ -6,38 +6,46 @@
             <a id="replyButton" class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>
         </div>
     </div>
-<!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
     
+    <!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">
         <div class="user-avatar">
             <img src="styles/images/notification1.png" />
         </div>
         <div class="activity-content">
-            <h2 id="personName" class="person-name" data-bind='text:title'></h2>
             <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-            <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
-            <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
+            <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
+              <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
+              <h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
+              <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
+            </li>    
+            <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
+            </div>
+        
+        <div class="commentContent" >
             <div class="comments-wrp">
                 <ul id="comments-listview" data-template="commentsTemplate"></ul>
             </div>
         </div>
-    </div>
-    
- <!--  
-    <div data-role="footer">
-        <div data-role="tabstrip">
-            <a href="#tabstrip-profile" data-icon="contacts">Call Us
-            </a><a href="#tabstrip-sales" data-icon="favorites">Website</a>
+        
+        
+    </div>   
+   
+   <div data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">
+        <div style="display:inline;padding:3px;">
+  		 <div style="float:left;width:80%;"><textarea id="newComment" placeholder="Write a reply..." style="padding-left:5px;padding-right:5px;"></textarea></div>
+           <input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>
         </div>
-   </div>
- -->   
+   </div>      
 </div>
 
-<!-- Comments Template -->
+<!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
-    <div class="comment-content">
+    <div class="comment-content" style="background-color:rgb(203,225,254);padding:10px;border-radius:6px;">
         <h2 class="person-name">${User()}</h2>
         <span class="time-span">${CreatedAtFormatted()}</span>
+              <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
         <a class="user-share-txt">${comment}</a>
     </div>
+
 </script>
