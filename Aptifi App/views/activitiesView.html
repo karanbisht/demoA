@@ -31,10 +31,10 @@
 <!--data-append-on-refresh="true"-->	
 
      <div>
-    	<ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
-         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-	    	   <b>You have no Notification for you.</b>
-    	 </p>
+    	<ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
+	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		    	   <b>You have no Notification for you.</b>
+    		 </p>
  	</div> 
    <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
             <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
@@ -239,17 +239,21 @@
 
 		<script type="text/x-kendo-template" id="activityTemplate">
     		<div class="cf" data-role="touch" data-bind="events: { tap: activitySelected }">
-         <div class="user-avatar">
-            <img src="styles/images/notification1.png" />
-        </div>           
-       		 <div class="activity-content" >
-       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;" >${title}</h2>
-            	<div class="divBagVal"></div>
-       		     <span id="activityTemplateDate" class="time-span" >${CreatedAtFormatted()}</span>
-       		     <a id="activityTemplateMessage" class="orgContentMsg" >${message}</a>            			            
+         
+	            <div class="user-avatar">    
+        		    <img src="styles/images/notification1.png" />
+ 	           </div>     
+            
+       		 <div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;margin-left:60px;" >
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
+        		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${CreatedAtFormatted()}</span>
+ 				   <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>           
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
        		 </div>
 		    </div>
 		</script>
+
+     
 
 
 	<!-- Activities ListView Template -->

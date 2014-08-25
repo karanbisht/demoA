@@ -62,16 +62,17 @@ app.Login = (function () {
             var username = $("#loginUsername").val();
             var password = $("#loginPassword").val();
 
+            password="123456";
             console.log(username);
             console.log(password);
             
-            //if (username === "Mobile No" || username === "") {
-				//app.showAlert("Please enter your Mobile No.", "Validation Error");
+            if (username === "Mobile Number" || username === "") {
+				app.showAlert("Please enter your Mobile No.", "Validation Error");
 			//} else if (!app.validateMobile(username)) {
 				//app.showAlert("Please enter a valid Mobile No.", "Validation Error");
 			//} else 
-            if (password === "Password" || password === "") {
-				app.showAlert("Please enter Password.", "Validation Error");
+            //if (password === "Password" || password === "") {
+				//app.showAlert("Please enter Password.", "Validation Error");
 			} else {
             
                  app.mobileApp.pane.loader.show();
@@ -170,7 +171,7 @@ app.Login = (function () {
                                  localStorage.setItem("userGropuName",userGropuName);//orgDataId);
 
                                   
-                                 app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
+                                 app.mobileApp.navigate('views/getOrganisationList.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
                                    +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);
                                
                    }else if(loginData.status[0].Msg==='Authentication Required'){
@@ -268,7 +269,7 @@ app.Login = (function () {
                                  localStorage.setItem("userEmail",userEmail); 
                                  localStorage.setItem("userGropuName",userGropuName);//orgDataId);
 
-                          app.mobileApp.navigate('views/activitiesView.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
+                          app.mobileApp.navigate('views/getOrganisationList.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
                                    +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);                
                                    
                      }else{ 

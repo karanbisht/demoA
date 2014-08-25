@@ -62,21 +62,19 @@
             <h1 class="app-name center-text">Aptifi </h1>
             <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
                 <ul data-role="listview" data-style="inset">
-                    <li class="username"><input type="text" id="loginUsername"  placeholder="Mobile No"  /></li>
-                    <li class="password"><input type="password" id="loginPassword" placeholder="Password"  /></li>
-                    <span style="float:right" class="forgetText" data-bind="click: forgetPass">forget Password ?</span>
+                    <li class="username" style="padding:10px;border-radius:6px;" ><input type="text" id="loginUsername"  placeholder="Mobile Number" maxlength=10;  /></li>
                 </ul>
             
-            <ol class="group-wrp">
+            <ol class="group-wrp" style="margin-top:20px;">
                 <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: login }">
-                        <a data-role="button" class="btn btn-login">Login</a>
+                        <a data-role="button" class="btn btn-login" >Next</a>
                     </span>
                 </li>
              </ol>    
              </form> 
              
-            <ol class="group-wrp">
+            <ol class="group-wrp" style="margin-top:20px;">
                 <li class="reg-Button">
                     <span id="registration" data-role="touch" data-bind="events: {tap: registration}">
                         <a data-role="button" class="btn register">Join</a>

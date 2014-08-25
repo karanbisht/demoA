@@ -1,4 +1,5 @@
 <div data-role="view" data-layout="default" class="activities-view" data-model="app.registration">
+
     <div data-role="header">
         <div data-role="navbar">
             Registration
@@ -6,7 +7,8 @@
             <a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: clearSelectOrganisation">Add</a>
         </div>
     </div>
- 
+    
+  <div id="selectionDiv"> 
     <div>
         <ul class="outerSelect">
   		<li class="parentView">
@@ -22,41 +24,77 @@
           </li>                   
         </ul>     
      </div>    
+        
+    <ol class="reg-group-wrp" id="regDoneButton">
+                <li>
+                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforRegenerateCode }">
+                        <a data-role="button" style="background-color:#33539E">Done</a>
+                    </span>
+                </li>
+    </ol>
+ </div>
     
-    
-    <div  id="validationRow" style="background-color:#F5F5F5; margin:10px; border-radius:6px; padding:0px 10px 20px 10px;">
+  <div  id="validationRow" style=" display:none;background-color:#F5F5F5; margin:-80px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:350px;">
     <div style="background-color:#313C50;color:#ffffff;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
        Verification
     </div>
     
     <div style="text-align:center;color:#313C50;padding-top:10px;">
-        Validation Code send to your registered Mobile Number . Please use this Validation Code to continue with the Registration.
-        
+        Verification Code send to your registered Mobile Number . Please use this Verification Code to continue with the Registration.
+     <br/>
+     <br/> 
+        In case multiple Verification Code is generated , use latest Verification Code
         <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
            <li class="username" style="padding-top:15px;border:2px solid #313C50" >
                <input type="text" class="k-textbox" id="validationCodeId" placeholder="Verification Code" style="border-radius:6px;text-align:center;"/>               
            </li> 
         </ul>
     </div>
-         <ol class="reg-group-wrp">
+         <ol class="reg-group-wrp" style="margin-bottom:10px;">
                 <li>
                     <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforValificationCode }">
-                        <a data-role="button" style="background-color:#33539E">Done</a>
+                        <a data-role="button" style="background-color:#313C50">Next</a>
+                    </span>
+                    
+                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: clickforRegenerateCode }">
+                        <a data-role="button" style="background-color:#313C50">Regenerate</a>
                     </span>
                 </li>
-    </ol>
- </div>
+	     </ol>
+ 
+        <div style="color:#313C50;position:relative;float:left;margin:10px;"> 
+	    	Note-: Clicking on Re-Generate will invalidate the previous verification code.  
+    	</div>    
 
-    
-    <ol class="reg-group-wrp">
+  </div>
+  
+  
+        
+   <div  id="regenerateDiv" style=" display:none;background-color:#F5F5F5; margin:-80px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:300px;">
+	<div style="vertical-align:middle; text-align:center">
+       <img src="styles/images/msgIcon.png" height="100" width="100"/>
+    </div>
+       
+     <div style="vertical-align:middle; text-align:center">
+        <span id="userRegMobNum" style="color:#61B85C;"></span>
+    </div>
+
+       
+    <div style="text-align:center;color:#BCBCBC;padding-top:10px;">        
+        The Verification Code will be sent to this number . If you'd like to change your phone number , please select [Cancel] 
+    </div>
+         <ol class="reg-group-wrp" style="margin-bottom:10px;">
                 <li>
                     <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforValificationCode }">
-                        <a data-role="button" style="background-color:#33539E">Done</a>
+                        <a data-role="button" style="background-color:#313C50">Ok</a>
+                    </span>
+                    
+                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: cancelButtonRC }">
+                        <a data-role="button" style="background-color:#313C50">Cancel</a>
                     </span>
                 </li>
-    </ol>
-    
-    
+	     </ol>
+  </div>  
     
     <script type="text/javascript">
 

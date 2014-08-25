@@ -2,7 +2,7 @@ var app = app || {};
 
 app.registration = (function () {
     'use strict'
-    
+    var userRegNumber;
     // Activities view model
     var registrationViewModel = (function () {
         var $regFirstName;
@@ -21,6 +21,9 @@ app.registration = (function () {
              	$regLastName=$('#regLastName');
              	$regEmail=$('#regEmail');
              	$regMobile=$('#regMobile'); 
+
+             
+             
              
              
          };
@@ -28,6 +31,7 @@ app.registration = (function () {
         // Navigate to activityView When some activity is selected
 
         var addNewRegistration = function () {
+         app.userPosition=false;
             if(!backToRegPage){
             $regFirstName.val('');
             $regPassword.val('');
@@ -45,6 +49,7 @@ app.registration = (function () {
         }
 
         var register = function(){
+   	  app.userPosition=false;   
          regClickButton=0;   
 		 backToRegPage=true;   
          var firstName = $regFirstName.val();
@@ -52,6 +57,7 @@ app.registration = (function () {
          var password= $regPassword.val();
          var email = $regEmail.val();
          var mobile = $regMobile.val();
+         userRegNumber= mobile;  
       /* 
          if (firstName === "First Name" || firstName === "") {
 				app.showAlert("Please enter your First Name.","Validation Error");
@@ -81,7 +87,15 @@ app.registration = (function () {
         }
 
         
-        var clickforValificationCode = function(){            
+        var clickforValificationCode = function(){
+            $("#regenerateDiv").hide();
+			$("#validationRow").show();
+            $("#regDoneButton").hide();
+            $("#selectionDiv").css("z-index", "-1");
+			$("#selectionDiv").css("opacity", .1);	
+			$("#validationRow").css("z-index", "999");
+			document.getElementById('selectionDiv').style.pointerEvents = 'none';
+         /*     
             if(regClickButton===0){
             var selectOrg = $("#selectOrgData").data("kendoComboBox");
 		    var selectGroup = $("#selectGroupData").data("kendoComboBox");
@@ -133,7 +147,8 @@ app.registration = (function () {
           }
         }else{
             regDone();
-        }        
+        }
+            */
       };
         
          var genRand = function() {      	
@@ -167,6 +182,7 @@ app.registration = (function () {
             var mobile=$regMobile.val();
         	var deviceName = app.devicePlatform();
             var device_type;
+            userRegNumber= mobile; 
              
             console.log(deviceName);
              
@@ -253,6 +269,31 @@ app.registration = (function () {
            }
         };
         
+        var clickforRegenerateCode = function(){
+          $("#regenerateDiv").show();
+          $("#validationRow").hide(); 
+          $("#userRegMobNum").html('+91'+ userRegNumber);    
+            
+            $("#regDoneButton").hide();
+            $("#selectionDiv").css("z-index", "-1");
+			$("#selectionDiv").css("opacity", .1);	
+			$("#regenerateDiv").css("z-index", "999");
+			document.getElementById('selectionDiv').style.pointerEvents = 'none';  
+        };
+        
+        
+        var cancelButtonRC = function(){
+           $("#regenerateDiv").hide();
+           $("#validationRow").hide(); 
+           document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+		   $("#selectionDiv").css("z-index", "1");
+		   $("#selectionDiv").css("opacity", 1);
+		   $("#regDoneButton").show();
+        };
+        
+        var backToIndex = function(){
+           window.location.href = "index.html";
+        };
     
         return {
             regInit: regInit,
@@ -260,7 +301,10 @@ app.registration = (function () {
             clickforValificationCode:clickforValificationCode,
             regDone: regDone,
             goToIndex:goToIndex,
+            backToIndex:backToIndex,
+            clickforRegenerateCode:clickforRegenerateCode,
             clearSelectOrganisation:clearSelectOrganisation,
+            cancelButtonRC:cancelButtonRC,
             // selectedOrg:selectedOrg,
             //selectedGroup:selectedGroup,
             register: register

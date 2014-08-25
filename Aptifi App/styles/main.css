@@ -177,7 +177,7 @@
 
 #friendsApp .btn-login,
 #friendsApp .signup-view .btn-signup {
-    background-color: #1bbc9b;
+    background-color: #09B201;
 }
 
 
@@ -334,7 +334,7 @@
 }
 
 #login-form .username:before {
-    background-image: url(images/icon-username.png);
+    background-image: url(images/mobIcon.png);
 }
 
 #login-form .password:before {
@@ -566,8 +566,8 @@
     top: 5px;
     right: 0;
     color: #6c7884;
-    text-transform: uppercase;
-    font-size: .7rem;
+    /*text-transform: uppercase;*/
+    font-size: .5rem;
 }
 
 #friendsApp .activity-content .comment-content .time-span {
@@ -684,7 +684,7 @@
     }
 
     #login-form .username:before {
-        background-image: url(images/icon-username@2x.png);
+        background-image: url(images/mobIcon.png);
         background-size: 12px 13px;
     }
 
@@ -756,8 +756,8 @@
     top: 12px;
     right: 0;
     color: #6c7884;
-    text-transform: uppercase;
-    font-size: .6rem;
+    /*text-transform: uppercase;*/
+    font-size: .5rem;
     margin-right:2px;
 }
 
@@ -780,9 +780,8 @@
     
 }
 
-
  .orgContentMsg {
-    color: #D3D8DC;
+    color: #BCBCBC;
     font-size: .75rem;
 }
 
@@ -794,3 +793,24 @@
   border-radius:12px;
   color:#ffffff;
 }
+
+
+#comments-listview > li {
+    border:none;
+    display: inline-block;
+    float:right;
+}
+
+
+#activities-listview > li {
+    border:none;
+    min-width:40px;
+    display: inline-block;
+}
+
+/*.commentClasList > li {
+    border:none;
+    display: inline-block;
+    float:right;
+}*/
+

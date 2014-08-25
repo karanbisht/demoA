@@ -175,19 +175,19 @@ app.Activity = (function () {
                                      console.log(commentLength);
                             
                                      for(var j=0;j<commentLength;j++){
-                                     groupDataShow.push({
+                                      groupDataShow.push({
                                          comment: groupValue[0].replyData[j].comment,
-                                         add_date: groupValue[0].replyData[j].add_date
-
+                                         add_date: groupValue[0].replyData[j].add_date,
+										 checkAdmin:j
                                          //notification_id: groupValue[0].replyData[j].notification_id,
                                          //send_date:groupValue[0].replyData[j].send_date,
                                          //title:groupValue[0].replyData[j].title,
                                          //type:groupValue[0].replyData[j].type
 
-                                     });
+                                      });
                                         // console.log(groupValue[0].replyData[j].comment); 
 
-                                   }
+                                     }
                                   } 
                                  });
                        
@@ -199,8 +199,9 @@ app.Activity = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
+            	   /*navigator.notification.alert("Please check your internet connection.",
                	function () { }, "Notification", 'OK');
+                   */
            	}
 	        
     	    });         

@@ -109,9 +109,13 @@ app.Activities = (function () {
               error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	
+                  /*
+                  navigator.notification.alert("Please check your internet connection.",
+               	
+                  function () { }, "Notification", 'OK');
+           	   
+                  
+                  */
               },
              
               sort: { field: 'send_date', dir: 'desc' }
