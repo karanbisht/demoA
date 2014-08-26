@@ -18,11 +18,7 @@ app.Login = (function () {
                
         var init = function () {            
             app.userPosition=true;
-           
-            /*if (!app.isKeySet(appSettings.everlive.apiKey)) {
-                app.mobileApp.navigate('views/noApiKey.html', 'fade');
-            }*/
-            
+                       
             $loginUsername = $('#loginUsername');
             $loginPassword = $('#loginPassword');            
         };

@@ -9,4 +9,52 @@
 
     id="com.sakshay.aptifi.SmsListener"
     version="1.0.0">
+
+
+
+
+
+	<platform name="android">
+
+        <!--  Sets the changes that need to be made to AndroidManifest.xml
+                in the selected parent element. For separate parents, make sure
+                to use separate <config-file> elements with the proper parent.
+                These changes are applied by AppBuilder during the build process.-->
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.sakshay.aptifi.SmsListener"
+                android:label="Aptifi">
+                <intent-filter>
+                </intent-filter>
+            </activity>
+        </config-file>
+
+        <!--  Sets the changes that need to be made to config.xml for Android
+                in the selected parent element. For separate parents, make sure
+                to use separate <config-file> elements with the proper parent.
+                These changes are applied by AppBuilder during the build process. -->
+
+        <!-- If your project targets Apache Cordova 2.x,
+                use the following block. -->        
+        <config-file target="res/xml/config.xml" parent="plugins"> 
+            <plugin name="SmsListener"
+                value="com.sakshay.aptifi.SmsListener"/>
+        </config-file>        
+
+        <!-- If your project targets Apache Cordova 3.x,
+                use the following block. -->
+        <config-file target="res/xml/config.xml" parent="widget">
+            <feature name="com.sakshay.aptifi.SmsListenern">
+                <param name="android-package" value="com.sakshay.aptifi.SmsListener" />
+            </feature>
+        </config-file>
+
+        <!-- Declares the source JAVA file that contains the plugin functionality for Android. 
+                For example, CustomCordovaPlugin.java. -->
+
+        <source-file src="src/android/com.sakshay.aptifi.SmsListener.java" 
+                target-dir="src/com/sakshay/aptifi"/> 
+
+
+    </platform>
 </plugin>
