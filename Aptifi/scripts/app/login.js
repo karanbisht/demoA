@@ -17,8 +17,7 @@ app.Login = (function () {
         //var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
-            app.userPosition=true;
-                       
+            app.userPosition=true;                       
             $loginUsername = $('#loginUsername');
             $loginPassword = $('#loginPassword');            
         };
@@ -28,10 +27,9 @@ app.Login = (function () {
             //app.showNativeAlert();
             
             app.userPosition=true;
-             $('#loginUsername').val('');
-             $('#loginPassword').val('');
-            //window.plugins.toast.showShortBottom('klkkkkkkk' , app.onSuccess , app.onError);
-
+            $('#loginUsername').val('');
+            $('#loginPassword').val('');
+            //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
             //app.showNativeAlert();
         };
         
