@@ -8,6 +8,7 @@ app.Activities = (function () {
  var validator;
  var loginType,groupId,userId;
   var userlName;
+    
             var userfName;
             var userMobile;
             var userEmail;

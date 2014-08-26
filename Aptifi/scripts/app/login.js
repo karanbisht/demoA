@@ -9,23 +9,28 @@ app.Login = (function () {
 
     var loginViewModel = (function () {
 
-        var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
+        //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
         var $loginUsername;
         var $loginPassword;
         var userOrgName=[];
         var userGropuName=[];
-        var isAnalytics = analytics.isAnalytics();
+        //var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
             app.userPosition=true;
-            if (!app.isKeySet(appSettings.everlive.apiKey)) {
+           
+            /*if (!app.isKeySet(appSettings.everlive.apiKey)) {
                 app.mobileApp.navigate('views/noApiKey.html', 'fade');
-            }
+            }*/
+            
             $loginUsername = $('#loginUsername');
             $loginPassword = $('#loginPassword');            
         };
 
         var show = function () {
+            
+            //app.showNativeAlert();
+            
             app.userPosition=true;
              $('#loginUsername').val('');
              $('#loginPassword').val('');

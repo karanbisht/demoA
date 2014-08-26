@@ -95,7 +95,43 @@ app.registration = (function () {
 			$("#selectionDiv").css("opacity", .1);	
 			$("#validationRow").css("z-index", "999");
 			document.getElementById('selectionDiv').style.pointerEvents = 'none';
-         /*     
+            
+            
+              //var mobile=$regMobile.val();
+              varifiCode = genRand(0,9);
+         	 //alert(varifiCode);
+              varifiCode = varifiCode.toString();
+                                           
+          var dataSourceValidation = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           } 
+           });  
+	            
+           dataSourceValidation.fetch(function() {
+				        var registrationDataView = dataSourceValidation.data();
+						       console.log(registrationDataView);
+               		    	app.showAlert("The Verification Code will be sent to this number." , "Notification");
+               				$("#validationRow").show();
+               				regClickButton=1;
+                          });          
+        
+         /*
+            ("+mobile+")
             if(regClickButton===0){
             var selectOrg = $("#selectOrgData").data("kendoComboBox");
 		    var selectGroup = $("#selectGroupData").data("kendoComboBox");

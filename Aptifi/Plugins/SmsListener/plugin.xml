@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <!-- Sets the ID for the custom plugin. It consists of 
+        the package declaration made in the JAVA file
+        and the plugin name. For example, com.custom.plugin.CustomCordovaPlugin. -->
+
+    id="com.sakshay.aptifi.SmsListener"
+    version="1.0.0">
+</plugin>

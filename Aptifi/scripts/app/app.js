@@ -81,10 +81,11 @@ var app = (function (win) {
         }
     };
     
-/*    var showNativeAlert = function () {
-            if (!this.checkSimulator()) {
-	            window.plugins.toast.showShortBottom('klkkkkkkk' , app.onSuccess , app.onError);
-            }
+    var showNativeAlert = function () {
+            //if (!this.checkSimulator()) {
+                alert("hello");
+	            window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
+            //}
     };
     
     var checkSimulator = function() {
@@ -98,8 +99,9 @@ var app = (function (win) {
                 return false;
             }
         };
-*/    
-    var getAdminId = function(){
+
+ 
+    /*var getAdminId = function(){
       var dataSource = new kendo.data.DataSource({
 			  type: 'everlive',
 	           transport: {
@@ -114,7 +116,7 @@ var app = (function (win) {
 					  console.log(view[0].Id); // displays "Jane Doe"                    
                       localStorage.setItem("adminId",view[0].Id);
 			});  
-    };
+    };*/
 
     
     
@@ -427,8 +429,8 @@ var app = (function (win) {
         showError: showError,
         errorCB:errorCB,
         successCB:successCB,
-        //checkSimulator:checkSimulator,
-        //showNativeAlert:showNativeAlert,
+        checkSimulator:checkSimulator,
+        showNativeAlert:showNativeAlert,
         getDb:getDb,
         validateMobile:validateMobile,
         validateEmail:validateEmail,
@@ -437,7 +439,7 @@ var app = (function (win) {
         selectQuery:selectQuery,
         deleteQuery:deleteQuery,
         updateQuery:updateQuery,
-        getAdminId:getAdminId,
+        //getAdminId:getAdminId,
         insertQuery:insertQuery,
         showConfirm: showConfirm,
         isKeySet: isKeySet,
