@@ -11,7 +11,9 @@ app.Login = (function () {
 
         //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
         var $loginUsername;
-        var $loginPassword;
+		var username;
+        var varifiCode;
+        var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
         //var isAnalytics = analytics.isAnalytics();
@@ -19,16 +21,14 @@ app.Login = (function () {
         var init = function () {            
             app.userPosition=true;                       
             $loginUsername = $('#loginUsername');
-            $loginPassword = $('#loginPassword');            
+          //$loginPassword = $('#loginPassword');            
         };
 
         var show = function () {
-            
-            //app.showNativeAlert();
-            
+            //app.showNativeAlert();            
             app.userPosition=true;
             $('#loginUsername').val('');
-            $('#loginPassword').val('');
+            //$('#loginPassword').val('');
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
             //app.showNativeAlert();
         };
@@ -48,44 +48,37 @@ app.Login = (function () {
         var login = function () {		 
             var deviceName = app.devicePlatform();
             var device_type;
-
              if(deviceName==='Android'){
                 device_type ='AN';
              }else if(deviceName==='iOS'){
                 device_type='AP';
              }
-             
-			var device_id = localStorage.getItem("deviceTokenID");
-            console.log(device_id);
+                         
+            var device_id='123456';
             
-            var username = $("#loginUsername").val();
-            var password = $("#loginPassword").val();
-
-            password="123456";
+			//var device_id = localStorage.getItem("deviceTokenID");
+            //console.log(device_id);
+            
+            username = $("#loginUsername").val();
             console.log(username);
-            console.log(password);
             
             if (username === "Mobile Number" || username === "") {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
-			//} else if (!app.validateMobile(username)) {
-				//app.showAlert("Please enter a valid Mobile No.", "Validation Error");
-			//} else 
-            //if (password === "Password" || password === "") {
-				//app.showAlert("Please enter Password.", "Validation Error");
-			} else {
-            
+			} else {            
                  app.mobileApp.pane.loader.show();
                 
                  //app.mobileApp.pane.loader.hide();
            
-       		 console.log(username+"||"+password+"||"+device_id+"||"+device_type);
-        		var jsonDataLogin = {"username":username ,"password":password,"device_id":123456, "device_type":device_type}
-                      
+       		  console.log(username+"||"+device_id+"||"+device_type);
+        	
             
+                
+          var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
+       
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/customerLogin",
+                   url: "http://54.85.208.215/webservice/customer/login",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -109,246 +102,32 @@ app.Login = (function () {
 	            
            dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
+               			console.log(loginDataView);
+               
                			var orgDataId = [];
                			var userAllGroupId = [];
 						   $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='Sucess'){
-                                   
-								var dataSend = loginData.status[0].CustomerData[0].user_type;
-                                var userId = loginData.status[0].CustomerData[0].pid;
-                                 if(dataSend==='O'){
-                                var userfName = loginData.status[0].CustomerData[0].org_name;
-                                var userlName = '';//loginData.status[0].CustomerData[0].cust_lname;   
-                                var userEmail = loginData.status[0].CustomerData[0].org_email; 
-                                var userMobile = loginData.status[0].CustomerData[0].org_ph; 
-                                     
-                                  localStorage.setItem("UserOrgID",userId);
-								  localStorage.setItem("userOrgName",userfName);  
-    
-                                 }else{
-                                var userfName = loginData.status[0].CustomerData[0].cust_fname;
-                                var userlName = loginData.status[0].CustomerData[0].cust_lname;   
-                                var userEmail = loginData.status[0].CustomerData[0].cust_email; 
-                                var userMobile = loginData.status[0].CustomerData[0].mobile; 
-								var groupNumber =loginData.status[0].joinedGroup.length;	
-                                
-                                for(var k=0;k<groupNumber;k++){   
-                                    
-                                 	var joinGroupInfo=loginData.status[0].joinedGroup[k];
-                                           
-                                 	$.each(joinGroupInfo, function(i, org) {
-                                     	orgDataId.push(org.orgID);
-                                     	userAllGroupId.push(org.groupId);
-                                         userGropuName.push(org.groupName);
-                                          
-                                         var pos = $.inArray(org.orgName, userOrgName);
-                         	 			 console.log(pos);
-									if (pos === -1) {
-                                       		userOrgName.push(org.orgName);
-                                        }
-                                         
-	                                 });
-                                 }   
- 
-                                     localStorage.setItem("UserOrgID",orgDataId);
-                                     localStorage.setItem("UserGroupID",userAllGroupId);
-                           	      localStorage.setItem("userOrgName",userOrgName);  
-       
-                              } 
-                          
-                                 localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
-                                 localStorage.setItem("UserID",userId); 
-                                
-                                console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
-                                         
-                                 localStorage.setItem("userlName",userlName); 
-                                 localStorage.setItem("userfName",userfName);//orgDataId);
-                                 localStorage.setItem("userMobile",userMobile);  
-                                 localStorage.setItem("userEmail",userEmail); 
-                                 localStorage.setItem("userGropuName",userGropuName);//orgDataId);
-
-                                  
-                                 app.mobileApp.navigate('views/getOrganisationList.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
-                                   +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);
-                               
-                   }else if(loginData.status[0].Msg==='Authentication Required'){
-                        
-                       
-                       
-            var jsonDataLogin = {"username":username ,"password":password,"device_id":123456, "device_type":device_type ,"authentication":1}
-                                 
-          var dataSourceLogin = new kendo.data.DataSource({
-               transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/customer/customerLogin",
-                   type:"POST",
-                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   data: jsonDataLogin
-           	}
-           },
-           schema: {
-               data: function(data)
-               {	console.log(data);
-               	return [data];
-               }
-           },
-           error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               app.mobileApp.pane.loader.hide();
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');               
-           }               
-          });  
-	            
-           dataSourceLogin.fetch(function() {
-                         var loginDataView = dataSourceLogin.data();
-               			var orgDataId = [];
-               			var userAllGroupId = [];
-						   $.each(loginDataView, function(i, loginData) {
-                               console.log(loginData.status[0].Msg);
-                               
-                      if(loginData.status[0].Msg==='Sucess'){
-                                   
-								var dataSend = loginData.status[0].CustomerData[0].user_type;
-                                var userId = loginData.status[0].CustomerData[0].pid;
-                                 if(dataSend==='O'){
-    	                            var userfName = loginData.status[0].CustomerData[0].org_name;
-        	                        var userlName = '';//loginData.status[0].CustomerData[0].cust_lname;   
-            	                    var userEmail = loginData.status[0].CustomerData[0].org_email; 
-                	                var userMobile = loginData.status[0].CustomerData[0].org_ph; 
-                                     
-                                  localStorage.setItem("UserOrgID",userId);
-								  localStorage.setItem("userOrgName",userfName);  
-    
-                                 }else{
-        	                        var userfName = loginData.status[0].CustomerData[0].cust_fname;
-    	                            var userlName = loginData.status[0].CustomerData[0].cust_lname;   
-            	                    var userEmail = loginData.status[0].CustomerData[0].cust_email; 
-                	                var userMobile = loginData.status[0].CustomerData[0].mobile; 
-									var groupNumber =loginData.status[0].joinedGroup.length;	
-                                
-                                for(var k=0;k<groupNumber;k++){   
-                                    
-                                 	var joinGroupInfo=loginData.status[0].joinedGroup[k];
-                                           
-                                 	$.each(joinGroupInfo, function(i, org) {
-                                     	orgDataId.push(org.orgID);
-                                     	userAllGroupId.push(org.groupId);
-                                         userGropuName.push(org.groupName);
-                                          
-                                         var pos = $.inArray(org.orgName, userOrgName);
-                         	 			 console.log(pos);
-									if (pos === -1) {
-                                       		userOrgName.push(org.orgName);
-                                        }
-                                         
-	                                 });
-                                 }   
- 
-                                     localStorage.setItem("UserOrgID",orgDataId);
-                                     localStorage.setItem("UserGroupID",userAllGroupId);
-                           	      localStorage.setItem("userOrgName",userOrgName);  
-
-                                 
-                              } 
-                          
-                                 localStorage.setItem("UserType",loginData.status[0].CustomerData[0].user_type);
-                                 localStorage.setItem("UserID",userId); 
-													
-                                
-                                   console.log(userAllGroupId+"||"+userId+"||"+userGropuName+"||"+userOrgName);                                   
-
-                                         
-                                 localStorage.setItem("userlName",userlName); 
-                                 localStorage.setItem("userfName",userfName);//orgDataId);
-                                 localStorage.setItem("userMobile",userMobile);  
-                                 localStorage.setItem("userEmail",userEmail); 
-                                 localStorage.setItem("userGropuName",userGropuName);//orgDataId);
-
-                          app.mobileApp.navigate('views/getOrganisationList.html?LoginType='+dataSend+'&UserId='+userId+'&GroupId='+userAllGroupId+'&userOrgName='+userOrgName
-                                   +'&userGropuName='+userGropuName+'&userEmail='+userEmail+'&userMobile='+userMobile+'&userfName='+userfName+'&userlName='+userlName);                
-                                   
-                     }else{ 
-                      app.showAlert(loginData.status[0].Msg ,'Notification'); 
-                      app.mobileApp.pane.loader.hide();
-                     }
-                               
-                });
-  		 });                                  
-                     }else{ 
-                      app.showAlert(loginData.status[0].Msg ,'Notification'); 
-                      app.mobileApp.pane.loader.hide();
-                     }
-                               
+                      if(loginData.status[0].Msg==='User not registered'){
+                          console.log('reg');
+							app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;
+ 				           app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
+                      }else if(loginData.status[0].Msg==='Create profile'){
+                            app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;
+                            var accountId=loginData.status[0].AccountID;
+ 				           app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
+                      }else if(loginData.status[0].Msg==='Authentication Required'){
+                             app.mobileApp.pane.loader.hide();
+                                clickforRegenerateCode();   
+                      }
+                            
                 });
   		 });
              
-                
-                
-            //username = 'ravi@chamria.com';
-            //password = 'password';
-            
-          /* var dataSource = new kendo.data.DataSource({
-			 transport: {
-    			read:  {
-      			url: "http://54.85.208.215/api/userapi/user",
-    			  dataType: "html", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  data: {email:username , password:password} 
-                }
- 			 }
-       	});
-            
-            console.log(dataSource);
-            console.log(dataSource.read());
-            
-			dataSource.fetch(function(){
-  				var data = dataSource.data();
-                  console.log(data);
-  				console.log(data.length);  // displays "77"
-			});
-            */
-            
-            // Authenticate using the username and password
-            
-                /*
-            app.everlive.Users.login(username, password)
-            .then(function () {
-                // EQATEC analytics monitor - track login type
-               if (isAnalytics) {
-                    analytics.TrackFeature('Login.Regular');
-                }
-                return app.Users.load();
-            })
-                
-            .then(function () {
-                app.userPosition=false;
-                app.everlive.Users.currentUser()
-    				.then(function (data) {
-                        saveLoginInfo(data);
-                        console.log(data.result.Group);
-    			        app.mobileApp.navigate('views/activitiesView.html?LoginType=' + data.result.Group);
-				    },
-
-                function(error){
-       					 alert(JSON.stringify(error));
-			    });
-
-            })  
-                
-            .then(null,
-                  function (err) {
-                      if(err.message===null){
-                          app.showAlert("Error in Internet Connectivity","Error");
-                      }else{
-                          app.showError(err.message);
-                      }
-                      //show();
-                  }
-            );
-               */ 		
+                	
           }
         };
         
@@ -437,10 +216,171 @@ app.Login = (function () {
         
         // function used for registration
         
-        var registration = function() {
+        /*var registration = function() {
             app.userPosition=false;
             app.mobileApp.navigate('views/registrationView.html');           
+        };*/
+        
+          var clickforRegenerateCode = function(){
+          $("#regenerateDiv").show();
+          $("#validationRow").hide(); 
+          $("#userRegMobNum").html('+91'+ username);    
+            
+            $("#registrationNext").hide();
+            $("#selectionDiv").css("z-index", "-1");
+			$("#selectionDiv").css("opacity", .1);	
+			$("#regenerateDiv").css("z-index", "999");
+			document.getElementById('selectionDiv').style.pointerEvents = 'none';  
         };
+        
+        
+        var cancelButtonRC = function(){
+           $("#regenerateDiv").hide();
+           $("#validationRow").hide(); 
+           document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+		   $("#selectionDiv").css("z-index", "1");
+		   $("#selectionDiv").css("opacity", 1);
+		   $("#regDoneButton").show();
+        };
+        
+        var backToIndex = function(){
+           window.location.href = "index.html";
+        };
+        
+        
+        var clickforValificationCode = function(){
+            $("#regenerateDiv").hide();
+			$("#validationRow").show();
+            $("#regDoneButton").hide();
+            $("#selectionDiv").css("z-index", "-1");
+			$("#selectionDiv").css("opacity", .1);	
+			$("#validationRow").css("z-index", "999");
+			document.getElementById('selectionDiv').style.pointerEvents = 'none';
+            
+            
+              //var mobile=$regMobile.val();
+              varifiCode = genRand(0,9);
+         	 //alert(varifiCode);
+              varifiCode = varifiCode.toString();
+                                           
+          var dataSourceValidation = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           } 
+           });  
+	            
+           dataSourceValidation.fetch(function() {
+				        var registrationDataView = dataSourceValidation.data();
+						console.log(registrationDataView);
+               		    	//app.showAlert("The Verification Code will be sent to this number." , "Notification");
+               				$("#validationRow").show();
+               				regClickButton=1;
+                          });                  	
+    		};
+    
+   	        
+         var genRand = function() {      	
+             return Math.floor(Math.random()*89999+10000);		   
+         };
+        
+        var doneVerification = function(){
+             varifiCode='123456';
+            
+			var validationCodeId = $("#validationCodeId").val();
+            if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
+              app.showAlert("Please Enter Verification Code","Notification");  
+            }else{
+                if(varifiCode===validationCodeId){
+          	  //app.mobileApp.navigate('views/getOrganisationList.html');  
+                    
+                                                        
+                                                var deviceName = app.devicePlatform();
+            									var device_type;
+									             if(deviceName==='Android'){
+											                device_type ='AN';
+									             }else if(deviceName==='iOS'){
+                										    device_type='AP';
+									             }
+
+          var device_id='123456';
+                    
+          var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
+       
+          var dataSourceLogin = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/login",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataLogin
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               app.mobileApp.pane.loader.hide();
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+               
+           }               
+          });  
+	            
+
+                    dataSourceLogin.fetch(function() {
+                         var loginDataView = dataSourceLogin.data();
+               			console.log(loginDataView);
+       
+               $.each(loginDataView, function(i, loginData) {
+                               console.log(loginData.status[0].Msg);
+                               
+                      if(loginData.status[0].Msg==='Success'){
+                          console.log('reg');
+                          var account_Id = loginData.status[0].ProfileInfo[0].account_id;
+							app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;
+                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id);
+                      }
+                   
+                     /*else if(loginData.status[0].Msg==='Create profile'){
+                            app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;
+                            var accountId=loginData.status[0].AccountID;
+ 				           app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
+                      }else if(loginData.status[0].Msg==='Authentication Required'){
+                             app.mobileApp.pane.loader.hide();
+                                clickforRegenerateCode();   
+                      }*/
+                            
+                });
+
+           });
+                          
+                    
+        	    }else{
+    	               app.showAlert("Please Enter Correct Verification Code","Notification");    
+                }
+                }
+	        };
 
         // Authenticate using Facebook credentials
         return {
@@ -453,7 +393,12 @@ app.Login = (function () {
             sendForgetMail:sendForgetMail,
             goToIndex:goToIndex,
             forgetPassInit:forgetPassInit,
-            registration : registration
+            backToIndex:backToIndex,
+            clickforValificationCode:clickforValificationCode,
+            cancelButtonRC:cancelButtonRC,
+            genRand:genRand,
+            doneVerification:doneVerification,
+            clickforRegenerateCode : clickforRegenerateCode
         };
 
     }());

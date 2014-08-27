@@ -4,28 +4,91 @@
         <div data-role="navbar">
             Registration
             <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-bind="click: backToIndex">Back</a>
-            <a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: addNewRegistration">Add</a>
+            <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: addNewRegistration">Add</a>-->
         </div>
     </div>
-    
-    <div>
+  
+     <div id="selectionDivR">  
+    	<div>
           <form>
                 <ul data-role="listview" data-style="inset">
-                    <li class="username"><input type="text" class="k-textbox" id="regFirstName" placeholder="First Name" required validationMessage="Please Enter First Name!" /></li>
-                    <li class="password"><input type="text" class="k-textbox" id="regLastName" placeholder="Last Name" required validationMessage="Please Enter Last Name!" /></li>
-                    <li class="password"><input type="email" class="k-textbox" id="regEmail" placeholder="Email" required validationMessage="Please Enter Email! " /></li>
-                    <li class="username"><input type="text" pattern="[0-9]*" class="k-textbox" id="regMobile" placeholder="Mobile No" maxlength="10" required validationMessage="Please Enter Mobile Number!" /></li>
-                    <li class="username"><input type="password" id="regPassword" class="k-textbox" placeholder="Password" required validationMessage="Please Enter Password!" /></li>
-                </ul>
+                    <li class="username"><input type="text" class="k-textbox" id="regFirstName" placeholder="First Name" /></li>
+                    <li class="password"><input type="text" class="k-textbox" id="regLastName" placeholder="Last Name" /></li>
+                    <li class="password"><input type="email" class="k-textbox" id="regEmail" placeholder="Email" /></li>
+                 </ul>
           </form>    
-    </div>  
+    	</div>  
             <ol class="reg-group-wrp">
                 <li>
-                    <span id="registrationNext" data-role="touch"  style="float:right;margin-left:10px;" data-bind="events: { tap: register }">
+                    <span id="registrationNextR" data-role="touch"  style="float:right;margin-left:10px;" data-bind="events: { tap: registerR }">
                         <a data-role="button" class="k-button" type="submit" style="background-color:#33539E">Next</a>
                     </span>
                 </li>
             </ol>
+    </div>
+    
+    <div  id="regenerateDivR" style=" display:none;background-color:#F5F5F5; margin:-80px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:300px;">
 
+    <div style="vertical-align:middle; text-align:center">
+       <img src="styles/images/msgIcon.png" height="100" width="100"/>
+    </div>
+       
+     <div style="vertical-align:middle; text-align:center">
+        <span id="userRegMobNumR" style="color:#61B85C;"></span>
+    </div>
+
+       
+    <div style="text-align:center;color:#BCBCBC;padding-top:10px;">        
+        The Verification Code will be sent to this number . If you'd like to change your phone number , please select [Cancel] 
+    </div>
+         <ol class="reg-group-wrp" style="margin-bottom:10px;">
+                <li>
+                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforValificationCodeR }">
+                        <a data-role="button" style="background-color:#313C50">Ok</a>
+                    </span>
+                    
+                    <!--<span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: cancelButtonRC }">
+                        <a data-role="button" style="background-color:#313C50">Cancel</a>
+                    </span>-->
+                </li>
+	     </ol>
+  </div>
+    
+    
+    
+    
+    <div  id="validationRowR" style=" display:none;background-color:#F5F5F5; margin:-80px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:350px;">
+    <div style="background-color:#313C50;color:#ffffff;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
+       Verification
+    </div>
+    
+    <div style="text-align:center;color:#313C50;padding-top:10px;">
+        Verification Code send to your registered Mobile Number . Please use this Verification Code to continue with the Registration.
+     <br/>
+     <br/> 
+        In case multiple Verification Code is generated , use latest Verification Code
+        <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
+           <li class="username" style="padding-top:15px;border:2px solid #313C50" >
+               <input type="text" class="k-textbox" id="validationCodeIdR" placeholder="Verification Code" style="border-radius:6px;text-align:center;"/>               
+           </li> 
+        </ul>
+    </div>
+         <ol class="reg-group-wrp" style="margin-bottom:10px;">
+                <li>
+                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: doneVerificationR }">
+                        <a data-role="button" style="background-color:#313C50">Next</a>
+                    </span>
+                    
+                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: clickforRegenerateCodeR }">
+                        <a data-role="button" style="background-color:#313C50">Regenerate</a>
+                    </span>
+                </li>
+	     </ol>
+ 
+        <div style="color:#313C50;position:relative;float:left;margin:10px;"> 
+	    	Note-: Clicking on Re-Generate will invalidate the previous verification code.  
+    	</div>    
+
+  </div>
 
 </div>
