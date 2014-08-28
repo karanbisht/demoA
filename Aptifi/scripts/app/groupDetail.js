@@ -2,51 +2,22 @@ var app = app || {};
 
 app.groupDetail = (function () {
 
-
     var GroupName;
     var selectedGroupId;
     var selectedGroupDesc;
     var custFromGroup= [];
     var orgId = localStorage.getItem("UserOrgID");
-    var el = new Everlive('wKkFz2wbqFe4Gj0s');          
     
-    
-        /*
-	        MemberDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: UserModel
-            },
-
-            transport: {
-                // Required by Backend Services
-                typeName: 'Users'
-            },
-                
-            change: function (e) {
-                if (e.items && e.items.length > 0) {
-                    $('#no-Group-span').hide();
-                } else {
-                    $('#no-Group-span').show();
-                }
-            },
-             sort: { field: 'CreatedAt', dir: 'desc' }    
-	        });
-               
-	        return {
-            	userData: MemberDataSource
-        	};
-         */
-	
-
-   
+    var organisationID;
+    var account_Id;
+       
     var groupDetailViewModel = (function () {
 
         
-  			var init = function () {
+  	var init = function () {
              
                       
-      		};
+      };
            
            
         var show = function (e) {
@@ -54,144 +25,33 @@ app.groupDetail = (function () {
             app.mobileApp.pane.loader.hide();
             
 		    console.log("show function");
-            activityUid = e.view.params.uid;
-            console.log(activityUid);
+            organisationID = e.view.params.organisationID;
+            account_Id = e.view.params.account_Id;
+            //console.log(activityUid);
             // Get current activity (based on item uid) from Activities model
-            activity = app.GroupList.groupListData.getByUid(activityUid);
-            console.log(activity.group_name);
+            //activity = app.GroupList.groupListData.getByUid(activityUid);
+            /*console.log(activity.group_name);
 			GroupName = activity.group_name;
             selectedGroupId = activity.pid;
             selectedGroupDesc = activity.group_desc;
             console.log(selectedGroupId);
             console.log(selectedGroupDesc);            
+            */
         };
            
            
         var showGroupNotification = function(){
         	 app.MenuPage=false;
-              var activitiesDataSource;
-              console.log(GroupName);
-               app.mobileApp.navigate('#groupNotificationShow');
-            
-            
-            var activityNotificationModel = {
-            id: 'Id',
-            fields: {
-                message: {
-                    field: 'message',
-                    defaultValue: ''
-                },
-                title :{
-                    field: 'title',
-                    defaultValue: ''  
-                },
-                CreatedAt: {
-                    field: 'send_date',
-                    defaultValue: new Date()
-                },
-                notification_id: {
-                    field: 'notification_id',
-                    defaultValue: null
-                }                  
-            },
-            
-                 
-            CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            
-          };
-             
-             
-          var notificationListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+selectedGroupId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-              	}
-              },
-       	 schema: {
-               model: activityNotificationModel,
-                                
-                 data: function(data)
-  	             {
-                       console.log(data);
-               
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                 });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-                       
-                       }                       
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
-            
-            notificationListDataSource.fetch(function() {
+             app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID +'&account_Id='+account_Id);
+             //app.mobileApp.navigate('#groupNotificationShow');
+         };   
+          
                 
- 		   });
-
-             $("#groupDetail-listview").kendoMobileListView({
-  		    template: kendo.template($("#groupDetailTemplate").html()),    		
-     		 dataSource: notificationListDataSource,
-              pullToRefresh: true,
-        		schema: {
-           		model:  activityNotificationModel
-				}			 
-		     });
-
-   	  
-    		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
-                  		//notificationModel();
-        
-            			   /*if(GroupName==='All'){
-    			             app.Activities.activities.filter({
-							                	
-        	    								});
-                           }else{		
-                                                app.Activities.activities.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName
-        	    								});
-                           }*/
-
-                     // kendo.bind($('#groupDetailTemplate'), activitiesDataSource);     
-        };
-           
-           
-           
-
-        
         
         var showGroupMembers = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
-            
+            console.log("karaasa"+organisationID)
                            
             var UserModel ={
             id: 'Id',
@@ -218,7 +78,7 @@ app.groupDetail = (function () {
         var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/"+selectedGroupId,
+                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+organisationID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -234,9 +94,35 @@ app.groupDetail = (function () {
                        
                         var groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].customerData.length;
-                                     console.log(orgLength);
-                            
+									console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+
+                   	             if(orgVal.Msg ==='No Customer in this organisation'){     
+                                     groupDataShow.push({
+                                         mobile: '',
+                                         first_name: '',
+                                         email:'No Customer in this Organisation',  
+                                         last_name : ''    
+    	                               });                                      
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.orgData.length);  
+                                        for(var i=0;i<orgVal.orgData.length;i++){
+                                            groupDataShow.push({
+												 orgName: orgVal.orgData[i].org_name,
+        		                                 orgDesc: orgVal.orgData[i].org_desc,
+                                                 organisationID:orgVal.orgData[i].organisationID,
+		                                         bagCount : 'C'					
+                                            });
+                                        }     
+   
+                                    } 
+                                     
+    							  });
+                                     //var orgLength=groupValue[0].customerData.length;
+                                     //console.log(orgLength);
+                            /*
                                      for(var j=0;j<orgLength;j++){
                                       var dataVal = groupValue[0].customerData[j].customerID;
                                          custFromGroup.push(dataVal);
@@ -249,6 +135,7 @@ app.groupDetail = (function () {
                                          mobile:groupValue[0].customerData[j].mobile
                                      });
                                    }
+                                     */
                                  });
                        
 		                         console.log(groupDataShow);
@@ -384,8 +271,9 @@ app.groupDetail = (function () {
         
         var addMemberToGroup = function(){
             app.MenuPage=false;
-            app.mobileApp.navigate('#addMemberToGroup');
-                       
+            //app.mobileApp.navigate('#addMemberToGroup');
+            app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
+        /*               
         var addUserModel ={
             id: 'Id',
             fields: {
@@ -483,16 +371,11 @@ app.groupDetail = (function () {
              kendo.bind($('#Member-Add-template'), MemberDataSource); 
             */
    
-   
+   		
         };
 
         
-        var groupNotificationSelected = function (e) {
-            alert("hello");
-			app.MenuPage=false;	
-            //alert(e.data.uid);
-            app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
-        };
+     
         
 
         
@@ -705,8 +588,7 @@ app.groupDetail = (function () {
         	   init: init,
            	show: show,
                manageGroup:manageGroup,    
-               sendNotification:sendNotification,
-               groupNotificationSelected:groupNotificationSelected,    
+               sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    

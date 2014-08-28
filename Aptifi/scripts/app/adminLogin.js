@@ -4,33 +4,36 @@
 
 var app = app || {};
 
-app.Login = (function () {
+app.adminLogin = (function () {
     'use strict';
 
-    var loginViewModel = (function () {
+    var adminLoginViewModel = (function () {
 
-        //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
+
         var $loginUsername;
-		var username;
+        var $loginPassword;
+		var usernameMob;
+        var password;
+        var account_Id;
         var varifiCode;
         var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
-        //var isAnalytics = analytics.isAnalytics();
+
                
         var init = function () {            
-            app.userPosition=true;                       
-            $loginUsername = $('#loginUsername');
-          //$loginPassword = $('#loginPassword');            
+            app.userPosition=false;
+            app.MenuPage=false;	
+            $loginUsername = $('#loginMob');
+            $loginPassword = $('#loginPassword');            
         };
 
-        var show = function () {
-            //app.showNativeAlert();            
+        var show = function (e) {
+            account_Id = e.view.params.account_Id;
             app.userPosition=true;
-            $('#loginUsername').val('');
-            //$('#loginPassword').val('');
-            //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
-            //app.showNativeAlert();
+            app.MenuPage=false;	
+            $('#loginMob').val('');
+            $('#loginPassword').val('');
         };
         
         
@@ -42,43 +45,25 @@ app.Login = (function () {
         };
 
 
-       
-        // Authenticate to use Backend Services as a particular user
-
         var login = function () {		 
-            var deviceName = app.devicePlatform();
-            var device_type;
-             if(deviceName==='Android'){
-                device_type ='AN';
-             }else if(deviceName==='iOS'){
-                device_type='AP';
-             }
-                         
-            var device_id='123456';
             
-			//var device_id = localStorage.getItem("deviceTokenID");
-            //console.log(device_id);
+            usernameMob = $("#loginMob").val();
+            password = $("#loginPassword").val();
+
+            console.log(usernameMob+"||"+password);
             
-            username = $("#loginUsername").val();
-            console.log(username);
-            
-            if (username === "Mobile Number" || username === "") {
+            /*if (username === "Mobile Number" || username === "") {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
-			} else {            
-                 app.mobileApp.pane.loader.show();
-                
-                 //app.mobileApp.pane.loader.hide();
-           
-       		  console.log(username+"||"+device_id+"||"+device_type);
-        	
-            
-                
-          var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
-       
+			} else if(password === "Password" || password === ""){
+                app.showAlert("Please enter your Password.", "Validation Error");
+            }else { */           
+                 app.mobileApp.pane.loader.show();  	
+                        
+          var jsonDataLogin = {"username":usernameMob ,"password":password}       
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
+                   url: "http://54.85.208.215/webservice/organisation/orgAdminLogin",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -104,17 +89,18 @@ app.Login = (function () {
                          var loginDataView = dataSourceLogin.data();
                			console.log(loginDataView);
                
-               			var orgDataId = [];
-               			var userAllGroupId = [];
-						   $.each(loginDataView, function(i, loginData) {
+       		$.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
-                               
-                      if(loginData.status[0].Msg==='User not registered'){
+                         console.log("karan" + account_Id);      
+                      if(loginData.status[0].Msg==='You have been successfully logged in.'){
                           console.log('reg');
 							app.mobileApp.pane.loader.hide();
                             app.userPosition=false;
- 				           app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
-                      }else if(loginData.status[0].Msg==='Create profile'){
+                            app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+                      }
+                 
+                   /*
+                   else if(loginData.status[0].Msg==='Create profile'){
                             app.mobileApp.pane.loader.hide();
                             app.userPosition=false;
                             var accountId=loginData.status[0].AccountID;
@@ -126,23 +112,19 @@ app.Login = (function () {
                            console.log('reg');
                            var account_Id = loginData.status[0].ProfileInfo[0].account_id;
                            console.log('karan'+account_Id);
-                           console.log(loginData.status[0].JoinedOrg.role.length);
-                          var roleLength = loginData.status[0].JoinedOrg.role.length;
-                          var userType=[];
-                          for(var i=0;i<roleLength;i++){
-                             userType.push(loginData.status[0].JoinedOrg.role[i]); 
-                          }
-                             console.log(userType);
+                           var userType=loginData.status[0].JoinedOrg.role[0];
                           
 							app.mobileApp.pane.loader.hide();
                             app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
-                      }                            
+                            app.mobileApp.navigate('views/getOrganisationList.html?mobile='+username+'&userType='+userType);
+                      } 
+                   */
+                   
                 });
   		 });
              
                 	
-          }
+          //}
         };
         
         var UserInfoData;
@@ -375,7 +357,7 @@ app.Login = (function () {
                  
 							app.mobileApp.pane.loader.hide();
                             app.userPosition=false;
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
+                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id);
                       }
                    
                      /*else if(loginData.status[0].Msg==='Create profile'){
@@ -420,6 +402,6 @@ app.Login = (function () {
 
     }());
 
-    return loginViewModel;
+    return adminLoginViewModel;
 
 }());

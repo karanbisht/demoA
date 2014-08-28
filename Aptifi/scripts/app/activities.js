@@ -8,16 +8,19 @@ app.Activities = (function () {
  var validator;
  var loginType,groupId,userId;
   var userlName;
-    
+  var organisationID;  
+  var account_Id;  
             var userfName;
             var userMobile;
             var userEmail;
             var userOrgName;
             var userGropuName;   
         
+   
     var orgId = localStorage.getItem("UserOrgID");                              
     
 	   // Activities model
+    /*
 	    var activitiesModel = (function () {	
 		var data; 
 		var groupId1 = localStorage.getItem("UserGroupID");
@@ -57,7 +60,7 @@ app.Activities = (function () {
                 return app.helper.resolvePictureUrl(this.get('Picture'));
             },*/
             
-            
+/*            
             isVisible: function () {
                 var currentUserId = app.Users.currentUser.data.Id;
                 var userId = this.get('UserId');
@@ -117,7 +120,7 @@ app.Activities = (function () {
            	   
                   
                   */
-              },
+/*              },
              
               sort: { field: 'send_date', dir: 'desc' }
 	        
@@ -314,19 +317,149 @@ app.Activities = (function () {
                   change: onChangeNotiGroup
 		    });
             */
-        };
+/*        };
         
-
+*/
+        var activitiesViewModel = (function () {
+            
+         var init = function(){
+             
+         }   
+            
          var show = function(e){
            app.MenuPage=true;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
                                      
-            loginType = e.view.params.LoginType;
-       	 userId = e.view.params.UserId;
-            groupId =e.view.params.GroupId;
+            organisationID = e.view.params.organisationID;
+       	 account_Id = e.view.params.account_Id;
+             
+              
+            var organisationAllNotificationModel = {
+            id: 'Id',
+            fields: {
+                title: {
+                    field: 'title',
+                    defaultValue: ''
+                },
+                message :{
+                    field: 'message',
+                    defaultValue: ''  
+                },
+                notificationID: {
+                    field: 'notificationID',
+                    defaultValue: null
+                },
+                CreatedAt: {
+                    field: 'date',
+                    defaultValue: new Date()
+                }/*,
+                organisationID: {
+                    field: 'organisationID',
+                    defaultValue: null
+                }*/                  
+            },            
+                 
+            CreatedAtFormatted: function () {
+                return app.helper.formatDate(this.get('CreatedAt'));
+            }
             
-             userlName =e.view.params.userlName;
+          };
+             
+             
+          var organisationALLListDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {
+               model: organisationAllNotificationModel,                                
+                 data: function(data)
+  	             {
+                       console.log(data);
+               
+                        var groupDataShow = [];
+                                  $.each(data, function(i, groupValue) {
+                                  console.log(groupValue);
+                                     
+                                   $.each(groupValue, function(i, orgVal) {
+                                     console.log();
+
+                   	             if(orgVal.Msg ==='No notification'){     
+                	                   groupDataShow.push({
+                                         title: ' No Notification ',
+                                         message: 'No Notification from this Organisation',
+                                         date:'0',  
+                                         commentAllow : 'Y',
+                                         notificationID:'0'        
+    	                               });                   
+                                        
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.orgData.length);  
+                                        for(var i=0;i<orgVal.orgData.length;i++){
+                                            groupDataShow.push({
+												 orgName: orgVal.orgData[i].org_name,
+        		                                 orgDesc: orgVal.orgData[i].org_desc,
+                                                 organisationID:orgVal.orgData[i].organisationID,
+		                                         bagCount : 'C'					
+                                            });
+                                        }     
+                                                                                     
+                                    }
+                                                                            
+                                   });    
+                                      
+                                  /*   
+                                     var orgLength=groupValue[0].sentNotification.length;
+                                     console.log(orgLength);
+                            
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         attached: groupValue[0].sentNotification[j].attached,
+                                         message: groupValue[0].sentNotification[j].message,
+                                         notification_id: groupValue[0].sentNotification[j].notification_id,
+                                         send_date:groupValue[0].sentNotification[j].send_date,
+                                         title:groupValue[0].sentNotification[j].title,
+                                          type:groupValue[0].sentNotification[j].type
+
+                                     });
+                                   }
+                                     */
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+                       
+                   }                       
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            organisationALLListDataSource.fetch(function() {
+                
+ 		   });
+
+             $("#activities-listview").kendoMobileListView({
+  		    template: kendo.template($("#activityTemplate").html()),    		
+     		 dataSource: organisationALLListDataSource,
+              pullToRefresh: true,
+        		schema: {
+           		model:  organisationAllNotificationModel
+				}			 
+		     });
+
+            
+          /* userlName =e.view.params.userlName;
              userfName =e.view.params.userfName;
              userMobile =e.view.params.userMobile;
              userEmail =e.view.params.userEmail;
@@ -350,10 +483,11 @@ app.Activities = (function () {
                   //$('#no-activities-span').show();
                     var db = app.getDb();
 					db.transaction(offlineQueryDB, app.onError, offlineQueryDBSuccess);
-            }        
+            }
+           */
         };
         
-        var offlineQueryDB = function(tx){
+        /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
 			app.selectQuery(tx, query, offlineTestQuerySuccess);
         };
@@ -383,15 +517,18 @@ app.Activities = (function () {
                    	$("#activities-listview").html("You are Currently Offline and data not available in local storage");
                }
         };
-                 
-        var CreatedAtFormatted = function(value){
+        */         
+       
+            var CreatedAtFormatted = function(value){
             return app.helper.formatDate(value);
-        };
+        
+            };
 
+       /*     
 		var offlineQueryDBSuccess = function(){
             console.log("Query Success");
         };
-        
+        */
         var activitySelected = function (e) {
             console.log(e.data.uid);
 			app.MenuPage=false;	
@@ -793,9 +930,9 @@ app.Activities = (function () {
 
 
         return {
-            activities: activitiesModel.activities,
-            groupData:GroupsModel.groupData,
-            userData:UsersModel.userData,
+            //activities: activitiesModel.activities,
+            //groupData:GroupsModel.groupData,
+            //userData:UsersModel.userData,
             activitySelected: activitySelected,
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,

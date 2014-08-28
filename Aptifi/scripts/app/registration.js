@@ -335,10 +335,13 @@ app.registration = (function () {
                                console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
-                          console.log('reg');
+                           console.log('reg');
+                           var account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                           console.log('karan'+account_Id);
+	   					var userType=loginData.status[0].JoinedOrg.role[0];
 							app.mobileApp.pane.loader.hide();
                             app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?mobile='+username);
+                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
                       }
                    
                      /*else if(loginData.status[0].Msg==='Create profile'){

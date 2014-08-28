@@ -1,0 +1,30 @@
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.adminLogin" data-init="app.adminLogin.init" data-show="app.adminLogin.show">
+            <div data-role="header">        
+              <div data-role="navbar">     
+             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
+              </div>              
+	         </div>
+
+            <h1 class="app-name center-text">Aptifi</h1>
+            
+            <h4 class="app-name center-text">Organisation Login</h4>
+            
+            <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
+                <ul data-role="listview" data-style="inset">
+                    <li class="username"><input type="text" id="loginMob"  placeholder="Mobile Number"/></li>
+                    <li class="password"><input type="password" id="loginPassword" placeholder="Password"  /></li>
+                    <span style="float:right" class="forgetText" data-bind="click: forgetPass">forget Password ?</span>
+                </ul>
+            
+            <ol class="group-wrp">
+                <li>
+                    <span id="login" data-role="touch" data-bind="events: { tap: login }">
+                        <a data-role="button" class="btn btn-login">Login</a>
+                    </span>
+                </li>
+             </ol>    
+             </form> 
+             
+            <div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>
+        </div>
+    
