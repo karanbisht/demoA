@@ -1,4 +1,3 @@
-
 var app = app || {};
 
 app.addCustomerByAdmin = (function () {
@@ -87,14 +86,21 @@ app.addCustomerByAdmin = (function () {
                function () { }, "Notification", 'OK');
                
            }               
-          });  
-	            
+           });  
+
+             
            dataSourceRegister.fetch(function() {
                          var loginDataView = dataSourceRegister.data();
                			console.log(loginDataView);       
 						   $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
+                     	    if(loginData.status[0].Msg==='Customer added successfully'){
+                         		app.showAlert("Member Added Successfully","Notification");
+				        	     app.mobileApp.navigate('#groupMemberShow');
+                               }else{
+                                 app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                               }
                            });
                });
             }

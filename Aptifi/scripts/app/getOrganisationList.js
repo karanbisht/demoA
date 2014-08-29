@@ -7,6 +7,7 @@ app.OragnisationList = (function () {
  var activitiesDataSource;   
  var validator;
  var account_Id;
+ var userType;
     
  var loginType,groupId,userId;
   
@@ -325,9 +326,20 @@ app.OragnisationList = (function () {
            app.MenuPage=true;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
-                                     
-            account_Id = e.view.params.account_Id;
-            var userType= e.view.params.userType;
+             
+           var from= e.view.params.from; 
+             
+             if(from==='Login'){
+              account_Id = e.view.params.account_Id;
+              userType= e.view.params.userType; 
+                		  localStorage.setItem("ACCOUNT_ID",account_Id);
+                 		  localStorage.setItem("USERTYPE",userType);
+             }else{
+                 
+               account_Id = localStorage.getItem("ACCOUNT_ID");
+               userType = localStorage.getItem("USERTYPE");
+             }
+
              console.log(account_Id);
              var userTypeLength = userType.length;
              console.log(userTypeLength);
@@ -456,8 +468,19 @@ app.OragnisationList = (function () {
               pullToRefresh: true,
         		schema: {
            		model:  organisationNotificationModel
+  				}			 
+		     });
+             
+             
+             
+              $("#organisation-listview1").kendoMobileListView({
+  		    template: kendo.template($("#orgTemplate").html()),    		
+     		 dataSource: organisationListDataSource,
+        		schema: {
+           		model:  organisationNotificationModel
 				}			 
 		     });
+
              
  
             /* 
@@ -683,19 +706,14 @@ app.OragnisationList = (function () {
         var orgShow = function(){
           app.MenuPage=false;
             
-          var orgDataSource= [];   
-          var userOrgName = localStorage.getItem("userOrgName"); 
-          console.log(userOrgName);
-          
-          //studentAnswerArray[i] = answerString.toString().split(',');
-            
-          orgDataSource.push({userOrgName:userOrgName});                                   
+                    
+          /*orgDataSource.push({userOrgName:userOrgName});                                   
           
            $("#organisation-listview").kendoMobileListView({
   		    template: kendo.template($("#orgTemplate").html()),    		
      		 dataSource: orgDataSource
 		   });
-            
+          */
             
         };
         
@@ -886,40 +904,60 @@ app.OragnisationList = (function () {
         
     
            
-          var initNotifi = function () {       
+         var userProfileInt = function () {       
       	    app.MenuPage=false; 
-          };
+         };
         
-        var showNotifi = function(){
-            app.MenuPage=false;
+        var userProfileShow = function(){
+            app.mobileApp.pane.loader.show();
+            app.MenuPage=false;    
+            var db = app.getDb();
+			db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
+         };
+            
+         function getProfileInfoDB(tx) {
+				var query = 'SELECT first_name , last_name , email , mobile FROM PROFILE_INFO';
+				app.selectQuery(tx, query, profileDataSuccess);
              
-            console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
-             $("#orgData").val('');
-             $("#groupData").val('');
-            
-            
-             var userlName = localStorage.getItem("userlName");
-             var userfName = localStorage.getItem("userfName");
-             var userEmail = localStorage.getItem("userEmail");
-             var userGropuName = localStorage.getItem("userGropuName"); 
-             var userOrgName = localStorage.getItem("userOrgName");
-             var userMobile = localStorage.getItem("userMobile");
-            
-            $("#userEmailId").html(userEmail); 
-            $("#userMobileNo").html(userMobile);
-            $("#userlname").html(userlName);
-            $("#userfname").html(userfName); 
-             
-            for(var x=0; x < userOrgName.length;x++){
-                document.getElementById("orgData").innerHTML += userOrgName[x];   
-            } 
-            
-			for(var y=0; y < userGropuName.length;y++){
-                document.getElementById("groupData").innerHTML += userGropuName[y];
+                var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+				app.selectQuery(tx, query, orgDataSuccess);
 			}
 
-        };
+function profileDataSuccess(tx, results) {
+	var count = results.rows.length;
+	if (count != 0) {
+			var fname = results.rows.item(0).first_name;
+			var lname = results.rows.item(0).last_name;
+			var email = results.rows.item(0).email;
+			var mobile = results.rows.item(0).mobile;
+        
+            $("#userEmailId").html(email); 
+            $("#userMobileNo").html(mobile);
+            $("#userlname").html(lname);
+            $("#userfname").html(fname); 
+	}
+}
             
+	function orgDataSuccess(tx, results) {    
+        	var count = results.rows.length;       
+				if (count !== 0) {
+                    
+	             document.getElementById("orgData").innerHTML = "";
+        			for(var x=0; x < count;x++){
+                		document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
+            		}             
+                }
+        
+      }
+            
+
+
+	function getProfileDBSuccess() {
+		app.mobileApp.pane.loader.hide();
+	}
+            
+            
+                     
         var callOrganisationLogin = function(){
           app.MenuPage=false;	
           //window.location.href = "views/organisationLogin.html"; 
@@ -955,9 +993,9 @@ app.OragnisationList = (function () {
             manageGroup:manageGroup,
             makeCall:makeCall,
             replyUser:replyUser,
-            initNotifi:initNotifi,
+            userProfileInt:userProfileInt,
             sendNotification:sendNotification,
-            showNotifi:showNotifi,
+            userProfileShow:userProfileShow,
 			about:about,
             setting:setting,
             orgShow:orgShow,

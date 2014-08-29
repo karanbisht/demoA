@@ -136,13 +136,17 @@ var app = (function (win) {
                 
 	var createDB = function(tx) {
             	
-			tx.executeSql('CREATE TABLE IF NOT EXISTS LOGIN_INFO(USER_ID INTEGER,EMAIL TEXT,PASSWORD TEXT,USER_NAME TEXT,GENDER TEXT , MOBILE INTEGER, PHOTO TEXT,LOGIN_STATUS INTEGER)');//1 for currently log in 0 or null for currently log out        
-            //tx.executeSql('CREATE TABLE IF NOT EXISTS GetNotification(Id INTEGER ,Title TEXT,Message TEXT,CreatedAt TEXT)');        
-            //tx.executeSql('CREATE TABLE IF NOT EXISTS NotificationReply(Id INTEGER ,ReplyText TEXT,UserNameField TEXT,NotificationId TEXT,CreatedAt TEXT,UserId TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
+      
+      tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT)');  
+
     };	
     
+    var checkForLoginStatus = function (){
+		  localStorage.setItem("loginStatusCheck",0);        
+    };
         
-    var checkForLoginStatus = function(){
+    /*var checkForLoginStatus = function(){
         	db = getDb();
 			db.transaction(loginStatusQuery, errorCB, loginStatusQuerySuccess);
     };
@@ -169,7 +173,10 @@ var app = (function (win) {
 	
 	};
 
-       
+  */
+    
+
+    
     var selectQuery = function(tx,query,successFunction){
 		tx.executeSql(query, [], successFunction, errorCB);
 	};
@@ -381,7 +388,6 @@ var app = (function (win) {
                 break;
             case 'message':
                 //getPromotionFromServer();
-                alert('hello2');
             	break;
             case 'error':
                 alert('GCM error = ' + e.msg);

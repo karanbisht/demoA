@@ -6,7 +6,7 @@ app.groupDetail = (function () {
     var selectedGroupId;
     var selectedGroupDesc;
     var custFromGroup= [];
-    var orgId = localStorage.getItem("UserOrgID");
+    //var orgId = localStorage.getItem("UserOrgID");
     
     var organisationID;
     var account_Id;
@@ -71,7 +71,12 @@ app.groupDetail = (function () {
                 last_name: {
                     field: 'last_name',
                     defaultValue:''
+                },
+                customerID: {
+                    field: 'customerID',
+                    defaultValue:''
                 }
+
                }
              };
             
@@ -104,39 +109,29 @@ app.groupDetail = (function () {
                                          mobile: '',
                                          first_name: '',
                                          email:'No Customer in this Organisation',  
-                                         last_name : ''    
+                                         last_name : '',
+                                         customerID:'0',
+                                         account_id:'0',
+                                         orgID:'0'
     	                               });                                      
 	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.orgData.length);  
-                                        for(var i=0;i<orgVal.orgData.length;i++){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
                                             groupDataShow.push({
-												 orgName: orgVal.orgData[i].org_name,
-        		                                 orgDesc: orgVal.orgData[i].org_desc,
-                                                 organisationID:orgVal.orgData[i].organisationID,
-		                                         bagCount : 'C'					
+                                                 mobile: orgVal.allCustomer[i].uacc_username,
+		                                         first_name: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
                                             });
                                         }     
    
                                     } 
                                      
     							  });
-                                     //var orgLength=groupValue[0].customerData.length;
-                                     //console.log(orgLength);
-                            /*
-                                     for(var j=0;j<orgLength;j++){
-                                      var dataVal = groupValue[0].customerData[j].customerID;
-                                         custFromGroup.push(dataVal);
-                                         
-                                         groupDataShow.push({
-                                         customerID: groupValue[0].customerData[j].customerID,
-                                         first_name: groupValue[0].customerData[j].first_name,
-                                         last_name: groupValue[0].customerData[j].last_name,
-                                         email:groupValue[0].customerData[j].email,
-                                         mobile:groupValue[0].customerData[j].mobile
-                                     });
-                                   }
-                                     */
-                                 });
+                               });
                        
 		                         console.log(groupDataShow);
                                  return groupDataShow;
@@ -172,33 +167,6 @@ app.groupDetail = (function () {
 				}			 
 		     });
             
-            
-            /*
-              $("#deleteMemberData").kendoListView({
-        		dataSource: MemberDataSource,
-       		 template: kendo.template($("#Member-Delete-template").html()),
-        		autoBind: true
-			});
-           */
-                     
-               //kendo.bind($('#deleteMemberData'), MemberDataSource);      
-           
-            //if(GroupName==='All'){
-    			             
-            /*app.groupDetail.userData.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName   	    				        	
-        	    								});
-                           /*}else{		
-                                                app.Activities.activities.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName
-        	    								});
-                           }*/
-            
-           //kendo.bind($('#groupMemberTemplate'), MemberDataSource);      
         };
         
         
@@ -473,26 +441,29 @@ app.groupDetail = (function () {
         
                  
         var removeMemberClick = function(){
-	         var orgId = localStorage.getItem("UserOrgID"); 
-                  console.log(orgId);    
+	         //var orgId = localStorage.getItem("UserOrgID"); 
+             //console.log(orgId);    
              var customer = [];
 		    
             $(':checkbox:checked').each(function(i){
           	  customer[i] = $(this).val();
         	});
             
-
-            console.log(customer);            
 			
-            //var jsonDataDeleteMember = {"customer":customer ,"organisation":orgId,"group":selectedGroupId}
+            customer = String(customer);        
+            
+            console.log(customer);            
+			console.log(organisationID);
+            
+            var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
                         
             var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/removeUser/"+customer+"/"+orgId+"/"+selectedGroupId,
+                   url: "http://54.85.208.215/webservice/customer/removeCustomer",
                    type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   //data: jsonDataDeleteMember
+                   dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataDeleteMember
            	}
            },
            schema: {
@@ -514,7 +485,7 @@ app.groupDetail = (function () {
               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='Success'){                                
+                               if(deleteGroupData.status[0].Msg==='You deleted successfully'){                                
 									app.showAlert("Member Deleted Successfully","Notification");
 				        	        app.mobileApp.navigate('#groupMemberShow');
                                }else{
@@ -524,7 +495,129 @@ app.groupDetail = (function () {
                   });
   		 });    
         };
+       
         
+        
+        var showOrgGroupView = function(){
+            app.MenuPage=false;
+            app.mobileApp.navigate('#orgGroupShow');             
+        };
+        
+        
+        
+        var orgGroupShow = function(){
+          console.log("karaasa"+organisationID)
+                           
+            var OrgGroupModel ={
+            id: 'Id',
+            fields: {
+                groupName: {
+                    field: 'groupName',
+                    defaultValue: ''
+                },
+                groupDesc: {
+                    field: 'groupDesc',
+                    defaultValue: ''
+                }/*,
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
+                    defaultValue:''
+                },
+                customerID: {
+                    field: 'customerID',
+                    defaultValue:''
+                }*/
+
+               }
+             };
+            
+
+            var GroupDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/index/"+organisationID,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+               model: OrgGroupModel,
+                
+                
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+									console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+
+                   	             /*if(orgVal.Msg ==='No Customer in this organisation'){     
+                                     groupDataShow.push({
+                                         groupName: '',
+                                         groupDesc: '',
+                                         email:'No Customer in this Organisation',  
+                                         last_name : '',
+                                         customerID:'0',
+                                         account_id:'0',
+                                         orgID:'0'
+    	                               });                                      
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
+                                            groupDataShow.push({
+                                                 groupName: orgVal.allCustomer[i].uacc_username,
+		                                         groupDesc: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
+                                            });
+                                        }     
+   
+                                    }*/ 
+                                     
+    							  });
+                               });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+	               }
+
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            GroupDataSource.fetch(function() {
+                
+ 		   });
+            
+            
+             $("#group-listview").kendoMobileListView({
+  		    template: kendo.template($("#groupTemplate").html()),    		
+     		 dataSource: GroupDataSource,
+              pullToRefresh: true,
+        		schema: {
+           		model:  OrgGroupModel
+				}			 
+		     });            
+        };
         
         
 		        var userMessageTab = function(e){
@@ -597,6 +690,8 @@ app.groupDetail = (function () {
            	showGroupNotification:showGroupNotification,
            	showGroupMembers:showGroupMembers,
                showUpdateGroupView:showUpdateGroupView ,
+               showOrgGroupView:showOrgGroupView,    
+               orgGroupShow:orgGroupShow,    
                saveUpdatedGroupVal:saveUpdatedGroupVal    
            	};
             

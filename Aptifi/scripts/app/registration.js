@@ -13,6 +13,12 @@ app.registration = (function () {
         var username;  
         var comingFrom;
         
+        var account_Id;
+        var userType=[];
+        var UserProfileInformation;
+        var UserOrgInformation;
+
+        
         var varifiCode;
         var regClickButton;
         
@@ -125,7 +131,7 @@ app.registration = (function () {
                 										    device_type='AP';
 									             }
                          
-            									var device_id='123456';
+            					var device_id='123456';
             
 								//var device_id = localStorage.getItem("deviceTokenID");
     					        //console.log(device_id);
@@ -299,6 +305,9 @@ app.registration = (function () {
 									             }
 
                     var device_id='123456';
+                    //var device_id = localStorage.getItem("deviceTokenID");
+    			    //console.log(device_id);
+
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
        
@@ -332,39 +341,120 @@ app.registration = (function () {
                			console.log(loginDataView);
        
                $.each(loginDataView, function(i, loginData) {
-                               console.log(loginData.status[0].Msg);
+                       console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
                            console.log('reg');
-                           var account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                           console.log('karan'+account_Id);
-	   					var userType=loginData.status[0].JoinedOrg.role[0];
-							app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
-                      }
-                   
-                     /*else if(loginData.status[0].Msg==='Create profile'){
-                            app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;
-                            var accountId=loginData.status[0].AccountID;
- 				           app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
-                      }else if(loginData.status[0].Msg==='Authentication Required'){
-                             app.mobileApp.pane.loader.hide();
-                                clickforRegenerateCode();   
-                      }*/
                             
+                          account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                          console.log('karan'+account_Id);
+	   					
+                         var roleLength = loginData.status[0].JoinedOrg.role.length;
+
+                          console.log(loginData.status[0].JoinedOrg.role[0])
+                          
+                          for(var i=0;i<roleLength;i++){
+                             userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                          }
+                                                                                   
+                          UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                          UserOrgInformation = loginData.status[0].JoinedOrg;
+                          console.log(UserOrgInformation);
+                          console.log(UserProfileInformation);
+                          console.log("karan bisht");
+                          
+                          //db = app.getDb();
+						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
+                          saveProfileInfo(UserProfileInformation);
+                          saveOrgInfo(UserOrgInformation); 
+
+                          
+                          
+                      }
+                                               
                 });
   		 });
-      
                     
                 }else{
                    app.showAlert("Please Enter Correct Verification Code","Notification");    
                 }
             }
                 
-
         };
+        
+        
+        
+                var profileInfoData;
+        var profileOrgData;
+		function saveProfileInfo(data) {
+			profileInfoData = data; 
+			var db = app.getDb();
+			db.transaction(insertProfileInfo, app.errorCB, loginSuccessCB);
+		};
+        
+        function saveOrgInfo(data1) {
+            profileOrgData = data1;            
+			var db = app.getDb();
+			db.transaction(insertOrgInfo, app.errorCB, loginSuccessCB);
+		};
+        
+        
+        
+        
+   function insertProfileInfo(tx) {
+		var query = "DELETE FROM PROFILE_INFO";
+			app.deleteQuery(tx, query);
+       	
+	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date ) VALUES ("'
+			+ profileInfoData.account_id
+			+ '","'
+			+ profileInfoData.id
+			+ '","'
+			+ profileInfoData.email
+			+ '","'
+			+ profileInfoData.first_name
+			+ '","'
+			+ profileInfoData.last_name
+			+ '","'
+			+ username
+			+ '","'
+			+ profileInfoData.add_date
+			+ '" ,"'
+			+ profileInfoData.mod_date + '")';              
+
+       app.insertQuery(tx, query);
+       
+}
+        
+    function insertOrgInfo(tx){
+        var query = "DELETE FROM JOINED_ORG";
+		app.deleteQuery(tx, query);
+
+        var dataLength = profileOrgData.org_id.length;
+       
+        console.log(profileOrgData.org_id[0]);
+                console.log(profileOrgData.org_id[1]);
+
+       for(var i=0;i<dataLength;i++){       
+    	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role ) VALUES ("'
+				+ profileOrgData.org_id[i]
+				+ '","'
+				+ profileOrgData.org_name[i]
+				+ '","'
+				+ profileOrgData.role[i]
+				+ '")';              
+       app.insertQuery(tx, query);
+      }                       
+        
+    }  
+
+function loginSuccessCB() {
+							app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;				  
+                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
+
+}
+
     
         
         return {

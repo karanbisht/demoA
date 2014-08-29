@@ -13,6 +13,12 @@ app.Login = (function () {
         var $loginUsername;
 		var username;
         var varifiCode;
+        var userType;
+        var userType=[];
+        var UserProfileInformation;
+        var UserOrgInformation;
+        var account_Id;
+        var db;
         var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
@@ -25,6 +31,7 @@ app.Login = (function () {
         };
 
         var show = function () {
+            console.log("Login Page");
             //app.showNativeAlert();            
             app.userPosition=true;
             $('#loginUsername').val('');
@@ -123,20 +130,27 @@ app.Login = (function () {
                              app.mobileApp.pane.loader.hide();
                                 clickforRegenerateCode();   
                       }else if(loginData.status[0].Msg==='Success'){
-                           console.log('reg');
-                           var account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                           console.log('karan'+account_Id);
-                           console.log(loginData.status[0].JoinedOrg.role.length);
+                          console.log('reg');
+                          account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                          console.log('karan'+account_Id);
+                          console.log(loginData.status[0].JoinedOrg.role.length);
                           var roleLength = loginData.status[0].JoinedOrg.role.length;
-                          var userType=[];
+
                           for(var i=0;i<roleLength;i++){
                              userType.push(loginData.status[0].JoinedOrg.role[i]); 
                           }
                              console.log(userType);
                           
-							app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
+                          
+                          UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                          UserOrgInformation = loginData.status[0].JoinedOrg;
+                          console.log(UserOrgInformation);
+                          console.log(UserProfileInformation);
+                          console.log("karan bisht");
+                          //db = app.getDb();
+						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
+                          saveProfileInfo(UserProfileInformation);
+                          saveOrgInfo(UserOrgInformation);                         
                       }                            
                 });
   		 });
@@ -144,6 +158,85 @@ app.Login = (function () {
                 	
           }
         };
+        
+        
+        
+        var profileInfoData;
+        var profileOrgData;
+		function saveProfileInfo(data) {
+			profileInfoData = data; 
+			var db = app.getDb();
+			db.transaction(insertProfileInfo, app.errorCB, loginSuccessCB);
+		};
+        
+        function saveOrgInfo(data1) {
+            profileOrgData = data1;            
+			var db = app.getDb();
+			db.transaction(insertOrgInfo, app.errorCB, loginSuccessCB);
+		};
+        
+        
+        
+        
+   function insertProfileInfo(tx) {
+		var query = "DELETE FROM PROFILE_INFO";
+			app.deleteQuery(tx, query);
+       	
+	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date ) VALUES ("'
+			+ profileInfoData.account_id
+			+ '","'
+			+ profileInfoData.id
+			+ '","'
+			+ profileInfoData.email
+			+ '","'
+			+ profileInfoData.first_name
+			+ '","'
+			+ profileInfoData.last_name
+			+ '","'
+			+ username
+			+ '","'
+			+ profileInfoData.add_date
+			+ '" ,"'
+			+ profileInfoData.mod_date + '")';              
+
+       app.insertQuery(tx, query);
+       
+}
+        
+    function insertOrgInfo(tx){
+        var query = "DELETE FROM JOINED_ORG";
+		app.deleteQuery(tx, query);
+
+        var dataLength = profileOrgData.org_id.length;
+       
+        console.log(profileOrgData.org_id[0]);
+                console.log(profileOrgData.org_id[1]);
+
+       for(var i=0;i<dataLength;i++){       
+    	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role ) VALUES ("'
+				+ profileOrgData.org_id[i]
+				+ '","'
+				+ profileOrgData.org_name[i]
+				+ '","'
+				+ profileOrgData.role[i]
+				+ '")';              
+       app.insertQuery(tx, query);
+      }                       
+        
+    }  
+
+function loginSuccessCB() {
+							app.mobileApp.pane.loader.hide();
+                            app.userPosition=false;				  
+                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
+
+}
+        
+        
+        
+        
+        
+        
         
         var UserInfoData;
         
@@ -330,7 +423,10 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-          var device_id='123456';
+            var device_id='123456';
+                    
+            //var device_id = localStorage.getItem("deviceTokenID");
+            //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
        
@@ -368,14 +464,26 @@ app.Login = (function () {
                                console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
-                          console.log('reg');
-                          var account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                          console.log('karan'+account_Id);
-                          var userType=loginData.status[0].JoinedOrg.role[0];
-                 
-							app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType);
+					         account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                           console.log('karan'+account_Id);
+                           console.log(loginData.status[0].JoinedOrg.role.length);
+                          var roleLength = loginData.status[0].JoinedOrg.role.length;
+                          
+                          for(var i=0;i<roleLength;i++){
+                             userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                          }
+                             console.log(userType);
+                          
+                          
+                          UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                          UserOrgInformation = loginData.status[0].JoinedOrg;
+                          console.log(UserOrgInformation);
+                          console.log(UserProfileInformation);
+                          console.log("karan bisht");
+                          //db = app.getDb();
+						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
+                          saveProfileInfo(UserProfileInformation);
+                          saveOrgInfo(UserOrgInformation); 
                       }
                    
                      /*else if(loginData.status[0].Msg==='Create profile'){

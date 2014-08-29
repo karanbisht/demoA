@@ -52,11 +52,11 @@ app.adminLogin = (function () {
 
             console.log(usernameMob+"||"+password);
             
-            /*if (username === "Mobile Number" || username === "") {
+            if (usernameMob === "Mobile Number" || usernameMob === "") {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
 			} else if(password === "Password" || password === ""){
                 app.showAlert("Please enter your Password.", "Validation Error");
-            }else { */           
+            }else {           
                  app.mobileApp.pane.loader.show();  	
                         
           var jsonDataLogin = {"username":usernameMob ,"password":password}       
@@ -124,7 +124,7 @@ app.adminLogin = (function () {
   		 });
              
                 	
-          //}
+          }
         };
         
         var UserInfoData;
