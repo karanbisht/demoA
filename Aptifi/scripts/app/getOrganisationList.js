@@ -7,7 +7,7 @@ app.OragnisationList = (function () {
  var activitiesDataSource;   
  var validator;
  var account_Id;
- var userType;
+ var userType=[];
     
  var loginType,groupId,userId;
   
@@ -332,16 +332,17 @@ app.OragnisationList = (function () {
              if(from==='Login'){
               account_Id = e.view.params.account_Id;
               userType= e.view.params.userType; 
-                		  localStorage.setItem("ACCOUNT_ID",account_Id);
-                 		  localStorage.setItem("USERTYPE",userType);
-             }else{
-                 
+              localStorage.setItem("ACCOUNT_ID",account_Id);
+              localStorage.setItem("USERTYPE",userType);
+             }else{                 
                account_Id = localStorage.getItem("ACCOUNT_ID");
                userType = localStorage.getItem("USERTYPE");
              }
 
              console.log(account_Id);
              var userTypeLength = userType.length;
+             
+             
              console.log(userTypeLength);
              
             if(userTypeLength===1){
@@ -706,6 +707,15 @@ app.OragnisationList = (function () {
         var orgShow = function(){
           app.MenuPage=false;
             
+          var userTypeLength = userType.length;
+             console.log(userTypeLength);
+             
+          if(userTypeLength===1){
+             $("#goToAdmin").hide();   
+          }else{
+             $("#moreOption").hide();   
+          } 
+               
                     
           /*orgDataSource.push({userOrgName:userOrgName});                                   
           
@@ -911,6 +921,15 @@ app.OragnisationList = (function () {
         var userProfileShow = function(){
             app.mobileApp.pane.loader.show();
             app.MenuPage=false;    
+            
+          var userTypeLength = userType.length;
+             console.log(userTypeLength);
+             
+          if(userTypeLength===1){
+             $("#goToAdmin").hide();   
+          }else{
+             $("#moreOption").hide();   
+          }
             var db = app.getDb();
 			db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
          };

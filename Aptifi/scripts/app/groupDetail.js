@@ -22,22 +22,10 @@ app.groupDetail = (function () {
            
         var show = function (e) {
             app.MenuPage=false;
-            app.mobileApp.pane.loader.hide();
-            
-		    console.log("show function");
+            app.mobileApp.pane.loader.hide();            
             organisationID = e.view.params.organisationID;
             account_Id = e.view.params.account_Id;
-            //console.log(activityUid);
-            // Get current activity (based on item uid) from Activities model
-            //activity = app.GroupList.groupListData.getByUid(activityUid);
-            /*console.log(activity.group_name);
-			GroupName = activity.group_name;
-            selectedGroupId = activity.pid;
-            selectedGroupDesc = activity.group_desc;
-            console.log(selectedGroupId);
-            console.log(selectedGroupDesc);            
-            */
-        };
+         };
            
            
         var showGroupNotification = function(){
@@ -500,124 +488,13 @@ app.groupDetail = (function () {
         
         var showOrgGroupView = function(){
             app.MenuPage=false;
-            app.mobileApp.navigate('#orgGroupShow');             
+            app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);                
+            //app.mobileApp.navigate('#orgGroupShow');                        
         };
         
         
         
-        var orgGroupShow = function(){
-          console.log("karaasa"+organisationID)
-                           
-            var OrgGroupModel ={
-            id: 'Id',
-            fields: {
-                groupName: {
-                    field: 'groupName',
-                    defaultValue: ''
-                },
-                groupDesc: {
-                    field: 'groupDesc',
-                    defaultValue: ''
-                }/*,
-                email: {
-                    field: 'email',
-                    defaultValue:''
-                },
-                last_name: {
-                    field: 'last_name',
-                    defaultValue:''
-                },
-                customerID: {
-                    field: 'customerID',
-                    defaultValue:''
-                }*/
-
-               }
-             };
-            
-
-            var GroupDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/index/"+organisationID,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {
-               model: OrgGroupModel,
-                
-                
-                 data: function(data)
-  	             {
-                       console.log(data);
-                       
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-									console.log(groupValue);
-                                     
-                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log(orgVal);
-
-                   	             /*if(orgVal.Msg ==='No Customer in this organisation'){     
-                                     groupDataShow.push({
-                                         groupName: '',
-                                         groupDesc: '',
-                                         email:'No Customer in this Organisation',  
-                                         last_name : '',
-                                         customerID:'0',
-                                         account_id:'0',
-                                         orgID:'0'
-    	                               });                                      
-	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.allCustomer.length);  
-                                        for(var i=0;i<orgVal.allCustomer.length;i++){
-                                            groupDataShow.push({
-                                                 groupName: orgVal.allCustomer[i].uacc_username,
-		                                         groupDesc: orgVal.allCustomer[i].user_fname,
-        		                                 email:orgVal.allCustomer[i].user_email,  
-                		                         last_name : orgVal.allCustomer[i].user_lname,
-                        		                 customerID:orgVal.allCustomer[i].custID,
-                                		         account_id:orgVal.allCustomer[i].account_id,
-                                                 orgID:orgVal.allCustomer[i].orgID
-                                            });
-                                        }     
-   
-                                    }*/ 
-                                     
-    							  });
-                               });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-	               }
-
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
-            
-            GroupDataSource.fetch(function() {
-                
- 		   });
-            
-            
-             $("#group-listview").kendoMobileListView({
-  		    template: kendo.template($("#groupTemplate").html()),    		
-     		 dataSource: GroupDataSource,
-              pullToRefresh: true,
-        		schema: {
-           		model:  OrgGroupModel
-				}			 
-		     });            
-        };
+ 
         
         
 		        var userMessageTab = function(e){
@@ -690,8 +567,7 @@ app.groupDetail = (function () {
            	showGroupNotification:showGroupNotification,
            	showGroupMembers:showGroupMembers,
                showUpdateGroupView:showUpdateGroupView ,
-               showOrgGroupView:showOrgGroupView,    
-               orgGroupShow:orgGroupShow,    
+               showOrgGroupView:showOrgGroupView,        
                saveUpdatedGroupVal:saveUpdatedGroupVal    
            	};
             

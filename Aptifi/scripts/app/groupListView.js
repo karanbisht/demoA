@@ -5,10 +5,11 @@ app.GroupList = (function () {
  var el = new Everlive('wKkFz2wbqFe4Gj0s');  
  var groupListDataSource;   
  var orgId = localStorage.getItem("UserOrgID");
-    
+
+ var organisationID;   
     //console.log(orgId);
     
-   var GroupsListModel = (function () {                 
+   /*var GroupsListModel = (function () {                 
        var GroupListModel = {
             id: 'Id',
             fields: {
@@ -69,7 +70,7 @@ app.GroupList = (function () {
 	        return {
             	groupListData: groupListDataSource
         	};
-	}());
+	}());*/
     
 	    	var activityListViewModel = (function () {
     	     
@@ -78,17 +79,135 @@ app.GroupList = (function () {
                   $('#newGroup').val('');
               };
                 
-              var show = function(){
+              var show = function(e){
+                organisationID = e.view.params.organisationID;  
 				$('#newGroup').val('');
-              };  
+                  
+                  
+                  
+                var OrgGroupModel ={
+            id: 'Id',
+            fields: {
+                groupName: {
+                    field: 'groupName',
+                    defaultValue: ''
+                },
+                groupDesc: {
+                    field: 'groupDesc',
+                    defaultValue: ''
+                },
+                addDate: {
+                    field: 'addDate',
+                    defaultValue: ''
+                } /*,
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
+                    defaultValue:''
+                },
+                customerID: {
+                    field: 'customerID',
+                    defaultValue:''
+                }*/
+
+               },                    
+               CreatedAtFormatted: function () {
+        	        return app.helper.formatDate(this.get('addDate'));
+    	       }     
+             };
+            
+
+            var GroupDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/index/"+organisationID,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {
+               model: OrgGroupModel,
                 
-               var groupSelected = function (e) {
+                
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+									console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+
+                   	             /*if(orgVal.Msg ==='No Customer in this organisation'){     
+                                     
+                                     groupDataShow.push({
+ 									 	groupName:'No Group',       
+                                      	groupDesc:'This Organisation don't have any group',
+                                      	addDate:''
+    	                             });
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
+                                            groupDataShow.push({
+                                                 groupName: orgVal.allCustomer[i].uacc_username,
+		                                         groupDesc: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
+                                            });
+                                        }     
+   
+                                    }*/ 
+                                     
+    							  });
+                               });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+	               }
+
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            GroupDataSource.fetch(function() {
+                
+ 		   });
+            
+            
+             $("#group-listview").kendoMobileListView({
+  		    template: kendo.template($("#groupTemplate").html()),    		
+     		 dataSource: GroupDataSource,
+              pullToRefresh: true,
+        		schema: {
+           		model:  OrgGroupModel
+				}			 
+		     });            
+  
+        };  
+                
+         var groupSelected = function (e) {
             		console.log("karan Bisht"+e);
 					app.MenuPage=false;	
             		app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
-        	 };
+        };
                 
-          var addGroup = function(){
+        var addGroup = function(){
             app.MenuPage=false;	
             app.mobileApp.navigate('views/addGroup.html');    
         };
@@ -103,26 +222,17 @@ app.GroupList = (function () {
                       
             var group_name = $("#newGroup").val();     
             var group_description = $("#newGroupDesc").val();
-			//var data = el.data('Group');
-            //data.create({ 'Name' : newGroupValue },  
-           // function(data){
-             //   app.showAlert("Group Added Successfully","Notification");
-             //   app.mobileApp.navigate('views/groupListPage.html');
-    	//	},
-          //  function(error){
-           //         app.showAlert("Please try again later","Notification");
-    	//	});
          
-		 var group_status = 'A';
-         var org_id=1; 
+		 //var group_status = 'A';
+         //var org_id=1; 
             
-         var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
+         var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description}
                       
             
          var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/saveGroup",
+                   url: "http://54.85.208.215/webservice/group/add",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -149,7 +259,9 @@ app.GroupList = (function () {
                       console.log(addGroupData.status[0].Msg);           
                                if(addGroupData.status[0].Msg==='Success'){                                
 									app.showAlert("Group Added Successfully","Notification");
-				        	        app.mobileApp.navigate('views/groupListPage.html');
+				        	        //app.mobileApp.navigate('views/groupListPage.html');
+                                    $("#newGroup").val('');     
+            						$("#newGroupDesc").val('');
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -173,13 +285,15 @@ app.GroupList = (function () {
             
             console.log(groupID);
             
+             var jsonDataDelete = {"group_id":groupID ,"orgID":organisationID}
+            
              var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/delete/"+groupID+"/"+orgId,
+                   url: "http://54.85.208.215/webservice/group/delete",
                    type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   //data: jsonDataDeleteMember
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataDelete
            	}
            },
            schema: {
@@ -235,8 +349,8 @@ app.GroupList = (function () {
 	           deleteGroupFunc:deleteGroupFunc,
                addGroup:addGroup,
                deleteGroup:deleteGroup,
-               addGroupFunc:addGroupFunc,                        
-               groupListData:GroupsListModel.groupListData
+               addGroupFunc:addGroupFunc                        
+               //groupListData:GroupsListModel.groupListData
           };
            
     }());
