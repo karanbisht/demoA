@@ -101,23 +101,7 @@ var app = (function (win) {
         };
 
  
-    /*var getAdminId = function(){
-      var dataSource = new kendo.data.DataSource({
-			  type: 'everlive',
-	           transport: {
-    	            typeName: 'Users'
-        	    },
-  			filter: { field: "Group", operator: "eq", value: "Admin" }
-			});
-				dataSource.fetch(function(){
-					  var view = dataSource.view();
-                      console.log(view);
-					  console.log(view.length); // displays "1"
-					  console.log(view[0].Id); // displays "Jane Doe"                    
-                      localStorage.setItem("adminId",view[0].Id);
-			});  
-    };*/
-
+  
     
     
     /*var openDb = function() {
@@ -424,7 +408,7 @@ var app = (function (win) {
                                                      skin: 'flat'
                                                  	});
        
-        }
+   }
 
     var getYear = (function () {
         return new Date().getFullYear();
@@ -445,7 +429,6 @@ var app = (function (win) {
         selectQuery:selectQuery,
         deleteQuery:deleteQuery,
         updateQuery:updateQuery,
-        //getAdminId:getAdminId,
         insertQuery:insertQuery,
         showConfirm: showConfirm,
         isKeySet: isKeySet,

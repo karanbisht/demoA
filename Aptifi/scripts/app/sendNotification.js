@@ -6,18 +6,16 @@ app.sendNotification = (function () {
 	 var sendNotificationViewModel = (function () {
 
       var orgId = localStorage.getItem("UserOrgID"); 
-         console.log(orgId);
+          console.log(orgId);
       var $notificationDesc;          
-                
+      var account_Id;          
     	var init = function () {				                 
            app.MenuPage=false;
            app.userPosition=false;
            validator = $('#enterNotification').kendoValidator().data('kendoValidator');
            $notificationDesc = $('#notificationDesc'); 
-             
-         
-            
-               $("#notificationType").kendoComboBox({
+                                 
+           $("#notificationType").kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
                         dataSource: [
@@ -34,19 +32,26 @@ app.sendNotification = (function () {
                     });
 
            //$("#groupSelectNotification").kendoComboBox();
+                       $("#groupforNotification").kendoComboBox({
+                          
+                       });
+
         };
+         
                                 
-        var show = function(){
-             $notificationDesc.val('');
-             validator.hideMessages();
+        var show = function(e){
+            $notificationDesc.val('');
+            validator.hideMessages();
             
 			$("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
             
-          var comboGroupListDataSource = new kendo.data.DataSource({
+            account_Id = e.view.params.account_Id;
+          
+            var comboOrgListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
+                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
               	}
@@ -56,15 +61,71 @@ app.sendNotification = (function () {
   	             {	console.log(data);
                         var groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].grpData.length;
+                                     console.log(groupValue);
+                                     var orgLength=groupValue[0].orgData.length;
                                    for(var j=0;j<orgLength;j++){
                                      groupDataShow.push({
-                                         pid: groupValue[0].grpData[j].pid,
-                                         group_name: groupValue[0].grpData[j].group_name,
-                                         add:groupValue[0].grpData[j].add,
-                                         group_desc:groupValue[0].grpData[j].group_desc
+                                         org_id: groupValue[0].orgData[j].org_id,
+                                         org_name: groupValue[0].orgData[j].org_name,
+                                         organisationID:groupValue[0].orgData[j].organisationID,
+                                         role:groupValue[0].orgData[j].role
                                      });
                                    }
+                                 });                       
+                       console.log(groupDataShow);
+                       return groupDataShow;                       
+	               }
+            },
+            error: function (e) {
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           },       
+             sort: { field: 'add', dir: 'desc' }    	     
+          });
+                       
+               
+            $("#orgforNotification").kendoComboBox({
+  				dataSource: comboOrgListDataSource,
+  				dataTextField: "org_name",
+  				dataValueField: "organisationID",
+                  change: onChangeNotiOrg	  	
+            });            
+            
+            
+        };    
+             
+         var onChangeNotiOrg = function(){
+             var org = this.value();       
+             localStorage.setItem("SELECTED_ORG",org);
+             
+             var comboGroupListDataSource = new kendo.data.DataSource({
+             transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/index/"+org,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+              	}
+              },
+       	 schema: {               
+                  data: function(data)
+  	             {	console.log(data);
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     console.log(groupValue);
+                                    
+                                     var orgLength=groupValue[0].groupData.length;
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         group_desc: groupValue[0].groupData[j].group_desc,
+                                         group_name: groupValue[0].groupData[j].group_name,
+                                         group_status:groupValue[0].groupData[j].group_status,
+                                         org_id:groupValue[0].groupData[j].org_id,
+                                         pid:groupValue[0].groupData[j].org_id
+
+                                     });
+                                   }
+                                     
                                  });
                        
                        console.log(groupDataShow);
@@ -86,24 +147,30 @@ app.sendNotification = (function () {
   				dataTextField: "group_name",
   				dataValueField: "pid",
                   change: onChangeNotiGroup	  	
-            });            
+            });
+          
+            	 
         };
+                       
+        
                 
           
          var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
              	var groupSelectedNoti = selectDataNoti.value();
              	return groupSelectedNoti;
-       	 
          };
          
                  
          var sendNotificationMessage = function () {    
          var cmbGroup = [];
+         var org_id = localStorage.getItem("SELECTED_ORG");    
              
             //if (validator.validate()) {
                 var group=onChangeNotiGroup();
                 cmbGroup.push(group);
+             	
+                cmbGroup = String(cmbGroup);
                 console.log(cmbGroup);
 				
                 var selectedType = $("#notificationType").data("kendoComboBox");
@@ -113,16 +180,16 @@ app.sendNotification = (function () {
                 var notificationValue = $notificationDesc.val();
                 var titleValue = $("#notificationTitleValue").val();
                 
-                console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup);
+                console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
                           
              
-          var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"comment_allow":cmmt_allow}
+          var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                       
             
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/sendnotification/"+orgId,
+                   url: "http://54.85.208.215/webservice/notification/sendNotification",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: notificationData

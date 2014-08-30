@@ -6,7 +6,8 @@ app.GroupList = (function () {
  var groupListDataSource;   
  var orgId = localStorage.getItem("UserOrgID");
 
- var organisationID;   
+ var organisationID;  
+    
     //console.log(orgId);
     
    /*var GroupsListModel = (function () {                 
@@ -73,6 +74,7 @@ app.GroupList = (function () {
 	}());*/
     
 	    	var activityListViewModel = (function () {
+     var GroupDataSource;           
     	     
      		 var init = function () {
 				  //console.log('helloasda');
@@ -80,7 +82,9 @@ app.GroupList = (function () {
               };
                 
               var show = function(e){
-                organisationID = e.view.params.organisationID;  
+                organisationID = e.view.params.organisationId;  
+                  console.log(organisationID);
+                  
 				$('#newGroup').val('');
                   
                   
@@ -120,7 +124,7 @@ app.GroupList = (function () {
              };
             
 
-            var GroupDataSource = new kendo.data.DataSource({
+            GroupDataSource = new kendo.data.DataSource({
             transport: {
                read: {
                    url: "http://54.85.208.215/webservice/group/index/"+organisationID,
@@ -143,7 +147,34 @@ app.GroupList = (function () {
                                      
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
+                                     if(orgVal.Msg ==='No Group list'){                                        
+                                     groupDataShow.push({
+ 									 	groupName:'No Group',       
+                                      	groupDesc:'No Group in this Organisation',
+                                          groupStatus:'',  
+                 		                 orgID : '',
+                        		          OrgName:'',
+                                		  groupID:'',
+                                      	addDate:'0'
+    	                             });
+	                                 }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.groupData.length);  
+                                        for(var i=0;i<orgVal.groupData.length;i++){
+                                            groupDataShow.push({
+                                                 groupName: orgVal.groupData[i].group_desc,
+		                                         groupDesc: orgVal.groupData[i].group_name,
+        		                                 groupStatus:orgVal.groupData[i].group_status,  
+                		                         orgID : orgVal.groupData[i].org_id,
+                        		                 OrgName:orgVal.groupData[i].org_name,
+                                		         groupID:orgVal.groupData[i].pid,
+                                                 addDate:orgVal.groupData[i].add
+                                            });
+                                        }  
+                                       
+                                     }
 
+
+                                     
                    	             /*if(orgVal.Msg ==='No Customer in this organisation'){     
                                      
                                      groupDataShow.push({
@@ -198,7 +229,12 @@ app.GroupList = (function () {
            		model:  OrgGroupModel
 				}			 
 		     });            
+                  
   
+
+
+                  
+                  
         };  
                 
          var groupSelected = function (e) {
@@ -222,7 +258,12 @@ app.GroupList = (function () {
                       
             var group_name = $("#newGroup").val();     
             var group_description = $("#newGroupDesc").val();
-         
+            
+            console.log(group_name);
+            console.log(group_description);
+             console.log(organisationID);
+            
+
 		 //var group_status = 'A';
          //var org_id=1; 
             
@@ -276,14 +317,17 @@ app.GroupList = (function () {
 
                 
         var deleteGroupFunc = function(){
-            var orgId = localStorage.getItem("UserOrgID"); 
+            //var orgId = localStorage.getItem("UserOrgID"); 
             //var data = $('input:checkbox:checked').val();
-			var groupID = [];
+			
+            var groupID = [];
 		        $(':checkbox:checked').each(function(i){
           	  groupID[i] = $(this).val();
         	});
             
-            console.log(groupID);
+            groupID=String(groupID);
+            
+            console.log(groupID +"||"+ organisationID);
             
              var jsonDataDelete = {"group_id":groupID ,"orgID":organisationID}
             
@@ -341,6 +385,16 @@ app.GroupList = (function () {
             
          };
                 
+          
+         var showGroup = function(){
+              
+             $("#deleteGroupData").kendoListView({
+  		    template: kendo.template($("#Group-Delete-template").html()),    		
+     		 dataSource: GroupDataSource        				 
+		     });    
+                    
+         }; 
+                
                 
     	 return {
         	   init: init,
@@ -349,6 +403,7 @@ app.GroupList = (function () {
 	           deleteGroupFunc:deleteGroupFunc,
                addGroup:addGroup,
                deleteGroup:deleteGroup,
+               showGroup:showGroup,
                addGroupFunc:addGroupFunc                        
                //groupListData:GroupsListModel.groupListData
           };

@@ -24,7 +24,7 @@ app.adminOragnisationList = (function () {
         };
 
          var show = function(e){
-           app.MenuPage=true;
+           app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
                                      
@@ -295,7 +295,7 @@ app.adminOragnisationList = (function () {
         var sendNotification = function(){
             app.MenuPage=false;
             //document.location.href="#sendNotificationDiv";
-            app.mobileApp.navigate('views/sendNotification.html');           
+            app.mobileApp.navigate('views/sendNotification.html?account_Id='+account_Id);           
         };
         
         var refreshButton = function(){

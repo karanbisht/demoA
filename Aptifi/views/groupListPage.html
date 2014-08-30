@@ -25,12 +25,15 @@
 <!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="groupTemplate" data-role="touch" data-bind="events: { tap: groupSelected }">
     		<div data-role="touch" data-bind="events: { tap: groupSelected }" class="cf">
-        <div class="user-avatar">
-			<img src="styles/images/group1.png" />
-        </div>
+   		     <div class="user-avatar">
+					<img src="styles/images/group1.png" />
+		        </div>
        		 <div class="activity-content">
        		     <h2 id="" class="person-name">${groupName}</h2>
+            		#if(addDate!==0){#
        		     <span id="" class="time-span" >${CreatedAtFormatted()}</span>
+            		#}#
+                    <a id="activityTemplateMessage" class="user-share-txt">${groupDesc}</a>
        		 </div>
 		    </div>
 		</script>

@@ -7,7 +7,9 @@ app.OragnisationList = (function () {
  var activitiesDataSource;   
  var validator;
  var account_Id;
- var userType=[];
+ var userType;
+ var newUserType;   
+ var num1=0,num2=0,num3=0;
     
  var loginType,groupId,userId;
   
@@ -17,305 +19,7 @@ app.OragnisationList = (function () {
             var userEmail;
             var userOrgName;
             var userGropuName;   
-/*        
-    var orgId = localStorage.getItem("UserOrgID");                              
     
-	   // Activities model
-	    var activitiesModel = (function () {	
-		var data; 
-		var groupId1 = localStorage.getItem("UserGroupID");
-        //var groupId1=2;    
- 	   var userId1 = localStorage.getItem("UserID");	
-     
-              console.log("karan"+groupId1+"||"+userId1+"||"+orgId);            
-
-            var activityModel = {
-
-            id: 'Id',
-            fields: {
-                message: {
-                    field: 'message',
-                    defaultValue: ''
-                },
-                title :{
-                    field: 'title',
-                    defaultValue: ''  
-                },
-                CreatedAt: {
-                    field: 'send_date',
-                    defaultValue: new Date()
-                },
-                notification_id: {
-                    field: 'notification_id',
-                    defaultValue: null
-                }                  
-            },
-            
-                 
-            CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('CreatedAt'));
-            },
-            
-            /*PictureUrl: function () {
-                return app.helper.resolvePictureUrl(this.get('Picture'));
-            },*/
-            
-/*            
-            isVisible: function () {
-                var currentUserId = app.Users.currentUser.data.Id;
-                var userId = this.get('UserId');
-                return currentUserId === userId;
-            }
-          };
-             
-             
-          var activitiesDataSource = new kendo.data.DataSource({
-
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+groupId1 +"&customer_id="+userId1,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {
-               model: activityModel,
-                                
-                 data: function(data)
-  	             {
-                       console.log(data);
-               
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                         type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                 });
-                       		console.log('karan');	
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-                       
-                       }                       
-            },
-	            
-              error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   /*
-                  navigator.notification.alert("Please check your internet connection.",
-                  function () { }, "Notification", 'OK');
-                  */
-/*              },
-             
-              sort: { field: 'send_date', dir: 'desc' }
-	        
-    	    });                    
-            
-            //var arr = [];
-        	    var len =null;
-				 	console.log(activitiesDataSource.data().length);
-		 	        activitiesDataSource.fetch(function(){
-     		           data = activitiesDataSource.data();
-            			len = data.length;
-            			console.log(data.length);
-                        //var db = app.getDb();             
-						//db.transaction(insertNotification, app.onError, app.onSuccess);
-    			    });
-            
-              var insertNotification = function(tx){
-						        var query = "DELETE FROM GetNotification";
-								app.deleteQuery(tx, query);
-                  for (var i = 0; i < len; i++) {
-    	       		var queryNotification = 'INSERT INTO GetNotification (Title, Message,CreatedAt) VALUES ("'+ data[i].Title+'","'+data[i].Message+'","'+ data[i].CreatedAt +'")';
-					   app.insertQuery(tx,queryNotification);  	
-        			}   
-    				
-               };
-           
- 				console.log(activitiesDataSource);
-				    return {          
-    		        	activities: activitiesDataSource
-        			};
-        }());
-    
-    
-     var GroupsModel = (function () {                 
-       var GroupModel = {
-            id: 'Id',
-            fields: {
-                CreatedAt: {
-                    field: 'CreatedAt',
-                    defaultValue: new Date()
-                },
-                Name: {
-                    field: 'Name',
-                    defaultValue: null
-                }
-            },
-	            CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('CreatedAt'));
-    	        }
-	       };        
-        
-	        var groupDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: GroupModel
-            },
-
-            transport: {
-                typeName: 'Group'
-            },
-               
-             sort: { field: 'CreatedAt', dir: 'desc' }    
-	        });
-               
-	        return {
-            	groupData: groupDataSource
-        	};
-	}());
-    
-    
-    
-    var UsersModel = (function () {                 
-       var UserModel = {
-            id: 'Id',
-            fields: {
-                ModifiedAt: {
-                    field: 'ModifiedAt',
-                    defaultValue: new Date()
-                },
-                UserId: {
-                    field: 'UserId',
-                    defaultValue: null
-                }
-            },
-           
-            User: function () {
-                var userId = this.get('UserId');
-                var user = $.grep(app.Users.users(), function (e) {
-                    return e.Id === userId;
-                })[0];
-                return user ? user.DisplayName : 'Anonymous';    
-            },
-           
-	          CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('ModifiedAt'));
-    	        }
-   	       };        
-        
-	        var userDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: UserModel
-            },
-
-            transport: {
-                // Required by Backend Services
-                typeName: 'NotificationReply'
-            },
-                
-            change: function (e) {
-                if (e.items && e.items.length > 0) {
-                    $('#no-notification-span').hide();
-                } else {
-                    $('#no-notification-span').show();
-                }
-            },
-                
-             sort: { field: 'ModifiedAt', dir: 'desc' }    
-	        });
-               
-	        return {
-            	userData: userDataSource
-        	};
-	}());
-    
-        
-    // Activities view model
-    var activitiesViewModel = (function () {
-        // Navigate to activityView When some activity is selected
-      
-        var $newNotification;
-        
-        var init = function () {        
-            app.MenuPage=true;
-            app.userPosition=false;
-            
-          var comboGroupListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {               
-                  data: function(data)
-  	             {	console.log(data);
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].grpData.length;
-                                   for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         pid: groupValue[0].grpData[j].pid,
-                                         group_name: groupValue[0].grpData[j].group_name,
-                                         add:groupValue[0].grpData[j].add,
-                                         group_desc:groupValue[0].grpData[j].group_desc
-                                     });
-                                   }
-                                 });
-                       
-                       console.log(groupDataShow);
-                       return groupDataShow;                       
-	               }
-
-            },
-            error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           },       
-             sort: { field: 'add', dir: 'desc' }    
-	       });
-               
-	                                        
-      	    $("#groupSelect").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onComboChange
-		  	});
-	            $("#groupSelectAdmin").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onAdminComboChange
-		  	});
-               
-            /*$("#groupSelectNotification").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onChangeNotiGroup
-		    });
-            */
-/*        };
-*/      
         var organisationViewModel = (function () {
             
         var init = function(){
@@ -331,25 +35,46 @@ app.OragnisationList = (function () {
              
              if(from==='Login'){
               account_Id = e.view.params.account_Id;
-              userType= e.view.params.userType; 
+              userType= e.view.params.userType;
+              newUserType = userType.split(',');   
+                 
+              //console.log("karan"+newUserType);  
+              //console.log(newUserType.length);
+                 
               localStorage.setItem("ACCOUNT_ID",account_Id);
               localStorage.setItem("USERTYPE",userType);
-             }else{                 
+                 
+             }else{
+                 
                account_Id = localStorage.getItem("ACCOUNT_ID");
                userType = localStorage.getItem("USERTYPE");
+               newUserType = userType.split(',');   
              }
-
+				
              console.log(account_Id);
-             var userTypeLength = userType.length;
+             console.log(userType);
+              
              
+             for(var i=0;i<newUserType.length;i++){
+                 console.log(newUserType[i]);
+                 if(newUserType[i]==='C'){
+                  num1=1;   
+                 }else if(newUserType[i]==='O'){
+                  num2=3;   
+                 }else{
+                  num3=5;   
+                 }
+             }
              
-             console.log(userTypeLength);
+            if(num1===1 && num2===3)
+             {
+                 localStorage.setItem("ShowMore",0);
+                 $("#moreOption").hide();
+             }else if(num1===1){
+                 localStorage.setItem("ShowMore",1);
+                 $("#goToAdmin").hide();
+             }
              
-            if(userTypeLength===1){
-             $("#goToAdmin").hide();   
-             }else{
-             $("#moreOption").hide();   
-             } 
              
             var organisationNotificationModel = {
             id: 'Id',
@@ -472,18 +197,7 @@ app.OragnisationList = (function () {
   				}			 
 		     });
              
-             
-             
-              $("#organisation-listview1").kendoMobileListView({
-  		    template: kendo.template($("#orgTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-        		schema: {
-           		model:  organisationNotificationModel
-				}			 
-		     });
-
-             
- 
+              
             /* 
        	 userId = e.view.params.UserId;
             groupId =e.view.params.GroupId;
@@ -705,48 +419,52 @@ app.OragnisationList = (function () {
         };
         
         var orgShow = function(){
-          app.MenuPage=false;
+              app.MenuPage=false;    
+           var showMore = localStorage.getItem("ShowMore");
+             if(showMore!==1){
+               $("#goToAdmin").hide();             
+             }else{
+               $("#moreOption").hide();  
+             }
+                        
+         var db = app.getDb();
+		 db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
+        };                        
+                     
+        function getOrgInfoDB(tx) {            
+        
+            var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+			app.selectQuery(tx, query, orgDataForOrgSuccess);
+		};
+
+		var orgDbData = [];
             
-          var userTypeLength = userType.length;
-             console.log(userTypeLength);
-             
-          if(userTypeLength===1){
-             $("#goToAdmin").hide();   
-          }else{
-             $("#moreOption").hide();   
-          } 
-               
-                    
-          /*orgDataSource.push({userOrgName:userOrgName});                                   
-          
-           $("#organisation-listview").kendoMobileListView({
+        function orgDataForOrgSuccess(tx, results) {
+			var count = results.rows.length;
+              console.log('count'+count);
+			if (count !== 0) {
+                for(var i=0;i<count;i++){
+                     orgDbData.push({
+						 org_name: results.rows.item(i).org_name,
+        		         org_id: results.rows.item(i).org_id,
+                         role:results.rows.item(i).role,
+                         orgDesc:''
+                       });                    
+                }
+			}
+		};
+           
+
+	function getOrgDBSuccess() {
+			app.mobileApp.pane.loader.hide();
+        
+	     	//document.getElementById("orgData").innerHTML = "";
+        
+              $("#organisation-listview1").kendoMobileListView({
   		    template: kendo.template($("#orgTemplate").html()),    		
-     		 dataSource: orgDataSource
-		   });
-          */
-            
-        };
-        
-
-            // var onComboSelect = function() {
-               // alert("combo");
-                // var selectData = $("#groupSelect").data("kendoComboBox");
-                 //alert(selectData.value());
-                 
-          	 //var dataItem = this.dataItem(e.item.index());      
-      	     //alert( dataItem.text + " : " + dataItem.value );
-               /*  
-                 
-                 
-                   $("#get").click(function() {
-                        var categoryInfo = "\nCategory: { id: " + categories.value() + ", name: " + categories.text() + " }",
-                            productInfo = "\nProduct: { id: " + products.value() + ", name: " + products.text() + " }",
-                            orderInfo = "\nOrder: { id: " + orders.value() + ", name: " + orders.text() + " }";
-
-                        alert("Order details:\n" + categoryInfo + productInfo + orderInfo);
-                 */
-        	//};
-        
+     		 dataSource: orgDbData        			 
+		     });
+		};
        
         	var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
@@ -922,17 +640,17 @@ app.OragnisationList = (function () {
             app.mobileApp.pane.loader.show();
             app.MenuPage=false;    
             
-          var userTypeLength = userType.length;
-             console.log(userTypeLength);
-             
-          if(userTypeLength===1){
-             $("#goToAdmin").hide();   
-          }else{
-             $("#moreOption").hide();   
-          }
+   		var showMore = localStorage.getItem("ShowMore");
+             if(showMore!==1){
+               $("#goToAdmin").hide();             
+             }else{
+               $("#moreOption").hide();  
+             }
+
             var db = app.getDb();
 			db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
          };
+            
             
          function getProfileInfoDB(tx) {
 				var query = 'SELECT first_name , last_name , email , mobile FROM PROFILE_INFO';
@@ -942,9 +660,10 @@ app.OragnisationList = (function () {
 				app.selectQuery(tx, query, orgDataSuccess);
 			}
 
-function profileDataSuccess(tx, results) {
-	var count = results.rows.length;
-	if (count != 0) {
+
+            function profileDataSuccess(tx, results) {
+				var count = results.rows.length;
+			if (count !== 0) {
 			var fname = results.rows.item(0).first_name;
 			var lname = results.rows.item(0).last_name;
 			var email = results.rows.item(0).email;
@@ -954,8 +673,8 @@ function profileDataSuccess(tx, results) {
             $("#userMobileNo").html(mobile);
             $("#userlname").html(lname);
             $("#userfname").html(fname); 
-	}
-}
+		}
+			}
             
 	function orgDataSuccess(tx, results) {    
         	var count = results.rows.length;       

@@ -488,6 +488,7 @@ app.groupDetail = (function () {
         
         var showOrgGroupView = function(){
             app.MenuPage=false;
+            console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);                
             //app.mobileApp.navigate('#orgGroupShow');                        
         };

@@ -1,4 +1,4 @@
- 	<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.GroupList" data-init="app.GroupList.init">            
+ 	<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.GroupList" data-init="app.GroupList.init" data-show="app.GroupList.showGroup">            
        <div data-role="header">           
              <div data-role="navbar">           
                     Delete Groups
@@ -8,8 +8,8 @@
 	
 	 		 
     	<div id="example">
-        		 <ul data-template="row-template" data-bind="source: groupListData"></ul>
-    	 	</div> 
+        		 <ul id="deleteGroupData" data-template="Group-Delete-template" style="border:none;padding:10px;" ></ul>
+    	</div> 
      
          
            <li>
@@ -19,9 +19,9 @@
            </li>
 	</div> 
      
-   <script id="row-template" type="text/x-kendo-template">
- 	   <li class="deleteGroupShow">
-     	   <input type="checkbox" name="chkValue" value="${pid}" data-bind="checked: selected"/>
-        	<label >${group_name}</label>
-    	</li>	
+     
+   <script id="Group-Delete-template" type="text/x-kendo-template">
+       <li class="deleteGroupShow">
+        	<label ><input type="checkbox" name="chkValue" value="${groupID}" /> ${groupName} </label>
+	   </li>	       
    </script>
