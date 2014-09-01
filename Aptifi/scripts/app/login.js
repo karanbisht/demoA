@@ -182,7 +182,7 @@ app.Login = (function () {
 		var query = "DELETE FROM PROFILE_INFO";
 			app.deleteQuery(tx, query);
        	
-	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date ) VALUES ("'
+	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , login_status ) VALUES ("'
 			+ profileInfoData.account_id
 			+ '","'
 			+ profileInfoData.id
@@ -197,7 +197,8 @@ app.Login = (function () {
 			+ '","'
 			+ profileInfoData.add_date
 			+ '" ,"'
-			+ profileInfoData.mod_date + '")';              
+			+ profileInfoData.mod_date
+	        + '" ,"'+1+'")';              
 
        app.insertQuery(tx, query);
        
@@ -210,19 +211,20 @@ app.Login = (function () {
         var dataLength = profileOrgData.org_id.length;
        
         console.log(profileOrgData.org_id[0]);
-                console.log(profileOrgData.org_id[1]);
+        console.log(profileOrgData.org_id[1]);
 
        for(var i=0;i<dataLength;i++){       
-    	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role ) VALUES ("'
+    	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
 				+ profileOrgData.org_id[i]
 				+ '","'
 				+ profileOrgData.org_name[i]
 				+ '","'
 				+ profileOrgData.role[i]
+           	 + '","'
+				+ profileOrgData.org_logo[i]	
 				+ '")';              
        app.insertQuery(tx, query);
-      }                       
-        
+      }                               
     }  
 
 function loginSuccessCB() {

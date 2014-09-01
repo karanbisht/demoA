@@ -1,9 +1,9 @@
-<div data-role="view" id="single-activity" data-layout="innerActivity" class="activity-view"  data-init="app.Activity.init"  data-show="app.Activity.show" data-before-show="app.Activity.befShow">
+<div data-role="view" id="single-activity" data-layout="innerActivity" class="activity-view"  data-init="app.Activity.init"  data-show="app.Activity.show" data-before-show="app.Activity.befShow" data-model="app.Activity">
     <div data-role="header">
         <div data-role="navbar">
             Notification
             <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>
-            <a id="replyButton" class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>
+            <!--<a id="replyButton" class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>-->
         </div>
     </div>
     
@@ -12,13 +12,13 @@
         <div class="user-avatar">
             <img src="styles/images/notification1.png" />
         </div>
-        <div class="activity-content">
-            <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-            <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
-              <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
-              <h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
-              <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
-            </li>    
+	        <div class="activity-content">
+    	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
+        	    <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
+            		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
+              		<h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
+              		<span id="activityText" data-bind="text: message" class="user-share-txt"></span>
+            	</li>    
             <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
             </div>
         
@@ -31,37 +31,31 @@
         
     </div>   
    
-   <div data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">
+   <div id="commentPanel" data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">
         <div style="display:inline;padding:3px;">
   		 <div style="float:left;width:80%;"><textarea id="newComment" placeholder="Write a reply..." style="padding-left:5px;padding-right:5px;"></textarea></div>
            <input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>
         </div>
    </div>      
+    
 </div>
 
 
 <!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
-   # if (checkAdmin === 1){ # 
+   # if (user_type !== 'Customer'){ # 
         <div class="comment-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;">
         <h2 class="person-name">${User()}</h2>
-
-        <span class="time-span">${CreatedAtFormatted()}</span>
-       
-              <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
+        <span class="time-span">${CreatedAtFormatted()}</span>       
+        <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
         <a class="user-share-txt">${comment}</a>
        </div>
-
   # }else{ #
-
     <div class="comment-content" style="background-color:rgb(203,225,254);padding:10px;border-radius:6px;">
         <h2 class="person-name">${User()}</h2>
         <span class="time-span">${CreatedAtFormatted()}</span>
               <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
         <a class="user-share-txt">${comment}</a>
-    </div>
-        
+    </div>        
    # } #
-    
-
 </script>

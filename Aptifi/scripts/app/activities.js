@@ -393,18 +393,23 @@ app.Activities = (function () {
                                          title: ' No Notification ',
                                          message: 'No Notification from this Organisation',
                                          date:'0',  
-                                         commentAllow : 'Y',
-                                         notificationID:'0'        
+                                         comment_allow : 'Y',
+                                         org_id:'0', 
+                                         pid:'',
+                                         bagCount : ''  
     	                               });                   
                                         
 	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.orgData.length);  
-                                        for(var i=0;i<orgVal.orgData.length;i++){
+                                        console.log(orgVal.notificationList.length);  
+                                        for(var i=0;i<orgVal.notificationList.length;i++){
                                             groupDataShow.push({
-												 orgName: orgVal.orgData[i].org_name,
-        		                                 orgDesc: orgVal.orgData[i].org_desc,
-                                                 organisationID:orgVal.orgData[i].organisationID,
-		                                         bagCount : 'C'					
+												 message: orgVal.notificationList[i].message,
+        		                                 org_id: orgVal.notificationList[i].org_id,
+                                                 date:orgVal.notificationList[i].send_date,
+                                                 title:orgVal.notificationList[i].title,
+                                                 pid :orgVal.notificationList[i].pid ,
+                                                 comment_allow:orgVal.notificationList[i].comment_allow ,
+		                                         bagCount : 'C'				
                                             });
                                         }     
                                                                                      
@@ -529,10 +534,19 @@ app.Activities = (function () {
             console.log("Query Success");
         };
         */
+            
         var activitySelected = function (e) {
             console.log(e.data.uid);
+            console.log(e.data);
+            var message = e.data.message;
+            var title = e.data.title;
+            var org_id = e.data.org_id;
+            console.log(org_id);
+            var notiId=e.data.pid;
+            var comment_allow=e.data.comment_allow;//: "1"
+            
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
+            app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
         };
         
         var groupSelected = function (e) {
@@ -605,122 +619,14 @@ app.Activities = (function () {
         };
         
          
-        var sendNotificationMessage = function () {     
-            if (validator.validate()) {
-                var group=onChangeNotiGroup();
-                console.log(group);
-                var notificationValue = $newNotification.val();
-                var titleValue = $("#inputValue").val();
-                
-                /*var el = new Everlive('wKkFz2wbqFe4Gj0s');
-					el.push.notifications.create({ Message:notificationValue},
-					    function(data){
-					        app.showAlert("Notification Send Sucessfully","Notification");
-					    },
-
-                
-                		function(error){
-					        app.showAlert(JSON.stringify(error));
-    					});
-                */
-               
-  			  var conditions = {
-    				'User.Group': group
-				};
-				var notification;
-                
-                if(group==='All' || group==='' ){
-
-                      	notification = {
-                              Title: titleValue ,
-                              Message:notificationValue  
-							};    
-              	  }else{
-                     			 notification = {
-								    Filter: JSON.stringify(conditions),
-                                    Title: titleValue ,
-                        	        Message:notificationValue  
-							};
-                }
-				                
-                		$.ajax({
-    						type: "POST",
-						    url: 'http://api.everlive.com/v1/wKkFz2wbqFe4Gj0s/Push/Notifications',
-						    contentType: "application/json",
-   						 data: JSON.stringify(notification),
-                    
- 						   success: function (data) {
-                                if(group===''){
-                                    group='All'
-                                }
-                                var el = new Everlive('wKkFz2wbqFe4Gj0s');
-								var data = el.data('GetNotification');
-								data.create({ 'Message': notificationValue , 'Group': group ,'Title':titleValue },
-							    function(data){
-							        //alert(JSON.stringify(data));
-							    },
-							    function(error){
-    							    // alert(JSON.stringify(error));
-							    });
-    							app.showAlert("Notification Send Sucessfully","Notification");
-						    },
-                    
-						    error: function (error) {
-						        app.showAlert(JSON.stringify(error));
-							}
-						});
-              }
-        };
         
         var info = function(){
             
         };
         
-        var orgShow = function(){
-          app.MenuPage=false;
-            
-          var orgDataSource= [];   
-          var userOrgName = localStorage.getItem("userOrgName"); 
-          console.log(userOrgName);
-          
-          //studentAnswerArray[i] = answerString.toString().split(',');
-            
-          orgDataSource.push({userOrgName:userOrgName});                                   
-          
-           $("#organisation-listview").kendoMobileListView({
-  		    template: kendo.template($("#orgTemplate").html()),    		
-     		 dataSource: orgDataSource
-		   });
-            
-            
-        };
         
-
-            // var onComboSelect = function() {
-               // alert("combo");
-                // var selectData = $("#groupSelect").data("kendoComboBox");
-                 //alert(selectData.value());
-                 
-          	 //var dataItem = this.dataItem(e.item.index());      
-      	     //alert( dataItem.text + " : " + dataItem.value );
-               /*  
-                 
-                 
-                   $("#get").click(function() {
-                        var categoryInfo = "\nCategory: { id: " + categories.value() + ", name: " + categories.text() + " }",
-                            productInfo = "\nProduct: { id: " + products.value() + ", name: " + products.text() + " }",
-                            orderInfo = "\nOrder: { id: " + orders.value() + ", name: " + orders.text() + " }";
-
-                        alert("Order details:\n" + categoryInfo + productInfo + orderInfo);
-                 */
-        	//};
         
        
-        	var onChangeNotiGroup = function(){
-            	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
-             	var groupSelectedNoti = selectDataNoti.value();
-             	return groupSelectedNoti;
-       	 };
         
         
         
@@ -937,7 +843,6 @@ app.Activities = (function () {
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,
             CreatedAtFormatted:CreatedAtFormatted,          
-            sendNotificationMessage:sendNotificationMessage,
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
             makeCall:makeCall,
@@ -947,7 +852,6 @@ app.Activities = (function () {
             showNotifi:showNotifi,
 			about:about,
             setting:setting,
-            orgShow:orgShow,
             info:info,
             init:init,
             show:show,

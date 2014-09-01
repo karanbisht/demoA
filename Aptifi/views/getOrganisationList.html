@@ -1,7 +1,7 @@
- <div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show">
-         <div data-role="header">        
+<div data-role="layout" data-id="mobile-tabstrip">
+   <div data-role="header">               
               <div data-role="navbar">     
-                   Organisation List
+                 <span data-role="view-title"></span> 
              	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>
 		         
                  <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
@@ -15,7 +15,13 @@
         	    	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
               </div>     
 	     </div>
-                      
+</div>
+ 
+
+
+
+
+<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-after-show="app.OragnisationList.afterShow">             
 	 <!--data-append-on-refresh="true"-->	
 
      <div>
@@ -28,14 +34,6 @@
             <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
             <a id="aboutUsView" data-icon="info" data-role="button" data-bind="click: about">About Us</a>
             <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
-   
-   <div data-role="footer">
-        <div data-role="tabstrip">
-            <a id="manageGroupView" data-icon="organize" data-role="button" data-bind="click: manageGroup" style="display:none" >Manage Groups</a>
-            <a id="replyUserView" data-icon="reply" data-role="button" data-bind="click: replyUser" style="display:none" >Reply User</a>
-            <a id="sendNotificationView" data-icon="action" data-role="button" data-bind="click: sendNotification" style="display:none" >Send Notification</a>
-        </div>
-   </div>
    
     
 	    <div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
@@ -73,25 +71,10 @@
 	</div>
 
 
-<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
-    <div data-role="header">
-
-        <div data-role="navbar">
-          Organisation  
-          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
-          <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>    
-          <!--<a id="goToAdmin" data-align="right" data-role="button" data-bind="click: callOrganisationLogin">Admin</a>-->
-        </div>
-        
-         <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #979C94">
-       		<a data-icon="history" href="#view-all-activities">Notification</a>
-			   <a data-icon="globe" href="#organisationDiv">Organisation</a>
-        	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
-         </div>     
-    </div>
-	
+<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organisation List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
+  	
     <div>
-      <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" style="padding:10px;"></ul>
+      <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-pull-to-refresh="true" style="padding:10px;"></ul>
     	<p id="no-notification-span" hidden="hidden" class="no-items-msg">
     	   <b>You have no Notification yet.</b>
     	</p>
@@ -100,22 +83,8 @@
 
 
 
-<div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
-    <div data-role="header">
-        <div data-role="navbar">
-          Profile
-          <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
-          <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>     
-          <!--<a id="goToAdmin" data-align="right" data-role="button" data-bind="click: callOrganisationLogin">Admin</a>-->  
-        </div>
-         <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #979C94">
-       		<a data-icon="history" href="#view-all-activities">Notification</a>
-			   <a data-icon="globe" href="#organisationDiv">Organisation</a>
-        	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
-         </div>     
-
-    </div>
-	
+<div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
+ 	
     <div id="tabstrip-profile">
       <ul data-role="listview" data-style="inset" data-type="group">
         <li>
@@ -211,10 +180,18 @@
 	<!-- Activities ListView Template -->
 
 		<script type="text/x-kendo-template" id="organisationTemplate">
-    		<div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
+    		
+            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
+         #if(org_logo===null){#   
          <div class="user-avatar">
-            <img src="styles/images/notification1.png" />
-        </div>           
+            <img src="styles/images/habicon.png">
+        </div>
+        #}else{#
+         <div class="user-avatar">
+           <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
+        </div>             
+         #}#  
+             
        		 <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
             
@@ -231,11 +208,24 @@
 
 	<!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="orgTemplate"> 
-    		<div class="cf">
-    	<div class="user-avatar">
-		    <img src="styles/images/habicon.png" />
-    	</div>
-	    		<div class="activity-content" st>
+    		<div class="cf" data-role="touch" data-bind="events: { tap: orgForGroupSelected }">
+				           
+     #console.log("----"+imageSource1)#
+            
+         #if(imgData===null ||imgData==='null' ){#   
+         
+        	<div class="user-avatar">
+            	<img src="styles/images/habicon.png"/>
+        	</div>
+             
+        #}else{#
+             
+ 	   	<div class="user-avatar">
+     	      <img  data-bind="attr: { src: imageSource1}" />  
+    		</div>
+             
+         #}#    
+	    		<div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
                     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a> 
         		</div>

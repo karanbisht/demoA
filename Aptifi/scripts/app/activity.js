@@ -10,6 +10,11 @@ app.Activity = (function () {
     var $commentsContainer,
         listScroller;
     
+    var org_id;
+    var notiId;
+    var account_Id;
+            
+    
     var activityViewModel = (function () {
         
       var activityUid,activity;
@@ -17,40 +22,32 @@ app.Activity = (function () {
         
       var init = function () {
                  if (app.checkConnection()) {  
-		 			 //getReplyPost();
+		 			 getuserName();
                   }             
       };
                 
         var data;          
         var len = null;
-        var getReplyPost = function(){
-    	//console.log(app.Comments.comments);
-        //console.log(app.Comments.comments.data());
-            
-            app.Comments.comments.fetch(function(){
-     		           data = app.Comments.comments.data();
-                		console.log(data);
-            			len = data.length;
-            			console.log(data.length);
-                        var db = app.getDb();             
-						db.transaction(insertNotificationReply, app.onError, app.onSuccess);
-        				//db.transaction(insertNotification, errorCB, successCB);
-    		    });
-           };              
-        
-        var insertNotificationReply = function(tx){
-			var query = "DELETE FROM NotificationReply";
-		    app.deleteQuery(tx, query);
+        var userFirstName;
 
-           for (var i = 0; i < len; i++) {
-            //console.log("DATA FROM INTERNAL DATABASE"+data[i].ReplyText+'","'+data[i].CreatedAt+'","'+ data[i].NotificationId +'","' + data[i].UserId);
-     		var UserNameValue = getUserName(data[i].UserId);
-            console.log(UserNameValue);                  
-    	     var queryInsert = 'INSERT INTO NotificationReply (ReplyText,UserNameField ,CreatedAt,NotificationId,UserId) VALUES ("'+ data[i].ReplyText+'","'+UserNameValue+'","'+data[i].CreatedAt+'","'+ data[i].NotificationId +'","' + data[i].UserId+'")';
-			 app.insertQuery(tx,queryInsert);  	
-           }   
+        var getuserName = function(){
+            var db = app.getDb();             
+			db.transaction(getProfileInfo, app.onError, app.onSuccess);
+    	};
+                        
+        
+        var getProfileInfo = function(tx){
+			var query = "select first_name FROM PROFILE_INFO";
+		    app.selectQuery(tx, query, orgDataProfileSuccess);
        };
         
+        
+        var orgDataProfileSuccess = function(tx, results){
+         var count = results.rows.length;
+			if (count !== 0) {
+		 		userFirstName = results.rows.item(0).first_name;
+			}
+        }
         
         var getUserName = function(idValue){
                 var userId = idValue;
@@ -86,31 +83,49 @@ app.Activity = (function () {
             //var cUserId = app.Users.currentUser.get('data').Id;
             //var adminId = localStorage.getItem("adminId");
 
-            var userIype = localStorage.getItem("UserType");
-            var userName = localStorage.getItem("userfName");	
-            var userOrgName = localStorage.getItem("userOrgName");	
+            //var userIype = localStorage.getItem("UserType");
+            //var userName = localStorage.getItem("userfName");	
+            //var userOrgName = localStorage.getItem("userOrgName");	
 
-            if(userIype==="O"){
+            /*if(userIype==="O"){
                 $("#replyButton").hide();
-            }
+            }*/
              
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
             listScroller.reset();
             
-            activityUid = e.view.params.uid;
+
+            var message =e.view.params.message;
+            var title =e.view.params.title;
+            org_id =e.view.params.org_id;
+            notiId =e.view.params.notiId;
+            account_Id =e.view.params.account_Id;
+            var comment_allow = e.view.params.comment_allow;
             
-            console.log(activityUid);
-            // Get current activity (based on item uid) from Activities model
-            activity = app.Activities.activities.getByUid(activityUid);
-            console.log(activity);
-           // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
-            kendo.bind(e.view.element, activity, kendo.mobile.ui);
+            if(comment_allow===1 || comment_allow==='1'){
+                $("#commentPanel").show();                
+            }else{
+                $("#commentPanel").hide();
+            }
             
-            var userId = localStorage.getItem("UserID");
             
-            var notificationId = activity.notification_id; 
+            console.log(org_id+"||"+notiId+"||"+account_Id);
+            
+            $("#personName").html(title);
+            $("#activityText").html(message);
+            
+            //console.log(activityUid);
+            //console.log(activityUid.message);
+            //activity = app.OragnisationList.organisationSelected.getByUid(activityUid);
+            //console.log(activity);
+            // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
+            //kendo.bind(e.view.element, activity, kendo.mobile.ui);
+            
+            //var userId = localStorage.getItem("UserID");
+            
+            //var notificationId = activity.notification_id; 
             
             var commentModel = {
             id: 'Id',
@@ -133,25 +148,24 @@ app.Activity = (function () {
                 return app.helper.formatDate(this.get('add_date'));
             },
             User: function () {
-                console.log(this.get('user_id'));                
-                var serUserId = this.get('user_id');
-                console.log(serUserId +"||"+ userId);
-                //if(userId===serUserId){
-					return userName;                    
-                //}else{
-                //    return userOrgName;
-                //}
+                //console.log(this.get('user_id'));                
+                //var serUserId = this.get('user_id');
+                if(this.get('user_type')==="Customer"){
+					return userFirstName;                    
+                }else{
+                    return 'Admin';
+                }
                 //return user ? user.DisplayName : 'Anonymous';    
             }
         };
             
-            console.log("SHOWING DATA" + notificationId +"||"+userId);
+            //console.log("SHOWING DATA" + notificationId +"||"+userId);
 
             
             var commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getReply/"+notificationId+"/"+userId,
+                   url: "http://54.85.208.215/webservice/notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -168,25 +182,19 @@ app.Activity = (function () {
                                     console.log(groupValue);
                                      
                                      var returnMsg =groupValue[0].Msg;
-                                     console.log(returnMsg);
+                                     console.log(returnMsg);//No Comments 
                                      if(returnMsg==='Success'){
-                                     var commentLength=groupValue[0].replyData.length;
+                                     var commentLength=groupValue[0].AllComment.length;
                                     
                                      console.log(commentLength);
                             
                                      for(var j=0;j<commentLength;j++){
                                       groupDataShow.push({
-                                         comment: groupValue[0].replyData[j].comment,
-                                         add_date: groupValue[0].replyData[j].add_date,
-										 checkAdmin:j
-                                         //notification_id: groupValue[0].replyData[j].notification_id,
-                                         //send_date:groupValue[0].replyData[j].send_date,
-                                         //title:groupValue[0].replyData[j].title,
-                                         //type:groupValue[0].replyData[j].type
-
+                                         comment: groupValue[0].AllComment[j].comment,
+                                         add_date: groupValue[0].AllComment[j].add_date,
+                                         user_id : groupValue[0].AllComment[j].user_id,
+                                         user_type : groupValue[0].AllComment[j].user_type
                                       });
-                                        // console.log(groupValue[0].replyData[j].comment); 
-
                                      }
                                   } 
                                  });
@@ -285,19 +293,20 @@ app.Activity = (function () {
         
         
         var saveComment = function () {    
+            console.log('click save');
             // Validating of the required fields
-            if (validator.validate()) {
+            //if (validator.validate()) {
                 
                 // Adding new comment to Comments model
                 //var comments = app.Comments.comments;
                 //var comment = comments.add();                
-                var comment =$newComment.val();
-                var org_id = localStorage.getItem("UserOrgID");
- 			   var customer_id = localStorage.getItem("UserID");
+                var comment =$("#newComment").val();
+                //var org_id = localStorage.getItem("UserOrgID");
+ 			   //var customer_id = localStorage.getItem("UserID");
                 
-                console.log("SHOWING DATA" + notificationId +"||"+customer_id);
+                console.log("SHOWING DATA" + notiId +"||"+account_Id+"||"+org_id);
                 
-          var jsonDatacomment = {"notification_id":notificationId ,"customer_id":customer_id,"comment":comment, "org_id":org_id}
+          var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
                    
           var saveCommentDataSource = new kendo.data.DataSource({
                transport: {
@@ -351,7 +360,7 @@ app.Activity = (function () {
                 comments.sync();
 
             */
-            }
+            //}
         };
 
         

@@ -794,16 +794,16 @@
 
 
 #comments-listview > li {
-    border:none;
-    display: inline-block;
-    float:right;
+    border:none;  
+    /*display: inline-block;
+    float:right;*/
 }
 
 
 #activities-listview > li {
     border:none;
-    min-width:40px;
-    display: inline-block;
+   /*min-width:40px;
+    display: inline-block;*/
 }
 
 /*.commentClasList > li {

@@ -10,7 +10,7 @@ app.OragnisationList = (function () {
  var userType;
  var newUserType;   
  var num1=0,num2=0,num3=0;
-    
+ var groupDataShow = [];   
  var loginType,groupId,userId;
   
  		   var userlName;
@@ -29,7 +29,7 @@ app.OragnisationList = (function () {
          var show = function(e){
            app.MenuPage=true;
            app.userPosition=false;
-           app.mobileApp.pane.loader.hide();
+  		 app.mobileApp.pane.loader.show();
              
            var from= e.view.params.from; 
              
@@ -44,8 +44,7 @@ app.OragnisationList = (function () {
               localStorage.setItem("ACCOUNT_ID",account_Id);
               localStorage.setItem("USERTYPE",userType);
                  
-             }else{
-                 
+             }else{                 
                account_Id = localStorage.getItem("ACCOUNT_ID");
                userType = localStorage.getItem("USERTYPE");
                newUserType = userType.split(',');   
@@ -66,8 +65,14 @@ app.OragnisationList = (function () {
                  }
              }
              
-            if(num1===1 && num2===3)
-             {
+             
+            if(num1===1 && num2===0 && num3===0){
+                localStorage.setItem("ShowMore",1);
+                $("#goToAdmin").hide();
+             }else if(num2===3 && num1===0 && num3===0){
+                localStorage.setItem("ShowMore",0);
+                $("#moreOption").hide();  
+             }else if(num1===1 && num2===3){
                  localStorage.setItem("ShowMore",0);
                  $("#moreOption").hide();
              }else if(num1===1){
@@ -121,8 +126,8 @@ app.OragnisationList = (function () {
                  data: function(data)
   	             {
                        console.log(data);
-               
-                        var groupDataShow = [];
+               			groupDataShow = [];
+                        //var groupDataShow = [];
                                   $.each(data, function(i, groupValue) {
                                   console.log(groupValue);
                                      
@@ -133,7 +138,8 @@ app.OragnisationList = (function () {
                 	                   groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
                                          orgDesc: 'You are not a customer of any organisation',
-                                         organisationID:'0',  
+                                         organisationID:'0',
+                                         org_logo :null,  
                                          bagCount : 'D'    
     	                               });                                      
 	                                }else if(orgVal.Msg==='Success'){
@@ -143,11 +149,15 @@ app.OragnisationList = (function () {
 												 orgName: orgVal.orgData[i].org_name,
         		                                 orgDesc: orgVal.orgData[i].org_desc,
                                                  organisationID:orgVal.orgData[i].organisationID,
+                                                 org_logo:orgVal.orgData[i].org_logo,
+                                                 imageSource:"http://54.85.208.215/assets/upload_logo/"+orgVal.orgData[i].org_logo,
 		                                         bagCount : 'C'					
                                             });
                                         }     
                                                                                      
                                     }
+                                       
+                                       
                                                                             
                                    });    
                                       
@@ -187,14 +197,18 @@ app.OragnisationList = (function () {
             organisationListDataSource.fetch(function() {
                 
  		   });
+             
+             app.mobileApp.pane.loader.hide();
 
              $("#organisation-listview").kendoMobileListView({
   		    template: kendo.template($("#organisationTemplate").html()),    		
      		 dataSource: organisationListDataSource,
               pullToRefresh: true,
-        		schema: {
+        	  schema: {
            		model:  organisationNotificationModel
-  				}			 
+  			 }
+               
+                 
 		     });
              
               
@@ -227,7 +241,24 @@ app.OragnisationList = (function () {
 					db.transaction(offlineQueryDB, app.onError, offlineQueryDBSuccess);
             } 
             */
+             
+          
         };
+            
+        var afterShow = function(){
+              var db = app.getDb();
+		  	db.transaction(insertOrgImage, app.errorCB, app.successCB);  
+        }    
+            
+         var insertOrgImage = function(tx){
+             console.log(groupDataShow.length);
+             
+             for(var i=0;i<groupDataShow.length;i++){     
+                 var query = 'UPDATE JOINED_ORG SET imageSource=' + groupDataShow[i].imageSource + ' WHERE org_id=' + groupDataShow[i].organisationID;
+				 app.updateQuery(tx, query);
+             }
+         };   
+            
         
         /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
@@ -276,7 +307,8 @@ app.OragnisationList = (function () {
 			app.MenuPage=false;	
             app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id);
         };
-        
+            
+       
         var groupSelected = function (e) {
             console.log("karan Bisht"+e);
 			app.MenuPage=false;	
@@ -315,8 +347,6 @@ app.OragnisationList = (function () {
        
         var about = function(){
              app.MenuPage=false;
-             //document.location.href="#view-all-notification";
-             //document.location.href="views/MessageChatLayout.html";
              document.location.href="#infoDiv";
         };
         
@@ -345,81 +375,14 @@ app.OragnisationList = (function () {
         var refreshButton = function(){
             
         };
-        
-         
-        var sendNotificationMessage = function () {     
-            if (validator.validate()) {
-                var group=onChangeNotiGroup();
-                console.log(group);
-                var notificationValue = $newNotification.val();
-                var titleValue = $("#inputValue").val();
-                
-                /*var el = new Everlive('wKkFz2wbqFe4Gj0s');
-					el.push.notifications.create({ Message:notificationValue},
-					    function(data){
-					        app.showAlert("Notification Send Sucessfully","Notification");
-					    },
-
-                
-                		function(error){
-					        app.showAlert(JSON.stringify(error));
-    					});
-                */
-               
-  			  var conditions = {
-    				'User.Group': group
-				};
-				var notification;
-                
-                if(group==='All' || group==='' ){
-
-                      	notification = {
-                              Title: titleValue ,
-                              Message:notificationValue  
-							};    
-              	  }else{
-                     			 notification = {
-								    Filter: JSON.stringify(conditions),
-                                    Title: titleValue ,
-                        	        Message:notificationValue  
-							};
-                }
-				                
-                		$.ajax({
-    						type: "POST",
-						    url: 'http://api.everlive.com/v1/wKkFz2wbqFe4Gj0s/Push/Notifications',
-						    contentType: "application/json",
-   						 data: JSON.stringify(notification),
-                    
- 						   success: function (data) {
-                                if(group===''){
-                                    group='All'
-                                }
-                                var el = new Everlive('wKkFz2wbqFe4Gj0s');
-								var data = el.data('GetNotification');
-								data.create({ 'Message': notificationValue , 'Group': group ,'Title':titleValue },
-							    function(data){
-							        //alert(JSON.stringify(data));
-							    },
-							    function(error){
-    							    // alert(JSON.stringify(error));
-							    });
-    							app.showAlert("Notification Send Sucessfully","Notification");
-						    },
-                    
-						    error: function (error) {
-						        app.showAlert(JSON.stringify(error));
-							}
-						});
-              }
-        };
-        
+                                 
         var info = function(){
             
         };
         
         var orgShow = function(){
-              app.MenuPage=false;    
+           app.MenuPage=false;
+		   $("#organisation-listview1").html("");
            var showMore = localStorage.getItem("ShowMore");
              if(showMore!==1){
                $("#goToAdmin").hide();             
@@ -431,25 +394,35 @@ app.OragnisationList = (function () {
 		 db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
         };                        
                      
-        function getOrgInfoDB(tx) {            
-        
-            var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+        function getOrgInfoDB(tx) {                    
+            var query = 'SELECT org_id , org_name , role , imageSource FROM JOINED_ORG';
 			app.selectQuery(tx, query, orgDataForOrgSuccess);
 		};
 
 		var orgDbData = [];
             
         function orgDataForOrgSuccess(tx, results) {
+            var tempArray= [];
+            orgDbData = [];
 			var count = results.rows.length;
-              console.log('count'+count);
+            console.log('count'+count);
 			if (count !== 0) {
                 for(var i=0;i<count;i++){
-                     orgDbData.push({
+                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
+                     var orgImageSource;
+                     console.log(pos);
+					if (pos === -1) {
+						 tempArray.push(results.rows.item(i).org_id); 
+                        
+                        orgDbData.push({
 						 org_name: results.rows.item(i).org_name,
         		         org_id: results.rows.item(i).org_id,
                          role:results.rows.item(i).role,
-                         orgDesc:''
-                       });                    
+                         imgData:results.rows.item(i).imageSource,   
+                         imageSource1:"http://54.85.208.215/assets/upload_logo/"+results.rows.item(i).imageSource,   
+                         orgDesc:''                      
+                       });         
+                    }
                 }
 			}
 		};
@@ -457,21 +430,27 @@ app.OragnisationList = (function () {
 
 	function getOrgDBSuccess() {
 			app.mobileApp.pane.loader.hide();
+            //console.log(orgDbData);
         
-	     	//document.getElementById("orgData").innerHTML = "";
-        
-              $("#organisation-listview1").kendoMobileListView({
+             $("#organisation-listview1").kendoMobileListView({
   		    template: kendo.template($("#orgTemplate").html()),    		
      		 dataSource: orgDbData        			 
 		     });
+                
 		};
        
-        	var onChangeNotiGroup = function(){
-            	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
-             	var groupSelectedNoti = selectDataNoti.value();
-             	return groupSelectedNoti;
-       	 };
-        
+            
+            
+            
+        var orgForGroupSelected =function(e){
+            alert("hello");
+            //var organisationID=e.data.organisationID;
+            //uid=' + e.data.uid
+            console.log(e.data);
+			app.MenuPage=false;	
+            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id);                
+        };    
+            
         
         
         var onAdminComboChange = function(){
@@ -677,12 +656,19 @@ app.OragnisationList = (function () {
 			}
             
 	function orgDataSuccess(tx, results) {    
-        	var count = results.rows.length;       
+        	var count = results.rows.length;      
+        	var tempArray=[];
 				if (count !== 0) {
                     
 	             document.getElementById("orgData").innerHTML = "";
+                    
         			for(var x=0; x < count;x++){
+                    var pos = $.inArray(results.rows.item(x).org_id, tempArray);
+                     console.log(pos);
+					if (pos === -1) {
+						tempArray.push(results.rows.item(x).org_id);								                    
                 		document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
+                        }
             		}             
                 }
         
@@ -723,10 +709,11 @@ app.OragnisationList = (function () {
             //groupData:GroupsModel.groupData,
             //userData:UsersModel.userData,
             organisationSelected: organisationSelected,
+            orgForGroupSelected:orgForGroupSelected,
             groupSelected:groupSelected,
+            afterShow:afterShow,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
-            sendNotificationMessage:sendNotificationMessage,
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
             makeCall:makeCall,

@@ -122,44 +122,57 @@ var app = (function (win) {
             	
       tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
       
-      tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT)');  
+      tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT)');  
 
     };	
     
     var checkForLoginStatus = function (){
-		  localStorage.setItem("loginStatusCheck",0);        
+		  localStorage.setItem("loginStatusCheck",0); 
+          db = getDb();
+		  db.transaction(loginStatusQuery, errorCB, loginStatusQuerySuccess);
     };
         
-    /*var checkForLoginStatus = function(){
-        	db = getDb();
-			db.transaction(loginStatusQuery, errorCB, loginStatusQuerySuccess);
-    };
-    
     var loginStatusQuery = function(tx){
-        	var query = 'SELECT * FROM LOGIN_INFO';
-			selectQuery(tx, query, loginResultSuccess);       
+        	var query = 'SELECT * FROM PROFILE_INFO';
+			selectQuery(tx, query, loginResultSuccess);  
+        
+            var query = 'SELECT * FROM JOINED_ORG';
+			selectQuery(tx, query, loginOrgResultSuccess);
     };
     
     var loginResultSuccess = function(tx, results) {
 		var count = results.rows.length;
-   	 console.log("Storage "+count);
 		if (count !== 0) {
-			var loginStatus = results.rows.item(0).LOGIN_STATUS;
-            app.mobileApp.navigate('views/activitiesView.html');
-            localStorage.setItem("loginStatusCheck",1);
+			var loginStatus = results.rows.item(0).login_status;
+            var account_id= results.rows.item(0).login_status;
+            //app.mobileApp.navigate('views/getOrganisationList.html');
+            //localStorage.setItem("loginStatusCheck",1);
         } else {		
-            app.mobileApp.navigate('#welcome');
-            localStorage.setItem("loginStatusCheck",1);
+            //app.mobileApp.navigate('#welcome');
+            //localStorage.setItem("loginStatusCheck",1);
         }
     };
+    
+    
+    
+    var loginOrgResultSuccess = function(tx, results) {
+    	var userType=[];
+        var count = results.rows.length;
+		  if (count !== 0) {
+             for(var i=0;i<count;i++){
+                  userType.push(results.rows.item(i).role); 
+			}
+          }else {		
+            //app.mobileApp.navigate('#welcome');
+            //localStorage.setItem("loginStatusCheck",1);
+        }
+    };
+    
+    
 
     var loginStatusQuerySuccess= function(){
 	
 	};
-
-  */
-    
-
     
     var selectQuery = function(tx,query,successFunction){
 		tx.executeSql(query, [], successFunction, errorCB);
@@ -247,8 +260,8 @@ var app = (function (win) {
         navigator.splashscreen.hide();
         fixViewResize();
                 
-         var pushNotification = window.plugins.pushNotification;
-		 console.log(window.plugins);
+        var pushNotification = window.plugins.pushNotification;
+		console.log(window.plugins);
            
         if (device.platform === "iOS") {
             pushNotification.register(apnSuccessfulRegistration,
