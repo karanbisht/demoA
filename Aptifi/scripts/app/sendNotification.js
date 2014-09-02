@@ -46,7 +46,7 @@ app.sendNotification = (function () {
 			$("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
             
-            account_Id = e.view.params.account_Id;
+            var account_Id = localStorage.getItem("ACCOUNT_ID");
           
             var comboOrgListDataSource = new kendo.data.DataSource({
             transport: {

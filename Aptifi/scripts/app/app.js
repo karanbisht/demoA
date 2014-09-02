@@ -12,6 +12,8 @@ var androidProjectNumber = '790452394475';
 var emulatorMode = false;
 
 
+
+
 var app = (function (win) {
     'use strict';
     
@@ -20,7 +22,7 @@ var app = (function (win) {
     //var userPosition;
     var db;
     
-    
+     
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
         }, title, 'OK');
@@ -445,6 +447,17 @@ var app = (function (win) {
           console.log(account_Id);
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
     }
+    
+    var replyUser = function(){
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/userReplyView.html');                         
+    };
+    
+    var sendNotification = function(){
+            app.MenuPage=false;
+            app.mobileApp.navigate('views/sendNotification.html?account_Id='+account_Id);           
+        };
+  
 
     var getYear = (function () {
         return new Date().getFullYear();
@@ -454,6 +467,8 @@ var app = (function (win) {
         showAlert: showAlert,
         showError: showError,
         callOrganisationLogin:callOrganisationLogin,
+        replyUser:replyUser,
+        sendNotification:sendNotification,
         errorCB:errorCB,
         successCB:successCB,
         checkSimulator:checkSimulator,

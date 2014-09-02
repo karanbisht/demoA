@@ -277,10 +277,6 @@ app.adminOragnisationList = (function () {
              document.location.href="#infoDiv";
         };
         
-        var replyUser = function(){
-            app.MenuPage=false;	
-            app.mobileApp.navigate('views/userReplyView.html');                         
-        };
         
         var manageGroup =function(){
             app.MenuPage=false;	
@@ -293,83 +289,12 @@ app.adminOragnisationList = (function () {
              document.location.href="#settingDiv";
         };       
         
-        var sendNotification = function(){
-            app.MenuPage=false;
-            //document.location.href="#sendNotificationDiv";
-            app.mobileApp.navigate('views/sendNotification.html?account_Id='+account_Id);           
-        };
-        
+              
         var refreshButton = function(){
             
         };
         
          
-        var sendNotificationMessage = function () {     
-            if (validator.validate()) {
-                var group=onChangeNotiGroup();
-                console.log(group);
-                var notificationValue = $newNotification.val();
-                var titleValue = $("#inputValue").val();
-                
-                /*var el = new Everlive('wKkFz2wbqFe4Gj0s');
-					el.push.notifications.create({ Message:notificationValue},
-					    function(data){
-					        app.showAlert("Notification Send Sucessfully","Notification");
-					    },
-
-                
-                		function(error){
-					        app.showAlert(JSON.stringify(error));
-    					});
-                */
-               
-  			  var conditions = {
-    				'User.Group': group
-				};
-				var notification;
-                
-                if(group==='All' || group==='' ){
-
-                      	notification = {
-                              Title: titleValue ,
-                              Message:notificationValue  
-							};    
-              	  }else{
-                     			 notification = {
-								    Filter: JSON.stringify(conditions),
-                                    Title: titleValue ,
-                        	        Message:notificationValue  
-							};
-                }
-				                
-                		$.ajax({
-    						type: "POST",
-						    url: 'http://api.everlive.com/v1/wKkFz2wbqFe4Gj0s/Push/Notifications',
-						    contentType: "application/json",
-   						 data: JSON.stringify(notification),
-                    
- 						   success: function (data) {
-                                if(group===''){
-                                    group='All'
-                                }
-                                var el = new Everlive('wKkFz2wbqFe4Gj0s');
-								var data = el.data('GetNotification');
-								data.create({ 'Message': notificationValue , 'Group': group ,'Title':titleValue },
-							    function(data){
-							        //alert(JSON.stringify(data));
-							    },
-							    function(error){
-    							    // alert(JSON.stringify(error));
-							    });
-    							app.showAlert("Notification Send Sucessfully","Notification");
-						    },
-                    
-						    error: function (error) {
-						        app.showAlert(JSON.stringify(error));
-							}
-						});
-              }
-        };
         
         var info = function(){
             
@@ -644,13 +569,10 @@ app.adminOragnisationList = (function () {
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
-            sendNotificationMessage:sendNotificationMessage,
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
             makeCall:makeCall,
-            replyUser:replyUser,
             initNotifi:initNotifi,
-            sendNotification:sendNotification,
             showNotifi:showNotifi,
 			about:about,
             setting:setting,
