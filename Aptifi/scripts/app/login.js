@@ -61,9 +61,9 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';
+            //var device_id='123456';
             
-			//var device_id = localStorage.getItem("deviceTokenID");
+			var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -151,6 +151,9 @@ app.Login = (function () {
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                           saveProfileInfo(UserProfileInformation);
                           saveOrgInfo(UserOrgInformation);                         
+                      }else{
+                          app.mobileApp.pane.loader.hide();
+                          app.showAlert(loginData.status[0].Msg,"Notification");
                       }                            
                 });
   		 });
@@ -424,9 +427,8 @@ function loginSuccessCB() {
                 										    device_type='AP';
 									             }
 
-            var device_id='123456';
-                    
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';                    
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
@@ -465,9 +467,9 @@ function loginSuccessCB() {
                                console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
-					         account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                           console.log('karan'+account_Id);
-                           console.log(loginData.status[0].JoinedOrg.role.length);
+					      account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                          console.log('karan'+account_Id);
+                          console.log(loginData.status[0].JoinedOrg.role.length);
                           var roleLength = loginData.status[0].JoinedOrg.role.length;
                           
                           for(var i=0;i<roleLength;i++){
@@ -485,7 +487,10 @@ function loginSuccessCB() {
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                           saveProfileInfo(UserProfileInformation);
                           saveOrgInfo(UserOrgInformation); 
-                      }
+                      }else{
+                          app.mobileApp.pane.loader.hide();
+                          app.showAlert(loginData.status[0].Msg,"Notification");
+                      }      
                    
                      /*else if(loginData.status[0].Msg==='Create profile'){
                             app.mobileApp.pane.loader.hide();

@@ -20,7 +20,8 @@ app.adminOragnisationList = (function () {
         var organisationViewModel = (function () {
             
         var init = function(){
-        
+           app.MenuPage=false;
+           app.userPosition=false;
         };
 
          var show = function(e){

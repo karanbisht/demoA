@@ -150,7 +150,7 @@ app.OragnisationList = (function () {
         		                                 orgDesc: orgVal.orgData[i].org_desc,
                                                  organisationID:orgVal.orgData[i].organisationID,
                                                  org_logo:orgVal.orgData[i].org_logo,
-                                                 imageSource:"http://54.85.208.215/assets/upload_logo/"+orgVal.orgData[i].org_logo,
+                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+orgVal.orgData[i].org_logo,
 		                                         bagCount : 'C'					
                                             });
                                         }     
@@ -409,17 +409,17 @@ app.OragnisationList = (function () {
 			if (count !== 0) {
                 for(var i=0;i<count;i++){
                      var pos = $.inArray(results.rows.item(i).org_id, tempArray);
-                     var orgImageSource;
+                     
                      console.log(pos);
 					if (pos === -1) {
 						 tempArray.push(results.rows.item(i).org_id); 
-                        
+
                         orgDbData.push({
 						 org_name: results.rows.item(i).org_name,
         		         org_id: results.rows.item(i).org_id,
                          role:results.rows.item(i).role,
                          imgData:results.rows.item(i).imageSource,   
-                         imageSource1:"http://54.85.208.215/assets/upload_logo/"+results.rows.item(i).imageSource,   
+                         imageSourceOrg:"http://54.85.208.215/assets/upload_logo/",   
                          orgDesc:''                      
                        });         
                     }
@@ -683,9 +683,10 @@ app.OragnisationList = (function () {
             
                      
         var callOrganisationLogin = function(){
+          alert('click');  
           app.MenuPage=false;	
           //window.location.href = "views/organisationLogin.html"; 
-            console.log(account_Id);
+          console.log(account_Id);
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);      
         };
         

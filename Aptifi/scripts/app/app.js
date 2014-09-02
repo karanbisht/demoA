@@ -372,18 +372,27 @@ var app = (function (win) {
  
     //the function is a callback for all GCM events
     var onNotificationGCM = function onNotificationGCM(e) {
+        //alert(e);
+     try{
         switch (e.event) {
             case 'registered':
                 if (e.regid.length > 0) {
                     //your GCM push server needs to know the regID before it can push to this device
                     //you can store the regID for later use here
                     console.log('###token received');
-                    //alert("TokenID Received" + e.regid);
+                    console.log("TokenID Received" + e.regid);
                     localStorage.setItem("deviceTokenID",e.regid);
                     //sendTokenToServer(e.regid);
                 }
                 break;
-            case 'message':
+            case 'message': 
+            //var messageSplitVal = e.message.split('#####');
+			//var type = messageSplitVal[0];
+			//var title = messageSplitVal[1];
+			//var message=messageSplitVal[2];
+            //alert(type+"||"+title+"||"+message);            
+            //return message;
+            //alert('message = '+e.message+' msgcnt = '+e.msgcnt);            
                 //getPromotionFromServer();
             	break;
             case 'error':
@@ -393,6 +402,13 @@ var app = (function (win) {
                 alert('An unknown GCM event has occurred.');
                 break;
         }
+      }
+	  catch(err){
+		 alert(err);
+	  }
+	  finally {    
+		
+	  }   
     };  
     
     
@@ -404,7 +420,7 @@ var app = (function (win) {
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
     var mobileApp;
-    if(loginStatusCheck==='0'){
+    //if(loginStatusCheck==='0'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
                                                      transition: 'slide',
@@ -412,7 +428,7 @@ var app = (function (win) {
          											layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});
-   }else{
+   /*}else{
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome1",
                                                      transition: 'slide',
@@ -421,7 +437,14 @@ var app = (function (win) {
                                                      skin: 'flat'
                                                  	});
        
-   }
+   }*/
+    
+    var callOrganisationLogin = function(){
+          var account_Id = localStorage.getItem("ACCOUNT_ID");
+          app.MenuPage=false;	
+          console.log(account_Id);
+          app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
+    }
 
     var getYear = (function () {
         return new Date().getFullYear();
@@ -430,6 +453,7 @@ var app = (function (win) {
     return {
         showAlert: showAlert,
         showError: showError,
+        callOrganisationLogin:callOrganisationLogin,
         errorCB:errorCB,
         successCB:successCB,
         checkSimulator:checkSimulator,

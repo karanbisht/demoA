@@ -131,9 +131,9 @@ app.registration = (function () {
                 										    device_type='AP';
 									             }
                          
-            					var device_id='123456';
+            					//var device_id='123456';
             
-								//var device_id = localStorage.getItem("deviceTokenID");
+								var device_id = localStorage.getItem("deviceTokenID");
     					        //console.log(device_id);
 	            
            
@@ -304,8 +304,8 @@ app.registration = (function () {
                 										    device_type='AP';
 									             }
 
-                    var device_id='123456';
-                    //var device_id = localStorage.getItem("deviceTokenID");
+                    //var device_id='123456';
+                    var device_id = localStorage.getItem("deviceTokenID");
     			    //console.log(device_id);
 
                     
@@ -370,7 +370,10 @@ app.registration = (function () {
 
                           
                           
-                      }
+                       }else{
+                          app.mobileApp.pane.loader.hide();
+                          app.showAlert(loginData.status[0].Msg,"Notification");
+                      }      
                                                
                 });
   		 });

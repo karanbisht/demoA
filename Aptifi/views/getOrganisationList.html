@@ -2,11 +2,9 @@
    <div data-role="header">               
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
-             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>
-		         
-                 <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
-                                  
-                 <a id="goToAdmin" data-align="right" data-role="button" data-bind="click: callOrganisationLogin">Admin</a> 
+             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>		         
+                 <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>                                  
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> 
               </div>              
                             
 	          <div id="upperTab" data-role="tabstrip" style="border-top:2px solid #2D384C">
@@ -14,11 +12,9 @@
 					   <a data-icon="globe" href="#organisationDiv">Organisation</a>
         	    	   <a data-icon="contacts" href="#profileDiv">Profile</a>            
               </div>     
-	     </div>
+   </div>
 </div>
  
-
-
 
 
 <div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-after-show="app.OragnisationList.afterShow">             
@@ -84,7 +80,6 @@
 
 
 <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
- 	
     <div id="tabstrip-profile">
       <ul data-role="listview" data-style="inset" data-type="group">
         <li>
@@ -108,11 +103,8 @@
             </ul>
         </li>
           
-    </ul>
-        
-    </div> 
-    
-    
+	    </ul>   
+    </div>         
 </div>
 
 
@@ -208,22 +200,17 @@
 
 	<!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="orgTemplate"> 
-    		<div class="cf" data-role="touch" data-bind="events: { tap: orgForGroupSelected }">
-				           
-     #console.log("----"+imageSource1)#
-            
-         #if(imgData===null ||imgData==='null' ){#   
-         
+    		<div class="cf" data-role="touch" data-bind="events: { tap: orgForGroupSelected }">				            
+         #if(imgData===null ||imgData==='null' ){#            
         	<div class="user-avatar">
             	<img src="styles/images/habicon.png"/>
         	</div>
-             
+            
         #}else{#
-             
  	   	<div class="user-avatar">
-     	      <img  data-bind="attr: { src: imageSource1}" />  
+             	<img src="styles/images/habicon.png"/>
+     	       <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
     		</div>
-             
          #}#    
 	    		<div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>

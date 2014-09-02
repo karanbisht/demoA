@@ -24,13 +24,14 @@ app.adminLogin = (function () {
         var init = function () {            
             app.userPosition=false;
             app.MenuPage=false;	
+            
             $loginUsername = $('#loginMob');
             $loginPassword = $('#loginPassword');            
         };
 
         var show = function (e) {
             account_Id = e.view.params.account_Id;
-            app.userPosition=true;
+            app.userPosition=false;
             app.MenuPage=false;	
             $('#loginMob').val('');
             $('#loginPassword').val('');
