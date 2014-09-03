@@ -15,7 +15,7 @@ app.Activities = (function () {
             var userEmail;
             var userOrgName;
             var userGropuName;   
-        
+        	var bagCount;
    
     var orgId = localStorage.getItem("UserOrgID");                              
     
@@ -333,7 +333,7 @@ app.Activities = (function () {
                                      
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
-             
+            bagCount = e.view.params.bagCount; 
               
             var organisationAllNotificationModel = {
             id: 'Id',
@@ -416,23 +416,6 @@ app.Activities = (function () {
                                     }
                                                                             
                                    });    
-                                      
-                                  /*   
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                     */
                                  });
                        
 		                         console.log(groupDataShow);
@@ -462,35 +445,23 @@ app.Activities = (function () {
            		model:  organisationAllNotificationModel
 				}			 
 		     });
-
-            
-          /* userlName =e.view.params.userlName;
-             userfName =e.view.params.userfName;
-             userMobile =e.view.params.userMobile;
-             userEmail =e.view.params.userEmail;
-             userOrgName =e.view.params.userOrgName;
-             userGropuName =e.view.params.userGropuName;
-             
-          
-             
-            if(loginType==='O'){
-             $("#replyUserView").show();   
-             $("#sendNotificationView").show();
-             $("#manageGroupView").show();
-             $("#upperTab").hide();   
-            }
-                     
-             
-            if (app.checkConnection()) {
-                  //$('#no-activities-span').hide();
-                     //show(e);
-            } else {
-                  //$('#no-activities-span').show();
-                    var db = app.getDb();
-					db.transaction(offlineQueryDB, app.onError, offlineQueryDBSuccess);
-            }
-           */
         };
+            
+                     
+        var afterShow = function(){
+              var db = app.getDb();
+		  	db.transaction(insertBagCount, app.errorCB, app.successCB);  
+        };    
+            
+         var insertBagCount = function(tx){             
+             console.log('ssss'+bagCount);
+                         console.log('ssss'+organisationID);
+
+                 var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
+				 app.updateQuery(tx, query);
+
+         };   
+   
         
         /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
@@ -855,6 +826,7 @@ app.Activities = (function () {
             info:info,
             init:init,
             show:show,
+            afterShow:afterShow,
             refreshButton:refreshButton,
             logout: logout
         };

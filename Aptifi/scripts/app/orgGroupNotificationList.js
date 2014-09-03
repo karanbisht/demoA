@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.orgListView = (function () {
+app.orgGroupListView = (function () {
     
     var organisationID;
     var account_Id;
@@ -73,7 +73,7 @@ app.orgListView = (function () {
                    	             if(orgVal.Msg ==='No notification'){     
                 	                   groupDataShow.push({
                                          title: ' No Notification ',
-                                         message: 'No Notification from this Organisation',
+                                         message: 'No Notification for this Group ',
                                          date:'0',  
                                          commentAllow : 'Y',
                                          pid:0        

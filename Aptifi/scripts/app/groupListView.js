@@ -239,8 +239,10 @@ app.GroupList = (function () {
                 
          var groupSelected = function (e) {
             		console.log("karan Bisht"+e);
+             		console.log(e.data.groupID);
+                          		console.log(e.data.orgID);
 					app.MenuPage=false;	
-            		app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
+            		app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID +'&orgID='+e.data.orgID);
         };
                 
         var addGroup = function(){

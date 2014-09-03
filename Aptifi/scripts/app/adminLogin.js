@@ -98,6 +98,10 @@ app.adminLogin = (function () {
 							app.mobileApp.pane.loader.hide();
                             app.userPosition=false;
                             app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+                      }else{
+                           app.mobileApp.pane.loader.hide();
+                          app.showAlert(loginData.status[0].Msg,"Notification");
+
                       }
                  
                    /*

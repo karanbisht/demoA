@@ -17,7 +17,7 @@
  
 
 
-<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-after-show="app.OragnisationList.afterShow">             
+<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-after-show="app.OragnisationList.afterShow" data-before-Show="app.OragnisationList.beforeShow">             
 	 <!--data-append-on-refresh="true"-->	
 
      <div>
@@ -187,8 +187,8 @@
        		 <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
             
-            		#if(bagCount!=='D'){#
-						<div class="divBagVal"></div>            
+            		#if(bagCount!==0){#
+						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${bagCount}</div>            
             		#}# 
             
        		     <!--<span id="activityTemplateDate" class="time-span" >${CreatedAtFormatted()}</span>-->

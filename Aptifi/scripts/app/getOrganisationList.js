@@ -25,8 +25,38 @@ app.OragnisationList = (function () {
         var init = function(){
         
         };
+                    
+        var beforeShow=function(){
+           var db = app.getDb();
+		   db.transaction(getDataOrg, app.errorCB, app.successCB);   
+        };
+            
+        var getDataOrg = function(tx){
+            	var query = 'SELECT org_id , bagCount FROM JOINED_ORG';
+				app.selectQuery(tx, query, getDataSuccess);
+        };    
+            
+         var getDataOrgDB=[];
+         var getDataCountDB=[];
+            
+        function getDataSuccess(tx, results) {
+            getDataOrgDB=[];
+            getDataCountDB=[];
+			var count = results.rows.length;
+			if (count !== 0) {
+            	for(var i =0 ; i<count ; i++){    
+					var org_id_DB = results.rows.item(i).org_id;
+					var bagCount = results.rows.item(i).bagCount;                   
+                    getDataOrgDB.push(org_id_DB);
+                    getDataCountDB.push(bagCount);
+        	    }    
+            }
+         };       
+                
 
          var show = function(e){
+           console.log(getDataOrgDB);
+            console.log(getDataCountDB);  
            app.MenuPage=true;
            app.userPosition=false;
   		 app.mobileApp.pane.loader.show();
@@ -140,18 +170,53 @@ app.OragnisationList = (function () {
                                          orgDesc: 'You are not a customer of any organisation',
                                          organisationID:'0',
                                          org_logo :null,  
-                                         bagCount : 'D'    
+                                         bagCount : 0    
     	                               });                                      
 	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.orgData.length);  
+                                        console.log(orgVal.orgData.length); 
+                                        var orgLastMsgData='';
+
                                         for(var i=0;i<orgVal.orgData.length;i++){
+                                         var bagCountValue;
+                                         var bagValueForDB;   
+                                           if(getDataCountDB.length!==0){
+                                               for(var k=0;k<getDataCountDB.length;k++){
+                                                   console.log(getDataCountDB.length);
+                                                  getDataOrgDB[k]=String(getDataOrgDB[k]);
+                                                  var orgID =orgVal.orgData[i].organisationID;
+                                                  orgID = String(orgID); 
+                                                  if(getDataOrgDB[k]===orgID){
+                                                      if(getDataCountDB[k]!==null){
+                                                         bagCountValue = orgVal.last[i].total;
+                                                         bagValueForDB=bagCountValue; 
+                                                         console.log('karan Bisht' +bagCountValue);                                                        
+                                                         bagCountValue = bagCountValue-getDataCountDB[k]; 
+                                                      }else{
+                                                         bagCountValue = orgVal.last[i].total;     
+                                                         bagValueForDB=bagCountValue;  
+                                                      }
+                                                  }else{
+                                                     bagCountValue = orgVal.last[i].total;  
+                                                     bagValueForDB=bagCountValue;  
+                                                  } 
+                                               }
+                                           }else{
+                                                   bagCountValue = orgVal.last[i].total;
+                                                   bagValueForDB=bagCountValue; 
+                                           } 
+                                            
+                                            
+                                            if(orgVal.last[i].total!==0){
+                                               orgLastMsgData = orgVal.last[i].last_notification.message;
+                                            }  
                                             groupDataShow.push({
 												 orgName: orgVal.orgData[i].org_name,
-        		                                 orgDesc: orgVal.orgData[i].org_desc,
+        		                                 orgDesc: orgLastMsgData,
                                                  organisationID:orgVal.orgData[i].organisationID,
                                                  org_logo:orgVal.orgData[i].org_logo,
                                                  imageSource:'http://54.85.208.215/assets/upload_logo/'+orgVal.orgData[i].org_logo,
-		                                         bagCount : 'C'					
+		                                         bagCount : bagCountValue,
+                                                 bagValToStore:bagValueForDB 
                                             });
                                         }     
                                                                                      
@@ -301,11 +366,13 @@ app.OragnisationList = (function () {
         */
     
         var organisationSelected = function (e) {
-            //console.log(e.data.uid);
+            console.log(e.data);
             var organisationID=e.data.organisationID;
+            var bagCount =e.data.bagValToStore;
             //uid=' + e.data.uid
+            
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id);
+            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&bagCount='+bagCount);
         };
             
        
@@ -728,6 +795,7 @@ app.OragnisationList = (function () {
             info:info,
             init:init,
             show:show,
+            beforeShow:beforeShow,
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,
             logout: logout

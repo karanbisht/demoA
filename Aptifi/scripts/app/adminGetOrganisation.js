@@ -30,7 +30,7 @@ app.adminOragnisationList = (function () {
            app.mobileApp.pane.loader.hide();
                                      
             account_Id = e.view.params.account_Id;
-
+	        account_Id = localStorage.getItem("ACCOUNT_ID");
             console.log(account_Id);
              
             var organisationNotificationModel = {
@@ -340,11 +340,11 @@ app.adminOragnisationList = (function () {
         	//};
         
        
-        	var onChangeNotiGroup = function(){
+       var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
              	var groupSelectedNoti = selectDataNoti.value();
              	return groupSelectedNoti;
-       	 };
+       };
         
         
         

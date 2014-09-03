@@ -16,7 +16,6 @@
 
 
 <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organisation List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show">
-
      <div>
     	<ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -98,7 +97,7 @@
 	<script type="text/x-kendo-template" id="adminOrganisationTemplate">
     		<div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
          <div class="user-avatar">
-            <img src="styles/images/notification1.png" />
+            <img src="styles/images/habicon.png" />
         </div>           
        		 <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
@@ -116,15 +115,14 @@
 
 
 
-<script type="text/x-kendo-template" id="userReplyTemplate" data-role="touch" data-bind="events: { tap: clickOnUserName}">
+<script type="text/x-kendo-template" id="userReplyTemplate">
    	<div class="cf" data-role="touch" data-bind="events: { tap: clickOnUserName }" >
          <div class="user-avatar">
-            <img src="styles/images/avatar.png" />
+			<img src="styles/images/habicon.png" />
         </div>           
        		 <div class="activity-content" >
-       		     <h2 id="activityTemplateTitle" class="person-name" >${cust_fname}</h2>
-       		     <span id="activityTemplateDate" class="time-span" >${mobile}</span>
-       		     <a id="activityTemplateMessage" class="user-share-txt" >${cust_email}</a>            			            
+       		     <h2 id="activityTemplateTitle" class="person-name" >${orgName}</h2>
+       		     <a id="activityTemplateMessage" class="user-share-txt" >${orgDesc}</a>            			            
        		 </div>
 		    </div>
 </script>

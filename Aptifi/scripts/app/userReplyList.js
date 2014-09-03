@@ -3,7 +3,7 @@ var app = app || {};
 app.userReplyList = (function () {
 
     var userReplyListViewModel = (function () {
-
+    var account_Id;
         
   	var init = function () {
              
@@ -13,94 +13,112 @@ app.userReplyList = (function () {
 
       var show = function(){
 	    
-	      var orgId = localStorage.getItem("UserOrgID");
-          
-            var userReplyModel = {
+	       app.MenuPage=false;
+           app.userPosition=false;
+           app.mobileApp.pane.loader.hide();
+            
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            
+
+            console.log(account_Id);
+             
+            var organisationNotificationModel = {
             id: 'Id',
             fields: {
-                cust_fname: {
-                    field: 'cust_fname',
+                orgName: {
+                    field: 'orgName',
                     defaultValue: ''
                 },
-                cust_lname: {
-                    field: 'cust_lname',
-                    defaultValue:''
-                }, 
-                cust_email: {
-                    field: 'cust_email',
-                    defaultValue: ''
+                orgDesc :{
+                    field: 'orgDesc',
+                    defaultValue: ''  
                 },
-                mobile: {
-                    field: 'mobile',
-                    defaultValue: ''
+                organisationID: {
+                    field: 'organisationID',
+                    defaultValue: null
+                }/*,
+                CreatedAt: {
+                    field: 'send_date',
+                    defaultValue: new Date()
                 },
-                add_date :{
-                     field: 'add_date',
-                    defaultValue: new Date()  
-                }
-                
-            },
+                organisationID: {
+                    field: 'organisationID',
+                    defaultValue: null
+                }*/                  
+            },            
+                 
             CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('add_date'));
+                return app.helper.formatDate(this.get('CreatedAt'));
             }
+            
           };
-            
-            
-            var userReplyDataSource = new kendo.data.DataSource({
+             
+             
+          var organisationListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getReplyUserList/"+orgId,
+                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
               },
        	 schema: {
-               model: userReplyModel,
-                                
+               model: organisationNotificationModel,                                
                  data: function(data)
   	             {
                        console.log(data);
+               
                         var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                   console.log(groupValue) 
-                                     var returnMsg =groupValue[0].Msg;
-                                     console.log(returnMsg);
-                                     if(returnMsg==='Success'){
+                                  $.each(data, function(i, groupValue) {
+                                  console.log(groupValue);
+                                     
+                                   $.each(groupValue, function(i, orgVal) {
+                                  			console.log();
 
-                                     var userReplyLength=groupValue[0].customerList.length;                                    
-                                     console.log(userReplyLength);
+                   	             if(orgVal.Msg ==='Not a customer to any organisation'){     
+                	                   groupDataShow.push({
+                                         orgName: 'Welcome to Aptifi',
+                                         orgDesc: 'You are not a customer of any organisation',
+                                         organisationID:'0',  
+                                         bagCount : 'D'    
+    	                               });                                      
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.orgData.length);  
+                                        for(var i=0;i<orgVal.orgData.length;i++){
+                                            groupDataShow.push({
+												 orgName: orgVal.orgData[i].org_name,
+        		                                 orgDesc: orgVal.orgData[i].org_desc,
+                                                 organisationID:orgVal.orgData[i].organisationID,
+		                                         bagCount : 'C'					
+                                            });
+                                        }     
+                                                                                     
+                                    }
+                                                                            
+                                   });    
+                                      
+                                  /*   
+                                     var orgLength=groupValue[0].sentNotification.length;
+                                     console.log(orgLength);
                             
-                                     for(var j=1;j<userReplyLength;j++){
-                                        $.each( groupValue[0].customerList[j], function(i, dataValue) {
-                                                       console.log(dataValue) ;
-                                       groupDataShow.push({
-                                        cust_fname:dataValue.cust_fname,
-                                        cust_lname: dataValue.cust_lname,
-                                        cust_email: dataValue.cust_email,
-                                        mobile: dataValue.mobile,
-                                        add_date: dataValue.add_date,
-                                        cust_id: dataValue.cust_id   
-                                         
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         attached: groupValue[0].sentNotification[j].attached,
+                                         message: groupValue[0].sentNotification[j].message,
+                                         notification_id: groupValue[0].sentNotification[j].notification_id,
+                                         send_date:groupValue[0].sentNotification[j].send_date,
+                                         title:groupValue[0].sentNotification[j].title,
+                                          type:groupValue[0].sentNotification[j].type
 
-                                         //notification_id: groupValue[0].replyData[j].notification_id,
-                                         //send_date:groupValue[0].replyData[j].send_date,
-                                         //title:groupValue[0].replyData[j].title,
-                                         //type:groupValue[0].replyData[j].type
-
-                                       });
-                                        // console.log(groupValue[0].replyData[j].comment); 
-                                             
                                      });
-
                                    }
-
-                                  } 
-                                                                                                          
-                                 });                       
-
-                       			 console.log(groupDataShow);
-                                    return groupDataShow;                      
-                       }                       
+                                     */
+                                 });
+                       
+		                         console.log(groupDataShow);
+                                 return groupDataShow;
+                       
+                   }                       
             },
 	            error: function (e) {
     	           //apps.hideLoading();
@@ -110,36 +128,34 @@ app.userReplyList = (function () {
            	}
 	        
     	    });         
-                     
-            userReplyDataSource.fetch(function() {
+         
+            
+            organisationListDataSource.fetch(function() {
                 
  		   });
 
-            $("#user-Reply-listview").kendoMobileListView({
+             $("#user-Reply-listview").kendoMobileListView({
   		    template: kendo.template($("#userReplyTemplate").html()),    		
-     		 dataSource: userReplyDataSource,
-              click: function(e){
-                      //var index = $(e.item).index();
-                  	//console.log(e.dataItem);
-                  	//console.log(e.dataItem.cust_id);
-                  	app.mobileApp.navigate('views/userReplyNotification.html?cust_id=' + e.dataItem.cust_id);
-              },
+     		 dataSource: organisationListDataSource,
+              pullToRefresh: true,
+               click: function(e){
+                  	console.log(e.dataItem);
+                  	console.log(e.dataItem.organisationID);
+   				   //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
+                     app.mobileApp.navigate('views/userReplyNotification.html?organisationID=' + e.dataItem.organisationID);                   
+               },    
         		schema: {
-           		model:  userReplyModel
+           		model:  organisationNotificationModel
 				}			 
 		     });
-		};
-        
-        var clickOnUserName = function(e){
-            console.log(e.target)
-			alert("got click");
-            
-        };
+  
+      
+          
+      };
         
             return {
         	   init: init,
-           	show: show,
-               clickOnUserName:clickOnUserName 
+           	show: show
            	};
             
            }());

@@ -3,12 +3,12 @@
  */
 var app = app || {};
 
-app.Comments = (function () {
+ /*app.Comments = (function () {
    
 	var data;
     var commentsViewModel = (function () {
         var profileUserId;
-        var adminId = app.getAdminId();
+        //var adminId = app.getAdminId();
         var commentModel = {
             id: 'Id',
             fields: {
@@ -77,5 +77,5 @@ app.Comments = (function () {
     
     
     return commentsViewModel;
-
+*/
 }());
