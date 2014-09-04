@@ -414,9 +414,11 @@ var app = (function (win) {
     };  
     
     
+    /*
     var os = kendo.support.mobileOS,
-        statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
-
+    statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
+	*/
+    
     // Initialize KendoUI mobile application
 
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
@@ -426,7 +428,7 @@ var app = (function (win) {
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
                                                      transition: 'slide',
-                                                     statusBarStyle: statusBarStyle,
+                                                     //statusBarStyle: statusBarStyle,
          											layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});

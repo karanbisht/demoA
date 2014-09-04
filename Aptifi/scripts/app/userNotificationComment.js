@@ -44,36 +44,23 @@ app.userNotiComment = (function () {
             listScroller = e.view.scroller;
             listScroller.reset();
             
-            var notificationId = e.view.params.uid;
-  		  var userId = e.view.params.custId;
             var message = e.view.params.message;
-            var title = e.view.params.title;
+  		  var title = e.view.params.title;
+            var org_id = e.view.params.org_id;
+            var notiId = e.view.params.notiId;
+            var comment_allow = e.view.params.comment_allow;
+            var customerID = e.view.params.customerID;
+
+            console.log(message+"||"+title);
             
-            //console.log(message+"||"+title);
-            
+            if(comment_allow===0){
+                $("#commentPanel").hide();
+            }
+                       
             $("#personName").html(title);
             $("#activityText").html(message);
-
-            
-            var datasource=[];
-            
-            datasource.push({
-                 title: title,
-                 message: message                
-            });
-           
-
-                                        
-            console.log(activityUid);
-            
-
-            // Get current activity (based on item uid) from Activities model
-            //activity = app.userReplyNotificationList.u.getByUid(activityUid);
-            console.log(activity);
-           
-           // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
-           
-            kendo.bind(e.view.element, datasource, kendo.mobile.ui);
+                      
+           // kendo.bind(e.view.element, datasource, kendo.mobile.ui);
             
                         
           //  var notificationId = activity.notification_id; 
@@ -111,13 +98,11 @@ app.userNotiComment = (function () {
             }
         };
             
-            console.log("SHOWING DATA" + notificationId +"||"+userId);
-
-            
+           
             var userCommentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getReply/"+notificationId+"/"+userId,
+                   url: "http://54.85.208.215/webservice/notification/getComment/"+org_id+"/"+notiId+"/"+customerID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -136,14 +121,13 @@ app.userNotiComment = (function () {
                                      var returnMsg =groupValue[0].Msg;
                                      console.log(returnMsg);
                                      if(returnMsg==='Success'){
-                                     var commentLength=groupValue[0].replyData.length;
-                                    
-                                     console.log(commentLength);
-                            
+                                     var commentLength=groupValue[0].AllComment.length;                                    
+                                     console.log(commentLength);                            
                                      for(var j=0;j<commentLength;j++){
                                      groupDataShow.push({
-                                         comment: groupValue[0].replyData[j].comment,
-                                         add_date: groupValue[0].replyData[j].add_date
+                                         comment: groupValue[0].AllComment[j].comment,
+                                         add_date: groupValue[0].AllComment[j].add_date,
+									     user_type: groupValue[0].AllComment[j].user_type
 
                                          //notification_id: groupValue[0].replyData[j].notification_id,
                                          //send_date:groupValue[0].replyData[j].send_date,
@@ -211,10 +195,7 @@ app.userNotiComment = (function () {
            init: init,
            show: show,
            remove: removeActivity,
-           replyButton:replyButton,
-           activity: function () {
-            return activity;
-           },
+           replyButton:replyButton
         };
         
     }());

@@ -1,42 +1,41 @@
 var app = app || {};
 
 app.replyedCustomer = (function () {
-
-    var GroupName;
-    var selectedGroupId;
-    var selectedGroupDesc;
-    var custFromGroup= [];
-    //var orgId = localStorage.getItem("UserOrgID");
-    
-    var groupID;
-    var organisationID;
        
-    var groupDetailViewModel = (function () {
-
+   var replyedCustomerView = (function () {
+    	var message;
+        var title;
+        var org_id;
+        var notiId;
+        var comment_allow;
+        
+        
         
   	var init = function () {
-             
-                      
+                                   
       };
-
-
-var showSubGroupMembers = function(){
-            app.MenuPage=false;
-            app.mobileApp.navigate('#subGroupMemberShow');         
-            console.log(organisationID);
-            console.log(groupID);
-            
-            var UserModel ={
+        
+      var show = function(e){
+                  app.MenuPage=false;
+                  message = e.view.params.message;
+                  title = e.view.params.title;
+                  org_id = e.view.params.org_id;
+                  notiId = e.view.params.notiId;
+                  comment_allow = e.view.params.comment_allow;
+          
+          
+          
+              var UserModel ={
             id: 'Id',
             fields: {
-                mobile: {
-                    field: 'mobile',
+                user_fname: {
+                    field: 'user_fname',
                     defaultValue: ''
                 },
-                first_name: {
-                    field: 'first_name',
+                user_lname: {
+                    field: 'user_lname',
                     defaultValue: ''
-                },
+                }/*,
                 email: {
                     field: 'email',
                     defaultValue:''
@@ -48,7 +47,7 @@ var showSubGroupMembers = function(){
                 customerID: {
                     field: 'customerID',
                     defaultValue:''
-                }
+                }*/
 
                }
              };
@@ -56,7 +55,7 @@ var showSubGroupMembers = function(){
         var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/"+groupID+"/"+organisationID,
+                   url: "http://54.85.208.215/webservice/notification/getReplycustomerList/"+org_id+"/"+notiId,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -79,23 +78,23 @@ var showSubGroupMembers = function(){
 
                    	             if(orgVal.Msg ==='No Customer in this group'){     
                                      groupDataShow.push({
-                                         mobile: '',
-                                         first_name: '',
-                                         email:'No Customer in this Group',  
-                                         last_name : '',
-                                         customerID:'0',
-                                         orgID:0
+                                         user_fname: 'No Customer',
+                                         user_lname: '',
+                                         customerID:0,  
+                                         user_type : '',
+                                         orgID:0,
+                                         user_id:0
     	                               });                                      
 	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.customerInfo.length);  
-                                        for(var i=0;i<orgVal.customerInfo.length;i++){
+                                        console.log(orgVal.customerList.length);  
+                                        for(var i=0;i<orgVal.customerList.length;i++){
                                             groupDataShow.push({
-		                                         first_name: orgVal.customerInfo[i].first_name,
-        		                                 email:orgVal.customerInfo[i].email,  
-                		                         last_name : orgVal.customerInfo[i].last_name,
-                        		                 customerID:orgVal.customerInfo[i].customerID,
-                                		         mobile:orgVal.customerInfo[i].mobile,
-                                                 orgID:orgVal.customerInfo[i].orgID
+		                                         user_fname: orgVal.customerList[i].user_fname,
+                		                         user_lname : orgVal.customerList[i].user_lname,
+                        		                 customerID:orgVal.customerList[i].customerID,
+                                		         user_type:orgVal.customerList[i].user_type,
+                                                 orgID:orgVal.customerList[i].orgID,
+                                                 user_id:orgVal.customerList[i].user_id
                                             });
                                         }     
    
@@ -124,31 +123,30 @@ var showSubGroupMembers = function(){
  		   });
 	
          
-    	    $("#subGroupMember-listview").kendoMobileListView({
+    	    $("#reply-customer-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
-       		 template: kendo.template($("#subGroupMemberTemplate").html()),
-                pullToRefresh: true, 
-			});
-            
-             $("#deleteSubMemberData").kendoListView({
-  		    template: kendo.template($("#sub-Member-Delete-template").html()),    		
-     		 dataSource: MemberDataSource,
-        		schema: {
+       		 template: kendo.template($("#replyCustomerTemplate").html()),
+                pullToRefresh: true,
+                schema: {
            		model:  UserModel
-				}			 
-		     });
-            
-        };
-        
-        
-        
-        
+				}		
+			});
+
+      };         
+       
+       var customerSelected = function(e){
+       	 console.log(e.data.customerID);
+            app.MenuPage=false;
+            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID);
+       };
+       
         	   return {
         	   init: init,
-           	show: show
+           	show: show,
+               customerSelected:customerSelected    
            	};
             
            }());
     
-    return groupDetailViewModel;
+    return replyedCustomerView;
 }());  
