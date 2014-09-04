@@ -327,10 +327,10 @@ app.Activities = (function () {
          }   
             
          var show = function(e){
-           app.MenuPage=true;
+           app.MenuPage=false;
            app.userPosition=false;
-           app.mobileApp.pane.loader.hide();
-                                     
+           app.mobileApp.pane.loader.show();
+                                      
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
             bagCount = e.view.params.bagCount; 
@@ -445,6 +445,7 @@ app.Activities = (function () {
            		model:  organisationAllNotificationModel
 				}			 
 		     });
+                     app.mobileApp.pane.loader.hide();
         };
             
                      

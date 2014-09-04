@@ -13,7 +13,7 @@ app.Activity = (function () {
     var org_id;
     var notiId;
     var account_Id;
-            
+    var commentsDataSource;        
     
     var activityViewModel = (function () {
         
@@ -162,7 +162,7 @@ app.Activity = (function () {
             //console.log("SHOWING DATA" + notificationId +"||"+userId);
 
             
-            var commentsDataSource = new kendo.data.DataSource({
+            commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
                    url: "http://54.85.208.215/webservice/notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id,
@@ -222,6 +222,7 @@ app.Activity = (function () {
              $("#comments-listview").kendoMobileListView({
   		    template: kendo.template($("#commentsTemplate").html()),    		
      		 dataSource: commentsDataSource,
+              pullToRefresh: true,   
         		schema: {
            		model:  commentModel
 				}			 
@@ -337,11 +338,12 @@ app.Activity = (function () {
 						 console.log(commentDataView);
                		  $.each(commentDataView, function(i, commentData) {           
                                console.log(commentData.status[0].Msg);
+                                  refreshCertificates(); 
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
-                                 app.showAlert("Reply sent successfully","Notification");
+                                 //app.showAlert("Reply sent successfully","Notification");
                                  $("#newComment").val('');
                              }else{
-                                 app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                                 app.showAlert(commentData.status[0].Msg ,'Notification'); 
                              }
                                
                          });
@@ -361,8 +363,15 @@ app.Activity = (function () {
 
             */
             //}
+            
+          
         };
 
+        function refreshCertificates() {
+ 			   var certificateList = $('#comments-listview').data('kendoMobileListView');
+    			//certificateList.commentsDataSource.read();   // added line
+    			certificateList.refresh();
+		};
         
         return {
            init: init,

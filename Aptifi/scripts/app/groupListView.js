@@ -301,10 +301,10 @@ app.GroupList = (function () {
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
                                if(addGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Added Successfully","Notification");
-				        	        //app.mobileApp.navigate('views/groupListPage.html');
+				        	        app.mobileApp.navigate('views/groupListPage.html');
                                     $("#newGroup").val('');     
             						$("#newGroupDesc").val('');
+        							app.showAlert("Group Added Successfully","Notification");
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -361,8 +361,9 @@ app.GroupList = (function () {
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
                                if(deleteGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Deleted Successfully","Notification");
 				        	        app.mobileApp.navigate('views/groupListPage.html');
+    								app.showAlert("Group Deleted Successfully","Notification");
+
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }

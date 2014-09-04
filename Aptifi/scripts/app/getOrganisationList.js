@@ -366,6 +366,7 @@ app.OragnisationList = (function () {
         */
     
         var organisationSelected = function (e) {
+            app.mobileApp.pane.loader.show();
             console.log(e.data);
             var organisationID=e.data.organisationID;
             var bagCount =e.data.bagValToStore;
@@ -486,7 +487,7 @@ app.OragnisationList = (function () {
         		         org_id: results.rows.item(i).org_id,
                          role:results.rows.item(i).role,
                          imgData:results.rows.item(i).imageSource,   
-                         imageSourceOrg:"http://54.85.208.215/assets/upload_logo/",   
+                         imageSourceOrg:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,   
                          orgDesc:''                      
                        });         
                     }
@@ -503,6 +504,8 @@ app.OragnisationList = (function () {
   		    template: kendo.template($("#orgTemplate").html()),    		
      		 dataSource: orgDbData        			 
 		     });
+        
+            $('#organisation-listview1').data('kendoMobileListView').refresh();    		    			
                 
 		};
        

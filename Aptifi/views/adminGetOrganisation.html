@@ -2,8 +2,7 @@
    <div data-role="header">               
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
-             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Log out</a>		         
-                 <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>                                  
+             	<a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>
               </div>              
                             
 	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
@@ -27,29 +26,18 @@
 
 
 
-
-
-
 <div data-role="view" id="view-all-activities-userReply" data-id="innerActivity" data-title="Reply To User" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.userReplyList" data-init="app.userReplyList.init"  data-show="app.userReplyList.show">	
 	 <div>
-    	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate"></ul>
+    	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
          <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	</p>
- 	</div> 
-
-   
+ 	</div>    
 </div>
 
 
 
-
-
-
-
-
-<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
-    
+<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">    
     <div style="margin-left:10px">
         <p style="color:#1B205E">Select Organisation to send Notification</p>
         <span style="margin-left:12px;"><input id="orgforNotification" placeholder="Select Organisation"/></span>
@@ -81,6 +69,10 @@
         <div class="user-share">
             <textarea id="notificationDesc" placeholder="Write Notification Message to Send ?" required validationMessage="Please Enter Notification Message!"></textarea>
         </div>
+    </div>
+    
+    <div style="color:#1B205E">
+     <label style="color:#1B205E"><input type="checkbox" id="commt_allow" value="" />Comment Allow</label>   
     </div>
     
     

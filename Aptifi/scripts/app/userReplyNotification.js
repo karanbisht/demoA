@@ -124,8 +124,18 @@ app.userReplyNotificationList = (function () {
 
 		};
         
-        var adminReplyNotiSelect = function(){
-            alert('hello');
+        var adminReplyNotiSelect = function(e){
+           /* console.log(e.data.uid);
+            console.log(e.data);
+            var message = e.data.message;
+            var title = e.data.title;
+            var org_id = e.data.org_id;
+            console.log(org_id);
+            var notiId=e.data.pid;
+            var comment_allow=e.data.comment_allow;//: "1"
+            */
+		   //	app.MenuPage=false;	
+           // app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
         };
         
             return {

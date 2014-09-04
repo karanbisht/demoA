@@ -1,9 +1,10 @@
 <div data-role="layout" data-id="mobile-tabstrip">
-   <div data-role="header">               
+   <div data-role="header">  
+       
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
-             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.Activities.logout">Log out</a>		         
-                 <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>                                  
+             	<a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.Activities.logout"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>		         
+                 <a id="moreOption"  style="width: 2.5em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50% ; background-color: transparent;"  data-align="right" href="#moreFeature" data-role="button" data-rel="popover"><img src="styles/images/icon-add.png" style="background-position: .65em 50%;"/></a>                                  
                  <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> 
               </div>              
                             
@@ -174,7 +175,8 @@
 		<script type="text/x-kendo-template" id="organisationTemplate">
     		
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
-         #if(org_logo===null){#   
+
+        #if(org_logo===null){#   
          <div class="user-avatar">
             <img src="styles/images/habicon.png">
         </div>
@@ -207,8 +209,12 @@
         	</div>
             
         #}else{#
+             #console.log(imgData)#
+             #console.log(imageSourceOrg)#
+             
  	   	<div class="user-avatar">
-             	<img src="styles/images/habicon.png"/>
+                 <img src=${imageSourceOrg} />
+             
      	       <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
     		</div>
          #}#    

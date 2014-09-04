@@ -233,7 +233,7 @@
 }
 
 #friendsApp .header .nav-button-back {
-    background-image: url(images/icon-arrow_left.png);
+    background-image: url(styles/images/icon-arrow_left.png);
     background-position: .65em 50%;
 }
 
@@ -712,7 +712,7 @@
     }
 
     #friendsApp .header .nav-button-back {
-        background-image: url(images/icon-arrow_left@2x.png);
+        background-image: url(styles/images/icon-arrow_left@2x.png);
         background-size: 9px 20px;
     }
 
@@ -805,6 +805,35 @@
    /*min-width:40px;
     display: inline-block;*/
 }
+
+#admin-sub-noti-listview> li {
+    border:none;
+   /*min-width:40px;
+    display: inline-block;*/
+}
+
+
+.nav-button-ui {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 2em;
+    height: 2em;
+    border: 0 none;
+    background-color: transparent;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+    background-image: url(images/icon-arrow_left.png);
+    background-position: .65em 50%;
+}
+
+
+.nav-button-back-ui {
+    background-image: url(styles/images/icon-arrow_left.png);
+    background-position: .65em 50%;
+}
+
+
 
 /*.commentClasList > li {
     border:none;

@@ -30,7 +30,7 @@ app.subGroupDetail = (function () {
            
         var showSubGroupNotification = function(){
         	 app.MenuPage=false;
-             app.mobileApp.navigate('views/orgGroupNotificationList.html?organisationID=' + organisationID +'&account_Id='+account_Id);
+             app.mobileApp.navigate('views/subGroupNotificationList.html?organisationID=' + organisationID +'&group_ID='+groupID);
              //app.mobileApp.navigate('#groupNotificationShow');
          };   
           
@@ -40,7 +40,7 @@ app.subGroupDetail = (function () {
             app.MenuPage=false;
             app.mobileApp.navigate('#subGroupMemberShow');         
             console.log(organisationID);
-                        console.log(groupID);
+            console.log(groupID);
             
             var UserModel ={
             id: 'Id',
@@ -311,15 +311,7 @@ app.subGroupDetail = (function () {
         
         var removeMemberFromGroup = function(){           
             app.MenuPage=false;
-            app.mobileApp.navigate('#removeMemberFromGroup');
-            /*
-            app.groupDetail.userData.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: GroupName   	    				        	
-        	    								});
-            kendo.bind($('#Member-Delete-template'), MemberDataSource); 
-            */
+            app.mobileApp.navigate('#removeMemberFromSubGroup');            
         };
         
         
@@ -338,16 +330,14 @@ app.subGroupDetail = (function () {
             
             console.log(customer);            
 			console.log(organisationID);
+       
             
-            var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
-                        
             var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/removeCustomer",
+                   url: "http://54.85.208.215/webservice/group/removeUser/"+customer+"/"+organisationID+"/"+groupID,
                    type:"POST",
-                   dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   data: jsonDataDeleteMember
+                   dataType: "json"// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
            	}
            },
            schema: {

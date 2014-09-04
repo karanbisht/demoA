@@ -2,12 +2,12 @@
          <div data-role="header">        
               <div data-role="navbar">     
                    Notification List
-             	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>
+             	<a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>
               </div>                                          
 	     </div>
 
     <div>
-    	<ul id="userReply-notification-listview" data-style="inset" data-role="listview" data-template="userReplyNotificationTemplate" ></ul>
+    	<ul id="userReply-notification-listview" data-style="inset" data-role="listview" data-template="userReplyNotificationTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
          <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	 </p>
