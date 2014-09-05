@@ -2,9 +2,9 @@ var app = app || {};
 
 app.groupDetail = (function () {
 
-    var GroupName;
+    var orgName;
     var selectedGroupId;
-    var selectedGroupDesc;
+    var orgDesc;
     var custFromGroup= [];
     //var orgId = localStorage.getItem("UserOrgID");
     
@@ -25,6 +25,8 @@ app.groupDetail = (function () {
             app.mobileApp.pane.loader.hide();            
             organisationID = e.view.params.organisationID;
             account_Id = e.view.params.account_Id;
+            orgName= e.view.params.orgName;
+            orgDesc= e.view.params.orgDesc;
          };
            
            
@@ -163,8 +165,8 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             app.mobileApp.navigate('#updateGroupInfo');      
                
-            $("#editGroupName").val(GroupName);
-            $("#editGroupDesc").val(selectedGroupDesc);
+            $("#editOrgName").val(orgName);
+            $("#editOrgDesc").val(orgDesc);
         };
         
         var manageGroup =function(){
@@ -181,8 +183,8 @@ app.groupDetail = (function () {
             console.log(selectedGroupId);
          var group_status = 'A';
          var org_id=1; 
-         var group_name = $("#editGroupName").val();     
-         var group_description = $("#editGroupDesc").val();
+         var group_name = $("#editOrgName").val();     
+         var group_description = $("#editOrgDesc").val();
             
          var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
                       console.log(selectedGroupId);

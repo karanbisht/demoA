@@ -26,7 +26,7 @@ app.sendNotification = (function () {
                             { text: "Alert", value: "A" }
                         ],
                         filter: "contains",
-                        placeholder: "Select Notification Type",
+                        placeholder: "Select Type",
                         suggest: true
                         //index: 0
                     });
@@ -121,7 +121,7 @@ app.sendNotification = (function () {
                                          group_name: groupValue[0].groupData[j].group_name,
                                          group_status:groupValue[0].groupData[j].group_status,
                                          org_id:groupValue[0].groupData[j].org_id,
-                                         pid:groupValue[0].groupData[j].org_id
+                                         pid:groupValue[0].groupData[j].pid
 
                                      });
                                    }
@@ -158,6 +158,7 @@ app.sendNotification = (function () {
          var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
              	var groupSelectedNoti = selectDataNoti.value();
+                 console.log(groupSelectedNoti);
              	return groupSelectedNoti;
          };
          
@@ -176,11 +177,20 @@ app.sendNotification = (function () {
                 var selectedType = $("#notificationType").data("kendoComboBox");
                 var type=selectedType.value();
              
-                var cmmt_allow = 0;
+            
+             var cmmt_allow ;
+             if($("#comment_allow").prop('checked')){
+    				cmmt_allow = 1;  // checked
+	 		}else{
+    				cmmt_allow = 0;
+             }
+             
+             console.log(cmmt_allow);
                 var notificationValue = $notificationDesc.val();
                 var titleValue = $("#notificationTitleValue").val();
                 
-                console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
+                
+           console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
                           
              
           var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
@@ -211,27 +221,24 @@ app.sendNotification = (function () {
           });  
 	            
            
-           dataSourceSendNotification.fetch(function() {
-                   
+           dataSourceSendNotification.fetch(function() {                   
            var sendNotificationDataView = dataSourceSendNotification.data();
 						   $.each(sendNotificationDataView, function(i, notification) {
                                console.log(notification.status[0].Msg);
                                
-                               if(notification.status[0].Msg==='Success'){
+                               if(notification.status[0].Msg==='Notification Sent'){
                                  app.showAlert("Notification Send Successfully ","Notification");  
                                    $("#notificationTitleValue").val('');            
-						            $("#notificationDesc").val('');
-                                   
-                                     $("#notificationType").data("kendoComboBox").value("");
-             						$("#groupforNotification").data("kendoComboBox").value("");
-            
-  
-                                   
+						           $("#notificationDesc").val('');
+                                   document.getElementById('comment_allow').checked = false;
+                                   $("#notificationType").data("kendoComboBox").value("");
+             					  $("#groupforNotification").data("kendoComboBox").value("");
+                                   $("#orgforNotification").data("kendoComboBox").value("");
+                                                                                    
                                }else{
                                   app.showAlert(notification.status[0].Msg ,'Notification'); 
                                }
-                           });
-               
+                           });               
                
            });
 

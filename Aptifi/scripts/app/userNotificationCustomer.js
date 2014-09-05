@@ -25,7 +25,7 @@ app.replyedCustomer = (function () {
           
           
           
-              var UserModel ={
+            var UserModel ={
             id: 'Id',
             fields: {
                 user_fname: {
@@ -135,9 +135,10 @@ app.replyedCustomer = (function () {
       };         
        
        var customerSelected = function(e){
+            console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
             app.MenuPage=false;
-            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID);
+            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname);
        };
        
         	   return {

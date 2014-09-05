@@ -228,21 +228,15 @@ app.GroupList = (function () {
         		schema: {
            		model:  OrgGroupModel
 				}			 
-		     });            
-                  
-  
-
-
-                  
-                  
+		     });                              
         };  
                 
          var groupSelected = function (e) {
-            		console.log("karan Bisht"+e);
-             		console.log(e.data.groupID);
-                          		console.log(e.data.orgID);
+            		console.log(e.data);
+             	   console.log(e.data.groupID);
+                    console.log(e.data.orgID);//groupName//groupDesc
 					app.MenuPage=false;	
-            		app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID +'&orgID='+e.data.orgID);
+            		app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID +'&orgID='+e.data.orgID+'&groupName='+e.data.groupName+'&groupDesc='+e.data.groupDesc);
         };
                 
         var addGroup = function(){

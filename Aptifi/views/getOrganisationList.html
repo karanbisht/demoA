@@ -169,8 +169,6 @@
    </div>   
 </div>
 	
-<!-- data-role="touch" data-bind="events: { tap: organisationSelected }" -->
-	<!-- Activities ListView Template -->
 
 		<script type="text/x-kendo-template" id="organisationTemplate">
     		
@@ -220,6 +218,9 @@
          #}#    
 	    		<div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+             #if(role==='O' ){#
+                 <div style="text-align:center;float:right;"><img src="styles/images/admin.png" style="width=35px;height:25px;" /></div>
+             #}#
                     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a> 
         		</div>
     		</div>

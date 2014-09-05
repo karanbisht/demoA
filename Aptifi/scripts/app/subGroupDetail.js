@@ -25,6 +25,8 @@ app.subGroupDetail = (function () {
             app.mobileApp.pane.loader.hide();            
             groupID = e.view.params.groupID;
             organisationID = e.view.params.orgID;
+            GroupName= e.view.params.groupName;
+            selectedGroupDesc= e.view.params.groupDesc;
          };
            
            
@@ -177,19 +179,19 @@ app.subGroupDetail = (function () {
         };
         
         var saveUpdatedGroupVal = function(){
-            console.log(selectedGroupId);
+         //console.log(selectedGroupId);
          var group_status = 'A';
-         var org_id=1; 
+         //var org_id=1; 
          var group_name = $("#editGroupName").val();     
          var group_description = $("#editGroupDesc").val();
+          console.log(organisationID +"||"+group_name+"||"+group_description+"||"+groupID+"||"+group_status);
             
-         var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
-                      console.log(selectedGroupId);
-            
+         var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description,"pid":groupID , "group_status":group_status}
+                       
          var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/saveGroup/"+selectedGroupId,
+                   url: "http://54.85.208.215/webservice/group/edit",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup

@@ -227,11 +227,10 @@ app.adminOragnisationList = (function () {
         */
     
         var organisationSelected = function (e) {
-            //console.log(e.data.uid);
             var organisationID=e.data.organisationID;
             //uid=' + e.data.uid
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID +'&account_Id='+account_Id);
+            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName+'&orgDesc='+e.data.orgDesc);
         };
         
         var groupSelected = function (e) {

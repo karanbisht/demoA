@@ -14,9 +14,12 @@ app.userNotiComment = (function () {
         
       var activityUid,activity,custId;
          // $activityPicture;
+      var org_id;
+      var notiId;  
+      var customerID;
         
       var init = function () {
-
+			
       };
                 
         var data;          
@@ -46,11 +49,12 @@ app.userNotiComment = (function () {
             
             var message = e.view.params.message;
   		  var title = e.view.params.title;
-            var org_id = e.view.params.org_id;
-            var notiId = e.view.params.notiId;
+            org_id = e.view.params.org_id;
+            notiId = e.view.params.notiId;
             var comment_allow = e.view.params.comment_allow;
-            var customerID = e.view.params.customerID;
-
+            customerID = e.view.params.customerID;
+			var userName = e.view.params.userName;
+            
             console.log(message+"||"+title);
             
             if(comment_allow===0){
@@ -87,14 +91,11 @@ app.userNotiComment = (function () {
             },
             User: function () {
                 console.log(this.get('user_id'));                
-                var serUserId = this.get('user_id');
-                console.log(serUserId +"||"+ userId);
-                //if(userId===serUserId){
+                 if(this.get('user_type')==="Customer"){
 					return userName;                    
-                //}else{
-                //    return userOrgName;
-                //}
-                //return user ? user.DisplayName : 'Anonymous';    
+                }else{
+                    return 'Admin';
+                }
             }
         };
             
@@ -127,8 +128,8 @@ app.userNotiComment = (function () {
                                      groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
                                          add_date: groupValue[0].AllComment[j].add_date,
-									     user_type: groupValue[0].AllComment[j].user_type
-
+									     user_type: groupValue[0].AllComment[j].user_type,
+										 user_id: groupValue[0].AllComment[j].user_id
                                          //notification_id: groupValue[0].replyData[j].notification_id,
                                          //send_date:groupValue[0].replyData[j].send_date,
                                          //title:groupValue[0].replyData[j].title,
@@ -170,6 +171,66 @@ app.userNotiComment = (function () {
         };
         
         
+        
+        
+        
+        
+         var saveAdminComment = function () {    
+            console.log('click save');
+                   
+            var comment =$("#newAdminComment").val();
+              
+            console.log("SHOWING DATA" + org_id +"||"+notiId+"||"+comment+"||"+customerID);
+                
+          var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
+                   
+          var saveCommentDataSource = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/orgReply",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDatacomment
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+               
+           }               
+          });  
+	            
+         	  saveCommentDataSource.fetch(function() {
+                         var commentDataView = saveCommentDataSource.data();
+						 console.log(commentDataView);
+               		  $.each(commentDataView, function(i, commentData) {           
+                               console.log(commentData.status[0].Msg);
+                             if(commentData.status[0].Msg === 'Reply sent successfully'){
+                                 //app.showAlert("Reply sent successfully","Notification");
+                                 $("#newAdminComment").val('');
+                             }else{
+                                 app.showAlert(commentData.status[0].Msg ,'Notification'); 
+                             }
+                               
+                         });
+               });
+  
+        };
+
+        
+        
+        
+        
+        
+        
         var removeActivity = function () {
             
             var activities = app.Activities.activities;
@@ -195,6 +256,7 @@ app.userNotiComment = (function () {
            init: init,
            show: show,
            remove: removeActivity,
+           saveAdminComment:saveAdminComment, 
            replyButton:replyButton
         };
         
