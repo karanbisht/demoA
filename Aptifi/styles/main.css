@@ -812,6 +812,14 @@
     display: inline-block;*/
 }
 
+#userComments-listview > li {
+        border:none;
+}
+
+
+#reply-customer-listview > li {
+        border:none;    
+}
 
 .nav-button-ui {
     display: inline-block;

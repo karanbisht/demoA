@@ -28,8 +28,7 @@ app.userNotiComment = (function () {
          if (app.checkConnection()) {
              console.log(activity);
              var notificationId = activity.notification_id;             
-             app.mobileApp.navigate('views/addCommentView.html?notificationId='+notificationId);            
-             
+             app.mobileApp.navigate('views/addCommentView.html?notificationId='+notificationId);                         
          } else {
               app.showAlert("You are currently offline , can't reply to post " , "Offline Mode");
                 }

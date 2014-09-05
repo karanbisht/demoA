@@ -6,6 +6,7 @@ app.subGroupDetail = (function () {
     var selectedGroupId;
     var selectedGroupDesc;
     var custFromGroup= [];
+
     //var orgId = localStorage.getItem("UserOrgID");
     
     var groupID;
@@ -43,6 +44,64 @@ app.subGroupDetail = (function () {
             app.mobileApp.navigate('#subGroupMemberShow');         
             console.log(organisationID);
             console.log(groupID);
+            var orgDataShow = []; 
+            
+            
+            
+            
+              var orgMemberDataSource = new kendo.data.DataSource({            
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+organisationID,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+              	}
+              },
+       	 schema: {                                
+                 data: function(data)
+  	             {
+                       console.log(data);
+                                $.each(data, function(i, groupValue) {
+								console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+                                     if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
+                                            orgDataShow.push({
+                                                 mobile: orgVal.allCustomer[i].uacc_username,
+		                                         first_name: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
+                                            });
+                                        }     
+                                    } 
+                                     
+    							  });
+                               });
+                       
+                            console.log(orgDataShow);
+                             return orgDataShow;
+	               }
+                },
+	              error: function (e) {
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+              	}	        
+    	      });         
+          
+	            orgMemberDataSource.fetch(function() {
+    	            
+ 			   });
+
+          console.log('karan bisht');
+          console.log(orgDataShow);
+            
             
             var UserModel ={
             id: 'Id',
@@ -82,8 +141,7 @@ app.subGroupDetail = (function () {
               },
        	 schema: {
                model: UserModel,
-                
-                
+                                
                  data: function(data)
   	             {
                        console.log(data);
@@ -142,6 +200,10 @@ app.subGroupDetail = (function () {
  		   });
 	
          
+            
+            console.log('welcome to show');
+             console.log(orgDataShow);
+            
     	    $("#subGroupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#subGroupMemberTemplate").html()),

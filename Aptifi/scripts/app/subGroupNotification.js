@@ -4,7 +4,6 @@ app.orgsubGroupListView = (function () {
     
     var organisationID;
     var group_ID;
-       
     var orgDetailViewModel = (function () {
 
         
@@ -68,19 +67,19 @@ app.orgsubGroupListView = (function () {
                                   console.log(groupValue);
                                      
                                    $.each(groupValue, function(i, orgVal) {
-                                     console.log();
 
-                   	             if(orgVal.Msg ==='No notification'){     
+                   	             if(orgVal.Msg ==='No notification in this group'){     
                 	                   groupDataShow.push({
-                                         title: ' No Notification ',
                                          message: 'No Notification for this Group ',
-                                         date:'0',  
-                                         commentAllow : 'Y',
-                                         pid:0        
+                                         org_id:0,
+                                         pid:0,  
+                                         date:0,
+                                         title: ' No Notification '                                                                                         
     	                               });                   
                                         
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.allNotification.length);  
+                        
                                         for(var i=0;i<orgVal.allNotification.length;i++){
                                             groupDataShow.push({
 												 message: orgVal.allNotification[i].message,
@@ -89,28 +88,11 @@ app.orgsubGroupListView = (function () {
                                                  date:orgVal.allNotification[i].send_date,
                                                  title:orgVal.allNotification[i].title
                                             });
-                                        }     
-                                                                                     
+                                        }
                                     }
                                                                             
                                    });    
                                       
-                                  /*   
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                     */
                                  });
                        
 		                         console.log(groupDataShow);
@@ -142,8 +124,9 @@ app.orgsubGroupListView = (function () {
 		     });              
         };
         
+        
+        
          var groupNotificationSelected = function (e) {
-            alert("hello");
 			app.MenuPage=false;	
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);

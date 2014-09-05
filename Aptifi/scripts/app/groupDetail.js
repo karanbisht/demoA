@@ -231,105 +231,7 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             //app.mobileApp.navigate('#addMemberToGroup');
             app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
-        /*               
-        var addUserModel ={
-            id: 'Id',
-            fields: {
-                mobile: {
-                    field: 'mobile',
-                    defaultValue: ''
-                },
-                first_name: {
-                    field: 'first_name',
-                    defaultValue: ''
-                },
-                email: {
-                    field: 'email',
-                    defaultValue:''
-                },
-                last_name: {
-                    field: 'last_name',
-                    defaultValue:''
-                }
-             }
-          };
-            
-        var addMemberDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/organisation/getCustomer/"+orgId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-              	}
-              },
-            
-       	 schema: {
-               model: addUserModel,
-                  
-                 data: function(data)
-  	             {
-                       console.log(data);
-                       
-                       var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].orgData.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                         
-                                     var pos = $.inArray(groupValue[0].orgData[j].cust_id, custFromGroup);
-                         	 			 console.log(pos);
-									if (pos === -1) {
-					                                    
-                                     groupDataShow.push({
-                                         customerID: groupValue[0].orgData[j].cust_id,
-                                         first_name: groupValue[0].orgData[j].cust_fname,
-                                         last_name: groupValue[0].orgData[j].cust_lname,
-                                         email:groupValue[0].orgData[j].cust_email,
-                                         mobile:groupValue[0].orgData[j].mobile
-                                     });
-                                    }
-                                   }
-                                 });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-	 		              
-                       
-                 }
-
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
-            
-            addMemberDataSource.fetch(function() {
-                
- 		   });
-	
-         
-    	    $("#addMemberData").kendoListView({
-        		dataSource: addMemberDataSource,
-       		 template: kendo.template($("#Member-Add-template").html()),
-                pullToRefresh: true, 
-			});
-            
-            
-            /*app.groupDetail.userData.filter({
-							                	field: 'Group',
-                								operator: 'neq',
-                								value: GroupName   	    				        	
-        	    								});
-             kendo.bind($('#Member-Add-template'), MemberDataSource); 
-            */
-   
-   		
+           		
         };
 
         
@@ -439,9 +341,8 @@ app.groupDetail = (function () {
           	  customer[i] = $(this).val();
         	});
             
-			
+			console.log('Delete Button');
             customer = String(customer);        
-            
             console.log(customer);            
 			console.log(organisationID);
             
@@ -471,19 +372,22 @@ app.groupDetail = (function () {
           
          });  
 	            
-           dataSourceDeleteMember.fetch(function() {
-              var loginDataView = dataSourceDeleteMember.data();
+             dataSourceDeleteMember.fetch(function() {
+               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
-                      console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='You deleted successfully'){                                
+					  console.log('karan bisht');
+                      console.log(deleteGroupData.status[0].Msg);
+                      console.log(deleteGroupData.status[0].Code);
+                      
+                               if(deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2 ){                                
 									app.showAlert("Member Deleted Successfully","Notification");
-				        	        app.mobileApp.navigate('#groupMemberShow');
+                            		app.mobileApp.navigate('#groupMemberShow');
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }
                                
                   });
-  		 });    
+  		   });    
         };
        
         

@@ -2,78 +2,13 @@ var app = app || {};
 
 app.GroupList = (function () {
 
- var el = new Everlive('wKkFz2wbqFe4Gj0s');  
  var groupListDataSource;   
  var orgId = localStorage.getItem("UserOrgID");
 
  var organisationID;  
-    
-    //console.log(orgId);
-    
-   /*var GroupsListModel = (function () {                 
-       var GroupListModel = {
-            id: 'Id',
-            fields: {
-                add: {
-                    field: 'add',
-                    defaultValue: new Date()
-                },
-                group_name: {
-                    field: 'group_name',
-                    defaultValue: null
-                }
-              },
-	            CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('add'));
-    	        }
-   	       };        
-        
-	        groupListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {
-                model: GroupListModel,                
-                  data: function(data)
-  	             {	console.log(data);
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].grpData.length;
-                                   for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         pid: groupValue[0].grpData[j].pid,
-                                         group_name: groupValue[0].grpData[j].group_name,
-                                         add:groupValue[0].grpData[j].add,
-                                         group_desc:groupValue[0].grpData[j].group_desc
-                                     });
-                                   }
-                                 });
-                       
-                       console.log(groupDataShow);
-                       return groupDataShow;                       
-	               }
-
-            },
-            error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           },       
-             sort: { field: 'add', dir: 'desc' }    
-	       });
-               
-	        return {
-            	groupListData: groupListDataSource
-        	};
-	}());*/
-    
-	    	var activityListViewModel = (function () {
+                
+     
+var activityListViewModel = (function () {
      var GroupDataSource;           
     	     
      		 var init = function () {
@@ -86,7 +21,6 @@ app.GroupList = (function () {
                   console.log(organisationID);
                   
 				$('#newGroup').val('');
-                  
                   
                   
                 var OrgGroupModel ={
@@ -172,32 +106,6 @@ app.GroupList = (function () {
                                         }  
                                        
                                      }
-
-
-                                     
-                   	             /*if(orgVal.Msg ==='No Customer in this organisation'){     
-                                     
-                                     groupDataShow.push({
- 									 	groupName:'No Group',       
-                                      	groupDesc:'This Organisation don't have any group',
-                                      	addDate:''
-    	                             });
-	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.allCustomer.length);  
-                                        for(var i=0;i<orgVal.allCustomer.length;i++){
-                                            groupDataShow.push({
-                                                 groupName: orgVal.allCustomer[i].uacc_username,
-		                                         groupDesc: orgVal.allCustomer[i].user_fname,
-        		                                 email:orgVal.allCustomer[i].user_email,  
-                		                         last_name : orgVal.allCustomer[i].user_lname,
-                        		                 customerID:orgVal.allCustomer[i].custID,
-                                		         account_id:orgVal.allCustomer[i].account_id,
-                                                 orgID:orgVal.allCustomer[i].orgID
-                                            });
-                                        }     
-   
-                                    }*/ 
-                                     
     							  });
                                });
                        
@@ -228,7 +136,8 @@ app.GroupList = (function () {
         		schema: {
            		model:  OrgGroupModel
 				}			 
-		     });                              
+		     });              
+
         };  
                 
          var groupSelected = function (e) {

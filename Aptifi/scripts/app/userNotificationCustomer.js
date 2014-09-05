@@ -8,7 +8,7 @@ app.replyedCustomer = (function () {
         var org_id;
         var notiId;
         var comment_allow;
-        
+		var orgDataShow = [];            
         
         
   	var init = function () {
@@ -22,8 +22,6 @@ app.replyedCustomer = (function () {
                   org_id = e.view.params.org_id;
                   notiId = e.view.params.notiId;
                   comment_allow = e.view.params.comment_allow;
-          
-          
           
             var UserModel ={
             id: 'Id',
@@ -63,8 +61,7 @@ app.replyedCustomer = (function () {
               },
        	 schema: {
                model: UserModel,
-                
-                
+                                
                  data: function(data)
   	             {
                        console.log(data);
@@ -131,9 +128,16 @@ app.replyedCustomer = (function () {
            		model:  UserModel
 				}		
 			});
+          
+          
+          
+          
 
-      };         
+
+      };
        
+       
+                     
        var customerSelected = function(e){
             console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
@@ -144,7 +148,7 @@ app.replyedCustomer = (function () {
         	   return {
         	   init: init,
            	show: show,
-               customerSelected:customerSelected    
+               customerSelected:customerSelected
            	};
             
            }());
