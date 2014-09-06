@@ -14,6 +14,9 @@ app.Activity = (function () {
     var notiId;
     var account_Id;
     var commentsDataSource;        
+    var message;
+    var title;
+    var comment_allow;
     
     var activityViewModel = (function () {
         
@@ -97,12 +100,12 @@ app.Activity = (function () {
             listScroller.reset();
             
 
-            var message =e.view.params.message;
-            var title =e.view.params.title;
+            message =e.view.params.message;
+            title =e.view.params.title;
             org_id =e.view.params.org_id;
             notiId =e.view.params.notiId;
             account_Id =e.view.params.account_Id;
-            var comment_allow = e.view.params.comment_allow;
+            comment_allow = e.view.params.comment_allow;
             
             if(comment_allow===1 || comment_allow==='1'){
                 $("#commentPanel").show();                
@@ -349,6 +352,7 @@ app.Activity = (function () {
                          });
                });
 
+
                          
                                 
   /*              comment.ReplyText  = $newComment.val();
@@ -368,9 +372,17 @@ app.Activity = (function () {
         };
 
         function refreshCertificates() {
- 			   var certificateList = $('#comments-listview').data('kendoMobileListView');
+            console.log('refButton');
+            //console.log('save button click');
+                app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
+ 			   //var certificateList = $('#comments-listview').data('kendoMobileListView');
     			//certificateList.commentsDataSource.read();   // added line
-    			certificateList.refresh();
+    			//certificateList.refresh();
+            
+              $("#comments-listview").kendoMobileListView({            
+                  dataSource: commentsDataSource,
+                  template:  $("#commentsTemplate").text()
+              });
 		};
         
         return {

@@ -8,7 +8,7 @@ app.replyedCustomer = (function () {
         var org_id;
         var notiId;
         var comment_allow;
-		var orgDataShow = [];            
+
         
         
   	var init = function () {
