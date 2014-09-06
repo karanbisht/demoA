@@ -18,7 +18,7 @@ var activityListViewModel = (function () {
                 
               var show = function(e){
                 organisationID = e.view.params.organisationId;  
-                  console.log(organisationID);
+                console.log('Organisation ID'+organisationID);
                   
 				$('#newGroup').val('');
                   
@@ -130,9 +130,9 @@ var activityListViewModel = (function () {
             
             
              $("#group-listview").kendoMobileListView({
-  		    template: kendo.template($("#groupTemplate").html()),    		
-     		 dataSource: GroupDataSource,
-              pullToRefresh: true,
+  		      template: kendo.template($("#groupTemplate").html()),    		
+     		   dataSource: GroupDataSource,
+                pullToRefresh: true,
         		schema: {
            		model:  OrgGroupModel
 				}			 
@@ -203,8 +203,8 @@ var activityListViewModel = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Success'){                                
-				        	        app.mobileApp.navigate('views/groupListPage.html');
+                               if(addGroupData.status[0].Msg==='Group added successfully'){                                
+				        	        app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
                                     $("#newGroup").val('');     
             						$("#newGroupDesc").val('');
         							app.showAlert("Group Added Successfully","Notification");
@@ -263,8 +263,8 @@ var activityListViewModel = (function () {
               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='Success'){                                
-				        	        app.mobileApp.navigate('views/groupListPage.html');
+                               if(deleteGroupData.status[0].Msg==='Deleted Successfully'){                                
+				        	        app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
     								app.showAlert("Group Deleted Successfully","Notification");
 
                                }else{

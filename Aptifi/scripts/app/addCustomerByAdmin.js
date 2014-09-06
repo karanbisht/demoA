@@ -97,7 +97,8 @@ app.addCustomerByAdmin = (function () {
                                
                      	    if(loginData.status[0].Msg==='Customer added successfully'){
                          		app.showAlert("Member Added Successfully","Notification");
-				        	     app.mobileApp.navigate('#groupMemberShow');
+                                 refreshOrgMember();
+				        	     //app.mobileApp.navigate('#groupMemberShow');
                                }else{
                                  app.showAlert(loginData.status[0].Msg ,'Notification'); 
                                }
@@ -106,6 +107,11 @@ app.addCustomerByAdmin = (function () {
             }
         };
         
+         function refreshOrgMember(){  
+             console.log('go to member');
+             app.groupDetail.showGroupMembers();
+ 		};
+
         
                 return {
             regInit: regInit,

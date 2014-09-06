@@ -130,6 +130,10 @@ app.Activity = (function () {
             
             //var notificationId = activity.notification_id; 
             
+           commentShow();              
+        };
+        
+        var commentShow = function(){
             var commentModel = {
             id: 'Id',
             fields: {
@@ -230,10 +234,8 @@ app.Activity = (function () {
            		model:  commentModel
 				}			 
 		     });
-            
-            
-            
-        };
+
+        }
 
         
         var offlineQueryReplyDB = function(tx){
@@ -341,7 +343,7 @@ app.Activity = (function () {
 						 console.log(commentDataView);
                		  $.each(commentDataView, function(i, commentData) {           
                                console.log(commentData.status[0].Msg);
-                                  refreshCertificates(); 
+                                  refreshComment(); 
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
                                  //app.showAlert("Reply sent successfully","Notification");
                                  $("#newComment").val('');
@@ -371,24 +373,30 @@ app.Activity = (function () {
           
         };
 
-        function refreshCertificates() {
+        function refreshComment() {
             console.log('refButton');
             //console.log('save button click');
-                app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
+            //app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
  			   //var certificateList = $('#comments-listview').data('kendoMobileListView');
     			//certificateList.commentsDataSource.read();   // added line
     			//certificateList.refresh();
+  
+            app.Activity.commentShow();
             
-              $("#comments-listview").kendoMobileListView({            
-                  dataSource: commentsDataSource,
-                  template:  $("#commentsTemplate").text()
-              });
+             /*setTimeout(function () {
+                 app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
+              	$("#comments-listview").kendoMobileListView({            
+                  	dataSource: commentsDataSource,
+                  	template:  $("#commentsTemplate").text()
+              	});
+              }, 100);*/
 		};
         
         return {
            init: init,
            show: show,
-           saveComment:saveComment, 
+           saveComment:saveComment,
+           commentShow:commentShow, 
            befShow: befShow,
            remove: removeActivity,
            replyButton:replyButton,

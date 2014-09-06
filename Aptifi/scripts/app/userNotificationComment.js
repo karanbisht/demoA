@@ -17,6 +17,8 @@ app.userNotiComment = (function () {
       var org_id;
       var notiId;  
       var customerID;
+      var userCommentsDataSource;
+      var userName;
         
       var init = function () {
 			
@@ -39,7 +41,7 @@ app.userNotiComment = (function () {
             //var cUserId = app.Users.currentUser.get('data').Id;
             //var adminId = localStorage.getItem("adminId");
 
-            var userName = localStorage.getItem("userfName");	
+            //var userName = localStorage.getItem("userfName");	
              
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
@@ -52,9 +54,9 @@ app.userNotiComment = (function () {
             notiId = e.view.params.notiId;
             var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
-			var userName = e.view.params.userName;
+			userName = e.view.params.userName;
             
-            console.log(message+"||"+title);
+            console.log(message+"||"+title+'||'+userName);
             
             if(comment_allow===0){
                 $("#commentPanel").hide();
@@ -67,7 +69,11 @@ app.userNotiComment = (function () {
             
                         
           //  var notificationId = activity.notification_id; 
-            
+        
+            adminComment();
+        };
+        
+        var adminComment = function(){
             var userCommentModel = {
             id: 'Id',
             fields: {
@@ -99,7 +105,7 @@ app.userNotiComment = (function () {
         };
             
            
-            var userCommentsDataSource = new kendo.data.DataSource({
+            userCommentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
                    url: "http://54.85.208.215/webservice/notification/getComment/"+org_id+"/"+notiId+"/"+customerID,
@@ -167,9 +173,8 @@ app.userNotiComment = (function () {
            		model:  userCommentModel
 				}			 
 		     });                                
-        };
-        
-        
+
+        }
         
         
         
@@ -214,6 +219,7 @@ app.userNotiComment = (function () {
                                console.log(commentData.status[0].Msg);
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
                                  //app.showAlert("Reply sent successfully","Notification");
+                                 refreshComment();
                                  $("#newAdminComment").val('');
                              }else{
                                  app.showAlert(commentData.status[0].Msg ,'Notification'); 
@@ -251,10 +257,19 @@ app.userNotiComment = (function () {
             );
         };
         
+        
+        function refreshComment() {
+        
+            app.userNotiComment.adminComment();
+            
+		};
+
+        
         return {
            init: init,
            show: show,
            remove: removeActivity,
+           adminComment:adminComment,
            saveAdminComment:saveAdminComment, 
            replyButton:replyButton
         };

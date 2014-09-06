@@ -14,10 +14,10 @@ app.groupDetail = (function () {
     var groupDetailViewModel = (function () {
 
         
-  	var init = function () {
-             
+	  	var init = function () {
+    	         
                       
-      };
+      	};
            
            
         var show = function (e) {
@@ -36,8 +36,7 @@ app.groupDetail = (function () {
              //app.mobileApp.navigate('#groupNotificationShow');
          };   
           
-                
-        
+                        
         var showGroupMembers = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
@@ -163,8 +162,7 @@ app.groupDetail = (function () {
 
         var showUpdateGroupView = function(){
             app.MenuPage=false;
-            app.mobileApp.navigate('#updateGroupInfo');      
-               
+            app.mobileApp.navigate('#updateGroupInfo');                     
             $("#editOrgName").val(orgName);
             $("#editOrgDesc").val(orgDesc);
         };
@@ -204,12 +202,12 @@ app.groupDetail = (function () {
                	return [data];
                }
            },
-           error: function (e) {
+            error: function (e) {
                //apps.hideLoading();
                console.log(e);
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
-           }               
+            }               
           });  
 	            
            dataSourceaddGroup.fetch(function() {
@@ -221,8 +219,7 @@ app.groupDetail = (function () {
 				        	        app.mobileApp.navigate('views/groupListPage.html');
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
-                               }
-                               
+                               }                               
                   });
   		 });
         };
@@ -239,7 +236,7 @@ app.groupDetail = (function () {
         
 
         
-        var addMemberToGroupFunc = function(){
+        /*var addMemberToGroupFunc = function(){
 			var successFlag = false;
             
             var val = [];
@@ -314,7 +311,9 @@ app.groupDetail = (function () {
              		 app.showAlert("Error ","Notification");
                }*/
             
-        };
+        //};
+        
+        
 
         
         var removeMemberFromGroup = function(){           
@@ -382,6 +381,7 @@ app.groupDetail = (function () {
                                if(deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2 ){                                
 									app.showAlert("Member Deleted Successfully","Notification");
                             		app.mobileApp.navigate('#groupMemberShow');
+                                    refreshOrgMember();
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -401,10 +401,13 @@ app.groupDetail = (function () {
         
         
         
- 
-        
-        
-		        var userMessageTab = function(e){
+         function refreshOrgMember(){  
+             console.log('go to member');
+             app.groupDetail.showGroupMembers();
+ 		};
+               
+		        
+        var userMessageTab = function(e){
         		    var tempArray= [];
             		app.MenuPage=false;	
             		var activity;
@@ -469,7 +472,7 @@ app.groupDetail = (function () {
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,    
-          	 addMemberToGroupFunc:addMemberToGroupFunc,
+          	 //addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
            	showGroupNotification:showGroupNotification,
            	showGroupMembers:showGroupMembers,
