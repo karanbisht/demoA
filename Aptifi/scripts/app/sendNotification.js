@@ -35,6 +35,20 @@ app.sendNotification = (function () {
                        $("#groupforNotification").kendoComboBox({
                           
                        });
+            
+            var comboboxGroup = $("#groupforNotification").data("kendoComboBox"); 
+				comboboxGroup.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    comboboxGroup.input.blur();
+				});
+            
+            
+                 var combobox = $("#notificationType").data("kendoComboBox"); 
+				combobox.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    combobox.input.blur();
+				});
+        
 
         };
          
@@ -93,6 +107,12 @@ app.sendNotification = (function () {
             });            
             
             
+            var combobox = $("#orgforNotification").data("kendoComboBox"); 
+				combobox.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    combobox.input.blur();
+				});
+            
         };    
              
          var onChangeNotiOrg = function(){
@@ -149,6 +169,11 @@ app.sendNotification = (function () {
                   change: onChangeNotiGroup	  	
             });
           
+             var combobox = $("#groupforNotification").data("kendoComboBox"); 
+				combobox.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    combobox.input.blur();
+				});
             	 
         };
                        
@@ -240,13 +265,9 @@ app.sendNotification = (function () {
                                }
                            });               
                
-           });
-
-                
+           });                
         };
         
-         
-                                                            
     	 return {
         	   init: init,
            	show: show,
