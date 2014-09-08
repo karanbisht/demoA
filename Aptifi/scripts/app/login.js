@@ -38,8 +38,13 @@ app.Login = (function () {
             app.userPosition=true;
             $('#loginUsername').val('');
             //$('#loginPassword').val('');
+            
+            //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
-            //app.showNativeAlert();
+            var message = 'karan bisht';
+            window.plugins.toast.showShortTop(message);
+		    //}
+                //app.showNativeAlert();
         };
         
         
@@ -63,8 +68,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';           			
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';           			
+            //var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -74,12 +79,9 @@ app.Login = (function () {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
 			} else {            
                  app.mobileApp.pane.loader.show();                
-                 //app.mobileApp.pane.loader.hide();
-           
+                 //app.mobileApp.pane.loader.hide();           
        		  console.log(username+"||"+device_id+"||"+device_type);
-        	
-            
-                
+        	              
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
        
           var dataSourceLogin = new kendo.data.DataSource({
