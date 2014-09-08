@@ -69,11 +69,15 @@
   "DisplayName": "Aptifi App",
   "Author": "karan",
   "Description": "Aptifi App",
-  "WP8TileTitle": "",
+  "WP8TileTitle": "Aptifi App",
   "WP8ProductID": "{003f5d01-c32e-4f2f-8a44-f2e7b1f00008}",
   "WP8PublisherID": "{b6e0580a-d18c-47b9-b482-6e009726ed8c}",
-  "WP8Publisher": "",
-  "WP8SupportedResolutions": [],
+  "WP8Publisher": "karan",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ],
   "WP8Capabilities": [],
   "WP8Requirements": [],
   "Framework": "Cordova"

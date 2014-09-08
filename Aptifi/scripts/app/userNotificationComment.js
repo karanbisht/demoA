@@ -17,8 +17,11 @@ app.userNotiComment = (function () {
       var org_id;
       var notiId;  
       var customerID;
-      var userCommentsDataSource;
+      var userCommentsDataSource; 
       var userName;
+      var attached;
+      var message;
+      var title;
         
       var init = function () {
 			
@@ -48,15 +51,25 @@ app.userNotiComment = (function () {
             listScroller = e.view.scroller;
             listScroller.reset();
             
-            var message = e.view.params.message;
-  		  var title = e.view.params.title;
+            message = e.view.params.message;
+  		  title = e.view.params.title;
             org_id = e.view.params.org_id;
             notiId = e.view.params.notiId;
             var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
 			userName = e.view.params.userName;
+            var attached = e.view.params.attached;
+            var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
             console.log(message+"||"+title+'||'+userName);
+            
+            document.getElementById("notiAdminImage").innerHTML = "";
+            
+            if(attached!== null && attached!==''){
+            var img = $('<img id="imgShowAdmin">'); //Equivalent: $(document.createElement('img'))
+			img.attr('src', attachedImg);
+			img.appendTo('#notiAdminImage');
+            }
             
             if(comment_allow===0){
                 $("#commentPanel").hide();

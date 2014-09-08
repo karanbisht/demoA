@@ -74,6 +74,7 @@ app.userReplyNotificationList = (function () {
                                          comment_allow : '0',
                                          org_id:'0', 
                                          pid:'',
+                                         attached:''  
     	                               });                   
                                         
 	                                }else if(orgVal.Msg==='Success'){
@@ -85,7 +86,8 @@ app.userReplyNotificationList = (function () {
                                                  date:orgVal.NotificationList[i].send_date,
                                                  title:orgVal.NotificationList[i].title,
                                                  pid :orgVal.NotificationList[i].pid ,
-                                                 comment_allow:orgVal.NotificationList[i].comment_allow 
+                                                 comment_allow:orgVal.NotificationList[i].comment_allow, 
+                                                 attached:orgVal.NotificationList[i].attached
                                             });
                                         }                                                    
                                     }                                                                           
@@ -120,10 +122,9 @@ app.userReplyNotificationList = (function () {
            		model:  userNotificationModel
 				}			 
 		     });
-
-
 		};
         
+    
         var adminReplyNotiSelect = function(e){
             console.log(e.data);
             var message = e.data.message;
@@ -131,9 +132,13 @@ app.userReplyNotificationList = (function () {
             var org_id = e.data.org_id;
             console.log(org_id);
             var notiId=e.data.pid;
-            var comment_allow=e.data.comment_allow;//: "1"           
+            var comment_allow=e.data.comment_allow;//: "1"  
+            var attached = e.data.attached;
+            
+            console.log(attached);
+            
 		    app.MenuPage=false;	
-            app.mobileApp.navigate('views/userNotificationCustomer.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow);
+            app.mobileApp.navigate('views/userNotificationCustomer.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&attached='+attached);
         };
         
             return {

@@ -8,7 +8,7 @@ app.replyedCustomer = (function () {
         var org_id;
         var notiId;
         var comment_allow;
-
+		var attachedimg;
         
         
   	var init = function () {
@@ -22,6 +22,10 @@ app.replyedCustomer = (function () {
                   org_id = e.view.params.org_id;
                   notiId = e.view.params.notiId;
                   comment_allow = e.view.params.comment_allow;
+                  attachedimg = e.view.params.attached;
+          
+          console.log(attachedimg);
+          
           
             var UserModel ={
             id: 'Id',
@@ -128,12 +132,6 @@ app.replyedCustomer = (function () {
            		model:  UserModel
 				}		
 			});
-          
-          
-          
-          
-
-
       };
        
        
@@ -142,7 +140,7 @@ app.replyedCustomer = (function () {
             console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
             app.MenuPage=false;
-            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname);
+            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname+'&attached='+attachedimg);
        };
        
         	   return {
