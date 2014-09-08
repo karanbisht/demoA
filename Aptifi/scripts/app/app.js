@@ -264,7 +264,7 @@ var app = (function (win) {
                 
         var pushNotification = window.plugins.pushNotification;
 		console.log(window.plugins);
-        alert(device.platform);
+        //alert(device.platform);
            
         if (device.platform === "iOS") {
             pushNotification.register(apnSuccessfulRegistration,
@@ -358,8 +358,8 @@ var app = (function (win) {
  
  
     var apnSuccessfulRegistration = function(token) {
-        alert(token);
-        alert(token.toString(16));
+        //alert(token);
+        //alert(token.toString(16));
         localStorage.setItem("deviceTokenID",token); //token.toString(16)
         //sendTokenToServer(token.toString(16));
         addCallback('onNotificationAPN', onNotificationAPN);
