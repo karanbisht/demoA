@@ -396,7 +396,8 @@ app.Activities = (function () {
                                          comment_allow : 'Y',
                                          org_id:'0', 
                                          pid:'',
-                                         bagCount : ''  
+                                         bagCount : '',
+                                         attached:''  
     	                               });                   
                                         
 	                                }else if(orgVal.Msg==='Success'){
@@ -409,7 +410,8 @@ app.Activities = (function () {
                                                  title:orgVal.notificationList[i].title,
                                                  pid :orgVal.notificationList[i].pid ,
                                                  comment_allow:orgVal.notificationList[i].comment_allow ,
-		                                         bagCount : 'C'				
+		                                         bagCount : 'C',
+                                                 attached :orgVal.notificationList[i].attached
                                             });
                                         }     
                                                                                      
@@ -516,9 +518,9 @@ app.Activities = (function () {
             console.log(org_id);
             var notiId=e.data.pid;
             var comment_allow=e.data.comment_allow;//: "1"
-            
+            var attached = e.data.attached;
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
+            app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
         };
         
         var groupSelected = function (e) {

@@ -56,7 +56,7 @@ app.OragnisationList = (function () {
 
          var show = function(e){
            console.log(getDataOrgDB);
-            console.log(getDataCountDB);  
+           console.log(getDataCountDB);  
            app.MenuPage=true;
            app.userPosition=false;
   		 app.mobileApp.pane.loader.show();
@@ -79,7 +79,8 @@ app.OragnisationList = (function () {
                userType = localStorage.getItem("USERTYPE");
                newUserType = userType.split(',');   
              }
-				
+			
+             
              console.log(account_Id);
              console.log(userType);
               
@@ -99,16 +100,16 @@ app.OragnisationList = (function () {
             if(num1===1 && num2===0 && num3===0){
                 localStorage.setItem("ShowMore",1);
                 $("#goToAdmin").hide();
-             }else if(num2===3 && num1===0 && num3===0){
+            }else if(num2===3 && num1===0 && num3===0){
                 localStorage.setItem("ShowMore",0);
                 $("#moreOption").hide();  
-             }else if(num1===1 && num2===3){
+            }else if(num1===1 && num2===3){
                  localStorage.setItem("ShowMore",0);
                  $("#moreOption").hide();
-             }else if(num1===1){
+            }else if(num1===1){
                  localStorage.setItem("ShowMore",1);
                  $("#goToAdmin").hide();
-             }
+            }
              
              
             var organisationNotificationModel = {
@@ -186,21 +187,30 @@ app.OragnisationList = (function () {
                                                   var orgID =orgVal.orgData[i].organisationID;
                                                   orgID = String(orgID); 
                                                   if(getDataOrgDB[k]===orgID){
+                                                      //alert(k+'1');
                                                       if(getDataCountDB[k]!==null){
                                                          bagCountValue = orgVal.last[i].total;
-                                                         bagValueForDB=bagCountValue; 
-                                                         console.log('karan Bisht' +bagCountValue);                                                        
-                                                         bagCountValue = bagCountValue-getDataCountDB[k]; 
+                                                         bagValueForDB=bagCountValue;
+                                                         
+                                                         console.log('karan Bisht1' +bagCountValue);
+                                                         console.log('karan Bisht2' +getDataCountDB[k]);
+                                                         
+                                                         bagCountValue = bagCountValue-getDataCountDB[k];
+                                                          
+                                                         console.log('karan Bisht2' +bagCountValue);
+                                                          
                                                       }else{
                                                          bagCountValue = orgVal.last[i].total;     
                                                          bagValueForDB=bagCountValue;  
                                                       }
                                                   }else{
+                                                     //alert(k+'2'); 
                                                      bagCountValue = orgVal.last[i].total;  
                                                      bagValueForDB=bagCountValue;  
                                                   } 
                                                }
                                            }else{
+                                                   //alert('3');
                                                    bagCountValue = orgVal.last[i].total;
                                                    bagValueForDB=bagCountValue; 
                                            } 

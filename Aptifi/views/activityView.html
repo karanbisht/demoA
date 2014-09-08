@@ -11,23 +11,26 @@
         <div class="user-avatar">
             <img src="styles/images/notification1.png" />
         </div>
+        <div>
 	        <div class="activity-content">
     	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
         	    <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
             		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
+                    
               		<h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
               		<span id="activityText" data-bind="text: message" class="user-share-txt"></span>
+                    
+                     <!--<img id="notiImg" data-bind="attr: { src:attachedImg, alt: imageAlt }" />-->
             	</li>    
             <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
             </div>
-        
+            <div id="notiImage"></div>
+       </div> 
         <div class="commentContent" >
             <div class="comments-wrp">
                 <ul id="comments-listview" data-template="commentsTemplate" data-pull-to-refresh="true" class="commentClasList"></ul>
             </div>
-        </div>
-        
-        
+        </div>              
     </div>   
    
    <div id="commentPanel" data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">

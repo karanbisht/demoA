@@ -17,6 +17,7 @@ app.Activity = (function () {
     var message;
     var title;
     var comment_allow;
+    var attached;
     
     var activityViewModel = (function () {
         
@@ -106,6 +107,18 @@ app.Activity = (function () {
             notiId =e.view.params.notiId;
             account_Id =e.view.params.account_Id;
             comment_allow = e.view.params.comment_allow;
+            attached = e.view.params.attached;
+            var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+            
+            console.log(attached);
+            
+            if(attached!== null && attached!==''){
+            var img = $('<img id="imgShow">'); //Equivalent: $(document.createElement('img'))
+			img.attr('src', attachedImg);
+			img.appendTo('#notiImage');
+            }
+            
+           // $("#notiImage").attr('src', attachedImg);
             
             if(comment_allow===1 || comment_allow==='1'){
                 $("#commentPanel").show();                
@@ -350,14 +363,13 @@ app.Activity = (function () {
                              }else{
                                  app.showAlert(commentData.status[0].Msg ,'Notification'); 
                              }
-                               
                          });
                });
 
 
                          
                                 
-  /*              comment.ReplyText  = $newComment.val();
+  /*            comment.ReplyText  = $newComment.val();
                 comment.UserId = app.Users.currentUser.get('data').Id;
                 comment.NotificationId = app.Activity.activity().Id;
                 
@@ -366,8 +378,7 @@ app.Activity = (function () {
                 });
                 
                 comments.sync();
-
-            */
+  */
             //}
             
           
