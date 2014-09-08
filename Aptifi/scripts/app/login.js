@@ -10,6 +10,7 @@ app.Login = (function () {
     var loginViewModel = (function () {
 
         //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
+
         var $loginUsername;
 		var username;
         var varifiCode;
@@ -22,6 +23,7 @@ app.Login = (function () {
         var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
+        
         //var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
@@ -61,9 +63,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';
-            
-			var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';           			
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
             
             username = $("#loginUsername").val();

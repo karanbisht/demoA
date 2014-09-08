@@ -358,6 +358,7 @@ var app = (function (win) {
  
     var apnSuccessfulRegistration = function(token) {
         console.log(token);
+        localStorage.setItem("deviceTokenID",token.toString(16));
         //sendTokenToServer(token.toString(16));
         addCallback('onNotificationAPN', onNotificationAPN);
     }

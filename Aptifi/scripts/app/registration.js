@@ -138,13 +138,10 @@ app.registration = (function () {
 	            
            
             
-                 app.mobileApp.pane.loader.show();
-                
-                 //app.mobileApp.pane.loader.hide();
-           
+                 app.mobileApp.pane.loader.show();                
+                 //app.mobileApp.pane.loader.hide();           
        		  console.log(username+"||"+device_id+"||"+device_type);
-        	
-            
+        	            
                 
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
        
