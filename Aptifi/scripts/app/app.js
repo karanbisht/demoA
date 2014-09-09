@@ -295,6 +295,7 @@ var app = (function (win) {
 		db.transaction(createDB, errorCB, checkForLoginStatus);
     };
     
+    
       
     
     // Handle "deviceready" event
@@ -365,16 +366,20 @@ var app = (function (win) {
         addCallback('onNotificationAPN', onNotificationAPN);
     }
  
+ 
     var apnFailedRegistration = function(error) {
         console.log("Error: " + error.toString());
     }
  
+    
     //the function is a callback when a notification from APN is received
     var onNotificationAPN = function(e) {
+        alert(e);        
         console.log(e);
         //getPromotionFromServer();
     };
  
+
     //the function is a callback for all GCM events
     var onNotificationGCM = function onNotificationGCM(e) {
         //alert(e);
