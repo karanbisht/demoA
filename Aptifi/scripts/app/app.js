@@ -21,7 +21,7 @@ var app = (function (win) {
     
     //var userPosition;
     var db;
-    
+    var fp;
      
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
@@ -163,7 +163,7 @@ var app = (function (win) {
 		  if (count !== 0) {
              for(var i=0;i<count;i++){
                   userType.push(results.rows.item(i).role); 
-			}
+			 }
           }else {		
             //app.mobileApp.navigate('#welcome');
             //localStorage.setItem("loginStatusCheck",1);
@@ -171,7 +171,6 @@ var app = (function (win) {
     };
     
     
-
     var loginStatusQuerySuccess= function(){
 	
 	};
@@ -225,7 +224,9 @@ var app = (function (win) {
 	    //var pathname = window.location.pathname;
    	 //var pageNama = pathname.slice(-10);
         //alert(app.userPosition);
-        //alert(app.MenuPage);
+        //alert(app.MenuPage); 
+        
+      //alert( app.mobileApp.view()['element']['0']['id']);
         
      if(app.userPosition){        
         	e.preventDefault();
@@ -246,7 +247,8 @@ var app = (function (win) {
         	}, 'Logout', ['OK', 'Cancel']);
             
   	  }else {
-        navigator.app.backHistory();
+        //navigator.app.backHistory();
+         app.mobileApp.navigate("#:back");    
 		}
 
     };
@@ -259,6 +261,9 @@ var app = (function (win) {
     var onDeviceReady = function() {
         // Handle "backbutton" event
         document.addEventListener('backbutton', onBackKeyDown, false);
+        
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+        
         navigator.splashscreen.hide();
         fixViewResize();
                 
@@ -302,6 +307,36 @@ var app = (function (win) {
     document.addEventListener('deviceready', onDeviceReady, false);
     // Handle "orientationchange" event
     document.addEventListener('orientationchange', fixViewResize);
+    
+    
+    var fileSystemSuccess = function(fileSystem){
+         var directoryEntry = fileSystem.root;
+         console.log(directoryEntry);
+		 directoryEntry.getDirectory("Aptifi", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
+         var rootdir = fileSystem.root;
+         console.log(rootdir);
+         fp = rootdir.fullPath;
+         getfbValue();
+    }
+    
+    var getfbValue = function(){
+       var fbValue = fp;
+        return fbValue;
+    };
+    
+    function onDirectorySuccess(parent) {
+            console.log(parent);
+    }
+ 
+	function onDirectoryFail(error) {
+    		console.log("Unable to create new directory: " + error.code);
+	}
+    
+    function fileSystemFail(evt) {
+    		console.log(evt.target.error.code);
+	}
+        
+
 
     // Initialize Everlive SDK
     var el = new Everlive({
@@ -497,6 +532,7 @@ var app = (function (win) {
         mobileApp: mobileApp,
         checkConnection:checkConnection,
         helper: AppHelper,
+        getfbValue:getfbValue,
         //registerInEverlive:registerInEverlive,
         //disablePushNotifications:disablePushNotifications,
         //updateRegistration:updateRegistration,

@@ -7,9 +7,7 @@ var app = app || {};
 app.Activity = (function () {
     'use strict'
     
-    var $commentsContainer,
-        listScroller;
-    
+    var $commentsContainer,listScroller;    
     var org_id;
     var notiId;
     var account_Id;
@@ -113,10 +111,33 @@ app.Activity = (function () {
             console.log(attached);
             
             if(attached!== null && attached!==''){
-            var img = $('<img id="imgShow">'); //Equivalent: $(document.createElement('img'))
+            var img = $('<img id="imgShow" style="width:100%;height:100%">'); //Equivalent: $(document.createElement('img'))
 			img.attr('src', attachedImg);
-			img.appendTo('#notiImage');
+			img.appendTo('#notiImage'); 
+                
+            console.log('Image Saving Process');    
+            console.log(attachedImg);
+                
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData+"/Aptifi/"+attached;
+                alert(fp);
+    		var fileTransfer = new FileTransfer();
+   		 
+                
+                fileTransfer.download(attachedImg,fp,  
+        			function(entry) {
+            			alert("download complete: " + entry.fullPath);
+	        		},
+    
+    		        function(error) {
+            			alert("download error source " + error.source);
+            			alert("download error target " + error.target);
+            			alert("upload error code" + error.code);
+	        		}
+	    		);    
             }
+            
+            
             
            // $("#notiImage").attr('src', attachedImg);
             
@@ -248,8 +269,9 @@ app.Activity = (function () {
 				}			 
 		     });
 
-        }
-
+        };
+        
+        
         
         var offlineQueryReplyDB = function(tx){
             var query = 'SELECT ReplyText , CreatedAt FROM NotificationReply';
@@ -403,6 +425,8 @@ app.Activity = (function () {
               }, 100);*/
 		};
         
+                
+		
         return {
            init: init,
            show: show,
