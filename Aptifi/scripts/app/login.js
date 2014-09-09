@@ -41,8 +41,8 @@ app.Login = (function () {
             
             //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
-            var message = 'karan bisht';
-            window.plugins.toast.showShortTop(message);
+            //var message = 'karan bisht';
+            //window.plugins.toast.showShortTop(message);
 		    //}
                 //app.showNativeAlert();
         };
@@ -68,9 +68,10 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';           			
-            //var device_id = localStorage.getItem("deviceTokenID");
-            //console.log(device_id);
+            //var device_id='123456';           			
+            
+            var device_id = localStorage.getItem("deviceTokenID");
+            console.log(device_id);
             
             username = $("#loginUsername").val();
             console.log(username);
