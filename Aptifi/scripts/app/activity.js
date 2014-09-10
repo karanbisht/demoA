@@ -134,6 +134,11 @@ app.Activity = (function () {
             console.log(attached);
             
             if(attached!== null && attached!==''){
+
+            $('#notiImage').css({"height":"200px"});
+            $('#notiImage').css({"width":'auto'});
+            $('#notiImage').css({"margin-top":"10px"});    
+
             loaded();
             var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
 			img.attr('src', attachedImg);
