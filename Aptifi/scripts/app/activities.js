@@ -16,7 +16,9 @@ app.Activities = (function () {
             var userOrgName;
             var userGropuName;   
         	var bagCount;
-   
+   		 var groupDataShow = [];
+            var lastNotificationPID;
+    		var DBGETDATAVALUE;
     var orgId = localStorage.getItem("UserOrgID");                              
     
 	   // Activities model
@@ -320,21 +322,120 @@ app.Activities = (function () {
 /*        };
         
 */
-        var activitiesViewModel = (function () {
+
+    var activitiesViewModel = (function () {
             
          var init = function(){
              
          }   
-            
+                                 
          var show = function(e){
+           groupDataShow=[];
+             //alert("ShowFunction");
+             
            app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.show();
                                       
-            organisationID = e.view.params.organisationID;
-       	 account_Id = e.view.params.account_Id;
-            bagCount = e.view.params.bagCount; 
-              
+           organisationID = e.view.params.organisationID;
+       	account_Id = e.view.params.account_Id;
+           bagCount = e.view.params.bagCount; 
+           
+           var db = app.getDb();
+		   db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
+        };
+            
+        var orgNotiDataVal;
+        
+        function saveOrgNotification(data) {
+            orgNotiDataVal = data;      
+			var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+		};
+            
+            
+     function insertOrgNotiData(tx){
+        //var query = "DELETE FROM ORG_NOTIFICATION";
+		//app.deleteQuery(tx, query);
+
+        var dataLength = orgNotiDataVal.length;
+        //alert('LiveDataVal'+dataLength);
+         
+ 
+       for(var i=0;i<dataLength;i++){       
+    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type) VALUES ("'
+				+ orgNotiDataVal[i].org_id
+				+ '","'
+				+ orgNotiDataVal[i].pid
+				+ '","'
+				+ orgNotiDataVal[i].attached
+           	 + '","'
+				+ orgNotiDataVal[i].message
+    	        + '","'
+			    + orgNotiDataVal[i].title
+                + '","'
+				+ orgNotiDataVal[i].comment_allow
+                + '","'
+				+ orgNotiDataVal[i].send_date
+                + '","'
+				+ orgNotiDataVal[i].type
+				+ '")';              
+                app.insertQuery(tx, query);
+        }                               
+      }
+                        
+            
+        var getDataOrgNoti = function(tx){
+            var query = 'SELECT * FROM ORG_NOTIFICATION where org_id='+organisationID ;
+			app.selectQuery(tx, query, getOrgNotiDataSuccess);
+        };    
+                        
+            
+        function getOrgNotiDataSuccess(tx, results) {
+			var count = results.rows.length;
+                DBGETDATAVALUE = count;           
+            //alert(count);
+			if (count !== 0) {
+                groupDataShow=[];
+            	for(var i =0 ; i<count ; i++){    
+                    
+                      groupDataShow.push({
+												 message: results.rows.item(i).message,
+        		                                 org_id: results.rows.item(i).org_id,
+                                                 date:results.rows.item(i).send_date,
+                                                 title:results.rows.item(i).title,
+                                                 pid :results.rows.item(i).pid ,
+                                                 comment_allow:results.rows.item(i).comment_allow ,
+		                                         bagCount : 'C',
+                                                 attached :results.rows.item(i).attached
+                       });
+                  lastNotificationPID=results.rows.item(i).pid;
+        	    }    
+                 console.log(lastNotificationPID);
+            }else{
+                lastNotificationPID=0;
+            }                       
+         };       
+
+
+            
+            
+            
+        var afterShow = function(){
+              var db = app.getDb();
+		  	db.transaction(insertBagCount, app.errorCB, app.successCB);  
+        };    
+            
+         var insertBagCount = function(tx){             
+             console.log('ssss'+bagCount);
+             console.log('ssss'+organisationID);
+
+                 var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
+				 app.updateQuery(tx, query);
+         };   
+            
+            
+         var showLiveData = function(){
             var organisationAllNotificationModel = {
             id: 'Id',
             fields: {
@@ -366,11 +467,12 @@ app.Activities = (function () {
             
           };
              
+          console.log(lastNotificationPID);
              
           var organisationALLListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id,
+                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id+"/"+lastNotificationPID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -381,14 +483,14 @@ app.Activities = (function () {
   	             {
                        console.log(data);
                
-                        var groupDataShow = [];
+                        var orgNotificationData; 
                                   $.each(data, function(i, groupValue) {
                                   console.log(groupValue);
                                      
                                    $.each(groupValue, function(i, orgVal) {
                                      console.log();
 
-                   	             if(orgVal.Msg ==='No notification'){     
+                   	             if(orgVal.Msg ==='No notification' && DBGETDATAVALUE===0){     
                 	                   groupDataShow.push({
                                          title: ' No Notification ',
                                          message: 'No Notification from this Organisation',
@@ -402,6 +504,7 @@ app.Activities = (function () {
                                         
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.notificationList.length);  
+                                        orgNotificationData = orgVal.notificationList;
                                         for(var i=0;i<orgVal.notificationList.length;i++){
                                             groupDataShow.push({
 												 message: orgVal.notificationList[i].message,
@@ -413,8 +516,8 @@ app.Activities = (function () {
 		                                         bagCount : 'C',
                                                  attached :orgVal.notificationList[i].attached
                                             });
-                                        }     
-                                                                                     
+                                        }
+                                        saveOrgNotification(orgNotificationData);                                                                                     
                                     }
                                                                             
                                    });    
@@ -422,7 +525,6 @@ app.Activities = (function () {
                        
 		                         console.log(groupDataShow);
                                  return groupDataShow;
-                       
                    }                       
             },
 	            error: function (e) {
@@ -435,9 +537,9 @@ app.Activities = (function () {
     	    });         
          
             
-            organisationALLListDataSource.fetch(function() {
+            //organisationALLListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#activities-listview").kendoMobileListView({
   		    template: kendo.template($("#activityTemplate").html()),    		
@@ -448,22 +550,8 @@ app.Activities = (function () {
 				}			 
 		     });
                      app.mobileApp.pane.loader.hide();
-        };
-            
-                     
-        var afterShow = function(){
-              var db = app.getDb();
-		  	db.transaction(insertBagCount, app.errorCB, app.successCB);  
-        };    
-            
-         var insertBagCount = function(tx){             
-             console.log('ssss'+bagCount);
-                         console.log('ssss'+organisationID);
 
-                 var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
-				 app.updateQuery(tx, query);
-
-         };   
+         };
    
         
         /*var offlineQueryDB = function(tx){
@@ -759,54 +847,7 @@ app.Activities = (function () {
                 
             };
         
-        
-          var initNotifi = function () {       
-      	    app.MenuPage=false; 
-          };
-        
-        var showNotifi = function(){
-            app.MenuPage=false;
-             
-            console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
-             $("#orgData").val('');
-             $("#groupData").val('');
-            
-            
-             var userlName = localStorage.getItem("userlName");
-             var userfName = localStorage.getItem("userfName");
-             var userEmail = localStorage.getItem("userEmail");
-             var userGropuName = localStorage.getItem("userGropuName"); 
-             var userOrgName = localStorage.getItem("userOrgName");
-             var userMobile = localStorage.getItem("userMobile");
-            
-            $("#userEmailId").html(userEmail); 
-            $("#userMobileNo").html(userMobile);
-            $("#userlname").html(userlName);
-            $("#userfname").html(userfName); 
-             
-            for(var x=0; x < userOrgName.length;x++){
-                document.getElementById("orgData").innerHTML += userOrgName[x];   
-            } 
-            
-			for(var y=0; y < userGropuName.length;y++){
-                document.getElementById("groupData").innerHTML += userGropuName[y];
-			}
 
-        };
-        
-    	         
-        // Logout user
-        var logout = function () {
-
-        navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
-            	if (checkLogout === true || checkLogout === 1) {                    
-                   app.mobileApp.pane.loader.show();    
-                   setTimeout(function() {
-                   	 window.location.href = "index.html";
-                   }, 100);
-            	}
-        	}, 'Logout', ['OK', 'Cancel']);
-        };
 
 
         return {
@@ -819,19 +860,17 @@ app.Activities = (function () {
             CreatedAtFormatted:CreatedAtFormatted,          
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
+            showLiveData:showLiveData,
             makeCall:makeCall,
             replyUser:replyUser,
-            initNotifi:initNotifi,
             sendNotification:sendNotification,
-            showNotifi:showNotifi,
 			about:about,
             setting:setting,
             info:info,
             init:init,
             show:show,
             afterShow:afterShow,
-            refreshButton:refreshButton,
-            logout: logout
+            refreshButton:refreshButton
         };
 
     }());

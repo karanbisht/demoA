@@ -16,6 +16,8 @@ app.Activity = (function () {
     var title;
     var comment_allow;
     var attached;
+    var groupDataShow = [];
+    var lastNotiCommentID;
     
     var activityViewModel = (function () {
         
@@ -31,6 +33,7 @@ app.Activity = (function () {
         var data;          
         var len = null;
         var userFirstName;
+        var myScroll;
 
         var getuserName = function(){
             var db = app.getDb();             
@@ -80,8 +83,28 @@ app.Activity = (function () {
                 }
         };
         
+        function loaded() {
+        setTimeout(function() {    
+            myScroll = new iScroll('notiImage', {
+			bounce : false,
+			zoom : true,
+            zoomMax: 4,
+            momentum: false,
+			hScrollbar: false,
+			vScrollbar: false    
+		   });
+         }, 100);
+            
+		}
+
+		//document.addEventListener('DOMContentLoaded', loaded, false);
+  
+        document.addEventListener('touchmove', function(e) {
+			e.preventDefault();
+		}, false);
 
         var show = function (e) {
+            groupDataShow = [];            
             //var cUserId = app.Users.currentUser.get('data').Id;
             //var adminId = localStorage.getItem("adminId");
 
@@ -111,28 +134,32 @@ app.Activity = (function () {
             console.log(attached);
             
             if(attached!== null && attached!==''){
-            var img = $('<img id="imgShow" style="width:100%;height:100%">'); //Equivalent: $(document.createElement('img'))
+            loaded();
+            var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
 			img.attr('src', attachedImg);
 			img.appendTo('#notiImage'); 
                 
             console.log('Image Saving Process');    
             console.log(attachedImg);
-                
+            app.mobileApp.pane.loader.show();                
+    
             var imgPathData = app.getfbValue();    
             var fp = imgPathData+"/Aptifi/"+attached;
-                alert(fp);
+                //alert(fp);
     		var fileTransfer = new FileTransfer();
    		 
                 
                 fileTransfer.download(attachedImg,fp,  
         			function(entry) {
-            			alert("download complete: " + entry.fullPath);
+                        app.mobileApp.pane.loader.hide();
+            			//alert("download complete: " + entry.fullPath);
 	        		},
     
     		        function(error) {
-            			alert("download error source " + error.source);
-            			alert("download error target " + error.target);
-            			alert("upload error code" + error.code);
+                        app.mobileApp.pane.loader.hide();
+            			//alert("download error source " + error.source);
+            			//alert("download error target " + error.target);
+            			//alert("upload error code" + error.code);
 	        		}
 	    		);    
             }
@@ -164,7 +191,10 @@ app.Activity = (function () {
             
             //var notificationId = activity.notification_id; 
             
-           commentShow();              
+               
+           var db = app.getDb();
+		   db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);         
+ 
         };
         
         var commentShow = function(){
@@ -200,13 +230,13 @@ app.Activity = (function () {
             }
         };
             
-            //console.log("SHOWING DATA" + notificationId +"||"+userId);
+            console.log(org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID);
 
             
             commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id,
+                   url: "http://54.85.208.215/webservice/notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -218,17 +248,17 @@ app.Activity = (function () {
   	             {
                        console.log(data);
                
-                        var groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
                                     console.log(groupValue);
                                      
                                      var returnMsg =groupValue[0].Msg;
+                                     var orgNotiCommentData;
                                      console.log(returnMsg);//No Comments 
                                      if(returnMsg==='Success'){
                                      var commentLength=groupValue[0].AllComment.length;
-                                    
-                                     console.log(commentLength);
-                            
+                                         orgNotiCommentData=groupValue[0].AllComment;
+                                         console.log(commentLength);
+                              
                                      for(var j=0;j<commentLength;j++){
                                       groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
@@ -237,6 +267,7 @@ app.Activity = (function () {
                                          user_type : groupValue[0].AllComment[j].user_type
                                       });
                                      }
+                                     saveOrgNotiComment(orgNotiCommentData);    
                                   } 
                                  });
                        
@@ -256,9 +287,9 @@ app.Activity = (function () {
     	    });         
          
             
-            commentsDataSource.fetch(function() {
-                
- 		   });
+            
+            //commentsDataSource.fetch(function() {               
+ 		   //});
 
              $("#comments-listview").kendoMobileListView({
   		    template: kendo.template($("#commentsTemplate").html()),    		
@@ -271,6 +302,77 @@ app.Activity = (function () {
 
         };
         
+        
+        
+       var orgNotiCommentDataVal;
+        
+      function saveOrgNotiComment(data) {
+            orgNotiCommentDataVal = data;      
+			var db = app.getDb();
+			db.transaction(insertOrgNotiCommentData, app.errorCB, app.successCB);
+      };
+            
+            
+     function insertOrgNotiCommentData(tx){
+        //var query = "DELETE FROM ORG_NOTIFICATION";
+		//app.deleteQuery(tx, query);
+
+        var dataLength = orgNotiCommentDataVal.length;
+        //alert('LiveDataVal'+dataLength);
+         
+ 
+       for(var i=0;i<dataLength;i++){       
+    	   var query = 'INSERT INTO ORG_NOTI_COMMENT(id,notification_id, comment, add_date, reply_to, reply_to_id, user_id, user_type) VALUES ("'
+				+ orgNotiCommentDataVal[i].id
+				+ '","'
+				+ orgNotiCommentDataVal[i].notification_id
+				+ '","'
+				+ orgNotiCommentDataVal[i].comment
+           	 + '","'
+				+ orgNotiCommentDataVal[i].add_date
+    	        + '","'
+			    + orgNotiCommentDataVal[i].reply_to
+                + '","'
+				+ orgNotiCommentDataVal[i].reply_to_id
+                + '","'
+				+ orgNotiCommentDataVal[i].user_id
+                + '","'
+				+ orgNotiCommentDataVal[i].user_type
+				+ '")';              
+                app.insertQuery(tx, query);
+        }                               
+      }
+        
+        
+      var getDataOrgNotiComment = function(tx){
+            var query = 'SELECT * FROM ORG_NOTI_COMMENT where notification_id='+notiId ;
+			app.selectQuery(tx, query, getOrgNotiCommentDataSuccess);
+        };    
+                        
+            
+      function getOrgNotiCommentDataSuccess(tx, results) {
+			var count = results.rows.length;  
+            //lastNotiCommentID = count;
+            //alert(count);
+			if (count !== 0) {
+                groupDataShow=[];
+            	for(var i =0 ; i<count ; i++){    
+                    groupDataShow.push({
+                                         comment: results.rows.item(i).comment,
+                                         add_date: results.rows.item(i).add_date,
+                                         user_id : results.rows.item(i).user_id,
+                                         user_type : results.rows.item(i).user_type
+                                      });
+                    
+                  lastNotiCommentID=results.rows.item(i).id;
+        	    }    
+                 console.log(lastNotiCommentID);
+            }else{
+                lastNotiCommentID=0;
+            }                       
+        };       
+
+  
         
         
         var offlineQueryReplyDB = function(tx){

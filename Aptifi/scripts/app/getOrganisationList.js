@@ -55,6 +55,9 @@ app.OragnisationList = (function () {
                 
 
          var show = function(e){
+            var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
+	   	 tabStrip.switchTo("#organisationNotiList");
+  
            console.log(getDataOrgDB);
            console.log(getDataCountDB);  
            app.MenuPage=true;

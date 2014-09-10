@@ -125,7 +125,11 @@ var app = (function (win) {
       tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
       
       tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER)');  
+        
+      tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT)');  
 
+      tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTI_COMMENT(id INTEGER,notification_id INTEGER, comment TEXT, add_date TEXT , reply_to TEXT , reply_to_id INTEGER , user_id INTEGER , user_type TEXT)');  
+    
     };	
     
     var checkForLoginStatus = function (){
@@ -226,27 +230,39 @@ var app = (function (win) {
         //alert(app.userPosition);
         //alert(app.MenuPage); 
         
-      //alert( app.mobileApp.view()['element']['0']['id']);
+      //alert(app.mobileApp.view()['element']['0']['id']);
         
-     if(app.userPosition){        
+     //if(app.userPosition){        
+        
+     if(app.mobileApp.view()['element']['0']['id']==='welcome'){    
         	e.preventDefault();
         		navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
             	if (confirmed === true || confirmed === 1) {
                     navigator.app.exitApp();
             	}
         	}, 'Exit', ['OK', 'Cancel']);        
-     }else if(app.MenuPage){
+     //}else if(app.MenuPage){
+         
+     }else if(app.mobileApp.view()['element']['0']['id']==='organisationNotiList'){
              navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
                      app.mobileApp.pane.loader.show();    
-
+                    
                     setTimeout(function() {
                    	 window.location.href = "index.html";
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
-            
-  	  }else {
+         
+     }else if(app.mobileApp.view()['element']['0']['id']==='organisationDiv'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate("#organisationNotiList");
+
+
+         
+     }else {
         //navigator.app.backHistory();
          app.mobileApp.navigate("#:back");    
 		}

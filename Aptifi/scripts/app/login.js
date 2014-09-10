@@ -68,9 +68,9 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';           			
+            //var device_id='123456';           			
             
-            //var device_id = localStorage.getItem("deviceTokenID");
+            var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -143,8 +143,7 @@ app.Login = (function () {
                              userType.push(loginData.status[0].JoinedOrg.role[i]); 
                           }
                              console.log(userType);
-                          
-                          
+                                                    
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
                           UserOrgInformation = loginData.status[0].JoinedOrg;
                           console.log(UserOrgInformation);
@@ -430,8 +429,8 @@ function loginSuccessCB() {
                 										    device_type='AP';
 									             }
 
-            var device_id='123456';                    
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';                    
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
