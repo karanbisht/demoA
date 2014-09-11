@@ -119,9 +119,9 @@ app.replyedCustomer = (function () {
     	    });         
          
             
-            MemberDataSource.fetch(function() {
+            //MemberDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 	
          
     	    $("#reply-customer-listview").kendoMobileListView({

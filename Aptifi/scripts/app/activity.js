@@ -105,22 +105,11 @@ app.Activity = (function () {
 
         var show = function (e) {
             groupDataShow = [];            
-            //var cUserId = app.Users.currentUser.get('data').Id;
-            //var adminId = localStorage.getItem("adminId");
-
-            //var userIype = localStorage.getItem("UserType");
-            //var userName = localStorage.getItem("userfName");	
-            //var userOrgName = localStorage.getItem("userOrgName");	
-
-            /*if(userIype==="O"){
-                $("#replyButton").hide();
-            }*/
              
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
             listScroller.reset();
-            
 
             message =e.view.params.message;
             title =e.view.params.title;
@@ -132,75 +121,70 @@ app.Activity = (function () {
             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
             console.log(attached);
-            
+                        
             if(attached!== null && attached!==''){
-
+			loaded(); 
             $('#notiImage').css({"height":"200px"});
             $('#notiImage').css({"width":'auto'});
-            $('#notiImage').css({"margin-top":"10px"});    
-
-            loaded();
-            var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
-			img.attr('src', attachedImg);
-			img.appendTo('#notiImage'); 
-                
+            $('#notiImage').css({"margin-top":"10px"}); 
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';    
+            
             console.log('Image Saving Process');    
             console.log(attachedImg);
-            app.mobileApp.pane.loader.show();                
     
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData+"/Aptifi/"+attached;
-                //alert(fp);
-    		var fileTransfer = new FileTransfer();
-   		 
-                
-                fileTransfer.download(attachedImg,fp,  
-        			function(entry) {
-                        app.mobileApp.pane.loader.hide();
-            			//alert("download complete: " + entry.fullPath);
-	        		},
-    
-    		        function(error) {
-                        app.mobileApp.pane.loader.hide();
-            			//alert("download error source " + error.source);
-            			//alert("download error target " + error.target);
-            			//alert("upload error code" + error.code);
-	        		}
-	    		);    
+ 			window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
+
             }
-            
-            
-            
-           // $("#notiImage").attr('src', attachedImg);
-            
+                        
             if(comment_allow===1 || comment_allow==='1'){
                 $("#commentPanel").show();                
             }else{
                 $("#commentPanel").hide();
             }
-            
-            
             console.log(org_id+"||"+notiId+"||"+account_Id);
             
             $("#personName").html(title);
             $("#activityText").html(message);
-            
-            //console.log(activityUid);
-            //console.log(activityUid.message);
-            //activity = app.OragnisationList.organisationSelected.getByUid(activityUid);
-            //console.log(activity);
-            // $activityPicture[0].style.display = activity.Picture ? 'block' : 'none';
-            //kendo.bind(e.view.element, activity, kendo.mobile.ui);
-            
-            //var userId = localStorage.getItem("UserID");
-            
-            //var notificationId = activity.notification_id; 
-            
+                        
                
            var db = app.getDb();
 		   db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);         
  
         };
+        
+        
+        var imagePathExist = function(){
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
+
+            var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
+			img.attr('src', fp);
+			img.appendTo('#notiImage'); 
+        }
+        
+        var imagePathNotExist = function(){
+             app.mobileApp.pane.loader.show();                
+             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+             var imgPathData = app.getfbValue();    
+             var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
+            
+            var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
+			img.attr('src', attachedImg);
+			img.appendTo('#notiImage'); 
+
+ 	
+             var fileTransfer = new FileTransfer();    
+             fileTransfer.download(attachedImg,fp,  
+        			function(entry) {
+                        app.mobileApp.pane.loader.hide();
+	        		},
+    
+    		        function(error) {
+                        app.mobileApp.pane.loader.hide();
+	        		}
+	    		);                
+        }
         
         var commentShow = function(){
             var commentModel = {
@@ -495,22 +479,7 @@ app.Activity = (function () {
                          });
                });
 
-
-                         
-                                
-  /*            comment.ReplyText  = $newComment.val();
-                comment.UserId = app.Users.currentUser.get('data').Id;
-                comment.NotificationId = app.Activity.activity().Id;
-                
-                comments.one('sync', function () {
-                    app.mobileApp.navigate('#:back');
-                });
-                
-                comments.sync();
-  */
-            //}
-            
-          
+      
         };
 
         function refreshComment() {

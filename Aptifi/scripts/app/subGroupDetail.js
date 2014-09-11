@@ -38,71 +38,13 @@ app.subGroupDetail = (function () {
          };   
           
                 
-        
+        var groupMemberData=[];
         var showSubGroupMembers = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#subGroupMemberShow');         
             console.log(organisationID);
             console.log(groupID);
-            var orgDataShow = []; 
-            
-            
-            
-            
-              var orgMemberDataSource = new kendo.data.DataSource({            
-               transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+organisationID,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
-              	}
-              },
-       	 schema: {                                
-                 data: function(data)
-  	             {
-                       console.log(data);
-                                $.each(data, function(i, groupValue) {
-								console.log(groupValue);
-                                     
-                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log(orgVal);
-                                     if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.allCustomer.length);  
-                                        for(var i=0;i<orgVal.allCustomer.length;i++){
-                                            orgDataShow.push({
-                                                 mobile: orgVal.allCustomer[i].uacc_username,
-		                                         first_name: orgVal.allCustomer[i].user_fname,
-        		                                 email:orgVal.allCustomer[i].user_email,  
-                		                         last_name : orgVal.allCustomer[i].user_lname,
-                        		                 customerID:orgVal.allCustomer[i].custID,
-                                		         account_id:orgVal.allCustomer[i].account_id,
-                                                 orgID:orgVal.allCustomer[i].orgID
-                                            });
-                                        }     
-                                    } 
-                                     
-    							  });
-                               });
                        
-                            console.log(orgDataShow);
-                             return orgDataShow;
-	               }
-                },
-	              error: function (e) {
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-              	}	        
-    	      });         
-          
-	            orgMemberDataSource.fetch(function() {
-    	            
- 			   });
-
-          console.log('karan bisht');
-          console.log(orgDataShow);
-            
-            
             var UserModel ={
             id: 'Id',
             fields: {
@@ -153,15 +95,16 @@ app.subGroupDetail = (function () {
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
 
-                   	             if(orgVal.Msg ==='No Customer in this group'){     
+                   	             if(orgVal.Msg ==='No member in group'){     
                                      groupDataShow.push({
                                          mobile: '',
                                          first_name: '',
-                                         email:'No Customer in this Group',  
+                                         email:'No member in this group',  
                                          last_name : '',
                                          customerID:'0',
                                          orgID:0
-    	                               });                                      
+    	                               }); 
+                                      $("#deleteGroupMemberBtn").hide();  
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.customerInfo.length);  
                                         for(var i=0;i<orgVal.customerInfo.length;i++){
@@ -174,6 +117,8 @@ app.subGroupDetail = (function () {
                                                  orgID:orgVal.customerInfo[i].orgID
                                             });
                                         }     
+                                        
+                                        groupMemberData = groupDataShow ;
    
                                     } 
                                      
@@ -199,11 +144,7 @@ app.subGroupDetail = (function () {
                 
  		   });
 	
-         
-            
-            console.log('welcome to show');
-             console.log(orgDataShow);
-            
+                     
     	    $("#subGroupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#subGroupMemberTemplate").html()),
@@ -290,27 +231,121 @@ app.subGroupDetail = (function () {
         
         var addMemberToGroup = function(){
             app.MenuPage=false;
-            //app.mobileApp.navigate('#addMemberToGroup');
-            app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);		
+            app.mobileApp.navigate('#addMemberToSubGroup');
+            //app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);		
+        };
+        
+        
+        var initAddMember = function(){
+            
+        };
+
+        
+        
+        
+        var showAddMember = function(){
+            
+            var groupDataAllShow=[];
+            var remDataValue =[];
+            var MemberDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+organisationID,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                  
+              	}
+              },
+       	 schema: {                              
+                 data: function(data)
+  	             {
+                       console.log(data);
+                       
+                                 $.each(data, function(i, groupValue) {
+									console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+
+	                               if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
+                                            groupDataAllShow.push({
+                                                 mobile: orgVal.allCustomer[i].uacc_username,
+		                                         first_name: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
+                                            });
+                                        }        
+                                    }    
+    							  });
+                               });
+                       
+		                                                           
+                                   var allData = groupDataAllShow.length;
+            					   var groupData = groupMemberData.length;            
+                 
+                       for(var x=0;x < allData ; x++){                     
+                           	var numCheck=0;
+                            for(var y=0;y<groupData ;y++){
+                              if(groupDataAllShow[x].customerID=== groupMemberData[y].customerID){                                
+                                  numCheck=1;
+                                }
+                           }
+                              if(numCheck!==1){
+                                    remDataValue.push({
+                                   mobile: groupDataAllShow[x].mobile,
+	      	                     first_name: groupDataAllShow[x].first_name,
+        	      	             email:groupDataAllShow[x].email,  
+                	      	     last_name : groupDataAllShow[x].last_name,
+                        	       customerID:groupDataAllShow[x].customerID,
+                                   account_id:groupDataAllShow[x].account_id,
+                                   orgID:groupDataAllShow[x].orgID
+                                   });								                             
+                              }
+                            
+                      }
+                       return remDataValue;
+                   }
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}	        
+    	    });         
+                  
+                                                   
+             $("#addMemberData-listview").kendoListView({
+       		 template: kendo.template($("#Sub-Member-Add-template").html()),
+        		dataSource: MemberDataSource
+		     });
+        
         };
 
         
         var addMemberToGroupFunc = function(){
 			var successFlag = false;
             
-            var val = [];
+            var customer = [];
 		        $(':checkbox:checked').each(function(i){
-          	  val[i] = $(this).val();
+          	  customer[i] = $(this).val();
                     //console.log(val[i]);
         	});
             
+             var customer = String(customer);        
             
-            var jsonDataAddMember = {"customer":val ,"organisation":orgId,"group":selectedGroupId}
-                    
+            var jsonDataAddMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
+            
+              console.log(customer +"||"+ groupID +"||"+ organisationID);      
             var dataSourceAddMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/addCustomertoGroup",
+                   url: "http://54.85.208.215/webservice/group/addUser",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataAddMember
@@ -335,41 +370,16 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceAddMember.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Customer saved to group'){                                
+                               if(addGroupData.status[0].Msg==='Customer Added to group successfully'){                                
 									app.showAlert("Member Added Successfully","Notification");
-				        	        app.mobileApp.navigate('#groupMemberShow');
+				        	        //app.mobileApp.navigate('#groupMemberShow');
+                                    showSubGroupMembers();
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
                                
                   });
   		 });        
-                        
-                                   
-            /*$.each(val,function(i,dataValue){  
-            console.log(dataValue);
-                  
-                var data = el.data('Users');
-	
-                data.update({ 'Group': 'Testing' }, // data
-					    { 'Id': dataValue }, // filter
-                  
-                function(data){      
-                      successFlag=true;
-                },
-
-                 function(error){
- 					successFlag=false;
-                 });
-                
-        	  });	
-            
-    	       if(successFlag){
-        		  	app.showAlert("Member Added to Group","Notification");               
-	           }else{
-             		 app.showAlert("Error ","Notification");
-               }*/
-            
         };
 
         
@@ -384,24 +394,25 @@ app.subGroupDetail = (function () {
 	         //var orgId = localStorage.getItem("UserOrgID"); 
              //console.log(orgId);    
              var customer = [];
-		    
             $(':checkbox:checked').each(function(i){
           	  customer[i] = $(this).val();
         	});
             
 			
-            customer = String(customer);        
+            var customer = String(customer);        
             
             console.log(customer);            
 			console.log(organisationID);
        
+            var jsonDataDeleteMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
             
             var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/removeUser/"+customer+"/"+organisationID+"/"+groupID,
+                   url: "http://54.85.208.215/webservice/group/removeUser",
                    type:"POST",
-                   dataType: "json"// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataDeleteMember
            	}
            },
            schema: {
@@ -423,9 +434,10 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='You deleted successfully'){                                
+                               if(deleteGroupData.status[0].Msg==='User removed successfully'){                                
 									app.showAlert("Member Deleted Successfully","Notification");
-				        	        app.mobileApp.navigate('#groupMemberShow');
+				        	        //app.mobileApp.navigate('#groupMemberShow');
+                                    showSubGroupMembers();
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -443,12 +455,8 @@ app.subGroupDetail = (function () {
             //app.mobileApp.navigate('#orgGroupShow');                        
         };
         
-        
-        
- 
-        
-        
-		        var userMessageTab = function(e){
+             
+		var userMessageTab = function(e){
         		    var tempArray= [];
             		app.MenuPage=false;	
             		var activity;
@@ -508,6 +516,8 @@ app.subGroupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
+               showAddMember:showAddMember,
+               initAddMember:initAddMember,    
                manageGroup:manageGroup,    
                sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,

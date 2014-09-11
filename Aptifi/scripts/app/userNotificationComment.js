@@ -175,9 +175,9 @@ app.userNotiComment = (function () {
     	    });         
          
             
-            userCommentsDataSource.fetch(function() {
+            //userCommentsDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#userComments-listview").kendoMobileListView({
   		    template: kendo.template($("#userCommentsTemplate").html()),    		

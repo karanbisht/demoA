@@ -129,9 +129,9 @@ app.userReplyList = (function () {
     	    });         
          
             
-            organisationListDataSource.fetch(function() {
+            //organisationListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#user-Reply-listview").kendoMobileListView({
   		    template: kendo.template($("#userReplyTemplate").html()),    		

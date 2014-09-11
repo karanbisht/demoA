@@ -57,6 +57,8 @@ app.OragnisationList = (function () {
          var show = function(e){
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
+             
+ 
   
            console.log(getDataOrgDB);
            console.log(getDataCountDB);  
@@ -222,6 +224,13 @@ app.OragnisationList = (function () {
                                             if(orgVal.last[i].total!==0){
                                                orgLastMsgData = orgVal.last[i].last_notification.message;
                                             }  
+                                            
+                                            var imgPathData = app.getfbValue();    
+                           	             var fp = imgPathData+"/Aptifi/"+'Aptifi_OrgLogo_'+orgVal.orgData[i].organisationID+'.jpg';
+ 									
+                                            //window.resolveLocalFileSystemURI(fp,imagePathExist, imagePathNotExist); 
+                                            storeImageSdcard(orgVal.orgData[i].org_logo , orgVal.orgData[i].organisationID); 
+                                            
                                             groupDataShow.push({
 												 orgName: orgVal.orgData[i].org_name,
         		                                 orgDesc: orgLastMsgData,
@@ -232,34 +241,12 @@ app.OragnisationList = (function () {
                                                  bagValToStore:bagValueForDB 
                                             });
                                         }     
-                                                                                     
-                                    }
-                                       
-                                       
-                                                                            
+                                     }
                                    });    
-                                      
-                                  /*   
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                     */
                                  });
                        
 		                         console.log(groupDataShow);
                                  return groupDataShow;
-                       
                    }                       
             },
 	            error: function (e) {
@@ -272,9 +259,10 @@ app.OragnisationList = (function () {
     	    });         
          
             
-            organisationListDataSource.fetch(function() {
+            //organisationListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
+             
              
              app.mobileApp.pane.loader.hide();
 
@@ -284,44 +272,37 @@ app.OragnisationList = (function () {
               pullToRefresh: true,
         	  schema: {
            		model:  organisationNotificationModel
-  			 }
-               
-                 
+  			 }                                
 		     });
-             
-              
-            /* 
-       	 userId = e.view.params.UserId;
-            groupId =e.view.params.GroupId;
-            userlName =e.view.params.userlName;
-            userfName =e.view.params.userfName;
-            userMobile =e.view.params.userMobile;
-            userEmail =e.view.params.userEmail;
-            userOrgName =e.view.params.userOrgName;
-            userGropuName =e.view.params.userGropuName;
-             
-          
-             
-            if(loginType==='O'){
-             $("#replyUserView").show();   
-             $("#sendNotificationView").show();
-             $("#manageGroupView").show();
-             $("#upperTab").hide();   
-            }
-                     
-             
-            if (app.checkConnection()) {
-                  //$('#no-activities-span').hide();
-                     //show(e);
-            } else {
-                  //$('#no-activities-span').show();
-                    var db = app.getDb();
-					db.transaction(offlineQueryDB, app.onError, offlineQueryDBSuccess);
-            } 
-            */
-             
-          
+                       
         };
+            
+            
+            var imagePathExist = function(){
+                   alert('1');    
+            };
+
+            var imagePathNotExist = function(){
+            	alert('2');    
+            };
+            
+            
+            var storeImageSdcard = function(imageName , orgId){
+                var imgData='http://54.85.208.215/assets/upload_logo/'+imageName;               
+                var imgPathData = app.getfbValue();    
+	            var fp = imgPathData+"/Aptifi/"+'Aptifi_OrgLogo_'+orgId+'.jpg';
+            	
+               var fileTransfer = new FileTransfer();    
+               fileTransfer.download(imgData,fp,  
+        			function(entry) {
+                        app.mobileApp.pane.loader.hide();
+	        		},
+    
+    		        function(error) {
+                        app.mobileApp.pane.loader.hide();
+	        		}
+	    		);                        
+            };
             
         var afterShow = function(){
               var db = app.getDb();

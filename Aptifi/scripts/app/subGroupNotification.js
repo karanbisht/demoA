@@ -110,9 +110,9 @@ app.orgsubGroupListView = (function () {
     	    });         
          
             
-            organisationALLListDataSource.fetch(function() {
+            //organisationALLListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#admin-sub-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminSubNotiTemplate").html()),    		

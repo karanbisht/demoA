@@ -473,6 +473,26 @@ var app = (function (win) {
     };  
     
     
+    
+    function checkIfFileExists(path){
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+        fileSystem.root.getFile(path, { create: false }, fileExists, fileDoesNotExist);
+    }, getFSFail);
+	}
+
+    function fileExists(fileEntry){
+	    alert("File " + fileEntry.fullPath + " exists!");
+	}
+	
+    function fileDoesNotExist(){
+    	alert("file does not exist");
+	}
+    
+	function getFSFail(evt) {
+    	console.log(evt.target.error.code);
+	}
+    
+    
     /*
     var os = kendo.support.mobileOS,
     statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
@@ -529,6 +549,7 @@ var app = (function (win) {
         showError: showError,
         callOrganisationLogin:callOrganisationLogin,
         replyUser:replyUser,
+        checkIfFileExists:checkIfFileExists,
         sendNotification:sendNotification,
         errorCB:errorCB,
         successCB:successCB,

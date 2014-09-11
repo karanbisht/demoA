@@ -128,9 +128,9 @@ app.orgGroupListView = (function () {
     	    });         
          
             
-            organisationALLListDataSource.fetch(function() {
+            //organisationALLListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#admin-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminNotiTemplate").html()),    		

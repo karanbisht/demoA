@@ -110,9 +110,9 @@ app.userReplyNotificationList = (function () {
     	    });         
          
             
-            userReplyNotification.fetch(function() {
+            //userReplyNotification.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#userReply-notification-listview").kendoMobileListView({
   		    template: kendo.template($("#userReplyNotificationTemplate").html()),    		

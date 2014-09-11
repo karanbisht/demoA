@@ -77,8 +77,8 @@
          
      <div data-role="footer">
        	 <div data-role="tabstrip" data-selected-index="2">
-            	<a id="" data-icon="add" data-role="button" data-bind="click: addMemberToGroup" >Add Members</a>
-                <a id="" data-icon="trash" data-role="button" data-bind="click: removeMemberFromGroup" >Remove Members</a>
+            	<a id="addGroupMemberBtn" data-icon="add" data-role="button" data-bind="click: addMemberToGroup" >Add Members</a>
+                <a id="deleteGroupMemberBtn" data-icon="trash" data-role="button" data-bind="click: removeMemberFromGroup" >Remove Members</a>
             </div>
  	</div>
 </div>
@@ -86,7 +86,7 @@
 
 
 
-<div data-role="view" id="addMemberToSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail">            
+<div data-role="view" id="addMemberToSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-init="app.subGroupDetail.initAddMember" data-show="app.subGroupDetail.showAddMember">            
        <div data-role="header">           
                <div data-role="navbar">           
                     Add Members To Group
@@ -96,7 +96,7 @@
 	
 	 		 
     	     <div id="example">
-        		 <ul id="addMemberData" data-template="Member-Add-template" style="border:none;padding:10px;" ></ul>
+        		 <ul id="addMemberData-listview" data-template="Sub-Member-Add-template" style="border:none;padding:10px;"></ul>
     	 	</div> 
               
            <li>
@@ -108,12 +108,12 @@
 
 
 
-<div data-role="view" id="removeMemberFromSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail">            
+<div data-role="view" id="removeMemberFromSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail">
           <div data-role="header">           
                <div data-role="navbar">           
                     Delete From Group
              	<a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>
-    	     </div>
+    	       </div>
 	      </div>
 		 		 
     	<div id="example">
@@ -133,14 +133,14 @@
 
    <script  type="text/x-kendo-template" id="sub-Member-Delete-template">     
        <div class="deleteGroupShow">   	       	
-        	<label >${first_name}<input type="checkbox" value="${customerID}" /></label>
+        	<label ><input type="checkbox" value="${customerID}" />${first_name}</label>
        </div>
    </script>
 
      
-   <script id="Member-Add-template" type="text/x-kendo-template">
+   <script id="Sub-Member-Add-template" type="text/x-kendo-template">
        <li class="deleteGroupShow">
-        	<label ><input type="checkbox" value="${customerID}" />   ${first_name} ${last_name}</label>
+        	<label ><input type="checkbox" value="${customerID}" />${first_name} ${last_name}</label>
 	   </li>	       
    </script>
 

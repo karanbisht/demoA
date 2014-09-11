@@ -27,6 +27,8 @@ app.groupDetail = (function () {
             account_Id = e.view.params.account_Id;
             orgName= e.view.params.orgName;
             orgDesc= e.view.params.orgDesc;
+            
+
          };
            
            
@@ -38,6 +40,7 @@ app.groupDetail = (function () {
           
                         
         var showGroupMembers = function(){
+            
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             console.log("karaasa"+organisationID)
@@ -116,9 +119,7 @@ app.groupDetail = (function () {
                                                  orgID:orgVal.allCustomer[i].orgID
                                             });
                                         }     
-   
                                     } 
-                                     
     							  });
                                });
                        
@@ -137,9 +138,9 @@ app.groupDetail = (function () {
     	    });         
          
             
-            MemberDataSource.fetch(function() {
+            //MemberDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 	
          
     	    $("#groupMember-listview").kendoMobileListView({

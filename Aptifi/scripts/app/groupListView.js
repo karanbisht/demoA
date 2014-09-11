@@ -17,6 +17,10 @@ var activityListViewModel = (function () {
               };
                 
               var show = function(e){
+                  
+                   var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
+                   tabStrip.clear();
+  
                 organisationID = e.view.params.organisationId;  
                 console.log('Organisation ID'+organisationID);
                   
@@ -124,9 +128,9 @@ var activityListViewModel = (function () {
     	    });         
          
             
-            GroupDataSource.fetch(function() {
+            //GroupDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
             
             
              $("#group-listview").kendoMobileListView({

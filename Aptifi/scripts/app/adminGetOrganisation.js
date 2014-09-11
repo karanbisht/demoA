@@ -141,9 +141,9 @@ app.adminOragnisationList = (function () {
     	    });         
          
             
-            organisationListDataSource.fetch(function() {
+            //organisationListDataSource.fetch(function() {
                 
- 		   });
+ 		   //});
 
              $("#admin-org-listview").kendoMobileListView({
   		    template: kendo.template($("#adminOrganisationTemplate").html()),    		
