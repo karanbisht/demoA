@@ -233,10 +233,9 @@ app.Login = (function () {
     }  
 
 function loginSuccessCB() {
-							app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
-
+		app.mobileApp.pane.loader.hide();
+        app.userPosition=false;				  
+        app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
 }
         
         

@@ -9,6 +9,7 @@ app.sendNotification = (function () {
           console.log(orgId);
       var $notificationDesc;          
       var account_Id;          
+         
     	var init = function () {				                 
            app.MenuPage=false;
            app.userPosition=false;
@@ -177,9 +178,6 @@ app.sendNotification = (function () {
             	 
         };
                        
-        
-                
-          
          var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
              	var groupSelectedNoti = selectDataNoti.value();
@@ -191,18 +189,21 @@ app.sendNotification = (function () {
          var sendNotificationMessage = function () {    
          var cmbGroup = [];
          var org_id = localStorage.getItem("SELECTED_ORG");    
-             
+         
             //if (validator.validate()) {
                 var group=onChangeNotiGroup();
                 cmbGroup.push(group);
-             	
+            
                 cmbGroup = String(cmbGroup);
                 console.log(cmbGroup);
 				
+                //alert(cmbGroup);
+             
                 var selectedType = $("#notificationType").data("kendoComboBox");
                 var type=selectedType.value();
              
-            
+                //alert(type);
+             
              var cmmt_allow ;
              if($("#comment_allow").prop('checked')){
     				cmmt_allow = 1;  // checked
@@ -214,9 +215,20 @@ app.sendNotification = (function () {
                 var notificationValue = $notificationDesc.val();
                 var titleValue = $("#notificationTitleValue").val();
                 
-                
+                //alert(titleValue +"||"+notificationValue);            
            console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
                           
+          if(org_id===null){
+            app.showAlert('Please select Organisation','Validation Error');
+          }else if(cmbGroup===''){
+            app.showAlert('Please Organisation Group','Validation Error');  
+          }else if(type===''){
+            app.showAlert('Please select Notification Type','Validation Error');     
+          }else if(titleValue===''){
+            app.showAlert('Please select Notification Title','Validation Error');       
+          }else if(notificationValue===''){
+            app.showAlert('Please select Notification Message','Validation Error');           
+          }else{ 
              
           var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                       
@@ -265,7 +277,9 @@ app.sendNotification = (function () {
                                }
                            });               
                
-           });                
+            });                
+             
+          }
         };
         
     	 return {

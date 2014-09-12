@@ -823,6 +823,22 @@
         border:none;    
 }
 
+#admin-sub-noti-listview > li {
+       border:none;
+}
+
+#admin-noti-listview > li {
+       border:none;
+}
+
+
+#userReply-notification-listview > li {
+       border:none;
+}
+
+
+
+
 .nav-button-ui {
     display: inline-block;
     margin: 0;

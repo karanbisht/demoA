@@ -9,6 +9,7 @@ app.userNotiComment = (function () {
     
     var $commentsContainer,
         listScroller;
+     var attached;
     
     var userActivityViewModel = (function () {
         
@@ -19,9 +20,11 @@ app.userNotiComment = (function () {
       var customerID;
       var userCommentsDataSource; 
       var userName;
-      var attached;
+     
       var message;
       var title;
+      var myScroll;
+      var attached;
         
       var init = function () {
 			
@@ -39,13 +42,30 @@ app.userNotiComment = (function () {
                 }
         };
         
+        
+        function loaded() {
+        setTimeout(function() {    
+            myScroll = new iScroll('notiAdminImage', {
+			bounce : false,
+			zoom : true,
+            zoomMax: 4,
+            momentum: false,
+			hScrollbar: false,
+			vScrollbar: false    
+		   });
+         }, 100);
+            
+		}
+
+		//document.addEventListener('DOMContentLoaded', loaded, false);
+  
+        document.addEventListener('touchmove', function(e) {
+			e.preventDefault();
+		}, false);
+        
+        
 
         var show = function (e) {
-            //var cUserId = app.Users.currentUser.get('data').Id;
-            //var adminId = localStorage.getItem("adminId");
-
-            //var userName = localStorage.getItem("userfName");	
-             
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
@@ -58,17 +78,24 @@ app.userNotiComment = (function () {
             var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
 			userName = e.view.params.userName;
-            var attached = e.view.params.attached;
+            attached = e.view.params.attached;
             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
-            console.log(message+"||"+title+'||'+userName);
+            //console.log(message+"||"+title+'||'+userName);
             
             document.getElementById("notiAdminImage").innerHTML = "";
             
-            if(attached!== null && attached!==''){
-            var img = $('<img id="imgShowAdmin">'); //Equivalent: $(document.createElement('img'))
-			img.attr('src', attachedImg);
-			img.appendTo('#notiAdminImage');
+            if(attached!== null && attached!==''){             
+              loaded(); 
+                $('#notiAdminImage').css({"height":"200px"});
+                $('#notiAdminImage').css({"width":'auto'});
+                $('#notiAdminImage').css({"margin-top":"10px"}); 
+
+              var imgPathData = app.getfbValue();    
+              var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';    
+            
+                   console.log(attachedImg);
+    	   		window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
             }
             
             if(comment_allow===0){
@@ -79,12 +106,44 @@ app.userNotiComment = (function () {
             $("#activityText").html(message);
                       
            // kendo.bind(e.view.element, datasource, kendo.mobile.ui);
-            
-                        
-          //  var notificationId = activity.notification_id; 
-        
+           //  var notificationId = activity.notification_id; 
+         
             adminComment();
         };
+        
+        
+        var imagePathExist = function(){
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
+            var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />');
+			img.attr('src', fp);
+			img.appendTo('#notiAdminImage');
+        };
+        
+        var imagePathNotExist = function(){
+             alert('2');
+             app.mobileApp.pane.loader.show();                
+             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+             var imgPathData = app.getfbValue();    
+             var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
+            
+             var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
+ 			img.attr('src', attachedImg);
+ 			img.appendTo('#notiAdminImage'); 
+
+ 	
+             var fileTransfer = new FileTransfer();    
+             fileTransfer.download(attachedImg,fp,  
+        			function(entry) {
+                        app.mobileApp.pane.loader.hide();
+	        		},    
+    		        function(error) {
+                        app.mobileApp.pane.loader.hide();
+	        		}
+	    		);                
+        };
+        
+        
         
         var adminComment = function(){
             var userCommentModel = {
@@ -188,8 +247,6 @@ app.userNotiComment = (function () {
 		     });                                
 
         }
-        
-        
         
         
          var saveAdminComment = function () {    

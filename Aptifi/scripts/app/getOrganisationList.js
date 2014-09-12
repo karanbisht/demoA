@@ -57,11 +57,10 @@ app.OragnisationList = (function () {
          var show = function(e){
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
+
+           //console.log(getDataOrgDB);
+           //console.log(getDataCountDB);  
              
- 
-  
-           console.log(getDataOrgDB);
-           console.log(getDataCountDB);  
            app.MenuPage=true;
            app.userPosition=false;
   		 app.mobileApp.pane.loader.show();
@@ -100,8 +99,7 @@ app.OragnisationList = (function () {
                   num3=5;   
                  }
              }
-             
-             
+                          
             if(num1===1 && num2===0 && num3===0){
                 localStorage.setItem("ShowMore",1);
                 $("#goToAdmin").hide();
@@ -144,8 +142,7 @@ app.OragnisationList = (function () {
                  
             CreatedAtFormatted: function () {
                 return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            
+            }            
           };
              
              
@@ -228,8 +225,12 @@ app.OragnisationList = (function () {
                                             var imgPathData = app.getfbValue();    
                            	             var fp = imgPathData+"/Aptifi/"+'Aptifi_OrgLogo_'+orgVal.orgData[i].organisationID+'.jpg';
  									
-                                            //window.resolveLocalFileSystemURI(fp,imagePathExist, imagePathNotExist); 
-                                            storeImageSdcard(orgVal.orgData[i].org_logo , orgVal.orgData[i].organisationID); 
+                                            //var checkImg =  window.resolveLocalFileSystemURI(fp,imagePathExist, imagePathNotExist);
+                                        
+                                            //var checkImg = fileExist(fp)
+
+                                            //alert(checkImg);
+                                            //storeImageSdcard(orgVal.orgData[i].org_logo , orgVal.orgData[i].organisationID); 
                                             
                                             groupDataShow.push({
 												 orgName: orgVal.orgData[i].org_name,
@@ -277,15 +278,26 @@ app.OragnisationList = (function () {
                        
         };
             
+                        
+                                                        
+                                     function fileExist( file ) {
+                                            var status;    
+                                            window.resolveLocalFileSystemURI('file://' + window.rootFS.fullPath + '/' + file,
+                                            function(){ status = true; },
+                                            function(){ status = false; }
+                                            );
+                                            return status;
+                                     }
+
             
-            var imagePathExist = function(){
-                   alert('1');    
+          /* var imagePathExist = function(){
+                   return 1;    
             };
 
             var imagePathNotExist = function(){
-            	alert('2');    
+            	return 2;    
             };
-            
+          */  
             
             var storeImageSdcard = function(imageName , orgId){
                 var imgData='http://54.85.208.215/assets/upload_logo/'+imageName;               

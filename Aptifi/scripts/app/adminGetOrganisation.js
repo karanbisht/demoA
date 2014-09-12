@@ -25,6 +25,10 @@ app.adminOragnisationList = (function () {
         };
 
          var show = function(e){
+            var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
+	   	 tabStrip.switchTo("#view-all-activities-admin");
+  
+             
            app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
@@ -547,13 +551,18 @@ app.adminOragnisationList = (function () {
         
     	         
         // Logout user
-        var logout = function () {
-
-        navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
+        
+       var logout = function () {
+        var account_Id = localStorage.getItem("ACCOUNT_ID");
+        var userType = localStorage.getItem("USERTYPE");   
+        
+           
+           navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {                    
                    app.mobileApp.pane.loader.show();    
                    setTimeout(function() {
-                   	 window.location.href = "index.html";
+                        app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+                   	 //window.location.href = "index.html";
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);

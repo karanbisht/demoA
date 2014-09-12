@@ -2,14 +2,14 @@
          <div data-role="header">        
               <div data-role="navbar">     
                    Notification
-             	<a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>
+                  <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>		           
 		         <!--<a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>-->  
               </div>              
 	     </div>
             
 
      <div>
-    	<ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
+    	<ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"  data-pull-to-refresh="true" data-bind="source: activities"></ul>
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
     		 </p>
@@ -84,18 +84,24 @@
 		<script type="text/x-kendo-template" id="activityTemplate">
     		<div class="cf" data-role="touch" data-bind="events: { tap: activitySelected }">
          
-	            <div class="user-avatar">    
+	            <!--<div class="user-avatar">    
         		    <img src="styles/images/notification1.png" />
- 	           </div>     
+ 	           </div>-->     
             
-       		 <div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;margin-left:60px;" >
+       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
                    #if(org_id!=='0'){#
         		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${CreatedAtFormatted()}</span>
             	  #}#
- 				   <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>           
+ 				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
-       		 </div>
+            
+                    #if(attachedImg!==''){#
+                      <br/>  
+                      <img src= ${attached} style="height:100px ; width:auto;margin-top:10px;" /> 
+                    #}#            
+            
+       		</div>
 		    </div>
 		</script>
 

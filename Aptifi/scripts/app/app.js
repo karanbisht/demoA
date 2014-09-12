@@ -253,15 +253,32 @@ var app = (function (win) {
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
-         
+
+     }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-admin'){
+           var account_Id = localStorage.getItem("ACCOUNT_ID");
+           var userType = localStorage.getItem("USERTYPE");   
+
+             navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
+            	if (checkLogout === true || checkLogout === 1) {
+                     app.mobileApp.pane.loader.show();    
+                    
+                    setTimeout(function() {
+                       app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+                   }, 100);
+            	}
+        	}, 'Logout', ['OK', 'Cancel']);
+   
      }else if(app.mobileApp.view()['element']['0']['id']==='organisationDiv'){
          //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
          //tabstrip.clear();
          //tabstrip.switchTo("#organisationNotiList");        
          app.mobileApp.navigate("#organisationNotiList");
-
-
          
+     }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-userReply'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate("#view-all-activities-admin");    
      }else {
         //navigator.app.backHistory();
          app.mobileApp.navigate("#:back");    
