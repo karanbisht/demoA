@@ -2,7 +2,8 @@ var app = app || {};
 
 app.sendNotification = (function () {
     var validator;
-    
+    var notificationTypeSelected;
+    var groupChecked = [];
 	 var sendNotificationViewModel = (function () {
 
       var orgId = localStorage.getItem("UserOrgID"); 
@@ -27,13 +28,24 @@ app.sendNotification = (function () {
       
           ];
             
+            
+            var dataSource = new kendo.data.DataSource({
+                  data: showNotiTypes
+            });
            
             
              $("#type-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#typeNameTemplate").html()),    		
-     		 dataSource: showNotiTypes,
-              pullToRefresh: true
-		     });
+     		 dataSource: dataSource,
+              click : function(e){
+                console.log(e.dataItem.value);
+                  notificationTypeSelected=e.dataItem.value;
+                     app.mobileApp.pane.loader.show(); 
+                     $("#selectTypeDiv").hide();
+                     $("#sendNotificationDivMsg").show();
+                     app.mobileApp.pane.loader.hide();     
+              }
+             });
 
             
 
@@ -92,8 +104,14 @@ app.sendNotification = (function () {
             $notificationDesc.val('');
             validator.hideMessages();
              app.mobileApp.pane.loader.show();
-			$("#notificationTitleValue").val('');            
+			localStorage.setItem("SELECTED_GROUP",'');
+            $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
+            document.getElementById('comment_allow').checked = false;
+            
+            $("#selectGroupDiv").hide();
+            $("#selectTypeDiv").hide();
+            $("#sendNotificationDivMsg").hide();
             
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
@@ -231,25 +249,26 @@ app.sendNotification = (function () {
          
                  
          var sendNotificationMessage = function () {    
-         var cmbGroup = [];
+         //var cmbGroup = [];
          var org_id = localStorage.getItem("SELECTED_ORG");    
          
             //if (validator.validate()) {
-                /*var group=onChangeNotiGroup();
-                cmbGroup.push(group);
+               //var group=onChangeNotiGroup();
+               // cmbGroup.push(group);
             
-                cmbGroup = String(cmbGroup);
-                console.log(cmbGroup);
-			*/	
+                //cmbGroup = String(cmbGroup);
+                //console.log(cmbGroup);
+		  
         
                 var cmbGroup = localStorage.getItem("SELECTED_GROUP");
-                 cmbGroup = String(cmbGroup);
+                cmbGroup = String(cmbGroup);
              
                 //alert(cmbGroup);
              
-                var selectedType = $("#notificationType").data("kendoComboBox");
-                var type=selectedType.value();
+                //var selectedType = $("#notificationType").data("kendoComboBox");
+                //var type=selectedType.value();
              
+                 var type= notificationTypeSelected;
                 //alert(type);
              
              var cmmt_allow ;
@@ -264,7 +283,8 @@ app.sendNotification = (function () {
                 var titleValue = $("#notificationTitleValue").val();
                 
                 //alert(titleValue +"||"+notificationValue);            
-           console.log(notificationValue +"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
+
+          console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
                           
           if(org_id===null){
             app.showAlert('Please select Organisation','Validation Error');
@@ -279,8 +299,7 @@ app.sendNotification = (function () {
           }else{ 
              
           var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
-                      
-            
+                            
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
                read: {
@@ -307,7 +326,7 @@ app.sendNotification = (function () {
 	            
            
            dataSourceSendNotification.fetch(function() {                   
-           var sendNotificationDataView = dataSourceSendNotification.data();
+               var sendNotificationDataView = dataSourceSendNotification.data();
 						   $.each(sendNotificationDataView, function(i, notification) {
                                console.log(notification.status[0].Msg);
                                
@@ -316,9 +335,9 @@ app.sendNotification = (function () {
                                    $("#notificationTitleValue").val('');            
 						           $("#notificationDesc").val('');
                                    document.getElementById('comment_allow').checked = false;
-                                   $("#notificationType").data("kendoComboBox").value("");
-             					  $("#groupforNotification").data("kendoComboBox").value("");
-                                   $("#orgforNotification").data("kendoComboBox").value("");
+                                   //$("#notificationType").data("kendoComboBox").value("");
+             					  //$("#groupforNotification").data("kendoComboBox").value("");
+                                   //$("#orgforNotification").data("kendoComboBox").value("");
                                                                                     
                                }else{
                                   app.showAlert(notification.status[0].Msg ,'Notification'); 
@@ -400,20 +419,23 @@ app.sendNotification = (function () {
              $("#selectTypeDiv").show();
              app.mobileApp.pane.loader.hide();              
          };
-         
-         var sendNotificationType = function(e){
-             console.log(e.data);                  
-             app.mobileApp.pane.loader.show(); 
-             $("#selectTypeDiv").hide();
-             $("#sendNotificationDiv").show();
-             app.mobileApp.pane.loader.hide();     
-         };
-         
+                  
          var escapeGroupClick = function(){                 
              app.mobileApp.pane.loader.show(); 
              $("#selectGroupDiv").hide();
              $("#selectTypeDiv").show();
              app.mobileApp.pane.loader.hide();    
+         };
+         
+         var groupCheckData = function(){
+           		    
+            $(':checkbox:checked').each(function(i){
+          	  groupChecked[i] = $(this).val();
+        	});
+            
+            groupChecked = String(groupChecked);        
+            console.log(groupChecked);
+                   
          };
 
     	 return {
@@ -421,8 +443,8 @@ app.sendNotification = (function () {
            	show: show,
                sendNotificationOrg:sendNotificationOrg,
                sendNotificationGroup:sendNotificationGroup,
-               sendNotificationType:sendNotificationType,
                escapeGroupClick:escapeGroupClick,
+               groupCheckData:groupCheckData,
                onChangeNotiGroup:onChangeNotiGroup,
                sendNotificationMessage:sendNotificationMessage
          };

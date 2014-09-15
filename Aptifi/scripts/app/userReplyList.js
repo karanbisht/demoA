@@ -157,7 +157,7 @@ app.userReplyList = (function () {
             console.log(e.data);
             console.log(e.data.organisationID);
    				   //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
-            app.mobileApp.navigate('views/userReplyNotification.html?organisationID=' + e.data.organisationID);                   
+            app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName);                   
         }
         
             return {

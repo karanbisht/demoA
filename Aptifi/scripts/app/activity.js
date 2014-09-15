@@ -144,6 +144,8 @@ app.Activity = (function () {
                 $("#commentPanel").css("z-index", "-1");
 			    $("#commentPanel").css("opacity", .4);	
     			document.getElementById('commentPanel').style.pointerEvents = 'none';
+                $("#newComment").val('');
+                $("#newComment").attr("placeholder", "Reply not allow.");
             }
             console.log(org_id+"||"+notiId+"||"+account_Id);            
             $("#personName").html(title);

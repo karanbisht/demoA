@@ -40,7 +40,7 @@
 <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
 
   <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
-        <p style="color:#1B205E; text-align:center">Select Organisation to send Notification</p>
+        <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
     	<ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
@@ -50,14 +50,14 @@
     
     
    <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
-        <p style="color:#1B205E;text-align:center">Select Group to send Notification to particular group</p>
+        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
     	<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
         
-       <div>
-          <span data-role="button" style="background-color:#33539E;width:90%" data-bind="click:escapeGroupClick">
+       <!--<div>
+          <span data-role="button" style="background-color:#33539E;width:100%" data-bind="click:escapeGroupClick">
 	           <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Skip</a>
           </span>       
-       </div>   
+       </div>-->   
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
     		 </p>
@@ -65,11 +65,12 @@
     
     
    <div id="selectTypeDiv" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
-       <p style="color:#1B205E;text-align:center">Notification Type</p>
+       <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
-	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-		    	   <b>You have no Notification for you.</b>
-    		 </p>
+       
+	   <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		   <b>You have no Notification for you.</b>
+       </p>
   </div> 
     
     
@@ -88,11 +89,10 @@
         <span style="margin-left:12px;"><input id="notificationType" /></span>
     </div>-->
     
-  <div id="sendNotificationDiv" style="display:none">
-    <ul data-role="listview" data-style="inset" style="margin-top:15px">
+  <div id="sendNotificationDivMsg" style="display:none">
+    <ul data-role="listview" data-style="inset" style="margin-top:25px">
         <li class="username"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
     </ul>
-
 			   
     <div id="enterNotification" class="share-form-wrp" style="margin-top:-30px" data-role="listview" data-style="inset">
          <!--<div class="user-avatar">
@@ -121,7 +121,7 @@
 
 		<script type="text/x-kendo-template" id="orgNameTemplate"> 
     		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationOrg }">				            
-	    		<div class="activity-content">
+	    		<div class="activity-content"style="padding-top:10px;">
        		     <h2 id="activityTemplateTitle" class="orgNameList">${org_name}</h2>
         		</div>
     		</div>            
@@ -130,7 +130,7 @@
 
 		<script type="text/x-kendo-template" id="groupNameTemplate"> 
     		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationGroup }">				            
-	    		<div class="activity-content">
+	    		<div class="activity-content"style="padding-top:10px;">
        		     <h2 id="activityTemplateTitle" class="orgNameList">${group_name}</h2>
         		</div>
     		</div>            
@@ -138,8 +138,8 @@
 
 
 		<script type="text/x-kendo-template" id="typeNameTemplate">
-    		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationType }">				            
-	    		<div class="activity-content" data-role="touch" data-bind="events: { tap: sendNotificationType }">
+    		<div class="cf">				            
+	    		<div class="activity-content" style="padding-top:10px;">
        		     <h2 id="activityTemplateTitle" class="orgNameList">${text}</h2>
         		</div>
     		</div>            
@@ -174,7 +174,7 @@
          <div class="user-avatar">
 			<img src="styles/images/habicon.png" />
         </div>           
-       		 <div class="activity-content" >
+       		 <div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="person-name" >${orgName}</h2>
        		     <a id="activityTemplateMessage" class="user-share-txt" >${orgDesc}</a>            			            
        		 </div>

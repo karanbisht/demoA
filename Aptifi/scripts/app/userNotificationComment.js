@@ -99,7 +99,9 @@ app.userNotiComment = (function () {
             }
             
             if(comment_allow===0){
-                $("#commentPanel").hide();
+                $("#commentPanel").css("z-index", "-1");
+			    $("#commentPanel").css("opacity", .4);	
+    			document.getElementById('commentPanel').style.pointerEvents = 'none';
             }
                        
             $("#personName").html(title);
@@ -121,7 +123,7 @@ app.userNotiComment = (function () {
         };
         
         var imagePathNotExist = function(){
-             alert('2');
+             //alert('2');
              app.mobileApp.pane.loader.show();                
              var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
              var imgPathData = app.getfbValue();    

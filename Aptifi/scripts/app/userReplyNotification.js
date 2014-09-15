@@ -4,7 +4,7 @@ app.userReplyNotificationList = (function () {
 
     var userReplyNotificationListViewModel = (function () {
 	var organisationID;		
-        
+    var orgName;    
   	var init = function () {
                                    
       };
@@ -12,6 +12,11 @@ app.userReplyNotificationList = (function () {
       var show = function(e){
 	    
         organisationID = e.view.params.organisationID;
+        orgName = e.view.params.orgName; 
+          
+             console.log(orgName);
+                          
+           $("#navBarAdminHeader").html(orgName);
           
          var userNotificationModel = {
             id: 'Id',
