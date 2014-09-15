@@ -19,6 +19,7 @@ app.Activities = (function () {
    		 var groupDataShow = [];
             var lastNotificationPID;
     		var DBGETDATAVALUE;
+    var orgName;
     var orgId = localStorage.getItem("UserOrgID");                              
     
 	   // Activities model
@@ -329,9 +330,8 @@ app.Activities = (function () {
              
          }   
                                  
-         var show = function(e){
+         var show = function(e){             
            groupDataShow=[];
-             //alert("ShowFunction");
              
            app.MenuPage=false;
            app.userPosition=false;
@@ -340,10 +340,17 @@ app.Activities = (function () {
            organisationID = e.view.params.organisationID;
        	account_Id = e.view.params.account_Id;
            bagCount = e.view.params.bagCount; 
-           
+           orgName = e.view.params.orgName;
+                         
+           console.log(orgName);
+             
+          // $("#fav-list-navbar").data("kendoMobileNavBar").title("foo");
+             
+           $("#navBarHeader").html(orgName);
+             
            var db = app.getDb();
 		   db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
-        };
+         };
             
         var orgNotiDataVal;
         
@@ -420,9 +427,10 @@ app.Activities = (function () {
                                                  pid :results.rows.item(i).pid ,
                                                  comment_allow:results.rows.item(i).comment_allow ,
 		                                         bagCount : 'C',
-                                                 attachedImg :results.rows.item(i).attached,
-                                                 attached :'http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached
+                                                 attached :results.rows.item(i).attached,
+                                                 attachedImg :'http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached
                        });
+                    
                   lastNotificationPID=results.rows.item(i).pid;
         	    }    
                  console.log(lastNotificationPID);
@@ -431,10 +439,6 @@ app.Activities = (function () {
             }                       
          };       
 
-
-            
-            
-            
         var afterShow = function(){
               var db = app.getDb();
 		  	db.transaction(insertBagCount, app.errorCB, app.successCB);  
@@ -444,8 +448,8 @@ app.Activities = (function () {
              console.log('ssss'+bagCount);
              console.log('ssss'+organisationID);
 
-                 var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
-				 app.updateQuery(tx, query);
+             var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
+		     app.updateQuery(tx, query);
          };   
             
             
@@ -533,6 +537,7 @@ app.Activities = (function () {
 
                                         console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
+                                        
                                         for(var i=0;i<orgVal.notificationList.length;i++){
                                             groupDataShow.push({
 												 message: orgVal.notificationList[i].message,
@@ -542,8 +547,8 @@ app.Activities = (function () {
                                                  pid :orgVal.notificationList[i].pid ,
                                                  comment_allow:orgVal.notificationList[i].comment_allow ,
 		                                         bagCount : 'C',
-                                                 attachedImg :orgVal.notificationList[i].attached,
-                                                 attached :'http://54.85.208.215/assets/attachment/'+orgVal.notificationList[i].attached
+                                                 attached :orgVal.notificationList[i].attached,
+                                                 attachedImg :'http://54.85.208.215/assets/attachment/'+orgVal.notificationList[i].attached
                                             });
                                         }
                                         saveOrgNotification(orgNotificationData);                                                                                     
@@ -636,6 +641,9 @@ app.Activities = (function () {
             var notiId=e.data.pid;
             var comment_allow=e.data.comment_allow;//: "1"
             var attached = e.data.attached;
+            
+            //alert(attached);
+            
 			app.MenuPage=false;	
             app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
         };

@@ -16,7 +16,28 @@ app.sendNotification = (function () {
            validator = $('#enterNotification').kendoValidator().data('kendoValidator');
            $notificationDesc = $('#notificationDesc'); 
                                  
-           $("#notificationType").kendoComboBox({
+            
+
+           var showNotiTypes=[
+                                        { text: "Promotion", value: "P" },
+                                        { text: "Invitaion", value: "V" },
+                                        { text: "Information", value: "I" },
+                                        { text: "Reminder", value: "R" },
+                                        { text: "Alert", value: "A" }
+      
+          ];
+            
+           
+            
+             $("#type-Name-listview").kendoMobileListView({
+  		    template: kendo.template($("#typeNameTemplate").html()),    		
+     		 dataSource: showNotiTypes,
+              pullToRefresh: true
+		     });
+
+            
+
+           /*$("#notificationType").kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
                         dataSource: [
@@ -31,11 +52,22 @@ app.sendNotification = (function () {
                         suggest: true
                         //index: 0
                     });
+            */
+            
+           /*$("#type-Name-listview").kendoMobileListView({
+  		    template: kendo.template($("#typeNameTemplate").html()),    		
+     		 dataSource: dataSource,
+              pullToRefresh: true
+		     });
+          */
 
-           //$("#groupSelectNotification").kendoComboBox();
-                       $("#groupforNotification").kendoComboBox({
+
+            //$("#groupSelectNotification").kendoComboBox();
+
+            
+            /*$("#groupforNotification").kendoComboBox({
                           
-                       });
+               });
             
             var comboboxGroup = $("#groupforNotification").data("kendoComboBox"); 
 				comboboxGroup.input.focus(function() {
@@ -48,7 +80,9 @@ app.sendNotification = (function () {
 				combobox.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     combobox.input.blur();
-				});
+				});*/
+            
+            
         
 
         };
@@ -57,7 +91,7 @@ app.sendNotification = (function () {
         var show = function(e){
             $notificationDesc.val('');
             validator.hideMessages();
-            
+             app.mobileApp.pane.loader.show();
 			$("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
             
@@ -98,9 +132,17 @@ app.sendNotification = (function () {
            },       
              sort: { field: 'add', dir: 'desc' }    	     
           });
-                       
+
+          app.mobileApp.pane.loader.hide();
+
+             $("#organisation-Name-listview").kendoMobileListView({
+  		    template: kendo.template($("#orgNameTemplate").html()),    		
+     		 dataSource: comboOrgListDataSource,
+              pullToRefresh: true
+		     });
+            
                
-            $("#orgforNotification").kendoComboBox({
+            /*$("#orgforNotification").kendoComboBox({
   				dataSource: comboOrgListDataSource,
   				dataTextField: "org_name",
   				dataValueField: "organisationID",
@@ -108,15 +150,17 @@ app.sendNotification = (function () {
             });            
             
             
-            var combobox = $("#orgforNotification").data("kendoComboBox"); 
+             var combobox = $("#orgforNotification").data("kendoComboBox"); 
 				combobox.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     combobox.input.blur();
-				});
+				});*/
             
+            
+            $("#selectOrgDiv").show();
         };    
              
-         var onChangeNotiOrg = function(){
+         /*var onChangeNotiOrg = function(){
              var org = this.value();       
              localStorage.setItem("SELECTED_ORG",org);
              
@@ -176,7 +220,7 @@ app.sendNotification = (function () {
                     combobox.input.blur();
 				});
             	 
-        };
+        };*/
                        
          var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
@@ -191,12 +235,16 @@ app.sendNotification = (function () {
          var org_id = localStorage.getItem("SELECTED_ORG");    
          
             //if (validator.validate()) {
-                var group=onChangeNotiGroup();
+                /*var group=onChangeNotiGroup();
                 cmbGroup.push(group);
             
                 cmbGroup = String(cmbGroup);
                 console.log(cmbGroup);
-				
+			*/	
+        
+                var cmbGroup = localStorage.getItem("SELECTED_GROUP");
+                 cmbGroup = String(cmbGroup);
+             
                 //alert(cmbGroup);
              
                 var selectedType = $("#notificationType").data("kendoComboBox");
@@ -281,10 +329,100 @@ app.sendNotification = (function () {
              
           }
         };
-        
+         
+         
+         var sendNotificationOrg = function(e){
+             console.log(e.data.org_id);
+              app.mobileApp.pane.loader.show();            
+              var org = e.data.org_id;       
+             localStorage.setItem("SELECTED_ORG",org);
+             
+             var comboGroupListDataSource = new kendo.data.DataSource({
+             transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/group/index/"+org,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+              	}
+              },
+       	 schema: {               
+                  data: function(data)
+  	             {	console.log(data);
+                        var groupDataShow = [];
+                                 $.each(data, function(i, groupValue) {
+                                     console.log(groupValue);
+                                    
+                                     var orgLength=groupValue[0].groupData.length;
+                                     for(var j=0;j<orgLength;j++){
+                                     groupDataShow.push({
+                                         group_desc: groupValue[0].groupData[j].group_desc,
+                                         group_name: groupValue[0].groupData[j].group_name,
+                                         group_status:groupValue[0].groupData[j].group_status,
+                                         org_id:groupValue[0].groupData[j].org_id,
+                                         pid:groupValue[0].groupData[j].pid
+
+                                     });
+                                   }
+                                     
+                                 });
+                       
+                       console.log(groupDataShow);
+                       return groupDataShow;                       
+	               }
+            },
+            error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           },       
+             sort: { field: 'add', dir: 'desc' }    	     
+          });
+                       
+                          
+             $("#group-Name-listview").kendoMobileListView({
+  		    template: kendo.template($("#groupNameTemplate").html()),    		
+     		 dataSource: comboGroupListDataSource,
+              pullToRefresh: true
+		     });
+             
+             $("#selectOrgDiv").hide();
+             $("#selectGroupDiv").show();
+             app.mobileApp.pane.loader.hide();
+         };
+
+         var sendNotificationGroup = function(e){
+            console.log(e.data.pid);
+            var group = e.data.pid;
+            localStorage.setItem("SELECTED_GROUP",group);
+            app.mobileApp.pane.loader.show();              
+             $("#selectGroupDiv").hide();
+             $("#selectTypeDiv").show();
+             app.mobileApp.pane.loader.hide();              
+         };
+         
+         var sendNotificationType = function(e){
+             console.log(e.data);                  
+             app.mobileApp.pane.loader.show(); 
+             $("#selectTypeDiv").hide();
+             $("#sendNotificationDiv").show();
+             app.mobileApp.pane.loader.hide();     
+         };
+         
+         var escapeGroupClick = function(){                 
+             app.mobileApp.pane.loader.show(); 
+             $("#selectGroupDiv").hide();
+             $("#selectTypeDiv").show();
+             app.mobileApp.pane.loader.hide();    
+         };
+
     	 return {
         	   init: init,
            	show: show,
+               sendNotificationOrg:sendNotificationOrg,
+               sendNotificationGroup:sendNotificationGroup,
+               sendNotificationType:sendNotificationType,
+               escapeGroupClick:escapeGroupClick,
                onChangeNotiGroup:onChangeNotiGroup,
                sendNotificationMessage:sendNotificationMessage
          };

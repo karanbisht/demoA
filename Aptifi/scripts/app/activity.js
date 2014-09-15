@@ -18,6 +18,7 @@ app.Activity = (function () {
     var attached;
     var groupDataShow = [];
     var lastNotiCommentID;
+    var orgLogoToShow;
     
     var activityViewModel = (function () {
         
@@ -93,8 +94,7 @@ app.Activity = (function () {
 			hScrollbar: false,
 			vScrollbar: false    
 		   });
-         }, 100);
-            
+         }, 100);            
 		}
 
 		//document.addEventListener('DOMContentLoaded', loaded, false);
@@ -118,58 +118,66 @@ app.Activity = (function () {
             account_Id =e.view.params.account_Id;
             comment_allow = e.view.params.comment_allow;
             attached = e.view.params.attached;
-            var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
-            console.log(attached);
+            //alert(attached);
+            
+            //var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;            
+            //console.log(attached);
                         
             if(attached!== null && attached!==''){
-			loaded(); 
-            $('#notiImage').css({"height":"200px"});
-            $('#notiImage').css({"width":'auto'});
-            $('#notiImage').css({"margin-top":"10px"}); 
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';    
-            
-            console.log('Image Saving Process');    
-            console.log(attachedImg);
-    
- 			window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
-
+	    		loaded(); 
+                $('#notiImage').css({"height":"200px"});
+                $('#notiImage').css({"width":'auto'});
+                $('#notiImage').css({"margin-top":"10px"}); 
+                var imgPathData = app.getfbValue();                    
+                var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';                
+                
+                //alert(fp);                
+                console.log('Image Saving Process');    
+                //console.log(attachedImg);    
+ 	    	   window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
             }
                         
             if(comment_allow===1 || comment_allow==='1'){
                 $("#commentPanel").show();                
             }else{
-                $("#commentPanel").hide();
+                $("#commentPanel").css("z-index", "-1");
+			    $("#commentPanel").css("opacity", .4);	
+    			document.getElementById('commentPanel').style.pointerEvents = 'none';
             }
-            console.log(org_id+"||"+notiId+"||"+account_Id);
-            
+            console.log(org_id+"||"+notiId+"||"+account_Id);            
             $("#personName").html(title);
             $("#activityText").html(message);
-                        
-               
+                                       
            var db = app.getDb();
 		   db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);         
- 
+           db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
+          
         };
         
         
         var imagePathExist = function(){
+            //alert('1');
             var imgPathData = app.getfbValue();    
             var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
-
             var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
 			img.attr('src', fp);
 			img.appendTo('#notiImage'); 
         }
         
         var imagePathNotExist = function(){
-             app.mobileApp.pane.loader.show();                
+             //alert('2');
+             app.mobileApp.pane.loader.show();    
+              //alert(attached);
              var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+            
              var imgPathData = app.getfbValue();    
              var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
             
             var img = $('<img id="imgShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
+            
+            //alert(attachedImg);
+            
 			img.attr('src', attachedImg);
 			img.appendTo('#notiImage'); 
 
@@ -220,8 +228,8 @@ app.Activity = (function () {
         };
             
             console.log(org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID);
-
             
+           
             commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
@@ -262,7 +270,7 @@ app.Activity = (function () {
                        
 		                        // console.log(groupDataShow);
                                    return groupDataShow;
-                       
+          
                        }                       
             },
 	            error: function (e) {
@@ -274,8 +282,6 @@ app.Activity = (function () {
            	}
 	        
     	    });         
-         
-            
             
             //commentsDataSource.fetch(function() {               
  		   //});
@@ -290,10 +296,8 @@ app.Activity = (function () {
 		     });
 
         };
-        
-        
-        
-       var orgNotiCommentDataVal;
+         
+      var orgNotiCommentDataVal;
         
       function saveOrgNotiComment(data) {
             orgNotiCommentDataVal = data;      
@@ -332,6 +336,33 @@ app.Activity = (function () {
         }                               
       }
         
+        
+        
+      var getOrgImgLogo = function(tx){
+            var query = 'SELECT * FROM JOINED_ORG where org_id='+org_id ;
+			app.selectQuery(tx, query, getOrgLogoDataSuccess);  
+      }  
+        
+      
+      function getOrgLogoDataSuccess(tx, results){
+           var count = results.rows.length;    
+               //for(var i =0 ; i<count ; i++){                       
+                orgLogoToShow = results.rows.item(0).imageSource
+                    
+          //alert(orgLogoToShow);
+              //}
+      }  
+      
+      function orgLogoShow(){
+          if(orgLogoToShow!==null  && orgLogoToShow!=='null' && orgLogoToShow!==''){
+          var imgPath = 'http://54.85.208.215/assets/upload_logo/'+orgLogoToShow;
+          $("#orgLogoImg").attr('src', imgPath);
+              }else{
+           var imgPath = 'styles/images/habicon.png';
+          $("#orgLogoImg").attr('src', imgPath);
+                         
+              }
+      }  
         
       var getDataOrgNotiComment = function(tx){
             var query = 'SELECT * FROM ORG_NOTI_COMMENT where notification_id='+notiId ;

@@ -17,8 +17,6 @@ app.registration = (function () {
         var userType=[];
         var UserProfileInformation;
         var UserOrgInformation;
-
-        
         var varifiCode;
         var regClickButton;
         
@@ -183,16 +181,12 @@ app.registration = (function () {
                                }
 						  });
                        });            
-                                    
-			      
+
             }
-                    
-                           
-                                
-                           });
-               });             
-         }
-      };
+       });
+     });             
+    }
+   };
         
      /*   
         var goToIndex = function(){

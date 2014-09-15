@@ -371,6 +371,7 @@ app.OragnisationList = (function () {
         };
         */
     
+
         var organisationSelected = function (e) {
             app.mobileApp.pane.loader.show();
             console.log(e.data);
@@ -379,7 +380,7 @@ app.OragnisationList = (function () {
             //uid=' + e.data.uid
             
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&bagCount='+bagCount);
+            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&bagCount='+bagCount+'&orgName='+e.data.orgName);
         };
             
        
@@ -519,12 +520,12 @@ app.OragnisationList = (function () {
             
             
         var orgForGroupSelected =function(e){
-            alert("hello");
+            //alert("hello");
             //var organisationID=e.data.organisationID;
             //uid=' + e.data.uid
             console.log(e.data);
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id);                
+            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName);                
         };    
             
         
