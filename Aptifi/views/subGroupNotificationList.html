@@ -18,17 +18,26 @@
 	<script type="text/x-kendo-template" id="adminSubNotiTemplate" >
             <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">
          
-	            <div class="user-avatar">    
+	            <!--<div class="user-avatar">    
         		    <img src="styles/images/notification1.png" />
- 	           </div>     
+ 	           </div>-->     
             
-       		 <div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;margin-left:60px;" >
+       		 <div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
                    #if(pid!==0){#
         		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${CreatedAtFormatted()}</span>
             	  #}#
- 				   <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>           
+ 				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
        		 </div>
+		    </div>
+	</script>
+
+
+      <script type="text/x-kendo-template" id="errorTemplate">    		
+            <div class="cf" style="margin-top:50%">
+       		 <div style="border-radius:12px;margin-left:10%;margin-right:10%;background-color:rgb(27,43,89);padding-top:.5px;padding-bottom:.5px;" >
+       		     <h5 style="color:rgb(255,255,255);" >${message}</h5>
+                </div>
 		    </div>
 	</script>

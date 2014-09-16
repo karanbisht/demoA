@@ -77,7 +77,7 @@
 	  </div>
 	
 	 <div>
-    	<ul id="groupMember-listview" data-style="inset" data-role="listview" data-pull-to-refresh="true" data-template="groupMemberTemplate"></ul>
+    	<ul id="groupMember-listview" data-style="inset" data-role="listview" data-pull-to-refresh="true" data-template="groupMemberTemplate" data-bind="source: activities"></ul>
          <p id="no-Group-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	 </p>
@@ -154,13 +154,12 @@
 
 
 	<script type="text/x-kendo-template" id="groupMemberTemplate">
-			<div data-role="touch" class="cf">
+			<div class="cf" data-role="touch" data-bind="events: { tap: clickOnOrgMember }">
             	<div class="user-avatar">
 					<img src="styles/images/avatar1.png" />
-        		</div>
-            
+        		</div>            
        		<div class="activity-content" >
-       		     <h2 id="" class="person-name">${first_name}</h2>
+       		     <h2 id="" class="person-name">${first_name} ${last_name}</h2>
        		     <span id="" class="time-span" >${mobile}</span>
             		<a id="activityTemplateMessage" class="user-share-txt">${email}</a>
         	   </div>
@@ -168,3 +167,11 @@
 	</script>
 
 
+
+    <script type="text/x-kendo-template" id="errorTemplate">    		
+            <div class="cf" style="margin-top:50%">
+       		 <div style="border-radius:12px;margin-left:10%;margin-right:10%;background-color:rgb(27,43,89);padding-top:.5px;padding-bottom:.5px;" >
+       		     <h5 style="color:rgb(255,255,255);" >${message}</h5>
+                </div>
+		    </div>
+	</script>

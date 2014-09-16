@@ -133,8 +133,21 @@ app.subGroupDetail = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');
+                    
+                      var showNotiTypes=[
+                      { message: "Please Check Your Internet Connection"}
+                    ];
+                        
+                    var dataSource = new kendo.data.DataSource({
+                          data: showNotiTypes
+                    });
+                    
+                    $("#subGroupMember-listview").kendoMobileListView({
+  		          template: kendo.template($("#errorTemplate").html()),
+                    dataSource: dataSource  
+     		       });
            	}
 	        
     	    });         

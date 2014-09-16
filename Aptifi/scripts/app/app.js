@@ -22,7 +22,10 @@ var app = (function (win) {
     //var userPosition;
     var db;
     var fp;
-     
+    var userTypeDBValue=[];
+    var loginStatusDBValue;
+    var account_IdDBValue;
+    
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
         }, title, 'OK');
@@ -149,34 +152,33 @@ var app = (function (win) {
     var loginResultSuccess = function(tx, results) {
 		var count = results.rows.length;
 		if (count !== 0) {
-			var loginStatus = results.rows.item(0).login_status;
-            var account_id= results.rows.item(0).login_status;
-            //app.mobileApp.navigate('views/getOrganisationList.html');
-            //localStorage.setItem("loginStatusCheck",1);
-        } else {		
-            //app.mobileApp.navigate('#welcome');
-            //localStorage.setItem("loginStatusCheck",1);
+			 loginStatusDBValue = results.rows.item(0).login_status;
+             account_IdDBValue= results.rows.item(0).account_id;
         }
     };
     
-    
-    
+     
     var loginOrgResultSuccess = function(tx, results) {
-    	var userType=[];
+    	 userTypeDBValue=[];
         var count = results.rows.length;
 		  if (count !== 0) {
              for(var i=0;i<count;i++){
-                  userType.push(results.rows.item(i).role); 
+                  userTypeDBValue.push(results.rows.item(i).role);
 			 }
-          }else {		
-            //app.mobileApp.navigate('#welcome');
-            //localStorage.setItem("loginStatusCheck",1);
-        }
+         }
     };
     
     
     var loginStatusQuerySuccess= function(){
-	
+	    console.log(loginStatusDBValue+"||"+account_IdDBValue+"||"+userTypeDBValue);
+        
+       if(loginStatusDBValue===1){
+            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
+            localStorage.setItem("loginStatusCheck",1);            
+        } else {            
+            app.mobileApp.navigate('#welcome');
+            localStorage.setItem("loginStatusCheck",0);
+        }
 	};
     
     var selectQuery = function(tx,query,successFunction){
@@ -249,7 +251,8 @@ var app = (function (win) {
                      app.mobileApp.pane.loader.show();    
                     
                     setTimeout(function() {
-                   	 window.location.href = "index.html";
+                       var db = app.getDb();
+                       db.transaction(updateLoginStatus, updateLoginStatusError,updateLoginStatusSuccess);
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
@@ -285,6 +288,22 @@ var app = (function (win) {
 		}
 
     };
+    
+    
+            function updateLoginStatus(tx) {
+	             var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            	 app.updateQuery(tx, query);
+            }
+            
+
+            function updateLoginStatusSuccess() {
+                  window.location.href = "index.html";
+            }
+
+            function updateLoginStatusError(err) {
+	            console.log(err);
+            }
+
 
      var navigateHome = function () {
             app.MenuPage=false;
@@ -354,7 +373,7 @@ var app = (function (win) {
     
     var getfbValue = function(){
        var fbValue = fp;
-        return fbValue;
+       return fbValue;
     };
     
     function onDirectorySuccess(parent) {
@@ -408,8 +427,6 @@ var app = (function (win) {
             //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
         },
         
-        
-
         // Current user logout
         logout: function () {
             //return el.Users.logout();
@@ -446,7 +463,6 @@ var app = (function (win) {
         console.log(e);
         //getPromotionFromServer();
     };
- 
 
     //the function is a callback for all GCM events
     var onNotificationGCM = function onNotificationGCM(e) {
@@ -464,6 +480,7 @@ var app = (function (win) {
                 }
                 break;
             case 'message': 
+            //app.mobileApp.navigate('views/activityView.html?message='+'Testing'+'&title='+'Welcome'+'&org_id='+3+'&notiId='+2+'&account_Id='+29+'&comment_allow='+1+'&attached= ');
             //var messageSplitVal = e.message.split('#####');
 			//var type = messageSplitVal[0];
 			//var title = messageSplitVal[1];
@@ -520,6 +537,9 @@ var app = (function (win) {
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
     var mobileApp;
+    
+    console.log(loginStatusCheck);
+    
     //if(loginStatusCheck==='0'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
@@ -530,7 +550,7 @@ var app = (function (win) {
                                                  	});
    /*}else{
     mobileApp = new kendo.mobile.Application(document.body, {
-        											 initial: "#welcome1",
+        											 initial: "#organisationNotiList",
                                                      transition: 'slide',
                                                      statusBarStyle: statusBarStyle,
          											layout: "tabstrip-layout",										

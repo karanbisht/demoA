@@ -119,6 +119,7 @@ app.Activity = (function () {
             comment_allow = e.view.params.comment_allow;
             attached = e.view.params.attached;
             
+            console.log(org_id+'||'+notiId+'||'+account_Id+'||'+comment_allow+'||'+attached);
             //alert(attached);
             
             //var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;            

@@ -55,6 +55,10 @@ app.OragnisationList = (function () {
                 
 
          var show = function(e){
+             
+            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
+             
+            app.mobileApp.pane.loader.show(); 
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
 
@@ -63,7 +67,7 @@ app.OragnisationList = (function () {
              
            app.MenuPage=true;
            app.userPosition=false;
-  		 app.mobileApp.pane.loader.show();
+
              
            var from= e.view.params.from; 
              
@@ -253,8 +257,22 @@ app.OragnisationList = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+                   
+                var showNotiTypes=[
+                      { message: "Please Check Your Internet Connection"}
+                ];
+                        
+                var dataSource = new kendo.data.DataSource({
+                      data: showNotiTypes
+                });
+                    
+                $("#organisation-listview").kendoMobileListView({
+  		      template: kendo.template($("#errorTemplate").html()),
+                dataSource: dataSource  
+     		   });
+                    
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');
            	}
 	        
     	    });         
@@ -264,8 +282,6 @@ app.OragnisationList = (function () {
                 
  		   //});
              
-             
-             app.mobileApp.pane.loader.hide();
 
              $("#organisation-listview").kendoMobileListView({
   		    template: kendo.template($("#organisationTemplate").html()),    		
@@ -275,7 +291,10 @@ app.OragnisationList = (function () {
            		model:  organisationNotificationModel
   			 }                                
 		     });
-                       
+                   
+             setTimeout(function(){
+                              app.mobileApp.pane.loader.hide();
+             },100);
         };
             
                         
@@ -775,11 +794,29 @@ app.OragnisationList = (function () {
             	if (checkLogout === true || checkLogout === 1) {                    
                    app.mobileApp.pane.loader.show();    
                    setTimeout(function() {
-                   	 window.location.href = "index.html";
+                       var db = app.getDb();
+                       db.transaction(updateLoginStatus, updateLoginStatusError,updateLoginStatusSuccess);
+
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };
+            
+            
+            
+            function updateLoginStatus(tx) {
+	             var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            	 app.updateQuery(tx, query);
+            }
+            
+
+            function updateLoginStatusSuccess() {
+                  window.location.href = "index.html";
+            }
+
+            function updateLoginStatusError(err) {
+	            console.log(err);
+            }
 
 
         return {

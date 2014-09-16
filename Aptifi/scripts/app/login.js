@@ -39,6 +39,10 @@ app.Login = (function () {
             $('#loginUsername').val('');
             //$('#loginPassword').val('');
             
+            
+            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
+
+            
             //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
             //var message = 'karan bisht';
@@ -68,8 +72,7 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';           			
-            
+            //var device_id='123456';           			            
             var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
@@ -138,7 +141,6 @@ app.Login = (function () {
                           console.log('karan'+account_Id);
                           console.log(loginData.status[0].JoinedOrg.role.length);
                           var roleLength = loginData.status[0].JoinedOrg.role.length;
-
                           for(var i=0;i<roleLength;i++){
                              userType.push(loginData.status[0].JoinedOrg.role[i]); 
                           }
@@ -209,7 +211,7 @@ app.Login = (function () {
        
 }
         
-    function insertOrgInfo(tx){
+      function insertOrgInfo(tx){
         var query = "DELETE FROM JOINED_ORG";
 		app.deleteQuery(tx, query);
 
@@ -219,7 +221,7 @@ app.Login = (function () {
         console.log(profileOrgData.org_id[1]);
 
        for(var i=0;i<dataLength;i++){       
-    	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
+        	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
 				+ profileOrgData.org_id[i]
 				+ '","'
 				+ profileOrgData.org_name[i]
@@ -228,23 +230,17 @@ app.Login = (function () {
            	 + '","'
 				+ profileOrgData.org_logo[i]	
 				+ '")';              
-       app.insertQuery(tx, query);
-      }                               
-    }  
+           app.insertQuery(tx, query);
+       }                               
+     }  
 
-function loginSuccessCB() {
-		app.mobileApp.pane.loader.hide();
-        app.userPosition=false;				  
-        app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
-}
-        
-        
-        
-        
-              
-        
-        var UserInfoData;
-        
+        function loginSuccessCB() {
+		    app.mobileApp.pane.loader.hide();
+            app.userPosition=false;				  
+            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
+        }
+          
+        var UserInfoData;        
         var saveLoginInfo = function(data){
            UserInfoData=data;
            console.log(UserInfoData);

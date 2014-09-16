@@ -13,12 +13,10 @@ app.groupDetail = (function () {
        
     var groupDetailViewModel = (function () {
 
-        
-	  	var init = function () {
+       var init = function () {
     	         
                       
-      	};
-           
+       };
            
         var show = function (e) {
             app.MenuPage=false;
@@ -27,8 +25,6 @@ app.groupDetail = (function () {
             account_Id = e.view.params.account_Id;
             orgName= e.view.params.orgName;
             orgDesc= e.view.params.orgDesc;
-            
-
          };
            
            
@@ -131,8 +127,21 @@ app.groupDetail = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');
+                    
+                    var showNotiTypes=[
+                      { message: "Please Check Your Internet Connection"}
+                    ];
+                        
+                    var dataSource = new kendo.data.DataSource({
+                          data: showNotiTypes
+                    });
+                    
+                    $("#groupMember-listview").kendoMobileListView({
+  		          template: kendo.template($("#errorTemplate").html()),
+                    dataSource: dataSource  
+     		       });
            	}
 	        
     	    });         
@@ -141,8 +150,7 @@ app.groupDetail = (function () {
             //MemberDataSource.fetch(function() {
                 
  		   //});
-	
-         
+	         
     	    $("#groupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#groupMemberTemplate").html()),
@@ -408,6 +416,11 @@ app.groupDetail = (function () {
  		};
                
 		        
+        var clickOnOrgMember = function(e){
+            console.log('member click'); 
+            console.log(e.data);
+        };
+        
         var userMessageTab = function(e){
         		    var tempArray= [];
             		app.MenuPage=false;	
@@ -468,7 +481,8 @@ app.groupDetail = (function () {
     	       return {
         	   init: init,
            	show: show,
-               manageGroup:manageGroup,    
+               manageGroup:manageGroup,
+               clickOnOrgMember:clickOnOrgMember,     
                sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,

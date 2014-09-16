@@ -4,9 +4,9 @@ app.Activities = (function () {
     'use strict'
  //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
- var activitiesDataSource;   
- var validator;
- var loginType,groupId,userId;
+  var activitiesDataSource;   
+  var validator;
+  var loginType,groupId,userId;
   var userlName;
   var organisationID;  
   var account_Id;  
@@ -332,11 +332,9 @@ app.Activities = (function () {
                                  
          var show = function(e){             
            groupDataShow=[];
-             
+           app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
-           app.userPosition=false;
-           app.mobileApp.pane.loader.show();
-                                      
+           app.userPosition=false;                                      
            organisationID = e.view.params.organisationID;
        	account_Id = e.view.params.account_Id;
            bagCount = e.view.params.bagCount; 
@@ -362,8 +360,8 @@ app.Activities = (function () {
             
             
      function insertOrgNotiData(tx){
-        //var query = "DELETE FROM ORG_NOTIFICATION";
-		//app.deleteQuery(tx, query);
+        var query = "DELETE FROM ORG_NOTIFICATION";
+		app.deleteQuery(tx, query);
 
         var dataLength = orgNotiDataVal.length;
         //alert('LiveDataVal'+dataLength);
@@ -564,8 +562,23 @@ app.Activities = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');
+                    
+                    
+                var showNotiTypes=[
+                      { message: "Please Check Your Internet Connection"}
+                ];
+                        
+                var dataSource = new kendo.data.DataSource({
+                      data: showNotiTypes
+                });
+                    
+                $("#activities-listview").kendoMobileListView({
+  		      template: kendo.template($("#errorTemplate").html()),
+                dataSource: dataSource  
+     		   });
+                
            	}
 	        
     	    });         
@@ -583,8 +596,10 @@ app.Activities = (function () {
            		model:  organisationAllNotificationModel
 				}			 
 		     });
-                     app.mobileApp.pane.loader.hide();
-
+            
+             setTimeout(function(){
+                 app.mobileApp.pane.loader.hide();
+             },100); 
          };
    
         
