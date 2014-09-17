@@ -29,7 +29,7 @@ app.Activities = (function () {
          var init = function(){
              
          }   
-                                 
+        
          var show = function(e){             
            groupDataShow=[];
            app.mobileApp.pane.loader.show();  
@@ -105,20 +105,7 @@ app.Activities = (function () {
 			if (count !== 0) {
                 groupDataShow=[];
             	for(var i =0 ; i<count ; i++){    
-                    
-                    //alert(results.rows.item(i).attached);
-                    
-                                   /* if(results.rows.item(i).attached!== null && results.rows.item(i).attached!==''){
-                                                        var attachedImg ='http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached;
-                                                        $('#notiImagefirstShow').css({"height":"100px"});
-                                                        $('#notiImagefirstShow').css({"width":'100px'});
-                                                        $('#notiImagefirstShow').css({"margin-top":"10px"});                                                         
-                                                        
-                                                        var img = $('<img id="imgShowfirstShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
-                                            			img.attr('src', attachedImg);
-                                            			img.appendTo('#notiImagefirstShow'); 
-                                      }*/
-
+ 
                       groupDataShow.push({
 												 message: results.rows.item(i).message,
         		                                 org_id: results.rows.item(i).org_id,
@@ -136,6 +123,19 @@ app.Activities = (function () {
                  console.log(lastNotificationPID);
             }else{
                 lastNotificationPID=0;
+
+                           groupDataShow.push({
+                                         title: ' No Notification ',
+                                         message: 'No Notification from this Organisation',
+                                         date:'0',  
+                                         comment_allow : 'Y',
+                                         org_id:'0', 
+                                         pid:'',
+                                         bagCount : '',
+                                         attachedImg :'',  
+                                         attached:''  
+    	                               });                   
+
             }                       
          };       
 
@@ -148,7 +148,7 @@ app.Activities = (function () {
              console.log('ssss'+bagCount);
              console.log('ssss'+organisationID);
 
-             var query = 'UPDATE JOINED_ORG SET bagCount=' +bagCount + ' WHERE org_id=' +organisationID ;
+             var query = "UPDATE JOINED_ORG SET bagCount='" +bagCount +"' WHERE org_id='" +organisationID+"' and role='"+'C'+"'" ;
 		     app.updateQuery(tx, query);
          };   
             
@@ -281,7 +281,7 @@ app.Activities = (function () {
              
              organisationALLListDataSource.fetch(function() {
                 
- 		   });
+ 		    });
            
 
              $("#activities-listview").kendoMobileListView({

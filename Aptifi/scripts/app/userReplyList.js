@@ -10,6 +10,75 @@ app.userReplyList = (function () {
                       
       };
          
+        
+        var beforeShow=function(){
+           var db = app.getDb();
+		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
+        };
+            
+    
+        var getDataOrg = function(tx){
+            	var query = "SELECT * FROM ADMIN_ORG";
+				app.selectQuery(tx, query, getDataSuccess);
+        };
+            
+            
+            var groupDataShow=[];
+            
+        function getDataSuccess(tx, results) {                        
+            groupDataShow=[];
+            
+			var count = results.rows.length;                    			
+               if (count !== 0) {                
+            	    for(var i =0 ; i<count ; i++){                
+                                       groupDataShow.push({
+												 orgName: results.rows.item(i).org_name,
+        		                                 orgDesc: results.rows.item(i).orgDesc,
+                                                 organisationID:results.rows.item(i).org_id,
+                                                 org_logo:results.rows.item(i).imageSource,
+                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+		                                         bagCount : 'C'					
+                                       });
+                    }
+                }else{
+                                     groupDataShow.push({
+                                         orgName: 'Welcome to Aptifi',
+                                         orgDesc: 'You are not a customer of any organisation',
+                                         organisationID:'0',
+                                         org_logo:null,
+                                         imageSource:null,
+                                         bagCount : 'D'    
+    	                               });          
+                }
+  
+             }               
+            
+            
+            
+             var showLiveData = function(){
+                console.log('Hello');
+                console.log(groupDataShow);
+                
+             var organisationListDataSource = new kendo.data.DataSource({
+                  data: groupDataShow
+              });           
+
+                
+              
+             $("#user-Reply-listview").kendoMobileListView({
+  		    template: kendo.template($("#userReplyTemplate").html()),    		
+     		 dataSource: organisationListDataSource,
+              pullToRefresh: true		 
+		     });
+                                   
+              $('#user-Reply-listview').data('kendoMobileListView').refresh();
+                
+              app.mobileApp.pane.loader.hide();
+
+            };
+
+        
+        
 
       var show = function(){	    
 	       app.MenuPage=false;
@@ -21,7 +90,7 @@ app.userReplyList = (function () {
 
             console.log(account_Id);
              
-            var organisationNotificationModel = {
+           /* var organisationNotificationModel = {
             id: 'Id',
             fields: {
                 orgName: {
@@ -35,15 +104,7 @@ app.userReplyList = (function () {
                 organisationID: {
                     field: 'organisationID',
                     defaultValue: null
-                }/*,
-                CreatedAt: {
-                    field: 'send_date',
-                    defaultValue: new Date()
-                },
-                organisationID: {
-                    field: 'organisationID',
-                    defaultValue: null
-                }*/                  
+                }                  
             },            
                  
             CreatedAtFormatted: function () {
@@ -95,23 +156,6 @@ app.userReplyList = (function () {
                                     }
                                                                             
                                    });    
-                                      
-                                  /*   
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                     */
                                  });
                        
 		                         console.log(groupDataShow);
@@ -128,28 +172,11 @@ app.userReplyList = (function () {
 	        
     	    });         
          
-            
+        */    
             //organisationListDataSource.fetch(function() {
                 
  		   //});
-
-             $("#user-Reply-listview").kendoMobileListView({
-  		    template: kendo.template($("#userReplyTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-              pullToRefresh: true,
-               /*click: function(e){
-                  	console.log(e.dataItem);
-                  	console.log(e.dataItem.organisationID);
-   				   //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
-                     app.mobileApp.navigate('views/userReplyNotification.html?organisationID=' + e.dataItem.organisationID);                   
-               },*/    
-        		schema: {
-           		model:  organisationNotificationModel
-				}			 
-		     });
-  
-      
-          
+            
       };
         
         var clickOnUserName = function(e){
@@ -163,6 +190,7 @@ app.userReplyList = (function () {
             return {
         	   init: init,
            	show: show,
+               beforeShow:beforeShow, 
                clickOnUserName:clickOnUserName 
            	};
             

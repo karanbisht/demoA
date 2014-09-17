@@ -41,6 +41,7 @@
     	</div>    
 </div>
 
+
 	<div data-role="view" id="infoDiv" data-model="app.Activities">
 		<div data-role="header">
         	<div data-role="navbar">
@@ -172,22 +173,20 @@
     		
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
 
-        #if(org_logo===null){#   
-         <div class="user-avatar">
-            <img src="styles/images/habicon.png">
-        </div>
-        #}else{#
-         <div class="user-avatar">
-           <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
-        </div>             
-         #}#  
+            #if(org_logo===null || org_logo==='null'){#   
+                 <div class="user-avatar">
+                    <img src="styles/images/habicon.png">
+                 </div>
+            #}else{#
+                 <div class="user-avatar">
+                    <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
+                 </div>             
+            #}#  
              
        		 <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
-            
-            		#if(bagValToStore!==0){#
-                       # var countShow = bagValToStore-bagCount #
-						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countShow}</div>            
+            		#if(countData!==0){#
+						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
             		#}# 
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
        		 </div>

@@ -41,40 +41,65 @@ app.OragnisationList = (function () {
          var org_id_DB;
          var bagValueForDB;
          var lastMessageShow;
+        
+        function getDataSuccess(tx, results) {                        
             
-        function getDataSuccess(tx, results) {
-                        
             getDataOrgDB=[];
             getDataCountDB=[];
             groupDataShow=[];
             
-			var count = results.rows.length;
-                    
-			if (count !== 0) {
-                
+			var count = results.rows.length;                    
+            console.log("DBCount"+count);
+			
+            if (count !== 0) {                
             	for(var i =0 ; i<count ; i++){   
                     
-                    console.log('functionRun'+i);
-					
-                    org_id_DB = results.rows.item(i).org_id;
+                    console.log('functionRun'+i);					
+                    org_id_DB = results.rows.item(i).org_id;                  
                     
-                    var db = app.getDb();
-        		    db.transaction(getLastNotification, app.errorCB, app.successCB); 
-                    
-					var bagCount = results.rows.item(i).bagCount;                   
+                    //var db = app.getDb();
+        		    //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
+
+                    var bagCount = results.rows.item(i).bagCount;                   
                     getDataOrgDB.push(org_id_DB);
                     getDataCountDB.push(bagCount);
                     
+                    //alert(lastMessageShow);
+                    var countValue;
+                    var bagCountValue;
+                    
+                                    if(results.rows.item(i).count==='' || results.rows.item(i).count==='null'){
+                                        countValue=0;
+                                    }else{
+                                        countValue = results.rows.item(i).count;
+                                    }
+                    
+                                    if(results.rows.item(i).bagCount==='' || results.rows.item(i).bagCount==='null'){
+                                        bagCountValue=0;
+                                    }else{
+                                        bagCountValue = results.rows.item(i).bagCount;
+                                    }
+                    
+                    
+                    
+                        var lastNotifi;
+                            if(results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null'){
+                                 lastNotifi='';   
+                            }else{
+                                lastNotifi=results.rows.item(i).lastNoti;
+                            }
+                                    var countData= countValue - bagCountValue;
+                    
                                         groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
-        		                                 orgDesc: lastMessageShow,
+        		                                 orgDesc: lastNotifi,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
                                                  imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
-		                                         bagCount : results.rows.item(i).bagCount,
-                                                 bagValToStore:bagValueForDB 
+		                                         bagCount : bagCountValue,
+                                                 countData:countData,
+                                                 count : countValue
                                          });
-
         	    }    
             }else{
                   groupDataShow.push({
@@ -90,15 +115,17 @@ app.OragnisationList = (function () {
          };       
 
             
-        var getLastNotification = function(tx){
+          var getLastNotification = function(tx){
+                console.log('orgId'+org_id_DB);
             	var query = 'SELECT message FROM ORG_NOTIFICATION where org_id ='+org_id_DB;
 				app.selectQuery(tx, query, getLastNotificationSuccess);
-        };      
+          };      
                 
             
-         function getLastNotificationSuccess(tx, results) {
+         function getLastNotificationSuccess(tx, results) {             
 			var count = results.rows.length;
-            bagValueForDB=count;
+            console.log('count'+count);
+            bagValueForDB=count;             
 			if (count !== 0) {                
             	for(var i =count-1 ; i<count ; i++){                    
 					lastMessageShow = results.rows.item(i).message;
@@ -106,12 +133,12 @@ app.OragnisationList = (function () {
             }else{
                 lastMessageShow='';               
             }
+                console.log('lastMessage'+lastMessageShow);
          };    
+            
 
-         var show = function(e){
-                     
-            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
-             
+         var show = function(e){                     
+            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
             app.mobileApp.pane.loader.show(); 
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
@@ -359,7 +386,7 @@ app.OragnisationList = (function () {
                 
               $('#organisation-listview').data('kendoMobileListView').refresh();
                 
-                       app.mobileApp.pane.loader.hide();
+              app.mobileApp.pane.loader.hide();
 
             };
                                                         
@@ -454,12 +481,11 @@ app.OragnisationList = (function () {
         };
         */
     
-
         var organisationSelected = function (e) {
             app.mobileApp.pane.loader.show();
             console.log(e.data);
             var organisationID=e.data.organisationID;
-            var bagCount =e.data.bagValToStore;
+            var bagCount =e.data.count;
             //uid=' + e.data.uid
             
 			app.MenuPage=false;	
@@ -598,8 +624,7 @@ app.OragnisationList = (function () {
             $('#organisation-listview1').data('kendoMobileListView').refresh();    		    			
                 
 		};
-       
-            
+                
             
             
         var orgForGroupSelected =function(e){

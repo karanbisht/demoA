@@ -139,7 +139,7 @@ app.Login = (function () {
                              userType.push(loginData.status[0].JoinedOrg.role[i]); 
                           }
                              console.log(userType);
-                                                    
+                          
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
                           UserOrgInformation = loginData.status[0].JoinedOrg;
                           console.log(UserOrgInformation);
@@ -155,12 +155,8 @@ app.Login = (function () {
                       }                            
                 });
   		 });
-             
-                	
           }
         };
-        
-        
         
         var profileInfoData;
         var profileOrgData;
@@ -177,11 +173,11 @@ app.Login = (function () {
 		};
         
         
-      var userAccountID;  
+      var userAccountID;
         
-       function insertProfileInfo(tx) {
+      function insertProfileInfo(tx) {
 		var query = "DELETE FROM PROFILE_INFO";
-			app.deleteQuery(tx, query);
+        app.deleteQuery(tx, query);
        	
         userAccountID = profileInfoData.account_id;
            
@@ -219,14 +215,13 @@ app.Login = (function () {
         console.log(profileOrgData.org_id[0]);
         console.log(profileOrgData.org_id[1]);
 
-       for(var i=0;i<dataLength;i++){       
-          
+       for(var i=0;i<dataLength;i++){                  
+           
            if(profileOrgData.role[i]==='C'){
-           userOrgIdArray.push(profileOrgData.org_id[i]);
+               userOrgIdArray.push(profileOrgData.org_id[i]);
            }
            
-           //userRoleArray.push(profileOrgData.role[i]);
-           
+           //userRoleArray.push(profileOrgData.role[i]);           
         	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
 				+ profileOrgData.org_id[i]
 				+ '","'
@@ -236,17 +231,17 @@ app.Login = (function () {
            	 + '","'
 				+ profileOrgData.org_logo[i]	
 				+ '")';              
-           app.insertQuery(tx, query);
+               app.insertQuery(tx, query);
        }                               
      }  
 
-         function loginSuccessCB() {
+
+        function loginSuccessCB() {
             console.log('DataBase Saved');
             console.log(userOrgIdArray);
             //console.log(userRoleArray);
             
             for(var i=0;i<userOrgIdArray.length;i++){     
-                console.log('helo');
                 
              var organisationALLListDataSource = new kendo.data.DataSource({
              transport: {
@@ -256,12 +251,48 @@ app.Login = (function () {
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
               },
-        	 schema: {                             
+        	 schema: {
+
                  data: function(data)
-  	             {
+                   {	
                        console.log(data);
-               
-                        var orgNotificationData; 
+               	    return [data];
+                   }                                                            
+                },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);            	                     
+           	}	        
+     	    });         
+            
+            
+               organisationALLListDataSource.fetch(function() {
+                 var loginDataView = organisationALLListDataSource.data();
+                        var datacheck=0;
+                        var allData=0;
+                     $.each(loginDataView, function(i, groupValue) {
+                          allData++;
+                                  console.log(groupValue);                                     
+                   	             if(groupValue.status[0].Msg ==='No notification'){     
+                                         datacheck++;
+                                    }else if(groupValue.status[0].Msg==='Success'){
+                                       var orgNotificationData = groupValue.status[0].notificationList;
+                                        console.log('hiiiiiiiiiiiiiiiiiii');
+                                        console.log(groupValue);
+                                        console.log(orgNotificationData);
+
+                                        saveOrgNotification(orgNotificationData);                                                                                     
+ 
+                                    }
+                         
+                                     if(allData===datacheck){
+                                         goToHomePage();
+                                     }
+                         
+                                 });
+                   
+                   
+                                 /*var orgNotificationData; 
                                   $.each(data, function(i, groupValue) {
                                   console.log(groupValue);
                                      
@@ -278,40 +309,34 @@ app.Login = (function () {
                                                                             
                                    });    
                                  });
-                   }                       
-                },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);            	                     
-           	}
-	        
-     	    });         
+                                */
 
-               organisationALLListDataSource.fetch(function() {
-                
  		      });
                 
             }
             
          }
-        
-                
-        var orgNotiDataVal;         
-        function saveOrgNotification(data) {
+                        
+       var orgNotiDataVal;         
+       function saveOrgNotification(data) {
             orgNotiDataVal = data;      
 			var db = app.getDb();
-			db.transaction(insertOrgNotiData, app.errorCB, goToHomePage);
-		};
-            
-            
+			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+	   };
+                        
       function insertOrgNotiData(tx){
         //var query = "DELETE FROM ORG_NOTIFICATION";
 		//app.deleteQuery(tx, query);         
         var dataLength = orgNotiDataVal.length;
         //alert('LiveDataVal'+dataLength);
          
- 
-       for(var i=0;i<dataLength;i++){       
+          var orgData;
+          var orgLastMsg;
+          
+       for(var i=0;i<dataLength;i++){   
+           orgData = orgNotiDataVal[i].org_id;
+           orgLastMsg = orgNotiDataVal[i].message;
+           
     	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type) VALUES ("'
 				+ orgNotiDataVal[i].org_id
 				+ '","'
@@ -330,17 +355,36 @@ app.Login = (function () {
 				+ orgNotiDataVal[i].type
 				+ '")';              
                 app.insertQuery(tx, query);
-        }                               
+        }                              
+                   
+          updateJoinOrgTable(orgData,orgLastMsg,dataLength);
       }
         
         
-        var goToHomePage = function(){
+       var goToHomePage = function(){
                app.mobileApp.pane.loader.hide();
                app.userPosition=false;				  
                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
-        }
-
+       }
+                 
+        var GlobalDataOrgId;
+        var GlobalDataLastMsg;
+        var GlobalDataCount;
         
+        var updateJoinOrgTable= function(orgData,orgLastMsg,dataLength){
+            GlobalDataOrgId=orgData;
+            GlobalDataLastMsg=orgLastMsg;
+            GlobalDataCount=dataLength;
+             var db = app.getDb();
+             db.transaction(updateLoginStatus, app.errorCB,goToHomePage);
+        }
+        
+        function updateLoginStatus(tx) {
+	           console.log(GlobalDataOrgId+"||"+GlobalDataLastMsg+"||"+GlobalDataCount);     
+               var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='"+'C'+"'";
+               app.updateQuery(tx, query);
+        }
+            
           
  /*       var UserInfoData;        
         var saveLoginInfo = function(data){
@@ -525,8 +569,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='123456';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                    
+            //var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}

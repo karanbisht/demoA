@@ -60,8 +60,8 @@ app.adminLogin = (function () {
             }else {           
                  app.mobileApp.pane.loader.show();  	
                         
-          var jsonDataLogin = {"username":usernameMob ,"password":password}       
-          var dataSourceLogin = new kendo.data.DataSource({
+             var jsonDataLogin = {"username":usernameMob ,"password":password}       
+             var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
                    url: "http://54.85.208.215/webservice/organisation/orgAdminLogin",
@@ -95,9 +95,8 @@ app.adminLogin = (function () {
                          console.log("karan" + account_Id);      
                       if(loginData.status[0].Msg==='You have been successfully logged in.'){
                           console.log('reg');
-							app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;
-                            app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+                          getAdminOrgData();
+                                                    
                       }else{
                            app.mobileApp.pane.loader.hide();
                           app.showAlert(loginData.status[0].Msg,"Notification");
@@ -132,7 +131,91 @@ app.adminLogin = (function () {
           }
         };
         
-        var UserInfoData;
+
+        var getAdminOrgData = function(){
+            
+           var organisationListDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {                                
+                 data: function(data)
+                   {	
+                       console.log(data);
+               	    return [data];
+                   }                                                            
+                },
+	            error: function (e) {
+    	           console.log(e);
+            	}	        
+    	     });
+                        
+            organisationListDataSource.fetch(function() {
+                  var loginAdminDataView = organisationListDataSource.data();
+                             $.each(loginAdminDataView, function(i, groupValue) {
+                                  console.log(groupValue);                                     
+                   	             if(groupValue.status[0].Msg ==='Not a customer to any organisation'){     
+
+                                    }else if(groupValue.status[0].Msg==='Success'){
+                                        console.log(groupValue.status[0].orgData.length);  
+                                        var adminOrgInformation = groupValue.status[0].orgData;
+                                        saveAdminOrgInfo(adminOrgInformation); 
+                                    }
+                                 });
+                
+ 		   });
+                        
+        };
+        
+        
+        var adminOrgProfileData;        
+        function saveAdminOrgInfo(data1) {
+            adminOrgProfileData = data1;            
+			var db = app.getDb();
+			db.transaction(insertAdminOrgInfo, app.errorCB, loginSuccessCB);
+		};
+        
+        
+      function insertAdminOrgInfo(tx){
+        var query = "DELETE FROM ADMIN_ORG";
+		app.deleteQuery(tx, query);
+
+          console.log(adminOrgProfileData);
+
+        var dataLength = adminOrgProfileData.length;
+                    console.log(dataLength);
+       
+
+         for(var i=0;i<dataLength;i++){       
+                      
+           //userRoleArray.push(profileOrgData.role[i]);           
+            var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc) VALUES ("'
+				+ adminOrgProfileData[i].organisationID
+				+ '","'
+				+ adminOrgProfileData[i].org_name
+				+ '","'
+				+ adminOrgProfileData[i].role
+           	 + '","'
+				+ adminOrgProfileData[i].org_logo
+                + '","'
+				+ adminOrgProfileData[i].org_desc
+				+ '")';              
+            app.insertQuery(tx, query);
+         }                               
+      }  
+
+      
+      var loginSuccessCB = function(){
+          		app.mobileApp.pane.loader.hide();
+                  app.userPosition=false;
+                  app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+      }  
+        
+        var UserInfoData; 
         
         var saveLoginInfo = function(data){
            UserInfoData=data;
@@ -347,11 +430,11 @@ app.adminLogin = (function () {
           });  
 	            
 
-                    dataSourceLogin.fetch(function() {
+                  dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
                			console.log(loginDataView);
-       
-               $.each(loginDataView, function(i, loginData) {
+        
+                    $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
@@ -375,9 +458,9 @@ app.adminLogin = (function () {
                                 clickforRegenerateCode();   
                       }*/
                             
-                });
-
-           });
+                   });
+  
+                 });
                           
                     
         	    }else{

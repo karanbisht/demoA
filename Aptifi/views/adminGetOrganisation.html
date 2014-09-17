@@ -7,14 +7,14 @@
                             
 	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
 	            <a id="manageGroupView" data-icon="organize" data-role="button" href="#view-all-activities-admin" >Manage Org</a>
-    	        <a id="replyUserView" data-icon="reply" data-role="button" href="#view-all-activities-userReply" >Reply User</a>
+    	        <a id="replyUserView" data-icon="reply" data-role="button" href="#view-all-activities-userReply" >Incomming Msg</a>
         	    <a id="sendNotificationView" data-icon="action" data-role="button" href="sendNotificationDiv" >Send Notification</a>
               </div>     
    </div>
 </div>
 
 
-<div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organisation List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show">
+<div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organisation List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" data-before-Show="app.adminOragnisationList.beforeShow">
      <div>
     	<ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -26,7 +26,7 @@
 
 
 
-<div data-role="view" id="view-all-activities-userReply" data-id="innerActivity" data-title="Reply To User" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.userReplyList" data-init="app.userReplyList.init"  data-show="app.userReplyList.show">	
+<div data-role="view" id="view-all-activities-userReply" data-id="innerActivity" data-title="Reply To User" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.userReplyList" data-init="app.userReplyList.init"  data-show="app.userReplyList.show" data-before-Show="app.userReplyList.beforeShow">	
 	 <div>
     	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
          <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -148,11 +148,21 @@
 
 
 	<script type="text/x-kendo-template" id="adminOrganisationTemplate">
-    		<div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
-                 <div class="user-avatar">
-                    <img src="styles/images/habicon.png" />
-                 </div>           
-       		 
+    		<div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">        
+         #if(org_logo===null ||org_logo==='null' ){#            
+        	<div class="user-avatar">
+            	<img src="styles/images/habicon.png"/>
+        	</div>
+            
+        #}else{#
+                          
+ 	   	<div class="user-avatar">
+                 <img src=${imageSource} />
+     	       <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+    		</div>
+        #}#    
+	    
+           		 
                 <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
             
@@ -160,8 +170,7 @@
 						<div class="divBagVal"></div>            
             		#}#--> 
             
-       		     <!--<span id="activityTemplateDate" class="time-span" >${CreatedAtFormatted()}</span>-->
-       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
+        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
        		 </div>
 		    </div>
 	</script>
@@ -171,14 +180,23 @@
 
 <script type="text/x-kendo-template" id="userReplyTemplate">
    	<div class="cf" data-role="touch" data-bind="events: { tap: clickOnUserName }" >
-         <div class="user-avatar">
-			<img src="styles/images/habicon.png" />
-        </div>           
+         #if(org_logo===null ||org_logo==='null' ){#            
+        	<div class="user-avatar">
+            	<img src="styles/images/habicon.png"/>
+        	</div>
+            
+        #}else{#
+                          
+ 	   	<div class="user-avatar">
+                 <img src=${imageSource} />
+     	       <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+    		</div>
+        #}#    
        		 <div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="person-name" >${orgName}</h2>
        		     <a id="activityTemplateMessage" class="user-share-txt" >${orgDesc}</a>            			            
        		 </div>
-		    </div>
+	   </div>
 </script>
 
 
