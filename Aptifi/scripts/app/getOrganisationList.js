@@ -28,34 +28,88 @@ app.OragnisationList = (function () {
                     
         var beforeShow=function(){
            var db = app.getDb();
-		   db.transaction(getDataOrg, app.errorCB, app.successCB);   
+		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
         };
             
         var getDataOrg = function(tx){
-            	var query = 'SELECT org_id , bagCount FROM JOINED_ORG';
+            	var query = "SELECT * FROM JOINED_ORG where role='C'";
 				app.selectQuery(tx, query, getDataSuccess);
         };    
             
          var getDataOrgDB=[];
          var getDataCountDB=[];
+         var org_id_DB;
+         var bagValueForDB;
+         var lastMessageShow;
             
         function getDataSuccess(tx, results) {
+                        
             getDataOrgDB=[];
             getDataCountDB=[];
+            groupDataShow=[];
+            
 			var count = results.rows.length;
+                    
 			if (count !== 0) {
-            	for(var i =0 ; i<count ; i++){    
-					var org_id_DB = results.rows.item(i).org_id;
+                
+            	for(var i =0 ; i<count ; i++){   
+                    
+                    console.log('functionRun'+i);
+					
+                    org_id_DB = results.rows.item(i).org_id;
+                    
+                    var db = app.getDb();
+        		    db.transaction(getLastNotification, app.errorCB, app.successCB); 
+                    
 					var bagCount = results.rows.item(i).bagCount;                   
                     getDataOrgDB.push(org_id_DB);
                     getDataCountDB.push(bagCount);
+                    
+                                        groupDataShow.push({
+												 orgName: results.rows.item(i).org_name,
+        		                                 orgDesc: lastMessageShow,
+                                                 organisationID:results.rows.item(i).org_id,
+                                                 org_logo:results.rows.item(i).imageSource,
+                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+		                                         bagCount : results.rows.item(i).bagCount,
+                                                 bagValToStore:bagValueForDB 
+                                         });
+
         	    }    
+            }else{
+                  groupDataShow.push({
+                                         orgName: 'Welcome to Aptifi',
+                                         orgDesc: 'You are not a customer of any organisation',
+                                         organisationID:'0',
+                                         imageSource:'',
+                                         org_logo :null,  
+                                         bagCount : 0 ,
+                                         bagValToStore:0
+    	                               });      
             }
          };       
+
+            
+        var getLastNotification = function(tx){
+            	var query = 'SELECT message FROM ORG_NOTIFICATION where org_id ='+org_id_DB;
+				app.selectQuery(tx, query, getLastNotificationSuccess);
+        };      
                 
+            
+         function getLastNotificationSuccess(tx, results) {
+			var count = results.rows.length;
+            bagValueForDB=count;
+			if (count !== 0) {                
+            	for(var i =count-1 ; i<count ; i++){                    
+					lastMessageShow = results.rows.item(i).message;
+        	    }    
+            }else{
+                lastMessageShow='';               
+            }
+         };    
 
          var show = function(e){
-             
+                     
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
              
             app.mobileApp.pane.loader.show(); 
@@ -80,8 +134,7 @@ app.OragnisationList = (function () {
               //console.log(newUserType.length);
                  
               localStorage.setItem("ACCOUNT_ID",account_Id);
-              localStorage.setItem("USERTYPE",userType);
-                 
+              localStorage.setItem("USERTYPE",userType);                 
              }else{                 
                account_Id = localStorage.getItem("ACCOUNT_ID");
                userType = localStorage.getItem("USERTYPE");
@@ -119,7 +172,7 @@ app.OragnisationList = (function () {
             }
              
              
-            var organisationNotificationModel = {
+            /*var organisationNotificationModel = {
             id: 'Id',
             fields: {
                 orgName: {
@@ -133,15 +186,7 @@ app.OragnisationList = (function () {
                 organisationID: {
                     field: 'organisationID',
                     defaultValue: null
-                }/*,
-                CreatedAt: {
-                    field: 'send_date',
-                    defaultValue: new Date()
-                },
-                organisationID: {
-                    field: 'organisationID',
-                    defaultValue: null
-                }*/                  
+                }           
             },            
                  
             CreatedAtFormatted: function () {
@@ -277,27 +322,46 @@ app.OragnisationList = (function () {
 	        
     	    });         
          
-            
+            */
+             
+             
+             
+             
+             
             //organisationListDataSource.fetch(function() {
                 
  		   //});
              
 
-             $("#organisation-listview").kendoMobileListView({
-  		    template: kendo.template($("#organisationTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-              pullToRefresh: true,
-        	  schema: {
-           		model:  organisationNotificationModel
-  			 }                                
-		     });
                    
-             setTimeout(function(){
-                              app.mobileApp.pane.loader.hide();
-             },100);
+             //setTimeout(function(){
+                       
+             //},100);
         };
             
                         
+            
+            var showLiveData = function(){
+                
+             console.log('alertvalue');
+             console.log(groupDataShow);
+                
+             var organisationListDataSource = new kendo.data.DataSource({
+                  data: groupDataShow
+              });           
+
+                
+            $("#organisation-listview").kendoMobileListView({
+  		    template: kendo.template($("#organisationTemplate").html()),    		
+     		 dataSource: organisationListDataSource,
+              pullToRefresh: true
+             });
+                
+              $('#organisation-listview').data('kendoMobileListView').refresh();
+                
+                       app.mobileApp.pane.loader.hide();
+
+            };
                                                         
                                      function fileExist( file ) {
                                             var status;    
@@ -335,7 +399,7 @@ app.OragnisationList = (function () {
 	    		);                        
             };
             
-        var afterShow = function(){
+        /*var afterShow = function(){
               var db = app.getDb();
 		  	db.transaction(insertOrgImage, app.errorCB, app.successCB);  
         }    
@@ -348,7 +412,7 @@ app.OragnisationList = (function () {
 				 app.updateQuery(tx, query);
              }
          };   
-            
+         */   
         
         /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
@@ -826,7 +890,7 @@ app.OragnisationList = (function () {
             organisationSelected: organisationSelected,
             orgForGroupSelected:orgForGroupSelected,
             groupSelected:groupSelected,
-            afterShow:afterShow,
+            //afterShow:afterShow,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
             inAppBrowser:inAppBrowser,          

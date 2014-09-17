@@ -32,14 +32,13 @@ app.sendNotification = (function () {
             var dataSource = new kendo.data.DataSource({
                   data: showNotiTypes
             });
-           
-            
+                       
              $("#type-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#typeNameTemplate").html()),    		
      		 dataSource: dataSource,
               click : function(e){
-                console.log(e.dataItem.value);
-                  notificationTypeSelected=e.dataItem.value;
+                     console.log(e.dataItem.value);
+                     notificationTypeSelected=e.dataItem.value;
                      app.mobileApp.pane.loader.show(); 
                      $("#selectTypeDiv").hide();
                      $("#sendNotificationDivMsg").show();

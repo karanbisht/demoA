@@ -22,307 +22,7 @@ app.Activities = (function () {
     var orgName;
     var orgId = localStorage.getItem("UserOrgID");                              
     
-	   // Activities model
-    /*
-	    var activitiesModel = (function () {	
-		var data; 
-		var groupId1 = localStorage.getItem("UserGroupID");
-        //var groupId1=2;    
- 	   var userId1 = localStorage.getItem("UserID");	
-     
-              console.log("karan"+groupId1+"||"+userId1+"||"+orgId);            
 
-            var activityModel = {
-
-            id: 'Id',
-            fields: {
-                message: {
-                    field: 'message',
-                    defaultValue: ''
-                },
-                title :{
-                    field: 'title',
-                    defaultValue: ''  
-                },
-                CreatedAt: {
-                    field: 'send_date',
-                    defaultValue: new Date()
-                },
-                notification_id: {
-                    field: 'notification_id',
-                    defaultValue: null
-                }                  
-            },
-            
-                 
-            CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('CreatedAt'));
-            },
-            
-            /*PictureUrl: function () {
-                return app.helper.resolvePictureUrl(this.get('Picture'));
-            },*/
-            
-/*            
-            isVisible: function () {
-                var currentUserId = app.Users.currentUser.data.Id;
-                var userId = this.get('UserId');
-                return currentUserId === userId;
-            }
-          };
-             
-             
-          var activitiesDataSource = new kendo.data.DataSource({
-
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/notification/notificationHistory?group_id="+groupId1 +"&customer_id="+userId1,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {
-               model: activityModel,
-                                
-                 data: function(data)
-  	             {
-                       console.log(data);
-               
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                         type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                 });
-                       		console.log('karan');	
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-                       
-                       }                       
-            },
-	            
-              error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-                  /*
-                  navigator.notification.alert("Please check your internet connection.",
-               	
-                  function () { }, "Notification", 'OK');
-           	   
-                  
-                  */
-/*              },
-             
-              sort: { field: 'send_date', dir: 'desc' }
-	        
-    	    });                    
-            
-            //var arr = [];
-        	    var len =null;
-				 	console.log(activitiesDataSource.data().length);
-		 	        activitiesDataSource.fetch(function(){
-     		           data = activitiesDataSource.data();
-            			len = data.length;
-            			console.log(data.length);
-                        //var db = app.getDb();             
-						//db.transaction(insertNotification, app.onError, app.onSuccess);
-    			    });
-            
-              var insertNotification = function(tx){
-						        var query = "DELETE FROM GetNotification";
-								app.deleteQuery(tx, query);
-                  for (var i = 0; i < len; i++) {
-    	       		var queryNotification = 'INSERT INTO GetNotification (Title, Message,CreatedAt) VALUES ("'+ data[i].Title+'","'+data[i].Message+'","'+ data[i].CreatedAt +'")';
-					   app.insertQuery(tx,queryNotification);  	
-        			}   
-    				
-               };
-           
- 				console.log(activitiesDataSource);
-				    return {          
-    		        	activities: activitiesDataSource
-        			};
-        }());
-    
-    
-     var GroupsModel = (function () {                 
-       var GroupModel = {
-            id: 'Id',
-            fields: {
-                CreatedAt: {
-                    field: 'CreatedAt',
-                    defaultValue: new Date()
-                },
-                Name: {
-                    field: 'Name',
-                    defaultValue: null
-                }
-            },
-	            CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('CreatedAt'));
-    	        }
-	       };        
-        
-	        var groupDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: GroupModel
-            },
-
-            transport: {
-                typeName: 'Group'
-            },
-               
-             sort: { field: 'CreatedAt', dir: 'desc' }    
-	        });
-               
-	        return {
-            	groupData: groupDataSource
-        	};
-	}());
-    
-    
-    
-    var UsersModel = (function () {                 
-       var UserModel = {
-            id: 'Id',
-            fields: {
-                ModifiedAt: {
-                    field: 'ModifiedAt',
-                    defaultValue: new Date()
-                },
-                UserId: {
-                    field: 'UserId',
-                    defaultValue: null
-                }
-            },
-           
-            User: function () {
-                var userId = this.get('UserId');
-                var user = $.grep(app.Users.users(), function (e) {
-                    return e.Id === userId;
-                })[0];
-                return user ? user.DisplayName : 'Anonymous';    
-            },
-           
-	          CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('ModifiedAt'));
-    	        }
-   	       };        
-        
-	        var userDataSource = new kendo.data.DataSource({
-            type: 'everlive',
-	           schema: {
-                model: UserModel
-            },
-
-            transport: {
-                // Required by Backend Services
-                typeName: 'NotificationReply'
-            },
-                
-            change: function (e) {
-                if (e.items && e.items.length > 0) {
-                    $('#no-notification-span').hide();
-                } else {
-                    $('#no-notification-span').show();
-                }
-            },
-                
-             sort: { field: 'ModifiedAt', dir: 'desc' }    
-	        });
-               
-	        return {
-            	userData: userDataSource
-        	};
-	}());
-    
-        
-    // Activities view model
-    var activitiesViewModel = (function () {
-        // Navigate to activityView When some activity is selected
-      
-        var $newNotification;
-        
-        var init = function () {        
-            app.MenuPage=true;
-            app.userPosition=false;
-            
-          var comboGroupListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
-              	}
-              },
-       	 schema: {               
-                  data: function(data)
-  	             {	console.log(data);
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     var orgLength=groupValue[0].grpData.length;
-                                   for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         pid: groupValue[0].grpData[j].pid,
-                                         group_name: groupValue[0].grpData[j].group_name,
-                                         add:groupValue[0].grpData[j].add,
-                                         group_desc:groupValue[0].grpData[j].group_desc
-                                     });
-                                   }
-                                 });
-                       
-                       console.log(groupDataShow);
-                       return groupDataShow;                       
-	               }
-
-            },
-            error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           },       
-             sort: { field: 'add', dir: 'desc' }    
-	       });
-               
-	                                        
-      	    $("#groupSelect").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onComboChange
-		  	});
-	            $("#groupSelectAdmin").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onAdminComboChange
-		  	});
-               
-            /*$("#groupSelectNotification").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onChangeNotiGroup
-		    });
-            */
-/*        };
-        
-*/
 
     var activitiesViewModel = (function () {
             
@@ -397,6 +97,8 @@ app.Activities = (function () {
                         
             
         function getOrgNotiDataSuccess(tx, results) {
+            groupDataShow=[];
+            
 			var count = results.rows.length;
                 DBGETDATAVALUE = count;           
             //alert(count);
@@ -452,6 +154,8 @@ app.Activities = (function () {
             
             
          var showLiveData = function(){
+           
+          /*   
             var organisationAllNotificationModel = {
             id: 'Id',
             fields: {
@@ -470,11 +174,7 @@ app.Activities = (function () {
                 CreatedAt: {
                     field: 'date',
                     defaultValue: new Date()
-                }/*,
-                organisationID: {
-                    field: 'organisationID',
-                    defaultValue: null
-                }*/                  
+                }                  
             },            
                  
             CreatedAtFormatted: function () {
@@ -520,18 +220,8 @@ app.Activities = (function () {
     	                               });                   
                                         
 	                                }else if(orgVal.Msg==='Success'){
-                                                        //alert(orgVal.notificationList[i].attached);
+
                                         
-                                                    /*if(orgVal.notificationList[i].attached!== null && orgVal.notificationList[i].attached!==''){
-                                                        var attachedImg ='http://54.85.208.215/assets/attachment/'+orgVal.notificationList[i].attached;
-                                                        $('#notiImagefirstShow').css({"height":"100px"});
-                                                        $('#notiImagefirstShow').css({"width":'100px'});
-                                                        $('#notiImagefirstShow').css({"margin-top":"10px"});                                                         
-                                                        
-                                                        var img = $('<img id="imgShowfirstShow" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
-                                            			img.attr('src', attachedImg);
-                                            			img.appendTo('#notiImagefirstShow'); 
-                                                    }*/
 
                                         console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
@@ -582,24 +272,29 @@ app.Activities = (function () {
            	}
 	        
     	    });         
-         
+              */
             
-            //organisationALLListDataSource.fetch(function() {
+              
+              var organisationALLListDataSource = new kendo.data.DataSource({
+                  data: groupDataShow
+              });
+             
+             organisationALLListDataSource.fetch(function() {
                 
- 		   //});
+ 		   });
+           
 
              $("#activities-listview").kendoMobileListView({
   		    template: kendo.template($("#activityTemplate").html()),    		
      		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true,
-        		schema: {
-           		model:  organisationAllNotificationModel
-				}			 
-		     });
+              pullToRefresh: true
+             });
             
-             setTimeout(function(){
+             $('#activities-listview').data('kendoMobileListView').refresh();
+             
+             //setTimeout(function(){
                  app.mobileApp.pane.loader.hide();
-             },100); 
+             //},100); 
          };
    
         

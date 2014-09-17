@@ -8,9 +8,7 @@ app.Login = (function () {
     'use strict';
 
     var loginViewModel = (function () {
-
         //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
-
         var $loginUsername;
 		var username;
         var varifiCode;
@@ -37,11 +35,9 @@ app.Login = (function () {
             //app.showNativeAlert();            
             app.userPosition=true;
             $('#loginUsername').val('');
-            //$('#loginPassword').val('');
-            
+            //$('#loginPassword').val('');            
             
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
-
             
             //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
@@ -58,8 +54,6 @@ app.Login = (function () {
                 $(e.target).blur();
             }
         };
-
-
        
         // Authenticate to use Backend Services as a particular user
 
@@ -72,8 +66,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';           			            
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';           			            
+            //var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -183,13 +177,15 @@ app.Login = (function () {
 		};
         
         
+      var userAccountID;  
         
-        
-   function insertProfileInfo(tx) {
+       function insertProfileInfo(tx) {
 		var query = "DELETE FROM PROFILE_INFO";
 			app.deleteQuery(tx, query);
        	
-	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , login_status ) VALUES ("'
+        userAccountID = profileInfoData.account_id;
+           
+ 	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , login_status ) VALUES ("'
 			+ profileInfoData.account_id
 			+ '","'
 			+ profileInfoData.id
@@ -207,9 +203,12 @@ app.Login = (function () {
 			+ profileInfoData.mod_date
 	        + '" ,"'+1+'")';              
 
-       app.insertQuery(tx, query);
+       app.insertQuery(tx, query);       
+      }
        
-}
+        
+      var userOrgIdArray=[];
+      //var userRoleArray=[];  
         
       function insertOrgInfo(tx){
         var query = "DELETE FROM JOINED_ORG";
@@ -221,6 +220,13 @@ app.Login = (function () {
         console.log(profileOrgData.org_id[1]);
 
        for(var i=0;i<dataLength;i++){       
+          
+           if(profileOrgData.role[i]==='C'){
+           userOrgIdArray.push(profileOrgData.org_id[i]);
+           }
+           
+           //userRoleArray.push(profileOrgData.role[i]);
+           
         	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
 				+ profileOrgData.org_id[i]
 				+ '","'
@@ -234,13 +240,109 @@ app.Login = (function () {
        }                               
      }  
 
-        function loginSuccessCB() {
-		    app.mobileApp.pane.loader.hide();
-            app.userPosition=false;				  
-            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
+         function loginSuccessCB() {
+            console.log('DataBase Saved');
+            console.log(userOrgIdArray);
+            //console.log(userRoleArray);
+            
+            for(var i=0;i<userOrgIdArray.length;i++){     
+                console.log('helo');
+                
+             var organisationALLListDataSource = new kendo.data.DataSource({
+             transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+        	 schema: {                             
+                 data: function(data)
+  	             {
+                       console.log(data);
+               
+                        var orgNotificationData; 
+                                  $.each(data, function(i, groupValue) {
+                                  console.log(groupValue);
+                                     
+                                   $.each(groupValue, function(i, orgVal) {
+                                     console.log();
+
+                   	             if(orgVal.Msg ==='No notification'){     
+                	                                                          
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.notificationList.length);  
+                                        orgNotificationData = orgVal.notificationList;
+                                        saveOrgNotification(orgNotificationData);                                                                                     
+                                    }
+                                                                            
+                                   });    
+                                 });
+                   }                       
+                },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);            	                     
+           	}
+	        
+     	    });         
+
+               organisationALLListDataSource.fetch(function() {
+                
+ 		      });
+                
+            }
+            
+         }
+        
+                
+        var orgNotiDataVal;         
+        function saveOrgNotification(data) {
+            orgNotiDataVal = data;      
+			var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB, goToHomePage);
+		};
+            
+            
+      function insertOrgNotiData(tx){
+        //var query = "DELETE FROM ORG_NOTIFICATION";
+		//app.deleteQuery(tx, query);         
+        var dataLength = orgNotiDataVal.length;
+        //alert('LiveDataVal'+dataLength);
+         
+ 
+       for(var i=0;i<dataLength;i++){       
+    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type) VALUES ("'
+				+ orgNotiDataVal[i].org_id
+				+ '","'
+				+ orgNotiDataVal[i].pid
+				+ '","'
+				+ orgNotiDataVal[i].attached
+           	 + '","'
+				+ orgNotiDataVal[i].message
+    	        + '","'
+			    + orgNotiDataVal[i].title
+                + '","'
+				+ orgNotiDataVal[i].comment_allow
+                + '","'
+				+ orgNotiDataVal[i].send_date
+                + '","'
+				+ orgNotiDataVal[i].type
+				+ '")';              
+                app.insertQuery(tx, query);
+        }                               
+      }
+        
+        
+        var goToHomePage = function(){
+               app.mobileApp.pane.loader.hide();
+               app.userPosition=false;				  
+               app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
         }
+
+        
           
-        var UserInfoData;        
+ /*       var UserInfoData;        
         var saveLoginInfo = function(data){
            UserInfoData=data;
            console.log(UserInfoData);
@@ -266,9 +368,6 @@ app.Login = (function () {
                      	 	 app.mobileApp.navigate('views/forgetPasswordView.html');       
         };
         
-        var goToIndex = function(){
-              app.mobileApp.navigate('index.html');
-        };
         
         var sendForgetMail = function(){
             var forgetEmail = $("#forgetEmail").val();    
@@ -313,12 +412,9 @@ app.Login = (function () {
                                   //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{
                                   app.showAlert(regData.status[0].Msg ,'Notification'); 
-                               }
-                               
+                               }                               
                           });
-
   		  });
-
             }
         };
         
@@ -328,6 +424,11 @@ app.Login = (function () {
             app.userPosition=false;
             app.mobileApp.navigate('views/registrationView.html');           
         };*/
+        
+        
+        var goToIndex = function(){
+              app.mobileApp.navigate('index.html');
+        };
         
         var clickforRegenerateCode = function(){
           $("#regenerateDiv").show();
@@ -517,10 +618,10 @@ app.Login = (function () {
             getYear: app.getYear,
             login: login,
             checkEnter:checkEnter,
-            forgetPass: forgetPass,
-            sendForgetMail:sendForgetMail,
+            //forgetPass: forgetPass,
+            //sendForgetMail:sendForgetMail,
             goToIndex:goToIndex,
-            forgetPassInit:forgetPassInit,
+            //forgetPassInit:forgetPassInit,
             backToIndex:backToIndex,
             clickforValificationCode:clickforValificationCode,
             cancelButtonRC:cancelButtonRC,
