@@ -564,9 +564,9 @@ app.adminOragnisationList = (function () {
           };
         
         var showNotifi = function(){
-            app.MenuPage=false;
-             
-            console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
+            app.MenuPage=false; 
+            
+             console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
              $("#orgData").val('');
              $("#groupData").val('');
             

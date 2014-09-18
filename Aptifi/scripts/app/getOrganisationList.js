@@ -12,6 +12,7 @@ app.OragnisationList = (function () {
  var num1=0,num2=0,num3=0;
  var groupDataShow = [];   
  var loginType,groupId,userId;
+    
   
  		   var userlName;
             var userfName;
@@ -138,6 +139,11 @@ app.OragnisationList = (function () {
             
 
          var show = function(e){                     
+             
+             
+             var scroller = e.view.scroller;
+             scroller.reset();
+             
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
             app.mobileApp.pane.loader.show(); 
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
@@ -426,11 +432,13 @@ app.OragnisationList = (function () {
 	    		);                        
             };
             
-        /*var afterShow = function(){
-              var db = app.getDb();
-		  	db.transaction(insertOrgImage, app.errorCB, app.successCB);  
+        var afterShow = function(){
+           $('#organisation-listview').data('kendoMobileListView').refresh();
+              //var db = app.getDb();
+		  	//db.transaction(insertOrgImage, app.errorCB, app.successCB);  
         }    
-            
+        
+        /*
          var insertOrgImage = function(tx){
              console.log(groupDataShow.length);
              
@@ -894,8 +902,21 @@ app.OragnisationList = (function () {
             
             
             function updateLoginStatus(tx) {
-	             var query = 'UPDATE PROFILE_INFO SET login_status=0';
-            	 app.updateQuery(tx, query);
+                
+                var query = "DELETE FROM PROFILE_INFO";
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM JOINED_ORG";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+                
+                var query = "DELETE FROM ORG_NOTI_COMMENT";
+	            app.deleteQuery(tx, query);
+                                
+	            var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            	app.updateQuery(tx, query);
             }
             
 
@@ -915,7 +936,7 @@ app.OragnisationList = (function () {
             organisationSelected: organisationSelected,
             orgForGroupSelected:orgForGroupSelected,
             groupSelected:groupSelected,
-            //afterShow:afterShow,
+            afterShow:afterShow,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
             inAppBrowser:inAppBrowser,          

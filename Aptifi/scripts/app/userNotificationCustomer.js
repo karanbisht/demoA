@@ -17,14 +17,14 @@ app.replyedCustomer = (function () {
         
       var show = function(e){
                   app.MenuPage=false;
-                  message = e.view.params.message;
-                  title = e.view.params.title;
+                  //message = e.view.params.message;
+                  //title = e.view.params.title;
                   org_id = e.view.params.org_id;
-                  notiId = e.view.params.notiId;
-                  comment_allow = e.view.params.comment_allow;
-                  attachedimg = e.view.params.attached;
+                  //notiId = e.view.params.notiId;
+                  //comment_allow = e.view.params.comment_allow;
+                  //attachedimg = e.view.params.attached;
           
-          console.log(attachedimg);
+                  //console.log(attachedimg);
           
           
             var UserModel ={
@@ -57,7 +57,8 @@ app.replyedCustomer = (function () {
         var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getReplycustomerList/"+org_id+"/"+notiId,
+                   //url: "http://54.85.208.215/webservice/notification/getReplycustomerList/"+org_id+"/"+notiId,
+                   url: "http://54.85.208.215/webservice/notification/replyListbyOrg/"+org_id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -84,6 +85,9 @@ app.replyedCustomer = (function () {
                                          customerID:0,  
                                          user_type : '',
                                          orgID:0,
+                                         comment:'',
+                                         notification_id:'',
+                                         add_date:'',
                                          user_id:0
     	                               });                                      
 	                                }else if(orgVal.Msg==='Success'){
@@ -95,6 +99,9 @@ app.replyedCustomer = (function () {
                         		                 customerID:orgVal.customerList[i].customerID,
                                 		         user_type:orgVal.customerList[i].user_type,
                                                  orgID:orgVal.customerList[i].orgID,
+                                                 comment:orgVal.customerList[i].comment,
+                                                 notification_id:orgVal.customerList[i].notification_id,
+                                                 add_date:orgVal.customerList[i].add_date,
                                                  user_id:orgVal.customerList[i].user_id
                                             });
                                         }     
@@ -122,8 +129,7 @@ app.replyedCustomer = (function () {
             //MemberDataSource.fetch(function() {
                 
  		   //});
-	
-         
+	       
     	    $("#reply-customer-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#replyCustomerTemplate").html()),
@@ -132,6 +138,8 @@ app.replyedCustomer = (function () {
            		model:  UserModel
 				}		
 			});
+
+      
       };
        
        
@@ -140,7 +148,7 @@ app.replyedCustomer = (function () {
             console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
             app.MenuPage=false;
-            app.mobileApp.navigate('views/userNotificationComment.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&comment_allow='+comment_allow+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname+'&attached='+attachedimg);
+            app.mobileApp.navigate('views/userNotificationComment.html?org_id='+org_id+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname+'&notification_id='+e.data.notification_id);
        };
        
         	   return {

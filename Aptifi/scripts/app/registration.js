@@ -129,8 +129,8 @@ app.registration = (function () {
                 										    device_type='AP';
 									             }
                          
-            					var device_id='123456';            
-								//var device_id = localStorage.getItem("deviceTokenID");
+            					//var device_id='123456';            
+								var device_id = localStorage.getItem("deviceTokenID");
     					        //console.log(device_id);
 	            
            
@@ -294,8 +294,8 @@ app.registration = (function () {
                 										    device_type='AP';
 									             }
 
-                    var device_id='123456';
-                    //var device_id = localStorage.getItem("deviceTokenID");
+                    //var device_id='123456';
+                    var device_id = localStorage.getItem("deviceTokenID");
     			    //console.log(device_id);
 
                     
@@ -392,12 +392,14 @@ app.registration = (function () {
 		};
         
         
-        
+      var userAccountID;  
         
    function insertProfileInfo(tx) {
 		var query = "DELETE FROM PROFILE_INFO";
 			app.deleteQuery(tx, query);
        	
+       userAccountID = profileInfoData.account_id;
+       
 	   var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date ) VALUES ("'
 			+ profileInfoData.account_id
 			+ '","'
@@ -470,7 +472,31 @@ function loginSuccessCB() {
                  data: function(data)
                    {	
                        console.log(data);
-               	    return [data];
+               	    //return [data];
+
+                       var datacheck=0;
+                       var allData=0;
+                       
+                       var orgNotificationData; 
+                            $.each(data, function(l, groupValue) {
+                                  console.log(groupValue);        
+                                allData++;
+                                 $.each(groupValue, function(m, orgVal) {
+                                     console.log();
+                   	             if(orgVal.Msg ==='No notification'){     
+                	                    datacheck++;                             
+	                                }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.notificationList.length);  
+                                        orgNotificationData = orgVal.notificationList;
+                                        saveOrgNotification(orgNotificationData);                                                                                     
+                                    }
+                                                                            
+                                });    
+                            });
+                                    if(allData===datacheck){
+                                         goToHomePage();
+                                     }
+
                    }                                                            
                 },
 	            error: function (e) {
@@ -481,7 +507,7 @@ function loginSuccessCB() {
             
             
                organisationALLListDataSource.fetch(function() {
-                 var loginDataView = organisationALLListDataSource.data();
+                 /*var loginDataView = organisationALLListDataSource.data();
                    var datacheck=0;
                    var allData=0;
                      $.each(loginDataView, function(i, groupValue) {

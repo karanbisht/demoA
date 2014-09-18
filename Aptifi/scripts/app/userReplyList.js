@@ -53,8 +53,6 @@ app.userReplyList = (function () {
   
              }               
             
-            
-            
              var showLiveData = function(){
                 console.log('Hello');
                 console.log(groupDataShow);
@@ -182,9 +180,10 @@ app.userReplyList = (function () {
         var clickOnUserName = function(e){
             console.log('karanbisht');
             console.log(e.data);
-            console.log(e.data.organisationID);
-   				   //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
-            app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName);                   
+            //console.log(e.data.organisationID);
+             //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
+            //app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName); 
+            app.mobileApp.navigate('views/userNotificationCustomer.html?org_id='+e.data.organisationID); 
         }
         
             return {

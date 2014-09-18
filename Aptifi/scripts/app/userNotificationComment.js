@@ -20,31 +20,33 @@ app.userNotiComment = (function () {
       var customerID;
       var userCommentsDataSource; 
       var userName;
-     
+      var notification_id;     
       var message;
       var title;
       var myScroll;
       var attached;
+      var comment_allow;
+      var pid;
         
-      var init = function () {
-			
-      };
+       var init = function () {
+ 			
+       };
                 
         var data;          
         
         var replyButton = function(){
-         if (app.checkConnection()) {
-             console.log(activity);
-             var notificationId = activity.notification_id;             
-             app.mobileApp.navigate('views/addCommentView.html?notificationId='+notificationId);                         
-         } else {
+          if (app.checkConnection()) {
+              console.log(activity);
+              var notificationId = activity.notification_id;             
+              app.mobileApp.navigate('views/addCommentView.html?notificationId='+notificationId);                         
+          } else {
               app.showAlert("You are currently offline , can't reply to post " , "Offline Mode");
-                }
+                 }
         };
         
         
         function loaded() {
-        setTimeout(function() {    
+          setTimeout(function() {    
             myScroll = new iScroll('notiAdminImage', {
 			bounce : false,
 			zoom : true,
@@ -53,8 +55,7 @@ app.userNotiComment = (function () {
 			hScrollbar: false,
 			vScrollbar: false    
 		   });
-         }, 100);
-            
+          }, 100);            
 		}
 
 		//document.addEventListener('DOMContentLoaded', loaded, false);
@@ -66,27 +67,92 @@ app.userNotiComment = (function () {
         
 
         var show = function (e) {
+            title=''
+            message='';
+            
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
             listScroller.reset();
-            
-            message = e.view.params.message;
-  		  title = e.view.params.title;
+           
+            //message = e.view.params.message;
+  		  //title = e.view.params.title;
             org_id = e.view.params.org_id;
-            notiId = e.view.params.notiId;
-            var comment_allow = e.view.params.comment_allow;
+            //notiId = e.view.params.notiId;
+            //var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
 			userName = e.view.params.userName;
-            attached = e.view.params.attached;
-            var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+            //attached = e.view.params.attached;
+            notiId=e.view.params.notification_id;
+            
+
+            
+            
+          var userCommentedNotification = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/notification/notificationDetail/"+ notiId+"/"+org_id,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {
+                 data: function(data)
+  	            {	console.log(data);
+               	    return [data];
+                  }                   
+            },
+	            error: function (e) {
+    	           //apps.hideLoading();
+        	       console.log(e);
+            	   navigator.notification.alert("Please check your internet connection.",
+               	function () { }, "Notification", 'OK');
+           	}
+	        
+    	    });         
+         
+            
+            userCommentedNotification.fetch(function() {
+                var notificationData = userCommentedNotification.data();
+                console.log('notificationnnnnnnnn');
+               			console.log(notificationData);
+                
+                 $.each(notificationData, function(i, loginData) {
+                      console.log(loginData.status[0].Msg);
+                     
+                      if(loginData.status[0].Msg==='Success'){
+					      attached = loginData.status[0].notificationList[0].attached;
+                          comment_allow = loginData.status[0].notificationList[0].comment_allow;
+                          message = loginData.status[0].notificationList[0].message;
+                          pid = loginData.status[0].notificationList[0].pid;
+                          title = loginData.status[0].notificationList[0].title;
+                       }
+
+                     $("#personNameTitle").html(title);
+                     $("#activityTextMessage").html(message);
+                     
+                     console.log(attached+"||"+comment_allow+"||"+message+"||"+pid+"||"+title);
+                     
+ 		       });
+            
+            });
+            
+            
+          setTimeout(function(){
+              moreDataToLoad();            
+          },100);              
+      };
+        
+        var moreDataToLoad = function(){
+         
+             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
             //console.log(message+"||"+title+'||'+userName);
             
             document.getElementById("notiAdminImage").innerHTML = "";
             
             if(attached!== null && attached!==''){             
-              loaded(); 
+              //loaded(); 
                 $('#notiAdminImage').css({"height":"200px"});
                 $('#notiAdminImage').css({"width":'auto'});
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
@@ -111,7 +177,8 @@ app.userNotiComment = (function () {
            //  var notificationId = activity.notification_id; 
          
             adminComment();
-        };
+
+        }
         
         
         var imagePathExist = function(){
@@ -176,7 +243,7 @@ app.userNotiComment = (function () {
                     return 'Admin';
                 }
             }
-        };
+          };
             
            
             userCommentsDataSource = new kendo.data.DataSource({

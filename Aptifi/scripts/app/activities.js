@@ -31,6 +31,10 @@ app.Activities = (function () {
          }   
         
          var show = function(e){             
+             
+           var scroller = e.view.scroller;
+           scroller.reset();  
+          
            groupDataShow=[];
            app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
@@ -272,8 +276,7 @@ app.Activities = (function () {
            	}
 	        
     	    });         
-              */
-            
+              */           
               
               var organisationALLListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
@@ -290,8 +293,7 @@ app.Activities = (function () {
               pullToRefresh: true
              });
             
-             $('#activities-listview').data('kendoMobileListView').refresh();
-             
+             $('#activities-listview').data('kendoMobileListView').refresh();          
              //setTimeout(function(){
                  app.mobileApp.pane.loader.hide();
              //},100); 
@@ -331,8 +333,7 @@ app.Activities = (function () {
         */         
        
             var CreatedAtFormatted = function(value){
-            return app.helper.formatDate(value);
-        
+                 return app.helper.formatDate(value);
             };
 
        /*     

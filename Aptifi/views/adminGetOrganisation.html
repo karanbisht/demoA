@@ -3,11 +3,12 @@
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
                  <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callUserLogin">User</a> 
               </div>              
                             
 	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
 	            <a id="manageGroupView" data-icon="organize" data-role="button" href="#view-all-activities-admin" >Manage Org</a>
-    	        <a id="replyUserView" data-icon="reply" data-role="button" href="#view-all-activities-userReply" >Incomming Msg</a>
+    	        <a id="replyUserView" data-icon="compose" data-role="button" href="#view-all-activities-userReply" >Incoming Msg</a>
         	    <a id="sendNotificationView" data-icon="action" data-role="button" href="sendNotificationDiv" >Send Notification</a>
               </div>     
    </div>
@@ -38,16 +39,17 @@
 
 
 <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
-
-  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
+  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;min-heigth:200px;">
+      
         <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
+      
     	<ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
-	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+
+      <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
-    		 </p>
+      </p>
   </div>
-    
-    
+        
     
    <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>

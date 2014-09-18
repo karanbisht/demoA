@@ -293,6 +293,19 @@ var app = (function (win) {
     
     
             function updateLoginStatus(tx) {
+                
+                var query = "DELETE FROM PROFILE_INFO";
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM JOINED_ORG";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+                
+                var query = "DELETE FROM ORG_NOTI_COMMENT";
+	            app.deleteQuery(tx, query);
+
 	             var query = 'UPDATE PROFILE_INFO SET login_status=0';
             	 app.updateQuery(tx, query);
             }
@@ -568,6 +581,16 @@ var app = (function (win) {
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
     }
     
+    
+    var callUserLogin = function(){
+           var account_Id = localStorage.getItem("ACCOUNT_ID");
+           var userType = localStorage.getItem("USERTYPE");
+          app.MenuPage=false;	
+          console.log(account_Id);
+          app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+    }
+    
+    
     var replyUser = function(){
             app.MenuPage=false;	
             app.mobileApp.navigate('views/userReplyView.html');                         
@@ -586,6 +609,7 @@ var app = (function (win) {
     return {
         showAlert: showAlert,
         showError: showError,
+        callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,
         replyUser:replyUser,
         checkIfFileExists:checkIfFileExists,
