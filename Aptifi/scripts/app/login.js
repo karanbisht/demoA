@@ -67,8 +67,7 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';      
-            
+            //var device_id='123456';                  
             var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
@@ -115,7 +114,8 @@ app.Login = (function () {
                
                			var orgDataId = [];
                			var userAllGroupId = [];
-						   $.each(loginDataView, function(i, loginData) {
+						   
+               $.each(loginDataView, function(i, loginData) {
                                console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='User not registered'){
@@ -242,11 +242,11 @@ app.Login = (function () {
             //console.log(userRoleArray);
             
             for(var i=0;i<userOrgIdArray.length;i++){
-                  console.log('hiiiiiiiiiiiiiiiiiii');
                   //alert(userOrgIdArray[i]);
                   console.log(userAccountID);
 
              var organisationALLListDataSource = new kendo.data.DataSource({
+                 
              transport: {
                read: {
                    url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
@@ -258,37 +258,42 @@ app.Login = (function () {
         	 schema: {
                  data: function(data)
                    {	
+                       var datacheck=0;
+                       var allData=0;
                        console.log(data);
-               	    //return [data];
                        
                        var orgNotificationData; 
                             $.each(data, function(l, groupValue) {
                                   console.log(groupValue);                                     
-                                 $.each(groupValue, function(m, orgVal) {
-                                     console.log();
-                   	             if(orgVal.Msg ==='No notification'){     
-                	                                                          
+                                 allData++;
+                                $.each(groupValue, function(m, orgVal) {
+                                     console.log();                   	             
+                
+                                    if(orgVal.Msg ==='No notification'){     
+                	                      datacheck++;                                        
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
                                         saveOrgNotification(orgNotificationData);                                                                                     
-                                    }
-                                                                            
+                                    }                                     
                                 });    
                             });
+                                if(allData===datacheck){
+                                         goToHomePage();
+                                }
+                    	return [data];
+ 
                    }                                                            
               },
                  
 	          error: function (e) {
+                    e.preventDefault();
     	           //apps.hideLoading();
-        	       console.log(e);      
-                  
+        	       console.log(e);                        
            	}	        
      	    });         
             
-               organisationALLListDataSource.fetch(function() {
-
-               });
+               organisationALLListDataSource.read();
                 
                 
               /*organisationALLListDataSource.fetch(function() {
@@ -592,7 +597,7 @@ app.Login = (function () {
                 }else{
                 
                       if(varifiCode===validationCodeId){
-          	   //app.mobileApp.navigate('views/getOrganisationList.html');  
+          	        //app.mobileApp.navigate('views/getOrganisationList.html');  
                     
                                                         
                                                 var deviceName = app.devicePlatform();
@@ -603,7 +608,7 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='123456';                    
+                            //var device_id='123456';                    
             var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     

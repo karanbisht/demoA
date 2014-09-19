@@ -105,9 +105,6 @@ var app = (function (win) {
             }
         };
 
- 
-  
-    
     
     /*var openDb = function() {
     	if (window.sqlitePlugin !== undefined) {
@@ -474,11 +471,21 @@ var app = (function (win) {
     
     //the function is a callback when a notification from APN is received
     var onNotificationAPN = function(e) {
-        alert(e);        
+        //alert(e);        
         console.log(e);
         //getPromotionFromServer();
     };
 
+            var messageDB;
+			var orgIdDB;
+			var notiIdDB;
+            var typeDB;
+            var titleDB;
+            var attachedDB;
+            var account_IdDB;
+            var commentAllowDB;
+
+    
     //the function is a callback for all GCM events
     var onNotificationGCM = function onNotificationGCM(e) {
         //alert(e);
@@ -495,12 +502,23 @@ var app = (function (win) {
                 }
                 break;
             case 'message': 
-            //app.mobileApp.navigate('views/activityView.html?message='+'Testing'+'&title='+'Welcome'+'&org_id='+3+'&notiId='+2+'&account_Id='+29+'&comment_allow='+1+'&attached= ');
-            //var messageSplitVal = e.message.split('#####');
-			//var type = messageSplitVal[0];
-			//var title = messageSplitVal[1];
-			//var message=messageSplitVal[2];
-            //alert(type+"||"+title+"||"+message);            
+            //alert(e.message);
+                       
+            account_IdDB = localStorage.getItem("ACCOUNT_ID");
+            var messageSplitVal = e.message.split('#####');
+            messageDB = messageSplitVal[0];
+			orgIdDB = messageSplitVal[1];
+			notiIdDB=messageSplitVal[2];
+            typeDB=messageSplitVal[3];
+            titleDB=messageSplitVal[4];
+            attachedDB=messageSplitVal[5];
+            commentAllowDB=1;            
+            
+    
+            var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+            
+            
             //return message;
             //alert('message = '+e.message+' msgcnt = '+e.msgcnt);            
                 //getPromotionFromServer();
@@ -521,6 +539,29 @@ var app = (function (win) {
 	  }   
     };  
     
+        
+      function insertOrgNotiData(tx){           
+    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type) VALUES ("'
+				+ orgIdDB
+				+ '","'
+				+ attachedDB
+				+ '","'
+				+ messageDB
+           	 + '","'
+				+ titleDB
+    	        + '","'
+			    + commentAllowDB
+                + '","'
+				+ typeDB
+				+ '")';              
+                app.insertQuery(tx, query);               
+      }
+    
+    
+    function goToAppPage(){
+            //alert(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB);            
+            app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+1+'&attached='+attachedDB);      
+    }
     
     
     function checkIfFileExists(path){
@@ -530,11 +571,11 @@ var app = (function (win) {
 	}
 
     function fileExists(fileEntry){
-	    alert("File " + fileEntry.fullPath + " exists!");
+	    console.log("File " + fileEntry.fullPath + " exists!");
 	}
 	
     function fileDoesNotExist(){
-    	alert("file does not exist");
+    	console.log("file does not exist");
 	}
     
 	function getFSFail(evt) {
@@ -579,7 +620,7 @@ var app = (function (win) {
           app.MenuPage=false;	
           console.log(account_Id);
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
-    }
+    };
     
     
     var callUserLogin = function(){
@@ -588,7 +629,13 @@ var app = (function (win) {
           app.MenuPage=false;	
           console.log(account_Id);
           app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-    }
+    };
+    
+    var callAdminOrganisationList = function(){
+          var account_Id = localStorage.getItem("ACCOUNT_ID");
+              app.userPosition=false;
+              app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+    }; 
     
     
     var replyUser = function(){
@@ -611,6 +658,7 @@ var app = (function (win) {
         showError: showError,
         callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,
+        callAdminOrganisationList:callAdminOrganisationList,
         replyUser:replyUser,
         checkIfFileExists:checkIfFileExists,
         sendNotification:sendNotification,

@@ -7,7 +7,7 @@ app.sendNotification = (function () {
 	 var sendNotificationViewModel = (function () {
 
       var orgId = localStorage.getItem("UserOrgID"); 
-          console.log(orgId);
+      console.log(orgId);
       var $notificationDesc;          
       var account_Id;          
          
@@ -91,14 +91,75 @@ app.sendNotification = (function () {
 				combobox.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     combobox.input.blur();
-				});*/
-            
-            
-        
-
+				});*/                             
         };
          
-                                
+         
+         
+         
+        var beforeShow=function(){
+           var db = app.getDb();
+		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
+        };
+            
+    
+        var getDataOrg = function(tx){
+            	var query = "SELECT * FROM ADMIN_ORG";
+				app.selectQuery(tx, query, getDataSuccess);
+        };
+            
+            
+            var groupDataShowOffline=[];
+            
+        function getDataSuccess(tx, results) {                        
+            groupDataShowOffline=[];
+            
+			var count = results.rows.length;                    			
+               if (count !== 0) {                
+            	    for(var i =0 ; i<count ; i++){                
+                                       groupDataShowOffline.push({
+												 org_name: results.rows.item(i).org_name,
+        		                                 orgDesc: results.rows.item(i).orgDesc,
+                                                 org_id:results.rows.item(i).org_id,
+		                                         bagCount : 'C'					
+                                       });
+                    }
+                }else{
+                                     groupDataShowOffline.push({
+                                         org_name: 'No Notification',
+                                         orgDesc: 'You are not a customer of any organisation',
+                                         org_id:'0',
+                                         bagCount : 'D'    
+    	                               });          
+                }
+  
+             };
+         
+         
+         
+         var showLiveData = function(){
+                console.log('Hello');
+                console.log(groupDataShowOffline);
+                
+             var organisationListDataSource = new kendo.data.DataSource({
+                  data: groupDataShowOffline
+              });           
+
+                
+             
+             $("#organisation-Name-listview").kendoMobileListView({
+  		    template: kendo.template($("#orgNameTemplate").html()),    		
+     		 dataSource: organisationListDataSource,
+              pullToRefresh: true
+		     });
+                                        
+              $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
+              app.mobileApp.pane.loader.hide();
+              $("#selectOrgDiv").show();
+
+            };
+    
+                                       
         var show = function(e){
             $notificationDesc.val('');
             validator.hideMessages();
@@ -114,7 +175,7 @@ app.sendNotification = (function () {
             
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
-            var comboOrgListDataSource = new kendo.data.DataSource({
+            /*var comboOrgListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
                    url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
@@ -174,7 +235,7 @@ app.sendNotification = (function () {
 				});*/
             
             
-            $("#selectOrgDiv").show();
+            //$("#selectOrgDiv").show();
         };    
              
          /*var onChangeNotiOrg = function(){
@@ -287,8 +348,8 @@ app.sendNotification = (function () {
                           
           if(org_id===null){
             app.showAlert('Please select Organisation','Validation Error');
-          }else if(cmbGroup===''){
-            app.showAlert('Please Organisation Group','Validation Error');  
+          //}else if(cmbGroup===''){
+          //  app.showAlert('Please Organisation Group','Validation Error');  
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -370,16 +431,20 @@ app.sendNotification = (function () {
                                  $.each(data, function(i, groupValue) {
                                      console.log(groupValue);
                                     
-                                     var orgLength=groupValue[0].groupData.length;
+                                     if(groupValue[0].Msg==='No Group list'){
+                                         escapeGroupClick();
+                                     }else{
                                      for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
+
+                                         groupDataShow.push({
                                          group_desc: groupValue[0].groupData[j].group_desc,
                                          group_name: groupValue[0].groupData[j].group_name,
                                          group_status:groupValue[0].groupData[j].group_status,
                                          org_id:groupValue[0].groupData[j].org_id,
                                          pid:groupValue[0].groupData[j].pid
 
-                                     });
+                                       });
+                                     }
                                    }
                                      
                                  });
@@ -440,6 +505,7 @@ app.sendNotification = (function () {
     	 return {
         	   init: init,
            	show: show,
+               beforeShow:beforeShow,
                sendNotificationOrg:sendNotificationOrg,
                sendNotificationGroup:sendNotificationGroup,
                escapeGroupClick:escapeGroupClick,

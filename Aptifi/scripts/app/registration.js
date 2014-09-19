@@ -472,7 +472,7 @@ function loginSuccessCB() {
                  data: function(data)
                    {	
                        console.log(data);
-               	    //return [data];
+               	    
 
                        var datacheck=0;
                        var allData=0;
@@ -496,6 +496,7 @@ function loginSuccessCB() {
                                     if(allData===datacheck){
                                          goToHomePage();
                                      }
+                      return [data];
 
                    }                                                            
                 },

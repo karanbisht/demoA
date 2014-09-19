@@ -44,7 +44,7 @@ app.OragnisationList = (function () {
          var lastMessageShow;
         
         function getDataSuccess(tx, results) {                        
-            
+                         $('#organisation-listview').data('kendoMobileListView').refresh(); 
             getDataOrgDB=[];
             getDataCountDB=[];
             groupDataShow=[];
@@ -140,7 +140,7 @@ app.OragnisationList = (function () {
 
          var show = function(e){                     
              
-             
+                           $('#organisation-listview').data('kendoMobileListView').refresh();
              var scroller = e.view.scroller;
              scroller.reset();
              
@@ -433,9 +433,9 @@ app.OragnisationList = (function () {
             };
             
         var afterShow = function(){
-           $('#organisation-listview').data('kendoMobileListView').refresh();
-              //var db = app.getDb();
-		  	//db.transaction(insertOrgImage, app.errorCB, app.successCB);  
+           //$('#organisation-listview').data('kendoMobileListView').refresh();
+           //var db = app.getDb();
+		   //db.transaction(insertOrgImage, app.errorCB, app.successCB);  
         }    
         
         /*

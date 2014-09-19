@@ -232,9 +232,15 @@
     background-repeat: no-repeat;
 }
 
+#friendsApp .header .nav-button-home {
+    background-image: url(images/home.png);
+    background-size: 30px 28px;
+}
+
 #friendsApp .header .nav-button-back {
-    background-image: url(styles/images/icon-arrow_left.png);
-    background-position: .65em 50%;
+    background-image: url(images/icon-arrow_left.png);
+    background-size: 30px 30px;
+    /*background-position: .65em 50%;*/
 }
 
 #friendsApp .header .nav-button-add {
@@ -714,16 +720,23 @@
     }
 
     #friendsApp .header .nav-button-back {
-        background-image: url(styles/images/icon-arrow_left@2x.png);
-        background-size: 9px 20px;
+        /*background-image: url(images/icon-arrow_left@2x.png);
+        background-size: 9px 20px;*/
+        background-image: url(images/icon-arrow_left.png);
+        background-size: 30px 30px; 
     }
-
+    
+    #friendsApp .header .nav-button-home {
+        background-image: url(images/home.png);
+        background-size: 33px 33px;
+    }
+    
+    
     #friendsApp .header .nav-button-add {
         background-image: url(images/icon-add@2x.png);
         background-size: 23px 23px;
     }
 }
-
 
 
 .chatTitle {
@@ -769,18 +782,15 @@
     display: block;
     margin: 0 0 .5em;
     color: #8F9297;
-    font-size: 1rem;
-    
+    font-size: 1rem;    
     overflow: hidden;
     width: 70%;
     text-overflow: ellipsis;
-    white-space: nowrap;
-   
-    font-weight: 600;
-    
+    white-space: nowrap;   
+    font-weight: 600;    
 }
 
- .orgContentMsg {
+.orgContentMsg {
     color: #BCBCBC;
     font-size: .75rem;
 }
@@ -834,7 +844,7 @@
 
 
 
-
+/*
 .nav-button-ui {
     display: inline-block;
     margin: 0;
