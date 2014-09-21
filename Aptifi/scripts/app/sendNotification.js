@@ -434,6 +434,8 @@ app.sendNotification = (function () {
                                      if(groupValue[0].Msg==='No Group list'){
                                          escapeGroupClick();
                                      }else{
+                                         var orgLength = groupValue[0].groupData.length;
+                                         
                                      for(var j=0;j<orgLength;j++){
 
                                          groupDataShow.push({

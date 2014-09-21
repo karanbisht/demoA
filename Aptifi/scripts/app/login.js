@@ -16,6 +16,7 @@ app.Login = (function () {
         var userType=[];
         var UserProfileInformation;
         var UserOrgInformation;
+        var UserOrgInformation;
         var account_Id;
         var db;
         var regClickButton;
@@ -59,16 +60,16 @@ app.Login = (function () {
 
         var login = function () {		 
             var deviceName = app.devicePlatform();
-
             var device_type;
-             if(deviceName==='Android'){
+           
+            if(deviceName==='Android'){
                 device_type ='AN';
              }else if(deviceName==='iOS'){
                 device_type='AP';
              }
                          
-            //var device_id='123456';                  
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                  
+            //var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -608,7 +609,7 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-                            //var device_id='123456';                    
+            //var device_id='123456';                    
             var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     

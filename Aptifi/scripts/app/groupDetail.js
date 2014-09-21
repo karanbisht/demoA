@@ -35,12 +35,12 @@ app.groupDetail = (function () {
          };   
           
                         
-        var showGroupMembers = function(){
-            
+        var showGroupMembers = function(){            
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             console.log("karaasa"+organisationID)
                            
+                     
             var UserModel ={
             id: 'Id',
             fields: {
@@ -151,6 +151,7 @@ app.groupDetail = (function () {
                 
  		   //});
 	         
+            
     	    $("#groupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#groupMemberTemplate").html()),
@@ -168,7 +169,7 @@ app.groupDetail = (function () {
         };
         
         
-
+                
         var showUpdateGroupView = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('#updateGroupInfo');                     
@@ -405,12 +406,10 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);                
-            //app.mobileApp.navigate('#orgGroupShow');                        
         };
         
-        
-        
-         function refreshOrgMember(){  
+ 
+        function refreshOrgMember(){  
              console.log('go to member');
              app.groupDetail.showGroupMembers();
  		};
@@ -435,7 +434,7 @@ app.groupDetail = (function () {
             		console.log(activity);
             		console.log(activity.Id);
    	  	  
-                                app.mobileApp.navigate('views/adminMessageReply.html');
+                    app.mobileApp.navigate('views/adminMessageReply.html');
     	                        app.Activities.userData.filter({
 							                	field: 'UserId',
                 								operator: 'eq',

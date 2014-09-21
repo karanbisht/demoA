@@ -44,7 +44,7 @@ app.OragnisationList = (function () {
          var lastMessageShow;
         
         function getDataSuccess(tx, results) {                        
-                         $('#organisation-listview').data('kendoMobileListView').refresh(); 
+            $('#organisation-listview').data('kendoMobileListView').refresh(); 
             getDataOrgDB=[];
             getDataCountDB=[];
             groupDataShow=[];
@@ -874,6 +874,29 @@ app.OragnisationList = (function () {
 	}
             
             
+            
+            function OnImageLoad(evt) {
+
+            var img = evt.currentTarget;
+
+            // what's the size of this image and it's parent
+            var w = $(img).width();
+            var h = $(img).height();
+            var tw = $(img).parent().width();
+            var th = $(img).parent().height();
+
+            // compute the new size and offsets
+            var result = app.ScaleImage(w, h, tw, th, false);
+
+            // adjust the image coordinates and size
+            img.width = result.width;
+            img.height = result.height;
+            $(img).css("left", result.targetleft);
+            $(img).css("top", result.targettop);
+           
+           };
+            
+            
                      
         var callOrganisationLogin = function(){
           alert('click');  
@@ -942,6 +965,7 @@ app.OragnisationList = (function () {
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
             makeCall:makeCall,
+            OnImageLoad:OnImageLoad,
             replyUser:replyUser,
             userProfileInt:userProfileInt,
             sendNotification:sendNotification,

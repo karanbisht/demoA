@@ -6,7 +6,6 @@ app.orgListView = (function () {
     var account_Id;
        
     var orgDetailViewModel = (function () {
-
         
   	var init = function () {
              
@@ -17,7 +16,7 @@ app.orgListView = (function () {
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
 
-            var organisationAllNotificationModel = {
+            /*var organisationAllNotificationModel = {
             id: 'Id',
             fields: {
                 title: {
@@ -35,11 +34,7 @@ app.orgListView = (function () {
                 CreatedAt: {
                     field: 'date',
                     defaultValue: new Date()
-                }/*,
-                organisationID: {
-                    field: 'organisationID',
-                    defaultValue: null
-                }*/                  
+                }                  
             },            
                  
             CreatedAtFormatted: function () {
@@ -95,22 +90,6 @@ app.orgListView = (function () {
                                                                             
                                    });    
                                       
-                                  /*   
-                                     var orgLength=groupValue[0].sentNotification.length;
-                                     console.log(orgLength);
-                            
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         attached: groupValue[0].sentNotification[j].attached,
-                                         message: groupValue[0].sentNotification[j].message,
-                                         notification_id: groupValue[0].sentNotification[j].notification_id,
-                                         send_date:groupValue[0].sentNotification[j].send_date,
-                                         title:groupValue[0].sentNotification[j].title,
-                                          type:groupValue[0].sentNotification[j].type
-
-                                     });
-                                   }
-                                     */
                                  });
                        
 		                         console.log(groupDataShow);
@@ -131,16 +110,86 @@ app.orgListView = (function () {
             //organisationALLListDataSource.fetch(function() {
                 
  		   //});
+          
+          */
+          
+             var db = app.getDb();
+	  	   db.transaction(getDataOrgNoti, app.errorCB, showLiveData); 
+                        
+        };
+        
+        
+        
+                var getDataOrgNoti = function(tx){
+                    var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
+		        	app.selectQuery(tx, query, getOrgNotiDataSuccess);
+                };    
+                        
+            
+        function getOrgNotiDataSuccess(tx, results) {
+            groupDataShow=[];
+            
+			var count = results.rows.length;
+                DBGETDATAVALUE = count;           
+            //alert(count);
+			if (count !== 0) {
+                groupDataShow=[];
+            	for(var i =0 ; i<count ; i++){    
+ 
+                      groupDataShow.push({
+												 message: results.rows.item(i).message,
+        		                                 org_id: results.rows.item(i).org_id,
+                                                 date:results.rows.item(i).send_date,
+                                                 title:results.rows.item(i).title,
+                                                 pid :results.rows.item(i).pid ,
+                                                 comment_allow:results.rows.item(i).comment_allow ,
+		                                         bagCount : 'C',
+                                                 attached :results.rows.item(i).attached,
+                                                 attachedImg :'http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached
+                       });
+                    
+                  lastNotificationPID=results.rows.item(i).pid;
+        	    }    
+                 console.log(lastNotificationPID);
+            }else{
+                lastNotificationPID=0;
 
-             $("#admin-noti-listview").kendoMobileListView({
+                           groupDataShow.push({
+                                         title: ' No Notification ',
+                                         message: 'No Notification from this Organisation',
+                                         date:'0',  
+                                         comment_allow : 'Y',
+                                         org_id:'0', 
+                                         pid:'',
+                                         bagCount : '',
+                                         attachedImg :'',  
+                                         attached:''  
+    	                               });                   
+
+            }                       
+         };       
+        
+        
+        var showLiveData = function(){
+                        
+             var organisationALLListDataSource = new kendo.data.DataSource({
+                  data: groupDataShow
+              });
+             
+             organisationALLListDataSource.fetch(function() {
+                
+ 		    });
+                       
+              $("#admin-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminNotiTemplate").html()),    		
      		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true,
-        		schema: {
-           		model:  organisationAllNotificationModel
-				}			 
-		     });              
+              pullToRefresh: true
+ 		     });             
+             $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
         };
+
+        
+        
         
          var groupNotificationSelected = function (e) {
             alert("hello");

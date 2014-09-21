@@ -26,8 +26,12 @@ var activityListViewModel = (function () {
                   
 				$('#newGroup').val('');
                   
+                   var db = app.getDb();
+		     db.transaction(getDataOrg, app.errorCB, showLiveData);   
+       
                   
-                var OrgGroupModel ={
+                  
+           /*var OrgGroupModel ={
             id: 'Id',
             fields: {
                 groupName: {
@@ -55,7 +59,7 @@ var activityListViewModel = (function () {
                     defaultValue:''
                 }*/
 
-               },                    
+              /* },                    
                CreatedAtFormatted: function () {
         	        return app.helper.formatDate(this.get('addDate'));
     	       }     
@@ -131,19 +135,76 @@ var activityListViewModel = (function () {
             //GroupDataSource.fetch(function() {
                 
  		   //});
+            */
+        };  
+    
+    
+         var getDataOrg = function(tx){
+            	var query = "SELECT * FROM ADMIN_ORG_GROUP where org_id="+organisationID;
+				app.selectQuery(tx, query, getDataSuccess);
+        };
             
             
+        var groupDataShow=[];            
+        function getDataSuccess(tx, results) {                        
+            groupDataShow=[]; 
+            
+		   	var count = results.rows.length;                    			
+            
+               if (count !== 0) {                
+            	    for(var i =0 ; i<count ; i++){                
+                                       groupDataShow.push({
+												 orgName: results.rows.item(i).org_name,
+        		                                 groupID: results.rows.item(i).groupID,
+                                                 groupName: results.rows.item(i).group_name,
+                                                 orgID:results.rows.item(i).org_id,
+                                                 groupDesc:results.rows.item(i).group_desc,
+                                                 addDate:results.rows.item(i).addDate
+	                                    });
+                    }
+                }else{
+                    
+                                     groupDataShow.push({
+                                                 orgName: '',
+        		                                 groupID:'',
+                                                 groupName:'No Group',
+                                                 organisationID:'',
+                                                 groupDesc:'No Group in this Organisation',
+                                                 addDate:''  
+    	                               });          
+                }
+  
+             }               
+            
+            
+            
+             var showLiveData = function(){
+                console.log('Hello');
+                console.log(groupDataShow);
+                
+             var organisationListDataSource = new kendo.data.DataSource({
+                  data: groupDataShow
+              });           
+
+                              
+                           
              $("#group-listview").kendoMobileListView({
   		      template: kendo.template($("#groupTemplate").html()),    		
-     		   dataSource: GroupDataSource,
-                pullToRefresh: true,
-        		schema: {
-           		model:  OrgGroupModel
-				}			 
-		     });              
+     		   dataSource: organisationListDataSource,
+                pullToRefresh: true
+             });              
 
-        };  
+                 
+                               
+              $('#group-listview').data('kendoMobileListView').refresh();
                 
+              app.mobileApp.pane.loader.hide();
+
+            };
+
+
+    
+    
          var groupSelected = function (e) {
             		console.log(e.data);
              	   console.log(e.data.groupID);
