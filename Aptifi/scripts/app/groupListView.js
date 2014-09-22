@@ -148,11 +148,16 @@ var activityListViewModel = (function () {
         var groupDataShow=[];            
         function getDataSuccess(tx, results) {                        
             groupDataShow=[]; 
+            var tempArray= [];
+		   var count = results.rows.length;
             
-		   	var count = results.rows.length;                    			
-            
+                       
                if (count !== 0) {                
-            	    for(var i =0 ; i<count ; i++){                
+            	    for(var i =0 ; i<count ; i++){
+                         var pos = $.inArray(results.rows.item(i).groupID, tempArray);
+                         console.log(pos);
+		                 if (pos === -1) {
+                               tempArray.push(results.rows.item(i).groupID); 
                                        groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
         		                                 groupID: results.rows.item(i).groupID,
@@ -161,7 +166,8 @@ var activityListViewModel = (function () {
                                                  groupDesc:results.rows.item(i).group_desc,
                                                  addDate:results.rows.item(i).addDate
 	                                    });
-                    }
+                         }
+                    }               
                 }else{
                     
                                      groupDataShow.push({
@@ -173,9 +179,8 @@ var activityListViewModel = (function () {
                                                  addDate:''  
     	                               });          
                 }
-  
-             }               
-            
+             
+        }
             
             
              var showLiveData = function(){

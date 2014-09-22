@@ -28,8 +28,16 @@ app.adminOragnisationList = (function () {
         var getDataOrg = function(tx){
             	var query = "SELECT * FROM ADMIN_ORG";
 				app.selectQuery(tx, query, getDataSuccess);
+            
+               var db = app.getDb();
+               db.transaction(updateProfileTab,app.errorCB,app.successCB);
         };
             
+        
+        var updateProfileTab = function(tx){
+                var query = 'UPDATE PROFILE_INFO SET Admin_login_status=1';
+            	app.updateQuery(tx, query);
+        };
             
             var groupDataShow=[];
             
@@ -602,21 +610,47 @@ app.adminOragnisationList = (function () {
     	         
         // Logout user
         
-       var logout = function () {
-        var account_Id = localStorage.getItem("ACCOUNT_ID");
-        var userType = localStorage.getItem("USERTYPE");   
-        
-           
+       var logout = function () {                   
            navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {                    
                    app.mobileApp.pane.loader.show();    
                    setTimeout(function() {
-                        app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+                       var db = app.getDb();
+                       db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError,updateAdminLoginStatusSuccess);
                    	 //window.location.href = "index.html";
                    }, 100);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
         };
+            
+            
+              function updateAdminLoginStatus(tx) {
+                
+                var query = "DELETE FROM ADMIN_ORG";
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_GROUP";
+	            app.deleteQuery(tx, query);
+                                                
+	            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            	app.updateQuery(tx, query);
+            }
+            
+
+            function updateAdminLoginStatusSuccess() {
+                        var account_Id = localStorage.getItem("ACCOUNT_ID");
+                        var userType = localStorage.getItem("USERTYPE");   
+
+                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+            }
+
+            function updateAdminLoginStatusError(err) {
+	            console.log(err);
+            }
+
 
 
         return {

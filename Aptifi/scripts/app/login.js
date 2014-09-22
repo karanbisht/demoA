@@ -224,14 +224,18 @@ app.Login = (function () {
                userOrgIdArray.push(profileOrgData.org_id[i]);
            }           
            //userRoleArray.push(profileOrgData.role[i]);           
-        	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource) VALUES ("'
+        	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource , joinedDate , orgDesc) VALUES ("'
 				+ profileOrgData.org_id[i]
 				+ '","'
 				+ profileOrgData.org_name[i]
 				+ '","'
 				+ profileOrgData.role[i]
            	 + '","'
-				+ profileOrgData.org_logo[i]	
+				+ profileOrgData.org_logo[i]
+                + '","'
+				+ profileOrgData.joined_on[i]
+                + '","'
+				+ profileOrgData.org_desc[i]
 				+ '")';              
                app.insertQuery(tx, query);
        }                               

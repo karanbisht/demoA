@@ -24,6 +24,7 @@ var app = (function (win) {
     var fp;
     var userTypeDBValue=[];
     var loginStatusDBValue;
+    var adminLoginStatusDBValue;
     var account_IdDBValue;
     
     var showAlert = function(message, title, callback) {
@@ -122,9 +123,9 @@ var app = (function (win) {
                 
 	var createDB = function(tx) {
             	
-      tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
+      tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER , Admin_login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
       
-      tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT)');
+      tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , joinedDate TEXT , orgDesc TEXT)');
         
       tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , orgDesc TEXT)');
         
@@ -156,6 +157,7 @@ var app = (function (win) {
 		var count = results.rows.length;
 		if (count !== 0) {
 			 loginStatusDBValue = results.rows.item(0).login_status;
+             adminLoginStatusDBValue= results.rows.item(0).Admin_login_status;
              account_IdDBValue= results.rows.item(0).account_id;
         }
     };
@@ -175,12 +177,17 @@ var app = (function (win) {
     var loginStatusQuerySuccess= function(){
 	    console.log(loginStatusDBValue+"||"+account_IdDBValue+"||"+userTypeDBValue);
         
-       if(loginStatusDBValue===1){
+       if(loginStatusDBValue===1 && adminLoginStatusDBValue!==1){
             app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
-            localStorage.setItem("loginStatusCheck",1);            
+            localStorage.setItem("loginStatusCheck",1);
+       }else if(loginStatusDBValue===1 && adminLoginStatusDBValue===1){
+          var account_Id = localStorage.getItem("ACCOUNT_ID");
+              app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+              localStorage.setItem("adminloginStatusCheck",1);    
         } else {            
             app.mobileApp.navigate('#welcome');
             localStorage.setItem("loginStatusCheck",0);
+             localStorage.setItem("adminloginStatusCheck",0);
         }
 	};
     
@@ -267,10 +274,8 @@ var app = (function (win) {
              navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
                      app.mobileApp.pane.loader.show();    
-                    
-                    setTimeout(function() {
-                       app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-                   }, 100);
+                       var db = app.getDb();
+                       db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError,updateAdminLoginStatusSuccess);
             	}
         	}, 'Logout', ['OK', 'Cancel']);
    
@@ -291,10 +296,8 @@ var app = (function (win) {
 		}
 
     };
-    
-    
-            function updateLoginStatus(tx) {
-                
+        
+            function updateLoginStatus(tx) {                
                 var query = "DELETE FROM PROFILE_INFO";
         	    app.deleteQuery(tx, query);
 
@@ -319,6 +322,36 @@ var app = (function (win) {
             function updateLoginStatusError(err) {
 	            console.log(err);
             }
+    
+    
+    
+    function updateAdminLoginStatus(tx) {
+                
+                var query = "DELETE FROM ADMIN_ORG";
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_GROUP";
+	            app.deleteQuery(tx, query);
+                                                
+	            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            	app.updateQuery(tx, query);
+            }
+            
+
+            function updateAdminLoginStatusSuccess() {
+                        var account_Id = localStorage.getItem("ACCOUNT_ID");
+                        var userType = localStorage.getItem("USERTYPE");   
+
+                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+            }
+
+            function updateAdminLoginStatusError(err) {
+	            console.log(err);
+            }
+
 
 
      var navigateHome = function () {

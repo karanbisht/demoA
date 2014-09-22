@@ -140,7 +140,7 @@ app.OragnisationList = (function () {
 
          var show = function(e){                     
              
-                           $('#organisation-listview').data('kendoMobileListView').refresh();
+             $('#organisation-listview').data('kendoMobileListView').refresh();
              var scroller = e.view.scroller;
              scroller.reset();
              
@@ -587,7 +587,7 @@ app.OragnisationList = (function () {
         };                        
                      
         function getOrgInfoDB(tx) {                    
-            var query = 'SELECT org_id , org_name , role , imageSource FROM JOINED_ORG';
+            var query = 'SELECT * FROM JOINED_ORG';
 			app.selectQuery(tx, query, orgDataForOrgSuccess);
 		};
 
@@ -612,7 +612,8 @@ app.OragnisationList = (function () {
                          role:results.rows.item(i).role,
                          imgData:results.rows.item(i).imageSource,   
                          imageSourceOrg:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,   
-                         orgDesc:''                      
+                         orgDesc:results.rows.item(i).orgDesc,                      
+                         joinDate:results.rows.item(i).joinedDate                   
                        });         
                     }
                 }
@@ -635,17 +636,52 @@ app.OragnisationList = (function () {
                 
             
             
-        var orgForGroupSelected =function(e){
-            //alert("hello");
-            //var organisationID=e.data.organisationID;
-            //uid=' + e.data.uid
+        var orgMoreInfoSelected =function(e){
             console.log(e.data);
+            var orgID=e.data.org_id;
+            var orgName=e.data.org_name;
+            var orgDesc=e.data.orgDesc;
+            var role = e.data.role;
+            var joinDate = e.data.joinDate;
+            //alert(joinDate);
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName);                
+            app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID +'&orgName='+orgName+'&orgDesc='+orgDesc+'&account_Id='+account_Id+'&role='+role+'&joinDate='+joinDate);
         };    
             
+           
+        var orgManageID;
+            
+        var showOrgInfoPage = function(e){
+           orgManageID = e.view.params.orgID;
+           var orgName = e.view.params.orgName; 
+           var orgDesc = e.view.params.orgDesc;
+           var account_Id = e.view.params.account_Id;
+           var role = e.view.params.role;                 
+           var joinDate = e.view.params.joinDate;
+            
+            if(orgDesc===''){
+                $("#manageOrgDesc").hide();
+            }else{
+               $("#manageOrgDesc").show(); 
+            }
+            
+            //alert(orgDesc+"||"+joinDate);
+            if(role==='C'){
+                $("#manageOrgFooter").show();
+            }else{
+                $("#manageOrgFooter").hide();
+            }
+            
+           $("#orgJoinData").html(joinDate); 
+           $("#navBarOrgHeader").html(orgName);        
+           $("#OrgDescData").html(orgDesc);  
+        }    
         
         
+         var unsubscribeOrg = function(){
+             
+         }
+            
         var onAdminComboChange = function(){
        		  var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
            	  var groupSelected = selectData.value();
@@ -957,9 +993,10 @@ app.OragnisationList = (function () {
             //groupData:GroupsModel.groupData,
             //userData:UsersModel.userData,
             organisationSelected: organisationSelected,
-            orgForGroupSelected:orgForGroupSelected,
+            orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
             afterShow:afterShow,
+            showOrgInfoPage:showOrgInfoPage,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
             inAppBrowser:inAppBrowser,          

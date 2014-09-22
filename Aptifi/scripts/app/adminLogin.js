@@ -91,18 +91,19 @@ app.adminLogin = (function () {
                			console.log(loginDataView);
                
        		$.each(loginDataView, function(i, loginData) {
-                               console.log(loginData.status[0].Msg);
+                         console.log(loginData.status[0].Msg);
                          console.log("karan" + account_Id);      
 
                    if(loginData.status[0].Msg==='You have been successfully logged in.'){
                           console.log('reg');
+                          console.log(loginDataView);
                           getAdminOrgData();
                                                     
-                      }else{
+                   }else{
                            app.mobileApp.pane.loader.hide();
                           app.showAlert(loginData.status[0].Msg,"Notification");
 
-                      }
+                   }
                  
                    /*
                    else if(loginData.status[0].Msg==='Create profile'){
