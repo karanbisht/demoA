@@ -678,9 +678,64 @@ app.OragnisationList = (function () {
         }    
         
         
-         var unsubscribeOrg = function(){
+         var unsubscribeOrg = function(){                         
              
+           var delOrgfromServerDB = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/unsubscribe/"+orgManageID+"/"+account_Id,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {                                
+                 data: function(data)
+  	             {
+                       console.log(data);
+               
+                                  if(data.status[0].Msg==='Sucess'){                                                      
+                                        var db = app.getDb();
+                                        db.transaction(delOrgRelData, delOrgError,delOrgSuccess);                          
+                                     } 
+                                 
+                       
+		                        // console.log(groupDataShow);
+                                   return groupDataShow;
+                   }                       
+            },
+	            error: function (e) {
+        	       console.log(e);
+           	}
+	        
+    	    });         
+             
+           delOrgfromServerDB.read();  
          }
+            
+            
+            
+              function delOrgRelData(tx) {
+                
+                var query = "DELETE FROM JOINED_ORG where org_id="+orgManageID;
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ORG_NOTIFICATION where org_id="+orgManageID;
+	            app.deleteQuery(tx, query);
+                               
+            }
+            
+
+            function delOrgSuccess() {
+                app.showAlert('Successfully Unsubscribe Organisation','Unsubscribe');
+                app.callUserLogin();
+            }
+
+            function delOrgError(err) {
+	            console.log(err);
+            }
+            
+            
+            
             
         var onAdminComboChange = function(){
        		  var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
@@ -1016,6 +1071,7 @@ app.OragnisationList = (function () {
             beforeShow:beforeShow,
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,
+            unsubscribeOrg:unsubscribeOrg,
             logout: logout
         };
 

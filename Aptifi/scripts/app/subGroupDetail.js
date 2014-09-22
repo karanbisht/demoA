@@ -28,6 +28,8 @@ app.subGroupDetail = (function () {
             organisationID = e.view.params.orgID;
             GroupName= e.view.params.groupName;
             selectedGroupDesc= e.view.params.groupDesc;
+            
+            $("#adminGroupHeader").html(GroupName);           
          };
            
            

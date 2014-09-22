@@ -25,6 +25,7 @@ app.groupDetail = (function () {
             account_Id = e.view.params.account_Id;
             orgName= e.view.params.orgName;
             orgDesc= e.view.params.orgDesc;
+            $("#adminOrgHeader").html(orgName);
          };
            
            

@@ -39,7 +39,7 @@ app.adminOragnisationList = (function () {
             	app.updateQuery(tx, query);
         };
             
-            var groupDataShow=[];
+        var groupDataShow=[];
             
         function getDataSuccess(tx, results) {                        
             groupDataShow=[];
