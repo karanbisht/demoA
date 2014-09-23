@@ -79,7 +79,8 @@ app.replyedCustomer = (function () {
                                     console.log(orgVal);
 
                    	             if(orgVal.Msg ==='No Customer in this group'){     
-                                     groupDataShow.push({
+                                     
+                                        groupDataShow.push({
                                          user_fname: 'No Customer',
                                          user_lname: '',
                                          customerID:0,  
@@ -89,10 +90,12 @@ app.replyedCustomer = (function () {
                                          notification_id:'',
                                          add_date:'',
                                          user_id:0
-    	                               });                                      
+    	                               
+                                        });                                      
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.customerList.length);  
                                         for(var i=0;i<orgVal.customerList.length;i++){
+                                          
                                             groupDataShow.push({
 		                                         user_fname: orgVal.customerList[i].user_fname,
                 		                         user_lname : orgVal.customerList[i].user_lname,

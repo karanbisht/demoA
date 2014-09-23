@@ -172,6 +172,7 @@ app.sendNotification = (function () {
             $("#selectGroupDiv").hide();
             $("#selectTypeDiv").hide();
             $("#sendNotificationDivMsg").hide();
+            $("#selectCustomerToSend").hide();
             
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
@@ -474,7 +475,107 @@ app.sendNotification = (function () {
              $("#selectOrgDiv").hide();
              $("#selectGroupDiv").show();
              app.mobileApp.pane.loader.hide();
+             
+             
+            var UserModel ={
+            id: 'Id',
+            fields: {
+                mobile: {
+                    field: 'mobile',
+                    defaultValue: ''
+                },
+                first_name: {
+                    field: 'first_name',
+                    defaultValue: ''
+                },
+                email: {
+                    field: 'email',
+                    defaultValue:''
+                },
+                last_name: {
+                    field: 'last_name',
+                    defaultValue:''
+                },
+                customerID: {
+                    field: 'customerID',
+                    defaultValue:''
+                }
+
+               }
+             };
+
+             
+          var MemberDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+org,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+              	}
+              },
+       	 schema: {
+                 model: UserModel,
+                 data: function(data)
+  	             {
+                       console.log(data);                      
+                        var groupDataShowCustomer = [];
+                                 $.each(data, function(i, groupValue) {
+									console.log(groupValue);
+                                     
+                                 $.each(groupValue, function(i, orgVal) {
+                                    console.log(orgVal);
+
+                   	             if(orgVal.Msg ==='No Customer in this organisation'){     
+                                      escapeGroupClick();
+                                    }else if(orgVal.Msg==='Success'){
+                                        console.log(orgVal.allCustomer.length);  
+                                        for(var i=0;i<orgVal.allCustomer.length;i++){
+                                            groupDataShowCustomer.push({
+                                                 mobile: orgVal.allCustomer[i].uacc_username,
+		                                         first_name: orgVal.allCustomer[i].user_fname,
+        		                                 email:orgVal.allCustomer[i].user_email,  
+                		                         last_name : orgVal.allCustomer[i].user_lname,
+                        		                 customerID:orgVal.allCustomer[i].custID,
+                                		         account_id:orgVal.allCustomer[i].account_id,
+                                                 orgID:orgVal.allCustomer[i].orgID
+                                            });
+                                        }     
+                                    } 
+    							  });
+                               });
+                       
+		                         console.log(groupDataShowCustomer);
+                                 return groupDataShowCustomer;
+	               }
+
+            },
+	            error: function (e) {
+        	       console.log(e);
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');                    
+           	}
+	        
+    	    });         
+                     
+            MemberDataSource.fetch(function() {
+                
+ 		   });
+	                     
+    	    $("#customer-Name-listview").kendoListView({
+        		dataSource: MemberDataSource,
+       		 template: kendo.template($("#customerNameTemplate").html()),
+                schema: {
+           		model:  UserModel
+				}			
+			});
+                                      
          };
+         
+         
+         var skipToSeletType = function(){
+           $("#selectCustomerToSend").hide();
+                 escapeGroupClick();
+        };
 
          var sendNotificationGroup = function(e){
             console.log(e.data.pid);
@@ -482,7 +583,8 @@ app.sendNotification = (function () {
             localStorage.setItem("SELECTED_GROUP",group);
             app.mobileApp.pane.loader.show();              
              $("#selectGroupDiv").hide();
-             $("#selectTypeDiv").show();
+             //$("#selectTypeDiv").show();
+             $("#selectCustomerToSend").show();
              app.mobileApp.pane.loader.hide();              
          };
                   
@@ -508,6 +610,7 @@ app.sendNotification = (function () {
         	   init: init,
            	show: show,
                beforeShow:beforeShow,
+               skipToSeletType:skipToSeletType,
                sendNotificationOrg:sendNotificationOrg,
                sendNotificationGroup:sendNotificationGroup,
                escapeGroupClick:escapeGroupClick,

@@ -659,6 +659,13 @@ app.OragnisationList = (function () {
            var role = e.view.params.role;                 
            var joinDate = e.view.params.joinDate;
             
+            
+            $("#orgDescList").css("background-color", "#ffffff");
+            $("#manageOrgDesc").css("background-color", "#ffffff");
+			$("#orgDescList").css("z-index", "999");
+            $("#manageOrgDesc").css("z-index", "999");
+            
+            
             if(orgDesc===''){
                 $("#manageOrgDesc").hide();
             }else{
@@ -966,7 +973,7 @@ app.OragnisationList = (function () {
             
             
             
-            function OnImageLoad(evt) {
+           function OnImageLoad(evt) {
 
             var img = evt.currentTarget;
 
@@ -985,7 +992,7 @@ app.OragnisationList = (function () {
             $(img).css("left", result.targetleft);
             $(img).css("top", result.targettop);
            
-           };
+          };
             
             
                      

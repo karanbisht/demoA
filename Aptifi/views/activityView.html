@@ -16,9 +16,8 @@
         <div>
 	        <div class="activity-content">
     	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-        	    <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
-            		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
-                    
+        	    <li id="titleContainer" style="background-color:#FDFF85;padding:10px;border-radius:6px;">
+            		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>                     
               		<h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
               		<span id="activityText" data-bind="text: message" class="user-share-txt"></span>
                     
@@ -26,6 +25,7 @@
             	</li>    
             <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
             </div>
+            <br/>
             <div id="notiImage"></div>
        </div> 
         <div class="commentContent" >

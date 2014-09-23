@@ -371,7 +371,7 @@ app.adminLogin = (function () {
                                  $.each(groupValue, function(i, orgVal) {
                                      console.log();
                    	             if(orgVal.Msg ==='No Group list'){     
-                                        alert('no');
+                                        //alert('no');
                   	                      datacheck++;                                                                                           
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.groupData.length);

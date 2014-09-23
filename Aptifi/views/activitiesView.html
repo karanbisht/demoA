@@ -90,13 +90,20 @@
     		<div class="cf" data-role="touch" data-bind="events: { tap: activitySelected }">         
 	            <!--<div class="user-avatar">    
         		    <img src="styles/images/notification1.png" />
- 	           </div>-->     
-            
+ 	           </div>-->
+              #if(date!==previousDate){#          
+              <div style="text-align: center;margin-bottom:10px;">
+                 <span id="activityTemplateDate" style="text-align:center;line-height:10pt;border-radius:6px;background-color:rgb(222,222,222);padding:2px 10px 2px 10px;">${date}</span>              
+              </div>
+              #}#
+              
        		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
+              #if(title!=='' && title!=='null' && title!==null){#
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
-                   #if(org_id!=='0'){#
-        		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;"></span>
-            	  #}#
+                                 
+       		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${time}</span>       	
+                   
+              #}#
  				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
             

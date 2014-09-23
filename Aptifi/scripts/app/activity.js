@@ -124,6 +124,11 @@ app.Activity = (function () {
             
             //var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;            
             //console.log(attached);
+            
+            if((title==='' || title==='null' || title===null) &&(message==='' || message==='null' || message===null)){
+                $('#titleContainer').hide();
+            }
+
                         
             if(attached!== null && attached!==''){
 	    		loaded(); 

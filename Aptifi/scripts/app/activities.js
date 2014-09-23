@@ -104,23 +104,48 @@ app.Activities = (function () {
             groupDataShow=[];
             
 			var count = results.rows.length;
-                DBGETDATAVALUE = count;           
+            //var current = new Date();   
+            DBGETDATAVALUE = count;           
+            
+            var previousDate='';
             //alert(count);
 			if (count !== 0) {
                 groupDataShow=[];
-            	for(var i =0 ; i<count ; i++){    
- 
+            	for(var i =0 ; i<count ; i++){
+                  
+                       var dateString = results.rows.item(i).send_date;
+                       var split = dateString .split(' ');
+                           console.log(split[0]+" || "+split[1]);
+                       var notiDate= app.formatDate(split[0]);
+                           console.log(notiDate);
+                    
+                       var splitTime =split[1].split(':');
+                            console.log(splitTime);
+                       var timeVal = splitTime[0]+':'+splitTime[1];
+                            console.log(timeVal);
+
+                       var notiTime=app.timeConvert(timeVal);
+                       console.log(notiTime);
+                    
+                    
+                      //var currentDate = app.currentDataFormate();
+                      //console.log(currentDate);
+                      //alert(results.rows.item(i).title);
                       groupDataShow.push({
 												 message: results.rows.item(i).message,
         		                                 org_id: results.rows.item(i).org_id,
-                                                 date:results.rows.item(i).send_date,
+                                                 date:notiDate,
+                                                 time:notiTime,
                                                  title:results.rows.item(i).title,
                                                  pid :results.rows.item(i).pid ,
                                                  comment_allow:results.rows.item(i).comment_allow ,
 		                                         bagCount : 'C',
                                                  attached :results.rows.item(i).attached,
+                                                 previousDate:previousDate,
                                                  attachedImg :'http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached
                        });
+                    
+                  previousDate= notiDate;
                     
                   lastNotificationPID=results.rows.item(i).pid;
         	    }    

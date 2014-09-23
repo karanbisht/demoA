@@ -673,8 +673,8 @@ var app = (function (win) {
     
     var callAdminOrganisationList = function(){
           var account_Id = localStorage.getItem("ACCOUNT_ID");
-              app.userPosition=false;
-              app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+          app.userPosition=false;
+          app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
     }; 
     
     
@@ -692,6 +692,47 @@ var app = (function (win) {
     var getYear = (function () {
         return new Date().getFullYear();
     }());
+    
+     
+    var formatDate = function (dateString) {
+            var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+            var month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            var today = new Date(dateString);
+			return kendo.toString(days[today.getDay()] +','+ today.getDate() +' '+ month[today.getMonth()]+' '+today.getFullYear());
+            //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
+     }
+    
+    var currentDataFormate = function(){
+       var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+       var month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+       var today = new Date();
+        
+        return kendo.toString(days[today.getDay()] +','+ today.getDate() +' '+ month[today.getMonth()]+' '+today.getFullYear()); 
+    }
+      
+    function timeConvert (time) {
+          // Check correct time format and split into components
+          time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+          if (time.length > 1) { // If time format correct
+            time = time.slice (1);  // Remove full string match value
+            time[5] = +time[0] < 12 ? ' am' : ' pm'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+          }
+          return time.join (''); // return adjusted time or original string
+      }
+
+    function isInternetConnected() {
+        if((navigator.network.connection.type).toUpperCase() != "NONE" &&
+           (navigator.network.connection.type).toUpperCase() != "UNKNOWN") {
+        //alert("online");
+            return true;
+        }else {                                             //alert("offline");
+            return false;
+        }
+     }
+    
+    
+    
     
     
   function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
@@ -750,6 +791,9 @@ var app = (function (win) {
         checkSimulator:checkSimulator,
         showNativeAlert:showNativeAlert,
         getDb:getDb,
+        formatDate:formatDate,
+        currentDataFormate:currentDataFormate,
+        timeConvert:timeConvert,
         validateMobile:validateMobile,
         validateEmail:validateEmail,
         devicePlatform:devicePlatform, 

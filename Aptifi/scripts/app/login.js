@@ -68,8 +68,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';                  
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';                  
+            var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -144,6 +144,9 @@ app.Login = (function () {
                              console.log(userType);
                           
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                          
+                          console.log('checking for User Date');
+                          
                           UserOrgInformation = loginData.status[0].JoinedOrg;
                           console.log(UserOrgInformation);
                           console.log(UserProfileInformation);
@@ -223,6 +226,9 @@ app.Login = (function () {
            if(profileOrgData.role[i]==='C'){
                userOrgIdArray.push(profileOrgData.org_id[i]);
            }           
+           
+           //alert(profileOrgData.joined_on[i]);
+           
            //userRoleArray.push(profileOrgData.role[i]);           
         	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource , joinedDate , orgDesc) VALUES ("'
 				+ profileOrgData.org_id[i]
