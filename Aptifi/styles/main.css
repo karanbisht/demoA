@@ -451,7 +451,27 @@
 
 #friendsApp .activities-view-info .km-content,
 #friendsApp .activities-view-info .km-listview {
-    background-color: #E2E2E2;
+    background-color: #EDEFF4;
+}
+
+
+#friendsApp .activities-view-notification .km-content{
+        background-color: #fff;
+}
+
+#friendsApp .activities-view-notification .km-listview {
+    background-color: #EDEFF4;
+}
+
+#friendsApp .activities-view-notification .km-list > li {
+    overflow: visible;
+    padding: .75em 0;
+    border-width: 0 0 1px;
+    border-color: #eaeced;
+    background-color: #fff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #34495e;
 }
 
 

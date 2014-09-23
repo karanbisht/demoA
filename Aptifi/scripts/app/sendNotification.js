@@ -574,9 +574,52 @@ app.sendNotification = (function () {
          
          var skipToSeletType = function(){
            $("#selectCustomerToSend").hide();
-                 escapeGroupClick();
+          
+            escapeGroupClick();
         };
 
+         
+          var NextToSeletType = function(){
+           $("#selectCustomerToSend").hide();
+          
+            var customer = [];
+		    
+            $(':checkbox:checked').each(function(i){
+          	  customer[i] = $(this).val();
+        	});
+            
+              customer = String(customer);        
+            console.log(customer);       
+             
+                 escapeGroupClick();
+        };
+         
+         
+          var skipToCustomerType = function(){
+           $("#selectGroupDiv").hide();
+           $("#selectCustomerToSend").show();
+          };
+
+         
+         
+           var NextToCustomerType = function(){
+                 $("#selectGroupDiv").hide();
+          
+            var customer = [];
+		    
+            $(':checkbox:checked').each(function(i){
+          	  customer[i] = $(this).val();
+        	});
+            
+            customer = String(customer);        
+            console.log(customer);      
+               
+         $("#selectCustomerToSend").show();
+              
+                 
+        };
+        
+         
          var sendNotificationGroup = function(e){
             console.log(e.data.pid);
             var group = e.data.pid;
@@ -614,6 +657,9 @@ app.sendNotification = (function () {
                sendNotificationOrg:sendNotificationOrg,
                sendNotificationGroup:sendNotificationGroup,
                escapeGroupClick:escapeGroupClick,
+               skipToCustomerType:skipToCustomerType,
+               NextToCustomerType:NextToCustomerType,
+               NextToSeletType:NextToSeletType,
                groupCheckData:groupCheckData,
                onChangeNotiGroup:onChangeNotiGroup,
                sendNotificationMessage:sendNotificationMessage

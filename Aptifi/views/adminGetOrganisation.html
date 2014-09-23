@@ -38,8 +38,8 @@
 
 
 
-<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
-  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;min-heigth:200px;">
+<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view-notification"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;min-heigth:200px;">
       
      <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
       
@@ -51,7 +51,7 @@
   </div>
         
     
-   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
+   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px;  padding-bottom:35px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
     	<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
         
@@ -63,25 +63,43 @@
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
     		 </p>
-   </div>
-    
-    
-    
-    <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
-        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
-        
-    	<ul id="customer-Name-listview" data-role="listview" data-template="customerNameTemplate" ></ul>
-        
-           <li>
+       
+               <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:right;">
                      	 <a data-role="button" style="background-color:#33539E">Skip</a>   
                     </span>
-           </li>
+            
+                    <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
+                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                    </span>
+
+        </li>
 
    </div>
     
     
-   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:15% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;">
+    
+   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:35px;border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
+        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
+        
+    	
+        <div id="customer-Name-listview" class="k-listview" style="overflow-y:scroll;">  </div>
+        
+        <li>
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:right;">
+                     	 <a data-role="button" style="background-color:#33539E">Skip</a>   
+                    </span>
+            
+                    <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
+                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                    </span>
+
+        </li>
+
+   </div>
+    
+    
+   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:15% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
        
@@ -154,20 +172,10 @@
 
 
         <script type="text/x-kendo-template" id="customerNameTemplate">            
-            <li class="deleteGroupShow">
-             <label><input type="checkbox" checked="checked" style="width:20px;height:20px;color:rgb(0,0,0);"/>
-                ${first_name} ${last_name}
-             </label>
-            </li>
-          <!--  
-                        <div class="deleteGroupShow" data="${customerID}">
-                <input type="checkbox" class="click" />
-                <span>${first_name} ${last_name}</span>
-            </div>
-
-           <li class="deleteGroupShow">
-        	    <label ><input type="checkbox" value="${customerID}" />${first_name} ${last_name}</label>
-	       </li>-->	       
+             <div class="deleteGroupShow" data="${customerID}">
+                <input type="checkbox" class="click" value="${customerID}" />
+                <span class="checkbox">#:first_name# #:last_name#</span>
+             </div>
         </script>
 
 
