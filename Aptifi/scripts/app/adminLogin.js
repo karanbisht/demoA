@@ -476,6 +476,7 @@ app.adminLogin = (function () {
         var goToIndex = function(){
               app.mobileApp.navigate('index.html');
         };
+
         
         var sendForgetMail = function(){
             var forgetEmail = $("#forgetEmail").val();    
@@ -483,8 +484,7 @@ app.adminLogin = (function () {
 				  app.showAlert("Please enter your Email.", "Validation Error");
 			} else if (!app.validateEmail(forgetEmail)) {
 				  app.showAlert("Please enter a valid Email.", "Validation Error");
-			}else{
-               
+			}else{               
                   var jsonData = {"email":forgetEmail};   
                   var dataSourceRegistration = new kendo.data.DataSource({
                transport: {
@@ -512,11 +512,11 @@ app.adminLogin = (function () {
                dataSourceRegistration.fetch(function() {
 				        var registrationDataView = dataSourceRegistration.data();
 						   $.each(registrationDataView, function(i, regData) {
-                                   console.log(regData.status[0].Msg);
+                                   console.log(regData.status[0].Msg); 
                                
                                if(regData.status[0].Msg==='An email has been sent to reset your password.'){              
                                      app.showAlert("An email has been sent to reset your password.","Notification"); 
-                                     window.location.href = "index.html";
+                                     window.location.href = "organisationLogin.html";
                                   //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
                                }else{
                                   app.showAlert(regData.status[0].Msg ,'Notification'); 

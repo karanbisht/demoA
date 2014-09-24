@@ -32,6 +32,7 @@ app.Login = (function () {
         };
 
         var show = function () {
+            
             console.log("Login Page");
             //app.showNativeAlert();            
             app.userPosition=true;
@@ -68,8 +69,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';                  
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';                  
+            var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();

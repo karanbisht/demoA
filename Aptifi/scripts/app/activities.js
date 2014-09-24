@@ -114,6 +114,7 @@ app.Activities = (function () {
             	for(var i =0 ; i<count ; i++){
                   
                        var dateString = results.rows.item(i).send_date;
+                   //alert(dateString);
                        var split = dateString .split(' ');
                            console.log(split[0]+" || "+split[1]);
                        var notiDate= app.formatDate(split[0]);

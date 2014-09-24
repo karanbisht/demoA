@@ -321,8 +321,11 @@ app.sendNotification = (function () {
                 //console.log(cmbGroup);
 		  
         
-                var cmbGroup = localStorage.getItem("SELECTED_GROUP");
-                cmbGroup = String(cmbGroup);
+               var cmbGroup = localStorage.getItem("SELECTED_GROUP");
+               cmbGroup = String(cmbGroup);
+             
+               var cmbCust=localStorage.getItem("SELECTED_CUSTOMER");
+               cmbCust = String(cmbCust);
              
                 //alert(cmbGroup);
              
@@ -345,12 +348,13 @@ app.sendNotification = (function () {
                 
                 //alert(titleValue +"||"+notificationValue);            
 
-          console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+org_id);
+          console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+cmbCust+"||"+org_id);
                           
           if(org_id===null){
             app.showAlert('Please select Organisation','Validation Error');
-          //}else if(cmbGroup===''){
-          //  app.showAlert('Please Organisation Group','Validation Error');  
+          }else if(cmbGroup==='' && cmbCust===''){
+            app.showAlert('Please Organisation Group or Customer.','Validation Error'); 
+            $("#selectGroupDiv").show();  
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -359,7 +363,7 @@ app.sendNotification = (function () {
             app.showAlert('Please select Notification Message','Validation Error');           
           }else{ 
              
-          var notificationData = {"cmbGroup":cmbGroup ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
+          var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                             
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
@@ -396,6 +400,8 @@ app.sendNotification = (function () {
                                    $("#notificationTitleValue").val('');            
 						           $("#notificationDesc").val('');
                                    document.getElementById('comment_allow').checked = false;
+                                   
+                                   app.callAdminOrganisationList();
                                    //$("#notificationType").data("kendoComboBox").value("");
              					  //$("#groupforNotification").data("kendoComboBox").value("");
                                    //$("#orgforNotification").data("kendoComboBox").value("");
@@ -466,7 +472,7 @@ app.sendNotification = (function () {
           });
                        
                           
-             $("#group-Name-listview").kendoMobileListView({
+             $("#group-Name-listview").kendoListView({
   		    template: kendo.template($("#groupNameTemplate").html()),    		
      		 dataSource: comboGroupListDataSource,
               pullToRefresh: true
@@ -557,9 +563,9 @@ app.sendNotification = (function () {
 	        
     	    });         
                      
-            MemberDataSource.fetch(function() {
+            /*MemberDataSource.fetch(function() {
                 
- 		   });
+ 		   });*/
 	                     
     	    $("#customer-Name-listview").kendoListView({
         		dataSource: MemberDataSource,
@@ -588,9 +594,9 @@ app.sendNotification = (function () {
           	  customer[i] = $(this).val();
         	});
             
-              customer = String(customer);        
+            customer = String(customer);        
             console.log(customer);       
-             
+            localStorage.setItem("SELECTED_CUSTOMER",customer);  
                  escapeGroupClick();
         };
          
@@ -603,31 +609,29 @@ app.sendNotification = (function () {
          
          
            var NextToCustomerType = function(){
-                 $("#selectGroupDiv").hide();
-          
-            var customer = [];
+            $("#selectGroupDiv").hide();
+               
+            var group = [];
 		    
             $(':checkbox:checked').each(function(i){
-          	  customer[i] = $(this).val();
+          	  group[i] = $(this).val();
         	});
             
-            customer = String(customer);        
-            console.log(customer);      
-               
-         $("#selectCustomerToSend").show();
-              
-                 
+            group = String(group);        
+            console.log(group);      
+            localStorage.setItem("SELECTED_GROUP",group); 
+            $("#selectCustomerToSend").show();                               
         };
         
          
          var sendNotificationGroup = function(e){
-            console.log(e.data.pid);
-            var group = e.data.pid;
-            localStorage.setItem("SELECTED_GROUP",group);
-            app.mobileApp.pane.loader.show();              
-             $("#selectGroupDiv").hide();
+             console.log(e.data.pid);
+             var group = e.data.pid;
+             localStorage.setItem("SELECTED_GROUP",group);
+             app.mobileApp.pane.loader.show();              
+              $("#selectGroupDiv").hide();
              //$("#selectTypeDiv").show();
-             $("#selectCustomerToSend").show();
+              $("#selectCustomerToSend").show();
              app.mobileApp.pane.loader.hide();              
          };
                   

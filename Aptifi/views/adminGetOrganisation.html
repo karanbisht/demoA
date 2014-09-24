@@ -53,27 +53,26 @@
     
    <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px;  padding-bottom:35px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
-    	<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
+    	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->
+       
+        <div id="group-Name-listview" class="k-listview" style="overflow-y:scroll;">  </div>
         
        <!--<div>
           <span data-role="button" style="background-color:#33539E;width:100%" data-bind="click:escapeGroupClick">
 	           <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Skip</a>
           </span>       
        </div>-->   
-	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-		    	   <b>You have no Notification for you.</b>
-    		 </p>
-       
+	    
                <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:right;">
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:right;">
                      	 <a data-role="button" style="background-color:#33539E">Skip</a>   
                     </span>
             
-                    <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
+                    <span id="login" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="padding:10px;float:right;">
                      	 <a data-role="button" style="background-color:#33539E">Next</a>   
                     </span>
 
-        </li>
+               </li>
 
    </div>
     
@@ -163,11 +162,17 @@
 
 
 		<script type="text/x-kendo-template" id="groupNameTemplate"> 
-    		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationGroup }">				            
+    		<!--<div class="cf" >				            
 	    		<div class="activity-content"style="padding-top:10px;">
        		     <h2 id="activityTemplateTitle" class="orgNameList">${group_name}</h2>
         		</div>
-    		</div>            
+    		</div>-->
+            
+             <div class="deleteGroupShow" data="${pid}">
+                <input type="checkbox" class="click" value="${pid}" />
+                <span class="checkbox">#:group_name#</span>
+             </div>
+
 		</script>
 
 

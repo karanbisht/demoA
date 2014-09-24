@@ -504,15 +504,9 @@ var app = (function (win) {
     var apnFailedRegistration = function(error) {
         console.log("Error: " + error.toString());
     }
- 
     
-    //the function is a callback when a notification from APN is received
-    var onNotificationAPN = function(e) {
-        //alert(e);        
-        console.log(e);
-        //getPromotionFromServer();
-    };
-
+    
+    
             var messageDB;
 			var orgIdDB;
 			var notiIdDB;
@@ -521,7 +515,37 @@ var app = (function (win) {
             var attachedDB;
             var account_IdDB;
             var commentAllowDB;
+            var send_DateDB;
 
+    
+ 
+    
+    //the function is a callback when a notification from APN is received
+    //var onNotificationAPN = function(e) {
+        
+       var onNotificationAPN = function(event) {
+           
+           var receivedMesage = JSON.stringify(event, null, 4);
+            account_IdDB = localStorage.getItem("ACCOUNT_ID");
+            var messageSplitVal = receivedMesage.split('#####');
+            messageDB = messageSplitVal[0];
+			orgIdDB = messageSplitVal[1];
+			notiIdDB=messageSplitVal[2];
+            typeDB=messageSplitVal[3];
+            titleDB=messageSplitVal[4];
+            attachedDB=messageSplitVal[5];
+            commentAllowDB=messageSplitVal[6];
+            send_DateDB= getPresentDateTime();
+                        
+            if(commentAllowDB===''){
+                commentAllowDB=0;
+            }
+    
+            var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+    };
+    
+    
     
     //the function is a callback for all GCM events
     var onNotificationGCM = function onNotificationGCM(e) {
@@ -540,23 +564,28 @@ var app = (function (win) {
                 break;
             case 'message': 
             //alert(e.message);
-                       
-            account_IdDB = localStorage.getItem("ACCOUNT_ID");
+            
+            account_IdDB = localStorage.getItem("ACCOUNT_ID");            
+            //alert(account_IdDB);
+            
             var messageSplitVal = e.message.split('#####');
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
 			notiIdDB=messageSplitVal[2];
             typeDB=messageSplitVal[3];
             titleDB=messageSplitVal[4];
-            commentAllowDB=messageSplitVal[5];
-            attachedDB=messageSplitVal[6];
+            attachedDB=messageSplitVal[5];
+            commentAllowDB=messageSplitVal[6];
+            send_DateDB= getPresentDateTime();
+
+            
                         
             if(commentAllowDB===''){
                 commentAllowDB=0;
             }
     
-            //var db = app.getDb();
-			//db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+            var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
             
             
             //return message;
@@ -581,7 +610,7 @@ var app = (function (win) {
     
         
       function insertOrgNotiData(tx){           
-    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type) VALUES ("'
+    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date) VALUES ("'
 				+ orgIdDB
 				+ '","'
 				+ attachedDB
@@ -593,13 +622,15 @@ var app = (function (win) {
 			    + commentAllowDB
                 + '","'
 				+ typeDB
+                + '","'
+				+ send_DateDB
 				+ '")';              
                 app.insertQuery(tx, query);               
       }
     
     
     function goToAppPage(){
-            //alert(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB);            
+            //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }
     
@@ -677,6 +708,21 @@ var app = (function (win) {
           app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
     }; 
     
+    var getPresentDateTime = function(){
+          var currentDate = new Date();
+          var month = currentDate.getMonth() + 1;
+          var day = currentDate.getDate();
+          var year = currentDate.getFullYear();
+            
+          var CurDateVal =year+'-'+month+'-'+day;
+          var hours = currentDate.getHours();
+          var minutes = currentDate.getMinutes();
+          var seconds = currentDate.getSeconds();
+          var time = hours + ":" + minutes + ":" + seconds;
+            
+          var totalTime = CurDateVal+' '+time;
+          return totalTime;
+    }
     
     var replyUser = function(){
             app.MenuPage=false;	
@@ -686,7 +732,7 @@ var app = (function (win) {
     var sendNotification = function(){
             app.MenuPage=false;
             app.mobileApp.navigate('views/sendNotification.html?account_Id='+account_Id);           
-        };
+    };
   
 
     var getYear = (function () {
@@ -788,6 +834,7 @@ var app = (function (win) {
         sendNotification:sendNotification,
         errorCB:errorCB,
         successCB:successCB,
+        getPresentDateTime:getPresentDateTime,
         checkSimulator:checkSimulator,
         showNativeAlert:showNativeAlert,
         getDb:getDb,
