@@ -56,7 +56,7 @@
     "Landscape"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "false",
+  "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.2.0",
   "BundleVersion": "1.0",
   "iOSDisplayName": "",
@@ -80,5 +80,10 @@
   ],
   "WP8Capabilities": [],
   "WP8Requirements": [],
-  "Framework": "Cordova"
+  "Framework": "Cordova",
+  "CordovaPluginVariables": {
+    "com.telerik.Cordova-MobileTestingExtension": {
+      "IOS_APP_URL": ""
+    }
+  }
 }

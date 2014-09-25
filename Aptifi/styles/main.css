@@ -885,6 +885,20 @@
 }
 
 
+input.largerCheckbox
+{
+/*	-webkit-appearance: none; 
+    -moz-appearance: none; 
+    -o-appearance: none;    
+    width:30px;
+    height:30px;
+    border: 2px solid #000000;
+*/
+    
+      zoom: 250%;
+    
+}
+
 
 /*
 .nav-button-ui {

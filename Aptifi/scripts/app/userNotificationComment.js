@@ -272,9 +272,15 @@ app.userNotiComment = (function () {
                                      var commentLength=groupValue[0].AllComment.length;                                    
                                      console.log(commentLength);                            
                                      for(var j=0;j<commentLength;j++){
+                                         
+                                           var dateString = groupValue[0].AllComment[j].add_date;
+                                           var split = dateString .split(' ');
+                                           console.log(split[0]+" || "+split[1]);
+                                           var commentDate= app.formatDate(split[0]);
+                                         
                                      groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
-                                         add_date: groupValue[0].AllComment[j].add_date,
+                                         add_date: commentDate,
 									     user_type: groupValue[0].AllComment[j].user_type,
 										 user_id: groupValue[0].AllComment[j].user_id
                                          //notification_id: groupValue[0].replyData[j].notification_id,

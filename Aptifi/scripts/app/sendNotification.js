@@ -162,7 +162,7 @@ app.sendNotification = (function () {
                                        
         var show = function(e){
             $notificationDesc.val('');
-            validator.hideMessages();
+           // validator.hideMessages();
              app.mobileApp.pane.loader.show();
 			localStorage.setItem("SELECTED_GROUP",'');
             $("#notificationTitleValue").val('');            

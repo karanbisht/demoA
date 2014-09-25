@@ -263,11 +263,19 @@ app.Activity = (function () {
                                      var commentLength=groupValue[0].AllComment.length;
                                          orgNotiCommentData=groupValue[0].AllComment;
                                          console.log(commentLength);
+                                         
                               
                                      for(var j=0;j<commentLength;j++){
+                                         
+                                                                var dateString = groupValue[0].AllComment[j].add_date;
+                                                                var split = dateString .split(' ');
+                                                                console.log(split[0]+" || "+split[1]);
+                                                                var commentDate= app.formatDate(split[0]);
+                                                                 alert(commentDate);
+                                         
                                       groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
-                                         add_date: groupValue[0].AllComment[j].add_date,
+                                         add_date: commentDate,
                                          user_id : groupValue[0].AllComment[j].user_id,
                                          user_type : groupValue[0].AllComment[j].user_type
                                       });
@@ -276,7 +284,7 @@ app.Activity = (function () {
                                   } 
                                  });
                        
-		                        // console.log(groupDataShow);
+ 		                         console.log(groupDataShow);
                                    return groupDataShow;
           
                        }                       
@@ -385,9 +393,17 @@ app.Activity = (function () {
 			if (count !== 0) {
                 groupDataShow=[];
             	for(var i =0 ; i<count ; i++){    
-                    groupDataShow.push({
+                    
+                       var dateString = results.rows.item(i).add_date;
+                       var split = dateString .split(' ');
+                       console.log(split[0]+" || "+split[1]);
+                       var commentDate= app.formatDate(split[0]);
+                       alert(commentDate);
+
+                    
+                        groupDataShow.push({
                                          comment: results.rows.item(i).comment,
-                                         add_date: results.rows.item(i).add_date,
+                                         add_date: commentDate,
                                          user_id : results.rows.item(i).user_id,
                                          user_type : results.rows.item(i).user_type
                                       });
