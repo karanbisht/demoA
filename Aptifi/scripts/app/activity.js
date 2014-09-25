@@ -271,7 +271,7 @@ app.Activity = (function () {
                                                                 var split = dateString .split(' ');
                                                                 console.log(split[0]+" || "+split[1]);
                                                                 var commentDate= app.formatDate(split[0]);
-                                                                 alert(commentDate);
+                                                                 //alert(commentDate);
                                          
                                       groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
@@ -398,7 +398,7 @@ app.Activity = (function () {
                        var split = dateString .split(' ');
                        console.log(split[0]+" || "+split[1]);
                        var commentDate= app.formatDate(split[0]);
-                       alert(commentDate);
+                       //alert(commentDate);
 
                     
                         groupDataShow.push({

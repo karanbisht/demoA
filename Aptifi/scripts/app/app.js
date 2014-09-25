@@ -208,6 +208,7 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {
+        alert("error--"+err.message);
  		console.log("Error processing SQL: " + err.message);
 	};
     
@@ -525,6 +526,9 @@ var app = (function (win) {
         
        var onNotificationAPN = function(event) {
            
+       if ( event.alert )
+       {
+                   
            var receivedMesage = JSON.stringify(event, null, 4);
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
             var messageSplitVal = receivedMesage.split('#####');
@@ -543,8 +547,8 @@ var app = (function (win) {
     
             var db = app.getDb();
 			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-    };
-    
+       }
+     };
     
     
     //the function is a callback for all GCM events
@@ -609,7 +613,8 @@ var app = (function (win) {
     };  
     
         
-      function insertOrgNotiData(tx){           
+      function insertOrgNotiData(tx){
+          alert('insert');
     	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date) VALUES ("'
 				+ orgIdDB
 				+ '","'
@@ -630,6 +635,7 @@ var app = (function (win) {
     
     
     function goToAppPage(){
+        alert('move');
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }

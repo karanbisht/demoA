@@ -39,7 +39,7 @@ app.Login = (function () {
             $('#loginUsername').val('');
             //$('#loginPassword').val('');            
             
-            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
+             window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
             
             //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
