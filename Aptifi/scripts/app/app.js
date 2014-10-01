@@ -1,4 +1,4 @@
-var app = (function () {
+var app = (function (win) {
     'use strict';
 
     var db;
@@ -17,15 +17,15 @@ var app = (function () {
         showAlert(message, 'Error');
     };
 
-    /*win.addEventListener('error', function (e) {
+    win.addEventListener('error', function (e) {
         e.preventDefault();
 
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
 
-        showAlert(message, 'Error');
+        console.log(message, 'Error');
 
         return true;
-    });*/
+    });
     
     var devicePlatform = function(){
         return device.platform;
@@ -342,9 +342,11 @@ var app = (function () {
      };
      var mobileApp;
     
+    
     //console.log(loginStatusCheck);
     
     //if(loginStatusCheck==='0'){
+    
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
                                                      transition: 'slide',
