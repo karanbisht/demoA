@@ -233,8 +233,15 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Updated Successfully","Notification");
+                               if(addGroupData.status[0].Msg==='Success'){  
+                                   
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Group Updated Successfully');   
+                                 }else{
+                                      app.showAlert("Group Updated Successfully","Notification");  
+                                 }
+                                   
+								//app.showAlert("Group Updated Successfully","Notification");
 				        	        app.mobileApp.navigate('views/groupListPage.html');
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
@@ -385,8 +392,15 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceAddMember.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Customer Added to group successfully'){                                
-									app.showAlert("Member Added Successfully","Notification");
+                               if(addGroupData.status[0].Msg==='Customer Added to group successfully'){  
+
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Member Added Successfully');   
+                                 }else{
+                                      app.showAlert("Member Added Successfully","Notification");  
+                                 }
+                                   
+							    //app.showAlert("Member Added Successfully","Notification");
 				        	        //app.mobileApp.navigate('#groupMemberShow');
                                     showSubGroupMembers();
                                }else{
@@ -449,8 +463,15 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='User removed successfully'){                                
-									app.showAlert("Member Deleted Successfully","Notification");
+                               if(deleteGroupData.status[0].Msg==='User removed successfully'){ 
+                                   
+                                   if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Member Deleted Successfully');   
+                                 }else{
+                                      app.showAlert("Member Deleted Successfully","Notification");  
+                                 }
+                                   
+								//app.showAlert("Member Deleted Successfully","Notification");
 				        	        //app.mobileApp.navigate('#groupMemberShow');
                                     showSubGroupMembers();
                                }else{

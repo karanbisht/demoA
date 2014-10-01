@@ -105,7 +105,12 @@ app.Activity = (function () {
 
         var show = function (e) {
             groupDataShow = [];            
-             
+
+            //console.log('TESTINGGGGGG');
+            //console.log(window);
+            //console.log(window.plugins);
+
+ 
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;
@@ -526,7 +531,13 @@ app.Activity = (function () {
                                console.log(commentData.status[0].Msg);
                                   refreshComment(); 
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
-                                 //app.showAlert("Reply sent successfully","Notification");
+                                 
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Reply sent successfully');   
+                                 }else{
+                                      app.showAlert("Reply sent successfully","Notification");  
+                                 }
+                                 
                                  $("#newComment").val('');
                              }else{
                                  app.showAlert(commentData.status[0].Msg ,'Notification'); 

@@ -364,7 +364,13 @@ app.userNotiComment = (function () {
                		  $.each(commentDataView, function(i, commentData) {           
                                console.log(commentData.status[0].Msg);
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
-                                 //app.showAlert("Reply sent successfully","Notification");
+                                 
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Reply sent successfully');   
+                                 }else{
+                                      app.showAlert("Reply sent successfully","Notification");  
+                                 }
+
                                  refreshComment();
                                  $("#newAdminComment").val('');
                              }else{

@@ -14,7 +14,7 @@ app.sendNotification = (function () {
     	var init = function () {				                 
            app.MenuPage=false;
            app.userPosition=false;
-           validator = $('#enterNotification').kendoValidator().data('kendoValidator');
+           //validator = $('#enterNotification').kendoValidator().data('kendoValidator');
            $notificationDesc = $('#notificationDesc'); 
                                  
             
@@ -161,9 +161,9 @@ app.sendNotification = (function () {
     
                                        
         var show = function(e){
-            $notificationDesc.val('');
+            //$notificationDesc.val('');
            // validator.hideMessages();
-             app.mobileApp.pane.loader.show();
+            app.mobileApp.pane.loader.show();
 			localStorage.setItem("SELECTED_GROUP",'');
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
@@ -347,7 +347,7 @@ app.sendNotification = (function () {
                 var titleValue = $("#notificationTitleValue").val();
                 
                 //alert(titleValue +"||"+notificationValue);            
-
+             
           console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+cmbCust+"||"+org_id);
                           
           if(org_id===null){
@@ -396,7 +396,14 @@ app.sendNotification = (function () {
                                console.log(notification.status[0].Msg);
                                
                                if(notification.status[0].Msg==='Notification Sent'){
-                                 app.showAlert("Notification Send Successfully ","Notification");  
+            
+                                   if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Notification Send Successfully');   
+                                 }else{
+                                       app.showAlert("Notification Send Successfully","Notification"); 
+                                 }
+            
+  
                                    $("#notificationTitleValue").val('');            
 						           $("#notificationDesc").val('');
                                    document.getElementById('comment_allow').checked = false;

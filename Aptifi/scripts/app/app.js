@@ -1,25 +1,6 @@
-//This is your Telerik BackEnd Services API key.
-var baasApiKey = 'wKkFz2wbqFe4Gj0s';
-
-//This is the scheme (http or https) to use for accessing Telerik BackEnd Services.
-var baasScheme = 'http';
-
-//This is your Android project number. It is required by Google in order to enable push notifications for your app. You do not need it for iPhone.
-var androidProjectNumber = '790452394475';
-
-//Set this to true in order to test push notifications in the emulator. Note, that you will not be able to actually receive 
-//push notifications because we will generate fake push tokens. But you will be able to test your other push-related functionality without getting errors.
-var emulatorMode = false;
-
-
-
-
-var app = (function (win) {
+var app = (function () {
     'use strict';
-    
-    // Global error handling
-    
-    //var userPosition;
+
     var db;
     var fp;
     var userTypeDBValue=[];
@@ -36,7 +17,7 @@ var app = (function (win) {
         showAlert(message, 'Error');
     };
 
-    win.addEventListener('error', function (e) {
+    /*win.addEventListener('error', function (e) {
         e.preventDefault();
 
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
@@ -44,7 +25,7 @@ var app = (function (win) {
         showAlert(message, 'Error');
 
         return true;
-    });
+    });*/
     
     var devicePlatform = function(){
         return device.platform;
@@ -96,10 +77,10 @@ var app = (function (win) {
     
     var checkSimulator = function() {
             if (window.navigator.simulator === true) {
-                alert('This plugin is not available in the simulator.');
+                //alert('This plugin is not available in the simulator.');
                 return true;
             } else if (window.plugins.toast === undefined) {
-                alert('Plugin not found. Maybe you are running in AppBuilder Companion app which currently does not support this plugin.');
+                //alert('Plugin not found. Maybe you are running in AppBuilder Companion app which currently does not support this plugin.');
                 return true;
             } else {
                 return false;
@@ -185,7 +166,7 @@ var app = (function (win) {
               app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
               localStorage.setItem("adminloginStatusCheck",1);    
         } else {            
-            app.mobileApp.navigate('#welcome');
+            //app.mobileApp.navigate('index.html');
             localStorage.setItem("loginStatusCheck",0);
              localStorage.setItem("adminloginStatusCheck",0);
         }
@@ -343,8 +324,8 @@ var app = (function (win) {
             
 
             function updateAdminLoginStatusSuccess() {
-                        var account_Id = localStorage.getItem("ACCOUNT_ID");
-                        var userType = localStorage.getItem("USERTYPE");   
+              var account_Id = localStorage.getItem("ACCOUNT_ID");
+              var userType = localStorage.getItem("USERTYPE");   
 
                 app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
             }
@@ -359,7 +340,18 @@ var app = (function (win) {
             app.MenuPage=false;
             app.mobileApp.navigate('#welcome');
      };
+     var mobileApp;
     
+    //console.log(loginStatusCheck);
+    
+    //if(loginStatusCheck==='0'){
+    mobileApp = new kendo.mobile.Application(document.body, {
+        											 initial: "#welcome",
+                                                     transition: 'slide',
+                                                     //statusBarStyle: statusBarStyle,
+         											layout: "tabstrip-layout",										
+                                                     skin: 'flat'
+                                                 	});
     var onDeviceReady = function() {
         // Handle "backbutton" event
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -368,31 +360,45 @@ var app = (function (win) {
         
         navigator.splashscreen.hide();
         fixViewResize();
-                
+        
+        console.log('apppppppppppp');
+        console.log(window.plugins);
+        
         var pushNotification = window.plugins.pushNotification;
-		console.log(window.plugins);
+		console.log(pushNotification);
         //alert(device.platform);
            
         if (device.platform === "iOS") {
-            pushNotification.register(apnSuccessfulRegistration,
-            apnFailedRegistration, {
-                "badge": "true",
-                "sound": "true",
-                "alert": "true",
-                "ecb": "pushCallbacks.onNotificationAPN"
+                pushNotification.register(apnSuccessfulRegistration,
+                apnFailedRegistration, {
+                    "badge": "true",
+                    "sound": "true",
+                    "alert": "true",
+                    "ecb": "pushCallbacks.onNotificationAPN"
             });
  
         } else {
             //register for GCM
+            //alert('Android');
+            
+             /*pushNotification.register(
+             successHandler,
+             errorHandler,
+             {
+                    "senderID":"790452394475",
+                    "ecb":"pushCallbacks.onNotificationGCM"
+             });*/
+            
+            
             pushNotification.register( 
             function(id) {
-                console.log("###Successfully sent request for registering with GCM.");
+                //alert("###Successfully sent request for registering with GCM.");
                 //set GCM notification callback
                 addCallback('onNotificationGCM', onNotificationGCM);
             },
  
             function(error) {
-                console.log("###Error " + error.toString());
+                //alert("###Error " + error.toString());
             }, {
                 "senderID": "790452394475",
                 "ecb": "pushCallbacks.onNotificationGCM"
@@ -400,11 +406,16 @@ var app = (function (win) {
         }
         var db = getDb();
 		db.transaction(createDB, errorCB, checkForLoginStatus);
-    };
+    };    
     
+    function successHandler (result) {
+        alert('result = ' + result);
+    }
     
-      
-    
+    function errorHandler (error) {
+        alert('error = ' + error);
+    }
+       
     // Handle "deviceready" event
     document.addEventListener('deviceready', onDeviceReady, false);
     // Handle "orientationchange" event
@@ -441,10 +452,11 @@ var app = (function (win) {
 
 
     // Initialize Everlive SDK
-    var el = new Everlive({
+   /* var el = new Everlive({
                               apiKey: appSettings.everlive.apiKey,
                               scheme: appSettings.everlive.scheme
-                          });
+                          });*/
+    
 
     var emptyGuid = '00000000-0000-0000-0000-000000000000';
 
@@ -453,7 +465,7 @@ var app = (function (win) {
         // Return user profile picture url
         resolveProfilePictureUrl: function (id) {
             if (id && id !== emptyGuid) {
-                return el.Files.getDownloadUrl(id);
+                //return el.Files.getDownloadUrl(id);
             } else {
                 return 'styles/images/avatar.png';
             }
@@ -462,7 +474,7 @@ var app = (function (win) {
         // Return current activity picture url
         resolvePictureUrl: function (id) {
             if (id && id !== emptyGuid) {
-                return el.Files.getDownloadUrl(id);
+                //return el.Files.getDownloadUrl(id);
             } else {
                 return '';
             }
@@ -506,8 +518,6 @@ var app = (function (win) {
         console.log("Error: " + error.toString());
     }
     
-    
-    
             var messageDB;
 			var orgIdDB;
 			var notiIdDB;
@@ -519,18 +529,18 @@ var app = (function (win) {
             var send_DateDB;
 
     
- 
-    
     //the function is a callback when a notification from APN is received
     //var onNotificationAPN = function(e) {
         
        var onNotificationAPN = function(event) {
+
+           alert(JSON.stringify(event));
            
        if ( event.alert )
-       {
-                   
-           var receivedMesage = JSON.stringify(event, null, 4);
+       {                   
+            var receivedMesage = JSON.stringify(event, null, 4);
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
+           
             var messageSplitVal = receivedMesage.split('#####');
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
@@ -552,8 +562,8 @@ var app = (function (win) {
     
     
     //the function is a callback for all GCM events
-    var onNotificationGCM = function onNotificationGCM(e) {
-        //alert(e);
+    var onNotificationGCM = function(e) {
+        alert(JSON.stringify(e));
      try{
         switch (e.event) {
             case 'registered':
@@ -566,13 +576,15 @@ var app = (function (win) {
                     //sendTokenToServer(e.regid);
                 }
                 break;
-            case 'message': 
-            //alert(e.message);
             
-            account_IdDB = localStorage.getItem("ACCOUNT_ID");            
+            case 'message': 
+            alert(e.payload.default);          
+
+            account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
+            
             //alert(account_IdDB);
             
-            var messageSplitVal = e.message.split('#####');
+            var messageSplitVal = e.payload.default.split('#####');
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
 			notiIdDB=messageSplitVal[2];
@@ -582,14 +594,35 @@ var app = (function (win) {
             commentAllowDB=messageSplitVal[6];
             send_DateDB= getPresentDateTime();
 
-            
-                        
             if(commentAllowDB===''){
                 commentAllowDB=0;
             }
+            
+            if ( e.foreground )
+            {
+                //var soundfile = e.soundname || e.payload.sound;
+                //var my_media = new Media("/android_asset/www/"+ soundfile);
+                //my_media.play();
+                alert('foreGround');
+                    var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
     
-            var db = app.getDb();
-			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+            }
+                else
+            {  // otherwise we were launched because the user touched a notification in the notification tray.
+                if ( e.coldstart )
+                {
+                    alert('coldstart');
+                    var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+    
+                }
+                else
+                {
+                     var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+                }
+            }
             
             
             //return message;
@@ -614,7 +647,7 @@ var app = (function (win) {
     
         
       function insertOrgNotiData(tx){
-          alert('insert');
+          //alert('insert');
     	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date) VALUES ("'
 				+ orgIdDB
 				+ '","'
@@ -635,7 +668,7 @@ var app = (function (win) {
     
     
     function goToAppPage(){
-        alert('move');
+        //alert('move');
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }
@@ -669,7 +702,7 @@ var app = (function (win) {
 
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
-    var mobileApp;
+    /*var mobileApp;
     
     console.log(loginStatusCheck);
     
@@ -681,7 +714,7 @@ var app = (function (win) {
          											layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});
-   /*}else{
+   }else{
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#organisationNotiList",
                                                      transition: 'slide',
@@ -698,8 +731,7 @@ var app = (function (win) {
           console.log(account_Id);
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
     };
-    
-    
+       
     var callUserLogin = function(){
            var account_Id = localStorage.getItem("ACCOUNT_ID");
            var userType = localStorage.getItem("USERTYPE");
@@ -718,14 +750,12 @@ var app = (function (win) {
           var currentDate = new Date();
           var month = currentDate.getMonth() + 1;
           var day = currentDate.getDate();
-          var year = currentDate.getFullYear();
-            
+          var year = currentDate.getFullYear();            
           var CurDateVal =year+'-'+month+'-'+day;
           var hours = currentDate.getHours();
           var minutes = currentDate.getMinutes();
           var seconds = currentDate.getSeconds();
-          var time = hours + ":" + minutes + ":" + seconds;
-            
+          var time = hours + ":" + minutes + ":" + seconds;            
           var totalTime = CurDateVal+' '+time;
           return totalTime;
     }
@@ -871,7 +901,6 @@ var app = (function (win) {
         //onAndroidPushReceived:onAndroidPushReceived,
         //onIosPushReceived:onIosPushReceived,
         //_onDeviceIsRegistered:_onDeviceIsRegistered,
-        everlive: el,
         getYear: getYear
     };
 }(window));

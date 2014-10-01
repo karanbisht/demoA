@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GCMBaseIntentService {
@@ -108,12 +109,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 				.setContentIntent(contentIntent)
 				.setAutoCancel(true);
 
-		String message = extras.getString("message");
+		String message = extras.getString("message.payload.default");
+
 		if (message != null) {
-			mBuilder.setContentText(message);
+            String[] messageSplitVal = message.split("#####");
+            String messageDB = messageSplitVal[0];
+			String orgIdDB = messageSplitVal[1];
+			String notiIdDB=messageSplitVal[2];
+            String typeDB=messageSplitVal[3];
+            String titleDB=messageSplitVal[4];
+            String attachedDB=messageSplitVal[5];
+            String commentAllowDB=messageSplitVal[6];
+
+            Toast.makeText(context, "asdasasd", Toast.LENGTH_LONG).show();
+
+			mBuilder.setContentText(messageDB);
 		} else {
 			mBuilder.setContentText("<missing message content>");
 		}
+
 
 		String msgcnt = extras.getString("msgcnt");
 		if (msgcnt != null) {

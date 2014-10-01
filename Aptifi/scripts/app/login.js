@@ -1,7 +1,6 @@
 /**
  * Login view model
  */
-
 var app = app || {};
 
 app.Login = (function () {
@@ -37,9 +36,13 @@ app.Login = (function () {
             //app.showNativeAlert();            
             app.userPosition=true;
             $('#loginUsername').val('');
-            //$('#loginPassword').val('');            
+        
+            //$('#loginPassword').val('');                        
+            //console.log('TESTINGGGGGG');
+            //console.log(window);
+            //console.log(window.plugins);
             
-             window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
+            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
             
             //if(window.navigator.simulator === true){
             //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
@@ -69,8 +72,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';                  
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                  
+            //var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();

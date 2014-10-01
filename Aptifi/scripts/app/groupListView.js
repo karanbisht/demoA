@@ -335,7 +335,15 @@ var activityListViewModel = (function () {
                       console.log(deleteGroupData.status[0].Msg);           
                                if(deleteGroupData.status[0].Msg==='Deleted Successfully'){                                
 				        	        app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
-    								app.showAlert("Group Deleted Successfully","Notification");
+
+                                if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Group Deleted Successfully');   
+                                 }else{
+                                      app.showAlert("Group Deleted Successfully","Notification");  
+                                 }
+
+                                   
+    						    //app.showAlert("Group Deleted Successfully","Notification");
 
                                }else{
                                   app.showAlert(deleteGroupData.status[0].Msg ,'Notification'); 

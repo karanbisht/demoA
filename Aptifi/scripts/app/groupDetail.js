@@ -225,8 +225,15 @@ app.groupDetail = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Updated Successfully","Notification");
+                               if(addGroupData.status[0].Msg==='Success'){    
+                                   
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Group Updated Successfully');   
+                                 }else{
+                                      app.showAlert("Group Updated Successfully","Notification");  
+                                 }
+
+									//app.showAlert("Group Updated Successfully","Notification");
 				        	        app.mobileApp.navigate('views/groupListPage.html');
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
@@ -390,7 +397,15 @@ app.groupDetail = (function () {
                       console.log(deleteGroupData.status[0].Code);
                       
                                if(deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2 ){                                
-									app.showAlert("Member Deleted Successfully","Notification");
+                                   
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Member Deleted Successfully');   
+                                 }else{
+                                      app.showAlert("Member Deleted Successfully","Notification");  
+                                 }
+
+                                   
+									//app.showAlert("Member Deleted Successfully","Notification");
                             		app.mobileApp.navigate('#groupMemberShow');
                                     refreshOrgMember();
                                }else{

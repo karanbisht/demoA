@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="nl.x-services.plugins.toast"
-        version="2.0.1">
+        version="2.0">
 
   <name>Toast</name>
 
@@ -19,9 +19,6 @@
 
   <js-module src="www/Toast.js" name="Toast">
     <clobbers target="window.plugins.toast" />
-  </js-module>
-
-  <js-module src="test/tests.js" name="tests">
   </js-module>
 
   <!-- ios -->

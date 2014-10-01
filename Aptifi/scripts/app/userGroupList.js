@@ -146,8 +146,13 @@ app.userGroupList = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Success'){                                
-									app.showAlert("Group Added Successfully","Notification");
+                               if(addGroupData.status[0].Msg==='Success'){
+                                    if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Group Added Successfully');   
+                                 }else{
+                                      app.showAlert("Group Added Successfully","Notification");  
+                                 }
+									//app.showAlert("Group Added Successfully","Notification");
 				        	        app.mobileApp.navigate('views/groupListPage.html');
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
