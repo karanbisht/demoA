@@ -1,8 +1,8 @@
 var app = app || {};
 
 app.Activities = (function () {
-    'use strict'
- //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+
+
  
   var activitiesDataSource;   
   var validator;
@@ -10,12 +10,7 @@ app.Activities = (function () {
   var userlName;
   var organisationID;  
   var account_Id;  
-            var userfName;
-            var userMobile;
-            var userEmail;
-            var userOrgName;
-            var userGropuName;   
-        	var bagCount;
+            var bagCount;
    		 var groupDataShow = [];
             var lastNotificationPID;
     		var DBGETDATAVALUE;
@@ -33,9 +28,10 @@ app.Activities = (function () {
          var show = function(e){             
              
            var scroller = e.view.scroller;
-           scroller.reset();  
-          
+           scroller.reset();
+             
            groupDataShow=[];
+             
            app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
            app.userPosition=false;                                      

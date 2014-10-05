@@ -121,9 +121,25 @@ app.replyedCustomer = (function () {
             },
 	            error: function (e) {
     	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+        	       //console.log(e);
+            	   //navigator.notification.alert("Please check your internet connection.",
+               	//function () { }, "Notification", 'OK');
+                    
+                    
+                     
+                    var showNotiTypes=[
+                      { message: "Your request has not been processed due to a connection error . Please try again"}
+                    ];
+                        
+                    var dataSource = new kendo.data.DataSource({
+                          data: showNotiTypes
+                    });
+                    
+                    $("#reply-customer-listview").kendoMobileListView({
+  		          template: kendo.template($("#errorTemplate").html()),
+                    dataSource: dataSource  
+     		       });
+                    
            	}
 	        
     	    });         

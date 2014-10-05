@@ -451,8 +451,10 @@
 
 #friendsApp .activities-view-info .km-content,
 #friendsApp .activities-view-info .km-listview {
-    background-color: #EDEFF4;
+    /*background-color: #EDEFF4;*/
+     background-color: #888888;
 }
+
 
 
 #friendsApp .activities-view-notification .km-content{
@@ -558,6 +560,8 @@
     padding-left: 5em;
     font-size: .85rem;
 }
+
+
 
 #friendsApp .activity-content .person-name,
 #friendsApp .add-activity-view .person-name,
@@ -898,6 +902,41 @@ input.largerCheckbox
       zoom: 250%;
     
 }
+
+
+.error-content {
+    position: relative;
+    font-size: .85rem;
+}
+
+
+.error-avatar {
+    width: 120px;
+    height:120px;
+    background-size:cover; 
+    background-position:center center; 
+    background-repeat:no-repeat; 
+}
+
+.error-avatar img {
+    /*width: 100%;*/
+    /*height: 100%;*/    
+    overflow: hidden;
+    display: inline-block;
+    max-width:120px;
+    max-height:120px;
+    margin-left:80%;
+    
+    /*min-width:60%;
+    min-height:60%;*/
+    text-align:center;
+    vertical-align:middle;    
+
+   /* -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;*/
+}
+
 
 
 /*

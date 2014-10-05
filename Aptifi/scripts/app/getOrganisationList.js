@@ -5,32 +5,18 @@ app.OragnisationList = (function () {
  //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
  var activitiesDataSource;   
- var validator;
  var account_Id;
  var userType;
  var newUserType;   
  var num1=0,num2=0,num3=0;
  var groupDataShow = [];   
- var loginType,groupId,userId;
-    
-  
- 		   var userlName;
-            var userfName;
-            var userMobile;
-            var userEmail;
-            var userOrgName;
-            var userGropuName;   
-    
+      
         var organisationViewModel = (function () {
             
         var init = function(){
         
         };
                     
-        var beforeShow=function(){
-           var db = app.getDb();
-		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
-        };
             
         var getDataOrg = function(tx){
             	var query = "SELECT * FROM JOINED_ORG where role='C'";
@@ -40,10 +26,11 @@ app.OragnisationList = (function () {
          var getDataOrgDB=[];
          var getDataCountDB=[];
          var org_id_DB;
-         var bagValueForDB;
          var lastMessageShow;
         
         function getDataSuccess(tx, results) {                        
+            console.log('before Show');
+            console.log(results.rows);
             $('#organisation-listview').data('kendoMobileListView').refresh(); 
             getDataOrgDB=[];
             getDataCountDB=[];
@@ -57,7 +44,7 @@ app.OragnisationList = (function () {
                     
                     console.log('functionRun'+i);					
                     org_id_DB = results.rows.item(i).org_id;                  
-                    
+                    console.log(org_id_DB);
                     //var db = app.getDb();
         		    //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
 
@@ -90,7 +77,7 @@ app.OragnisationList = (function () {
                                 lastNotifi=results.rows.item(i).lastNoti;
                             }
                                     var countData= countValue - bagCountValue;
-                    
+                       
                                         groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
         		                                 orgDesc: lastNotifi,
@@ -126,7 +113,7 @@ app.OragnisationList = (function () {
          function getLastNotificationSuccess(tx, results) {             
 			var count = results.rows.length;
             console.log('count'+count);
-            bagValueForDB=count;             
+            //bagValueForDB=count;             
 			if (count !== 0) {                
             	for(var i =count-1 ; i<count ; i++){                    
 					lastMessageShow = results.rows.item(i).message;
@@ -139,7 +126,7 @@ app.OragnisationList = (function () {
             
 
          var show = function(e){                     
-             
+                          
              $('#organisation-listview').data('kendoMobileListView').refresh();
              var scroller = e.view.scroller;
              scroller.reset();
@@ -203,173 +190,7 @@ app.OragnisationList = (function () {
                  localStorage.setItem("ShowMore",1);
                  $("#goToAdmin").hide();
             }
-             
-             
-            /*var organisationNotificationModel = {
-            id: 'Id',
-            fields: {
-                orgName: {
-                    field: 'orgName',
-                    defaultValue: ''
-                },
-                orgDesc :{
-                    field: 'orgDesc',
-                    defaultValue: ''  
-                },
-                organisationID: {
-                    field: 'organisationID',
-                    defaultValue: null
-                }           
-            },            
-                 
-            CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('CreatedAt'));
-            }            
-          };
-             
-             
-          var organisationListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/organisation/customerOrg/"+account_Id,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-              	}
-              },
-       	 schema: {
-               model: organisationNotificationModel,                                
-                 data: function(data)
-  	             {
-                       console.log(data);
-               			groupDataShow = [];
-                        //var groupDataShow = [];
-                                  $.each(data, function(i, groupValue) {
-                                  console.log(groupValue);
-                                     
-                                   $.each(groupValue, function(i, orgVal) {
-                                  			console.log();
-
-                   	             if(orgVal.Msg ==='Not a customer to any organisation'){     
-                	                   groupDataShow.push({
-                                         orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organisation',
-                                         organisationID:'0',
-                                         org_logo :null,  
-                                         bagCount : 0    
-    	                               });                                      
-	                                }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.orgData.length); 
-                                        var orgLastMsgData='';
-
-                                        for(var i=0;i<orgVal.orgData.length;i++){
-                                         var bagCountValue;
-                                         var bagValueForDB;   
-                                           if(getDataCountDB.length!==0){
-                                               for(var k=0;k<getDataCountDB.length;k++){
-                                                   console.log(getDataCountDB.length);
-                                                  getDataOrgDB[k]=String(getDataOrgDB[k]);
-                                                  var orgID =orgVal.orgData[i].organisationID;
-                                                  orgID = String(orgID); 
-                                                  if(getDataOrgDB[k]===orgID){
-                                                      //alert(k+'1');
-                                                      if(getDataCountDB[k]!==null){
-                                                         bagCountValue = orgVal.last[i].total;
-                                                         bagValueForDB=bagCountValue;
-                                                         
-                                                         console.log('karan Bisht1' +bagCountValue);
-                                                         console.log('karan Bisht2' +getDataCountDB[k]);
-                                                         
-                                                         bagCountValue = bagCountValue-getDataCountDB[k];
-                                                          
-                                                         console.log('karan Bisht2' +bagCountValue);
-                                                          
-                                                      }else{
-                                                         bagCountValue = orgVal.last[i].total;     
-                                                         bagValueForDB=bagCountValue;  
-                                                      }
-                                                  }else{
-                                                     //alert(k+'2'); 
-                                                     bagCountValue = orgVal.last[i].total;  
-                                                     bagValueForDB=bagCountValue;  
-                                                  } 
-                                               }
-                                           }else{
-                                                   //alert('3');
-                                                   bagCountValue = orgVal.last[i].total;
-                                                   bagValueForDB=bagCountValue; 
-                                           } 
-                                            
-                                            
-                                            if(orgVal.last[i].total!==0){
-                                               orgLastMsgData = orgVal.last[i].last_notification.message;
-                                            }  
-                                            
-                                            var imgPathData = app.getfbValue();    
-                           	             var fp = imgPathData+"/Aptifi/"+'Aptifi_OrgLogo_'+orgVal.orgData[i].organisationID+'.jpg';
- 									
-                                            //var checkImg =  window.resolveLocalFileSystemURI(fp,imagePathExist, imagePathNotExist);
-                                        
-                                            //var checkImg = fileExist(fp)
-
-                                            //alert(checkImg);
-                                            //storeImageSdcard(orgVal.orgData[i].org_logo , orgVal.orgData[i].organisationID); 
-                                            
-                                            groupDataShow.push({
-												 orgName: orgVal.orgData[i].org_name,
-        		                                 orgDesc: orgLastMsgData,
-                                                 organisationID:orgVal.orgData[i].organisationID,
-                                                 org_logo:orgVal.orgData[i].org_logo,
-                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+orgVal.orgData[i].org_logo,
-		                                         bagCount : bagCountValue,
-                                                 bagValToStore:bagValueForDB 
-                                            });
-                                        }     
-                                     }
-                                   });    
-                                 });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-                   }                       
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-                   
-                var showNotiTypes=[
-                      { message: "Please Check Your Internet Connection"}
-                ];
-                        
-                var dataSource = new kendo.data.DataSource({
-                      data: showNotiTypes
-                });
-                    
-                $("#organisation-listview").kendoMobileListView({
-  		      template: kendo.template($("#errorTemplate").html()),
-                dataSource: dataSource  
-     		   });
-                    
-            	   //navigator.notification.alert("Please check your internet connection.",
-               	//function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
-            */
-             
-             
-             
-             
-             
-            //organisationListDataSource.fetch(function() {
-                
- 		   //});
-             
-
-                   
-             //setTimeout(function(){
-                       
-             //},100);
+                              
         };
             
                         
@@ -381,7 +202,7 @@ app.OragnisationList = (function () {
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
-              });           
+             });           
 
                 
             $("#organisation-listview").kendoMobileListView({
@@ -393,7 +214,15 @@ app.OragnisationList = (function () {
               $('#organisation-listview').data('kendoMobileListView').refresh();
                 
               app.mobileApp.pane.loader.hide();
-
+                
+                if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }   
+                 
             };
                                                         
                                      function fileExist( file ) {
@@ -433,6 +262,11 @@ app.OragnisationList = (function () {
             };
             
         var afterShow = function(){
+            
+           var db = app.getDb();
+		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
+
+            
            //$('#organisation-listview').data('kendoMobileListView').refresh();
            //var db = app.getDb();
 		   //db.transaction(insertOrgImage, app.errorCB, app.successCB);  
@@ -667,10 +501,8 @@ app.OragnisationList = (function () {
             
             
             if(orgDesc===''){
-                $("#manageOrgDesc").hide();
-            }else{
-               $("#manageOrgDesc").show(); 
-            }
+                orgDesc="Description Not Available";
+             }
             
             //alert(orgDesc+"||"+joinDate);
             if(role==='C'){
@@ -681,7 +513,9 @@ app.OragnisationList = (function () {
             
            $("#orgJoinData").html(joinDate); 
            $("#navBarOrgHeader").html(orgName);        
-           $("#OrgDescData").html(orgDesc);  
+           $("#OrgDescData").html(orgDesc); 
+                   
+   
         }    
         
         
@@ -1075,7 +909,6 @@ app.OragnisationList = (function () {
             info:info,
             init:init,
             show:show,
-            beforeShow:beforeShow,
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,
             unsubscribeOrg:unsubscribeOrg,

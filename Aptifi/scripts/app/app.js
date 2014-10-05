@@ -806,8 +806,8 @@ var app = (function (win) {
       }
 
     function isInternetConnected() {
-        if((navigator.network.connection.type).toUpperCase() != "NONE" &&
-           (navigator.network.connection.type).toUpperCase() != "UNKNOWN") {
+        if((navigator.network.connection.type).toUpperCase() !== "NONE" &&
+           (navigator.network.connection.type).toUpperCase() !== "UNKNOWN") {
         //alert("online");
             return true;
         }else {                                             //alert("offline");
@@ -815,9 +815,7 @@ var app = (function (win) {
         }
      }
     
-    
-    
-    
+        
     
   function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
 
@@ -885,6 +883,7 @@ var app = (function (win) {
         deviceUuid:deviceUuid,
         selectQuery:selectQuery,
         deleteQuery:deleteQuery,
+        isInternetConnected:isInternetConnected,
         updateQuery:updateQuery,
         insertQuery:insertQuery,
         showConfirm: showConfirm,
