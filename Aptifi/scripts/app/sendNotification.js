@@ -174,6 +174,15 @@ app.sendNotification = (function () {
             $("#sendNotificationDivMsg").hide();
             $("#selectCustomerToSend").hide();
             
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
+
+            
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
             /*var comboOrgListDataSource = new kendo.data.DataSource({
@@ -310,6 +319,14 @@ app.sendNotification = (function () {
          
                  
          var sendNotificationMessage = function () {    
+             
+         if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+           }else{     
          //var cmbGroup = [];
          var org_id = localStorage.getItem("SELECTED_ORG");    
          
@@ -385,8 +402,15 @@ app.sendNotification = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
+               
+                  if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                }
+               
            }               
           });  
 	            
@@ -422,6 +446,7 @@ app.sendNotification = (function () {
             });                
              
           }
+            }   
         };
          
          
@@ -473,8 +498,23 @@ app.sendNotification = (function () {
             error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
+                
+                
+                   var showNotiTypes=[
+                      { message: "Your request has not been processed due to a connection error . Please try again"}
+                    ];
+                        
+                    var dataSource = new kendo.data.DataSource({
+                          data: showNotiTypes
+                    });
+                    
+                    $("#group-Name-listview").kendoMobileListView({
+  		          template: kendo.template($("#errorTemplate").html()),
+                    dataSource: dataSource  
+     		       });
+
            },       
              sort: { field: 'add', dir: 'desc' }    	     
           });

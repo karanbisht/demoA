@@ -1,8 +1,6 @@
 var app = app || {};
 
 app.Activities = (function () {
-
-
  
   var activitiesDataSource;   
   var validator;
@@ -319,6 +317,14 @@ app.Activities = (function () {
              //setTimeout(function(){
                  app.mobileApp.pane.loader.hide();
              //},100); 
+             
+             if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
          };
    
         

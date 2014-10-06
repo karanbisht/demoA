@@ -59,6 +59,14 @@ app.Login = (function () {
                 $(e.target).blur();
             }
         };
+        
+        
+        var checkEnterCode = function (e) {
+            if (e.keyCode === 13) {
+                doneVerification();
+                $(e.target).blur();
+            }
+        };
        
         // Authenticate to use Backend Services as a particular user
 
@@ -72,8 +80,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';                  
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='123456';                  
+            var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -725,6 +733,7 @@ app.Login = (function () {
             clickforValificationCode:clickforValificationCode,
             cancelButtonRC:cancelButtonRC,
             genRand:genRand,
+            checkEnterCode:checkEnterCode,
             doneVerification:doneVerification,
             clickforRegenerateCode : clickforRegenerateCode
         };

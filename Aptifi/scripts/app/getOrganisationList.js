@@ -449,6 +449,13 @@ app.OragnisationList = (function () {
         
             $('#organisation-listview1').data('kendoMobileListView').refresh();    		    			
                 
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
 		};
                 
             
@@ -499,6 +506,13 @@ app.OragnisationList = (function () {
            $("#OrgDescData").html(orgDesc); 
                    
    
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
         }    
         
         

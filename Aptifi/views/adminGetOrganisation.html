@@ -4,7 +4,7 @@
                  <span data-role="view-title"></span> 
                  <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>                         
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callUserLogin">User</a> 
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a> 
               </div>              
                             
 	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
@@ -42,7 +42,7 @@
 <!--data-pull-to-refresh="true"-->
 
 <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
-  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;min-heigth:200px;">
+  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
       
      <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
       
@@ -55,7 +55,7 @@
         
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
     
-   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px;  padding-bottom:35px; padding-top:10px; border-radius:6px;">
+   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px;  padding-bottom:35px; padding-top:10px; border-radius:6px;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
     	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->
        
@@ -82,7 +82,7 @@
     
  <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->   
     
-   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:35px; padding-top:10px; border-radius:6px;">
+   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:35px; padding-top:10px; border-radius:6px;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
         
     	
@@ -103,7 +103,7 @@
     
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
     
-   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:15% 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
+   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        
@@ -130,8 +130,8 @@
     
   <div id="sendNotificationDivMsg" style="display:none">
     
-    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#F5F7F8;border-radius:6px;">
-        <li class="username" style="background-color:#F5F7F8;margin-top:7px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
+    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
+        <li class="username" style="background-color:#ffffff;margin-top:7px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
     </ul>
 			   
 
@@ -139,12 +139,12 @@
         <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>
     </div>
         
-
+      
+    <li style="color:#1B205E;margin:10px;list-style-type: none;">
+         <span style="color:#F5F7F8;width:70%;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
+    </li>
     
-    <div style="color:#1B205E;margin-top:10px;margin-bottom:10px;margin-left:10px; ">
-         <label style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</label>
-    </div>
-    
+      
     
      <li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
           <span data-role="button" style="background-color:#33539E;width:90%" data-bind="click: sendNotificationMessage">
@@ -232,18 +232,31 @@
     		</div>
         #}#    
        		 <div class="activity-content">
-       		     <h2 id="activityTemplateTitle" class="person-name" >${orgName}</h2>
-       		     <a id="activityTemplateMessage" class="user-share-txt" >${orgDesc}</a>            			            
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
        		 </div>
 	   </div>
     </script>
 
 
 		
-    <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="margin-top:50%">
-       		 <div style="border-radius:12px;margin-left:10%;margin-right:10%;background-color:rgb(27,43,89);padding-top:.5px;padding-bottom:.5px;" >
-       		     <h5 style="color:rgb(255,255,255);" >${message}</h5>
-                </div>
-		    </div>
-	</script>
+ <script type="text/x-kendo-template" id="errorTemplate">    		
+            <div class="cf" style="margin-top:10%;border:none">
+     
+
+                 <div class="error-avatar">
+					    <img src="styles/images/error.png"/>
+        		</div>
+     
+
+                 <div class="error-content">
+               		  <h5 style="color:rgb();text-align:center" >${message}</h5>
+     
+                      <p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
+                          Try Again
+                      </p>
+
+                 </div>
+             </div>
+    
+</script>

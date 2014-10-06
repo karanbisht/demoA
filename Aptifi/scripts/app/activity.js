@@ -315,6 +315,15 @@ app.Activity = (function () {
            		model:  commentModel
 				}			 
 		     });
+            
+            
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
 
         };
          
@@ -491,7 +500,15 @@ app.Activity = (function () {
                 
                 // Adding new comment to Comments model
                 //var comments = app.Comments.comments;
-                //var comment = comments.add();                
+                //var comment = comments.add();            
+            
+          if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+           }else{  
                 var comment =$("#newComment").val();
                 //var org_id = localStorage.getItem("UserOrgID");
  			   //var customer_id = localStorage.getItem("UserID");
@@ -521,6 +538,12 @@ app.Activity = (function () {
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
                
+                if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                }
+               
            }               
           });  
 	            
@@ -545,6 +568,7 @@ app.Activity = (function () {
                          });
                });
 
+            }
       
         };
 

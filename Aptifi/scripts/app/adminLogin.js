@@ -48,6 +48,14 @@ app.adminLogin = (function () {
 
         var login = function () {		 
             
+          if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+           }else{ 
+               
             usernameMob = $("#loginMob").val();
             password = $("#loginPassword").val();
 
@@ -80,8 +88,16 @@ app.adminLogin = (function () {
                //apps.hideLoading();
                console.log(e);
                app.mobileApp.pane.loader.hide();
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               
+                   if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                    }
+
+               
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
                
            }               
           });  
@@ -131,6 +147,7 @@ app.adminLogin = (function () {
              
                 	
           }
+         }
         };
         
 
