@@ -70,7 +70,7 @@ var app = (function (win) {
     
     var showNativeAlert = function () {
             //if (!this.checkSimulator()) {
-                alert("hello");
+                //alert("hello");
 	            window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
             //}
     };
@@ -189,7 +189,7 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {
-        alert("error--"+err.message);
+        //alert("error--"+err.message);
  		console.log("Error processing SQL: " + err.message);
 	};
     
@@ -411,11 +411,11 @@ var app = (function (win) {
     };    
     
     function successHandler (result) {
-        alert('result = ' + result);
+        //alert('result = ' + result);
     }
     
     function errorHandler (error) {
-        alert('error = ' + error);
+        //alert('error = ' + error);
     }
        
     // Handle "deviceready" event
@@ -536,7 +536,7 @@ var app = (function (win) {
         
        var onNotificationAPN = function(event) {
 
-           alert(JSON.stringify(event));
+           //alert(JSON.stringify(event));
            
        if ( event.alert )
        {                   
@@ -565,7 +565,7 @@ var app = (function (win) {
     
     //the function is a callback for all GCM events
     var onNotificationGCM = function(e) {
-        alert(JSON.stringify(e));
+        //alert(JSON.stringify(e));
         
      try{
         switch (e.event) {
@@ -581,7 +581,7 @@ var app = (function (win) {
                 break;
             
             case 'message': 
-            alert(e.payload.default);          
+            //alert(e.payload.default);          
 
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
             
@@ -606,7 +606,7 @@ var app = (function (win) {
                 //var soundfile = e.soundname || e.payload.sound;
                 //var my_media = new Media("/android_asset/www/"+ soundfile);
                 //my_media.play();
-                alert('foreGround');
+                //alert('foreGround');
                     var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
     
@@ -615,7 +615,7 @@ var app = (function (win) {
             {  // otherwise we were launched because the user touched a notification in the notification tray.
                 if ( e.coldstart )
                 {
-                    alert('coldstart');
+                    //alert('coldstart');
                     var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
     
@@ -633,15 +633,15 @@ var app = (function (win) {
                 //getPromotionFromServer();
             	break;
             case 'error':
-                alert('GCM error = ' + e.msg);
+                //alert('GCM error = ' + e.msg);
                 break;
             default:
-                alert('An unknown GCM event has occurred.');
+                //alert('An unknown GCM event has occurred.');
                 break;
         }
       }
 	  catch(err){
-		 alert(err);
+		 //alert(err);
 	  }
 	  finally {    
 		

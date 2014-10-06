@@ -8,15 +8,12 @@ app.sendNotification = (function () {
 
       var orgId = localStorage.getItem("UserOrgID"); 
       console.log(orgId);
-      var $notificationDesc;          
       var account_Id;          
          
     	var init = function () {				                 
            app.MenuPage=false;
            app.userPosition=false;
-           //validator = $('#enterNotification').kendoValidator().data('kendoValidator');
-           $notificationDesc = $('#notificationDesc'); 
-                                 
+           //validator = $('#enterNotification').kendoValidator().data('kendoValidator');                                 
             
 
            var showNotiTypes=[
@@ -360,7 +357,7 @@ app.sendNotification = (function () {
              }
              
              console.log(cmmt_allow);
-                var notificationValue = $notificationDesc.val();
+                var notificationValue = $("#notificationDesc").val();
                 var titleValue = $("#notificationTitleValue").val();
                 
                 //alert(titleValue +"||"+notificationValue);            
