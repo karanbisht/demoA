@@ -149,8 +149,8 @@ app.sendNotification = (function () {
              
              $("#organisation-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#orgNameTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-              pullToRefresh: true
+     		 dataSource: organisationListDataSource
+              //pullToRefresh: true
 		     });
                                         
               $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
@@ -354,7 +354,8 @@ app.sendNotification = (function () {
             app.showAlert('Please select Organisation','Validation Error');
           }else if(cmbGroup==='' && cmbCust===''){
             app.showAlert('Please Organisation Group or Customer.','Validation Error'); 
-            $("#selectGroupDiv").show();  
+            $("#selectGroupDiv").show(); 
+              $("#sendNotificationDivMsg").hide();
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -481,8 +482,8 @@ app.sendNotification = (function () {
                           
              $("#group-Name-listview").kendoListView({
   		    template: kendo.template($("#groupNameTemplate").html()),    		
-     		 dataSource: comboGroupListDataSource,
-              pullToRefresh: true
+     		 dataSource: comboGroupListDataSource
+              //pullToRefresh: true
 		     });
              
              $("#selectOrgDiv").hide();

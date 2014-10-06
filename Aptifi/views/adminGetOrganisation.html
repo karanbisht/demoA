@@ -37,21 +37,25 @@
 </div>
 
 
+<!--class="activities-view-notification"-->
+<!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
+<!--data-pull-to-refresh="true"-->
 
-<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" class="activities-view-notification"  data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
-  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;min-heigth:200px;">
+<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;min-heigth:200px;">
       
      <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
       
-     <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
+     <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
 
       <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
       </p>
   </div>
         
+    <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
     
-   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px;  padding-bottom:35px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
+   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px;  padding-bottom:35px; padding-top:10px; border-radius:6px;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
     	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->
        
@@ -76,9 +80,9 @@
 
    </div>
     
+ <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->   
     
-    
-   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:35px;border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
+   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:25% 10px 10px 10px; padding-bottom:35px; padding-top:10px; border-radius:6px;">
         <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
         
     	
@@ -97,10 +101,11 @@
 
    </div>
     
+    <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
     
-   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:15% 10px 10px 10px; border-radius:6px;border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;">
+   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:15% 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Notification Type</p>
-       <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
+       <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        
 	   <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		   <b>You have no Notification for you.</b>
@@ -125,8 +130,8 @@
     
   <div id="sendNotificationDivMsg" style="display:none">
     
-    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;">
-        <li class="username" style="background-color:#F5F7F8;border-radius:6px;margin-top:7px;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
+    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#F5F7F8;border-radius:6px;">
+        <li class="username" style="background-color:#F5F7F8;margin-top:7px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
     </ul>
 			   
 
@@ -137,13 +142,13 @@
 
     
     <div style="color:#1B205E;margin-top:10px;margin-bottom:10px;margin-left:10px; ">
-         <label style="color:#1B205E;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</label>
+         <label style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</label>
     </div>
     
     
-     <li style="width:100%;margin-bottom:30px;">
+     <li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
           <span data-role="button" style="background-color:#33539E;width:90%" data-bind="click: sendNotificationMessage">
-	           <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Send Notification</a>
+	         <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Send Notification</a>
           </span>
      </li>
    

@@ -566,6 +566,7 @@ var app = (function (win) {
     //the function is a callback for all GCM events
     var onNotificationGCM = function(e) {
         alert(JSON.stringify(e));
+        
      try{
         switch (e.event) {
             case 'registered':
@@ -857,6 +858,28 @@ var app = (function (win) {
 
     return result;
   };
+    
+        var inAppBrowser= function() {
+            app.MenuPage=false;
+            window.open('http://www.sakshay.in','_blank');
+        };
+                        
+        var makeCall = function(){
+            app.MenuPage=false;
+            document.location.href = 'tel:+91-971-781-8898';
+        };
+       
+        var about = function(){
+             app.MenuPage=false;
+             document.location.href="#infoDiv";
+        };
+    
+            var setting = function(){
+             app.MenuPage=false;
+             document.location.href="#settingDiv";
+        };       
+
+    
 
     return {
         showAlert: showAlert,
@@ -892,6 +915,11 @@ var app = (function (win) {
         checkConnection:checkConnection,
         helper: AppHelper,
         getfbValue:getfbValue,
+        		about:about,
+            setting:setting,
+         inAppBrowser:inAppBrowser,  
+         makeCall:makeCall,
+    
         //registerInEverlive:registerInEverlive,
         //disablePushNotifications:disablePushNotifications,
         //updateRegistration:updateRegistration,
