@@ -622,7 +622,7 @@ app.adminOragnisationList = (function () {
        var logout = function () {                   
            navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {                    
-                   app.mobileApp.pane.loader.show();    
+                   //app.mobileApp.pane.loader.show();    
                    setTimeout(function() {
                        var db = app.getDb();
                        db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError,updateAdminLoginStatusSuccess);

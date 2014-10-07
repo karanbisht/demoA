@@ -126,17 +126,14 @@ app.OragnisationList = (function () {
             
 
          var show = function(e){                     
-                          
+             $("#progress2").hide();
              $('#organisation-listview').data('kendoMobileListView').refresh();
              var scroller = e.view.scroller;
              scroller.reset();
              
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
             //app.mobileApp.pane.loader.show();
-             
-            $("#progress").show();
-            $("#organisationListView").hide();
-             
+                          
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
 
@@ -328,7 +325,8 @@ app.OragnisationList = (function () {
         */
     
         var organisationSelected = function (e) {
-            app.mobileApp.pane.loader.show();
+            $("#progress2").show();
+            //app.mobileApp.pane.loader.show();
             console.log(e.data);
             var organisationID=e.data.organisationID;
             var bagCount =e.data.count;
@@ -832,7 +830,6 @@ app.OragnisationList = (function () {
             
                      
         var callOrganisationLogin = function(){
-          alert('click');  
           app.MenuPage=false;	
           //window.location.href = "views/organisationLogin.html"; 
           console.log(account_Id);
@@ -845,7 +842,7 @@ app.OragnisationList = (function () {
 
         navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {                    
-                   app.mobileApp.pane.loader.show();    
+                   //app.mobileApp.pane.loader.show();    
                    setTimeout(function() {
                        var db = app.getDb();
                        db.transaction(updateLoginStatus, updateLoginStatusError,updateLoginStatusSuccess);

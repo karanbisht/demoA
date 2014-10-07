@@ -12,7 +12,7 @@
                         
             <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
                 <ul data-role="listview" data-style="inset">
-                    <li class="username"><input type="text" id="loginMob"  placeholder="Mobile Number"/></li>
+                    <li class="username"><input type="text" id="loginMob"  placeholder="Mobile Number" maxlength=10;/></li>
                     <li class="password"><input type="password" id="loginPassword" placeholder="Password"  /></li>
                     <span style="float:right" class="forgetText" data-bind="click: forgetPass">forget Password ?</span>
                 </ul>
@@ -26,5 +26,12 @@
              </ol>    
              </form> 
              
+            
+               <div class="loader" id="progress1" style="display:none;margin-top:10px;">
+                      <div class="ball"></div>
+                      <div class="loading">Loading...</div>
+               </div>
+
+            
             <div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>
         </div>

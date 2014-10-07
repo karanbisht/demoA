@@ -18,68 +18,8 @@
     		 </p>
  	  </div> 
 
-   
     
-	    <div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
-    	    <div data-role="view" id="popUpView" data-title="view1">
-                             	   <li class="popMoreButton"><a  data-bind="click: makeCall"></a>Call Us</li>
-                            		<li class="popMoreButton"><a   data-bind="click: inAppBrowser">Website</a></li>
-                            		<li class="popMoreButton"><a data-bind="click: about">About Us</a></li>
-                                    <li class="popMoreButton"><a data-bind="click: setting">Setting</a></li>
-    		</div>
-    	</div>    
    </div>
-
-	<div data-role="view" id="infoDiv" data-model="app.Activities">
-		<div data-role="header">
-        	<div data-role="navbar">
-            	Sakshay Web Technologies
-         	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
-         	</div>
-    	</div>
-    	<hr style="margin-top:0px;"/>
-    	<div data-role="content">
-        	<ul data-role="listview">
-		    	<p>Welcome to Our Organisation</p>
-    	    </ul>
-    	</div>
-    
-    	<div data-role="footer">
-        	<div data-role="tabstrip">
-            	<a data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            	<a data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            	<a  data-icon="info" data-role="button" href="#view-all-notification">About Us</a>
-            	<a data-icon="settings" data-role="button" href="#settingDiv">Setting</a>
-        	</div>
-	   </div>   
-	</div>
-
-
-
-  <div data-role="view" id="settingDiv" data-model="app.Activities">
-	<div data-role="header">
-        <div data-role="navbar">
-            Setting
-         <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
-         </div>
-    </div>
-    <hr style="margin-top:0px;"/>
-    
-    <div data-role="content">
-        <ul data-role="listview">
-		    	<p>Welcome to Setting Page</p>
-        </ul>
-    </div>
-    
-    <div data-role="footer">
-        <div data-role="tabstrip">
-            <a data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            <a data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            <a  data-icon="info" data-role="button" href="#view-all-notification">About Us</a>
-            <a data-icon="settings" data-role="button" href="#settingDiv">Setting</a>
-        </div>
-   </div>   
- </div>
 	
 <!-- data-role="touch" data-bind="events: { tap: activitySelected }" -->
 	<!-- Activities ListView Template -->

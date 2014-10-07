@@ -30,7 +30,7 @@ app.Activities = (function () {
              
            groupDataShow=[];
              
-           app.mobileApp.pane.loader.show();  
+           //app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
            app.userPosition=false;                                      
            organisationID = e.view.params.organisationID;

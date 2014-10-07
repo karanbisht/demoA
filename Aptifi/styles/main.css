@@ -949,18 +949,17 @@ input.largerCheckbox
 
 .loader {
 	background-color: #212121;
-	width: 170px;
-	z-index: 1;
+	width: 190px;
+	z-index: 999;
 	font-size:18px;
-	border-radius: 10px;
-	margin: 40% auto;
+	border-radius: 4px;
+	margin: auto auto;
 	vertical-align: middle;
 	text-align: center;
-	padding: 0px;
 	position: absolute;
 	left: 0px;
 	right: 0px;
-	padding: 20px 10px;
+	padding: 10px 20px;
 }
 
 
@@ -1005,7 +1004,7 @@ input.largerCheckbox
     left: 30%;
     width: 28px;
     height: 28px;
-    z-index: 1;
+    z-index:999;
 }
 
 
@@ -1044,23 +1043,6 @@ input.largerCheckbox
     
 }
 
-.android-scroll-panel1 {
-	overflow: hidden;
-	max-width: 1300px;
-	min-width: 290px;
-	padding: 0px 0px 0 0px;
-	position: absolute;
-	margin: 0 auto;
-	left: 0px;
-	right: 0px;
-	bottom: 5px;  
-	top: 5px;
-	
-}
-.main-scroll1-inside-panel1 {
-	width: auto;
-	padding: 0px 0px 0px 0px;
-}
 
 /*
 .spinner{
@@ -1161,7 +1143,7 @@ input.largerCheckbox
 
 .ball {
     background-color: rgba(0,0,0,0);
-    border: 5px solid rgba(255,0,0,0.9);
+    border: 5px solid rgba(0,183,229,0.9);
     opacity: .9;
     border-top: 5px solid ;
     border-left: 5px solid ;

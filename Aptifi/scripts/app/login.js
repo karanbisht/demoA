@@ -76,7 +76,7 @@ app.Login = (function () {
         var login = function () {		 
             var deviceName = app.devicePlatform();
             var device_type;
-           
+             
             if(deviceName==='Android'){
                 device_type ='AN';
              }else if(deviceName==='iOS'){
@@ -92,8 +92,12 @@ app.Login = (function () {
             
             if (username === "Mobile Number" || username === "") {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
-			} else {            
-                 app.mobileApp.pane.loader.show();                
+            } else if (!validateMobile(username)) {
+                app.showAlert("Please enter a valid Mobile Number.","Validation Error");
+			} else {         
+                           $("#progress").show();
+
+                 //app.mobileApp.pane.loader.show();                
                  //app.mobileApp.pane.loader.hide();           
        		  console.log(username+"||"+device_id+"||"+device_type);
         	              
@@ -117,9 +121,19 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               app.mobileApp.pane.loader.hide();
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               //app.mobileApp.pane.loader.hide();
+              $("#progress").hide();
+               
+               if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
+               
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
                
            }               
           });  
@@ -136,16 +150,19 @@ app.Login = (function () {
                                
                       if(loginData.status[0].Msg==='User not registered'){
                           //console.log('reg');
-							app.mobileApp.pane.loader.hide();
+							//app.mobileApp.pane.loader.hide();
+                             $("#progress").hide();
                             app.userPosition=false;
  				           app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
                       }else if(loginData.status[0].Msg==='Create profile'){
-                            app.mobileApp.pane.loader.hide();
+                            //app.mobileApp.pane.loader.hide();
+                             $("#progress").hide();
                             app.userPosition=false;
                             var accountId=loginData.status[0].AccountID;
  				           app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
                       }else if(loginData.status[0].Msg==='Authentication Required'){
-                             app.mobileApp.pane.loader.hide();
+                             //app.mobileApp.pane.loader.hide();
+                             $("#progress").hide();
                                 clickforRegenerateCode();   
                       }else if(loginData.status[0].Msg==='Success'){
                           //console.log('reg');
@@ -175,13 +192,20 @@ app.Login = (function () {
                           saveOrgInfo(UserOrgInformation);                         
                       
                       }else{
-                          app.mobileApp.pane.loader.hide();
+                          //app.mobileApp.pane.loader.hide();
+                             $("#progress").hide();
                           app.showAlert(loginData.status[0].Msg,"Notification");
                       }                            
                 });
   		 });
           }
         };
+        
+        
+        function validateMobile(mobileNo) {
+	        var mobilePattern = /^\d{10}$/;
+	        return mobilePattern.test(mobileNo);
+        }
         
         var profileInfoData;
         var profileOrgData;
@@ -428,7 +452,8 @@ app.Login = (function () {
         
         
        var goToHomePage = function(){
-               app.mobileApp.pane.loader.hide();
+               //app.mobileApp.pane.loader.hide();
+              $("#progress").hide();
                app.userPosition=false;				  
                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
        }
@@ -660,7 +685,8 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                //console.log(e);
-               app.mobileApp.pane.loader.hide();
+                  $("#progress").hide();
+               //app.mobileApp.pane.loader.hide();
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
                
@@ -696,7 +722,8 @@ app.Login = (function () {
                           saveProfileInfo(UserProfileInformation);
                           saveOrgInfo(UserOrgInformation); 
                       }else{
-                          app.mobileApp.pane.loader.hide();
+                          //app.mobileApp.pane.loader.hide();
+                             $("#progress").hide();
                           app.showAlert(loginData.status[0].Msg,"Notification");
                       }      
                    
