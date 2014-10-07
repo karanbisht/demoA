@@ -9,24 +9,15 @@ app.adminLogin = (function () {
 
     var adminLoginViewModel = (function () {
 
-
-        var $loginUsername;
-        var $loginPassword;
 		var usernameMob;
         var password;
         var account_Id;
         var varifiCode;
-        var regClickButton;
-        var userOrgName=[];
-        var userGropuName=[];
 
                
         var init = function () {            
             app.userPosition=false;
-            app.MenuPage=false;	
-            
-            $loginUsername = $('#loginMob');
-            $loginPassword = $('#loginPassword');            
+            app.MenuPage=false;	            
         };
 
         var show = function (e) {

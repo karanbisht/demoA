@@ -86,10 +86,10 @@ app.Activities = (function () {
                 app.insertQuery(tx, query);
         }                               
       }
-                        
+                         
             
         var getDataOrgNoti = function(tx){
-            var query = 'SELECT * FROM ORG_NOTIFICATION where org_id='+organisationID ;
+            var query = "SELECT * FROM ORG_NOTIFICATION where org_id="+organisationID+" ORDER BY pid DESC" ;
 			app.selectQuery(tx, query, getOrgNotiDataSuccess);
         };    
                         
@@ -309,8 +309,7 @@ app.Activities = (function () {
 
              $("#activities-listview").kendoMobileListView({
   		    template: kendo.template($("#activityTemplate").html()),    		
-     		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true
+     		 dataSource: organisationALLListDataSource
              });
             
              $('#activities-listview').data('kendoMobileListView').refresh();          

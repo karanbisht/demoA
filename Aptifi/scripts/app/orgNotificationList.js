@@ -121,7 +121,8 @@ app.orgListView = (function () {
         
         
                 var getDataOrgNoti = function(tx){
-                    var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
+                    //var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
+                    var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id="+organisationID+" ORDER BY pid DESC" ;
 		        	app.selectQuery(tx, query, getOrgNotiDataSuccess);
                 };    
                         

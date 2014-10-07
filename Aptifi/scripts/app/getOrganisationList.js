@@ -132,7 +132,11 @@ app.OragnisationList = (function () {
              scroller.reset();
              
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
-            app.mobileApp.pane.loader.show(); 
+            //app.mobileApp.pane.loader.show();
+             
+            $("#progress").show();
+            $("#organisationListView").hide();
+             
             var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#organisationNotiList");
 
@@ -880,6 +884,27 @@ app.OragnisationList = (function () {
 	            console.log(err);
             }
 
+            
+                    var inAppBrowser= function() {
+                        app.MenuPage=false;
+                        window.open('http://www.sakshay.in','_blank');
+                    };
+                        
+                    var makeCall = function(){
+                        app.MenuPage=false;
+                        document.location.href = 'tel:+91-971-781-8898';
+                    };
+       
+                    var about = function(){
+                         app.MenuPage=false;
+                         document.location.href="#infoDiv";
+                    };
+    
+                    var setting = function(){
+                         app.MenuPage=false;
+                         document.location.href="#settingDiv";
+                    };       
+
 
         return {
             //activities: activitiesModel.activities,
@@ -894,7 +919,10 @@ app.OragnisationList = (function () {
             //CreatedAtFormatted:CreatedAtFormatted,          
                    
             manageGroup:manageGroup,
-           
+            about:about,
+            setting:setting,
+            inAppBrowser:inAppBrowser,  
+            makeCall:makeCall,
             OnImageLoad:OnImageLoad,
             replyUser:replyUser,
             userProfileInt:userProfileInt,

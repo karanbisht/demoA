@@ -75,7 +75,6 @@
                     <span id="login" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="padding:10px;float:right;">
                      	 <a data-role="button" style="background-color:#33539E">Next</a>   
                     </span>
-
                </li>
 
    </div>
@@ -104,7 +103,7 @@
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
     
    <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
-       <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Notification Type</p>
+       <p style="color:#1B205E;text-align:center;padding-bottom:5px;margin-bottom:5px;">Select Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        
 	   <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -128,10 +127,10 @@
         <span style="margin-left:12px;"><input id="notificationType" /></span>
     </div>-->
     
-  <div id="sendNotificationDivMsg" style="display:none">
+  <div id="sendNotificationDivMsg" style="display:none;overflow:hidden">
     
     <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
-        <li class="username" style="background-color:#ffffff;margin-top:7px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title"/></li>
+        <li class="username" style="background-color:#ffffff;margin-top:9px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title" autofocus/></li>
     </ul>
 			   
 
@@ -141,7 +140,7 @@
         
       
     <li style="color:#1B205E;margin:10px;list-style-type: none;">
-         <span style="color:#F5F7F8;width:70%;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
+         <span style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
     </li>
     
       
@@ -213,7 +212,14 @@
             		<!--#if(bagCount!=='D'){#
 						<div class="divBagVal"></div>            
             		#}#--> 
-        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
+            
+                  #if(orgDesc.length > 80){#
+                    #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                  #}else{#
+                    #orgDescVal = orgDesc;#  
+                  #}#
+             
+        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
        	  </div>
 	   </div>
 	</script>
@@ -233,7 +239,12 @@
         #}#    
        		 <div class="activity-content">
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
-       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
+                  #if(orgDesc.length > 80){#
+                    #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                  #}else{#
+                    #orgDescVal = orgDesc;#  
+                  #}#
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
        		 </div>
 	   </div>
     </script>

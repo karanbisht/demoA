@@ -6,7 +6,7 @@
                   
                  <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>    
 
-                 <a id="moreOption" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
+                 <a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
 
                  <!--<a id="moreOption"  style="width: 2.5em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50% ; background-color: transparent;"  data-align="right" href="#moreFeature" data-role="button" data-rel="popover"><img src="styles/images/icon-add.png" style="background-position: 65em 50%;"/></a>-->                      
                   
@@ -22,14 +22,13 @@
 </div>
  
 
-
 <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-after-show="app.OragnisationList.afterShow">
 	 <!--data-append-on-refresh="true"-->	
-     <div>
-    	<ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
-	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-		    	   <b>You have no Notification for you.</b>
-    		 </p>
+     <div id="organisationListView">
+        	<ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>
+	             <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		        	   <b>You have no Notification for you.</b>
+    		     </p>
  	</div> 
    <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
             <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
@@ -37,59 +36,55 @@
             <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
    
     
-	    <div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
+	    <!--<div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
     	    <div data-role="view" id="popUpView" data-title="view1">
                              	   <li class="popMoreButton"><a  data-bind="click: makeCall"></a>Call Us</li>
                             		<li class="popMoreButton"><a   data-bind="click: inAppBrowser">Website</a></li>
                             		<li class="popMoreButton"><a data-bind="click: about">About Us</a></li>
                                     <li class="popMoreButton"><a data-bind="click: setting">Setting</a></li>
     		</div>
-    	</div>  
+    	</div>-->  
     
     
-    		<!--<div data-role="popover" class="popupBox refreshPop" id="moreFeature" data-popup='{ "height": "230" }'>
-                <div data-role="view" id="popUpView">
+    
+    <div class="loader" id="progress" style="display:none;">
+      <div class="ball"></div>
+      <div class="loading">Loading...</div>
+    </div>
+
+    
+    		<div data-role="popover" class="popupBox refreshPop" id="moreFeature" data-popup='{ "height": "230" }'>
+                <div data-role="view" data-model="app.OragnisationList">
                     <ul data-role="listview">
-                        <li data-bind="click: app.makeCall">Call Us</li>
-                        <li data-bind="click: app.inAppBrowser">Website</li>
-                        <li data-bind="click: app.about">About Us</li>
-                        <li data-bind="click: app.setting">Setting </li>
-                        <li data-bind="click: app.logout">Logout</li>
+                        <li data-bind="click: makeCall">Call Us</li>
+                        <li data-bind="click: inAppBrowser">Website</li>
+                        <li data-bind="click: about">About Us</li>
+                        <li data-bind="click: setting">Setting </li>
+                        <li data-bind="click: logout">Logout</li>
                         
                     </ul>
                 </div>
-            </div>-->
+            </div>
     
 </div>
 
 
 	<div data-role="view" id="infoDiv" data-model="app.Activities">
-		<div data-role="header">
+		<div data-role="header" style="border-bottom:2px solid #2D384C">
         	<div data-role="navbar">
             	Sakshay Web Technologies
-         	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
+         	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton" ></a>
          	</div>
     	</div>
-    	<hr style="margin-top:0px;"/>
     	<div data-role="content">
         	<ul data-role="listview">
 		    	<p>Welcome to Our Organisation</p>
     	    </ul>
     	</div>
-    
-    	<div data-role="footer">
-        	<div data-role="tabstrip">
-            	<a data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            	<a data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            	<a  data-icon="info" data-role="button" href="#view-all-notification">About Us</a>
-            	<a data-icon="settings" data-role="button" href="#settingDiv">Setting</a>
-        	</div>
-	   </div>   
 	</div>
 
 
-<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organisation List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
-  	
+<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organisation List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">  	
     <div>
       <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities" style="padding:10px;"></ul>
     	<p id="no-notification-span" hidden="hidden" class="no-items-msg">
@@ -165,28 +160,19 @@
 
 
 <div data-role="view" id="settingDiv" data-model="app.Activities">
-	<div data-role="header">
+	<div data-role="header" style="border-bottom:2px solid #2D384C">
         <div data-role="navbar">
             Setting
-         <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" href="#view-all-activities"></a>
-         </div>
+            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
+        </div>
     </div>
-    <hr style="margin-top:0px;"/>
-    
+      
     <div data-role="content">
         <ul data-role="listview">
 		    	<p>Welcome to Setting Page</p>
         </ul>
     </div>
     
-    <div data-role="footer">
-        <div data-role="tabstrip">
-            <a data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            <a data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            <a  data-icon="info" data-role="button" href="#view-all-notification">About Us</a>
-            <a data-icon="settings" data-role="button" href="#settingDiv">Setting</a>
-        </div>
-   </div>   
 </div>
 	
 
@@ -240,7 +226,14 @@
                  #if(role==='O' ){#
                      <div style="text-align:center;float:right;"><img src="styles/images/admin.png" style="width=35px;height:25px;" /></div>
                  #}#
-                    <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a> 
+                     
+                #if(orgDesc.length > 60){#
+                    #orgDescVal = orgDesc.substr(0, 60) + '..';#
+                #}else{#
+                   #orgDescVal = orgDesc;#  
+                #}#
+                   
+                         <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
         		</div>
     		</div>
 		</script>

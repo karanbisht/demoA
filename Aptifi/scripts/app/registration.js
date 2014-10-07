@@ -624,6 +624,14 @@ function loginSuccessCB() {
                var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='"+'C'+"'";
                app.updateQuery(tx, query);
         }
+        
+        var checkEnterCode = function (e) {
+            if (e.keyCode === 13) {
+                doneVerification();
+                $(e.target).blur();
+            }
+        };
+
     
         
         return {
@@ -636,6 +644,7 @@ function loginSuccessCB() {
             cancelButtonRCR:cancelButtonRCR,
             genRandR:genRandR,
             doneVerificationR:doneVerificationR,
+            checkEnterCode:checkEnterCode,
             // selectedOrg:selectedOrg,
             //selectedGroup:selectedGroup,
             registerR: registerR

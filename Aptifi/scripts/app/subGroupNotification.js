@@ -125,10 +125,8 @@ app.orgsubGroupListView = (function () {
 	  	   db.transaction(getDataOrgNoti, app.errorCB, showLiveData); 
         };
         
-        
-        
               var getDataOrgNoti = function(tx){
-                  var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='"+organisationID+"'and group_id=='"+group_ID+"'and customer_id=='"+group_ID+"'";
+                  var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='"+organisationID+"'and group_id=='"+group_ID+"'";
 		          app.selectQuery(tx, query, getOrgNotiDataSuccess);
               };    
                         
@@ -138,6 +136,7 @@ app.orgsubGroupListView = (function () {
             groupDataShow=[];
             
 			var count = results.rows.length;
+            
                 DBGETDATAVALUE = count;           
             //alert(count);
 			if (count !== 0) {

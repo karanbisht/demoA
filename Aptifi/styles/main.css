@@ -936,6 +936,260 @@ input.largerCheckbox
 }
 
 
+.popupBox {-moz-box-shadow:0px 0px 0px #7f7f7f;-webkit-box-shadow:0px 0px 0 px #7f7f7f; box-shadow:0px 0px 0px #7f7f7f;margin:-13px 0 0; border:1px solid #ccc !important;}
+.popupBox li { color:#333;}
+
+
+.refreshPop { width:45% !important; height:25%!important;}
+
+
+.popup {text-indent:-9000px; width:40px; background-position:center center; height:40px; background-repeat:no-repeat; margin:0; padding:5px; border:0; background-color:#f4f4f4; border-radius:0;}
+
+
+
+.loader {
+	background-color: #212121;
+	width: 170px;
+	z-index: 1;
+	font-size:18px;
+	border-radius: 10px;
+	margin: 40% auto;
+	vertical-align: middle;
+	text-align: center;
+	padding: 0px;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	padding: 20px 10px;
+}
+
+
+/*
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+*/
+
+
+@-webkit-keyframes spin{
+     from {
+          -webkit-transform: rotate(0deg);
+     }
+     to {
+          -webkit-transform: rotate(360deg);
+     }
+}
+@-moz-keyframes spin {
+     from {
+          -moz-transform: rotate(0deg);
+     }
+     to {
+          -moz-transform: rotate(360deg);
+     }
+}
+@keyframes spin {
+     from {
+          transform: rotate(0deg);
+     }
+     to {
+          transform: rotate(360deg);
+     }
+}
+
+/* Loading animation container */
+
+.loading {
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    width: 28px;
+    height: 28px;
+    z-index: 1;
+}
+
+
+
+
+
+/* Spinning circle (inner circle) */
+
+.loading .maskedCircle {
+    width: 20px;
+    height: 20px;
+    border-radius: 27px;
+    border: 3px solid white;
+}
+
+/* Spinning circle mask */
+
+.loading .mask {
+    width: 55px;
+    height: 12px;
+    overflow: hidden;
+}
+
+/* Spinner */
+
+.loading .spinner {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 26px;
+    
+    height: 26px;
+    animation: spin 1.9s infinite linear;
+    -webkit-animation: spin 1.9s linear infinite;
+    -moz-animation: spin 1.9s linear infinite;
+    
+}
+
+.android-scroll-panel1 {
+	overflow: hidden;
+	max-width: 1300px;
+	min-width: 290px;
+	padding: 0px 0px 0 0px;
+	position: absolute;
+	margin: 0 auto;
+	left: 0px;
+	right: 0px;
+	bottom: 5px;  
+	top: 5px;
+	
+}
+.main-scroll1-inside-panel1 {
+	width: auto;
+	padding: 0px 0px 0px 0px;
+}
+
+/*
+.spinner{
+     width:100px;
+     height:100px;
+     margin:30px auto;
+     position:relative;
+     -webkit-animation: rotateit 3.5s linear infinite;
+     -moz-animation: rotateit 3.5s linear infinite;
+     animation: rotateit 3.5s linear infinite;
+}
+@-webkit-keyframes rotateit{
+     from {
+          -webkit-transform: rotate(360deg);
+     }
+     to {
+          -webkit-transform: rotate(0deg);
+     }
+}
+@-moz-keyframes rotateit {
+     from {
+          -moz-transform: rotate(360deg);
+     }
+     to {
+          -moz-transform: rotate(0deg);
+     }
+}
+@keyframes rotateit {
+     from {
+          transform: rotate(360deg);
+     }
+     to {
+          transform: rotate(0deg);
+     }
+}
+/*=======================================================
+ * Circles
+ *======================================================*/
+/*
+.spinner.circles div{
+     width: 20px;
+     height: 20px;
+     border-radius:50%;
+     background: #6092B3;
+     position: absolute;
+     top: 35px;
+     left: 45px;
+}
+.spinner.circles .a{
+     -webkit-transform: rotate(0deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(0deg) translate(0, -35px) scale(.6);
+     transform: rotate(0deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .b{
+     -webkit-transform: rotate(45deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(45deg) translate(0, -35px) scale(.6);
+     transform: rotate(45deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .c{
+     -webkit-transform: rotate(90deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(90deg) translate(0, -35px) scale(.6);
+     transform: rotate(90deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .d{
+     -webkit-transform: rotate(135deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(135deg) translate(0, -35px) scale(.6);
+     transform: rotate(135deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .e{
+     -webkit-transform: rotate(180deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(180deg) translate(0, -35px) scale(.6);
+     transform: rotate(180deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .f{
+     -webkit-transform: rotate(225deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(225deg) translate(0, -35px) scale(.6);
+     transform: rotate(225deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .g{
+     -webkit-transform: rotate(270deg) translate(0, -35px) scale(.6);
+     -moz-transform: rotate(270deg) translate(0, -35px) scale(.6);
+     transform: rotate(270deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+.spinner.circles .h{
+     -webkit-transform: rotate(315deg) translate(0, -35px) scale(0.6);
+     -moz-transform: rotate(315deg) translate(0, -35px) scale(.6);
+     transform: rotate(315deg) translate(0, -35px) scale(.6);
+     opacity:0.5;
+}
+*/
+
+.ball {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(255,0,0,0.9);
+    opacity: .9;
+    border-top: 5px solid ;
+    border-left: 5px solid ;
+    border-radius: 25px;
+    width: 25px;
+    height: 25px;
+    -moz-animation: spin .5s infinite linear;
+    -webkit-animation: spin .5s infinite linear;
+}
+
+.ball1 {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-top: 5px solid rgba(0,0,0,0);
+    border-left: 5px solid rgba(0,0,0,0);
+    border-radius: 50px;
+    box-shadow: 0 0 15px #2187e7;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    position: relative;
+    top: -50px;
+    -moz-animation: spinoff .5s infinite linear;
+    -webkit-animation: spinoff .5s infinite linear;
+}
+
+
 
 /*
 .nav-button-ui {

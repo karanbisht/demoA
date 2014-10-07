@@ -32,6 +32,9 @@ app.Login = (function () {
 
         var show = function () {
             
+            
+            //app.mobileApp.pane.showLoading();
+              
             console.log("Login Page");
             //app.showNativeAlert();            
             app.userPosition=true;
@@ -80,8 +83,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';                  
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                  
+            //var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -530,8 +533,7 @@ app.Login = (function () {
         /*var registration = function() {
             app.userPosition=false;
             app.mobileApp.navigate('views/registrationView.html');           
-        };*/
-        
+        };*/        
         
         var goToIndex = function(){
               app.mobileApp.navigate('index.html');
@@ -634,8 +636,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='123456';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                    
+            //var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
@@ -666,7 +668,7 @@ app.Login = (function () {
           });  
 	            
 
-                    dataSourceLogin.fetch(function() {
+                  dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
                			//console.log(loginDataView);
        
