@@ -948,7 +948,7 @@ input.largerCheckbox
 
 
 .loader {
-	background-color: #212121;
+	background-color: transparent;
 	width: 190px;
 	z-index: 999;
 	font-size:18px;
@@ -1005,6 +1005,7 @@ input.largerCheckbox
     width: 28px;
     height: 28px;
     z-index:999;
+    color:#3569B0l
 }
 
 

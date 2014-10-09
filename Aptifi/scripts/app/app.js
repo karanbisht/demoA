@@ -535,8 +535,7 @@ var app = (function (win) {
     //var onNotificationAPN = function(e) {
         
        var onNotificationAPN = function(event) {
-
-           //alert(JSON.stringify(event));
+           //alert(JSON.stringify(event));           
            
        if ( event.alert )
        {                   
@@ -581,12 +580,13 @@ var app = (function (win) {
                 break;
             
             case 'message': 
-            //alert(e.payload.default);          
-
+            //alert(e);          
+            
+            //alert(JSON.stringify(e));           
+            //alert(e.title);            
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
             
-            //alert(account_IdDB);
-            
+            //alert(account_IdDB);            
             var messageSplitVal = e.payload.default.split('#####');
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
@@ -596,20 +596,30 @@ var app = (function (win) {
             attachedDB=messageSplitVal[5];
             commentAllowDB=messageSplitVal[6];
             send_DateDB= getPresentDateTime();
-
-            if(commentAllowDB===''){
-                commentAllowDB=0;
-            }
             
+            if(attachedDB=== 0 || attachedDB=== "0"){
+                attachedDB='';
+            }
+
             if ( e.foreground )
             {
+                    var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                
+                
+            }else{
+                    var db = app.getDb();
+                	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+            }
+            
+           /* if ( e.foreground )
+             {
                 //var soundfile = e.soundname || e.payload.sound;
                 //var my_media = new Media("/android_asset/www/"+ soundfile);
                 //my_media.play();
                 //alert('foreGround');
                     var db = app.getDb();
-        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
-    
+        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);    
             }
                 else
             {  // otherwise we were launched because the user touched a notification in the notification tray.
@@ -618,14 +628,13 @@ var app = (function (win) {
                     //alert('coldstart');
                     var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-    
                 }
                 else
                 {
                      var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
                 }
-            }
+           }*/
             
             
             //return message;
@@ -673,6 +682,9 @@ var app = (function (win) {
     function goToAppPage(){
         //alert('move');
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
+        
+                console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
+        
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }
     

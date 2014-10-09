@@ -24,6 +24,8 @@ app.Activities = (function () {
          }   
         
          var show = function(e){             
+           //console.log("plugin test");  
+           //console.log(window.plugins);
              
            var scroller = e.view.scroller;
            scroller.reset();

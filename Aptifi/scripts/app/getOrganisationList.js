@@ -126,6 +126,8 @@ app.OragnisationList = (function () {
             
 
          var show = function(e){                     
+             
+                          
              $("#progress2").hide();
              $('#organisation-listview').data('kendoMobileListView').refresh();
              var scroller = e.view.scroller;
@@ -162,6 +164,7 @@ app.OragnisationList = (function () {
                newUserType = userType.split(',');   
              }
 			
+             
              
              console.log(account_Id);
              console.log(userType);
