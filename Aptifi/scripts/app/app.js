@@ -584,9 +584,11 @@ var app = (function (win) {
             
             //alert(JSON.stringify(e));           
             //alert(e.title);            
+            
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
             
             //alert(account_IdDB);            
+            
             var messageSplitVal = e.payload.default.split('#####');
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
@@ -682,8 +684,8 @@ var app = (function (win) {
     function goToAppPage(){
         //alert('move');
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
-        
-                console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
+            console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
+            console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
         
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }

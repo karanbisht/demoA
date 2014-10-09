@@ -1005,9 +1005,18 @@ input.largerCheckbox
     width: 28px;
     height: 28px;
     z-index:999;
-    color:#3569B0l
 }
 
+
+.loading1 {
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    width: 28px;
+    height: 28px;
+    z-index:999;
+    color:#3598DB;
+}
 
 
 

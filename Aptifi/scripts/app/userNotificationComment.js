@@ -152,7 +152,7 @@ app.userNotiComment = (function () {
             document.getElementById("notiAdminImage").innerHTML = "";
             
             
-            if(attached!== null && attached!==''&& attached!==undefined){             
+            if(attached!== null && attached!==''&& attached!==undefined && attached!=='0'){             
               //loaded(); 
                 $('#notiAdminImage').css({"height":"200px"});
                 $('#notiAdminImage').css({"width":'auto'});

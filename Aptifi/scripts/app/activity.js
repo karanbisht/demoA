@@ -134,8 +134,7 @@ app.Activity = (function () {
                 $('#titleContainer').hide();
             }
 
-                        
-            if(attached!== null && attached!==''){
+            if(attached!== null && attached!=='' && attached!=="0"){
 	    		loaded(); 
                 $('#notiImage').css({"height":"200px"});
                 $('#notiImage').css({"width":'auto'});
