@@ -10,6 +10,10 @@
 #import "PushPlugin.h"
 #import <objc/runtime.h>
 
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
 static char launchNotificationKey;
 
 @implementation AppDelegate (notification)
@@ -48,7 +52,8 @@ static char launchNotificationKey;
 	{
 		NSDictionary *launchOptions = [notification userInfo];
 		if (launchOptions)
-			self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
+			//self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
+            self.launchNotification=@"data value show";
 	}
 }
 
@@ -72,13 +77,26 @@ static char launchNotificationKey;
     }
     
     if (appState == UIApplicationStateActive) {
-        PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
-        pushHandler.notificationMessage = userInfo;
-        pushHandler.isInline = YES;
-        [pushHandler notificationReceived];
+        NSLog(@"That car is a Carrera");
+        //PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+        //pushHandler.notificationMessage = userInfo;
+        //pushHandler.isInline = YES;
+        //[pushHandler notificationReceived];
     } else {
+
+       NSLog(@"That bus is a Carrera");
+
         //save it for later
-        self.launchNotification = userInfo;
+          //NSString*alertD = [userInfo valueForKey:"alert"];
+          //NSLog(@"alert----> %@",userInfo);
+        
+        //NSString*alert = @"karan#####bisht#####mca";
+
+        //NSArray *array = [alert componentsSeparatedByString:@"#####"];
+
+        //self.launchNotification = [array objectAtIndex:0]; 
+        
+//userInfo;
     }
 }
 
@@ -93,7 +111,9 @@ static char launchNotificationKey;
         PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
 		
         pushHandler.notificationMessage = self.launchNotification;
+
         self.launchNotification = nil;
+
         [pushHandler performSelectorOnMainThread:@selector(notificationReceived) withObject:pushHandler waitUntilDone:NO];
     }
 }

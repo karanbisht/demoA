@@ -136,7 +136,8 @@ app.Activity = (function () {
 
             if(attached!== null && attached!=='' && attached!=="0"){
 	    		loaded(); 
-                $('#notiImage').css({"height":"200px"});
+                //$('#notiImage').css({"height":"200px"});
+                $('#notiImage').css({"height":"auto"});
                 $('#notiImage').css({"width":'auto'});
                 $('#notiImage').css({"margin-top":"10px"}); 
                 var imgPathData = app.getfbValue();                    
@@ -309,7 +310,7 @@ app.Activity = (function () {
              $("#comments-listview").kendoMobileListView({
   		    template: kendo.template($("#commentsTemplate").html()),    		
      		 dataSource: commentsDataSource,
-              pullToRefresh: true,   
+              //pullToRefresh: true,   
         		schema: {
            		model:  commentModel
 				}			 
@@ -412,7 +413,6 @@ app.Activity = (function () {
                        console.log(split[0]+" || "+split[1]);
                        var commentDate= app.formatDate(split[0]);
                        //alert(commentDate);
-
                     
                         groupDataShow.push({
                                          comment: results.rows.item(i).comment,

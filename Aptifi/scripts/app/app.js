@@ -363,7 +363,7 @@ var app = (function (win) {
         navigator.splashscreen.hide();
         fixViewResize();
         
-        console.log('apppppppppppp');
+        //console.log('apppppppppppp');
         console.log(window.plugins);
         
         var pushNotification = window.plugins.pushNotification;
@@ -535,7 +535,7 @@ var app = (function (win) {
     //var onNotificationAPN = function(e) {
         
        var onNotificationAPN = function(event) {
-           //alert(JSON.stringify(event));           
+           alert(JSON.stringify(event));           
            
        if ( event.alert )
        {                   
@@ -582,7 +582,7 @@ var app = (function (win) {
             case 'message': 
             //alert(e);          
             
-            //alert(JSON.stringify(e));           
+            alert(JSON.stringify(e));           
             //alert(e.title);            
             
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
@@ -662,6 +662,10 @@ var app = (function (win) {
         
       function insertOrgNotiData(tx){
           //alert('insert');
+          
+          var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='"+messageDB+"' where org_id='" +orgIdDB+"' and role='C'";
+          app.updateQuery(tx, queryUpdate);          
+              
     	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date) VALUES ("'
 				+ orgIdDB
 				+ '","'
@@ -686,7 +690,6 @@ var app = (function (win) {
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
             console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
-        
             app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }
     

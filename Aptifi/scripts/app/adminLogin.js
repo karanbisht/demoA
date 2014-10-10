@@ -255,15 +255,14 @@ app.adminLogin = (function () {
       
       var loginSuccessCB = function(){
             console.log('DataBase Saved');
-            console.log(userOrgIdArray);
-          
+            console.log(userOrgIdArray);          
             //console.log(userRoleArray);
             
             for(var i=0;i<userOrgIdArray.length;i++){
                   //alert(userOrgIdArray[i]);
                   //console.log(userAccountID);
-             var organisationALLListDataSource = new kendo.data.DataSource({                
-             transport: {
+              var organisationALLListDataSource = new kendo.data.DataSource({                
+               transport: {
                read: {
                    url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+account_Id,
                    type:"POST",
@@ -271,7 +270,7 @@ app.adminLogin = (function () {
               	}
               },
                  
-        	 schema: {
+        	  schema: {
                  data: function(data)
                    {	
                        var datacheck=0;
@@ -423,8 +422,9 @@ app.adminLogin = (function () {
         
        var orgNotiGroupDataVal;         
        function saveOrgGroupNotification(data) {
+           
             orgNotiGroupDataVal = data;
-                      console.log('dataaaaaaaaa');
+            alert('dataaaaaaaaa');
             console.log(orgNotiGroupDataVal);            
 			var db = app.getDb();
 			db.transaction(insertOrgGroupNotiData, app.errorCB, goToAdminDashboard);
@@ -433,12 +433,10 @@ app.adminLogin = (function () {
       function insertOrgGroupNotiData(tx){
         //var query = "DELETE FROM ADMIN_ORG_GROUP";
         //app.deleteQuery(tx, query);
-
           
-          var dataLength = orgNotiGroupDataVal.length;         
+        var dataLength = orgNotiGroupDataVal.length;         
           //alert(dataLength);
-
-          var orgGroupData;
+        var orgGroupData;
           
         for(var i=0;i<dataLength;i++){   
            orgGroupData = orgNotiGroupDataVal[i].org_id;
@@ -463,8 +461,7 @@ app.adminLogin = (function () {
 
       var goToAdminDashboard = function(){
              //app.mobileApp.pane.loader.hide();
-                          $("#progress1").hide();
-
+              $("#progress1").hide();
               app.userPosition=false;
               app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
       };

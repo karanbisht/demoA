@@ -154,7 +154,9 @@ app.userNotiComment = (function () {
             
             if(attached!== null && attached!==''&& attached!==undefined && attached!=='0'){             
               //loaded(); 
-                $('#notiAdminImage').css({"height":"200px"});
+                //$('#notiAdminImage').css({"height":"200px"});
+                
+                $('#notiAdminImage').css({"height":"auto"});
                 $('#notiAdminImage').css({"width":'auto'});
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
 

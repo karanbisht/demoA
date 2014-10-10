@@ -100,6 +100,7 @@ app.Activities = (function () {
             groupDataShow=[];
             
 			var count = results.rows.length;
+            //alert(count);
             //var current = new Date();   
             DBGETDATAVALUE = count;           
             
@@ -311,7 +312,9 @@ app.Activities = (function () {
 
              $("#activities-listview").kendoMobileListView({
   		    template: kendo.template($("#activityTemplate").html()),    		
-     		 dataSource: organisationALLListDataSource
+     		 dataSource: organisationALLListDataSource,
+              pullToRefresh: true,   
+
              });
             
              $('#activities-listview').data('kendoMobileListView').refresh();          
