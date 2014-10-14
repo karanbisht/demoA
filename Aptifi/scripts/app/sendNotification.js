@@ -169,8 +169,9 @@ app.sendNotification = (function () {
             localStorage.setItem("SELECTED_GROUP",'');
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
-            $("#largeImage").src = '';
-
+            
+            var largeImage = document.getElementById('largeImage');
+            largeImage.src ='';
             document.getElementById('comment_allow').checked = false;
             
             $("#selectGroupDiv").hide();
@@ -188,131 +189,9 @@ app.sendNotification = (function () {
             
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
-            /*var comboOrgListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
-              	}
-              },
-       	 schema: {               
-                  data: function(data)
-  	             {	console.log(data);
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     console.log(groupValue);
-                                     var orgLength=groupValue[0].orgData.length;
-                                   for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         org_id: groupValue[0].orgData[j].org_id,
-                                         org_name: groupValue[0].orgData[j].org_name,
-                                         organisationID:groupValue[0].orgData[j].organisationID,
-                                         role:groupValue[0].orgData[j].role
-                                     });
-                                   }
-                                 });                       
-                       console.log(groupDataShow);
-                       return groupDataShow;                       
-	               }
-            },
-            error: function (e) {
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           },       
-             sort: { field: 'add', dir: 'desc' }    	     
-          });
-
-          app.mobileApp.pane.loader.hide();
-
-             $("#organisation-Name-listview").kendoMobileListView({
-  		    template: kendo.template($("#orgNameTemplate").html()),    		
-     		 dataSource: comboOrgListDataSource,
-              pullToRefresh: true
-		     });
-            
-               
-            /*$("#orgforNotification").kendoComboBox({
-  				dataSource: comboOrgListDataSource,
-  				dataTextField: "org_name",
-  				dataValueField: "organisationID",
-                  change: onChangeNotiOrg	  	
-            });            
-            
-            
-             var combobox = $("#orgforNotification").data("kendoComboBox"); 
-				combobox.input.focus(function() {
-	                //$( "#orgforNotification" ).blur();
-                    combobox.input.blur();
-				});*/
-            
-            
-            //$("#selectOrgDiv").show();
-        };    
+       };    
              
-         /*var onChangeNotiOrg = function(){
-             var org = this.value();       
-             localStorage.setItem("SELECTED_ORG",org);
-             
-             var comboGroupListDataSource = new kendo.data.DataSource({
-             transport: {
-               read: {
-                   url: "http://54.85.208.215/webservice/group/index/"+org,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
-              	}
-              },
-       	 schema: {               
-                  data: function(data)
-  	             {	console.log(data);
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-                                     console.log(groupValue);
-                                    
-                                     var orgLength=groupValue[0].groupData.length;
-                                     for(var j=0;j<orgLength;j++){
-                                     groupDataShow.push({
-                                         group_desc: groupValue[0].groupData[j].group_desc,
-                                         group_name: groupValue[0].groupData[j].group_name,
-                                         group_status:groupValue[0].groupData[j].group_status,
-                                         org_id:groupValue[0].groupData[j].org_id,
-                                         pid:groupValue[0].groupData[j].pid
-
-                                     });
-                                   }
-                                     
-                                 });
-                       
-                       console.log(groupDataShow);
-                       return groupDataShow;                       
-	               }
-            },
-            error: function (e) {
-               //apps.hideLoading();
-               console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
-           },       
-             sort: { field: 'add', dir: 'desc' }    	     
-          });
-                       
-               
-            $("#groupforNotification").kendoComboBox({
-  				dataSource: comboGroupListDataSource,
-  				dataTextField: "group_name",
-  				dataValueField: "pid",
-                  change: onChangeNotiGroup	  	
-            });
-          
-             var combobox = $("#groupforNotification").data("kendoComboBox"); 
-				combobox.input.focus(function() {
-	                //$( "#orgforNotification" ).blur();
-                    combobox.input.blur();
-				});
-            	 
-        };*/
-                       
+                              
          var onChangeNotiGroup = function(){
             	 var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
              	var groupSelectedNoti = selectDataNoti.value();
@@ -486,6 +365,8 @@ app.sendNotification = (function () {
 
                                      if(groupValue[0].Msg==='No Group list'){
                                          $("#selectGroupDiv").hide();
+                                         $("#selectOrgDiv").hide();
+
                                          escapeGroupGoCustClick();
                                      }else{
                                          var orgLength = groupValue[0].groupData.length;
@@ -543,7 +424,7 @@ app.sendNotification = (function () {
               //pullToRefresh: true
 		     });
              
-             $("#selectGroupDiv").hide();
+             //$("#selectGroupDiv").hide();
 
              app.mobileApp.pane.loader.hide();
              

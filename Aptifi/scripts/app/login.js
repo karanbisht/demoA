@@ -81,8 +81,8 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            //var device_id='123456';                  
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                  
+            //var device_id = localStorage.getItem("deviceTokenID");
             console.log(device_id);
             
             username = $("#loginUsername").val();
@@ -660,8 +660,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='123456';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='123456';                    
+            //var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
