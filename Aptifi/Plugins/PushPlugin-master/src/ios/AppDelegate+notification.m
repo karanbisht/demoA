@@ -52,8 +52,8 @@ static char launchNotificationKey;
 	{
 		NSDictionary *launchOptions = [notification userInfo];
 		if (launchOptions)
-			//self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
-            self.launchNotification=@"data value show";
+			self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
+            //self.launchNotification=@"data value show";
 	}
 }
 
@@ -78,25 +78,26 @@ static char launchNotificationKey;
     
     if (appState == UIApplicationStateActive) {
         NSLog(@"That car is a Carrera");
-        //PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
-        //pushHandler.notificationMessage = userInfo;
-        //pushHandler.isInline = YES;
-        //[pushHandler notificationReceived];
+        PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+        pushHandler.notificationMessage = userInfo;
+        NSLog(@"Show---->", userInfo);
+        pushHandler.isInline = YES;
+        [pushHandler notificationReceived];
     } else {
 
        NSLog(@"That bus is a Carrera");
 
         //save it for later
-          //NSString*alertD = [userInfo valueForKey:"alert"];
-          //NSLog(@"alert----> %@",userInfo);
+        //NSString*alertD = [userInfo valueForKey:"alert"];
+         
+         NSLog(@"alert----> %@",userInfo);
         
         //NSString*alert = @"karan#####bisht#####mca";
 
         //NSArray *array = [alert componentsSeparatedByString:@"#####"];
 
-        //self.launchNotification = [array objectAtIndex:0]; 
-        
-//userInfo;
+        self.launchNotification = userInfo; //[array objectAtIndex:0]; 
+        //userInfo;
     }
 }
 

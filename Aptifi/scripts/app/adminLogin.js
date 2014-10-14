@@ -424,7 +424,7 @@ app.adminLogin = (function () {
        function saveOrgGroupNotification(data) {
            
             orgNotiGroupDataVal = data;
-            alert('dataaaaaaaaa');
+            //alert('dataaaaaaaaa');
             console.log(orgNotiGroupDataVal);            
 			var db = app.getDb();
 			db.transaction(insertOrgGroupNotiData, app.errorCB, goToAdminDashboard);

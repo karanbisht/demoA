@@ -384,11 +384,17 @@ app.Activities = (function () {
             var notiId=e.data.pid;
             var comment_allow=e.data.comment_allow;//: "1"
             var attached = e.data.attached;
-            
-            //alert(attached);
-            
+                     
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
+    
+            //alert(message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
+            
+            var messageVal=app.urlEncode(message); 
+            var titleVal=app.urlEncode(title);
+            
+            //alert(messageVal);
+            
+            app.mobileApp.navigate('views/activityView.html?message=' + messageVal +'&title='+titleVal+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
         };
         
         var groupSelected = function (e) {

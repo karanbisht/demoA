@@ -348,7 +348,6 @@ var app = (function (win) {
     //if(loginStatusCheck==='0'){
     
     mobileApp = new kendo.mobile.Application(document.body, {
-        											 initial: "#welcome",
                                                      transition: 'slide',
                                                      //statusBarStyle: statusBarStyle,
          											layout: "tabstrip-layout",										
@@ -582,7 +581,7 @@ var app = (function (win) {
             case 'message': 
             //alert(e);          
             
-            alert(JSON.stringify(e));           
+            //alert(JSON.stringify(e));           
             //alert(e.title);            
             
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
@@ -661,12 +660,15 @@ var app = (function (win) {
     
         
       function insertOrgNotiData(tx){
-          //alert('insert');
           
           var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='"+messageDB+"' where org_id='" +orgIdDB+"' and role='C'";
           app.updateQuery(tx, queryUpdate);          
-              
-    	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date) VALUES ("'
+           
+          
+    	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ='"+notiIdDB+"'";
+		app.deleteQuery(tx, queryDelete);         
+          
+          var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date,pid) VALUES ("'
 				+ orgIdDB
 				+ '","'
 				+ attachedDB
@@ -680,6 +682,8 @@ var app = (function (win) {
 				+ typeDB
                 + '","'
 				+ send_DateDB
+                + '","'
+                + notiIdDB
 				+ '")';              
                 app.insertQuery(tx, query);               
       }
@@ -690,7 +694,11 @@ var app = (function (win) {
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
             console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
-            app.mobileApp.navigate('views/activityView.html?message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
+
+            var messageDBVal=app.urlEncode(messageDB); 
+            var titleDBVal=app.urlEncode(titleDB);
+        
+            app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
     }
     
     
@@ -712,6 +720,28 @@ var app = (function (win) {
     	console.log(evt.target.error.code);
 	}
     
+    
+    function urldecode(str) {
+	    return decodeURIComponent((str + '').replace(/\+/g, '%20'));
+    }
+
+    function urlEncode(str){
+        return encodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+    }
+    
+    
+    function proURIDecoder(val)
+    {
+          val=val.replace(/\+/g, '%20');
+          var str=val.split("%");
+          var cval=str[0];
+          for (var i=1;i<str.length;i++)
+          {
+            cval+=String.fromCharCode(parseInt(str[i].substring(0,2),16))+str[i].substring(2);
+          }
+
+      return cval;
+    }
     
     /*
     var os = kendo.support.mobileOS,
@@ -906,8 +936,11 @@ var app = (function (win) {
         updateQuery:updateQuery,
         insertQuery:insertQuery,
         showConfirm: showConfirm,
+        urldecode:urldecode,
+        urlEncode:urlEncode,
         isKeySet: isKeySet,
         mobileApp: mobileApp,
+        proURIDecoder:proURIDecoder,
         checkConnection:checkConnection,
         helper: AppHelper,
         getfbValue:getfbValue,

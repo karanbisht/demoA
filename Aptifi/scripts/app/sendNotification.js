@@ -9,7 +9,9 @@ app.sendNotification = (function () {
       var orgId = localStorage.getItem("UserOrgID"); 
       console.log(orgId);
       var account_Id;          
-         
+      var pictureSource;   // picture source
+      var destinationType; // sets the format of returned value
+   
     	var init = function () {				                 
            app.MenuPage=false;
            app.userPosition=false;
@@ -21,15 +23,15 @@ app.sendNotification = (function () {
                                         { text: "Invitaion", value: "V" },
                                         { text: "Information", value: "I" },
                                         { text: "Reminder", value: "R" },
-                                        { text: "Alert", value: "A" }
-      
+                                        { text: "Alert", value: "A" }      
           ];
             
             
             var dataSource = new kendo.data.DataSource({
                   data: showNotiTypes
             });
-                       
+
+            
              $("#type-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#typeNameTemplate").html()),    		
      		 dataSource: dataSource,
@@ -140,9 +142,7 @@ app.sendNotification = (function () {
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShowOffline
-              });           
-
-                
+              });                           
              
              $("#organisation-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#orgNameTemplate").html()),    		
@@ -158,12 +158,19 @@ app.sendNotification = (function () {
     
                                        
         var show = function(e){
+            
+             pictureSource=navigator.camera.PictureSourceType;
+             destinationType=navigator.camera.DestinationType;
+            
             //$notificationDesc.val('');
            // validator.hideMessages();
             app.mobileApp.pane.loader.show();
-			localStorage.setItem("SELECTED_GROUP",'');
+
+            localStorage.setItem("SELECTED_GROUP",'');
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
+            $("#largeImage").src = '';
+
             document.getElementById('comment_allow').checked = false;
             
             $("#selectGroupDiv").hide();
@@ -178,7 +185,6 @@ app.sendNotification = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
                }
-
             
             var account_Id = localStorage.getItem("ACCOUNT_ID");
           
@@ -314,7 +320,16 @@ app.sendNotification = (function () {
              	return groupSelectedNoti;
          };
          
+         
+         var getPhotoVal = function(){
+                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: pictureSource.SAVEDPHOTOALBUM });
+
+         };
+         
                  
+
          var sendNotificationMessage = function () {    
              
          if(!app.checkConnection()){
@@ -324,8 +339,8 @@ app.sendNotification = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
            }else{     
-         //var cmbGroup = [];
-         var org_id = localStorage.getItem("SELECTED_ORG");    
+             //var cmbGroup = [];
+             var org_id = localStorage.getItem("SELECTED_ORG");    
          
             //if (validator.validate()) {
                //var group=onChangeNotiGroup();
@@ -368,8 +383,8 @@ app.sendNotification = (function () {
             app.showAlert('Please select Organisation','Validation Error');
           }else if(cmbGroup==='' && cmbCust===''){
             app.showAlert('Please Organisation Group or Customer.','Validation Error'); 
-            $("#selectGroupDiv").show(); 
-              $("#sendNotificationDivMsg").hide();
+               $("#selectGroupDiv").show(); 
+               $("#sendNotificationDivMsg").hide();
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -403,9 +418,9 @@ app.sendNotification = (function () {
                //function () { }, "Notification", 'OK');
                
                   if(!app.checkSimulator()){
-                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                      //window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                       }else{
-                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                      //app.showAlert("Network problem . Please try again later","Notification");  
                 }
                
            }               
@@ -449,8 +464,9 @@ app.sendNotification = (function () {
          
          var sendNotificationOrg = function(e){
              console.log(e.data.org_id);
-              app.mobileApp.pane.loader.show();            
-              var org = e.data.org_id;       
+             app.mobileApp.pane.loader.show();            
+             var org = e.data.org_id;       
+
              localStorage.setItem("SELECTED_ORG",org);
              
              var comboGroupListDataSource = new kendo.data.DataSource({
@@ -467,12 +483,13 @@ app.sendNotification = (function () {
                         var groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
                                      console.log(groupValue);
-                                    
+
                                      if(groupValue[0].Msg==='No Group list'){
-                                         escapeGroupClick();
+                                         $("#selectGroupDiv").hide();
+                                         escapeGroupGoCustClick();
                                      }else{
                                          var orgLength = groupValue[0].groupData.length;
-                                         
+
                                      for(var j=0;j<orgLength;j++){
 
                                          groupDataShow.push({
@@ -484,6 +501,9 @@ app.sendNotification = (function () {
 
                                        });
                                      }
+                                          $("#selectOrgDiv").hide();
+                                          $("#selectGroupDiv").show();
+
                                    }
                                      
                                  });
@@ -523,8 +543,8 @@ app.sendNotification = (function () {
               //pullToRefresh: true
 		     });
              
-             $("#selectOrgDiv").hide();
-             $("#selectGroupDiv").show();
+             $("#selectGroupDiv").hide();
+
              app.mobileApp.pane.loader.hide();
              
              
@@ -687,6 +707,13 @@ app.sendNotification = (function () {
              app.mobileApp.pane.loader.hide();    
          };
          
+         var escapeGroupGoCustClick = function(){                 
+             app.mobileApp.pane.loader.show(); 
+             $("#selectGroupDiv").hide();
+             $("#selectCustomerToSend").show();
+             app.mobileApp.pane.loader.hide();    
+         };
+         
          var groupCheckData = function(){
            		    
             $(':checkbox:checked').each(function(i){
@@ -697,6 +724,40 @@ app.sendNotification = (function () {
             console.log(groupChecked);
                    
          };
+         
+         
+       
+         
+          var getPhoto =function() {
+              alert('123');
+              // Retrieve image file location from specified source
+              navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: pictureSource.SAVEDPHOTOALBUM });
+          }
+         
+          function onPhotoURISuccess(imageURI) {
+                  // Uncomment to view the image file URI
+                  // console.log(imageURI);
+
+                  // Get image handle
+                  //
+                  var largeImage = document.getElementById('largeImage');
+
+                  // Unhide image elements
+                  //
+                  largeImage.style.display = 'block';
+
+                  // Show the captured photo
+                  // The inline CSS rules are used to resize the image
+                  //
+                  largeImage.src = imageURI;
+              //dataToSend = imageURI;
+          }
+         
+          function onFail(message) {
+              alert('Failed because: ' + message);
+            }
 
     	 return {
         	   init: init,
@@ -711,6 +772,8 @@ app.sendNotification = (function () {
                NextToSeletType:NextToSeletType,
                groupCheckData:groupCheckData,
                onChangeNotiGroup:onChangeNotiGroup,
+               getPhoto:getPhoto,
+               getPhotoVal:getPhotoVal,
                sendNotificationMessage:sendNotificationMessage
          };
            

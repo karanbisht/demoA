@@ -196,7 +196,13 @@
             		#if(countData!==0){#
 						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
             		#}# 
-       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>            			            
+                                #if(orgDesc.length > 60){#
+                                #orgDescVal = orgDesc.substr(0, 60) + '..';#
+                                #}else{#
+                                #orgDescVal = orgDesc;#  
+                                #}#
+
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
        		 </div>
 		    </div>
 		</script>

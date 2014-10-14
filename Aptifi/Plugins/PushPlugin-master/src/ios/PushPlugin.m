@@ -216,6 +216,12 @@
         [jsonStr appendString:@"}"];
 
         NSLog(@"Msg: %@", jsonStr);
+        
+        //NSArray *array = [jsonStr componentsSeparatedByString:@"#####"];
+
+        //jsonStr = [array objectAtIndex:0]; 
+
+        //NSLog(@"Msg: %@", jsonStr);
 
         NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
         [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];

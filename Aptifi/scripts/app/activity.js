@@ -104,6 +104,7 @@ app.Activity = (function () {
 		}, false);
 
         var show = function (e) {
+
             groupDataShow = [];            
 
             //console.log('TESTINGGGGGG');
@@ -123,6 +124,11 @@ app.Activity = (function () {
             account_Id =e.view.params.account_Id;
             comment_allow = e.view.params.comment_allow;
             attached = e.view.params.attached;
+            
+            message=app.proURIDecoder(message);
+            title =app.proURIDecoder(title);
+            
+            //alert('dataValue');
             
             console.log(org_id+'||'+notiId+'||'+account_Id+'||'+comment_allow+'||'+attached);
             //alert(attached);

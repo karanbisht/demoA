@@ -47,7 +47,7 @@
  				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
             
-                    #if(attached!=='' && attached!=="0"){#
+                    #if(attached!=='' && attached!=='0'){#
                       <br/>  
                       <img src= ${attachedImg} style="height:100px ; width:auto;margin-top:10px;" /> 
                     #}#            
@@ -66,7 +66,7 @@
  				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
             
-                    #if(attached!==''){#
+                    #if(attached!=='' && attached!=='0' ){#
                       <br/>  
                       <img src= ${attachedImg} style="height:100px ; width:auto;margin-top:10px;" /> 
                     #}#            

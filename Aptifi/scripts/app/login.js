@@ -93,7 +93,8 @@ app.Login = (function () {
             } else if (!validateMobile(username)) {
                 app.showAlert("Please enter a valid Mobile Number.","Validation Error");
 			} else {         
-                           $("#progress").show();
+              
+                $("#progress").show();
 
                  //app.mobileApp.pane.loader.show();                
                  //app.mobileApp.pane.loader.hide();           
@@ -625,7 +626,7 @@ app.Login = (function () {
            });  
 	            
            dataSourceValidation.fetch(function() {
-				        var registrationDataView = dataSourceValidation.data();
+				      var registrationDataView = dataSourceValidation.data();
 						//console.log(registrationDataView);
                		    	//app.showAlert("The Verification Code will be sent to this number." , "Notification");
                				$("#validationRow").show();
