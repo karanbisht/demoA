@@ -172,8 +172,8 @@ app.Activities = (function () {
         };    
             
          var insertBagCount = function(tx){             
-             console.log('ssss'+bagCount);
-             console.log('ssss'+organisationID);
+             //alert('ssss'+bagCount);
+             //alert('ssss'+organisationID);
 
              var query = "UPDATE JOINED_ORG SET bagCount='" +bagCount +"' WHERE org_id='" +organisationID+"' and role='"+'C'+"'" ;
 		     app.updateQuery(tx, query);

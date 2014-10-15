@@ -15,7 +15,6 @@ app.Login = (function () {
         var userType=[];
         var UserProfileInformation;
         var UserOrgInformation;
-        var UserOrgInformation;
         var account_Id;
         var db;
         var regClickButton;
@@ -81,10 +80,11 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='123456';                  
-            //var device_id = localStorage.getItem("deviceTokenID");
-            console.log(device_id);
             
+              //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                  
+              var device_id = localStorage.getItem("deviceTokenID");
+            
+            console.log(device_id);            
             username = $("#loginUsername").val();
         //    console.log(username);
             
@@ -98,10 +98,12 @@ app.Login = (function () {
 
                  //app.mobileApp.pane.loader.show();                
                  //app.mobileApp.pane.loader.hide();           
+                
        		  console.log(username+"||"+device_id+"||"+device_type);
+                
+                 localStorage.setItem("username",username); 
         	              
               var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
-       
               var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
@@ -215,7 +217,7 @@ app.Login = (function () {
 		};
         
         function saveOrgInfo(data1) {
-            profileOrgData = data1;            
+            profileOrgData = data1; 
 			var db = app.getDb();
 			db.transaction(insertOrgInfo, app.errorCB, loginSuccessCB);
 		};
@@ -257,19 +259,21 @@ app.Login = (function () {
       function insertOrgInfo(tx){
         var query = "DELETE FROM JOINED_ORG";
 		app.deleteQuery(tx, query);
+          
 
         var dataLength = profileOrgData.org_id.length;
        
        // console.log(profileOrgData.org_id[0]);
        // console.log(profileOrgData.org_id[1]);
 
+          //alert(dataLength);
        for(var i=0;i<dataLength;i++){                  
            
            if(profileOrgData.role[i]==='C'){
                userOrgIdArray.push(profileOrgData.org_id[i]);
            }           
            
-           //alert(profileOrgData.joined_on[i]);
+           //alert(profileOrgData.org_name[i]);
            
            //userRoleArray.push(profileOrgData.role[i]);           
         	   var query = 'INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource , joinedDate , orgDesc) VALUES ("'
@@ -452,7 +456,7 @@ app.Login = (function () {
         
        var goToHomePage = function(){
                //app.mobileApp.pane.loader.hide();
-              $("#progress").hide();
+               $("#progress").hide();
                app.userPosition=false;				  
                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
        }
@@ -465,13 +469,13 @@ app.Login = (function () {
             GlobalDataOrgId=orgData;
             GlobalDataLastMsg=orgLastMsg;
             GlobalDataCount=dataLength;
-             var db = app.getDb();
-             db.transaction(updateLoginStatus, app.errorCB,goToHomePage);
+            var db = app.getDb();
+            db.transaction(updateLoginStatus, app.errorCB,goToHomePage);
         }
         
         function updateLoginStatus(tx) {
 	           //console.log(GlobalDataOrgId+"||"+GlobalDataLastMsg+"||"+GlobalDataCount);     
-               var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='C'";
+               var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',bagCount='"+GlobalDataCount+"', lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='C'";
                app.updateQuery(tx, query);
         }
             
@@ -660,8 +664,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            var device_id='123456';                    
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
@@ -723,7 +727,7 @@ app.Login = (function () {
                       }else{
                           //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
-                          app.showAlert(loginData.status[0].Msg,"Notification");
+                             app.showAlert(loginData.status[0].Msg,"Notification");
                       }      
                    
                      /*else if(loginData.status[0].Msg==='Create profile'){

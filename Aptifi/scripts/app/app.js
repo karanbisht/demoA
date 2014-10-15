@@ -566,6 +566,7 @@ var app = (function (win) {
         //alert(JSON.stringify(e));
         
      try{
+         
         switch (e.event) {
             case 'registered':
                 if (e.regid.length > 0) {
@@ -597,6 +598,7 @@ var app = (function (win) {
             attachedDB=messageSplitVal[5];
             commentAllowDB=messageSplitVal[6];
             send_DateDB= getPresentDateTime();
+            
             
             if(attachedDB=== 0 || attachedDB=== "0"){
                 attachedDB='';
@@ -690,7 +692,10 @@ var app = (function (win) {
     
     
     function goToAppPage(){
-        //alert('move');
+        
+                    var db = app.getDb();
+        			db.transaction(updatebagCount, app.errorCB, app.successCB);
+          
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
             console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
@@ -699,6 +704,11 @@ var app = (function (win) {
             var titleDBVal=app.urlEncode(titleDB);
         
             app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
+    }
+    
+    function updatebagCount(tx){
+        var queryUpdate = "UPDATE JOINED_ORG SET bagCount=bagCount+1 where org_id='" +orgIdDB+"' and role='C'";
+        app.updateQuery(tx, queryUpdate);          
     }
     
     
