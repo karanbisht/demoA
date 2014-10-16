@@ -181,7 +181,7 @@ app.OragnisationList = (function () {
             }else if(num2===3 && num1===0 && num3===0){
                 localStorage.setItem("ShowMore",0);
                 $("#moreOption").hide();  
-            }else if(num1===1 && num2===3){
+            }else if(num1===1 && num2===3){0
                  localStorage.setItem("ShowMore",0);
                  $("#moreOption").hide();
             }else if(num1===1){
@@ -189,8 +189,8 @@ app.OragnisationList = (function () {
                  $("#goToAdmin").hide();
             }
              
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            var device_id = localStorage.getItem("deviceTokenID"); 
+           //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+           var device_id = localStorage.getItem("deviceTokenID"); 
              
             var deviceName = app.devicePlatform();
             var device_type;
@@ -353,9 +353,9 @@ app.OragnisationList = (function () {
 
        for(var i=0;i<dataLength;i++){                             
  
-           if(profileOrgData.role[i]==='C'){
-               userOrgIdArray.push(profileOrgData.org_id[i]);
-           }                      
+           //if(profileOrgData.role[i]==='C'){
+              // userOrgIdArray.push(profileOrgData.org_id[i]);
+           //}                      
 
            //alert(joinOrgID);
            
@@ -378,7 +378,7 @@ app.OragnisationList = (function () {
 				+ '")';              
                 app.insertQuery(tx, query);
            }else{         
-               //alert(profileOrgData.role[i]);                
+               //alert(profileOrgData.role[0]); 
                var queryUpdate = "UPDATE JOINED_ORG SET org_name='"+profileOrgData.org_name[i]+"',orgDesc='"+profileOrgData.org_desc[i]+"',imageSource='"+profileOrgData.org_logo[i]+"' where org_id='" +profileOrgData.org_id[i] +"'";
                app.updateQuery(tx, queryUpdate);                         
            }                      
