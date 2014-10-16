@@ -348,7 +348,7 @@ var app = (function (win) {
     //if(loginStatusCheck==='0'){
     
     mobileApp = new kendo.mobile.Application(document.body, {
-                                                     transition: 'slide',
+                                                     //transition: 'slide',
                                                      //statusBarStyle: statusBarStyle,
          											layout: "tabstrip-layout",										
                                                      skin: 'flat'

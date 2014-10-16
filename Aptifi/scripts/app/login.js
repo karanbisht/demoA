@@ -20,6 +20,8 @@ app.Login = (function () {
         var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
+        var JoinedOrganisationYN=1;
+ 
         
         //var isAnalytics = analytics.isAnalytics();
                
@@ -34,6 +36,7 @@ app.Login = (function () {
               
             console.log("Login Page");
             //app.showNativeAlert();            
+            app.userPosition=true;
             app.userPosition=true;
             $('#loginUsername').val('');
         
@@ -50,9 +53,9 @@ app.Login = (function () {
             //window.plugins.toast.showShortTop(message);
 		    //}
             //app.showNativeAlert();
+            //app.showNativeAlert();
         };
-        
-        
+                
         var checkEnter = function (e) {
             if (e.keyCode === 13) {
                 login();
@@ -81,9 +84,8 @@ app.Login = (function () {
              }
                          
             
-                //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                  
-                 var device_id = localStorage.getItem("deviceTokenID");
-            
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
+            var device_id = localStorage.getItem("deviceTokenID");            
             console.log(device_id);            
             username = $("#loginUsername").val();
         //    console.log(username);
@@ -170,17 +172,26 @@ app.Login = (function () {
                           account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
                          // console.log(loginData.status[0].JoinedOrg.role.length);
-                          var roleLength = loginData.status[0].JoinedOrg.role.length;
-                          for(var i=0;i<roleLength;i++){
-                             userType.push(loginData.status[0].JoinedOrg.role[i]); 
-                          }
-                            // console.log(userType);
                           
+                          //console.log(loginData);
+                          //console.log(loginData.status[0].JoinedOrg.role.length);
+                          
+                          
+                         if(loginData.status[0].JoinedOrg.length!==0){
+                              var roleLength = loginData.status[0].JoinedOrg.role.length;
+                                  for(var i=0;i<roleLength;i++){
+                                         userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                              }
+                            // console.log(userType);
+                              UserOrgInformation = loginData.status[0].JoinedOrg;
+                         }else{
+                              JoinedOrganisationYN = 0;
+                         }
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
                           
                           //console.log('checking for User Date');
                           
-                          UserOrgInformation = loginData.status[0].JoinedOrg;
+                         
                           //console.log("1");
                           //console.log(UserOrgInformation);
                             //                        console.log("2");
@@ -190,7 +201,10 @@ app.Login = (function () {
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                           saveProfileInfo(UserProfileInformation);
-                          saveOrgInfo(UserOrgInformation);                         
+                           
+                         if(loginData.status[0].JoinedOrg.length!==0){
+                                  saveOrgInfo(UserOrgInformation);              
+                         }
                       
                       }else{
                           //app.mobileApp.pane.loader.hide();
@@ -212,8 +226,14 @@ app.Login = (function () {
         var profileOrgData;
 		function saveProfileInfo(data) {
 			profileInfoData = data; 
-			var db = app.getDb();
-			db.transaction(insertProfileInfo, app.errorCB, app.successCB);
+            if(JoinedOrganisationYN===0){
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 
+             
+            }else{
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+            }
 		};
         
         function saveOrgInfo(data1) {
@@ -612,7 +632,8 @@ app.Login = (function () {
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+                   //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+                     url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCode+"&rout=transactional&from=APTIFI"
            	}
            },
            schema: {
@@ -644,7 +665,7 @@ app.Login = (function () {
          };
         
         var doneVerification = function(){
-             varifiCode='123456';
+             //varifiCode='123456';
             
 			var validationCodeId = $("#validationCodeId").val();
                 if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
@@ -707,23 +728,31 @@ app.Login = (function () {
                       if(loginData.status[0].Msg==='Success'){
 					      account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
-                          //console.log(loginData.status[0].JoinedOrg.role.length);
-                          var roleLength = loginData.status[0].JoinedOrg.role.length;
-                          
-                          for(var i=0;i<roleLength;i++){
-                             userType.push(loginData.status[0].JoinedOrg.role[i]); 
-                          }
+                          console.log(loginData);
+                                                   
+                          if(loginData.status[0].JoinedOrg.length!==0){ 
+                              console.log(loginData.status[0].JoinedOrg.role.length);
+                              var roleLength = loginData.status[0].JoinedOrg.role.length;                          
+                              for(var i=0;i<roleLength;i++){
+                                 userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                              }
                              //console.log(userType);
-                                                    
+                          }else{
+                               JoinedOrganisationYN = 0;
+                          }   
+                          
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                          UserOrgInformation = loginData.status[0].JoinedOrg;
+                          if(loginData.status[0].JoinedOrg.length!==0){
+                              UserOrgInformation = loginData.status[0].JoinedOrg;
+                              saveOrgInfo(UserOrgInformation);
+                          }    
                           //console.log(UserOrgInformation);
                           //console.log(UserProfileInformation);
                           //console.log("karan bisht");
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                           saveProfileInfo(UserProfileInformation);
-                          saveOrgInfo(UserOrgInformation); 
+                           
                       }else{
                           //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();

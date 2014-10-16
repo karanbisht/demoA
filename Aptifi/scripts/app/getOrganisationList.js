@@ -13,6 +13,8 @@ app.OragnisationList = (function () {
  var groupDataShow = [];   
  var UserProfileInformation;
  var UserOrgInformation;
+ var JoinedOrganisationYN=1;
+    
     
     var organisationViewModel = (function () {
             
@@ -113,7 +115,8 @@ app.OragnisationList = (function () {
                                          imageSource:'',
                                          org_logo :null,  
                                          bagCount : 0 ,
-                                         bagValToStore:0
+                                         countData:0,
+                                         count : 0
     	                               });      
             }
          };       
@@ -124,6 +127,9 @@ app.OragnisationList = (function () {
                                        
              $("#progress2").show();
              $('#organisation-listview').data('kendoMobileListView').refresh();
+            
+             $(".km-scroll-container").css("-webkit-transform", "");
+             
              var scroller = e.view.scroller;
              scroller.reset();
              
@@ -145,6 +151,7 @@ app.OragnisationList = (function () {
              if(from==='Login'){
               account_Id = e.view.params.account_Id;
               userType= e.view.params.userType;
+              //alert(userType);   
               newUserType = userType.split(',');   
                  
               //console.log("karan"+newUserType);  
@@ -160,9 +167,9 @@ app.OragnisationList = (function () {
 			
              
              
-             console.log(account_Id);
-             console.log(userType);
-              
+             //alert(account_Id);
+             
+          if(userType!==''){
              
              for(var i=0;i<newUserType.length;i++){
                  console.log(newUserType[i]);
@@ -188,7 +195,12 @@ app.OragnisationList = (function () {
                  localStorage.setItem("ShowMore",1);
                  $("#goToAdmin").hide();
             }
-             
+           
+          }else{
+               
+                 $("#goToAdmin").hide();
+                 $("#moreOption").show();   
+          }  
            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
            var device_id = localStorage.getItem("deviceTokenID"); 
              
@@ -271,19 +283,27 @@ app.OragnisationList = (function () {
                           //account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
                           // console.log(loginData.status[0].JoinedOrg.role.length);
-                          var roleLength = loginData.status[0].JoinedOrg.role.length;
-                          
-                          for(var i=0;i<roleLength;i++){
-                             userTypeAtShow.push(loginData.status[0].JoinedOrg.role[i]); 
-                          }
-                          
+
+                          if(loginData.status[0].JoinedOrg.length!==0){
+
+                              var roleLength = loginData.status[0].JoinedOrg.role.length;
+                              
+                              for(var i=0;i<roleLength;i++){
+                                 userTypeAtShow.push(loginData.status[0].JoinedOrg.role[i]); 
+                              }
+                         }else{
+                                JoinedOrganisationYN = 0;
+                         } 
                            //alert(userType);
                           
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
                           
                           //console.log('checking for User Date');
-                          
-                          UserOrgInformation = loginData.status[0].JoinedOrg;
+
+                          if(loginData.status[0].JoinedOrg.length!==0){
+                              UserOrgInformation = loginData.status[0].JoinedOrg;
+                              saveOrgInfo(UserOrgInformation);
+                          }    
                           //console.log("1");
                           //console.log(UserOrgInformation);
                             //                        console.log("2");
@@ -293,7 +313,7 @@ app.OragnisationList = (function () {
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                           saveProfileInfo(UserProfileInformation);
-                          saveOrgInfo(UserOrgInformation);                         
+                          
                       
                       }else{
                           //app.mobileApp.pane.loader.hide();
@@ -309,9 +329,16 @@ app.OragnisationList = (function () {
         var profileOrgData;
         
 		function saveProfileInfo(data) {
-			profileInfoData = data; 
-			var db = app.getDb();
-			db.transaction(insertProfileInfo, app.errorCB, app.successCB);
+			profileInfoData = data;
+            
+            if(JoinedOrganisationYN===0){
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, showFullData);              
+            }else{
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+            }
+
 		};
         
         function saveOrgInfo(data1) {
@@ -633,6 +660,9 @@ app.OragnisationList = (function () {
         
 
         var orgShow = function(){
+
+           $(".km-scroll-container").css("-webkit-transform", "");
+ 
            app.MenuPage=false;
 		   $("#organisation-listview1").html("");
            var showMore = localStorage.getItem("ShowMore");
@@ -678,7 +708,17 @@ app.OragnisationList = (function () {
                        });
                     }
                 }
-			}
+			}else{
+                orgDbData.push({
+						 org_name:'No Organisation',
+        		         org_id: '',
+                         role:'',
+                         imgData:null,   
+                         imageSourceOrg:'',   
+                         orgDesc:'You are not a customer of any organisation',                      
+                         joinDate:'Not Yet Joined'                   
+                 });
+            }
 		};
            
 
@@ -816,15 +856,15 @@ app.OragnisationList = (function () {
 	            console.log(err);
             }
             
-            
-            
-                
            
          var userProfileInt = function () {       
       	    app.MenuPage=false; 
          };
         
         var userProfileShow = function(){
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
             app.mobileApp.pane.loader.show();
             app.MenuPage=false;    
             

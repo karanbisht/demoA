@@ -3,6 +3,8 @@ var app = app || {};
 app.sendNotification = (function () {
     var validator;
     var notificationTypeSelected;
+    var dataToSend ;
+
     var groupChecked = [];
 	 var sendNotificationViewModel = (function () {
 
@@ -159,6 +161,9 @@ app.sendNotification = (function () {
                                        
         var show = function(e){
             
+             $("#removeAttachment").show();            
+             $(".km-scroll-container").css("-webkit-transform", "");
+
              pictureSource=navigator.camera.PictureSourceType;
              destinationType=navigator.camera.DestinationType;
             
@@ -172,6 +177,8 @@ app.sendNotification = (function () {
             app.mobileApp.pane.loader.show();
 
             localStorage.setItem("SELECTED_GROUP",'');
+            localStorage.setItem("SELECTED_CUSTOMER",'');
+            
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
             
@@ -190,10 +197,8 @@ app.sendNotification = (function () {
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
-               }
-            
-            var account_Id = localStorage.getItem("ACCOUNT_ID");
-          
+               }            
+            var account_Id = localStorage.getItem("ACCOUNT_ID");          
        };    
              
                               
@@ -211,11 +216,10 @@ app.sendNotification = (function () {
                     sourceType: pictureSource.SAVEDPHOTOALBUM });
 
          };
-         
-                 
+                          
 
          var sendNotificationMessage = function () {    
-             
+         //alert(dataToSend);
          if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -261,7 +265,7 @@ app.sendNotification = (function () {
                 
                 //alert(titleValue +"||"+notificationValue);            
              
-          console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+cmbCust+"||"+org_id);
+          //console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+cmbCust+"||"+org_id);
                    
                //alert(cmbGroup);
                //alert(cmbCust);
@@ -283,8 +287,37 @@ app.sendNotification = (function () {
           }else if(notificationValue===''){
             app.showAlert('Please select Notification Message','Validation Error');           
           }else{ 
-             
-          var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
+          $("#progressSendNotification").show();
+              
+              
+              
+              
+              
+
+              /*   var url = "http://54.85.208.215/webservice/notification/sendNotification";
+
+                        var params = new Object();
+                        params.cmbGroup = "cmbGroup";  //you can send additional info with the file
+                        params.cmbCust = "cmbCust";
+                        params.type = "type";
+                        params.titleValue = "title";
+                        params.notificationValue = "message";
+                        params.org_id = "org_id";
+                        params.cmmt_allow = "comment_allow";
+              
+                        var options = new FileUploadOptions();
+                        options.fileKey = "attached";
+                        options.fileName = dataToSend.substr(imageUri.lastIndexOf('/')+1);
+                        options.mimeType = "image/jpeg";
+                        options.params = params;
+                        options.chunkedMode = false;
+
+                        var ft = new FileTransfer();
+                        ft.upload(dataToSend, url, successCallback, errorCallback, options);
+                    */
+
+              
+          var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow ,"attached":dataToSend}
                             
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
@@ -308,12 +341,12 @@ app.sendNotification = (function () {
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
                
-                  if(!app.checkSimulator()){
+                      if(!app.checkSimulator()){
                                       //window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                       }else{
                                       //app.showAlert("Network problem . Please try again later","Notification");  
-                 }
-               
+                     }
+                   
                                if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Notification Send Successfully');   
                                  }else{
@@ -324,10 +357,10 @@ app.sendNotification = (function () {
                                    document.getElementById('comment_allow').checked = false;
                                       var largeImage = document.getElementById('largeImage');
                                       largeImage.src ='';
-                             
- 
-    
-               
+                                  $("#progressSendNotification").hide();
+                             app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+
+                 
            }               
           });  
 	            
@@ -351,6 +384,9 @@ app.sendNotification = (function () {
                                    document.getElementById('comment_allow').checked = false;
                                    var largeImage = document.getElementById('largeImage');
                                    largeImage.src ='';
+                                   $("#progressSendNotification").hide();
+                                   app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+
 
 
                                    
@@ -361,6 +397,8 @@ app.sendNotification = (function () {
                                                                                     
                                }else{
                                   app.showAlert(notification.status[0].Msg ,'Notification'); 
+                                  $("#progressSendNotification").hide();
+  
                                }
                            });               
                
@@ -370,6 +408,35 @@ app.sendNotification = (function () {
             }   
         };
          
+         
+         var successCallback = function(){
+          
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Notification Send Successfully');   
+                                 }else{
+                                       app.showAlert("Notification Send Successfully","Notification"); 
+                                 }
+            
+  
+                                   $("#notificationTitleValue").val('');            
+						           $("#notificationDesc").val('');
+                                   document.getElementById('comment_allow').checked = false;
+                                   var largeImage = document.getElementById('largeImage');
+                                   largeImage.src ='';
+                                   $("#progressSendNotification").hide();
+                                   app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+         }
+         
+         
+         var errorCallback = function(){
+             
+                               if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                               }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                               }
+    
+         }
          
          var sendNotificationOrg = function(e){
              console.log(e.data.org_id);
@@ -642,11 +709,19 @@ app.sendNotification = (function () {
           var getPhoto =function() {
               //alert('123');
               // Retrieve image file location from specified source
+              
               navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
                     destinationType: destinationType.FILE_URI,
+                    correctOrientation: true,
                     sourceType: pictureSource.SAVEDPHOTOALBUM });
+              
+              /*navigator.gallery.getPicture(onGallerySuccess, onFail, {
+		            quality : 100,
+		            targetWidth : 800,
+		            targetHeight : 600
+	          	});*/
           }
-         
+                  
           function onPhotoURISuccess(imageURI) {
                   // Uncomment to view the image file URI
                   // console.log(imageURI);
@@ -663,12 +738,24 @@ app.sendNotification = (function () {
                   // The inline CSS rules are used to resize the image
                   //
                   largeImage.src = imageURI;
+                  dataToSend = imageURI;
+              
+                  $("#removeAttachment").show();
+              
+             // alert(imageURI);
+              console.log(imageURI);
               //dataToSend = imageURI;
           }
          
           function onFail(message) {
-              alert('Failed because: ' + message);
+              console.log('Failed because: ' + message);
             }
+         
+         var removeImage = function(){
+            var largeImage = document.getElementById('largeImage');
+            largeImage.src ='';
+            $("#removeAttachment").hide(); 
+         }
 
     	 return {
         	   init: init,
@@ -685,6 +772,7 @@ app.sendNotification = (function () {
                onChangeNotiGroup:onChangeNotiGroup,
                getPhoto:getPhoto,
                getPhotoVal:getPhotoVal,
+             removeImage:removeImage,
                sendNotificationMessage:sendNotificationMessage
          };
            

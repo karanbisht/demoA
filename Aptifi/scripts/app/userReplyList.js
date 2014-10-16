@@ -83,6 +83,8 @@ app.userReplyList = (function () {
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
             
+                     $(".km-scroll-container").css("-webkit-transform", "");
+
            account_Id = localStorage.getItem("ACCOUNT_ID");
             
 

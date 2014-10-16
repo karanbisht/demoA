@@ -26,9 +26,14 @@ app.Activities = (function () {
          var show = function(e){             
            //console.log("plugin test");  
            //console.log(window.plugins);
+            
+           $("#progressNotification").show();
+                
+           $(".km-scroll-container").css("-webkit-transform", "");
+  
              
-           var scroller = e.view.scroller;
-           scroller.reset();
+           //var scroller = e.view.scroller;
+           //scroller.reset();
              
            groupDataShow=[];
              
@@ -435,7 +440,8 @@ app.Activities = (function () {
             
              $('#activities-listview').data('kendoMobileListView').refresh();          
              //setTimeout(function(){
-                 app.mobileApp.pane.loader.hide();
+             $("#progressNotification").hide();
+             //app.mobileApp.pane.loader.hide();
              //},100); 
              
              if(!app.checkConnection()){

@@ -26,6 +26,8 @@ app.replyedCustomer = (function () {
           
                   //console.log(attachedimg);
           
+                     $(".km-scroll-container").css("-webkit-transform", "");
+
           
             var UserModel ={
             id: 'Id',

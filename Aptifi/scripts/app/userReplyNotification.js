@@ -13,7 +13,8 @@ app.userReplyNotificationList = (function () {
 	    
         organisationID = e.view.params.organisationID;
         orgName = e.view.params.orgName; 
-          
+                     $(".km-scroll-container").css("-webkit-transform", "");
+
              console.log(orgName);
                           
            $("#navBarAdminHeader").html(orgName);

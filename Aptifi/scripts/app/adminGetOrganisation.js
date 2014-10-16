@@ -72,8 +72,8 @@ app.adminOragnisationList = (function () {
             
             
              var showLiveData = function(){
-                console.log('Hello');
-                console.log(groupDataShow);
+                //console.log('Hello');
+                //console.log(groupDataShow);
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
@@ -111,6 +111,8 @@ app.adminOragnisationList = (function () {
             var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#view-all-activities-admin");
   
+            $(".km-scroll-container").css("-webkit-transform", "");
+
              
            app.MenuPage=false;
            app.userPosition=false;

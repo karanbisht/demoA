@@ -69,7 +69,8 @@ app.userNotiComment = (function () {
         var show = function (e) {
             title=''
             message='';
-            
+                       $(".km-scroll-container").css("-webkit-transform", "");
+
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
             listScroller = e.view.scroller;

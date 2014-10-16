@@ -136,19 +136,29 @@
 
     <div class="user-share" style="margin-right:10px;margin-left:10px;border-radius:6px;">
         <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>
-    </div>
         
+        <div class="loader" id="progressSendNotification" style="display:none;">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+        </div>
+
+    </div>
+          
       
     <li style="color:#1B205E;margin:10px;list-style-type: none;">
          <span style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
     </li> 
       
-     <li style="width:90%;margin-bottom:30px;margin-right:15%;margin-left:5%;list-style-type: none;">
+      
+       <li style="width:90%;margin-bottom:30px;margin-right:15%;margin-left:5%;list-style-type: none;">
          <img id="largeImage" src="" alt="" align="right"  style="height:70px; width:70px;margin-right:10px;float:right;border:none;" />
-         <span data-role="button" style="background-color: #09B201;width:50%;margin-top:20px;" data-bind="click: getPhotoVal">
-	         Add Attachment
-         </span>         
-     </li>	
+             <span data-role="button" style="background-color: #09B201;width:50%;margin-top:20px;" data-bind="click: getPhotoVal">
+	             Add Attachment
+             </span> 
+           <span data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;">  
+                 <img id="removeAttachment" src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30"  style="display:none;" >
+            </span>
+       </li>	
 
             
      <li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">

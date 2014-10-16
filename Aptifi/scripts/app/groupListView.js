@@ -18,6 +18,9 @@ var activityListViewModel = (function () {
                 
               var show = function(e){
                   
+                             $(".km-scroll-container").css("-webkit-transform", "");
+
+                  
                    var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
                    tabStrip.clear();
   

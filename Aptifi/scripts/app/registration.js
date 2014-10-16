@@ -19,6 +19,8 @@ app.registration = (function () {
         var UserOrgInformation;
         var varifiCode;
         var regClickButton;
+        var JoinedOrganisationYN=1;
+
         
          var regInit = function () {
                  app.userPosition=false;
@@ -216,7 +218,9 @@ app.registration = (function () {
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+                     //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
+                     url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCode+"&rout=transactional&from=APTIFI"
+
            	}
            },
            schema: {
@@ -276,7 +280,7 @@ app.registration = (function () {
         };
         
         var doneVerificationR = function(){
-            varifiCode='123456';
+            //varifiCode='123456';
             
 			var validationCodeId = $("#validationCodeIdR").val();
             if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
@@ -339,26 +343,30 @@ app.registration = (function () {
                           account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           console.log('karan'+account_Id);
 	   					
-                         var roleLength = loginData.status[0].JoinedOrg.role.length;
+                       if(loginData.status[0].JoinedOrg.length!==0){
 
-                          console.log(loginData.status[0].JoinedOrg.role[0])
-                          
+                          var roleLength = loginData.status[0].JoinedOrg.role.length;
+                          console.log(loginData.status[0].JoinedOrg.role[0])                          
                           for(var i=0;i<roleLength;i++){
                              userType.push(loginData.status[0].JoinedOrg.role[i]); 
                           }
-                                                                                   
+                        }else{
+                          JoinedOrganisationYN = 0;
+                        } 
+                          
+                        if(loginData.status[0].JoinedOrg.length!==0){
+                             UserOrgInformation = loginData.status[0].JoinedOrg;
+                             console.log(UserOrgInformation);
+                             saveOrgInfo(UserOrgInformation);  
+                        }
+                     
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                          UserOrgInformation = loginData.status[0].JoinedOrg;
-                          console.log(UserOrgInformation);
                           console.log(UserProfileInformation);
                           console.log("karan bisht");
                           
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
-                          saveProfileInfo(UserProfileInformation);
-                          saveOrgInfo(UserOrgInformation); 
-
-                          
+                          saveProfileInfo(UserProfileInformation);                          
                           
                        }else{
                           app.mobileApp.pane.loader.hide();
@@ -381,8 +389,18 @@ app.registration = (function () {
         var profileOrgData;
 		function saveProfileInfo(data) {
 			profileInfoData = data; 
-			var db = app.getDb();
-			db.transaction(insertProfileInfo, app.errorCB, loginSuccessCB);
+            console.log(hello);
+            if(JoinedOrganisationYN===0){
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 
+             
+            }else{
+              var db = app.getDb();
+	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+            }
+            
+			//var db = app.getDb();
+			//db.transaction(insertProfileInfo, app.errorCB, loginSuccessCB);
 		};
         
         function saveOrgInfo(data1) {
@@ -394,7 +412,7 @@ app.registration = (function () {
         
       var userAccountID;  
         
-   function insertProfileInfo(tx) {
+      function insertProfileInfo(tx) {
 		var query = "DELETE FROM PROFILE_INFO";
 			app.deleteQuery(tx, query);
        	
@@ -419,7 +437,7 @@ app.registration = (function () {
 
        app.insertQuery(tx, query);
        
-}
+      }
       
       var userOrgIdArray=[];
         

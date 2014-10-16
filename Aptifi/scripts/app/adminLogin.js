@@ -365,8 +365,8 @@ app.adminLogin = (function () {
             console.log('sssssssss');
             console.log(userOrgIdArray);
             for(var i=0;i<userOrgIdArray.length;i++){
-                  console.log(userOrgIdArray[i]);
-                  //console.log(userAccountID);
+               console.log(userOrgIdArray[i]);
+               //console.log(userAccountID);
              var organisationGroupDataSource = new kendo.data.DataSource({                
              transport: {
                read: {
@@ -415,7 +415,6 @@ app.adminLogin = (function () {
         	           console.log(e);                        
            	    }	        
      	      });         
-            
                organisationGroupDataSource.read();                                  
             }       
         }

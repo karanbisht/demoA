@@ -194,6 +194,9 @@ app.orgListView = (function () {
              var organisationALLListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
               });
+            
+                       $(".km-scroll-container").css("-webkit-transform", "");
+
              
              organisationALLListDataSource.fetch(function() {
                 

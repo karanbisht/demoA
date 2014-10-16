@@ -34,8 +34,7 @@
     "org.apache.cordova.vibration"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "iOSStatusBarStyle": "Default",
   "AndroidHardwareAcceleration": "true",
