@@ -22,7 +22,7 @@ var app = (function (win) {
 
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
 
-        alert(message, 'Error');
+        console.log(message, 'Error');
 
         return true;
     });
