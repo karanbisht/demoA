@@ -161,7 +161,7 @@ app.sendNotification = (function () {
                                        
         var show = function(e){
             
-             $("#removeAttachment").show();            
+            $("#removeAttachment").hide(); 
              $(".km-scroll-container").css("-webkit-transform", "");
 
              pictureSource=navigator.camera.PictureSourceType;
@@ -288,36 +288,60 @@ app.sendNotification = (function () {
             app.showAlert('Please select Notification Message','Validation Error');           
           }else{ 
           $("#progressSendNotification").show();
-              
-              
-              
-              
-              
 
-              /*   var url = "http://54.85.208.215/webservice/notification/sendNotification";
-
+              //var url = "http://54.85.208.215/webservice/notification/sendNotification";
+              
                         var params = new Object();
-                        params.cmbGroup = "cmbGroup";  //you can send additional info with the file
-                        params.cmbCust = "cmbCust";
-                        params.type = "type";
-                        params.titleValue = "title";
-                        params.notificationValue = "message";
-                        params.org_id = "org_id";
-                        params.cmmt_allow = "comment_allow";
-              
+                        params.cmbGroup = cmbGroup;  //you can send additional info with the file
+                        params.cmbCust = cmbCust;
+                        params.type = type;
+                        params.title = titleValue;
+                        params.message = notificationValue;
+                        params.org_id = org_id;
+                        params.comment_allow = cmmt_allow;
+                         
                         var options = new FileUploadOptions();
                         options.fileKey = "attached";
-                        options.fileName = dataToSend.substr(imageUri.lastIndexOf('/')+1);
+                        options.fileName = dataToSend.substr(dataToSend.lastIndexOf('/')+1);
+              
+              console.log("-------------------------------------------");
+              console.log(options.fileName);
+              
                         options.mimeType = "image/jpeg";
                         options.params = params;
+                        options.headers = {
+                            Connection: "close"
+                        }
                         options.chunkedMode = false;
 
-                        var ft = new FileTransfer();
-                        ft.upload(dataToSend, url, successCallback, errorCallback, options);
-                    */
+                   var ft = new FileTransfer();
+
+                  /* var deviceName = app.devicePlatform();             
+                    if(deviceName==='Android'){
+                          console.log("upload file from Android");
+                          window.resolveLocalFileSystemURL(dataToSend, function(fileEntry) {
+                               fileEntry.file(function(fileObj) {
+                                  var fileName;
+                                   fileName = fileObj.fullPath;
+                                     console.log("-------------------------------------------");
+                                                 console.log(fileName);
+
+                                  options.fileName = fileName.substr(fileName.lastIndexOf('/') + 1);
+                                               
+                                  ft.upload(fileName,encodeURI("http://54.85.208.215/webservice/notification/sendNotification"), win, fail, options, true);
+                               });
+                          });
+                    } else {
+                                  console.log("upload file from other device");
+                                  ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options, true);
+                    }
+              */
+
+                        ft.upload(dataToSend, "http://54.85.208.215/webservice/notification/sendNotification", win, fail, options , true);
+                  
 
               
-          var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow ,"attached":dataToSend}
+          /*var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow ,"attached":dataToSend}
                             
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
@@ -402,14 +426,17 @@ app.sendNotification = (function () {
                                }
                            });               
                
-            });                
+            });*/                
              
           }
             }   
         };
          
          
-         var successCallback = function(){
+         function win(r) {
+            alert("Code = " + r.responseCode);
+            alert("Response = " + r.response);
+            alert("Sent = " + r.bytesSent);
           
                                  if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Notification Send Successfully');   
@@ -428,7 +455,10 @@ app.sendNotification = (function () {
          }
          
          
-         var errorCallback = function(){
+         function fail(error) {
+            alert("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
              
                                if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
@@ -664,7 +694,7 @@ app.sendNotification = (function () {
             console.log(group);      
             localStorage.setItem("SELECTED_GROUP",group); 
             $("#selectCustomerToSend").show();                               
-        };
+vvv        };
         
          
          var sendNotificationGroup = function(e){
@@ -692,42 +722,41 @@ app.sendNotification = (function () {
              app.mobileApp.pane.loader.hide();    
          };
          
+
          var groupCheckData = function(){
-           		    
             $(':checkbox:checked').each(function(i){
           	  groupChecked[i] = $(this).val();
         	});
             
             groupChecked = String(groupChecked);        
             console.log(groupChecked);
-                   
          };
          
-         
-       
          
           var getPhoto =function() {
               //alert('123');
               // Retrieve image file location from specified source
               
               navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-                    destinationType: destinationType.FILE_URI,
                     correctOrientation: true,
-                    sourceType: pictureSource.SAVEDPHOTOALBUM });
+                    destinationType : navigator.camera.DestinationType.DATA_URI,
+                    sourceType : navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                    });
               
-              /*navigator.gallery.getPicture(onGallerySuccess, onFail, {
-		            quality : 100,
-		            targetWidth : 800,
-		            targetHeight : 600
+              
+                  /*navigator.gallery.getPicture(onGallerySuccess, onFail, {
+		                quality : 100,
+		                targetWidth : 800,
+		                targetHeight : 600
 	          	});*/
+              
+              
           }
                   
           function onPhotoURISuccess(imageURI) {
                   // Uncomment to view the image file URI
                   // console.log(imageURI);
-
                   // Get image handle
-                  //
                   var largeImage = document.getElementById('largeImage');
 
                   // Unhide image elements
@@ -749,7 +778,7 @@ app.sendNotification = (function () {
          
           function onFail(message) {
               console.log('Failed because: ' + message);
-            }
+          }
          
          var removeImage = function(){
             var largeImage = document.getElementById('largeImage');
@@ -772,7 +801,7 @@ app.sendNotification = (function () {
                onChangeNotiGroup:onChangeNotiGroup,
                getPhoto:getPhoto,
                getPhotoVal:getPhotoVal,
-             removeImage:removeImage,
+               removeImage:removeImage,
                sendNotificationMessage:sendNotificationMessage
          };
            

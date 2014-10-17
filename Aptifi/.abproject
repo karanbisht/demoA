@@ -1,7 +1,7 @@
 {
   "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "AppIdentifier": "com.sakshay.aptifiApp",
+  "AppIdentifier": "com.sakshay.aptifi",
   "ProjectName": "Aptifi",
   "IsRunnable": "true",
   "AndroidPermissions": [
@@ -38,7 +38,7 @@
   ],
   "iOSStatusBarStyle": "Default",
   "AndroidHardwareAcceleration": "true",
-  "FrameworkVersion": "3.2.0",
+  "FrameworkVersion": "3.5.0",
   "BundleVersion": "1.0",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
@@ -63,7 +63,7 @@
   "WP8Requirements": [],
   "Framework": "Cordova",
   "CordovaPluginVariables": {
-    "com.telerik.Cordova-MobileTestingExtension": {
+    "com.telerik.mobiletesting": {
       "IOS_APP_URL": ""
     }
   }

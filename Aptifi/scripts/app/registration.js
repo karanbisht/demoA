@@ -122,7 +122,6 @@ app.registration = (function () {
                     		        app.userPosition=false;
  				          		 //app.mobileApp.navigate('views/getOrganisationList.html');  
                                     
-                                    
                                                 var deviceName = app.devicePlatform();
             									var device_type;
 									             if(deviceName==='Android'){
@@ -140,7 +139,6 @@ app.registration = (function () {
                  app.mobileApp.pane.loader.show();                
                  //app.mobileApp.pane.loader.hide();           
        		  console.log(username+"||"+device_id+"||"+device_type);
-        	            
                 
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
        
@@ -199,7 +197,6 @@ app.registration = (function () {
         };
 `		*/
        
-
         var clickforValificationCodeR = function(){
             $("#regenerateDivR").hide();
 			$("#validationRowR").show();
@@ -214,18 +211,19 @@ app.registration = (function () {
               varifiCode = genRandR(0,9);
          	 //alert(varifiCode);
               varifiCode = varifiCode.toString();
-                                           
+               
+             var varifiCodeMsg = "verification code-: "+ varifiCode;
+        
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
                      //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
-                     url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCode+"&rout=transactional&from=APTIFI"
-
+                       url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCodeMsg+"&rout=transactional&from=APTIFI"
            	}
            },
            schema: {
                data: function(data)
-               {	console.log(data);
+               {     //alert(data);
                	return [data];
                }
            },
@@ -236,8 +234,8 @@ app.registration = (function () {
                function () { }, "Notification", 'OK');
            } 
            });  
-	            
-           dataSourceValidation.fetch(function() {
+ 	            
+                        dataSourceValidation.fetch(function() {
 				        var registrationDataView = dataSourceValidation.data();
 						       console.log(registrationDataView);
                		    	//app.showAlert("The Verification Code will be sent to this number." , "Notification");
@@ -251,8 +249,6 @@ app.registration = (function () {
          var genRandR = function() {      	
              return Math.floor(Math.random()*89999+10000);		   
          };
-
-        
         
         var clickforRegenerateCodeR = function(){
           $("#regenerateDivR").show();
@@ -281,7 +277,6 @@ app.registration = (function () {
         
         var doneVerificationR = function(){
             //varifiCode='123456';
-            
 			var validationCodeId = $("#validationCodeIdR").val();
             if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
               app.showAlert("Please Enter Verification Code","Notification");  

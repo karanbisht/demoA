@@ -74,7 +74,7 @@ app.Activities = (function () {
             }
             //alert(lastNotificationPID);
 
-        if (count !== 0) {
+          if (count !== 0) {
             //alert('inside');
             
           var organisationALLNewListDataSource = new kendo.data.DataSource({
@@ -130,8 +130,8 @@ app.Activities = (function () {
     	    });        
                organisationALLNewListDataSource.read();
 
-        }else{
-                                   var db = app.getDb();
+           }else{
+                                    var db = app.getDb();
 		            db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
            } 
         }                      

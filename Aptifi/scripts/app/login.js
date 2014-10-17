@@ -350,7 +350,9 @@ app.Login = (function () {
 	                                }else if(orgVal.Msg==='Success'){
                                        // console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
-                                        saveOrgNotification(orgNotificationData);                                                                                     
+                                      setTimeout(function(){  
+                                        saveOrgNotification(orgNotificationData);
+                                       },10);  
                                     }                                     
                                 });    
                             });
@@ -433,9 +435,11 @@ app.Login = (function () {
        function saveOrgNotification(data) {
             orgNotiDataVal = data; 
             console.log(orgNotiDataVal);
-            
+
+           setTimeout(function(){
 			var db = app.getDb();
 			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+            },10);   
 	   };
                         
       function insertOrgNotiData(tx){
@@ -628,23 +632,26 @@ app.Login = (function () {
               varifiCode = genRand(0,9);
          	 //alert(varifiCode);
               varifiCode = varifiCode.toString();
-                                           
+              
+              var varifiCodeMsg = "verification code-: "+ varifiCode;
+            
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
                    //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
-                     url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCode+"&rout=transactional&from=APTIFI"
+                   url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCodeMsg+"&rout=transactional&from=APTIFI"
            	}
            },
            schema: {
                data: function(data)
-               {	//console.log(data);
+               {
+                   console.log(data);
                	return [data];
                }
            },
            error: function (e) {
                //apps.hideLoading();
-               //console.log(e);
+               console.log(e);
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
            } 
@@ -676,7 +683,6 @@ app.Login = (function () {
                       if(varifiCode===validationCodeId){
           	        //app.mobileApp.navigate('views/getOrganisationList.html');  
                     
-                                                        
                                                 var deviceName = app.devicePlatform();
             									var device_type;
 									             if(deviceName==='Android'){
