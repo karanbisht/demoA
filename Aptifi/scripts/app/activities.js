@@ -28,14 +28,13 @@ app.Activities = (function () {
            //console.log(window.plugins);
             
            $("#progressNotification").show();
-                
-           $(".km-scroll-container").css("-webkit-transform", "");
-  
+           $(".km-scroll-container").css("-webkit-transform", "");  
+           groupDataShow=[];
+           $('#activities-listview').data('kendoMobileListView').refresh();
              
            //var scroller = e.view.scroller;
            //scroller.reset();
              
-           groupDataShow=[];
              
            //app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
@@ -433,16 +432,17 @@ app.Activities = (function () {
 
              $("#activities-listview").kendoMobileListView({
   		    template: kendo.template($("#activityTemplate").html()),    		
-     		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true,   
+     		 dataSource: organisationALLListDataSource
+              //pullToRefresh: true,   
 
              });
             
              $('#activities-listview').data('kendoMobileListView').refresh();          
              //setTimeout(function(){
              $("#progressNotification").hide();
+                 
              //app.mobileApp.pane.loader.hide();
-             //},100); 
+             //},10); 
              
              if(!app.checkConnection()){
                   if(!app.checkSimulator()){
@@ -594,12 +594,7 @@ app.Activities = (function () {
             
         };
         
-        
-        
-       
-        
-        
-        
+               
         var onAdminComboChange = function(){
        		  var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
            	  var groupSelected = selectData.value();

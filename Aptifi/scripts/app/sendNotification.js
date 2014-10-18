@@ -170,8 +170,8 @@ app.sendNotification = (function () {
             //$notificationDesc.val('');
            // validator.hideMessages();
             
-             var scroller = e.view.scroller;
-             scroller.reset();
+             //var scroller = e.view.scroller;
+             //scroller.reset();
 
             
             app.mobileApp.pane.loader.show();
@@ -443,8 +443,7 @@ app.sendNotification = (function () {
                                  }else{
                                        app.showAlert("Notification Send Successfully","Notification"); 
                                  }
-            
-  
+              
                                    $("#notificationTitleValue").val('');            
 						           $("#notificationDesc").val('');
                                    document.getElementById('comment_allow').checked = false;
@@ -467,6 +466,7 @@ app.sendNotification = (function () {
                                }
     
          }
+         
          
          var sendNotificationOrg = function(e){
              console.log(e.data.org_id);
@@ -694,7 +694,7 @@ app.sendNotification = (function () {
             console.log(group);      
             localStorage.setItem("SELECTED_GROUP",group); 
             $("#selectCustomerToSend").show();                               
-vvv        };
+        };
         
          
          var sendNotificationGroup = function(e){
@@ -712,6 +712,8 @@ vvv        };
              app.mobileApp.pane.loader.show(); 
              $("#selectGroupDiv").hide();
              $("#selectTypeDiv").show();
+             $(".km-scroll-container").css("-webkit-transform", "");
+
              app.mobileApp.pane.loader.hide();    
          };
          

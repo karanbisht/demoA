@@ -123,10 +123,9 @@ app.Login = (function () {
            },
            error: function (e) {
                //apps.hideLoading();
-               console.log(e);
+               console.log(JSON.stringify(e));
                //app.mobileApp.pane.loader.hide();
-              $("#progress").hide();
-               
+             
                if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -134,6 +133,8 @@ app.Login = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
                }
+             
+              $("#progress").hide();
                
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
@@ -144,7 +145,6 @@ app.Login = (function () {
            dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
                //			console.log(loginDataView);
-               
                			var orgDataId = [];
                			var userAllGroupId = [];
 						   
@@ -481,6 +481,8 @@ app.Login = (function () {
        var goToHomePage = function(){
                //app.mobileApp.pane.loader.hide();
                $("#progress").hide();
+               $("#progressRandomCode").hide();
+
                app.userPosition=false;				  
                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
        }
@@ -652,8 +654,18 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               
+               if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }
+                
+               }
+               
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
            } 
            });  
 	            
@@ -679,7 +691,7 @@ app.Login = (function () {
                       app.showAlert("Please Enter Verification Code","Notification");  
                 
                 }else{
-                
+                    $("#progressRandomCode").show();
                       if(varifiCode===validationCodeId){
           	        //app.mobileApp.navigate('views/getOrganisationList.html');  
                     
@@ -691,8 +703,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+           //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+           var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
@@ -715,10 +727,20 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                //console.log(e);
-                  $("#progress").hide();
+               $("#progressRandomCode").hide();
                //app.mobileApp.pane.loader.hide();
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+               
+               if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }
+                
+               }
+               
+               //navigator.notification.alert("Please check your internet connection.",
+               //function () { }, "Notification", 'OK');
                
            }               
           });  
@@ -761,7 +783,7 @@ app.Login = (function () {
                            
                       }else{
                           //app.mobileApp.pane.loader.hide();
-                             $("#progress").hide();
+                             $("#progressRandomCode").hide();
                              app.showAlert(loginData.status[0].Msg,"Notification");
                       }      
                    

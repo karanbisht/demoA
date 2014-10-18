@@ -81,14 +81,14 @@ app.adminLogin = (function () {
            },
            error: function (e) {
                //apps.hideLoading();
-               console.log(e);
+               console.log(JSON.stringify(e));
                //app.mobileApp.pane.loader.hide();
                 $("#progress1").hide();
                    if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                       }else{
                                       app.showAlert("Network problem . Please try again later","Notification");  
-                    }
+                   }
 
                
                //navigator.notification.alert("Please check your internet connection.",

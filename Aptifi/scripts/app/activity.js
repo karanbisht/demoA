@@ -169,9 +169,21 @@ app.Activity = (function () {
             $("#activityText").html(message);
                                        
            var db = app.getDb();
-		   db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);         
-           db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
-          
+		                 
+           if(!app.checkConnection()){
+               
+                          if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                          }else{
+                            app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                          } 
+                db.transaction(getDataOrgNotiComment, app.errorCB, app.successDB);      
+           }else{
+                db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);      
+           }
+            
+          db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
+           
         };
         
         
@@ -278,10 +290,10 @@ app.Activity = (function () {
                               
                                      for(var j=0;j<commentLength;j++){
                                          
-                                                                var dateString = groupValue[0].AllComment[j].add_date;
-                                                                var split = dateString .split(' ');
-                                                                console.log(split[0]+" || "+split[1]);
-                                                                var commentDate= app.formatDate(split[0]);
+                                                  var dateString = groupValue[0].AllComment[j].add_date;
+                                                  var split = dateString .split(' ');
+                                                  console.log(split[0]+" || "+split[1]);
+                                                  var commentDate= app.formatDate(split[0]);
                                                                  //alert(commentDate);
                                          
                                       groupDataShow.push({
@@ -306,6 +318,15 @@ app.Activity = (function () {
             	   /*navigator.notification.alert("Please check your internet connection.",
                	function () { }, "Notification", 'OK');
                    */
+                    
+                   if(!app.checkConnection()){
+                          if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                          }else{
+                            app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                          } 
+                   }
+                    
            	}
 	        
     	    });         

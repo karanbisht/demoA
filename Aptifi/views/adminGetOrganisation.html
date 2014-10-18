@@ -42,24 +42,28 @@
 <!--data-pull-to-refresh="true"-->
 
 <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+    
   <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
       
      <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organisation to send Notification</p>
       
-     <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
-
-      <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-		    	   <b>You have no Notification for you.</b>
-      </p>
+         <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
+             <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		        	   <b>You have no Notification for you.</b>
+             </p>
   </div>
         
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
     
    <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px;  padding-bottom:35px; padding-top:10px; border-radius:6px;">
-        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group</p>
-    	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->
+
+        <span id="" data-role="button" data-bind="click: backToOrg" style="margin:0px;background-color: transparent;border:none;display:none">  
+              <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+        </span>
        
-        <div id="group-Name-listview" class="k-listview" style="overflow-y:scroll;">  </div>
+        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group </p>
+        	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->   
+        <div id="group-Name-listview" class="k-listview">  </div>
         
        <!--<div>
           <span data-role="button" style="background-color:#33539E;width:100%" data-bind="click:escapeGroupClick">
@@ -67,8 +71,8 @@
           </span>       
        </div>-->   
 	    
-               <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:right;">
+               <li>                   
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:left;">
                      	 <a data-role="button" style="background-color:#33539E">Skip</a>   
                     </span>
             
@@ -82,13 +86,17 @@
  <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->   
     
    <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:35px; padding-top:10px; border-radius:6px;">
-        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
+           
+       <span id="" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
+           <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+       </span>    
+             <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
         
     	
-        <div id="customer-Name-listview" class="k-listview" style="overflow-y:scroll;">  </div>
+        <div id="customer-Name-listview" class="k-listview">  </div>
         
         <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:right;">
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:left;">
                      	 <a data-role="button" style="background-color:#33539E">Skip</a>   
                     </span>
             
@@ -103,6 +111,11 @@
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
     
    <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
+           
+       <span id="" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
+             <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+       </span>
+       
        <p style="color:#1B205E;text-align:center;padding-bottom:5px;margin-bottom:5px;">Select Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        

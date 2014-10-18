@@ -22,7 +22,7 @@ public class SmsListener extends BroadcastReceiver {
 		Log.i("SMS_Listener", "SMS_Listener");
 		currentContext = context;
 		if (intent.getAction()
-				.equals("android.provider.Telephony.SMS_RECEIVED")) {
+			.equals("android.provider.Telephony.SMS_RECEIVED")) {
 			Bundle bundle = intent.getExtras(); // ---get the SMS message passed
 												// in---
 			SmsMessage[] msgs = null;

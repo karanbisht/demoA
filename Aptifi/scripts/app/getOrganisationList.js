@@ -21,12 +21,7 @@ app.OragnisationList = (function () {
         var init = function(){
         
         };
-        
-
-        
-        
-        
-        
+                
         var getRoleDataOrg = function(tx){
             	var query = "SELECT role FROM JOINED_ORG ";
 				app.selectQuery(tx, query, checkUserRole);
@@ -49,15 +44,22 @@ app.OragnisationList = (function () {
             if(num1===1 && num2===0 && num3===0){
                 localStorage.setItem("ShowMore",1);
                 $("#goToAdmin").hide();
+                               $("#moreOption").show();  
+ 
             }else if(num2===3 && num1===0 && num3===0){
                 localStorage.setItem("ShowMore",0);
                 $("#moreOption").hide();  
+                               $("#goToAdmin").show();
+ 
             }else if(num1===1 && num2===3){0
                  localStorage.setItem("ShowMore",0);
                  $("#moreOption").hide();
+                               $("#goToAdmin").show();
+ 
             }else if(num1===1){
                  localStorage.setItem("ShowMore",1);
                  $("#goToAdmin").hide();
+                               $("#moreOption").show();   
             }
            
           }else{
@@ -127,8 +129,6 @@ app.OragnisationList = (function () {
                                         bagCountValue = results.rows.item(i).bagCount;
                                     }
                     
-                    
-                    
                         var lastNotifi;
                             if(results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null'){
                                  lastNotifi='';   
@@ -196,6 +196,10 @@ app.OragnisationList = (function () {
            app.MenuPage=true;
            app.userPosition=false;
 
+                              $("#moreOption").hide();
+                              $("#goToAdmin").hide();
+
+             
              
            var from= e.view.params.from; 
              
@@ -220,7 +224,7 @@ app.OragnisationList = (function () {
              
              //alert(account_Id);
              
-           //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
              var device_id = localStorage.getItem("deviceTokenID"); 
              
             var deviceName = app.devicePlatform();
@@ -262,8 +266,11 @@ app.OragnisationList = (function () {
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                  } 
+                  }
+                
                }
+               
+                afterShow();  
                
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
