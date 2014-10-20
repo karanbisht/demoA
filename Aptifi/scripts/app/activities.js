@@ -506,7 +506,8 @@ app.Activities = (function () {
             var notiId=e.data.pid;
             var comment_allow=e.data.comment_allow;//: "1"
             var attached = e.data.attached;
-                     
+            var type= e.data.type;
+        
 			app.MenuPage=false;	
     
             //alert(message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
@@ -516,7 +517,7 @@ app.Activities = (function () {
             
             //alert(messageVal);
             
-            app.mobileApp.navigate('views/activityView.html?message=' + messageVal +'&title='+titleVal+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
+            app.mobileApp.navigate('views/activityView.html?message=' + messageVal +'&title='+titleVal+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached+'&type='+type);
         };
         
         var groupSelected = function (e) {

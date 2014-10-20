@@ -19,6 +19,7 @@ app.Activity = (function () {
     var groupDataShow = [];
     var lastNotiCommentID;
     var orgLogoToShow;
+    var type;
     
     var activityViewModel = (function () {
         
@@ -124,6 +125,7 @@ app.Activity = (function () {
             account_Id =e.view.params.account_Id;
             comment_allow = e.view.params.comment_allow;
             attached = e.view.params.attached;
+            type= e.view.params.type;
             
             message=app.proURIDecoder(message);
             title =app.proURIDecoder(title);

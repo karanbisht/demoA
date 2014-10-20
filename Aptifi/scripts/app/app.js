@@ -528,7 +528,7 @@ var app = (function (win) {
             var account_IdDB;
             var commentAllowDB;
             var send_DateDB;
-
+            var notificationMsg;
     
     //the function is a callback when a notification from APN is received
     //var onNotificationAPN = function(e) {
@@ -581,8 +581,8 @@ var app = (function (win) {
             
             case 'message': 
             //alert(e);          
-            
-            //alert(JSON.stringify(e));           
+            console.log('----------------------');
+            console.log(JSON.stringify(e));           
             //alert(e.title);            
             
             account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
@@ -597,8 +597,9 @@ var app = (function (win) {
             titleDB=messageSplitVal[4];
             attachedDB=messageSplitVal[5];
             commentAllowDB=messageSplitVal[6];
+            notificationMsg=messageSplitVal[7];
+
             send_DateDB= getPresentDateTime();
-            
             
             if(attachedDB=== 0 || attachedDB=== "0"){
                 attachedDB='';
@@ -606,13 +607,25 @@ var app = (function (win) {
 
             if ( e.foreground )
             {
+                if(typeDB==='Reply'){
                     var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
-                
+                }
                 
             }else{
+                if(typeDB==='Reply'){
                     var db = app.getDb();
                 	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+                }else{
+                    alert("1");
+                    
+                    typeDB="Reply";
+                    var temp;
+                    temp=messageDB;
+                    messageDB=notificationMsg;
+                    notificationMsg=temp;
+                    goToAppPage();                    
+                }    
             }
             
            /* if ( e.foreground )
@@ -703,7 +716,7 @@ var app = (function (win) {
             var messageDBVal=app.urlEncode(messageDB); 
             var titleDBVal=app.urlEncode(titleDB);
         
-            app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);      
+            app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB+'&type='+typeDB);      
     }
     
     function updatebagCount(tx){
