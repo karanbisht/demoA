@@ -635,7 +635,9 @@ app.Login = (function () {
          	 //alert(varifiCode);
               varifiCode = varifiCode.toString();
               
-              var varifiCodeMsg = "verification code-: "+ varifiCode;
+            var varifiCodeMsg = "verification code-: "+ varifiCode;
+          
+            console.log(varifiCode);
             
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
@@ -688,7 +690,7 @@ app.Login = (function () {
             
 			var validationCodeId = $("#validationCodeId").val();
                 if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
-                      app.showAlert("Please Enter Verification Code","Notification");  
+                      app.showAlert("Please Enter Verification Code","Notification");
                 
                 }else{
                     $("#progressRandomCode").show();

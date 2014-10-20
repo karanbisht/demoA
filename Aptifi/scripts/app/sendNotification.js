@@ -219,7 +219,9 @@ app.sendNotification = (function () {
                           
 
          var sendNotificationMessage = function () {    
-         //alert(dataToSend);
+           //alert(dataToSend);undefined
+             console.log(dataToSend);
+             
          if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -291,6 +293,7 @@ app.sendNotification = (function () {
 
               //var url = "http://54.85.208.215/webservice/notification/sendNotification";
               
+               if(dataToSend!==undefined && dataToSend!=="undefined"){ 
                         var params = new Object();
                         params.cmbGroup = cmbGroup;  //you can send additional info with the file
                         params.cmbCust = cmbCust;
@@ -313,6 +316,7 @@ app.sendNotification = (function () {
                             Connection: "close"
                         }
                         options.chunkedMode = false;
+                   
 
                    var ft = new FileTransfer();
 
@@ -336,12 +340,25 @@ app.sendNotification = (function () {
                                   ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options, true);
                     }
               */
+                   
+               window.resolveLocalFileSystemURI(dataToSend
+                   , function(entry){
 
-                        ft.upload(dataToSend, "http://54.85.208.215/webservice/notification/sendNotification", win, fail, options , true);
+                            console.log("****************HERE YOU WILL GET THE NAME AND OTHER PROPERTIES***********************");
+                            console.log("IMAGE NAME-"+entry.name);
+                               console.log("PATH NAME"+entry.fullPath);
+
+                        }, function(e){
+
+                       }); 
+                   
+
+               ft.upload(dataToSend, "http://54.85.208.215/webservice/notification/sendNotification", win, fail, options , true);
                   
 
-              
-          /*var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow ,"attached":dataToSend}
+             }else{
+ 
+                 var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                             
           var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
@@ -426,8 +443,8 @@ app.sendNotification = (function () {
                                }
                            });               
                
-            });*/                
-             
+            });                
+           }  
           }
             }   
         };
@@ -490,6 +507,8 @@ app.sendNotification = (function () {
                                  $.each(data, function(i, groupValue) {
                                      console.log(groupValue);
 
+                                     console.log(groupValue[0].Msg);
+                                     
                                      if(groupValue[0].Msg==='No Group list'){
                                          $("#selectGroupDiv").hide();
                                          $("#selectOrgDiv").hide();
@@ -526,7 +545,6 @@ app.sendNotification = (function () {
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
                 
-                
                    var showNotiTypes=[
                       { message: "Your request has not been processed due to a connection error . Please try again"}
                     ];
@@ -539,7 +557,6 @@ app.sendNotification = (function () {
   		          template: kendo.template($("#errorTemplate").html()),
                     dataSource: dataSource  
      		       });
-
            },       
              sort: { field: 'add', dir: 'desc' }    	     
           });
