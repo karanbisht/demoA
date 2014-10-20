@@ -163,7 +163,7 @@ app.sendNotification = (function () {
             
             $("#removeAttachment").hide(); 
              $(".km-scroll-container").css("-webkit-transform", "");
-
+             dataToSend='';
              pictureSource=navigator.camera.PictureSourceType;
              destinationType=navigator.camera.DestinationType;
             
@@ -293,7 +293,12 @@ app.sendNotification = (function () {
 
               //var url = "http://54.85.208.215/webservice/notification/sendNotification";
               
-               if(dataToSend!==undefined && dataToSend!=="undefined"){ 
+             if(dataToSend!==undefined && dataToSend!=="undefined"&& dataToSend!==''){ 
+                 
+                 if (dataToSend.substring(0,21)==="content://com.android") {
+                  photo_split=dataToSend.split("%3A");
+                  dataToSend="content://media/external/images/media/"+photo_split[1];
+                 }
                         var params = new Object();
                         params.cmbGroup = cmbGroup;  //you can send additional info with the file
                         params.cmbCust = cmbCust;
@@ -316,10 +321,9 @@ app.sendNotification = (function () {
                             Connection: "close"
                         }
                         options.chunkedMode = false;
+                        var ft = new FileTransfer();
+
                    
-
-                   var ft = new FileTransfer();
-
                   /* var deviceName = app.devicePlatform();             
                     if(deviceName==='Android'){
                           console.log("upload file from Android");
@@ -341,7 +345,7 @@ app.sendNotification = (function () {
                     }
               */
                    
-               window.resolveLocalFileSystemURI(dataToSend
+               /*window.resolveLocalFileSystemURI(dataToSend
                    , function(entry){
 
                             console.log("****************HERE YOU WILL GET THE NAME AND OTHER PROPERTIES***********************");
@@ -351,7 +355,7 @@ app.sendNotification = (function () {
                         }, function(e){
 
                        }); 
-                   
+                  */ 
 
                ft.upload(dataToSend, "http://54.85.208.215/webservice/notification/sendNotification", win, fail, options , true);
                   
@@ -360,7 +364,7 @@ app.sendNotification = (function () {
  
                  var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                             
-          var dataSourceSendNotification = new kendo.data.DataSource({
+             var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
                read: {
                    url: "http://54.85.208.215/webservice/notification/sendNotification",
@@ -451,9 +455,9 @@ app.sendNotification = (function () {
          
          
          function win(r) {
-            alert("Code = " + r.responseCode);
-            alert("Response = " + r.response);
-            alert("Sent = " + r.bytesSent);
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
           
                                  if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Notification Send Successfully');   
@@ -472,7 +476,7 @@ app.sendNotification = (function () {
          
          
          function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
+            console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);
              
