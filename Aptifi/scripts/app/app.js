@@ -581,6 +581,7 @@ var app = (function (win) {
             
             case 'message': 
             //alert(e);          
+            
             console.log('----------------------');
             console.log(JSON.stringify(e));           
             //alert(e.title);            
@@ -607,13 +608,13 @@ var app = (function (win) {
 
             if ( e.foreground )
             {
-                if(typeDB==='Reply'){
+                if(typeDB!=='Reply'){
                     var db = app.getDb();
         			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
                 }
                 
             }else{
-                if(typeDB==='Reply'){
+                if(typeDB!=='Reply'){
                     var db = app.getDb();
                 	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
                 }else{

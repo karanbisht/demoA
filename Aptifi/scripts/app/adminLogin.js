@@ -38,9 +38,7 @@ app.adminLogin = (function () {
 
 
         var login = function () {		
- 
-            $("#progress1").show();     
-            
+             
           if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -192,7 +190,14 @@ app.adminLogin = (function () {
                    }                                                            
                 },
 	            error: function (e) {
+                  $("#progress1").hide();  
     	           console.log(e);
+                                     if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                     }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                     }
+  
             	}	        
     	     });
                         
@@ -304,7 +309,15 @@ app.adminLogin = (function () {
     	        error: function (e) {
                         e.preventDefault();
     	               //apps.hideLoading();
-        	           console.log(e);                        
+        	           console.log(e);
+                                      $("#progress1").hide();  
+
+                                       if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                       }
+
            	    }	        
      	      });         
             
@@ -412,7 +425,16 @@ app.adminLogin = (function () {
     	       error: function (e) {
                         e.preventDefault();
     	               //apps.hideLoading();
-        	           console.log(e);                        
+        	           console.log(e);
+                   
+                                      $("#progress1").hide();  
+
+                                       if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                       }
+
            	    }	        
      	      });         
                organisationGroupDataSource.read();                                  

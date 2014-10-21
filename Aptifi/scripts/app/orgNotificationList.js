@@ -4,7 +4,8 @@ app.orgListView = (function () {
     
     var organisationID;
     var account_Id;
-       
+    var groupDataShow=[];
+    
     var orgDetailViewModel = (function () {
         
   	var init = function () {
@@ -16,115 +17,117 @@ app.orgListView = (function () {
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
 
-            /*var organisationAllNotificationModel = {
-            id: 'Id',
-            fields: {
-                title: {
-                    field: 'title',
-                    defaultValue: ''
-                },
-                message :{
-                    field: 'message',
-                    defaultValue: ''  
-                },
-                notificationID: {
-                    field: 'notificationID',
-                    defaultValue: null
-                },
-                CreatedAt: {
-                    field: 'date',
-                    defaultValue: new Date()
-                }                  
-            },            
-                 
-            CreatedAtFormatted: function () {
-                return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            
-          };
-             
-             
-          var organisationALLListDataSource = new kendo.data.DataSource({
-            transport: {
+               var organisationALLListDataSource = new kendo.data.DataSource({                
+               transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id,
+                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID +"/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
               },
-       	 schema: {
-               model: organisationAllNotificationModel,                                
+                 
+        	  schema: {
                  data: function(data)
-  	             {
+                   {	
                        console.log(data);
-               
-                        var groupDataShow = [];
-                                  $.each(data, function(i, groupValue) {
+                       
+                       var orgNotificationData; 
+                           $.each(data, function(i, groupValue) {
                                   console.log(groupValue);
-                                     
-                                   $.each(groupValue, function(i, orgVal) {
-                                     console.log();
+
+                               $.each(groupValue, function(i, orgVal) {
 
                    	             if(orgVal.Msg ==='No notification'){     
-                	                   groupDataShow.push({
-                                         title: ' No Notification ',
-                                         message: 'No Notification from this Organisation',
-                                         date:'0',  
-                                         commentAllow : 'Y',
-                                         pid:0        
-    	                               });                   
-                                        
-	                                }else if(orgVal.Msg==='Success'){
+                                        showMoreDbData();
+
+                                    }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.notificationList.length);  
-                                        for(var i=0;i<orgVal.notificationList.length;i++){
-                                            groupDataShow.push({
-												 message: orgVal.notificationList[i].message,
-        		                                 org_id: orgVal.notificationList[i].org_id,
-                                                 pid:orgVal.notificationList[i].pid,
-                                                 date:orgVal.notificationList[i].send_date,
-                                                 title:orgVal.notificationList[i].title
-                                            });
-                                        }     
-                                                                                     
+                                        orgNotificationData = orgVal.notificationList;
+                                        saveOrgNotification(orgNotificationData);                                                                                                                                                                      
                                     }
-                                                                            
-                                   });    
-                                      
-                                 });
+                                 });    
+                            });       
                        
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-                       
-                   }                       
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
+                    	return [data]; 
+                   }                                                            
+              },
+                 
+    	        error: function (e) {
+                        e.preventDefault();
+    	               //apps.hideLoading();
+        	           console.log(e);
+                                      //$("#progress1").hide();  
+
+                                       if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                       }
+                        showMoreDbData();
+
+           	    }	        
+     	      });         
             
-            //organisationALLListDataSource.fetch(function() {
-                
- 		   //});
-          
-          */
-          
-             var db = app.getDb();
-	  	   db.transaction(getDataOrgNoti, app.errorCB, showLiveData); 
-                        
+               organisationALLListDataSource.read();
+                                  
         };
         
         
+        var orgNotiDataVal;         
+       
+       function saveOrgNotification(data) {
+            orgNotiDataVal = data; 
+            console.log(orgNotiDataVal);            
+			var db = app.getDb();
+			db.transaction(insertOrgNotiData, app.errorCB,showMoreDbData);
+	   };
+                        
+      function insertOrgNotiData(tx){
+          
+        var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id="+organisationID;
+        app.deleteQuery(tx, query);
+          
+        var dataLength = orgNotiDataVal.length;         
+          
+        for(var i=0;i<dataLength;i++){   
+           
+    	   var query = 'INSERT INTO ADMIN_ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,group_id,customer_id) VALUES ("'
+				+ orgNotiDataVal[i].org_id
+				+ '","'
+				+ orgNotiDataVal[i].pid
+				+ '","'
+				+ orgNotiDataVal[i].attached
+           	 + '","'
+				+ orgNotiDataVal[i].message
+    	        + '","'
+			    + orgNotiDataVal[i].title
+                + '","'
+				+ orgNotiDataVal[i].comment_allow
+                + '","'
+				+ orgNotiDataVal[i].send_date
+                + '","'
+				+ orgNotiDataVal[i].type
+                + '","'
+				+ orgNotiDataVal[i].group_id
+                + '","'
+				+ orgNotiDataVal[i].customer_id
+				+ '")';              
+                app.insertQuery(tx, query);
+        }
+          
+      }
         
-                var getDataOrgNoti = function(tx){
+            var showMoreDbData = function(){
+                var db = app.getDb();
+   	  	   db.transaction(getDataOrgNoti, app.errorCB, showLiveData);
+            }
+        
+        
+            var getDataOrgNoti = function(tx){
                     //var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
                     var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id="+organisationID+" ORDER BY pid DESC" ;
 		        	app.selectQuery(tx, query, getOrgNotiDataSuccess);
-                };    
+            };    
                         
             
         function getOrgNotiDataSuccess(tx, results) {
@@ -132,8 +135,8 @@ app.orgListView = (function () {
             
 			var count = results.rows.length;
                 DBGETDATAVALUE = count;           
-            //alert(count);
-                        var previousDate='';
+                         
+            var previousDate='';
 
 			if (count !== 0) {
                 groupDataShow=[];
@@ -182,7 +185,9 @@ app.orgListView = (function () {
                                          org_id:'0', 
                                          pid:'',
                                          bagCount : '',
-                                         attachedImg :'',  
+                                         attachedImg :'',
+                                         previousDate:'0',
+                                         time:'',
                                          attached:''  
     	                               });                   
 

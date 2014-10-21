@@ -250,7 +250,13 @@ app.groupDetail = (function () {
         };
 
         
-     
+     var backToOrgDetail = function(){
+            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID+'&account_Id=' + account_Id+'&orgName=' + orgName+'&orgDesc=' + orgDesc);
+     }
+        
+     var backToOrgAdminList = function(){       
+           app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id=' + account_Id);      
+     }   
         
 
         
@@ -501,7 +507,9 @@ app.groupDetail = (function () {
                sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
-           	userMessageTab:userMessageTab,    
+           	userMessageTab:userMessageTab,
+                   backToOrgAdminList:backToOrgAdminList,
+               backToOrgDetail:backToOrgDetail,    
           	 //addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
            	showGroupNotification:showGroupNotification,

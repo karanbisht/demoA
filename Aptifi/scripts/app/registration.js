@@ -263,12 +263,13 @@ app.registration = (function () {
         
         
         var cancelButtonRCR = function(){
-           $("#regenerateDivR").hide();
+           /*$("#regenerateDivR").hide();
            $("#validationRowR").hide(); 
            document.getElementById('selectionDivR').style.pointerEvents = 'auto'; 
 		   $("#selectionDivR").css("z-index", "1");
 		   $("#selectionDivR").css("opacity", 1);
-		   $("#regDoneButtonR").show();
+		   $("#regDoneButtonR").show();*/
+           window.location.href = "index.html"; 
         };
         
         var backToIndex = function(){

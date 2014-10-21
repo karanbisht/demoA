@@ -29,7 +29,7 @@ var activityListViewModel = (function () {
                   
 				$('#newGroup').val('');
                   
-                   var db = app.getDb();
+             var db = app.getDb();
 		     db.transaction(getDataOrg, app.errorCB, showLiveData);   
        
                   
@@ -180,7 +180,8 @@ var activityListViewModel = (function () {
                                                  organisationID:'',
                                                  groupDesc:'No Group in this Organisation',
                                                  addDate:''  
-    	                               });          
+    	                               });   
+                    $("#tabDeleteGroup").hide();
                 }
              
         }
@@ -211,6 +212,9 @@ var activityListViewModel = (function () {
             };
 
 
+            var backToOrgDetail = function(){
+                 app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID);  
+            }
     
     
          var groupSelected = function (e) {
@@ -390,6 +394,7 @@ var activityListViewModel = (function () {
 	           deleteGroupFunc:deleteGroupFunc,
                addGroup:addGroup,
                deleteGroup:deleteGroup,
+               backToOrgDetail:backToOrgDetail,
                showGroup:showGroup,
                addGroupFunc:addGroupFunc                        
                //groupListData:GroupsListModel.groupListData
