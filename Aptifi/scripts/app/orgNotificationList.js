@@ -14,6 +14,9 @@ app.orgListView = (function () {
       };
 
       var adminNotificationShow = function(e){
+
+          $("#progressAdminNoti").show();
+
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
 
@@ -127,16 +130,19 @@ app.orgListView = (function () {
                     //var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
                     var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id="+organisationID+" ORDER BY pid DESC" ;
 		        	app.selectQuery(tx, query, getOrgNotiDataSuccess);
-            };    
-                        
-            
+            };   
+        
+       
+        
+        var previousDate='';
+
+        
         function getOrgNotiDataSuccess(tx, results) {
             groupDataShow=[];
             
 			var count = results.rows.length;
                 DBGETDATAVALUE = count;           
                          
-            var previousDate='';
 
 			if (count !== 0) {
                 groupDataShow=[];
@@ -213,10 +219,11 @@ app.orgListView = (function () {
               pullToRefresh: true
  		     });             
              $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
+            
+            $("#progressAdminNoti").hide();
         };
 
          var groupNotificationSelected = function (e) {
-            alert("hello");
 			app.MenuPage=false;	
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);

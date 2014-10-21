@@ -161,14 +161,15 @@ var app = (function (win) {
        if(loginStatusDBValue===1 && adminLoginStatusDBValue!==1){
             app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
             localStorage.setItem("loginStatusCheck",1);
+           
        }else if(loginStatusDBValue===1 && adminLoginStatusDBValue===1){
-          var account_Id = localStorage.getItem("ACCOUNT_ID");
-              app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
-              localStorage.setItem("adminloginStatusCheck",1);    
+            var account_Id = localStorage.getItem("ACCOUNT_ID");
+            app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+            localStorage.setItem("adminloginStatusCheck",1);    
         } else {            
             //app.mobileApp.navigate('index.html');
             localStorage.setItem("loginStatusCheck",0);
-             localStorage.setItem("adminloginStatusCheck",0);
+            localStorage.setItem("adminloginStatusCheck",0);
         }
 	};
     
@@ -534,14 +535,16 @@ var app = (function (win) {
     //var onNotificationAPN = function(e) {
         
        var onNotificationAPN = function(event) {
-           alert(JSON.stringify(event));           
-           
-       if ( event.alert )
-       {                   
-            var receivedMesage = JSON.stringify(event, null, 4);
+
+        console.log(JSON.stringify(event));           
+        if ( event.id )       
+        {                   
+            //var receivedMesage = JSON.stringify(event.id, null, 4);
+            //console.log(receivedMesage);
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
            
-            var messageSplitVal = receivedMesage.split('#####');
+           var messageSplitVal = event.id.split('#####');
+                      
             messageDB = messageSplitVal[0];
 			orgIdDB = messageSplitVal[1];
 			notiIdDB=messageSplitVal[2];
@@ -549,21 +552,49 @@ var app = (function (win) {
             titleDB=messageSplitVal[4];
             attachedDB=messageSplitVal[5];
             commentAllowDB=messageSplitVal[6];
+            notificationMsg=messageSplitVal[7];
             send_DateDB= getPresentDateTime();
                         
+            
             if(commentAllowDB===''){
                 commentAllowDB=0;
             }
+                        
+            console.log("RECEIVED VALUE------------------------");
+            console.log(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB+"||"+commentAllowDB+"||"+notificationMsg);
     
-            var db = app.getDb();
-			db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-       }
+            //var db = app.getDb();
+			//db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
+
+            
+          /*if ( event.foreground )
+            {
+                if(typeDB!=='Reply'){
+                    var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                }
+                
+            }else{
+                if(typeDB!=='Reply'){
+                    var db = app.getDb();
+                	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+                }else{
+                    typeDB="Reply";
+                    var temp;
+                    temp=messageDB;
+                    messageDB=notificationMsg;
+                    notificationMsg=temp;
+                    goToAppPage();                    
+                }    
+            }*/
+            
+        }
      };
     
     
     //the function is a callback for all GCM events
     var onNotificationGCM = function(e) {
-        //alert(JSON.stringify(e));
+      //alert(JSON.stringify(e));
         
      try{
          
@@ -580,8 +611,7 @@ var app = (function (win) {
                 break;
             
             case 'message': 
-            //alert(e);          
-            
+            //alert(e);                      
             console.log('----------------------');
             console.log(JSON.stringify(e));           
             //alert(e.title);            
@@ -618,8 +648,6 @@ var app = (function (win) {
                     var db = app.getDb();
                 	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
                 }else{
-                    alert("1");
-                    
                     typeDB="Reply";
                     var temp;
                     temp=messageDB;
@@ -677,14 +705,19 @@ var app = (function (win) {
         
       function insertOrgNotiData(tx){
           
+          console.log('DATA VALUE1');
+          
           var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='"+messageDB+"' where org_id='" +orgIdDB+"' and role='C'";
           app.updateQuery(tx, queryUpdate);          
-           
           
-    	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ='"+notiIdDB+"'";
-		app.deleteQuery(tx, queryDelete);         
-          
-          var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,attached ,message ,title,comment_allow,type,send_date,pid) VALUES ("'
+          console.log('DATA VALUE2');
+
+      	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ='"+notiIdDB+"'";
+  		app.deleteQuery(tx, queryDelete);         
+
+          console.log('DATA VALUE3');
+
+          var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid) VALUES ("'
 				+ orgIdDB
 				+ '","'
 				+ attachedDB
@@ -707,8 +740,10 @@ var app = (function (win) {
     
     function goToAppPage(){
         
-                    var db = app.getDb();
-        			db.transaction(updatebagCount, app.errorCB, app.successCB);
+        console.log('DATA VALUE4');
+
+           var db = app.getDb();
+           db.transaction(updatebagCount, app.errorCB, app.successCB);
           
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    

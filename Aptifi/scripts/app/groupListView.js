@@ -6,8 +6,11 @@ app.GroupList = (function () {
  var orgId = localStorage.getItem("UserOrgID");
 
  var organisationID;  
-                
-     
+ var account_Id;
+ var orgName;
+ var orgDesc;
+    
+    
 var activityListViewModel = (function () {
      var GroupDataSource;           
     	     
@@ -18,131 +21,143 @@ var activityListViewModel = (function () {
                 
               var show = function(e){
                   
-                             $(".km-scroll-container").css("-webkit-transform", "");
-
-                  
+                   $(".km-scroll-container").css("-webkit-transform", "");
                    var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
                    tabStrip.clear();
   
                 organisationID = e.view.params.organisationId;  
+                account_Id = e.view.params.account_Id;
+                orgName= e.view.params.orgName;
+                orgDesc= e.view.params.orgDesc;
+  
+                  
                 console.log('Organisation ID'+organisationID);
                   
 				$('#newGroup').val('');
+                groupDataShow=[];      
                   
-             var db = app.getDb();
-		     db.transaction(getDataOrg, app.errorCB, showLiveData);   
-       
-                  
-                  
-           /*var OrgGroupModel ={
-            id: 'Id',
-            fields: {
-                groupName: {
-                    field: 'groupName',
-                    defaultValue: ''
-                },
-                groupDesc: {
-                    field: 'groupDesc',
-                    defaultValue: ''
-                },
-                addDate: {
-                    field: 'addDate',
-                    defaultValue: ''
-                } /*,
-                email: {
-                    field: 'email',
-                    defaultValue:''
-                },
-                last_name: {
-                    field: 'last_name',
-                    defaultValue:''
-                },
-                customerID: {
-                    field: 'customerID',
-                    defaultValue:''
-                }*/
-
-              /* },                    
-               CreatedAtFormatted: function () {
-        	        return app.helper.formatDate(this.get('addDate'));
-    	       }     
-             };
-            
-
-            GroupDataSource = new kendo.data.DataSource({
-            transport: {
+         
+    
+             var organisationGroupDataSource = new kendo.data.DataSource({                
+             transport: {
                read: {
                    url: "http://54.85.208.215/webservice/group/index/"+organisationID,
                    type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
               },
-       	 schema: {
-               model: OrgGroupModel,
-                
-                
+                 
+        	 schema: {
                  data: function(data)
-  	             {
-                       console.log(data);
+                   {
+                       console.log("---------------------------");
+                       console.log(JSON.stringify(data));
                        
-                        var groupDataShow = [];
-                                 $.each(data, function(i, groupValue) {
-									console.log(groupValue);
-                                     
-                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log(orgVal);
-                                     if(orgVal.Msg ==='No Group list'){                                        
-                                     groupDataShow.push({
- 									 	groupName:'No Group',       
-                                      	groupDesc:'No Group in this Organisation',
-                                          groupStatus:'',  
-                 		                 orgID : '',
-                        		          OrgName:'',
-                                		  groupID:'',
-                                      	addDate:'0'
-    	                             });
-	                                 }else if(orgVal.Msg==='Success'){
-                                        console.log(orgVal.groupData.length);  
-                                        for(var i=0;i<orgVal.groupData.length;i++){
-                                            groupDataShow.push({
-                                                 groupName: orgVal.groupData[i].group_desc,
-		                                         groupDesc: orgVal.groupData[i].group_name,
-        		                                 groupStatus:orgVal.groupData[i].group_status,  
-                		                         orgID : orgVal.groupData[i].org_id,
-                        		                 OrgName:orgVal.groupData[i].org_name,
-                                		         groupID:orgVal.groupData[i].pid,
-                                                 addDate:orgVal.groupData[i].add
-                                            });
-                                        }  
-                                       
-                                     }
-    							  });
-                               });
-                       
-		                         console.log(groupDataShow);
-                                 return groupDataShow;
-	               }
+                       var orgNotificationData; 
+                           $.each(data, function(i, groupValue) {
+                                  console.log(groupValue);
+    
+                               $.each(groupValue, function(i, orgVal) {
+                                   
+                                     console.log();
+                   	            
+                                   if(orgVal.Msg ==='No Group list'){
+                                       console.log("--------------------------No Group");
+                                  	   groupDataShow.push({
+                                                 orgName: '',
+        		                                 groupID:'',
+                                                 groupName:'No Group',
+                                                 organisationID:'',
+                                                 groupDesc:'No Group in this Organisation',
+                                                 addDate:''  
+    	                                });   
+                    
+                                        $("#tabDeleteGroup").hide();
+                                            showLiveData();
+                                        
+	                                }else if(orgVal.Msg==='Success'){
+                                                        console.log("--------------------------Success");
 
-            },
-	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
-           	}
-	        
-    	    });         
-         
+                                        console.log(orgVal.groupData.length);
+                                        console.log('karan Bisht');
+                                        orgNotificationData = orgVal.groupData;                                                                               
+                                        console.log(orgNotificationData);                                       
+                                        saveOrgGroupNotification(orgNotificationData);                                                                                                                                                                      
+                                    }
+                                 });    
+                            });       
+                                                     
+                    	return [data]; 
+                   }                                                            
+              },
+                 
+    	       error: function (e) {
+                        e.preventDefault();
+    	               //apps.hideLoading();
+        	           console.log(e);
+                   
+                                      //$("#progress1").hide();  
+
+                                       if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                      }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                       }
+                     getGroupDataDB();
+
+           	    }	        
+     	      });         
+
+                  organisationGroupDataSource.read();
             
-            //GroupDataSource.fetch(function() {
-                
- 		   //});
-            */
-        };  
+         };  
+    
+       var orgNotiGroupDataVal;         
+       function saveOrgGroupNotification(data) {                      
+            orgNotiGroupDataVal = data;
+            //alert('dataaaaaaaaa');
+            console.log(orgNotiGroupDataVal);            
+			var db = app.getDb();
+			db.transaction(insertOrgGroupNotiData, app.errorCB, getGroupDataDB);
+	   };
+                        
+      function insertOrgGroupNotiData(tx){
+        var queryDelete = "DELETE FROM ADMIN_ORG_GROUP";
+        app.deleteQuery(tx, queryDelete);
+          
+        var dataLength = orgNotiGroupDataVal.length;         
+          //alert(dataLength);
+    
+        var orgGroupData;
+          
+        for(var i=0;i<dataLength;i++){   
+           orgGroupData = orgNotiGroupDataVal[i].org_id;
+           
+    	   var query = 'INSERT INTO ADMIN_ORG_GROUP(org_id ,groupID ,org_name ,group_name ,group_desc,addDate) VALUES ("'
+				+ orgNotiGroupDataVal[i].org_id
+				+ '","'
+				+ orgNotiGroupDataVal[i].pid
+				+ '","'
+				+ orgNotiGroupDataVal[i].org_name
+           	 + '","'
+				+ orgNotiGroupDataVal[i].group_name
+    	        + '","'
+			    + orgNotiGroupDataVal[i].group_desc
+                + '","'
+				+ orgNotiGroupDataVal[i].add
+				+ '")';              
+                app.insertQuery(tx, query);
+        }                                                 
+      }
     
     
-         var getDataOrg = function(tx){
+        var getGroupDataDB = function(){
+             var db = app.getDb();
+		     db.transaction(getDataOrg, app.errorCB, showLiveData);     
+        }
+        
+    
+        var getDataOrg = function(tx){
             	var query = "SELECT * FROM ADMIN_ORG_GROUP where org_id="+organisationID;
 				app.selectQuery(tx, query, getDataSuccess);
         };
@@ -152,13 +167,14 @@ var activityListViewModel = (function () {
         function getDataSuccess(tx, results) {                        
             groupDataShow=[]; 
             var tempArray= [];
-		   var count = results.rows.length;
+ 		   var count = results.rows.length;
             
                        
                if (count !== 0) {                
             	    for(var i =0 ; i<count ; i++){
                          var pos = $.inArray(results.rows.item(i).groupID, tempArray);
                          console.log(pos);
+                        //alert(results.rows.item(i).addDate);
 		                 if (pos === -1) {
                                tempArray.push(results.rows.item(i).groupID); 
                                        groupDataShow.push({
@@ -171,8 +187,7 @@ var activityListViewModel = (function () {
 	                                    });
                          }
                     }               
-                }else{
-                    
+                }else{                    
                                      groupDataShow.push({
                                                  orgName: '',
         		                                 groupID:'',
@@ -181,15 +196,16 @@ var activityListViewModel = (function () {
                                                  groupDesc:'No Group in this Organisation',
                                                  addDate:''  
     	                               });   
-                    $("#tabDeleteGroup").hide();
+                    
+                            $("#tabDeleteGroup").hide();
                 }
              
         }
             
             
              var showLiveData = function(){
-                console.log('Hello');
-                console.log(groupDataShow);
+                //console.log('Hello');                 
+                console.log(JSON.stringify(groupDataShow));
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
@@ -201,19 +217,20 @@ var activityListViewModel = (function () {
   		      template: kendo.template($("#groupTemplate").html()),    		
      		   dataSource: organisationListDataSource,
                 pullToRefresh: true
-             });              
-
+             });        
+                
                  
-                               
+ 
               $('#group-listview').data('kendoMobileListView').refresh();
                 
               app.mobileApp.pane.loader.hide();
 
             };
 
-
             var backToOrgDetail = function(){
-                 app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID);  
+                 groupDataShow=[];         
+                app.mobileApp.navigate('views/groupDetailView.html?organisationId='+organisationID+'&account_Id='+account_Id+'&orgName='+orgName+'&orgDesc='+orgDesc);                
+ 
             }
     
     
@@ -234,6 +251,11 @@ var activityListViewModel = (function () {
             app.MenuPage=false;	
             app.mobileApp.navigate('views/deleteGroup.html');    
         };
+    
+    
+        var goToGroupList = function(){
+           app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);                
+        }
                 
          
         var addGroupFunc = function(){            
@@ -393,6 +415,7 @@ var activityListViewModel = (function () {
                groupSelected:groupSelected,
 	           deleteGroupFunc:deleteGroupFunc,
                addGroup:addGroup,
+               goToGroupList:goToGroupList,
                deleteGroup:deleteGroup,
                backToOrgDetail:backToOrgDetail,
                showGroup:showGroup,

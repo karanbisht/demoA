@@ -3,17 +3,23 @@
            <div data-role="navbar">      
                Org. Notification
                <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a> 
-                                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">Home</a>    
+               <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">Home</a>    
                <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
     	   </div>
 	  </div>
 	
 	 <div>
+         <div class="loader" id="progressAdminNoti" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+         </div>
+
     	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
-         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-	    	   <b>You have no Notification for you.</b>
-    	 </p>
+             <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+	        	   <b>You have no Notification for you.</b>
+    	     </p>
  	</div> 
+
  </div>
 
 

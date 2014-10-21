@@ -20,11 +20,15 @@ app.groupDetail = (function () {
            
         var show = function (e) {
             app.MenuPage=false;
-            app.mobileApp.pane.loader.hide();            
+            app.mobileApp.pane.loader.hide();       
+            
             organisationID = e.view.params.organisationID;
             account_Id = e.view.params.account_Id;
             orgName= e.view.params.orgName;
             orgDesc= e.view.params.orgDesc;
+            
+            organisationID = localStorage.getItem("orgSelectAdmin");
+
             $("#adminOrgHeader").html(orgName);
          };
            
@@ -37,10 +41,13 @@ app.groupDetail = (function () {
           
                         
         var showGroupMembers = function(){            
+ 
+            $("#progressAdminOrgMem").show();         
+            
             app.MenuPage=false;
             app.mobileApp.navigate('#groupMemberShow');         
             console.log("karaasa"+organisationID)
-                           
+            
                      
             var UserModel ={
             id: 'Id',
@@ -102,7 +109,10 @@ app.groupDetail = (function () {
                                          customerID:'0',
                                          account_id:'0',
                                          orgID:'0'
-    	                               });                                      
+    	                               });     
+                                        $("#adminRemoveMember").hide();
+                                        $("#progressAdminOrgMem").hide();
+ 
 	                                }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.allCustomer.length);  
                                         for(var i=0;i<orgVal.allCustomer.length;i++){
@@ -120,7 +130,7 @@ app.groupDetail = (function () {
     							  });
                                });
                        
-		                         console.log(groupDataShow);
+		                         console.log(JSON.stringify(groupDataShow));
                                  return groupDataShow;
 	               }
 
@@ -143,6 +153,8 @@ app.groupDetail = (function () {
   		          template: kendo.template($("#errorTemplate").html()),
                     dataSource: dataSource  
      		       });
+                    
+                        $("#progressAdminOrgMem").hide();
            	}
 	        
     	    });         
@@ -167,6 +179,9 @@ app.groupDetail = (function () {
 				}			 
 		     });
             
+            setTimeout(function(){
+                $("#progressAdminOrgMem").hide();
+            });
         };
         
         
@@ -427,7 +442,7 @@ app.groupDetail = (function () {
         var showOrgGroupView = function(){
             app.MenuPage=false;
             console.log(organisationID);
-            app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);                
+            app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID+'&account_Id='+account_Id+'&orgName='+orgName+'&orgDesc='+orgDesc);                
         };
         
  

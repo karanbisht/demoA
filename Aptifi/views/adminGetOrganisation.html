@@ -19,6 +19,11 @@
 
 <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
      <div>
+         <div class="loader" id="progressAdmin" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+         </div>
+         
     	<ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
 	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>

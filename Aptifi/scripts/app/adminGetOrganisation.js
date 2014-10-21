@@ -89,7 +89,7 @@ app.adminOragnisationList = (function () {
                                
               $('#admin-org-listview').data('kendoMobileListView').refresh();
                 
-              app.mobileApp.pane.loader.hide();
+                          $("#progressAdmin").hide();
 
                if(!app.checkConnection()){
                   if(!app.checkSimulator()){
@@ -115,7 +115,7 @@ app.adminOragnisationList = (function () {
   
             $(".km-scroll-container").css("-webkit-transform", "");
 
-             
+           $("#progressAdmin").show();             
            app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
@@ -158,8 +158,9 @@ app.adminOragnisationList = (function () {
                    }                                                            
                 },
 	            error: function (e) {
-                  $("#progress1").hide();  
     	           console.log(e);
+
+                    beforeShow();
                                      if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                      }else{
@@ -272,7 +273,9 @@ app.adminOragnisationList = (function () {
         var organisationSelected = function (e) {
             var organisationID=e.data.organisationID;
             //uid=' + e.data.uid
-			app.MenuPage=false;	
+			app.MenuPage=false;
+            localStorage.setItem("orgSelectAdmin",organisationID);
+
             app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName+'&orgDesc='+e.data.orgDesc);
         };
         

@@ -273,9 +273,9 @@ app.sendNotification = (function () {
                //alert(cmbCust);
                
           if(org_id===null){
-            app.showAlert('Please select Organisation','Validation Error');
+            app.showAlert('Please select Organization','Validation Error');
           }else if(cmbGroup ==='' && (cmbCust==='' || cmbCust==="null")){
-            app.showAlert('Please Organisation Group or Customer.','Validation Error'); 
+            app.showAlert('Please Organization Group or Customer.','Validation Error'); 
                $("#selectGroupDiv").show(); 
                $("#sendNotificationDivMsg").hide();
           }else if(cmbGroup ==='0' && (cmbCust==='' || cmbCust==="null")){

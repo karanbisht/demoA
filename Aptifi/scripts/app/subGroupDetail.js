@@ -106,8 +106,12 @@ app.subGroupDetail = (function () {
                                          customerID:'0',
                                          orgID:0
     	                               }); 
+                                        
                                       $("#deleteGroupMemberBtn").hide();  
-	                                }else if(orgVal.Msg==='Success'){
+	                                
+                                    }else if(orgVal.Msg==='Success'){
+                                    
+                                        $("#deleteGroupMemberBtn").show();  
                                         console.log(orgVal.customerInfo.length);  
                                         for(var i=0;i<orgVal.customerInfo.length;i++){
                                             groupDataShow.push({
@@ -233,16 +237,17 @@ app.subGroupDetail = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Success'){  
-                                   
+                               if(addGroupData.status[0].Msg==='Group updated successfully'){  
                                  if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Group Updated Successfully');   
                                  }else{
                                       app.showAlert("Group Updated Successfully","Notification");  
                                  }
                                    
-								//app.showAlert("Group Updated Successfully","Notification");
-				        	        app.mobileApp.navigate('views/groupListPage.html');
+                                 app.mobileApp.navigate('views/groupListPage.html');  
+								
+                                   //app.showAlert("Group Updated Successfully","Notification");
+		
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -308,17 +313,24 @@ app.subGroupDetail = (function () {
                        
 		                                                           
                                    var allData = groupDataAllShow.length;
-            					   var groupData = groupMemberData.length;            
+                                   var groupData = groupMemberData.length;            
                  
+                       
+                       console.log(allData);
+                       console.log(groupData);
+                       
+                       
                        for(var x=0;x < allData ; x++){                     
                            	var numCheck=0;
                             for(var y=0;y<groupData ;y++){
-                              if(groupDataAllShow[x].customerID=== groupMemberData[y].customerID){                                
+                              
+                                if(groupDataAllShow[x].customerID=== groupMemberData[y].customerID){                                
                                   numCheck=1;
                                 }
+                                
                            }
                               if(numCheck!==1){
-                                    remDataValue.push({
+                                 remDataValue.push({
                                    mobile: groupDataAllShow[x].mobile,
 	      	                     first_name: groupDataAllShow[x].first_name,
         	      	             email:groupDataAllShow[x].email,  
@@ -434,6 +446,8 @@ app.subGroupDetail = (function () {
 			console.log(organisationID);
        
             var jsonDataDeleteMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
+            
+            console.log("customer_id"+customer+"||"+groupID+"||"+organisationID);
             
             var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
