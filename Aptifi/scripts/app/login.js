@@ -691,7 +691,6 @@ app.Login = (function () {
 			var validationCodeId = $("#validationCodeId").val();
                 if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
                       app.showAlert("Please Enter Verification Code","Notification");
-                
                 }else{
                     $("#progressRandomCode").show();
                       if(varifiCode===validationCodeId){
@@ -803,7 +802,9 @@ app.Login = (function () {
            });
                                               
         	    }else{
-    	               app.showAlert("Please Enter Correct Verification Code","Notification");    
+    	               app.showAlert("Please Enter Correct Verification Code","Notification");
+                                       $("#progressRandomCode").hide();
+
                 }
                 }
 	        };

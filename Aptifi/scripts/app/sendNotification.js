@@ -479,7 +479,9 @@ app.sendNotification = (function () {
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);
-             
+
+             $("#progressSendNotification").hide();
+ 
                                if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                }else{

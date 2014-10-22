@@ -374,6 +374,8 @@ app.registration = (function () {
                     
                 }else{
                    app.showAlert("Please Enter Correct Verification Code","Notification");    
+                                     $("#progressRandomCode").hide();
+  
                 }
             }
                 
@@ -381,7 +383,7 @@ app.registration = (function () {
         
         
         
-                var profileInfoData;
+        var profileInfoData;
         var profileOrgData;
 		function saveProfileInfo(data) {
 			profileInfoData = data; 

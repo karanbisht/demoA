@@ -541,6 +541,7 @@ var app = (function (win) {
         {                   
             //var receivedMesage = JSON.stringify(event.id, null, 4);
             //console.log(receivedMesage);
+            
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
            
            var messageSplitVal = event.id.split('#####');
@@ -563,6 +564,29 @@ var app = (function (win) {
             console.log("RECEIVED VALUE------------------------");
             console.log(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB+"||"+commentAllowDB+"||"+notificationMsg);
     
+            
+    		navigator.notification.confirm(titleDB, function (confirmed) {           
+            	if (confirmed === true || confirmed === 1) {
+                                        if(typeDB!=='Reply'){
+                                            var db = app.getDb();
+                	                        db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+                                        }else{
+                                            typeDB="Reply";
+                                            var temp;
+                                            temp=messageDB;
+                                            messageDB=notificationMsg;
+                                            notificationMsg=temp;
+                                            goToAppPage();                    
+                                        }    
+
+                }else{
+                    var db = app.getDb();
+        			db.transaction(insertOrgNotiData, app.errorCB, app.successCB);   
+                }
+        	}, 'Notification', ['Move To', 'Cancel']);        
+
+            
+                    
             //var db = app.getDb();
 			//db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
 
