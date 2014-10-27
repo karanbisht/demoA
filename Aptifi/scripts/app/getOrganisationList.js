@@ -174,7 +174,8 @@ app.OragnisationList = (function () {
 
                         
 
-         var show = function(e){                     
+         var show = function(e){       
+             
                                        
              $("#progress2").show();
              $('#organisation-listview').data('kendoMobileListView').refresh();
@@ -200,45 +201,43 @@ app.OragnisationList = (function () {
                               $("#goToAdmin").hide();
 
              
+             localStorage.setItem("loginStatusCheck",1);
+             account_Id = localStorage.getItem("ACCOUNT_ID");
+             console.log(account_Id);
              
-           var from= e.view.params.from; 
+           //var from= e.view.params.from; 
              
-             if(from==='Login'){
-              account_Id = e.view.params.account_Id;
-              userType= e.view.params.userType;
+             //if(from==='Login'){
+              //account_Id = e.view.params.account_Id;
+              //userType= e.view.params.userType;
               //alert(userType);   
-              newUserType = userType.split(',');   
+              //newUserType = userType.split(',');   
                  
               //console.log("karan"+newUserType);  
               //console.log(newUserType.length);
                  
-              localStorage.setItem("ACCOUNT_ID",account_Id);
-              localStorage.setItem("USERTYPE",userType);                 
-             }else{                 
-               account_Id = localStorage.getItem("ACCOUNT_ID");
-               userType = localStorage.getItem("USERTYPE");
-               newUserType = userType.split(',');   
-             }
+              //localStorage.setItem("ACCOUNT_ID",account_Id);
+              //localStorage.setItem("USERTYPE",userType);                 
+             //}else{                 
+               //account_Id = localStorage.getItem("ACCOUNT_ID");
+               //userType = localStorage.getItem("USERTYPE");
+               //newUserType = userType.split(',');   
+             //}
 			
              
              
              //alert(account_Id);
              
-             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-             var device_id = localStorage.getItem("deviceTokenID"); 
+             var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+             //var device_id = localStorage.getItem("deviceTokenID"); 
              
-            var deviceName = app.devicePlatform();
-            var device_type;
+
              
-            if(deviceName==='Android'){
-                device_type ='AN';
-            }else if(deviceName==='iOS'){
-                device_type='AP';
-            }
+            var username = localStorage.getItem("username");
              
-            var username = localStorage.getItem("username");  
+            var device_type = localStorage.getItem("DEVICE_TYPE");  
              
-             
+                   
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
               var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
@@ -286,7 +285,7 @@ app.OragnisationList = (function () {
                var userAllGroupId = [];
 						   
                $.each(loginDataView, function(i, loginData) {
-                           //    console.log(loginData.status[0].Msg);
+                      console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='User not registered'){
                           //console.log('reg');
@@ -355,6 +354,9 @@ app.OragnisationList = (function () {
         var profileOrgData;
         
 		function saveProfileInfo(data) {
+ 
+            //alert("saveProgfile");
+
 			profileInfoData = data;            
             if(JoinedOrganisationYN===0){
               var db = app.getDb();
@@ -579,6 +581,8 @@ app.OragnisationList = (function () {
 
             
         var afterShow = function(){
+            
+           console.log("showData");
             
            var db = app.getDb();
 		   db.transaction(getRoleDataOrg, app.errorCB, showMoreDBData);   

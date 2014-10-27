@@ -619,6 +619,9 @@ function loginSuccessCB() {
         
        var goToHomePage = function(){
                app.mobileApp.pane.loader.hide();
+ 
+               localStorage.setItem("ACCOUNT_ID",account_Id);
+
                app.userPosition=false;				  
                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
        }

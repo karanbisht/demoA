@@ -7,6 +7,8 @@ var app = (function (win) {
     var loginStatusDBValue;
     var adminLoginStatusDBValue;
     var account_IdDBValue;
+    var mobileApp;
+
     
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
@@ -27,9 +29,6 @@ var app = (function (win) {
         return true;
     });
     
-    var devicePlatform = function(){
-        return device.platform;
-    };
     
     var deviceUuid = function(){
         return device.uuid;
@@ -54,6 +53,11 @@ var app = (function (win) {
 		var mobilePattern = /^\d{10}$/;
 		return mobilePattern.test(mobileNo);
 	};
+    
+    var devicePlatform = function(){
+        return device.platform;
+    };
+
 
     var isKeySet = function (key) {
         var regEx = /^\$[A-Z_]+\$$/;
@@ -121,7 +125,6 @@ var app = (function (win) {
     };	
     
     var checkForLoginStatus = function (){
-		  localStorage.setItem("loginStatusCheck",0); 
           db = getDb();
 		  db.transaction(loginStatusQuery, errorCB, loginStatusQuerySuccess);
     };
@@ -159,13 +162,13 @@ var app = (function (win) {
 	    console.log(loginStatusDBValue+"||"+account_IdDBValue+"||"+userTypeDBValue);
         
        if(loginStatusDBValue===1 && adminLoginStatusDBValue!==1){
-            app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
+            //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
             localStorage.setItem("loginStatusCheck",1);
            
        }else if(loginStatusDBValue===1 && adminLoginStatusDBValue===1){
-            var account_Id = localStorage.getItem("ACCOUNT_ID");
-            app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
-            localStorage.setItem("adminloginStatusCheck",1);    
+            //var account_Id = localStorage.getItem("ACCOUNT_ID");
+            //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+            localStorage.setItem("loginStatusCheck",2);    
         } else {            
             //app.mobileApp.navigate('index.html');
             localStorage.setItem("loginStatusCheck",0);
@@ -341,19 +344,19 @@ var app = (function (win) {
             app.MenuPage=false;
             app.mobileApp.navigate('#welcome');
      };
-     var mobileApp;
     
     
     //console.log(loginStatusCheck);
     
     //if(loginStatusCheck==='0'){
     
-    mobileApp = new kendo.mobile.Application(document.body, {
+    /*mobileApp = new kendo.mobile.Application(document.body, {
                                                      //transition: 'slide',
                                                      //statusBarStyle: statusBarStyle,
-         											layout: "tabstrip-layout",										
+                                                     //loading: "<h1>Please wait...</h1>",
+         											//layout: "tabstrip-layout",										
                                                      skin: 'flat'
-                                                 	});
+                                                 	});*/
     var onDeviceReady = function() {
         // Handle "backbutton" event
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -370,7 +373,20 @@ var app = (function (win) {
 		console.log(pushNotification);
         //alert(device.platform);
            
+           /*var deviceName = app.devicePlatform();
+            var device_type;
+             
+             alert(deviceName);
+            if(deviceName==='Android'){
+                device_type ='AN';
+            }else if(deviceName==='iOS'){
+                device_type='AP';
+            }*/
+        
         if (device.platform === "iOS") {
+
+            localStorage.setItem("DEVICE_TYPE","AP");
+
                 pushNotification.register(apnSuccessfulRegistration,
                 apnFailedRegistration, {
                     "badge": "true",
@@ -380,6 +396,9 @@ var app = (function (win) {
             });
  
         } else {
+
+            localStorage.setItem("DEVICE_TYPE","AN");
+
             //register for GCM
             //alert('Android');
             
@@ -835,28 +854,33 @@ var app = (function (win) {
 
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
-    /*var mobileApp;
     
     console.log(loginStatusCheck);
     
-    //if(loginStatusCheck==='0'){
+    //alert(loginStatusCheck);
+    
+    if(loginStatusCheck==='0' || loginStatusCheck===null){
+    
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
-                                                     transition: 'slide',
-                                                     //statusBarStyle: statusBarStyle,
-         											layout: "tabstrip-layout",										
+                     								layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});
-   }else{
+   }else if(loginStatusCheck==='1'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#organisationNotiList",
-                                                     transition: 'slide',
-                                                     statusBarStyle: statusBarStyle,
          											layout: "tabstrip-layout",										
                                                      skin: 'flat'
                                                  	});
        
-   }*/
+   }else if(loginStatusCheck==='2'){
+    mobileApp = new kendo.mobile.Application(document.body, {
+        											 initial: "#view-all-activities-admin",
+         											layout: "tabstrip-layout",										
+                                                     skin: 'flat'
+                                                 	});       
+   }
+    
     
     var callOrganisationLogin = function(){
           var account_Id = localStorage.getItem("ACCOUNT_ID");

@@ -84,8 +84,8 @@ app.Login = (function () {
              }
                          
             
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
-            var device_id = localStorage.getItem("deviceTokenID");            
+            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
+            //var device_id = localStorage.getItem("deviceTokenID");            
             console.log(device_id);            
             username = $("#loginUsername").val();
         //    console.log(username);
@@ -180,7 +180,7 @@ app.Login = (function () {
                          if(loginData.status[0].JoinedOrg.length!==0){
                               var roleLength = loginData.status[0].JoinedOrg.role.length;
                                   for(var i=0;i<roleLength;i++){
-                                         userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                                    userType.push(loginData.status[0].JoinedOrg.role[i]); 
                               }
                             // console.log(userType);
                               UserOrgInformation = loginData.status[0].JoinedOrg;
@@ -482,9 +482,14 @@ app.Login = (function () {
                //app.mobileApp.pane.loader.hide();
                $("#progress").hide();
                $("#progressRandomCode").hide();
+                             
+               localStorage.setItem("ACCOUNT_ID",account_Id);
 
-               app.userPosition=false;				  
-               app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
+               app.userPosition=false;	
+           
+               app.mobileApp.navigate('#organisationNotiList');
+           
+               //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
        }
                  
         var GlobalDataOrgId;
@@ -637,7 +642,8 @@ app.Login = (function () {
               
             var varifiCodeMsg = "verification code-: "+ varifiCode;
           
-            console.log(varifiCode);
+                      console.log("-----Verification code--" + varifiCode);
+
             
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
@@ -704,8 +710,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+            //var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}

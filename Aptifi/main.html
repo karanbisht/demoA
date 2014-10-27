@@ -3,6 +3,8 @@
     <head>
         <title></title>
         <meta charset="utf-8" />
+        <script src="cordova.js"></script>
+
         
         <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />   
@@ -12,7 +14,6 @@
         <link href="styles/main.css" rel="stylesheet" />
 
         
-        <script src="cordova.js"></script>
         <script src="kendo/js/jquery.min.js"></script>
         <script src="kendo/js/kendo.all.min.js"></script>
         <!--<script src="kendo/js/kendo.mobile.min.js"></script>-->
@@ -78,7 +79,33 @@
         
          <div data-role="layout" data-id="innerPages">
     
- 		</div>              
+ 		</div>             
+        
+        
+        <div data-role="layout" data-id="mobile-tabstrip">
+           <div data-role="header">         
+              <div data-role="navbar">     
+                 <span data-role="view-title"></span> 
+             	<!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		         
+                  
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>    
+
+                 <a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
+
+                 <!--<a id="moreOption"  style="width: 2.5em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50% ; background-color: transparent;"  data-align="right" href="#moreFeature" data-role="button" data-rel="popover"><img src="styles/images/icon-add.png" style="background-position: 65em 50%;"/></a>-->                      
+                  
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> 
+              </div>              
+                            
+	          <div id="upperMainTab" data-role="tabstrip" style="border-top:2px solid #2D384C">
+	               <a data-icon="history" href="#organisationNotiList">Notification</a>
+				   <a data-icon="globe" href="#organisationDiv">Organization</a>
+        	       <a data-icon="contacts" href="#profileDiv">Profile</a>            
+              </div>     
+           </div>
+        </div>
+        
+        
       
         <!-- maxlength="10" pattern="[0-9]*"-->
         <!--WELCOME VIEW -->
@@ -199,6 +226,8 @@
                     </span>
                 </li>
             </ol>-->
+            
+            
             <div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>
         </div>
         
@@ -206,6 +235,573 @@
                     
                     
                 </div>-->
+        
+        
+        
+   <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>     
+ 
+<!--data-after-show="app.OragnisationList.afterShow"-->
+
+        <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show">
+	         <!--data-append-on-refresh="true"-->
+    
+             <div class="loader" id="progress2" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+             </div>
+
+    
+         <div id="organisationListView">
+        	<ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-bind="source: activities" ></ul>
+	             <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		        	   <b>You have no Notification for you.</b>
+    		     </p>
+ 	    </div> 
+           <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
+            <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
+            <a id="aboutUsView" data-icon="info" data-role="button" data-bind="click: about">About Us</a>
+            <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
+   
+    
+	        <!--<div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
+    	    <div data-role="view" id="popUpView" data-title="view1">
+                             	   <li class="popMoreButton"><a  data-bind="click: makeCall"></a>Call Us</li>
+                            		<li class="popMoreButton"><a   data-bind="click: inAppBrowser">Website</a></li>
+                            		<li class="popMoreButton"><a data-bind="click: about">About Us</a></li>
+                                    <li class="popMoreButton"><a data-bind="click: setting">Setting</a></li>
+    		</div>
+    	</div>-->  
+    
+        
+    
+    		<div data-role="popover" class="popupBox refreshPop" id="moreFeature" data-popup='{ "height": "230" }'>
+                <div data-role="view" data-model="app.OragnisationList">
+                    <ul data-role="listview">
+                        <li data-bind="click: makeCall">Call Us</li>
+                        <li data-bind="click: inAppBrowser">Website</li>
+                        <li data-bind="click: about">About Us</li>
+                        <li data-bind="click: setting">Setting </li>
+                        <li data-bind="click: logout">Logout</li>
+                        
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+
+
+	<div data-role="view" id="infoDiv" data-model="app.Activities">
+		<div data-role="header" style="border-bottom:2px solid #2D384C">
+        	<div data-role="navbar">
+            	Sakshay Web Technologies
+         	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton" ></a>
+         	</div>
+    	</div>
+    	<div data-role="content">
+        	<ul data-role="listview">
+		    	<p>Welcome to Our Organization</p>
+    	    </ul>
+    	</div>
+	</div>
+
+
+<div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">  	
+    <div>
+      <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities" style="padding:10px;"></ul>
+    	<p id="no-notification-span" hidden="hidden" class="no-items-msg">
+    	   <b>You have no Notification yet.</b>
+    	</p>
+ 	</div>     
+</div>
+
+
+
+<div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
+    <div id="tabstrip-profile">
+      <ul data-role="listview" data-style="inset" data-type="group">
+        <li>
+            <ul>
+                <li><h2><span id="userfname"></span></h2><h2><span id="userlname"></span></h2><img src="styles/images/userProfile.png" /></li>
+            </ul>
+        </li>
+         
+        <li>
+            <ul>
+                <li>Email <span class="sales-up" id="userEmailId"></span></li>
+                <li>Mobile No <span class="sales-up" id="userMobileNo"></span></li>
+            </ul>
+        </li>
+  
+
+        <li>
+            <ul>
+                <li style="text-align:center;font-weight:bold;color:#1B205E">Organization</li>
+  			  <li id="orgData"></li>
+            </ul>
+        </li>
+          
+	    </ul>   
+    </div>         
+</div>
+
+
+<style scoped>
+    #tabstrip-profile h2 {
+        display: inline-block;
+        font-size: 1.1em;
+        margin: 1.5em 0 0 .7em;
+    }
+    #tabstrip-profile h2 span {
+        display: block;
+        clear: both;
+        font-size: 1.8em;
+        margin: .1em 0 0 0;
+    }
+    #tabstrip-profile img {
+        width: 5em;
+        height: 5em;
+        float: left;
+        margin: 1em;
+        border: 1px solid rgba(0,0,0,.2);
+        -webkit-border-radius: 4em;
+        border-radius: 4em;
+    }
+
+    .sales-down,
+    .sales-hold,
+    .sales-up,
+    .value {
+        float: right;
+    }
+    .sales-up { color: green; }
+    .sales-down { color: red; }
+    .sales-hold { color: blue; }
+    .value { color: #bbb; }
+</style>
+
+
+<div data-role="view" id="settingDiv" data-model="app.Activities">
+	<div data-role="header" style="border-bottom:2px solid #2D384C">
+        <div data-role="navbar">
+            Setting
+            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
+        </div>
+    </div>
+      
+    <div data-role="content">
+        <ul data-role="listview">
+		    	<p>Welcome to Setting Page</p>
+        </ul>
+    </div>
+    
+</div>
+	
+
+		<script type="text/x-kendo-template" id="organisationTemplate">
+    		
+            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
+
+            #if(org_logo===null || org_logo==='null'){#   
+                 <div class="user-avatar">
+                    <img src="styles/images/habicon.png">
+                 </div>
+            #}else{#
+                 <div class="user-avatar">
+                    <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
+                 </div>             
+            #}#  
+             
+       		 <div class="activity-content" >
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
+            		#if(countData!==0){#
+						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
+            		#}# 
+                                #if(orgDesc.length > 60){#
+                                #orgDescVal = orgDesc.substr(0, 60) + '..';#
+                                #}else{#
+                                #orgDescVal = orgDesc;#  
+                                #}#
+
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
+       		 </div>
+		    </div>
+		</script>
+
+
+	<!-- Activities ListView Template -->
+		<script type="text/x-kendo-template" id="orgTemplate"> 
+    		
+            <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
+                 #if(imgData===null ||imgData==='null' ){#            
+        	        <div class="user-avatar">
+            	        <img src="styles/images/habicon.png"/>
+        	        </div>
+             
+             
+                #}else{#
+             
+                     #console.log(imgData)#
+                     #console.log(imageSourceOrg)#
+             
+ 	   	        <div class="user-avatar">
+                     <img src=${imageSourceOrg} />
+     	           <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+        		    </div>
+                #}#    
+	    		<div class="activity-content">
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                 #if(role==='O' ){#
+                     <div style="text-align:center;float:right;"><img src="styles/images/admin.png" style="width=35px;height:25px;" /></div>
+                 #}#
+                     
+                #if(orgDesc.length > 60){#
+                    #orgDescVal = orgDesc.substr(0, 60) + '..';#
+                #}else{#
+                   #orgDescVal = orgDesc;#  
+                #}#
+                   
+                         <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
+        		</div>
+    		</div>
+		</script>
+
+
+
+		<script type="text/x-kendo-template" id="errorTemplate">    		
+            <div class="cf" style="height:200px;">
+       		 <div class="activity-content" >
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${message}</h2>
+                </div>
+		    </div>
+		</script>
+
+        
+        
+        
+        
+        
+        <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
+        
+        
+        
+        
+        
+        
+        
+        <div data-role="layout" data-id="mobile-tabstrip-admin">
+           <div data-role="header" >               
+              <div data-role="navbar">     
+                 <span data-role="view-title"></span> 
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>                         
+                 <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a> 
+              </div>              
+                            
+	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
+	            <a id="manageGroupView" data-icon="organize" data-role="button" href="#view-all-activities-admin" >Manage Org</a>
+    	        <a id="replyUserView" data-icon="compose" data-role="button" href="#view-all-activities-userReply" >Incoming Msg</a>
+        	    <a id="sendNotificationView" data-icon="action" data-role="button" href="sendNotificationDiv" >Send Notification</a>
+              </div>     
+           </div>
+        </div>
+
+<!--data-before-Show="app.adminOragnisationList.beforeShow"-->
+
+<div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
+     <div>
+         <div class="loader" id="progressAdmin" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+         </div>
+         
+    	<ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
+	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		    	   <b>You have no Notification for you.</b>
+    		 </p>
+ 	</div>    
+</div>	
+
+
+
+<div data-role="view" id="view-all-activities-userReply" data-id="innerActivity" data-title="Reply To User" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.userReplyList" data-init="app.userReplyList.init"  data-show="app.userReplyList.show" data-before-Show="app.userReplyList.beforeShow">	
+	 <div>
+    	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
+         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+	    	   <b>You have no Notification for you.</b>
+    	</p>
+ 	</div>    
+</div>
+
+
+<!--class="activities-view-notification"-->
+<!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
+<!--data-pull-to-refresh="true"-->
+
+<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+    
+  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
+      
+     <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organization to send Notification</p>
+      
+         <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
+             <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		        	   <b>You have no Notification for you.</b>
+             </p>
+  </div>
+        
+    <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
+    
+   <div  id="selectGroupDiv" style=" display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px;  padding-bottom:35px; padding-top:10px; border-radius:6px;">
+
+        <span id="" data-role="button" data-bind="click: backToOrg" style="margin:0px;background-color: transparent;border:none;display:none">  
+              <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+        </span>
+       
+        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group </p>
+        	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->   
+        <div id="group-Name-listview" class="k-listview">  </div>
+        
+       <!--<div>
+          <span data-role="button" style="background-color:#33539E;width:100%" data-bind="click:escapeGroupClick">
+	           <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Skip</a>
+          </span>       
+       </div>-->   
+	    
+               <li>                   
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:left;">
+                     	 <a data-role="button" style="background-color:#33539E">Skip</a>   
+                    </span>
+            
+                    <span id="login" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="padding:10px;float:right;">
+                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                    </span>
+               </li>
+
+   </div>
+    
+ <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->   
+    
+   <div  id="selectCustomerToSend" style="display:none;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:35px; padding-top:10px; border-radius:6px;">
+           
+       <span id="" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
+           <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+       </span>    
+             <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
+        
+    	
+        <div id="customer-Name-listview" class="k-listview">  </div>
+        
+        <li>
+                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:left;">
+                     	 <a data-role="button" style="background-color:#33539E">Skip</a>   
+                    </span>
+            
+                    <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
+                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                    </span>
+
+        </li>
+
+   </div>
+    
+    <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
+    
+   <div id="selectTypeDiv" style="display:block;background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
+           
+       <span id="" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
+             <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
+       </span>
+       
+       <p style="color:#1B205E;text-align:center;padding-bottom:5px;margin-bottom:5px;">Select Notification Type</p>
+       <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
+       
+    	   <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+		       <b>You have no Notification for you.</b>
+           </p>
+   </div> 
+    
+    
+   <!-- <div style="margin-left:10px">
+        <p style="color:#1B205E">Select Organisation to send Notification</p>
+        <span style="margin-left:12px;"><input id="orgforNotification" placeholder="Select Organisation" /></span>
+    </div>-->
+    
+    <!--<div style="margin-left:10px">
+        <p style="color:#1B205E">Select Group to send Notification to particular group</p>
+        <span style="margin-left:12px;"><input id="groupforNotification" placeholder="Select Group"/></span>
+    </div>-->
+    
+    <!--<div style="margin-left:10px">
+        <p style="color:#1B205E">Notification Type</p>               
+        <span style="margin-left:12px;"><input id="notificationType" /></span>
+    </div>-->
+    
+  <div id="sendNotificationDivMsg" style="display:none;overflow:hidden">
+    
+    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
+        <li class="username" style="background-color: #f5f7f8; margin-top:9px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title" autofocus/></li>
+    </ul>
+			   
+
+    <div class="user-share" style="margin-right:10px;margin-left:10px;border-radius:6px;">
+        <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>
+        
+        <div class="loader" id="progressSendNotification" style="display:none;">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+        </div>
+
+    </div>
+          
+      
+    <li style="color:#1B205E;margin:10px;list-style-type: none;">
+         <span style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
+    </li> 
+      
+      
+       <li style="width:90%;margin-bottom:30px;margin-right:15%;margin-left:5%;list-style-type: none;">
+         <img id="largeImage" src="" alt="" align="right"  style="height:70px; width:70px;margin-right:10px;float:right;border:none;" />
+             <span data-role="button" style="background-color: #09B201;width:50%;margin-top:20px;" data-bind="click: getPhotoVal">
+	             Add Attachment
+             </span> 
+           <span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
+                 <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
+            </span>
+       </li>	
+
+            
+     <li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
+          <span data-role="button" style="background-color:#33539E;width:90%;float:left;" data-bind="click: sendNotificationMessage">
+	         <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Send Notification</a>
+          </span>
+     </li>
+   
+  </div>           
+</div>
+
+		<script type="text/x-kendo-template" id="orgNameTemplate"> 
+    		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationOrg }">				            
+	    		<div class="activity-content"style="padding-top:10px;">
+       		     <h2 id="activityTemplateTitle" class="orgNameList">${org_name}</h2>
+        		</div>
+    		</div>            
+		</script>
+
+
+		<script type="text/x-kendo-template" id="groupNameTemplate"> 
+    		<!--<div class="cf" >				            
+	    		<div class="activity-content"style="padding-top:10px;">
+       		     <h2 id="activityTemplateTitle" class="orgNameList">${group_name}</h2>
+        		</div>
+    		</div>-->
+            
+             <div class="deleteGroupShow" data="${pid}">
+                <input type="checkbox" class="largerCheckbox" value="${pid}" />
+                <span class="checkbox">#:group_name#</span>
+             </div>
+
+		</script>
+
+
+        <script type="text/x-kendo-template" id="customerNameTemplate">            
+             <div class="deleteGroupShow" data="${customerID}">
+                <input type="checkbox"  class="largerCheckbox" value="${customerID}" />
+                <span class="checkbox">#:first_name# #:last_name#</span>
+             </div>
+        </script>
+
+
+		<script type="text/x-kendo-template" id="typeNameTemplate">
+    		<div class="cf">				            
+	    		<div class="activity-content" style="padding-top:10px;">
+       		     <h2 id="activityTemplateTitle" class="orgNameList">${text}</h2>
+        		</div>
+    		</div>            
+		</script>
+
+
+    	<script type="text/x-kendo-template" id="adminOrganisationTemplate">
+           <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">        
+             #if(org_logo===null ||org_logo==='null' ){#            
+        	    <div class="user-avatar">
+            	    <img src="styles/images/habicon.png"/>
+        	    </div>
+            #}else{#
+ 	       	<div class="user-avatar">
+                     <img src=${imageSource} />
+     	           <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+        		</div>
+            #}#    
+             <div class="activity-content" >
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
+            		<!--#if(bagCount!=='D'){#
+						<div class="divBagVal"></div>            
+            		#}#--> 
+            
+                  #if(orgDesc.length > 80){#
+                    #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                  #}else{#
+                    #orgDescVal = orgDesc;#  
+                  #}#
+             
+        		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
+       	  </div>
+	       </div>
+    	</script>
+
+
+        <script type="text/x-kendo-template" id="userReplyTemplate">
+   	    <div class="cf" data-role="touch" data-bind="events: { tap: clickOnUserName }" >
+             #if(org_logo===null ||org_logo==='null' ){#            
+        	    <div class="user-avatar">
+            	    <img src="styles/images/habicon.png"/>
+            	</div>
+            #}else{#
+ 	       	<div class="user-avatar">
+                     <img src=${imageSource} />
+     	           <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+        		</div>
+            #}#    
+       		 <div class="activity-content">
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
+                  #if(orgDesc.length > 80){#
+                    #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                  #}else{#
+                    #orgDescVal = orgDesc;#  
+                  #}#
+       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
+       		 </div>
+	       </div>
+        </script>
+
+
+		
+         <script type="text/x-kendo-template" id="errorTemplate">    		
+            <div class="cf" style="margin-top:10%;border:none">
+     
+
+                 <div class="error-avatar">
+					    <img src="styles/images/error.png"/>
+        		</div>
+     
+
+                 <div class="error-content">
+               		  <h5 style="color:rgb();text-align:center" >${message}</h5>
+     
+                      <p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
+                          Try Again
+                      </p>
+
+                 </div>
+             </div>
+    
+        </script>
+
+        
+        
+        
+        
+        
              
     </body>
 </html>

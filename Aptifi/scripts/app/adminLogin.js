@@ -484,7 +484,8 @@ app.adminLogin = (function () {
              //app.mobileApp.pane.loader.hide();
               $("#progress1").hide();
               app.userPosition=false;
-              app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+              app.mobileApp.navigate('#view-all-activities-admin'); 
+              //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
       };
         
  

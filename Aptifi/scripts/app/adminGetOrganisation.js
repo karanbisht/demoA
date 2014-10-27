@@ -74,8 +74,10 @@ app.adminOragnisationList = (function () {
             
              var showLiveData = function(){
                 //console.log('Hello');
-                //console.log(groupDataShow);
+                console.log(groupDataShow);
                 
+                 //alert('LiveShow');
+                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
               });           
@@ -83,15 +85,15 @@ app.adminOragnisationList = (function () {
                 
              $("#admin-org-listview").kendoMobileListView({
   		    template: kendo.template($("#adminOrganisationTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-              pullToRefresh: true
+     		 dataSource: organisationListDataSource
              });
                                
               $('#admin-org-listview').data('kendoMobileListView').refresh();
                 
                           $("#progressAdmin").hide();
 
-               if(!app.checkConnection()){
+
+                 if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
@@ -110,19 +112,23 @@ app.adminOragnisationList = (function () {
 
          var show = function(e){
     
+            //alert('show');
+             
+            localStorage.setItem("loginStatusCheck",2);
+ 
             var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#view-all-activities-admin");
   
             $(".km-scroll-container").css("-webkit-transform", "");
 
            $("#progressAdmin").show();             
-           app.MenuPage=false;
-           app.userPosition=false;
-           app.mobileApp.pane.loader.hide();
+               app.MenuPage=false;
+               app.userPosition=false;
+               app.mobileApp.pane.loader.hide();
                                      
-            account_Id = e.view.params.account_Id;
-	        account_Id = localStorage.getItem("ACCOUNT_ID");
-            console.log(account_Id);
+            //account_Id = e.view.params.account_Id;
+               account_Id = localStorage.getItem("ACCOUNT_ID");
+               //alert(account_Id);
              
 
             var organisationListDataSource = new kendo.data.DataSource({
@@ -628,7 +634,8 @@ app.adminOragnisationList = (function () {
                         var account_Id = localStorage.getItem("ACCOUNT_ID");
                         var userType = localStorage.getItem("USERTYPE");   
 
-                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+                //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+                app.mobileApp.navigate('#organisationNotiList');
             }
 
             function updateAdminLoginStatusError(err) {
