@@ -24,10 +24,17 @@ app.subGroupDetail = (function () {
         var show = function (e) {
             app.MenuPage=false;
             app.mobileApp.pane.loader.hide();            
-            groupID = e.view.params.groupID;
-            organisationID = e.view.params.orgID;
-            GroupName= e.view.params.groupName;
-            selectedGroupDesc= e.view.params.groupDesc;
+            //groupID = e.view.params.groupID;
+            //organisationID = e.view.params.orgID;
+            //GroupName= e.view.params.groupName;
+            //selectedGroupDesc= e.view.params.groupDesc;
+            
+            organisationID = localStorage.getItem("orgSelectAdmin");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            groupID = localStorage.getItem("groupIdAdmin");
+            GroupName = localStorage.getItem("groupNameAdmin");
+            selectedGroupDesc = localStorage.getItem("groupDescAdmin");
+
             
             $("#adminGroupHeader").html(GroupName);           
          };
@@ -166,18 +173,9 @@ app.subGroupDetail = (function () {
                      
     	    $("#subGroupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
-       		 template: kendo.template($("#subGroupMemberTemplate").html()),
-                pullToRefresh: true, 
+       		 template: kendo.template($("#subGroupMemberTemplate").html())
 			});
-            
-             $("#deleteSubMemberData").kendoListView({
-  		    template: kendo.template($("#sub-Member-Delete-template").html()),    		
-     		 dataSource: MemberDataSource,
-        		schema: {
-           		model:  UserModel
-				}			 
-		     });
-            
+                                   
         };
         
         
@@ -189,6 +187,15 @@ app.subGroupDetail = (function () {
             $("#editGroupName").val(GroupName);
             $("#editGroupDesc").val(selectedGroupDesc);
         };
+        
+        
+        var showDeleteGroupMember = function(){
+            
+             $("#deleteSubMemberData").kendoListView({
+  		    template: kendo.template($("#sub-Member-Delete-template").html()),    		
+     		 dataSource: groupMemberData 
+		     });
+        }
         
         var manageGroup =function(){
             app.MenuPage=false;	
@@ -561,14 +568,25 @@ app.subGroupDetail = (function () {
 								//kendo.bind($('#userDetailTemplate'), activitiesDataSource);
                            }                                                                                                              
        			 };
+        
+                  var backToPrePage = function(){
+                    app.mobileApp.navigate('views/subGroupDetailView.html');
+                  }
 
+                    var goToPrePageOrg = function(){
+                       app.mobileApp.navigate('views/groupListPage.html');
+   
+                    }
 	           
     	       return {
         	   init: init,
            	show: show,
                showAddMember:showAddMember,
-               initAddMember:initAddMember,    
+               initAddMember:initAddMember,
+               backToPrePage:backToPrePage,   
+               goToPrePageOrg:goToPrePageOrg,    
                manageGroup:manageGroup,    
+               showDeleteGroupMember:showDeleteGroupMember,    
                sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,

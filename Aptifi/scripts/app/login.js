@@ -84,8 +84,8 @@ app.Login = (function () {
              }
                          
             
-            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
-            //var device_id = localStorage.getItem("deviceTokenID");            
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
+            var device_id = localStorage.getItem("deviceTokenID");            
             console.log(device_id);            
             username = $("#loginUsername").val();
         //    console.log(username);
@@ -97,10 +97,9 @@ app.Login = (function () {
 			} else {         
               
                 $("#progress").show();
-
+                document.getElementById('selectionDiv').style.pointerEvents = 'none';
                  //app.mobileApp.pane.loader.show();                
                  //app.mobileApp.pane.loader.hide();           
-                
        		  console.log(username+"||"+device_id+"||"+device_type);
                 
                  localStorage.setItem("username",username); 
@@ -135,6 +134,9 @@ app.Login = (function () {
                }
              
               $("#progress").hide();
+
+               document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+ 
                
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
@@ -155,17 +157,23 @@ app.Login = (function () {
                           //console.log('reg');
 							//app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
+                                                     document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+
                             app.userPosition=false;
  				           app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
                       }else if(loginData.status[0].Msg==='Create profile'){
                             //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
+                                                     document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+
                             app.userPosition=false;
                             var accountId=loginData.status[0].AccountID;
  				           app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
                       }else if(loginData.status[0].Msg==='Authentication Required'){
                              //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
+                                                     document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+
                                 clickforRegenerateCode();   
                       }else if(loginData.status[0].Msg==='Success'){
                           //console.log('reg');
@@ -209,6 +217,8 @@ app.Login = (function () {
                       }else{
                           //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
+                                                     document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+
                           app.showAlert(loginData.status[0].Msg,"Notification");
                       }                            
                 });
@@ -481,8 +491,9 @@ app.Login = (function () {
        var goToHomePage = function(){
                //app.mobileApp.pane.loader.hide();
                $("#progress").hide();
-               $("#progressRandomCode").hide();
-                             
+               document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+
+               $("#progressRandomCode").hide();                             
                localStorage.setItem("ACCOUNT_ID",account_Id);
 
                app.userPosition=false;	
@@ -599,6 +610,9 @@ app.Login = (function () {
         };
         
         var clickforRegenerateCode = function(){
+           
+          $(".km-scroll-container").css("-webkit-transform", "");
+  
           $("#regenerateDiv").show();
           $("#validationRow").hide(); 
           $("#userRegMobNum").html('+91'+ username);    
@@ -612,6 +626,9 @@ app.Login = (function () {
         
         
         var cancelButtonRC = function(){
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+ 
            $("#regenerateDiv").hide();
            $("#validationRow").hide(); 
            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
@@ -626,6 +643,9 @@ app.Login = (function () {
         
         
         var clickforValificationCode = function(){
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+ 
             $("#regenerateDiv").hide();
 			$("#validationRow").show();
             $("#regDoneButton").hide();
@@ -645,7 +665,8 @@ app.Login = (function () {
                       console.log("-----Verification code--" + varifiCode);
 
             
-          var dataSourceValidation = new kendo.data.DataSource({
+
+            var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
                    //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
@@ -694,6 +715,10 @@ app.Login = (function () {
         var doneVerification = function(){
              //varifiCode='123456';
             
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
+            
 			var validationCodeId = $("#validationCodeId").val();
                 if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
                       app.showAlert("Please Enter Verification Code","Notification");
@@ -710,8 +735,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}

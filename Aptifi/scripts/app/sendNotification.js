@@ -139,7 +139,7 @@ app.sendNotification = (function () {
          
          
          var showLiveData = function(){
-                console.log('Hello');
+                //console.log('Hello');
                 console.log(groupDataShowOffline);
                 
              var organisationListDataSource = new kendo.data.DataSource({
@@ -289,11 +289,14 @@ app.sendNotification = (function () {
           }else if(notificationValue===''){
             app.showAlert('Please select Notification Message','Validation Error');           
           }else{ 
-          $("#progressSendNotification").show();
+
+              $("#progressSendNotification").show();
 
               //var url = "http://54.85.208.215/webservice/notification/sendNotification";
               
              if(dataToSend!==undefined && dataToSend!=="undefined"&& dataToSend!==''){ 
+                 
+                 //alert("1");
                  
                  if (dataToSend.substring(0,21)==="content://com.android") {
                   photo_split=dataToSend.split("%3A");
@@ -312,8 +315,8 @@ app.sendNotification = (function () {
                         options.fileKey = "attached";
                         options.fileName = dataToSend.substr(dataToSend.lastIndexOf('/')+1);
               
-              console.log("-------------------------------------------");
-              console.log(options.fileName);
+                        console.log("-------------------------------------------");
+                        console.log(options.fileName);
               
                         options.mimeType = "image/jpeg";
                         options.params = params;
@@ -324,26 +327,27 @@ app.sendNotification = (function () {
                         var ft = new FileTransfer();
 
                    
-                  /* var deviceName = app.devicePlatform();             
-                    if(deviceName==='Android'){
-                          console.log("upload file from Android");
-                          window.resolveLocalFileSystemURL(dataToSend, function(fileEntry) {
-                               fileEntry.file(function(fileObj) {
-                                  var fileName;
-                                   fileName = fileObj.fullPath;
-                                     console.log("-------------------------------------------");
+                  
+                  
+                 /* 
+                 var deviceName = app.devicePlatform();             
+                      if(deviceName==='Android'){
+                           console.log("upload file from Android");
+                           window.resolveLocalFileSystemURL(dataToSend, function(fileEntry) {
+                                fileEntry.file(function(fileObj) {
+                                   var fileName;
+                                    fileName = fileObj.fullPath;
+                                      console.log("-------------------------------------------");
                                                  console.log(fileName);
-
                                   options.fileName = fileName.substr(fileName.lastIndexOf('/') + 1);
-                                               
-                                  ft.upload(fileName,encodeURI("http://54.85.208.215/webservice/notification/sendNotification"), win, fail, options, true);
-                               });
-                          });
-                    } else {
-                                  console.log("upload file from other device");
-                                  ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options, true);
-                    }
-              */
+                                   ft.upload(fileName,encodeURI("http://54.85.208.215/webservice/notification/sendNotification"), win, fail, options, true);
+                                });
+                           });
+                     } else {
+                                   console.log("upload file from other device");
+                                   ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options, true);
+                     }
+                  */
                    
                /*window.resolveLocalFileSystemURI(dataToSend
                    , function(entry){
@@ -357,12 +361,12 @@ app.sendNotification = (function () {
                        }); 
                   */ 
 
-               ft.upload(dataToSend, "http://54.85.208.215/webservice/notification/sendNotification", win, fail, options , true);
+               ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options , true);
                   
 
              }else{
  
-                 var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
+              var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow}
                             
              var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
@@ -403,7 +407,9 @@ app.sendNotification = (function () {
                                       var largeImage = document.getElementById('largeImage');
                                       largeImage.src ='';
                                   $("#progressSendNotification").hide();
-                             app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+                             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+                             app.mobileApp.navigate('#view-all-activities-admin'); 
+
 
                  
            }               
@@ -430,7 +436,10 @@ app.sendNotification = (function () {
                                    var largeImage = document.getElementById('largeImage');
                                    largeImage.src ='';
                                    $("#progressSendNotification").hide();
-                                   app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+
+                                   app.mobileApp.navigate('#view-all-activities-admin'); 
+
+                                   //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
 
 
 
@@ -471,14 +480,17 @@ app.sendNotification = (function () {
                                    var largeImage = document.getElementById('largeImage');
                                    largeImage.src ='';
                                    $("#progressSendNotification").hide();
-                                   app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
+
+                                     app.mobileApp.navigate('#view-all-activities-admin');
+
+                                   //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
          }
          
          
          function fail(error) {
-            console.log("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+             console.log("An error has occurred: Code = " + error.code);
+             console.log("upload error source " + error.source);
+             console.log("upload error target " + error.target);
 
              $("#progressSendNotification").hide();
  

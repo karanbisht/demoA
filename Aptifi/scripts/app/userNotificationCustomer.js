@@ -154,7 +154,6 @@ app.replyedCustomer = (function () {
     	    $("#reply-customer-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#replyCustomerTemplate").html()),
-                pullToRefresh: true,
                 schema: {
            		model:  UserModel
 				}		

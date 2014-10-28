@@ -60,7 +60,10 @@ app.adminLogin = (function () {
                 app.showAlert("Please enter your Password.", "Validation Error");
             }else {           
                  //app.mobileApp.pane.loader.show();  	
-                    $("#progress1").show();     
+                    $("#progress1").show();
+                    document.getElementById('OrgLogin').style.pointerEvents = 'none';
+
+                
              var jsonDataLogin = {"username":usernameMob ,"password":password}       
              var dataSourceLogin = new kendo.data.DataSource({
                transport: {
@@ -82,6 +85,9 @@ app.adminLogin = (function () {
                console.log(JSON.stringify(e));
                //app.mobileApp.pane.loader.hide();
                 $("#progress1").hide();
+
+                document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
                    if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                       }else{
@@ -112,6 +118,9 @@ app.adminLogin = (function () {
                            //app.mobileApp.pane.loader.hide();
                                        $("#progress1").hide();
 
+                         document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
+                       
                           app.showAlert(loginData.status[0].Msg,"Notification");
 
                    }
@@ -191,6 +200,9 @@ app.adminLogin = (function () {
                 },
 	            error: function (e) {
                   $("#progress1").hide();  
+
+                     document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+    
     	           console.log(e);
                                      if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
@@ -312,6 +324,9 @@ app.adminLogin = (function () {
         	           console.log(e);
                                       $("#progress1").hide();  
 
+
+                                      document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
                                        if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                       }else{
@@ -427,7 +442,10 @@ app.adminLogin = (function () {
     	               //apps.hideLoading();
         	           console.log(e);
                    
-                                      $("#progress1").hide();  
+                                      $("#progress1").hide();
+
+                                       document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
 
                                        if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
@@ -483,6 +501,9 @@ app.adminLogin = (function () {
       var goToAdminDashboard = function(){
              //app.mobileApp.pane.loader.hide();
               $("#progress1").hide();
+
+              document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
               app.userPosition=false;
               app.mobileApp.navigate('#view-all-activities-admin'); 
               //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 

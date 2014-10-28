@@ -228,8 +228,8 @@ app.OragnisationList = (function () {
              
              //alert(account_Id);
              
-             var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-             //var device_id = localStorage.getItem("deviceTokenID"); 
+             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+             var device_id = localStorage.getItem("deviceTokenID"); 
              
 
              
@@ -342,7 +342,9 @@ app.OragnisationList = (function () {
                       
                       }else{
                           //app.mobileApp.pane.loader.hide();
-                          //$("#progress").hide();
+
+                          $("#progress2").show();
+
                           //app.showAlert(loginData.status[0].Msg,"Notification");
                       }                            
                 });
@@ -354,9 +356,7 @@ app.OragnisationList = (function () {
         var profileOrgData;
         
 		function saveProfileInfo(data) {
- 
             //alert("saveProgfile");
-
 			profileInfoData = data;            
             if(JoinedOrganisationYN===0){
               var db = app.getDb();
@@ -518,6 +518,8 @@ app.OragnisationList = (function () {
                 
              console.log('alertvalue');
              console.log(groupDataShow);
+            
+            $("#progress2").hide();
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShow
@@ -529,9 +531,11 @@ app.OragnisationList = (function () {
      		 dataSource: organisationListDataSource
             });
                 
+            $("#progress2").hide();
+            
               $('#organisation-listview').data('kendoMobileListView').refresh();
                 
-                $("#progress2").hide();
+                
                 
                 if(!app.checkConnection()){
                   if(!app.checkSimulator()){
@@ -1052,6 +1056,9 @@ app.OragnisationList = (function () {
             
 
             function updateLoginStatusSuccess() {
+
+                  localStorage.setItem("loginStatusCheck",0);
+
                   window.location.href = "index.html";
             }
 

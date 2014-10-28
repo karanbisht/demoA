@@ -25,11 +25,15 @@ var activityListViewModel = (function () {
                    var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
                    tabStrip.clear();
   
-                organisationID = e.view.params.organisationId;  
-                account_Id = e.view.params.account_Id;
-                orgName= e.view.params.orgName;
-                orgDesc= e.view.params.orgDesc;
+                //organisationID = e.view.params.organisationId;  
+                //account_Id = e.view.params.account_Id;
+                //orgName= e.view.params.orgName;
+                //orgDesc= e.view.params.orgDesc;
   
+            organisationID = localStorage.getItem("orgSelectAdmin");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            orgName = localStorage.getItem("orgNameAdmin");
+            orgDesc = localStorage.getItem("orgDescAdmin");
                   
                 console.log('Organisation ID'+organisationID);
                   
@@ -229,8 +233,7 @@ var activityListViewModel = (function () {
 
             var backToOrgDetail = function(){
                  groupDataShow=[];         
-                app.mobileApp.navigate('views/groupDetailView.html?organisationId='+organisationID+'&account_Id='+account_Id+'&orgName='+orgName+'&orgDesc='+orgDesc);                
- 
+                app.mobileApp.navigate('views/groupDetailView.html?organisationId='+organisationID+'&account_Id='+account_Id+'&orgName='+orgName+'&orgDesc='+orgDesc);                 
             }
     
     
@@ -239,6 +242,12 @@ var activityListViewModel = (function () {
              	   console.log(e.data.groupID);
                     console.log(e.data.orgID);//groupName//groupDesc
 					app.MenuPage=false;	
+             
+                            localStorage.setItem("groupIdAdmin",e.data.groupID);
+                            localStorage.setItem("groupNameAdmin",e.data.groupName);
+                            localStorage.setItem("groupDescAdmin",e.data.groupDesc);
+
+             
             		app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID +'&orgID='+e.data.orgID+'&groupName='+e.data.groupName+'&groupDesc='+e.data.groupDesc);
         };
                 
@@ -302,7 +311,7 @@ var activityListViewModel = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Group added successfully'){                                
+                               if(addGroupData.status[0].Msg==='Group added successfully'){         
 				        	        app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
                                     $("#newGroup").val('');     
             						$("#newGroupDesc").val('');
@@ -321,6 +330,7 @@ var activityListViewModel = (function () {
 
                 
         var deleteGroupFunc = function(){
+            
             //var orgId = localStorage.getItem("UserOrgID"); 
             //var data = $('input:checkbox:checked').val();
 			
@@ -362,8 +372,9 @@ var activityListViewModel = (function () {
               var loginDataView = dataSourceDeleteMember.data();
 				  $.each(loginDataView, function(i, deleteGroupData) {
                       console.log(deleteGroupData.status[0].Msg);           
-                               if(deleteGroupData.status[0].Msg==='Deleted Successfully'){                                
-				        	        app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
+                               if(deleteGroupData.status[0].Msg==='Deleted Successfully'){      
+				        	        
+                                   app.mobileApp.navigate('views/groupListPage.html?organisationId='+organisationID);
 
                                 if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Group Deleted Successfully');   
@@ -400,10 +411,14 @@ var activityListViewModel = (function () {
                 
           
          var showGroup = function(){
-              
+
+             console.log("---------------------GROUP DATA----------------");
+
+             console.log(groupDataShow);
+             
              $("#deleteGroupData").kendoListView({
   		    template: kendo.template($("#Group-Delete-template").html()),    		
-     		 dataSource: GroupDataSource        				 
+     		 dataSource: groupDataShow 
 		     });    
                     
          }; 

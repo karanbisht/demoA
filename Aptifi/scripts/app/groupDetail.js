@@ -22,12 +22,22 @@ app.groupDetail = (function () {
             app.MenuPage=false;
             app.mobileApp.pane.loader.hide();       
             
-            organisationID = e.view.params.organisationID;
-            account_Id = e.view.params.account_Id;
-            orgName= e.view.params.orgName;
-            orgDesc= e.view.params.orgDesc;
+            
+            //organisationID = e.view.params.organisationID;
+            //account_Id = e.view.params.account_Id;
+            //orgName= e.view.params.orgName;
+            //orgDesc= e.view.params.orgDesc;
             
             organisationID = localStorage.getItem("orgSelectAdmin");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            orgName = localStorage.getItem("orgNameAdmin");
+            orgDesc = localStorage.getItem("orgDescAdmin");
+
+
+            
+            //localStorage.setItem("orgNameAdmin",e.data.orgName);
+            //localStorage.setItem("orgDescAdmin",e.data.orgDesc);
+
 
             $("#adminOrgHeader").html(orgName);
          };
@@ -270,7 +280,7 @@ app.groupDetail = (function () {
      }
         
      var backToOrgAdminList = function(){       
-           app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id=' + account_Id);      
+           app.mobileApp.navigate('#view-all-activities-admin');      
      }   
         
 
@@ -358,6 +368,7 @@ app.groupDetail = (function () {
         var removeMemberFromGroup = function(){           
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');
+
             /*
             app.groupDetail.userData.filter({
 							                	field: 'Group',

@@ -269,18 +269,41 @@ var app = (function (win) {
          //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
          //tabstrip.clear();
          //tabstrip.switchTo("#organisationNotiList");        
-         app.mobileApp.navigate("#organisationNotiList");
-         
+         app.mobileApp.navigate("#organisationNotiList");         
      }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-userReply'){
          //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
          //tabstrip.clear();
          //tabstrip.switchTo("#organisationNotiList");        
-         app.mobileApp.navigate("#view-all-activities-admin");    
+         app.mobileApp.navigate("#view-all-activities-admin");          
+     }else if(app.mobileApp.view()['element']['0']['id']==='groupMemberShow'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate("views/groupDetailView.html");
+     }else if(app.mobileApp.view()['element']['0']['id']==='subGroupMemberShow'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate('views/subGroupDetailView.html');
+     }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-Group'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate('views/groupListPage.html');
+     }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupList'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate('views/groupDetailView.html');    
+     }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+           app.mobileApp.navigate('#view-all-activities-admin');
      }else {
         //navigator.app.backHistory();
          app.mobileApp.navigate("#:back");    
 		}
-
     };
         
             function updateLoginStatus(tx) {                
@@ -302,7 +325,11 @@ var app = (function (win) {
             
 
             function updateLoginStatusSuccess() {
-                  window.location.href = "index.html";
+
+                localStorage.setItem("loginStatusCheck",0);
+
+                //app.mobileApp.navigate('#welcome');
+                window.location.href = "index.html";
             }
 
             function updateLoginStatusError(err) {
@@ -331,7 +358,8 @@ var app = (function (win) {
               var account_Id = localStorage.getItem("ACCOUNT_ID");
               var userType = localStorage.getItem("USERTYPE");   
 
-                app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+              app.mobileApp.navigate('#organisationNotiList');
+              //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
             }
 
             function updateAdminLoginStatusError(err) {
@@ -887,6 +915,7 @@ var app = (function (win) {
           app.MenuPage=false;	
           console.log(account_Id);
           app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);
+          //app.mobileApp.navigate('#organisationNotiList');
     };
        
     var callUserLogin = function(){
@@ -894,13 +923,17 @@ var app = (function (win) {
            var userType = localStorage.getItem("USERTYPE");
           app.MenuPage=false;	
           console.log(account_Id);
-          app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+          //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+         app.mobileApp.navigate('#organisationNotiList');
+
     };
     
     var callAdminOrganisationList = function(){
           var account_Id = localStorage.getItem("ACCOUNT_ID");
           app.userPosition=false;
-          app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+          //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
+          app.mobileApp.navigate('#view-all-activities-admin'); 
+ 
     }; 
     
     var getPresentDateTime = function(){

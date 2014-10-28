@@ -75,6 +75,8 @@ app.adminOragnisationList = (function () {
              var showLiveData = function(){
                 //console.log('Hello');
                 console.log(groupDataShow);
+                $("#progressAdmin").hide();
+ 
                 
                  //alert('LiveShow');
                  
@@ -87,13 +89,11 @@ app.adminOragnisationList = (function () {
   		    template: kendo.template($("#adminOrganisationTemplate").html()),    		
      		 dataSource: organisationListDataSource
              });
-                               
+               
+              $("#progressAdmin").hide();
               $('#admin-org-listview').data('kendoMobileListView').refresh();
                 
-                          $("#progressAdmin").hide();
-
-
-                 if(!app.checkConnection()){
+               if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
@@ -111,7 +111,6 @@ app.adminOragnisationList = (function () {
         };
 
          var show = function(e){
-    
             //alert('show');
              
             localStorage.setItem("loginStatusCheck",2);
@@ -124,7 +123,7 @@ app.adminOragnisationList = (function () {
            $("#progressAdmin").show();             
                app.MenuPage=false;
                app.userPosition=false;
-               app.mobileApp.pane.loader.hide();
+               //app.mobileApp.pane.loader.hide();
                                      
             //account_Id = e.view.params.account_Id;
                account_Id = localStorage.getItem("ACCOUNT_ID");
@@ -165,6 +164,8 @@ app.adminOragnisationList = (function () {
                 },
 	            error: function (e) {
     	           console.log(e);
+
+                               $("#progressAdmin").hide();             
 
                     beforeShow();
                                      if(!app.checkSimulator()){
@@ -281,6 +282,8 @@ app.adminOragnisationList = (function () {
             //uid=' + e.data.uid
 			app.MenuPage=false;
             localStorage.setItem("orgSelectAdmin",organisationID);
+            localStorage.setItem("orgNameAdmin",e.data.orgName);
+            localStorage.setItem("orgDescAdmin",e.data.orgDesc);
 
             app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName+'&orgDesc='+e.data.orgDesc);
         };

@@ -1,9 +1,8 @@
-<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-init="app.subGroupDetail.init" data-show="app.subGroupDetail.show" >            
+<div data-role="view" id="view-all-activities-Group" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-init="app.subGroupDetail.init" data-show="app.subGroupDetail.show" >            
     <div data-role="header">           
              <div data-role="navbar">           
-                 <span id="adminGroupHeader"></span>
-                 
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a> 
+                 <span id="adminGroupHeader"></span>                 
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.subGroupDetail.goToPrePageOrg" >Back</a> 
                  <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">Home</a>    
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
     	     </div>
@@ -69,16 +68,15 @@
       <div data-role="header">        
            <div data-role="navbar">      
                Group Members
-                                <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a> 
-
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.subGroupDetail.backToPrePage" >Back</a> 
                <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-                                                    <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">Home</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">Home</a>    
 
     	   </div>
 	  </div>
 	
 	 <div>
-    	<ul id="subGroupMember-listview"  data-style="inset" data-role="listview" data-pull-to-refresh="true" data-template="subGroupMemberTemplate"></ul>
+    	<ul id="subGroupMember-listview"  data-style="inset" data-role="listview" data-template="subGroupMemberTemplate"></ul>
          <p id="no-Group-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	 </p>
@@ -121,7 +119,7 @@
 
 
 
-<div data-role="view" id="removeMemberFromSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail">
+<div data-role="view" id="removeMemberFromSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-show="app.subGroupDetail.showDeleteGroupMember">
           <div data-role="header">           
                <div data-role="navbar">           
                     Delete From Group
