@@ -67,12 +67,13 @@ app.userNotiComment = (function () {
         
 
         var show = function (e) {
-            title=''
-            message='';
-                       $(".km-scroll-container").css("-webkit-transform", "");
+              title=''
+              message='';
+              $(".km-scroll-container").css("-webkit-transform", "");
 
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
+
             listScroller = e.view.scroller;
             listScroller.reset();
            
@@ -115,18 +116,24 @@ app.userNotiComment = (function () {
             
             userCommentedNotification.fetch(function() {
                 var notificationData = userCommentedNotification.data();
-                console.log('notificationnnnnnnnn');
+                           console.log('notificationnnnnnnnn');
                			console.log(notificationData);
-                
+
+
                  $.each(notificationData, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                      
                       if(loginData.status[0].Msg==='Success'){
+
 					      attached = loginData.status[0].notificationList[0].attached;
                           comment_allow = loginData.status[0].notificationList[0].comment_allow;
                           message = loginData.status[0].notificationList[0].message;
                           pid = loginData.status[0].notificationList[0].pid;
                           title = loginData.status[0].notificationList[0].title;
+                          
+
+                          moreDataToLoad();            
+ 
                        }
 
                      $("#personNameTitle").html(title);
@@ -138,14 +145,11 @@ app.userNotiComment = (function () {
             
             });
             
-            
-          setTimeout(function(){
-              moreDataToLoad();            
-          },100);              
       };
         
         var moreDataToLoad = function(){
          
+            
              var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
             //console.log(message+"||"+title+'||'+userName);

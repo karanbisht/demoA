@@ -76,18 +76,20 @@ app.replyedCustomer = (function () {
                         var groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
 									console.log(groupValue);
-                                     
+
+                                    //alert(JSON.stringify(groupValue));           
+ 
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
 
-                   	             if(orgVal.Msg ==='No Customer in this group'){     
+                   	             if(orgVal.Msg ==='No Customer in this group'){   
                                      
                                         groupDataShow.push({
                                          user_fname: 'No Customer',
                                          user_lname: '',
                                          customerID:0,  
                                          user_type : '',
-                                         orgID:0,
+                                         //orgID:0,
                                          comment:'',
                                          notification_id:'',
                                          add_date:'',
@@ -95,15 +97,16 @@ app.replyedCustomer = (function () {
     	                               
                                         });                                      
 	                                }else if(orgVal.Msg==='Success'){
+
                                         console.log(orgVal.customerList.length);  
+                                        
                                         for(var i=0;i<orgVal.customerList.length;i++){
-                                          
                                             groupDataShow.push({
 		                                         user_fname: orgVal.customerList[i].user_fname,
                 		                         user_lname : orgVal.customerList[i].user_lname,
                         		                 customerID:orgVal.customerList[i].customerID,
                                 		         user_type:orgVal.customerList[i].user_type,
-                                                 orgID:orgVal.customerList[i].orgID,
+                                                 //orgID:orgVal.customerList[i].orgID,
                                                  comment:orgVal.customerList[i].comment,
                                                  notification_id:orgVal.customerList[i].notification_id,
                                                  add_date:orgVal.customerList[i].add_date,
@@ -117,6 +120,7 @@ app.replyedCustomer = (function () {
                                });
                        
 		                         console.log(groupDataShow);
+                                 //alert(groupDataShow);
                                  return groupDataShow;
 	               }
 
@@ -141,9 +145,7 @@ app.replyedCustomer = (function () {
   		          template: kendo.template($("#errorTemplate").html()),
                     dataSource: dataSource  
      		       });
-                    
            	}
-	        
     	    });         
          
             
@@ -151,7 +153,8 @@ app.replyedCustomer = (function () {
                 
  		   //});
 	       
-    	    $("#reply-customer-listview").kendoMobileListView({
+    	    
+             $("#reply-customer-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#replyCustomerTemplate").html()),
                 schema: {
@@ -165,6 +168,7 @@ app.replyedCustomer = (function () {
        
                      
        var customerSelected = function(e){
+            console.log(e);
             console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
             app.MenuPage=false;
