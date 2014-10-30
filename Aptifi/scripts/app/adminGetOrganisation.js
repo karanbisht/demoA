@@ -41,32 +41,44 @@ app.adminOragnisationList = (function () {
         };
             
         var groupDataShow=[];
-            
+        var totalCount=0;
+        var bagCount=0;
+        var ShowBagCount=0;    
         function getDataSuccess(tx, results) {                        
             groupDataShow=[];
             
-			var count = results.rows.length;                    			
+			var count = results.rows.length;                    		            
                if (count !== 0) {                
+                   
             	    for(var i =0 ; i<count ; i++){                
-                                       groupDataShow.push({
+                        totalCount=results.rows.item(i).count + totalCount;
+                        
+                        bagCount=results.rows.item(i).bagCount;
+                        //if(bagCount) 
+                        
+                                    groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
         		                                 orgDesc: results.rows.item(i).orgDesc,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
                                                  imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
-		                                         bagCount : 'C'					
+		                                         count:results.rows.item(i).count					
                                        });
                     }
-                }else{
+                   
+                   ShowBagCount=totalCount-bagCount;
+
+               }else{
+                       totalCount=0;
                                      groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organisation',
+                                         orgDesc: 'You are not a customer of any organization',
                                          organisationID:'0',
                                          org_logo:null,
                                          imageSource:null,
-                                         bagCount : 'D'    
+                                         count : 0    
     	                               });          
-                }
+               }
   
              }               
             
@@ -80,9 +92,9 @@ app.adminOragnisationList = (function () {
                 
                  //alert('LiveShow');
                  
-             var organisationListDataSource = new kendo.data.DataSource({
-                  data: groupDataShow
-              });           
+                 var organisationListDataSource = new kendo.data.DataSource({
+                      data: groupDataShow
+                  });           
 
                 
              $("#admin-org-listview").kendoMobileListView({
@@ -117,15 +129,22 @@ app.adminOragnisationList = (function () {
  
             var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#view-all-activities-admin");
-  
-            $(".km-scroll-container").css("-webkit-transform", "");
 
+
+             var badgeCount=2;
+             var tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");
+                  // Set the first tab badge value to 5
+                  tabstrip1.badge(1, badgeCount);
+                  // Get the current badge value on the first tab.
+                  console.log(tabstrip1.badge(1));
+  
+           $(".km-scroll-container").css("-webkit-transform", "");
            $("#progressAdmin").show();             
                app.MenuPage=false;
                app.userPosition=false;
                //app.mobileApp.pane.loader.hide();
                                      
-            //account_Id = e.view.params.account_Id;
+               //account_Id = e.view.params.account_Id;
                account_Id = localStorage.getItem("ACCOUNT_ID");
                //alert(account_Id);
              
@@ -149,17 +168,16 @@ app.adminOragnisationList = (function () {
                        
                                     $.each(data, function(i, groupValue) {
                                              console.log(groupValue);   
-                           
                                             if(groupValue[0].Msg ==='Not a customer to any organisation'){     
                                                    beforeShow();
-                                                }else if(groupValue[0].Msg==='Success'){
+                                            }else if(groupValue[0].Msg==='Success'){
                                                     console.log(groupValue[0].orgData.length);  
                                                     var adminOrgInformation = groupValue[0].orgData;
-                                                    saveAdminOrgInfo(adminOrgInformation); 
-                                                }
+                                                    var adminIncomMsg = groupValue[0].last;
+                                                    saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
+                                            }
                                      });
                     	return [data];
-
                    }                                                            
                 },
 	            error: function (e) {
@@ -194,19 +212,18 @@ app.adminOragnisationList = (function () {
  		   });
 
         };
-            
-            
                         
         var adminOrgProfileData;        
-        function saveAdminOrgInfo(data1) {
-            adminOrgProfileData = data1;            
+        var adminIncomMsgData;  
+            
+        function saveAdminOrgInfo(data1 , data2 ) {
+            adminOrgProfileData = data1;  
+            adminIncomMsgData = data2;
 			var db = app.getDb();
 			db.transaction(insertAdminOrgInfo, app.errorCB, beforeShow);
 		};
-        
-        
-            var userOrgIdArray=[];
 
+        var userOrgIdArray=[];
         
       function insertAdminOrgInfo(tx){
           var query = "DELETE FROM ADMIN_ORG";
@@ -220,8 +237,8 @@ app.adminOragnisationList = (function () {
          for(var i=0;i<dataLength;i++){       
                                  
             userOrgIdArray.push(adminOrgProfileData[i].organisationID);
-             
-            var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc) VALUES ("'
+
+             var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
 				+ adminOrgProfileData[i].organisationID
 				+ '","'
 				+ adminOrgProfileData[i].org_name
@@ -231,7 +248,9 @@ app.adminOragnisationList = (function () {
 				+ adminOrgProfileData[i].org_logo
                 + '","'
 				+ adminOrgProfileData[i].org_desc
-				+ '")';              
+                + '","'
+				+ adminIncomMsgData[i].total    
+                + '")';              
             app.insertQuery(tx, query);
          }                               
       }  

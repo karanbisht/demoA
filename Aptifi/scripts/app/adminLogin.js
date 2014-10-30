@@ -432,7 +432,8 @@ app.adminLogin = (function () {
                        
                              if(allData===datacheck){
                                          goToAdminDashboard();
-                             }                                       
+                             }    
+                       
                     	return [data]; 
                    }                                                            
               },
@@ -446,12 +447,11 @@ app.adminLogin = (function () {
 
                                        document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
-
-                                       if(!app.checkSimulator()){
+                                    if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-                                      }else{
+                                    }else{
                                       app.showAlert("Network problem . Please try again later","Notification");  
-                                       }
+                                    }
 
            	    }	        
      	      });         
@@ -460,8 +460,7 @@ app.adminLogin = (function () {
         }
         
        var orgNotiGroupDataVal;         
-       function saveOrgGroupNotification(data) {
-           
+       function saveOrgGroupNotification(data) {           
             orgNotiGroupDataVal = data;
             //alert('dataaaaaaaaa');
             console.log(orgNotiGroupDataVal);            
@@ -494,12 +493,14 @@ app.adminLogin = (function () {
 				+ orgNotiGroupDataVal[i].addDate
 				+ '")';              
                 app.insertQuery(tx, query);
-        }                                                 
+        }                                  
+          
       }
         
 
       var goToAdminDashboard = function(){
-             //app.mobileApp.pane.loader.hide();
+
+              //app.mobileApp.pane.loader.hide();
               $("#progress1").hide();
 
               document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 

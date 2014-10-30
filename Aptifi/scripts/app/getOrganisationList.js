@@ -165,7 +165,7 @@ app.OragnisationList = (function () {
             }else{
                                       groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organisation',
+                                         orgDesc: 'You are not a customer of any organization',
                                          organisationID:'0',
                                          imageSource:'',
                                          org_logo :null,  
@@ -229,13 +229,11 @@ app.OragnisationList = (function () {
              //}
 			
              
-             
              //alert(account_Id);
              
-             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-             var device_id = localStorage.getItem("deviceTokenID"); 
+             var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+             //var device_id = localStorage.getItem("deviceTokenID"); 
              
-
              
             var username = localStorage.getItem("username");
              
@@ -331,7 +329,7 @@ app.OragnisationList = (function () {
                               
                                  groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organisation',
+                                         orgDesc: 'You are not a customer of any organization',
                                          organisationID:'0',
                                          imageSource:'',
                                          org_logo :null,  
@@ -815,7 +813,7 @@ app.OragnisationList = (function () {
                          role:'',
                          imgData:null,   
                          imageSourceOrg:'',   
-                         orgDesc:'You are not a customer of any organisation',                      
+                         orgDesc:'You are not a customer of any organization',                      
                          joinDate:'Not Yet Joined'                   
                  });
             }
@@ -851,21 +849,38 @@ app.OragnisationList = (function () {
             var orgDesc=e.data.orgDesc;
             var role = e.data.role;
             var joinDate = e.data.joinDate;
+            var imageSourceOrg = e.data.imageSourceOrg; 
+            var imgData=e.data.imgData;   
             //alert(joinDate);
 			app.MenuPage=false;	
-            app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID +'&orgName='+orgName+'&orgDesc='+orgDesc+'&account_Id='+account_Id+'&role='+role+'&joinDate='+joinDate);
+            app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID +'&orgName='+orgName+'&orgDesc='+orgDesc+'&account_Id='+account_Id+'&role='+role+'&joinDate='+joinDate +'&imageSourceOrg='+imageSourceOrg+'&imgData='+imgData);
         };    
             
            
         var orgManageID;
             
         var showOrgInfoPage = function(e){
+            
+            
+          
+
            orgManageID = e.view.params.orgID;
            var orgName = e.view.params.orgName; 
            var orgDesc = e.view.params.orgDesc;
            var account_Id = e.view.params.account_Id;
            var role = e.view.params.role;                 
            var joinDate = e.view.params.joinDate;
+           var imageSourceOrg = e.view.params.imageSourceOrg; 
+           var imgData=e.view.params.imgData;   
+            
+            
+            
+             if(imgData===null ||imgData==='null' ){   
+                 $("#organisationLogo").attr('src', 'styles/images/habicon.png');
+               }else{
+                 $("#organisationLogo").attr('src', imageSourceOrg);
+             }    
+
             
             
             $("#orgDescList").css("background-color", "#ffffff");
@@ -884,12 +899,14 @@ app.OragnisationList = (function () {
             }else{
                 $("#manageOrgFooter").hide();
             }
+   
+            joinDate = app.formatDate(joinDate);
             
            $("#orgJoinData").html(joinDate); 
            $("#navBarOrgHeader").html(orgName);        
            $("#OrgDescData").html(orgDesc); 
-                   
    
+            
             if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -900,7 +917,23 @@ app.OragnisationList = (function () {
         }    
         
         
-         var unsubscribeOrg = function(){                         
+        var editProfilePage = function(){        
+            app.MenuPage=false;	
+            app.mobileApp.navigate('views/editProfile.html');       
+        }
+        
+        
+        var editProfileShow = function(){
+    
+            $("#editFirstName").val(fname);
+            $("#editLastName").val(lname);
+            $("#editEmail").val(email);
+            $("#editMobile").val(mobile);
+            
+        }
+        
+        
+        var unsubscribeOrg = function(){                         
              
            var delOrgfromServerDB = new kendo.data.DataSource({
             transport: {
@@ -932,7 +965,7 @@ app.OragnisationList = (function () {
     	    });         
              
            delOrgfromServerDB.read();  
-         }
+        }
             
             
             
@@ -988,20 +1021,25 @@ app.OragnisationList = (function () {
 				app.selectQuery(tx, query, orgDataSuccess);
 			}
 
-
+	                var fname;
+	        		var lname;
+		        	var email;
+		        	var mobile;
+        
             function profileDataSuccess(tx, results) {
 				var count = results.rows.length;
-			if (count !== 0) {
-			var fname = results.rows.item(0).first_name;
-			var lname = results.rows.item(0).last_name;
-			var email = results.rows.item(0).email;
-			var mobile = results.rows.item(0).mobile;
+		    	if (count !== 0) {
+			        fname = results.rows.item(0).first_name;
+	        		lname = results.rows.item(0).last_name;
+		        	email = results.rows.item(0).email;
+		        	mobile = results.rows.item(0).mobile;
         
-            $("#userEmailId").html(email); 
-            $("#userMobileNo").html(mobile);
-            $("#userlname").html(lname);
-            $("#userfname").html(fname); 
-		}
+                    
+                    $("#userEmailId").html(email); 
+                    $("#userMobileNo").html(mobile);
+                    $("#userlname").html(lname);
+                    $("#userfname").html(fname); 
+		        }
 			}
             
 	function orgDataSuccess(tx, results) {    
@@ -1160,6 +1198,8 @@ app.OragnisationList = (function () {
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,
             unsubscribeOrg:unsubscribeOrg,
+            editProfilePage:editProfilePage,
+            editProfileShow:editProfileShow,
             logout: logout
         };
 

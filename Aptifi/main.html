@@ -240,7 +240,7 @@
         
    <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>     
  
-<!--data-after-show="app.OragnisationList.afterShow"-->
+       <!--data-after-show="app.OragnisationList.afterShow"-->
 
         <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show">
 	         <!--data-append-on-refresh="true"-->
@@ -290,7 +290,7 @@
         </div>
 
 
-	<div data-role="view" id="infoDiv" data-model="app.Activities">
+  	<div data-role="view" id="infoDiv" data-model="app.Activities">
 		<div data-role="header" style="border-bottom:2px solid #2D384C">
         	<div data-role="navbar">
             	Sakshay Web Technologies
@@ -316,8 +316,8 @@
 
 
 
-<div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
-    <div id="tabstrip-profile">
+  <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
+     <div id="tabstrip-profile">
       <ul data-role="listview" data-style="inset" data-type="group">
         <li>
             <ul>
@@ -341,27 +341,34 @@
         </li>
           
 	    </ul>   
-    </div>         
-</div>
+     </div>         
+    
+        <div data-role="footer">
+         	 <div id="editProfileFooter" data-role="tabstrip" data-selected-index="2">
+                <a id="" data-icon="compose" data-role="button" data-bind="click: editProfilePage" >Edit Profile</a>
+              </div>
+        </div>
+
+  </div>
 
 
 <style scoped>
     #tabstrip-profile h2 {
         display: inline-block;
         font-size: 1.1em;
-        margin: 1.5em 0 0 .7em;
+        margin: 1.1em 0 0 .7em;
     }
     #tabstrip-profile h2 span {
         display: block;
         clear: both;
-        font-size: 1.8em;
+        font-size: 1.3em;
         margin: .1em 0 0 0;
     }
     #tabstrip-profile img {
         width: 5em;
         height: 5em;
         float: left;
-        margin: 1em;
+        margin: .5em;
         border: 1px solid rgba(0,0,0,.2);
         -webkit-border-radius: 4em;
         border-radius: 4em;
@@ -428,7 +435,7 @@
 		</script>
 
 
-	<!-- Activities ListView Template -->
+   	<!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="orgTemplate"> 
     		
             <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
@@ -444,8 +451,8 @@
                      #console.log(imageSourceOrg)#
              
  	   	        <div class="user-avatar">
-                     <img src=${imageSourceOrg} />
-     	           <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
+                       <img src=${imageSourceOrg} />
+        	           <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->   
         		    </div>
                 #}#    
 	    		<div class="activity-content">
@@ -460,12 +467,10 @@
                    #orgDescVal = orgDesc;#  
                 #}#
                    
-                         <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
+                 <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
         		</div>
     		</div>
 		</script>
-
-
 
 		<script type="text/x-kendo-template" id="errorTemplate">    		
             <div class="cf" style="height:200px;">
@@ -474,18 +479,9 @@
                 </div>
 		    </div>
 		</script>
-
-        
-        
-        
         
         
         <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
-        
-        
-        
-        
-        
         
         
         <div data-role="layout" data-id="mobile-tabstrip-admin">
@@ -734,9 +730,6 @@
             #}#    
              <div class="activity-content" >
        		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
-            		<!--#if(bagCount!=='D'){#
-						<div class="divBagVal"></div>            
-            		#}#--> 
             
                   #if(orgDesc.length > 80){#
                     #orgDescVal = orgDesc.substr(0, 80) + '..';#
