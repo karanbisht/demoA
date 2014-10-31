@@ -16,9 +16,9 @@ app.adminOragnisationList = (function () {
             var userEmail;
             var userOrgName;
             var userGropuName;   
+            var tabstrip1;
 
         var organisationViewModel = (function () {
-
             
         var beforeShow=function(){
            var db = app.getDb();
@@ -43,8 +43,12 @@ app.adminOragnisationList = (function () {
         var groupDataShow=[];
         var totalCount=0;
         var bagCount=0;
+        var bagCount1=0;
+
+            
         var ShowBagCount=0;    
-        function getDataSuccess(tx, results) {                        
+        
+            function getDataSuccess(tx, results) {                        
             groupDataShow=[];
             
 			var count = results.rows.length;                    		            
@@ -53,8 +57,13 @@ app.adminOragnisationList = (function () {
             	    for(var i =0 ; i<count ; i++){                
                         totalCount=results.rows.item(i).count + totalCount;
                         
-                        bagCount=results.rows.item(i).bagCount;
-                        //if(bagCount) 
+                        bagCount1=results.rows.item(i).bagCount;                        
+                        if(bagCount1===null || bagCount1==="null"){
+                            bagCount1=0;
+                        }
+                        
+                        bagCount=bagCount1+bagCount;
+                        
                         
                                     groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
@@ -67,6 +76,8 @@ app.adminOragnisationList = (function () {
                     }
                    
                    ShowBagCount=totalCount-bagCount;
+                   tabstrip1.badge(1, ShowBagCount);
+
 
                }else{
                        totalCount=0;
@@ -105,6 +116,7 @@ app.adminOragnisationList = (function () {
               $("#progressAdmin").hide();
               $('#admin-org-listview').data('kendoMobileListView').refresh();
                 
+               
                if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -130,13 +142,15 @@ app.adminOragnisationList = (function () {
             var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#view-all-activities-admin");
 
+            tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");
+ 
+            groupDataShow=[];
+            joinOrgID=[]; 
+             
+                 totalCount=0;
+                 bagCount=0;
+                 bagCount1=0;
 
-             var badgeCount=2;
-             var tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");
-                  // Set the first tab badge value to 5
-                  tabstrip1.badge(1, badgeCount);
-                  // Get the current badge value on the first tab.
-                  console.log(tabstrip1.badge(1));
   
            $(".km-scroll-container").css("-webkit-transform", "");
            $("#progressAdmin").show();             
@@ -167,6 +181,7 @@ app.adminOragnisationList = (function () {
                	    //return [data];
                        
                                     $.each(data, function(i, groupValue) {
+                                        //alert("IN");
                                              console.log(groupValue);   
                                             if(groupValue[0].Msg ==='Not a customer to any organisation'){     
                                                    beforeShow();
@@ -177,7 +192,7 @@ app.adminOragnisationList = (function () {
                                                     saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
                                             }
                                      });
-                    	return [data];
+                                	return [data];
                    }                                                            
                 },
 	            error: function (e) {
@@ -219,24 +234,69 @@ app.adminOragnisationList = (function () {
         function saveAdminOrgInfo(data1 , data2 ) {
             adminOrgProfileData = data1;  
             adminIncomMsgData = data2;
-			var db = app.getDb();
-			db.transaction(insertAdminOrgInfo, app.errorCB, beforeShow);
+
+            var db = app.getDb();
+			db.transaction(getAdminOrgIdFmDB, app.errorCB, nowGetLiveData);        
+
 		};
 
         var userOrgIdArray=[];
+
+        var joinOrgID = [];
+            
         
+        var getAdminOrgIdFmDB = function(tx){
+            var query = 'SELECT org_id FROM ADMIN_ORG';
+			app.selectQuery(tx, query, getOrgDataSuccess);   
+        } 
+        
+        
+       function getOrgDataSuccess(tx, results){
+           joinOrgID = [];
+                  var count = results.rows.length;
+		          if (count !== 0) {
+                     for(var i=0;i<count;i++){
+                           joinOrgID.push(results.rows.item(i).org_id);
+			         }
+                  }
+       }
+
+            
+       var nowGetLiveData = function(){       
+			var db = app.getDb();
+			db.transaction(insertAdminOrgInfo, app.errorCB, beforeShow);
+       } 
+     
+
       function insertAdminOrgInfo(tx){
-          var query = "DELETE FROM ADMIN_ORG";
-	  	app.deleteQuery(tx, query);
+          //var query = "DELETE FROM ADMIN_ORG";
+	  	//app.deleteQuery(tx, query);
+
           console.log(adminOrgProfileData);
 
           var dataLength = adminOrgProfileData.length;
           console.log(dataLength);
        
 
+          //alert(dataLength);
+          console.log("------------------DATA---------------------");
+          console.log(joinOrgID);
+          
          for(var i=0;i<dataLength;i++){       
                                  
-            userOrgIdArray.push(adminOrgProfileData[i].organisationID);
+           userOrgIdArray.push(adminOrgProfileData[i].organisationID);
+             
+             console.log(adminOrgProfileData[i].organisationID);
+             adminOrgProfileData[i].organisationID=parseInt(adminOrgProfileData[i].organisationID);
+
+          var pos = $.inArray(adminOrgProfileData[i].organisationID, joinOrgID);           
+		  
+             //alert(adminOrgProfileData[i].organisationID);
+             //alert(JSON.stringify(joinOrgID));
+         
+         if (pos === -1) {              
+             //alert("insert");
+             joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
              var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
 				+ adminOrgProfileData[i].organisationID
@@ -252,10 +312,19 @@ app.adminOragnisationList = (function () {
 				+ adminIncomMsgData[i].total    
                 + '")';              
             app.insertQuery(tx, query);
-         }                               
-      }  
+                                        
+         }else{        
+              // alert("update");
+              // alert(adminOrgProfileData[i].org_name);
+               
+                    var queryUpdate = "UPDATE ADMIN_ORG SET org_name='"+adminOrgProfileData[i].org_name+"',orgDesc='"+adminOrgProfileData[i].org_desc+"',imageSource='"+adminOrgProfileData[i].org_logo+"',count='"+adminIncomMsgData[i].total+"' where org_id="+adminOrgProfileData[i].organisationID;
+                    app.updateQuery(tx, queryUpdate);                         
+               
+         }                      
+                               
+       }  
 
-              
+     }         
         /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
 			app.selectQuery(tx, query, offlineTestQuerySuccess);

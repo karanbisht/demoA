@@ -6,6 +6,7 @@ app.replyedCustomer = (function () {
     	var message;
         var title;
         var org_id;
+        var userCount;
         var notiId;
         var comment_allow;
 		var attachedimg;
@@ -19,13 +20,16 @@ app.replyedCustomer = (function () {
                   app.MenuPage=false;
                   //message = e.view.params.message;
                   //title = e.view.params.title;
+         
                   org_id = e.view.params.org_id;
+                  userCount = e.view.params.count;
+          
                   //notiId = e.view.params.notiId;
                   //comment_allow = e.view.params.comment_allow;
                   //attachedimg = e.view.params.attached;
           
                   //console.log(attachedimg);
-          
+                    
                      $(".km-scroll-container").css("-webkit-transform", "");
 
           
@@ -162,9 +166,20 @@ app.replyedCustomer = (function () {
 				}		
 			});
 
-      
+
+          
+                     var db = app.getDb();
+		             db.transaction(updateBagCount, app.errorCB, app.successCB);   
+
       };
        
+       
+       var updateBagCount = function(tx){
+           //alert('update');
+                    var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='"+userCount+"' where org_id="+org_id;
+                    app.updateQuery(tx, queryUpdate);                         
+  
+       }
        
                      
        var customerSelected = function(e){

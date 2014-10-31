@@ -114,7 +114,7 @@ app.groupDetail = (function () {
                                      groupDataShow.push({
                                          mobile: '',
                                          first_name: '',
-                                         email:'No Customer in this Organisation',  
+                                         email:'No Customer in this Organization',  
                                          last_name : '',
                                          customerID:'0',
                                          account_id:'0',

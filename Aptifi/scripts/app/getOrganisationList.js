@@ -22,7 +22,7 @@ app.OragnisationList = (function () {
         
         };
                 
-        var getRoleDataOrg = function(tx){
+        /*var getRoleDataOrg = function(tx){
             	var query = "SELECT role FROM JOINED_ORG ";
 				app.selectQuery(tx, query, checkUserRole);
         };    
@@ -66,7 +66,7 @@ app.OragnisationList = (function () {
                  $("#goToAdmin").hide();
                  $("#moreOption").show();   
           }  
-        }
+        }*/
         
         
         var showMoreDBData = function(){
@@ -76,9 +76,16 @@ app.OragnisationList = (function () {
         
                                 
         var getDataOrg = function(tx){
-            	var query = "SELECT * FROM JOINED_ORG where role='C'";
+            	var query = "SELECT * FROM JOINED_ORG";
 				app.selectQuery(tx, query, getDataSuccess);
-        };    
+            
+                //var query = "SELECT * FROM JOINED_ORG_ADMIN";
+				//app.selectQuery(tx, query, getAdminDataSuccess);
+
+        }; 
+        
+        
+        
             
          var getDataOrgDB=[];
          var getDataCountDB=[];
@@ -86,6 +93,95 @@ app.OragnisationList = (function () {
          var lastMessageShow;
         
         function getDataSuccess(tx, results) {                        
+            console.log('before Show');
+            console.log(results.rows);
+            $('#organisation-listview').data('kendoMobileListView').refresh(); 
+            getDataOrgDB=[];
+            getDataCountDB=[];
+            groupDataShow=[];
+            
+			var count = results.rows.length;                    
+            console.log("DBCount"+count);
+			
+            if (count !== 0) {                
+                 var tempArray=[];
+
+                for(var i =0 ; i<count ; i++){                       
+
+                    console.log('functionRun'+i);					
+                    org_id_DB = results.rows.item(i).org_id;                  
+                    console.log(org_id_DB);
+                    
+                    //var db = app.getDb();
+        		    //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
+
+                    var bagCount = results.rows.item(i).bagCount;                   
+                    var countVal = results.rows.item(i).count;                   
+                    var countValue;
+                    
+                    if(bagCount===null || bagCount==="null"){
+                            bagCount=0;
+                    }
+                    countValue=count-bagCount;
+                    
+                    getDataOrgDB.push(org_id_DB);
+                    getDataCountDB.push(bagCount);
+                    
+                    //alert(lastMessageShow);
+                    var bagCountValue;
+
+                    var lastNotifi;                    
+                                if(results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null'){
+                                     lastNotifi='';   
+                                }else{
+                                    lastNotifi=results.rows.item(i).lastNoti;
+                                }
+
+                    //alert(countValue);
+                    //alert(bagCountValue);
+                                   countValue=countVal-bagCount;
+                                   if(countValue < 0){
+                                            countValue=0;
+                                    }
+                    
+                    //alert('hello');
+                                    var pos = $.inArray(results.rows.item(i).org_id, tempArray);
+                                    console.log(pos);
+ 					               if (pos === -1) {
+                                     tempArray.push(results.rows.item(i).org_id);                                     
+                                        //alert(tempArray);
+                                       groupDataShow.push({
+												 orgName: results.rows.item(i).org_name,
+        		                                 orgDesc: lastNotifi,
+                                                 organisationID:results.rows.item(i).org_id,
+                                                 org_logo:results.rows.item(i).imageSource,
+                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+		                                         bagCount : bagCountValue,
+                                                 countData:countValue,
+                                                 count : countVal
+                                      });
+                                    }
+        	    }    
+            }else{
+                                      groupDataShow.push({
+                                         orgName: 'Welcome to Aptifi',
+                                         orgDesc: 'You are not a customer of any organization',
+                                         organisationID:'0',
+                                         imageSource:'',
+                                         org_logo :null,  
+                                         bagCount : 0 ,
+                                         countData:0,
+                                         count : 0
+    	                               });      
+            }
+         };       
+
+        
+        
+        
+        
+        
+         function getAdminDataSuccess(tx, results) {                        
             console.log('before Show');
             console.log(results.rows);
             $('#organisation-listview').data('kendoMobileListView').refresh(); 
@@ -130,12 +226,12 @@ app.OragnisationList = (function () {
                                     }
                     
 
-                            var lastNotifi;
-                            if(results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null'){
-                                 lastNotifi='';   
-                            }else{
-                                lastNotifi=results.rows.item(i).lastNoti;
-                            }
+                                var lastNotifi;
+                                if(results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null'){
+                                     lastNotifi='';   
+                                }else{
+                                    lastNotifi=results.rows.item(i).lastNoti;
+                                }
 
                     //alert(countValue);
                     //alert(bagCountValue);
@@ -174,13 +270,16 @@ app.OragnisationList = (function () {
                                          count : 0
     	                               });      
             }
-         };       
-
+         };
+        
+        
+        
+        
+        
                         
 
          var show = function(e){       
              
-                                       
              $("#progress2").show();
              $('#organisation-listview').data('kendoMobileListView').refresh();
             
@@ -231,23 +330,24 @@ app.OragnisationList = (function () {
              
              //alert(account_Id);
              
-             var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
              //var device_id = localStorage.getItem("deviceTokenID"); 
              
              
             var username = localStorage.getItem("username");
              
-            var device_type = localStorage.getItem("DEVICE_TYPE");  
+            //var device_type = localStorage.getItem("DEVICE_TYPE");  
              
                    
-          var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
+          //var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
               var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
-                   type:"POST",
-                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                   data: jsonDataLogin
+                   //url: "http://54.85.208.215/webservice/customer/login",
+                   url: "http://54.85.208.215/webservice/organisation/customerOrg/"+account_Id,
+                    type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   //data: jsonDataLogin
            	}
            },
            schema: {
@@ -289,38 +389,36 @@ app.OragnisationList = (function () {
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='User not registered'){
-                          //console.log('reg');
-							//app.mobileApp.pane.loader.hide();
-                            //$("#progress").hide();
-                            //app.userPosition=false;
- 				           //app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
-                      }else if(loginData.status[0].Msg==='Create profile'){
-                            //app.mobileApp.pane.loader.hide();
-                            //$("#progress").hide();
-                            //app.userPosition=false;
-                            //var accountId=loginData.status[0].AccountID;
- 				           //app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
-                      }else if(loginData.status[0].Msg==='Authentication Required'){
-                             //app.mobileApp.pane.loader.hide();
-                             //$("#progress").hide();
-                             //clickforRegenerateCode();   
+                      if(loginData.status[0].Msg==='Not a customer to any organisation'){
+                         
+                          loginSuccessCB();
+                          
                       }else if(loginData.status[0].Msg==='Success'){
+                          
                           //console.log('reg');
                           //account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
                           // console.log(loginData.status[0].JoinedOrg.role.length);
 
-                          if(loginData.status[0].JoinedOrg.length!==0){
+                          if(loginData.status[0].orgData.length!==0){
 
-                              var roleLength = loginData.status[0].JoinedOrg.role.length;
+                              //var roleLength = loginData.status[0].JoinedOrg.role.length;
 
                               JoinedOrganisationYN = 1;
 
-                              for(var i=0;i<roleLength;i++){
-                                 userTypeAtShow.push(loginData.status[0].JoinedOrg.role[i]); 
-                              }
+                              //for(var i=0;i<roleLength;i++){
+                                 //userTypeAtShow.push(loginData.status[0].JoinedOrg.role[i]); 
+                              //}
+
+                              
+                             UserOrgInformation = loginData.status[0].orgData;
+                             var userOrgLastNoti = loginData.status[0].last;
+                             
+                             saveOrgInfo(UserOrgInformation,userOrgLastNoti);
+
                           }else{
+
+
                                 JoinedOrganisationYN = 0;
                                 groupDataShow=[]; 
 
@@ -345,14 +443,10 @@ app.OragnisationList = (function () {
                           
                            //alert(userType);
                           
-                          UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                          //UserProfileInformation = loginData.status[0].ProfileInfo[0];
                           
                           //console.log('checking for User Date');
 
-                          if(loginData.status[0].JoinedOrg.length!==0){
-                              UserOrgInformation = loginData.status[0].JoinedOrg;
-                              saveOrgInfo(UserOrgInformation);
-                          }    
                           //console.log("1");
                           //console.log(UserOrgInformation);
                             //                        console.log("2");
@@ -361,12 +455,12 @@ app.OragnisationList = (function () {
                           
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
-                          saveProfileInfo(UserProfileInformation);
+                          //saveProfileInfo(UserProfileInformation);
 
                       }else{
                           //app.mobileApp.pane.loader.hide();
 
-                          $("#progress2").show();
+                          $("#progress2").hide();
 
                           //app.showAlert(loginData.status[0].Msg,"Notification");
                       }                            
@@ -379,20 +473,19 @@ app.OragnisationList = (function () {
         
         
          function delOrgDataDB(tx) {
-                
                 var query = "DELETE FROM JOINED_ORG";
         	    app.deleteQuery(tx, query);
 
             	var query = "DELETE FROM ORG_NOTIFICATION";
 	            app.deleteQuery(tx, query);
-             
          }   
 
                           
         var profileInfoData;
+        var profileAdminOrgData;
         var profileOrgData;
         
-		function saveProfileInfo(data) {
+		/*function saveProfileInfo(data) {
             //alert("saveProgfile");
 			profileInfoData = data;            
             if(JoinedOrganisationYN===0){
@@ -402,53 +495,70 @@ app.OragnisationList = (function () {
               var db = app.getDb();
 	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
             }
-		};
+		};*/
         
-        function saveOrgInfo(data1) {
-            profileOrgData = data1;            
+        function saveOrgInfo(data1,data2) {
+            profileOrgData = data1;
+            profileAdminOrgData=data2;
             var db = app.getDb();
 			db.transaction(getOrgIdFmDB, app.errorCB, nowGetLiveData);        
 		};
+
+        var joinOrgID = [];
+               
+        var joinOrgAdminID = [];
         
-        
-        var getOrgIdFmDB = function(tx){
+       var getOrgIdFmDB = function(tx){
             var query = 'SELECT org_id FROM JOINED_ORG';
 			app.selectQuery(tx, query, getOrgDataSuccess);   
-        } 
-        
-        var joinOrgID = [];
-        
+
+            var query = 'SELECT org_id FROM JOINED_ORG_ADMIN';
+			app.selectQuery(tx, query, getOrgAdminDataSuccess);   
+       } 
+                
        function getOrgDataSuccess(tx, results){
                   var count = results.rows.length;
-		          if (count !== 0) {
+                   if (count !== 0) {
                      for(var i=0;i<count;i++){
                            joinOrgID.push(results.rows.item(i).org_id);
 			         }
                   }
        }
+
         
+       function getOrgAdminDataSuccess(tx, results){
+                  var count = results.rows.length;
+		          if (count !== 0) {
+                     for(var i=0;i<count;i++){
+                           joinOrgAdminID.push(results.rows.item(i).org_id);
+			         }
+                  }
+       }
+ 
         
        var nowGetLiveData = function(){
         	var db = app.getDb();
 			db.transaction(insertOrgInfo, app.errorCB, loginSuccessCB);   
        } 
         
-      function insertProfileInfo(tx) {
+      /*function insertProfileInfo(tx) {
 		//var query = "DELETE FROM PROFILE_INFO";
         //app.deleteQuery(tx, query);          
         var query = "UPDATE PROFILE_INFO SET email='"+profileInfoData.email+"',first_name='"+profileInfoData.first_name+"',last_name='"+profileInfoData.last_name+"',mod_date='"+profileInfoData.mod_date+"' where account_id='" +profileInfoData.account_id +"'";
         app.updateQuery(tx, query);
-       }
+       }*/
                
       var userOrgIdArray=[];
       //var userRoleArray=[];  
         
       function insertOrgInfo(tx){
-       var dataLength = profileOrgData.org_id.length;
+       console.log(profileOrgData);
+          
+       var dataLength = profileOrgData.length;
        //alert(dataLength);
           
-       var query = "DELETE FROM JOINED_ORG";
-	   app.deleteQuery(tx, query); 
+       //var query = "DELETE FROM JOINED_ORG";
+	   //app.deleteQuery(tx, query); 
           
        // console.log(profileOrgData.org_id[0]);
        // console.log(profileOrgData.org_id[1]);
@@ -461,54 +571,194 @@ app.OragnisationList = (function () {
           joinOrgID.push(profileOrgData.org_id[x]);
        }*/
           
-        //alert(joinOrgID);
           
        for(var i=0;i<dataLength;i++){                             
  
-           if(profileOrgData.role[i]==='C'){
-               userOrgIdArray.push(profileOrgData.org_id[i]);
-           }
+           /*if(profileOrgData.role[i]==='C'){
+               userOrgIdArray.push(profileOrgData.organisationID[i]);
+           }*/
            
-           //alert(joinOrgID);
+           //alert(JSON.stringify(joinOrgID));
+           console.log(profileOrgData[i]); 
+           profileOrgData[i].organisationID=parseInt(profileOrgData[i].organisationID);
            
-           /*var pos = $.inArray(profileOrgData.org_id[i], joinOrgID);           
+          var pos = $.inArray(profileOrgData[i].organisationID, joinOrgID);           
 		   if (pos === -1) {
-    		   joinOrgID.push(profileOrgData.org_id[i]);*/      
-                //alert('New Data');               
-               var query ='INSERT INTO JOINED_ORG(org_id , org_name , role , imageSource , joinedDate , orgDesc) VALUES ("'
-				+ profileOrgData.org_id[i]
+    		   joinOrgID.push(profileOrgData[i].organisationID);     
+                              
+               //alert('New Data');               
+               var query ='INSERT INTO JOINED_ORG(org_id , org_name , imageSource , joinedDate , orgDesc ,lastNoti ,count) VALUES ("'
+				+ profileOrgData[i].organisationID
 				+ '","'
-				+ profileOrgData.org_name[i]
+				+ profileOrgData[i].org_name
 				+ '","'
-				+ profileOrgData.role[i]
-           	 + '","'
-				+ profileOrgData.org_logo[i]
+				+ profileOrgData[i].org_logo
                 + '","'
-				+ profileOrgData.joined_on[i]
+				+ profileOrgData[i].joinedON
                 + '","'
-				+ profileOrgData.org_desc[i]
+				+ profileOrgData[i].org_desc
+                + '","'
+				+ profileAdminOrgData[i].last_notification.message
+                + '","'
+				+ profileAdminOrgData[i].total
 				+ '")';              
                 app.insertQuery(tx, query);
            
-           /*}else{        
-               //alert("update");
-               //alert(profileOrgData.role[0]); 
-               setTimeout(function(){
-                   var queryUpdate = "UPDATE JOINED_ORG SET role='"+profileOrgData.role[i]+"', org_name='"+profileOrgData.org_name[i]+"',orgDesc='"+profileOrgData.org_desc[i]+"',imageSource='"+profileOrgData.org_logo[i]+"' where org_id='" +profileOrgData.org_id[i];
+           }else{        
+               
+                   //alert("update");
+                   //alert(profileOrgData.role[0]); 
+                   var queryUpdate = "UPDATE JOINED_ORG SET org_name='"+profileOrgData[i].org_name+"',orgDesc='"+profileOrgData[i].org_desc+"',imageSource='"+profileOrgData[i].org_logo+"',joinedDate='"+profileOrgData[i].joinedON+"' where org_id=" +profileOrgData[i].organisationID;
                    app.updateQuery(tx, queryUpdate);                         
-               },10);
-           }*/                      
+           }                      
         }                               
      }  
 
 
+
+        
        var loginSuccessCB = function(){
-          var db = app.getDb();
-          db.transaction(getLastNotification, app.errorCB, showFullData);                            
+
+           //alert('Admin');
+          //var db = app.getDb();
+			//db.transaction(insertAdminOrgInfo, app.errorCB, loginSuccessCB);   
+  
+          //var db = app.getDb();
+          //db.transaction(getLastNotification, app.errorCB, showFullData);                            
+           
+          
+           var organisationListDataSource = new kendo.data.DataSource({
+            transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
+                   type:"POST",
+                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+              	}
+              },
+       	 schema: {                                
+                 data: function(data)
+                   {	
+                       var datacheck=0;
+                       var allData=0;
+                       
+                       //console.log(data);
+               	    //return [data];
+                       
+                                    $.each(data, function(i, groupValue) {
+                                        //alert("IN");
+                                             console.log(groupValue);   
+                                            if(groupValue[0].Msg ==='No Orgnisation to manage'){     
+                            
+                                                      $("#moreOption").show();
+                                                      $("#goToAdmin").hide();
+    
+                                                   showMoreDBData();  
+                                            }else if(groupValue[0].Msg==='Success'){
+                                                    $("#moreOption").hide();
+                                                    $("#goToAdmin").show();
+  
+                                                    console.log(groupValue[0].orgData.length);  
+                                                    var adminOrgInformation = groupValue[0].orgData;
+                                                    var adminIncomMsg = groupValue[0].last;
+                                                    saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
+                                            }
+                                     });
+                                	return [data];
+                   }                                                            
+                },
+	            error: function (e) {
+    	           console.log(e);
+
+                                     showMoreDBData();  
+                                     if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                     }else{
+                                      app.showAlert("Network problem . Please try again later","Notification");  
+                                     }
+  
+            	}	        
+    	     });
+                        
+            organisationListDataSource.fetch(function() {
+
+            });
+
+ 
        }  
         
+        var adminOrgProfileData;        
+        var adminIncomMsgData;  
+            
+        function saveAdminOrgInfo(data1 , data2 ) {
+            adminOrgProfileData = data1;  
+            adminIncomMsgData = data2;
 
-        var getLastNotification = function(tx){
+        	var db = app.getDb();
+			db.transaction(insertAdminOrgInfo, app.errorCB, showMoreDBData);
+		};
+
+
+
+      function insertAdminOrgInfo(tx){          
+
+          //alert("insert Admin");
+          
+          console.log(adminOrgProfileData);
+
+          var dataLength = adminOrgProfileData.length;
+          console.log(dataLength);
+       
+
+          //alert(dataLength);
+          console.log("------------------DATA---------------------");
+          console.log(joinOrgAdminID);
+          
+         for(var i=0;i<dataLength;i++){       
+                                 
+           userOrgIdArray.push(adminOrgProfileData[i].organisationID);
+             
+             console.log(adminOrgProfileData[i].organisationID);
+             adminOrgProfileData[i].organisationID=parseInt(adminOrgProfileData[i].organisationID);
+
+          var pos = $.inArray(adminOrgProfileData[i].organisationID, joinOrgAdminID);           
+		  
+             //alert(adminOrgProfileData[i].organisationID);
+             //alert(JSON.stringify(joinOrgID));
+         
+         if (pos === -1) {              
+             //alert("insert");
+             joinOrgAdminID.push(adminOrgProfileData[i].organisationID);      
+
+             var query = 'INSERT INTO JOINED_ORG_ADMIN(org_id , org_name , joinedDate , imageSource ,orgDesc , count) VALUES ("'
+				+ adminOrgProfileData[i].organisationID
+				+ '","'
+				+ adminOrgProfileData[i].org_name
+				+ '","'
+				+ adminOrgProfileData[i].joinedOn
+           	 + '","'
+				+ adminOrgProfileData[i].org_logo
+                + '","'
+				+ adminOrgProfileData[i].org_desc
+                + '","'
+				+ adminIncomMsgData[i].total    
+                + '")';              
+            app.insertQuery(tx, query);
+                                        
+         }else{        
+              // alert("update");
+              // alert(adminOrgProfileData[i].org_name);
+               
+            var queryUpdate = "UPDATE JOINED_ORG_ADMIN SET org_name='"+adminOrgProfileData[i].org_name+"',orgDesc='"+adminOrgProfileData[i].org_desc+"',imageSource='"+adminOrgProfileData[i].org_logo+"',count='"+adminIncomMsgData[i].total+"' where org_id="+adminOrgProfileData[i].organisationID;
+            app.updateQuery(tx, queryUpdate);                         
+               
+         }                      
+                               
+        }  
+          
+      }  
+
+
+     /*   var getLastNotification = function(tx){
              console.log(userOrgIdArray);                    
              var dataLength = userOrgIdArray.length;      
              console.log(dataLength);
@@ -552,7 +802,7 @@ app.OragnisationList = (function () {
       var showFullData = function(){
           afterShow();  
       }  
-        
+        */
 
         var showLiveData = function(){
                 
@@ -624,7 +874,7 @@ app.OragnisationList = (function () {
             };
 
             
-        var afterShow = function(){
+        /*var afterShow = function(){
             
            console.log("showData");
             
@@ -635,7 +885,7 @@ app.OragnisationList = (function () {
            //$('#organisation-listview').data('kendoMobileListView').refresh();
            //var db = app.getDb();
 		   //db.transaction(insertOrgImage, app.errorCB, app.successCB);  
-        }    
+        }*/    
         
         /*
          var insertOrgImage = function(tx){
@@ -758,24 +1008,24 @@ app.OragnisationList = (function () {
         
 
         var orgShow = function(){
-
            $(".km-scroll-container").css("-webkit-transform", "");
  
            app.MenuPage=false;
 		   $("#organisation-listview1").html("");
            var showMore = localStorage.getItem("ShowMore");
-             if(showMore!==1){
+             
+            /*if(showMore!==1){
                $("#goToAdmin").hide();             
              }else{
                $("#moreOption").hide();  
-             }
+             }*/
                         
             var db = app.getDb();
 		    db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
         };                        
                      
         function getOrgInfoDB(tx) {                    
-            var query = 'SELECT * FROM JOINED_ORG';
+            var query = 'SELECT * FROM JOINED_ORG_ADMIN';
 			app.selectQuery(tx, query, orgDataForOrgSuccess);
 		};
 
@@ -798,7 +1048,7 @@ app.OragnisationList = (function () {
                         orgDbData.push({
 						 org_name: results.rows.item(i).org_name,
         		         org_id: results.rows.item(i).org_id,
-                         role:results.rows.item(i).role,
+                         role:'O',
                          imgData:results.rows.item(i).imageSource,   
                          imageSourceOrg:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,   
                          orgDesc:results.rows.item(i).orgDesc,                      
@@ -818,9 +1068,10 @@ app.OragnisationList = (function () {
                  });
             }
 		};
-           
+          
+        
 
-	function getOrgDBSuccess() {
+    	function getOrgDBSuccess() {
 			app.mobileApp.pane.loader.hide();
             //console.log(orgDbData);
         
@@ -861,9 +1112,6 @@ app.OragnisationList = (function () {
             
         var showOrgInfoPage = function(e){
             
-            
-          
-
            orgManageID = e.view.params.orgID;
            var orgName = e.view.params.orgName; 
            var orgDesc = e.view.params.orgDesc;
@@ -1042,7 +1290,7 @@ app.OragnisationList = (function () {
 		        }
 			}
             
-	function orgDataSuccess(tx, results) {    
+ 	function orgDataSuccess(tx, results) {    
         	var count = results.rows.length;      
         	var tempArray=[];
 				if (count !== 0) {
@@ -1124,6 +1372,10 @@ app.OragnisationList = (function () {
 
             	var query = "DELETE FROM JOINED_ORG";
 	            app.deleteQuery(tx, query);
+                
+            	var query = "DELETE FROM JOINED_ORG_ADMIN";
+	            app.deleteQuery(tx, query);
+
 
             	var query = "DELETE FROM ORG_NOTIFICATION";
 	            app.deleteQuery(tx, query);
@@ -1176,7 +1428,7 @@ app.OragnisationList = (function () {
             organisationSelected: organisationSelected,
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
-            afterShow:afterShow,
+            //afterShow:afterShow,
             showOrgInfoPage:showOrgInfoPage,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          

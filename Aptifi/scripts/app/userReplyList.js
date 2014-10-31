@@ -4,6 +4,8 @@ app.userReplyList = (function () {
 
     var userReplyListViewModel = (function () {
     var account_Id;
+    var tabstrip1;
+
         
   	var init = function () {
              
@@ -28,26 +30,55 @@ app.userReplyList = (function () {
         function getDataSuccess(tx, results) {                        
             groupDataShow=[];
             
-			var count = results.rows.length;                    			
-               if (count !== 0) {                
+			var count = results.rows.length;
+            var totalShowData=0;
+               if (count !== 0) { 
+                   
+                   
+                   
             	    for(var i =0 ; i<count ; i++){                
+                        
+                        var bagCountData=results.rows.item(i).bagCount;
+                   
+                        var countData=results.rows.item(i).count;
+                   
+                       if(countData===null ||countData==="null" ){
+                          countData=0; 
+                       }
+                   
+                       if(bagCountData===null || bagCountData==="null"){
+                           bagCountData=0;
+                       }
+                   
+                       var showData=countData-bagCountData;
+                       totalShowData = showData + totalShowData;
+                       //alert(showData);
                                        groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
         		                                 orgDesc: results.rows.item(i).orgDesc,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
                                                  imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
-		                                         bagCount : 'C'					
+       		                                  count : results.rows.item(i).count,
+                                                 bagCount : results.rows.item(i).bagCount,
+                                                 showCount: showData 
                                        });
+
                     }
+                   
+
+                               tabstrip1.badge(1, totalShowData);
+
                 }else{
                                      groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organisation',
+                                         orgDesc: 'You are not a customer of any organization',
                                          organisationID:'0',
                                          org_logo:null,
                                          imageSource:null,
-                                         bagCount : 'D'    
+                                         count:0,
+                                         bagCount : 0,
+                                         showCount:0
     	                               });          
                 }
   
@@ -78,12 +109,15 @@ app.userReplyList = (function () {
         
         
 
-      var show = function(){	    
+      var show = function(e){
 	       app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();
             
-                     $(".km-scroll-container").css("-webkit-transform", "");
+           $(".km-scroll-container").css("-webkit-transform", "");
+
+            tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");
+
 
            account_Id = localStorage.getItem("ACCOUNT_ID");
             
@@ -182,10 +216,10 @@ app.userReplyList = (function () {
         var clickOnUserName = function(e){
             console.log('karanbisht');
             console.log(e.data);
-            //console.log(e.data.organisationID);
+            console.log(e.data.count);
              //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
             //app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName); 
-            app.mobileApp.navigate('views/userNotificationCustomer.html?org_id='+e.data.organisationID); 
+            app.mobileApp.navigate('views/userNotificationCustomer.html?org_id='+e.data.organisationID+'&count='+e.data.count); 
         }
         
             return {
