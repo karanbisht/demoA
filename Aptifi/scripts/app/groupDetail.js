@@ -49,7 +49,9 @@ app.groupDetail = (function () {
              //app.mobileApp.navigate('#groupNotificationShow');
          };   
           
-                        
+
+        var groupDataShow = [];
+
         var showGroupMembers = function(){            
  
             $("#progressAdminOrgMem").show();         
@@ -103,7 +105,7 @@ app.groupDetail = (function () {
   	             {
                        console.log(data);
                        
-                        var groupDataShow = [];
+                        groupDataShow = [];
                                  $.each(data, function(i, groupValue) {
 									console.log(groupValue);
                                      
@@ -181,20 +183,27 @@ app.groupDetail = (function () {
                 pullToRefresh: true, 
 			});
             
-             $("#deleteMemberData").kendoListView({
-  		    template: kendo.template($("#Member-Delete-template").html()),    		
-     		 dataSource: MemberDataSource,
-        		schema: {
-           		model:  UserModel
-				}			 
-		     });
             
             setTimeout(function(){
                 $("#progressAdminOrgMem").hide();
             });
         };
         
+        var showGroupToDelete = function(){
+                         console.log("---------------------GROUP DATA----------------");
+
+            
+             $("#deleteMemberData").kendoListView({
+  		    template: kendo.template($("#Member-Delete-template").html()),    		
+     		 dataSource: groupDataShow
+		     });
+            
+        }
         
+        
+        var addNemMember = function(){
+            
+        }
                 
         var showUpdateGroupView = function(){
             app.MenuPage=false;
@@ -535,7 +544,9 @@ app.groupDetail = (function () {
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,
                    backToOrgAdminList:backToOrgAdminList,
-               backToOrgDetail:backToOrgDetail,    
+               backToOrgDetail:backToOrgDetail,   
+                   showGroupToDelete:showGroupToDelete,
+                   addNemMember:addNemMember,
           	 //addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
            	showGroupNotification:showGroupNotification,

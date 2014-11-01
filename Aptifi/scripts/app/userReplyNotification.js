@@ -75,7 +75,7 @@ app.userReplyNotificationList = (function () {
                    	             if(orgVal.Msg ==='No List'){     
                 	                   groupDataShow.push({
                                          title: ' No Notification ',
-                                         message: 'No Notification from this Organisation',
+                                         message: 'No Notification from this Organization',
                                          date:'0',  
                                          comment_allow : '0',
                                          org_id:'0', 

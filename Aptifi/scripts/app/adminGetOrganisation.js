@@ -63,8 +63,6 @@ app.adminOragnisationList = (function () {
                         }
                         
                         bagCount=bagCount1+bagCount;
-                        
-                        
                                     groupDataShow.push({
 												 orgName: results.rows.item(i).org_name,
         		                                 orgDesc: results.rows.item(i).orgDesc,
@@ -183,8 +181,19 @@ app.adminOragnisationList = (function () {
                                     $.each(data, function(i, groupValue) {
                                         //alert("IN");
                                              console.log(groupValue);   
-                                            if(groupValue[0].Msg ==='Not a customer to any organisation'){     
-                                                   beforeShow();
+                                            if(groupValue[0].Msg ==='No Orgnisation to manage'){     
+
+                                                //beforeShow();
+                                                
+                                                if(!app.checkSimulator()){
+                                                     window.plugins.toast.showLongBottom('No Organization to Manage.');  
+                                                }else{
+                                                     app.showAlert('No Organization to Manage.' , 'Notification');  
+                                                }
+
+
+                                                app.mobileApp.navigate('#organisationNotiList');
+                                                
                                             }else if(groupValue[0].Msg==='Success'){
                                                     console.log(groupValue[0].orgData.length);  
                                                     var adminOrgInformation = groupValue[0].orgData;
@@ -243,8 +252,7 @@ app.adminOragnisationList = (function () {
         var userOrgIdArray=[];
 
         var joinOrgID = [];
-            
-        
+                    
         var getAdminOrgIdFmDB = function(tx){
             var query = 'SELECT org_id FROM ADMIN_ORG';
 			app.selectQuery(tx, query, getOrgDataSuccess);   
@@ -252,11 +260,11 @@ app.adminOragnisationList = (function () {
         
         
        function getOrgDataSuccess(tx, results){
-           joinOrgID = [];
                   var count = results.rows.length;
+                 joinOrgID = [];
 		          if (count !== 0) {
                      for(var i=0;i<count;i++){
-                           joinOrgID.push(results.rows.item(i).org_id);
+                           joinOrgID.push(parseInt(results.rows.item(i).org_id));
 			         }
                   }
        }
@@ -269,6 +277,7 @@ app.adminOragnisationList = (function () {
      
 
       function insertAdminOrgInfo(tx){
+        userOrgIdArray=[];
           //var query = "DELETE FROM ADMIN_ORG";
 	  	//app.deleteQuery(tx, query);
 
@@ -284,15 +293,15 @@ app.adminOragnisationList = (function () {
           
          for(var i=0;i<dataLength;i++){       
                                  
-           userOrgIdArray.push(adminOrgProfileData[i].organisationID);
+           userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
              console.log(adminOrgProfileData[i].organisationID);
              adminOrgProfileData[i].organisationID=parseInt(adminOrgProfileData[i].organisationID);
 
-          var pos = $.inArray(adminOrgProfileData[i].organisationID, joinOrgID);           
+          var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgID);           
 		  
-             //alert(adminOrgProfileData[i].organisationID);
              //alert(JSON.stringify(joinOrgID));
+             //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
          
          if (pos === -1) {              
              //alert("insert");
@@ -314,17 +323,57 @@ app.adminOragnisationList = (function () {
             app.insertQuery(tx, query);
                                         
          }else{        
-              // alert("update");
-              // alert(adminOrgProfileData[i].org_name);
-               
+               //alert("update");
+              // alert(adminOrgProfileData[i].org_name);               
                     var queryUpdate = "UPDATE ADMIN_ORG SET org_name='"+adminOrgProfileData[i].org_name+"',orgDesc='"+adminOrgProfileData[i].org_desc+"',imageSource='"+adminOrgProfileData[i].org_logo+"',count='"+adminIncomMsgData[i].total+"' where org_id="+adminOrgProfileData[i].organisationID;
-                    app.updateQuery(tx, queryUpdate);                         
-               
+                    app.updateQuery(tx, queryUpdate);                                        
          }                      
                                
-       }  
-
+       }            
+          checkDeletedData();
      }         
+            
+            
+            
+        var orgIdToDel;
+        var checkDeletedData = function(){
+                        
+            var liveIdLength;
+            var dbIdLength;
+            
+            liveIdLength=userOrgIdArray.length;
+            dbIdLength=joinOrgID.length;
+            
+            //alert(JSON.stringify(userOrgIdArray));
+            
+            for(var i=0;i<dbIdLength;i++){
+              
+               //alert(JSON.stringify(joinOrgID[i]));
+                
+               var dataVal = userOrgIdArray.indexOf(joinOrgID[i]);
+               //alert(dataVal);
+                //var pos = $.inArray(joinOrgID[i], userLiveOrgIdArray[j]);           
+  
+                if(dataVal===-1){
+                        orgIdToDel=joinOrgID[i];
+                        var db = app.getDb();
+                        db.transaction(delOrgDataId, app.errorCB,app.successCB);                          
+                } 
+
+            }            
+        }
+
+         function delOrgDataId(tx) {
+                var query = "DELETE FROM ADMIN_ORG where org_id="+orgIdToDel;
+        	    app.deleteQuery(tx, query);
+             
+                var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id="+orgIdToDel;
+        	    app.deleteQuery(tx, query);
+         } 
+            
+            
+            
+            
         /*var offlineQueryDB = function(tx){
             var query = 'SELECT * FROM GetNotification';
 			app.selectQuery(tx, query, offlineTestQuerySuccess);
@@ -435,9 +484,7 @@ app.adminOragnisationList = (function () {
         var refreshButton = function(){
             
         };
-        
-         
-        
+                
         var info = function(){
             
         };

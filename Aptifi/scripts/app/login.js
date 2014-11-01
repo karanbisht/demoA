@@ -84,11 +84,11 @@ app.Login = (function () {
              }
                          
             
-            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
-              //var device_id = localStorage.getItem("deviceTokenID");            
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
+            var device_id = localStorage.getItem("deviceTokenID");            
             console.log(device_id);            
             username = $("#loginUsername").val();
-        //    console.log(username);
+            //console.log(username);
             
             if (username === "Mobile Number" || username === "") {
 				app.showAlert("Please enter your Mobile No.", "Validation Error");
@@ -104,8 +104,8 @@ app.Login = (function () {
                 
                  localStorage.setItem("username",username); 
         	              
-              var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
-              var dataSourceLogin = new kendo.data.DataSource({
+               var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
+               var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
                    url: "http://54.85.208.215/webservice/customer/login",
@@ -133,7 +133,7 @@ app.Login = (function () {
                   } 
                }
              
-              $("#progress").hide();
+               $("#progress").hide();
 
                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
  
@@ -211,7 +211,7 @@ app.Login = (function () {
                           saveProfileInfo(UserProfileInformation);
                            
                          if(loginData.status[0].JoinedOrg.length!==0){
-                                  saveOrgInfo(UserOrgInformation);              
+                                  //saveOrgInfo(UserOrgInformation);              
                          }
                       
                       }else{
@@ -242,7 +242,8 @@ app.Login = (function () {
              
             }else{
               var db = app.getDb();
-	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+	  		//db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+              db.transaction(insertProfileInfo, app.errorCB, goToHomePage);  
             }
 		};
         
@@ -627,7 +628,7 @@ app.Login = (function () {
         
         var cancelButtonRC = function(){
 
-            $(".km-scroll-container").css("-webkit-transform", "");
+           $(".km-scroll-container").css("-webkit-transform", "");
  
            $("#regenerateDiv").hide();
            $("#validationRow").hide(); 
@@ -662,7 +663,7 @@ app.Login = (function () {
               
             var varifiCodeMsg = "verification code-: "+ varifiCode;
           
-                      console.log("-----Verification code--" + varifiCode);
+             console.log("-----Verification code--" + varifiCode);
 
             
 
@@ -735,8 +736,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            //var device_id = localStorage.getItem("deviceTokenID");
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+            var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}

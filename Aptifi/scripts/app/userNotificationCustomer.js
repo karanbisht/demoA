@@ -86,10 +86,10 @@ app.replyedCustomer = (function () {
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
 
-                   	             if(orgVal.Msg ==='No Customer in this group'){   
+                   	             if(orgVal.Msg ==='No list found'){   
                                      
                                         groupDataShow.push({
-                                         user_fname: 'No Customer',
+                                         user_fname: 'No Customer found',
                                          user_lname: '',
                                          customerID:0,  
                                          user_type : '',

@@ -72,7 +72,7 @@ var activityListViewModel = (function () {
         		                                 groupID:'',
                                                  groupName:'No Group',
                                                  organisationID:'',
-                                                 groupDesc:'No Group in this Organisation',
+                                                 groupDesc:'No Group in this Organization',
                                                  addDate:''  
     	                                });   
                     
@@ -197,7 +197,7 @@ var activityListViewModel = (function () {
         		                                 groupID:'',
                                                  groupName:'No Group',
                                                  organisationID:'',
-                                                 groupDesc:'No Group in this Organisation',
+                                                 groupDesc:'No Group in this Organization',
                                                  addDate:''  
     	                               });   
                     

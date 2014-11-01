@@ -4,6 +4,8 @@ app.sendNotification = (function () {
     var validator;
     var notificationTypeSelected;
     var dataToSend ;
+    var noGroup=0;
+    var noCustomer=0;
 
     var groupChecked = [];
 	 var sendNotificationViewModel = (function () {
@@ -160,6 +162,10 @@ app.sendNotification = (function () {
     
                                        
         var show = function(e){
+            
+
+            noGroup=0;
+            noCustomer=0;
             
             $("#removeAttachment").hide(); 
              $(".km-scroll-container").css("-webkit-transform", "");
@@ -530,6 +536,8 @@ app.sendNotification = (function () {
                                      if(groupValue[0].Msg==='No Group list'){
                                          $("#selectGroupDiv").hide();
                                          $("#selectOrgDiv").hide();
+                                            noGroup=1;        
+                                         
                                          localStorage.setItem("SELECTED_GROUP",0); 
                                          escapeGroupGoCustClick();
                                      }else{
@@ -640,7 +648,9 @@ app.sendNotification = (function () {
                                     console.log(orgVal);
 
                    	             if(orgVal.Msg ==='No Customer in this organisation'){     
+                                      noCustomer=1;
                                       escapeGroupClick();
+
                                     }else if(orgVal.Msg==='Success'){
                                         console.log(orgVal.allCustomer.length);  
                                         for(var i=0;i<orgVal.allCustomer.length;i++){
@@ -746,7 +756,32 @@ app.sendNotification = (function () {
          var escapeGroupClick = function(){                 
              app.mobileApp.pane.loader.show(); 
              $("#selectGroupDiv").hide();
-             $("#selectTypeDiv").show();
+             $("#selectCustomerToSend").hide();
+             
+            //alert(noGroup +"||"+ noCustomer);
+             
+             if(noGroup===1 && noCustomer===1){
+
+                 if(!app.checkSimulator()){
+                 
+                     window.plugins.toast.showShortBottom('No Customer and Group To Send Notification');   
+                     
+                 }else{
+                 
+                     app.showAlert("No Customer and Group To Send Notification","Notification");  
+                     
+                 }
+
+                  app.mobileApp.navigate('#view-all-activities-admin'); 
+
+             }else{
+                 
+                 $("#selectTypeDiv").show();
+
+             }
+
+
+             
              $(".km-scroll-container").css("-webkit-transform", "");
 
              app.mobileApp.pane.loader.hide();    

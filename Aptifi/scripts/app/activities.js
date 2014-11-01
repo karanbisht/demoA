@@ -43,7 +43,9 @@ app.Activities = (function () {
        	account_Id = e.view.params.account_Id;
            bagCount = e.view.params.bagCount; 
            orgName = e.view.params.orgName;
-                         
+           
+           //alert(bagCount);
+             
            console.log(orgName);
              
           // $("#fav-list-navbar").data("kendoMobileNavBar").title("foo");
@@ -297,7 +299,7 @@ app.Activities = (function () {
              //alert('ssss'+bagCount);
              //alert('ssss'+organisationID);
 
-             var query = "UPDATE JOINED_ORG SET bagCount='" +bagCount +"' WHERE org_id='" +organisationID+"' and role='"+'C'+"'" ;
+             var query = "UPDATE JOINED_ORG SET bagCount='" +bagCount +"' WHERE org_id='" +organisationID+"'" ;
 		     app.updateQuery(tx, query);
          };   
             

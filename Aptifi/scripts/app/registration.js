@@ -353,7 +353,7 @@ app.registration = (function () {
                         if(loginData.status[0].JoinedOrg.length!==0){
                              UserOrgInformation = loginData.status[0].JoinedOrg;
                              console.log(UserOrgInformation);
-                             saveOrgInfo(UserOrgInformation);  
+                             //saveOrgInfo(UserOrgInformation);  
                         }
                      
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
@@ -394,7 +394,8 @@ app.registration = (function () {
              
             }else{
               var db = app.getDb();
-	  		db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+	  		//db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
+              db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 
             }
             
 			//var db = app.getDb();

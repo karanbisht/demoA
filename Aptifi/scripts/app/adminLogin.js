@@ -119,9 +119,7 @@ app.adminLogin = (function () {
                                        $("#progress1").hide();
 
                          document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-
-                       
-                          app.showAlert(loginData.status[0].Msg,"Notification");
+                         app.showAlert(loginData.status[0].Msg,"Notification");
 
                    }
                  
@@ -179,11 +177,19 @@ app.adminLogin = (function () {
                        //console.log(data);
                	    //return [data];
                        
-                                    $.each(data, function(i, groupValue) {
-                                     console.log(groupValue);   
-                                        allData++;
-                   	             if(groupValue[0].Msg ==='Not a customer to any organisation'){     
-                                        datacheck++;   
+                                 $.each(data, function(i, groupValue) {
+                                    console.log(groupValue);   
+                                        //allData++;
+                   	             if(groupValue[0].Msg ==='No Orgnisation to manage'){    
+                                        
+                                        if(!app.checkSimulator()){
+                                         window.plugins.toast.showLongBottom('No Organization to Manage , Login not allow.');  
+                                        }else{
+                                         app.showAlert('No Organization to Manage , Login not allow.' , 'Notification');  
+                                        }
+                                        
+                                        $("#progress1").hide();  
+                                           
                                     }else if(groupValue[0].Msg==='Success'){
                                         console.log(groupValue[0].orgData.length);  
                                         var adminOrgInformation = groupValue[0].orgData;
@@ -191,9 +197,9 @@ app.adminLogin = (function () {
                                     }
                                  });
                        
-                           if(allData===datacheck){
+                           /*if(allData===datacheck){
                              goToAdminDashboard();
-                           }
+                           }*/
                     	return [data];
 
                    }                                                            

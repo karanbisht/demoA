@@ -25,12 +25,10 @@ app.addCustomerByAdmin = (function () {
 
         var addNewRegistration = function (e) {
          app.userPosition=false;
-            if(!backToRegPage){
             $regFirstName.val('');
             $regLastName.val('');
             $regEmail.val('');
             $regMobile.val('');
-            }
             organisationID = e.view.params.organisationID;
 
         };
@@ -98,6 +96,11 @@ app.addCustomerByAdmin = (function () {
                      	    if(loginData.status[0].Msg==='Customer added successfully'){
                          		app.showAlert("Member Added Successfully","Notification");
                                  refreshOrgMember();
+                                             $regFirstName.val('');
+                                                $regLastName.val('');
+                                                $regEmail.val('');
+                                            $regMobile.val('');
+
 				        	     //app.mobileApp.navigate('#groupMemberShow');
                                }else{
                                  app.showAlert(loginData.status[0].Msg ,'Notification'); 
