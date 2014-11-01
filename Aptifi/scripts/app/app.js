@@ -784,12 +784,12 @@ var app = (function (win) {
           
           console.log('DATA VALUE1');
           
-          var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='"+messageDB+"' where org_id='" +orgIdDB+"' and role='C'";
+          var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='"+messageDB+"' where org_id="+orgIdDB;
           app.updateQuery(tx, queryUpdate);          
           
           console.log('DATA VALUE2');
 
-      	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ='"+notiIdDB+"'";
+      	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ="+notiIdDB;
   		app.deleteQuery(tx, queryDelete);         
 
           console.log('DATA VALUE3');
@@ -833,7 +833,7 @@ var app = (function (win) {
     }
     
     function updatebagCount(tx){
-        var queryUpdate = "UPDATE JOINED_ORG SET bagCount=bagCount+1 where org_id='" +orgIdDB+"' and role='C'";
+        var queryUpdate = "UPDATE JOINED_ORG SET bagCount=bagCount+1 where org_id="+orgIdDB;
         app.updateQuery(tx, queryUpdate);          
     }
     

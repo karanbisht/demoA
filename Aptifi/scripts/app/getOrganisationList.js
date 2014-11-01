@@ -556,9 +556,9 @@ app.OragnisationList = (function () {
            
            }else{        
                
-                   //alert("update1");
+                   //alert(LastNotificationMsg);
                    //alert(profileOrgData.role[0]); 
-                   var queryUpdate = "UPDATE JOINED_ORG SET org_name='"+profileOrgData[i].org_name+"',orgDesc='"+profileOrgData[i].org_desc+"',imageSource='"+profileOrgData[i].org_logo+"',joinedDate='"+profileOrgData[i].joinedON+"' where org_id=" +profileOrgData[i].organisationID;
+                   var queryUpdate = "UPDATE JOINED_ORG SET org_name='"+profileOrgData[i].org_name+"',orgDesc='"+profileOrgData[i].org_desc+"',imageSource='"+profileOrgData[i].org_logo+"',joinedDate='"+profileOrgData[i].joinedON+"',lastNoti='"+LastNotificationMsg+"',count='"+profileAdminOrgData[i].total+"' where org_id=" +profileOrgData[i].organisationID;
                    app.updateQuery(tx, queryUpdate);                         
            }                      
         }                               
@@ -1351,7 +1351,7 @@ app.OragnisationList = (function () {
         var userProfileShow = function(){
 
             document.getElementById("orgData").innerHTML = "";
-
+            tempArray=[];
             $(".km-scroll-container").css("-webkit-transform", "");
 
             app.mobileApp.pane.loader.show();
@@ -1402,16 +1402,15 @@ app.OragnisationList = (function () {
 			}
             
         
-        var tempArray=[];
+       var tempArray=[];
         
   	function orgDataSuccess(tx, results) {    
-        	var count = results.rows.length;      
-        	
-				if (count !== 0) {
-                    
-	             document.getElementById("orgData").innerHTML = "";
-                    
+        	var count = results.rows.length;              	
+			//alert(count);	
+          if (count !== 0) {                    
+	             document.getElementById("orgData").innerHTML = "";                    
         			for(var x=0; x < count;x++){
+                     //alert(JSON.stringify(tempArray));
                      var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                      console.log(pos);
  					if (pos === -1) {
@@ -1421,11 +1420,9 @@ app.OragnisationList = (function () {
             		}             
                 }else{
                     tempArray=[];
-                }
-        
+                } 
       }
 
-        
         
       function orgAdminDataSuccess(tx, results) {    
         	var count = results.rows.length;      	
@@ -1438,15 +1435,14 @@ app.OragnisationList = (function () {
                 		document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
                         }
             		}             
-                }
-        
+                }        
       }
 
 
 
-	function getProfileDBSuccess() {
-		app.mobileApp.pane.loader.hide();
-	}
+    	function getProfileDBSuccess() {
+	    	app.mobileApp.pane.loader.hide();
+	    }
             
             
             
