@@ -607,6 +607,7 @@ var app = (function (win) {
             attachedDB=messageSplitVal[5];
             commentAllowDB=messageSplitVal[6];
             notificationMsg=messageSplitVal[7];
+            
             send_DateDB= getPresentDateTime();
                         
             
@@ -615,14 +616,14 @@ var app = (function (win) {
             }
                         
             console.log("RECEIVED VALUE------------------------");
-            console.log(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB+"||"+commentAllowDB+"||"+notificationMsg);
+            console.log(messageDB+"||"+orgIdDB+"||"+notiIdDB+"||"+typeDB+"||"+titleDB+"||"+attachedDB+"||"+commentAllowDB+"||"+notificationMsg+"||"+send_DateDB);
     
             
     		navigator.notification.confirm(titleDB, function (confirmed) {           
             	if (confirmed === true || confirmed === 1) {
                                         if(typeDB!=='Reply'){
                                             var db = app.getDb();
-                	                        db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+                	                        db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                                         }else{
                                             typeDB="Reply";
                                             var temp;
@@ -723,7 +724,7 @@ var app = (function (win) {
             }else{
                 if(typeDB!=='Reply'){
                     var db = app.getDb();
-                	db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
+                	db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                 }else{
                     typeDB="Reply";
                     var temp;
@@ -793,6 +794,8 @@ var app = (function (win) {
   		app.deleteQuery(tx, queryDelete);         
 
           console.log('DATA VALUE3');
+          
+          //alert(send_DateDB);
 
           var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid) VALUES ("'
 				+ orgIdDB
@@ -813,6 +816,47 @@ var app = (function (win) {
 				+ '")';              
                 app.insertQuery(tx, query);               
       }
+    
+    
+    
+    
+    
+          function insertOrgNotiDataBagINC(tx){
+          
+          console.log('DATA VALUE1');
+          
+          var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , bagCount=bagCount+1 , lastNoti='"+messageDB+"' where org_id="+orgIdDB;
+          app.updateQuery(tx, queryUpdate);          
+          
+          console.log('DATA VALUE2');
+
+      	var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid ="+notiIdDB;
+  		app.deleteQuery(tx, queryDelete);   
+
+          console.log('DATA VALUE3');
+          
+          //alert(send_DateDB);
+
+          var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid) VALUES ("'
+				+ orgIdDB
+				+ '","'
+				+ attachedDB
+				+ '","'
+				+ messageDB
+           	 + '","'
+				+ titleDB
+    	        + '","'
+			    + commentAllowDB
+                + '","'
+				+ typeDB
+                + '","'
+				+ send_DateDB
+                + '","'
+                + notiIdDB
+				+ '")';              
+                app.insertQuery(tx, query);               
+      }
+    
     
     
     function goToAppPage(){
@@ -946,7 +990,10 @@ var app = (function (win) {
           var currentDate = new Date();
           var month = currentDate.getMonth() + 1;
           var day = currentDate.getDate();
-          var year = currentDate.getFullYear();            
+          var year = currentDate.getFullYear();
+          if(day<10){
+             day='0'+day;
+          }
           var CurDateVal =year+'-'+month+'-'+day;
           var hours = currentDate.getHours();
           var minutes = currentDate.getMinutes();

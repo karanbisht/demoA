@@ -39,6 +39,7 @@ app.Activities = (function () {
            //app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
            app.userPosition=false;                                      
+
            organisationID = e.view.params.organisationID;
        	account_Id = e.view.params.account_Id;
            bagCount = e.view.params.bagCount; 
@@ -46,7 +47,7 @@ app.Activities = (function () {
            
            //alert(bagCount);
              
-           console.log(orgName);
+           console.log(organisationID+"||"+orgName+"||"+ account_Id+"||"+bagCount);
              
           // $("#fav-list-navbar").data("kendoMobileNavBar").title("foo");
              
@@ -104,7 +105,7 @@ app.Activities = (function () {
                                     		 db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
 
 	                                    }else if(orgVal.Msg==='Success'){
-                                            //alert('success');    
+                                             //alert('success');    
                                             console.log(orgVal.notificationList.length);  
                                             orgNotificationData = orgVal.notificationList;
                                             console.log('dattttttttttttttttttttttttttttttttttaaaaaaaaa');
@@ -162,8 +163,7 @@ app.Activities = (function () {
            
            orgData = orgNotiDataVal[i].org_id;
            orgLastMsg = orgNotiDataVal[i].message;
-
-           
+          
     	   var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type) VALUES ("'
 				+ orgNotiDataVal[i].org_id
 				+ '","'

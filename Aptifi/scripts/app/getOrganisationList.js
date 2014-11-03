@@ -261,9 +261,9 @@ app.OragnisationList = (function () {
                 transport: {
                 read: {
                    //url: "http://54.85.208.215/webservice/customer/login",
-                   url: "http://54.85.208.215/webservice/organisation/customerOrg/"+account_Id,
+                    url: "http://54.85.208.215/webservice/organisation/customerOrg/"+account_Id,
                     type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    //data: jsonDataLogin
            	}
            },
@@ -333,7 +333,7 @@ app.OragnisationList = (function () {
                           loginSuccessCB();
                           
                       }else if(loginData.status[0].Msg==='Success'){
-                          
+                          //alert('success');
                           //console.log('reg');
                           //account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
@@ -507,6 +507,8 @@ app.OragnisationList = (function () {
           joinOrgID.push(profileOrgData.org_id[x]);
        }*/
          
+         //alert(dataLength);
+          
         userLiveOrgIdArray=[];  
           
        for(var i=0;i<dataLength;i++){                             
@@ -979,7 +981,7 @@ app.OragnisationList = (function () {
         var organisationSelected = function (e) {
             $("#progress2").show();
             //app.mobileApp.pane.loader.show();
-            console.log(e.data);
+            console.log(JSON.stringify(e.data));
             var organisationID=e.data.organisationID;
             var bagCount =e.data.count;
             //alert(bagCount);
@@ -1047,9 +1049,12 @@ app.OragnisationList = (function () {
 
         var orgShow = function(){
            $(".km-scroll-container").css("-webkit-transform", "");
+            orgDbData = [];
+             tempArray= [];
  
            app.MenuPage=false;
 		   $("#organisation-listview1").html("");
+
            var showMore = localStorage.getItem("ShowMore");
              
             /*if(showMore!==1){
@@ -1073,10 +1078,12 @@ app.OragnisationList = (function () {
 		};
 
 		var orgDbData = [];
+        var tempArray= [];
+
             
         function orgDataForOrgSuccess(tx, results) {
-            var tempArray= [];
             orgDbData = [];
+            tempArray= [];
             
 			var count = results.rows.length;
             //alert(count);
@@ -1141,13 +1148,17 @@ app.OragnisationList = (function () {
             //orgDbData=[];
             
 			if (count1 !== 0) {
+                //alert(JSON.stringify(tempArray));
+
                 for(var i=0;i<count1;i++){
-                     //var pos = $.inArray(results.rows.item(i).org_id, tempArray);                   
-                     //console.log(pos);
-                    
-					//if (pos === -1) {
-						 
-                        //tempArray.push(results.rows.item(i).org_id); 
+                     
+                    var pos = $.inArray(results.rows.item(i).org_id, tempArray);                   
+                    console.log(pos);
+                    //alert(results.rows.item(i).org_id);
+                    //alert(pos);
+					if (pos === -1) {	
+                        
+                         tempArray.push(results.rows.item(i).org_id); 
 
                         orgDbData.push({
 						 org_name: results.rows.item(i).org_name,
@@ -1158,9 +1169,12 @@ app.OragnisationList = (function () {
                          orgDesc:results.rows.item(i).orgDesc,                      
                          joinDate:results.rows.item(i).joinedDate                   
                        });
-                    //}
+                        
+                    }
                 }
-			}else{
+			
+            }else{
+                
               if(adminOrgExist===0){
                 orgDbData.push({
 						 org_name:'No Organisation',
@@ -1279,11 +1293,13 @@ app.OragnisationList = (function () {
         
         var editProfileShow = function(){
     
+            
             $("#editFirstName").val(fname);
             $("#editLastName").val(lname);
             $("#editEmail").val(email);
-            $("#editMobile").val(mobile);
-            
+            //$("#editMobile").val(mobile);            
+            //document.getElementById("editMobile").readOnly = true;
+
         }
         
         
@@ -1357,13 +1373,13 @@ app.OragnisationList = (function () {
             app.mobileApp.pane.loader.show();
             app.MenuPage=false;    
             
-   		var showMore = localStorage.getItem("ShowMore");
-             if(showMore!==1){
-               $("#goToAdmin").hide();             
-             }else{
+   		    /*var showMore = localStorage.getItem("ShowMore");
+                 if(showMore!==1){
+                   $("#goToAdmin").hide();             
+                 }else{
                $("#moreOption").hide();  
-             }
-
+                 }
+            */
             var db = app.getDb();
 			db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
          };
@@ -1543,12 +1559,107 @@ app.OragnisationList = (function () {
                          app.MenuPage=false;
                          document.location.href="#infoDiv";
                     };
+        
+                    var appinfo = function(){
+                        
+                    }
     
                     var setting = function(){
                          app.MenuPage=false;
                          document.location.href="#settingDiv";
                     };       
+        
+        
+        var newFName;
+        var newLName;
+        var newEmail;
 
+        var editProfileFunc = function(){
+            
+         var account_Id = localStorage.getItem("ACCOUNT_ID");
+            
+         var fname = $("#editFirstName").val();
+            newFName=fname;
+         var lname = $("#editLastName").val();
+            newLName=lname;
+         var email = $("#editEmail").val();
+            newEmail =email;
+         console.log(account_Id+"||"+fname+"||"+lname+"||"+email);
+            
+         if (fname === "First Name" || fname === "") {
+				app.showAlert("Please enter your First Name.","Validation Error");
+         }else if (lname === "Last Name" || lname === "") {
+				app.showAlert("Please enter your Last Name.","Validation Error");
+         }else if (email === "Email" || email === "") {
+				app.showAlert("Please enter your Email.","Validation Error");
+		 } else if (!app.validateEmail(email)) {
+				app.showAlert("Please enter a valid Email.","Validation Error");
+         }else {    
+
+              //console.log(fname+"||"+lname+"||"+email+"||"+mobile+"||"+organisationID);  
+	          var jsonDataRegister;
+                          
+             jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email} 
+
+       
+          var dataSourceRegister = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url:"http://54.85.208.215/webservice/customer/editprofile",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataRegister
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               app.mobileApp.pane.loader.hide();
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+               
+           }               
+           });  
+
+             
+           dataSourceRegister.fetch(function() {
+                         var loginDataView = dataSourceRegister.data();
+               			console.log(loginDataView);       
+						   $.each(loginDataView, function(i, loginData) {
+                               console.log(loginData.status[0].Msg);
+                               
+                     	    if(loginData.status[0].Msg==='Profile Updated'){
+                                 
+                         		app.showAlert("Profile Updated","Notification");
+                                 var db = app.getDb();
+                                 db.transaction(updateLocalDB, app.errorCB,afterUpdateProfile);                          
+                                                               
+                             }else{
+                             
+                                 app.showAlert(loginData.status[0].Msg ,'Notification'); 
+                               
+                             }
+                           });
+               });
+            }
+        };
+
+        var updateLocalDB = function(tx){
+            var queryUpdate = "UPDATE PROFILE_INFO SET email='"+newEmail+"',first_name='"+newFName+"',last_name='"+newLName+"'";
+            app.updateQuery(tx, queryUpdate);                            
+        }
+        
+        var afterUpdateProfile = function(){
+
+            app.mobileApp.navigate('#profileDiv');
+
+        }
 
         return {
             //activities: activitiesModel.activities,
@@ -1579,6 +1690,7 @@ app.OragnisationList = (function () {
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,
             unsubscribeOrg:unsubscribeOrg,
+            editProfileFunc:editProfileFunc,
             editProfilePage:editProfilePage,
             editProfileShow:editProfileShow,
             logout: logout

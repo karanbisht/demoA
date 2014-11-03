@@ -610,6 +610,12 @@ app.Login = (function () {
               app.mobileApp.navigate('index.html');
         };
         
+        
+        var goToLoginPage = function(){
+            $("#regenerateDiv").hide();
+            $("#validationRow").hide();
+        };
+        
         var clickforRegenerateCode = function(){
            
           $(".km-scroll-container").css("-webkit-transform", "");
@@ -629,7 +635,6 @@ app.Login = (function () {
         var cancelButtonRC = function(){
 
            $(".km-scroll-container").css("-webkit-transform", "");
- 
            $("#regenerateDiv").hide();
            $("#validationRow").hide(); 
            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
@@ -663,7 +668,7 @@ app.Login = (function () {
               
             var varifiCodeMsg = "verification code-: "+ varifiCode;
           
-             console.log("-----Verification code--" + varifiCode);
+             //alert("-----Verification code--" + varifiCode);
 
             
 
@@ -671,7 +676,7 @@ app.Login = (function () {
                transport: {
                read: {
                    //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
-                   url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCodeMsg+"&rout=transactional&from=APTIFI"
+                     url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to="+username+"&msg="+varifiCodeMsg+"&rout=transactional&from=APTIFI"
            	}
            },
            schema: {
@@ -715,10 +720,8 @@ app.Login = (function () {
         
         var doneVerification = function(){
              //varifiCode='123456';
-            
 
             $(".km-scroll-container").css("-webkit-transform", "");
-
             
 			var validationCodeId = $("#validationCodeId").val();
                 if(validationCodeId==='Verification Code' || validationCodeId==='' ){            
@@ -736,8 +739,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-            var device_id = localStorage.getItem("deviceTokenID");
+                //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+                var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
@@ -779,7 +782,7 @@ app.Login = (function () {
 	            
 
                   dataSourceLogin.fetch(function() {
-                         var loginDataView = dataSourceLogin.data();
+                       var loginDataView = dataSourceLogin.data();
                			//console.log(loginDataView);
        
                $.each(loginDataView, function(i, loginData) {
@@ -848,6 +851,7 @@ app.Login = (function () {
             getYear: app.getYear,
             login: login,
             checkEnter:checkEnter,
+            goToLoginPage:goToLoginPage,
             //forgetPass: forgetPass,
             //sendForgetMail:sendForgetMail,
             goToIndex:goToIndex,

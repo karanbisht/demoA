@@ -90,11 +90,11 @@
                   
                  <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>    
 
-                 <a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
-
-                 <!--<a id="moreOption"  style="width: 2.5em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50% ; background-color: transparent;"  data-align="right" href="#moreFeature" data-role="button" data-rel="popover"><img src="styles/images/icon-add.png" style="background-position: 65em 50%;"/></a>-->                      
+                 <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
+                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
                   
-                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> 
+                 <a id="more" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">More</a>                                       
+ 
               </div>              
                             
 	          <div id="upperMainTab" data-role="tabstrip" style="border-top:2px solid #2D384C">
@@ -172,9 +172,16 @@
     
  
   <div  id="validationRow" style=" display:none;background-color:#F5F5F5; margin:-160px 10px 10px 10px; border-radius:6px; padding:0px 10px 30px 10px;border: 2px solid #575B5F;height:350px;">
-		 <div style="background-color:#ffffff;color:#313C50;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
+
+
+         <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin:0px;background-color: transparent;border:none;display:block;">  
+             <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
+         </span>
+
+         <div style="background-color:#ffffff;color:#313C50;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
        	Verification
 		 </div>
+      
     
           <form id="verification-form" data-bind="events: { keyup: checkEnterCode }" class="">
   
@@ -197,7 +204,7 @@
                       <div class="loading1">Loading...</div>
                </div>
             
-             <ol class="reg-group-wrp" style="margin-bottom:10px;">
+             <ol class="reg-group-wrp" style="margin-bottom:25px;">
                 <li>
                     <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: doneVerification }">
                         <a data-role="button" style="background-color:#313C50">Next</a>
@@ -270,23 +277,26 @@
                             		<li class="popMoreButton"><a data-bind="click: about">About Us</a></li>
                                     <li class="popMoreButton"><a data-bind="click: setting">Setting</a></li>
     		</div>
-    	</div>-->  
+     	</div>-->  
     
         
     
-    		<div data-role="popover" class="popupBox refreshPop" id="moreFeature" data-popup='{ "height": "230" }'>
-                <div data-role="view" data-model="app.OragnisationList">
-                    <ul data-role="listview">
-                        <li data-bind="click: makeCall">Call Us</li>
-                        <li data-bind="click: inAppBrowser">Website</li>
+    		<div data-role="popover"  class="popupBox refreshPop" id="moreFeature" data-popup='{ "height": "230" }'>
+                <div data-role="view" class="activities-view" data-model="app.OragnisationList">
+                    <ul data-role="listview" style="padding-left:10px;padding-right:10px;">
+                        
+                        <li id="goToAdmin" style="margin-top:10px;" data-bind="click:callOrganisationLogin">Admin Section</li>
+                        <!--<li data-bind="click: makeCall">Call Us</li>
+                        <li data-bind="click: inAppBrowser">Website</li>-->                        
                         <li data-bind="click: about">About Us</li>
+                        <!--<li data-bind="click: refreshApp">Refresh</li>-->
+                        <!--<li data-bind="click: appinfo">App Info </li>-->
                         <li data-bind="click: setting">Setting </li>
                         <li data-bind="click: logout">Logout</li>
                         
                     </ul>
                 </div>
-            </div>
-    
+            </div>    
         </div>
 
 
@@ -297,12 +307,22 @@
          	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton" ></a>
          	</div>
     	</div>
+          
     	<div data-role="content">
-        	<ul data-role="listview">
-		    	<p>Welcome to Our Organization</p>
+        	<ul data-role="listview">                
+                <h3>WHAT WE DO</h3>
+		    	<p style="text-align: justify;">When it comes to web design and development services in Delhi/NCR, India, we happen to be the leading players in that sphere. Our dedicated efforts towards providing you with the finest tech advanced IT solutions, helps you grow your online business exponentially. Our wide range of IT services has yielded us a number of reputed web based projects. We have backed some great online market places for business over various web development platforms like Joomla, Wordpress, Magento E-Commerce, Drupal and more. Take a look at our portfolio to get a glimpse of work we have done for our prestigious clients over the years.</p>
     	    </ul>
-    	</div>
-	</div>
+    	</div>   
+          
+        <div data-role="footer">
+       	 <div id="appInfoTabStrip" data-role="tabstrip" data-selected-index="2">
+            	<a id="" data-icon="phone" data-role="button" data-bind="click: makeCall" >Call Us</a>
+                <a id="" data-icon="mostviewed" data-role="button" data-bind="click: inAppBrowser" >Website</a>
+            </div>
+    	</div>    
+          
+  	</div>
 
 
 <div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">  	
