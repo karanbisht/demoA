@@ -214,6 +214,9 @@ app.registration = (function () {
                
              var varifiCodeMsg = "verification code-: "+ varifiCode;
         
+             console.log("-----Verification code Registration--" + varifiCode);
+
+            
           var dataSourceValidation = new kendo.data.DataSource({
                transport: {
                read: {
@@ -387,7 +390,6 @@ app.registration = (function () {
         var profileOrgData;
 		function saveProfileInfo(data) {
 			profileInfoData = data; 
-            console.log(hello);
             if(JoinedOrganisationYN===0){
               var db = app.getDb();
 	  		db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 

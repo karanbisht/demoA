@@ -201,9 +201,7 @@ app.Activities = (function () {
         }
         
         function updateLoginStatus(tx) {
-            
 	           //alert(GlobalDataOrgId+"||"+GlobalDataLastMsg+"||"+GlobalDataCount);     
-               
                var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',bagCount='"+GlobalDataCount+"', lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='C'";
                app.updateQuery(tx, query);
         }

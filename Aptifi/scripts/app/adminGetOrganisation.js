@@ -754,14 +754,14 @@ app.adminOragnisationList = (function () {
             
               function updateAdminLoginStatus(tx) {
                 
-                var query = "DELETE FROM ADMIN_ORG";
+                /*var query = "DELETE FROM ADMIN_ORG";
         	    app.deleteQuery(tx, query);
 
             	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
 	            app.deleteQuery(tx, query);
 
             	var query = "DELETE FROM ADMIN_ORG_GROUP";
-	            app.deleteQuery(tx, query);
+	            app.deleteQuery(tx, query);*/
                                                 
 	            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
             	app.updateQuery(tx, query);

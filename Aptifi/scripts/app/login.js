@@ -54,6 +54,13 @@ app.Login = (function () {
 		    //}
             //app.showNativeAlert();
             //app.showNativeAlert();
+            
+          $("#validationRow").hide();  
+                    $("#regenerateDiv").hide();  
+
+          $("#validationRowR").hide();  
+                    $("#regenerateDivR").hide();  
+            
         };
                 
         var checkEnter = function (e) {
@@ -96,6 +103,14 @@ app.Login = (function () {
                 app.showAlert("Please enter a valid Mobile Number.","Validation Error");
 			} else {         
               
+                if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }else{
+
                 $("#progress").show();
                 document.getElementById('selectionDiv').style.pointerEvents = 'none';
                  //app.mobileApp.pane.loader.show();                
@@ -122,6 +137,7 @@ app.Login = (function () {
            },
            error: function (e) {
                //apps.hideLoading();
+               console.log("------error------");
                console.log(JSON.stringify(e));
                //app.mobileApp.pane.loader.hide();
              
@@ -136,28 +152,30 @@ app.Login = (function () {
                $("#progress").hide();
 
                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
- 
-               
+
                //navigator.notification.alert("Please check your internet connection.",
-               //function () { }, "Notification", 'OK');
-               
+               //function () { }, "Notification", 'OK');               
            }               
           });  
 	            
            dataSourceLogin.fetch(function() {
                          var loginDataView = dataSourceLogin.data();
-               //			console.log(loginDataView);
+               console.log('----------fetch Data------------');			
+               console.log(loginDataView);
                			var orgDataId = [];
                			var userAllGroupId = [];
 						   
                $.each(loginDataView, function(i, loginData) {
-                           //    console.log(loginData.status[0].Msg);
+                                  console.log('-------Msg Data --------');			
+
+                           console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='User not registered'){
-                          //console.log('reg');
+                            //console.log('reg');
 							//app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
-                                                     document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+                                                    
+                            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
 
                             app.userPosition=false;
  				           app.mobileApp.navigate('views/registrationView.html?mobile='+username+'&type=reg');  
@@ -224,6 +242,7 @@ app.Login = (function () {
                 });
   		 });
           }
+         }
         };
         
         
@@ -668,7 +687,7 @@ app.Login = (function () {
               
             var varifiCodeMsg = "verification code-: "+ varifiCode;
           
-             //alert("-----Verification code--" + varifiCode);
+             console.log("-----Verification code Login--" + varifiCode);
 
             
 

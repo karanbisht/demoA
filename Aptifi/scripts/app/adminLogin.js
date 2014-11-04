@@ -193,7 +193,8 @@ app.adminLogin = (function () {
                                     }else if(groupValue[0].Msg==='Success'){
                                         console.log(groupValue[0].orgData.length);  
                                         var adminOrgInformation = groupValue[0].orgData;
-                                        saveAdminOrgInfo(adminOrgInformation); 
+                                        goToAdminDashboard();
+                                        //saveAdminOrgInfo(adminOrgInformation); 
                                     }
                                  });
                        

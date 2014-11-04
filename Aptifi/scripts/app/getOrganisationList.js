@@ -1294,6 +1294,7 @@ app.OragnisationList = (function () {
         var editProfileShow = function(){
     
             
+            
             $("#editFirstName").val(fname);
             $("#editLastName").val(lname);
             $("#editEmail").val(email);
@@ -1379,7 +1380,7 @@ app.OragnisationList = (function () {
                  }else{
                $("#moreOption").hide();  
                  }
-            */
+                */
             var db = app.getDb();
 			db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
          };
@@ -1410,6 +1411,15 @@ app.OragnisationList = (function () {
 		        	mobile = results.rows.item(0).mobile;
         
                     
+                                var fnameLen=fname.length;
+                                var lnameLen=lname.length;
+
+                                var totalLen = fnameLen + lnameLen ;
+                                
+                                if (totalLen > 14) {
+                           		lname = lname.substr(0, 1) + '..';
+	                            }
+                    
                     $("#userEmailId").html(email); 
                     $("#userMobileNo").html(mobile);
                     $("#userlname").html(lname);
@@ -1419,7 +1429,7 @@ app.OragnisationList = (function () {
             
         
        var tempArray=[];
-        
+       var adminOrg = 0; 
   	function orgDataSuccess(tx, results) {    
         	var count = results.rows.length;              	
 			//alert(count);	
@@ -1435,7 +1445,8 @@ app.OragnisationList = (function () {
                         }
             		}             
                 }else{
-                    tempArray=[];
+                    tempArray=[];                    
+                    adminOrg=1;
                 } 
       }
 
@@ -1451,6 +1462,10 @@ app.OragnisationList = (function () {
                 		document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
                         }
             		}             
+                }else{
+                    if(adminOrg===1){
+                      document.getElementById("orgData").innerHTML += '<ul><li>No Organisation Added You</li></ul>'   
+                    }
                 }        
       }
 
@@ -1462,7 +1477,7 @@ app.OragnisationList = (function () {
             
             
             
-           function OnImageLoad(evt) {
+        function OnImageLoad(evt) {
 
             var img = evt.currentTarget;
 
@@ -1481,7 +1496,7 @@ app.OragnisationList = (function () {
             $(img).css("left", result.targetleft);
             $(img).css("top", result.targettop);
            
-          };
+        };
             
             
                      
@@ -1527,6 +1542,16 @@ app.OragnisationList = (function () {
                 
                 var query = "DELETE FROM ORG_NOTI_COMMENT";
 	            app.deleteQuery(tx, query);
+                
+                var query = "DELETE FROM ADMIN_ORG";
+        	    app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_GROUP";
+	            app.deleteQuery(tx, query);
+
                                 
 	            var query = 'UPDATE PROFILE_INFO SET login_status=0';
             	app.updateQuery(tx, query);

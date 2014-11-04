@@ -372,8 +372,6 @@ app.groupDetail = (function () {
         //};
         
         
-
-        
         var removeMemberFromGroup = function(){           
             app.MenuPage=false;
             app.mobileApp.navigate('#removeMemberFromGroup');

@@ -324,9 +324,18 @@ var app = (function (win) {
                 
                 var query = "DELETE FROM ORG_NOTI_COMMENT";
 	            app.deleteQuery(tx, query);
+                
+                var query = "DELETE FROM ADMIN_ORG";
+        	    app.deleteQuery(tx, query);
 
-	             var query = 'UPDATE PROFILE_INFO SET login_status=0';
-            	 app.updateQuery(tx, query);
+            	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+	            app.deleteQuery(tx, query);
+
+            	var query = "DELETE FROM ADMIN_ORG_GROUP";
+	            app.deleteQuery(tx, query);
+
+	            var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            	app.updateQuery(tx, query);
             }
             
 
@@ -346,14 +355,14 @@ var app = (function (win) {
     
     function updateAdminLoginStatus(tx) {
                 
-                var query = "DELETE FROM ADMIN_ORG";
+                /*var query = "DELETE FROM ADMIN_ORG";
         	    app.deleteQuery(tx, query);
 
             	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
 	            app.deleteQuery(tx, query);
 
             	var query = "DELETE FROM ADMIN_ORG_GROUP";
-	            app.deleteQuery(tx, query);
+	            app.deleteQuery(tx, query);*/
                                                 
 	            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
             	app.updateQuery(tx, query);
@@ -611,6 +620,9 @@ var app = (function (win) {
             send_DateDB= getPresentDateTime();
                         
             
+          
+            if(typeDB!=='Add Customer'){
+          
             if(commentAllowDB===''){
                 commentAllowDB=0;
             }
@@ -639,7 +651,9 @@ var app = (function (win) {
                 }
         	}, 'Notification', ['Move To', 'Cancel']);        
 
-            
+           }else{
+               showAlert(messageDB , "Notification" );
+           } 
                     
             //var db = app.getDb();
 			//db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
@@ -709,7 +723,9 @@ var app = (function (win) {
             notificationMsg=messageSplitVal[7];
 
             send_DateDB= getPresentDateTime();
-            
+           
+            if(typeDB!=='Add Customer'){
+
             if(attachedDB=== 0 || attachedDB=== "0"){
                 attachedDB='';
             }
@@ -734,7 +750,7 @@ var app = (function (win) {
                     goToAppPage();                    
                 }    
             }
-            
+           } 
            /* if ( e.foreground )
              {
                 //var soundfile = e.soundname || e.payload.sound;
