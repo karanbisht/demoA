@@ -86,7 +86,22 @@ app.replyedCustomer = (function () {
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
 
-                   	             if(orgVal.Msg ==='No list found'){   
+                                     
+                                    if(orgVal.Msg ==="You don't have access"){   
+                                     
+                                        groupDataShow.push({
+                                         user_fname: "You Don't have access",
+                                         user_lname: '',
+                                         customerID:0,  
+                                         user_type : '',
+                                         //orgID:0,
+                                         comment:'',
+                                         notification_id:'',
+                                         add_date:'',
+                                         user_id:0
+    	                               
+                                        });                                      
+	                                }else if(orgVal.Msg ==='No list found'){   
                                      
                                         groupDataShow.push({
                                          user_fname: 'No Customer found',

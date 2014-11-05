@@ -137,7 +137,7 @@
            </div>
            
                       
-            <div  id="regenerateDiv" style=" display:none;background-color:#F5F5F5; margin:-160px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:300px;">
+            <div  data-role="view" id="regenerateDiv" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:300px;width:94%;overflow:hidden;">
 
 				    <div style="vertical-align:middle; text-align:center">
        				<img src="styles/images/msgIcon.png" height="100" width="100"/>
@@ -171,14 +171,13 @@
     
     
  
-  <div  id="validationRow" style=" display:none;background-color:#F5F5F5; margin:-200px 10px 10px 10px; border-radius:6px; padding:0px 10px 30px 10px;border: 2px solid #575B5F;height:350px;">
+         <div  data-role="view"  id="validationRow" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;overflow:hidden;">
 
-
-         <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin:0px;background-color: transparent;border:none;display:block;">  
+         <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin-top:-10px;background-color: transparent;border:none;display:block;">  
              <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
          </span>
 
-         <div style="background-color:#ffffff;color:#313C50;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
+         <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
        	Verification
 		 </div>
       
@@ -223,7 +222,7 @@
 	    	Note-: Clicking on Re-Generate will invalidate the previous verification code.  
     	</div>    
 
-  </div>
+      </div>
             
             
             <!--<ol class="group-wrp" style="margin-top:20px;">
@@ -554,9 +553,10 @@
 <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
 <!--data-pull-to-refresh="true"-->
 
+        
 <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
     
-  <div  id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
+  <div id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
       
      <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organization to send Notification</p>
       

@@ -834,10 +834,7 @@ var app = (function (win) {
       }
     
     
-    
-    
-    
-          function insertOrgNotiDataBagINC(tx){
+       function insertOrgNotiDataBagINC(tx){
           
           console.log('DATA VALUE1');
           
@@ -884,12 +881,12 @@ var app = (function (win) {
           
             //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
             console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
-            console.log('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
+            alert('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
 
             var messageDBVal=app.urlEncode(messageDB); 
             var titleDBVal=app.urlEncode(titleDB);
         
-            app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB+'&type='+typeDB);      
+            app.mobileApp.navigate('views/activityView.html?message='+messageDBVal+'&title='+titleDBVal+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB+'&type='+typeDB);
     }
     
     function updatebagCount(tx){

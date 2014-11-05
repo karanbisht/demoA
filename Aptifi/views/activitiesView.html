@@ -15,12 +15,18 @@
                       <div class="loading1">Loading...</div>
        </div>
 
-       <div>
+       <div>  
+           
     	<ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></ul>
-	         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
+
+          <div id="showMoreButton" style="color:#3598DB;margin:10px;width:93%" data-role="button" data-click="app.Activities.showMoreButtonPress">SHOW MORE</div>
+
+             <!--<p id="no-activities-span" hidden="hidden" class="no-items-msg">
 		    	   <b>You have no Notification for you.</b>
-    		 </p>
+    		 </p>-->
  	  </div> 
+       
+
 
     
    </div>
@@ -36,8 +42,8 @@
         		    <img src="styles/images/notification1.png" />
  	           </div>-->
               #if(date!==previousDate){#          
-              <div style="text-align: center;margin-bottom:10px;">
-                 <span id="activityTemplateDate" style="text-align:center;line-height:10pt;border-radius:6px;background-color:rgb(222,222,222);padding:2px 10px 2px 10px;">${date}</span>              
+              <div style="text-align: center;margin-bottom:10px;margin-top:5px;">
+                 <span id="activityTemplateDate" style="text-align:center;line-height:10pt;border-radius:6px;background-color:rgb(230,230,230);padding:2px 10px 2px 10px;color:rgb(53,152,219);">${date}</span>              
               </div>
               #}#
               

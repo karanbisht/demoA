@@ -79,7 +79,7 @@ app.Login = (function () {
         };
        
         // Authenticate to use Backend Services as a particular user
-
+        var countCheck=0;
         var login = function () {		 
             var deviceName = app.devicePlatform();
             var device_type;
@@ -194,16 +194,18 @@ app.Login = (function () {
 
                                 clickforRegenerateCode();   
                       }else if(loginData.status[0].Msg==='Success'){
+                           clickforRegenerateCode();   
+
                           //console.log('reg');
-                          account_Id = loginData.status[0].ProfileInfo[0].account_id;
+                       //   account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
-                         // console.log(loginData.status[0].JoinedOrg.role.length);
+                          // console.log(loginData.status[0].JoinedOrg.role.length);
                           
                           //console.log(loginData);
                           //console.log(loginData.status[0].JoinedOrg.role.length);
                           
                           
-                         if(loginData.status[0].JoinedOrg.length!==0){
+                         /*if(loginData.status[0].JoinedOrg.length!==0){
                               var roleLength = loginData.status[0].JoinedOrg.role.length;
                                   for(var i=0;i<roleLength;i++){
                                     userType.push(loginData.status[0].JoinedOrg.role[i]); 
@@ -214,7 +216,7 @@ app.Login = (function () {
                               JoinedOrganisationYN = 0;
                          }
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                          
+                          */
                           //console.log('checking for User Date');
                           
                          
@@ -226,12 +228,12 @@ app.Login = (function () {
                           
                           //db = app.getDb();
 						  //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
-                          saveProfileInfo(UserProfileInformation);
+                     //  saveProfileInfo(UserProfileInformation);
                            
                          if(loginData.status[0].JoinedOrg.length!==0){
                                   //saveOrgInfo(UserOrgInformation);              
                          }
-                      
+                        
                       }else{
                           //app.mobileApp.pane.loader.hide();
                              $("#progress").hide();
@@ -653,13 +655,17 @@ app.Login = (function () {
         
         var cancelButtonRC = function(){
 
-           $(".km-scroll-container").css("-webkit-transform", "");
+           /*$(".km-scroll-container").css("-webkit-transform", "");
            $("#regenerateDiv").hide();
            $("#validationRow").hide(); 
            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
 		   $("#selectionDiv").css("z-index", "1");
 		   $("#selectionDiv").css("opacity", 1);
-		   $("#regDoneButton").show();
+		   $("#regDoneButton").show();*/
+            
+           window.location.href = "index.html"; 
+
+            
         };
         
         var backToIndex = function(){
@@ -760,7 +766,7 @@ app.Login = (function () {
 
                 //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
                 var device_id = localStorage.getItem("deviceTokenID");
-            //console.log(device_id);
+                //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
        
@@ -804,11 +810,12 @@ app.Login = (function () {
                        var loginDataView = dataSourceLogin.data();
                			//console.log(loginDataView);
        
-               $.each(loginDataView, function(i, loginData) {
+                  $.each(loginDataView, function(i, loginData) {
                                //console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='Success'){
-					      account_Id = loginData.status[0].ProfileInfo[0].account_id;
+					                                                    
+                          account_Id = loginData.status[0].ProfileInfo[0].account_id;
                           //console.log('karan'+account_Id);
                           console.log(loginData);
                                                    
@@ -824,10 +831,10 @@ app.Login = (function () {
                           }   
                           
                           UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                          if(loginData.status[0].JoinedOrg.length!==0){
-                              UserOrgInformation = loginData.status[0].JoinedOrg;
-                              saveOrgInfo(UserOrgInformation);
-                          }    
+                          //if(loginData.status[0].JoinedOrg.length!==0){
+                              //UserOrgInformation = loginData.status[0].JoinedOrg;
+                              //saveOrgInfo(UserOrgInformation);
+                          //}    
                           //console.log(UserOrgInformation);
                           //console.log(UserProfileInformation);
                           //console.log("karan bisht");

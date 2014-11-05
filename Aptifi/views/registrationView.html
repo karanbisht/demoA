@@ -27,7 +27,7 @@
             </ol>
     </div>
     
-    <div  id="regenerateDivR" style=" display:none;background-color:#F5F5F5; margin:-100px 10px 10px 10px; border-radius:6px; padding:0px 10px 20px 10px;border: 2px solid #575B5F;height:300px;">
+  <div data-role="view" id="regenerateDivR" style=" display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:300px;width:94%;overflow:hidden;">
 
     <div style="vertical-align:middle; text-align:center">
        <img src="styles/images/msgIcon.png" height="100" width="100"/>
@@ -57,8 +57,13 @@
     
     
     
-    <div  id="validationRowR" style=" display:none;background-color:#F5F5F5; margin:-140px 10px 10px 10px; border-radius:6px; padding:0px 10px 30px 10px;border: 2px solid #575B5F;height:350px;">
-    <div style="background-color:#313C50;color:#ffffff;text-align:center;margin-right:-10px;margin-left:-10px;padding:10px;border-radius:6px 6px 0px 0px;">
+    <div data-role="view" id="validationRowR" style=" display:none; margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;overflow:hidden;">
+
+     <!--<span id="" data-role="button" data-bind="click: cancelButtonRCR" style="margin:-20px;background-color: transparent;border:none;display:block;">  
+             <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
+     </span>-->
+  
+    <div style="background-color:#313C50;color:#ffffff;text-align:center;padding:10px;">
        Verification
     </div>
        <form id="reg-verification-form" data-bind="events: { keyup: checkEnterCode }" class="">

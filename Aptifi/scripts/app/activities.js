@@ -27,13 +27,47 @@ app.Activities = (function () {
            //console.log("plugin test");  
            //console.log(window.plugins);
             
+                     StartDbCount=0;
+                     EndDbCount=10;
+                     totalOrgNotification=0;
+                     groupDataShow=[];
+                             $("#showMoreButton").hide();
+
            $("#progressNotification").show();
            $(".km-scroll-container").css("-webkit-transform", "");  
            groupDataShow=[];
            $('#activities-listview').data('kendoMobileListView').refresh();
              
-           //var scroller = e.view.scroller;
-           //scroller.reset();
+        
+           var scroller = app.mobileApp.scroller();
+               scroller.reset();
+
+             
+            /*var scroller = app.mobileApp.scroller();
+            console.log("scrollheight " + scroller.scrollHeight() + " height: " + scroller.height());
+            var offset = scroller.height();
+            if (offset === 0)
+                offset = 100;
+            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
+             */
+             
+           /*var scroller = e.view.scroller;
+           var offset = scroller.height();
+            if (offset === 0)
+                offset = 100;
+            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
+             
+             //scroller.reset();
+             
+          /*scrollViewToBottom: function (view) {
+            var scroller = view.scroller;
+            console.log("scrollheight " + scroller.scrollHeight() + " height: " + scroller.height());
+            var offset = scroller.height();
+            if (offset == 0)
+                offset = 100;
+            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
+          },*/
+             
              
              
            //app.mobileApp.pane.loader.show();  
@@ -55,7 +89,8 @@ app.Activities = (function () {
 
              
            var db = app.getDb();
-		   db.transaction(getLastOrgNoti, app.errorCB, showDBNotification);         
+             //showDBNotification
+		   db.transaction(getLastOrgNoti, app.errorCB,app.successCB );         
        };
         
                     
@@ -205,7 +240,11 @@ app.Activities = (function () {
                var query = "UPDATE JOINED_ORG SET count='"+GlobalDataCount+"',bagCount='"+GlobalDataCount+"', lastNoti='"+GlobalDataLastMsg+"' where org_id='" +GlobalDataOrgId +"' and role='C'";
                app.updateQuery(tx, query);
         }
+
         
+        var totalOrgNotification=0;        
+        var StartDbCount=0;
+        var EndDbCount=10;
         
         function showDBNotification(){
            var db = app.getDb();
@@ -213,23 +252,44 @@ app.Activities = (function () {
         }
             
         var getDataOrgNoti = function(tx){
-            var query = "SELECT * FROM ORG_NOTIFICATION where org_id="+organisationID+" ORDER BY pid DESC" ;
+            //alert(StartDbCount+"||"+EndDbCount);
+            
+            var query = "SELECT * FROM ORG_NOTIFICATION where org_id='"+organisationID+"' ORDER BY pid DESC limit'"+ StartDbCount+"','"+EndDbCount+"'" ;
 			app.selectQuery(tx, query, getOrgNotiDataSuccess);
+            
+            var query = "SELECT count(pid) as TOTAL_DATA from ORG_NOTIFICATION where org_id="+organisationID;
+            app.selectQuery(tx, query, getOrgTotalNotiData);
+
         };    
+        
+        
+        function getOrgTotalNotiData(tx, results){
+                 
+            totalOrgNotification = results.rows.item(0).TOTAL_DATA;
+            //alert(totalOrgNotification);
+            //alert(EndDbCount);
+            
+            if(StartDbCount+10 >=totalOrgNotification){
+                StartDbCount=totalOrgNotification;
+                $("#showMoreButton").hide();
+            }else{
+               $("#showMoreButton").show(); 
+            }
+        }
                         
             
         function getOrgNotiDataSuccess(tx, results) {
-            groupDataShow=[];
+            //groupDataShow=[];
             
 			var count = results.rows.length;
-            //alert(count);
+            //alert("countData- "+count);
             //var current = new Date();   
             DBGETDATAVALUE = count;           
             
             var previousDate='';
             //alert(count);
 			if (count !== 0) {
-                groupDataShow=[];
+                //groupDataShow=[];
             	for(var i =0 ; i<count ; i++){
                   
                        var dateString = results.rows.item(i).send_date;
@@ -287,6 +347,20 @@ app.Activities = (function () {
 
             }                       
          };       
+        
+        
+        var showMoreButtonPress = function(){
+            //console.log(JSON.stringify(groupDataShow));
+            StartDbCount=StartDbCount+10;
+            EndDbCount=10;
+            
+            /*if(StartDbCount+5>=totalOrgNotification){
+                StartDbCount=totalOrgNotification;
+            }*/
+            
+            showDBNotification();
+
+        }
 
         var afterShow = function(){
               var db = app.getDb();
@@ -776,6 +850,7 @@ app.Activities = (function () {
             init:init,
             show:show,
             afterShow:afterShow,
+            showMoreButtonPress:showMoreButtonPress,
             refreshButton:refreshButton
         };
 
