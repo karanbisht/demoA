@@ -105,7 +105,7 @@ app.Login = (function () {
               
                 if(!app.checkConnection()){
                   if(!app.checkSimulator()){
-                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
@@ -517,7 +517,8 @@ app.Login = (function () {
 
                $("#progressRandomCode").hide();                             
                localStorage.setItem("ACCOUNT_ID",account_Id);
-
+               localStorage.setItem("FIRST_LOGIN",1); 
+               localStorage.setItem("ADMIN_FIRST_LOGIN",1); 
                app.userPosition=false;	
            
                app.mobileApp.navigate('#organisationNotiList');

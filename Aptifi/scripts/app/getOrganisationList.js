@@ -306,7 +306,7 @@ app.OragnisationList = (function () {
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='Not a customer to any organisation'){
+                      if(loginData.status[0].Msg==='Not a customer to any organization'){
                           
                           JoinedOrganisationYN = 0;
                                 groupDataShow=[]; 
@@ -537,7 +537,10 @@ app.OragnisationList = (function () {
 
            if (pos === -1) {
     		   joinOrgID.push(profileOrgData[i].organisationID);     
-                              
+
+               var first_login = localStorage.getItem("FIRST_LOGIN");
+
+               if(first_login===0){
                //alert('New Data');               
                var query ='INSERT INTO JOINED_ORG(org_id , org_name , imageSource , joinedDate , orgDesc ,lastNoti ,count) VALUES ("'
 				+ profileOrgData[i].organisationID
@@ -555,7 +558,30 @@ app.OragnisationList = (function () {
 				+ profileAdminOrgData[i].total
 				+ '")';              
                 app.insertQuery(tx, query);
-           
+               }else{
+                                                               
+                   localStorage.setItem(0,FIRST_LOGIN); 
+
+                var query ='INSERT INTO JOINED_ORG(org_id , org_name , imageSource , joinedDate , orgDesc ,lastNoti ,count,bagCount) VALUES ("'
+				+ profileOrgData[i].organisationID
+				+ '","'
+				+ profileOrgData[i].org_name
+				+ '","'
+				+ profileOrgData[i].org_logo
+                + '","'
+				+ profileOrgData[i].joinedON
+                + '","'
+				+ profileOrgData[i].org_desc
+                + '","'
+				+ LastNotificationMsg
+                + '","'
+				+ profileAdminOrgData[i].total
+                + '","'
+				+ profileAdminOrgData[i].total
+                + '")';              
+                app.insertQuery(tx, query);
+
+               }
            }else{        
                
                    //alert(LastNotificationMsg);
@@ -1177,7 +1203,7 @@ app.OragnisationList = (function () {
                 
               if(adminOrgExist===0){
                 orgDbData.push({
-						 org_name:'No Organisation',
+						 org_name:'No Organization',
         		         org_id: '',
                          role:'',
                          imgData:null,   
@@ -1464,7 +1490,7 @@ app.OragnisationList = (function () {
             		}             
                 }else{
                     if(adminOrg===1){
-                      document.getElementById("orgData").innerHTML += '<ul><li>No Organisation Added You</li></ul>'   
+                      document.getElementById("orgData").innerHTML += '<ul><li>No Organization Added You</li></ul>'   
                     }
                 }        
       }

@@ -15,16 +15,20 @@ app.adminLogin = (function () {
         var varifiCode;
 
                
-        var init = function () {            
+        var init = function () {         
             app.userPosition=false;
             app.MenuPage=false;	            
         };
 
         var show = function (e) {
+            
             account_Id = e.view.params.account_Id;
             app.userPosition=false;
             app.MenuPage=false;	
-            $('#loginMob').val('');
+
+            var userMobileNo = localStorage.getItem("username");
+            $("#loginMob").val(userMobileNo);            
+            document.getElementById("loginMob").readOnly = true;
             $('#loginPassword').val('');
         };
         

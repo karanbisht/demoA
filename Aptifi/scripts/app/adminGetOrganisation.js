@@ -307,6 +307,11 @@ app.adminOragnisationList = (function () {
              //alert("insert");
              joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
+
+           var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
+
+           if(first_login===0){
+
              var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
 				+ adminOrgProfileData[i].organisationID
 				+ '","'
@@ -321,6 +326,29 @@ app.adminOragnisationList = (function () {
 				+ adminIncomMsgData[i].total    
                 + '")';              
             app.insertQuery(tx, query);
+           
+           }else{               
+
+               localStorage.setItem(0,ADMIN_FIRST_LOGIN); 
+               
+                var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
+				+ adminOrgProfileData[i].organisationID
+				+ '","'
+				+ adminOrgProfileData[i].org_name
+				+ '","'
+				+ adminOrgProfileData[i].role
+           	 + '","'
+				+ adminOrgProfileData[i].org_logo
+                + '","'
+				+ adminOrgProfileData[i].org_desc
+                + '","'
+				+ adminIncomMsgData[i].total    
+                + '","'
+				+ adminIncomMsgData[i].total    
+                + '")';              
+            app.insertQuery(tx, query);
+ 
+           }    
                                         
          }else{        
                //alert("update");

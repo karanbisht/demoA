@@ -46,7 +46,7 @@ app.Activity = (function () {
         var getProfileInfo = function(tx){
 			var query = "select first_name FROM PROFILE_INFO";
 		    app.selectQuery(tx, query, orgDataProfileSuccess);
-       };
+        };
         
         
         var orgDataProfileSuccess = function(tx, results){
@@ -105,6 +105,11 @@ app.Activity = (function () {
 		}, false);
 
         var show = function (e) {
+            
+
+            app.mobileApp.pane.loader.hide();
+
+
 
             groupDataShow = [];            
 
@@ -200,7 +205,7 @@ app.Activity = (function () {
         
         var imagePathNotExist = function(){
              //alert('2');
-             app.mobileApp.pane.loader.show();    
+            $("#progressChat").show();
               //alert(attached);
              var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
             
@@ -218,16 +223,21 @@ app.Activity = (function () {
              var fileTransfer = new FileTransfer();    
              fileTransfer.download(attachedImg,fp,  
         			function(entry) {
-                        app.mobileApp.pane.loader.hide();
+                        $("#progressChat").hide();
 	        		},
     
     		        function(error) {
-                        app.mobileApp.pane.loader.hide();
+                                                $("#progressChat").hide();
+
 	        		}
 	    		);                
         }
         
         var commentShow = function(){
+            
+            app.mobileApp.pane.loader.hide();
+            $("#progressChat").show();
+
             var commentModel = {
             id: 'Id',
             fields: {
@@ -283,13 +293,13 @@ app.Activity = (function () {
                                      
                                      var returnMsg =groupValue[0].Msg;
                                      var orgNotiCommentData;
-                                     console.log(returnMsg);//No Comments 
+                                     console.log(returnMsg);
                                      if(returnMsg==='Success'){
                                      var commentLength=groupValue[0].AllComment.length;
+                              
                                          orgNotiCommentData=groupValue[0].AllComment;
                                          console.log(commentLength);
                                          
-                              
                                      for(var j=0;j<commentLength;j++){
                                          
                                                   var dateString = groupValue[0].AllComment[j].add_date;
@@ -298,25 +308,28 @@ app.Activity = (function () {
                                                   var commentDate= app.formatDate(split[0]);
                                                                  //alert(commentDate);
                                          
-                                      groupDataShow.push({
+                                        groupDataShow.push({
                                          comment: groupValue[0].AllComment[j].comment,
                                          add_date: commentDate,
                                          user_id : groupValue[0].AllComment[j].user_id,
                                          user_type : groupValue[0].AllComment[j].user_type
-                                      });
+                                        });
                                      }
                                      saveOrgNotiComment(orgNotiCommentData);    
                                   } 
                                  });
                        
  		                         console.log(groupDataShow);
-                                   return groupDataShow;
+                                  //alert(JSON.stringify(groupDataShow));
+                                  return groupDataShow;
           
                        }                       
             },
 	            error: function (e) {
-    	           //apps.hideLoading();
-        	       console.log(e);
+
+                    $("#progressChat").hide();
+
+                   console.log(e);
             	   /*navigator.notification.alert("Please check your internet connection.",
                	function () { }, "Notification", 'OK');
                    */
@@ -344,6 +357,10 @@ app.Activity = (function () {
            		model:  commentModel
 				}			 
 		     });
+            
+
+            $("#progressChat").hide();
+
             
             
             if(!app.checkConnection()){
@@ -561,7 +578,7 @@ app.Activity = (function () {
                }
            },
            error: function (e) {
-               //apps.hideLoading();
+
                console.log(e);
                navigator.notification.alert("Please check your internet connection.",
                function () { }, "Notification", 'OK');
@@ -583,6 +600,7 @@ app.Activity = (function () {
                                   refreshComment(); 
                              if(commentData.status[0].Msg === 'Reply sent successfully'){
                                  
+                                 lastNotiCommentID=lastNotiCommentID+1;
                                  if(!app.checkSimulator()){
                                       window.plugins.toast.showShortBottom('Reply sent successfully');   
                                  }else{
