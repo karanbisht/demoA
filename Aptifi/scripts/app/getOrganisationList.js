@@ -306,7 +306,7 @@ app.OragnisationList = (function () {
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='Not a customer to any organization'){
+                      if(loginData.status[0].Msg==='Not a customer to any organisation'){
                           
                           JoinedOrganisationYN = 0;
                                 groupDataShow=[]; 
@@ -559,8 +559,9 @@ app.OragnisationList = (function () {
 				+ '")';              
                 app.insertQuery(tx, query);
                }else{
-                                                               
-                   localStorage.setItem(0,FIRST_LOGIN); 
+
+                   localStorage.setItem("FIRST_LOGIN",0); 
+                   //localStorage.setItem(0,FIRST_LOGIN); 
 
                 var query ='INSERT INTO JOINED_ORG(org_id , org_name , imageSource , joinedDate , orgDesc ,lastNoti ,count,bagCount) VALUES ("'
 				+ profileOrgData[i].organisationID
@@ -1318,11 +1319,9 @@ app.OragnisationList = (function () {
         
         
         var editProfileShow = function(){
-    
-            
             
             $("#editFirstName").val(fname);
-            $("#editLastName").val(lname);
+            $("#editLastName").val(lnameVal);
             $("#editEmail").val(email);
             //$("#editMobile").val(mobile);            
             //document.getElementById("editMobile").readOnly = true;
@@ -1427,12 +1426,16 @@ app.OragnisationList = (function () {
 	        		var lname;
 		        	var email;
 		        	var mobile;
+                    var lnameVal;
         
             function profileDataSuccess(tx, results) {
 				var count = results.rows.length;
 		    	if (count !== 0) {
 			        fname = results.rows.item(0).first_name;
 	        		lname = results.rows.item(0).last_name;
+
+                    lnameVal = results.rows.item(0).last_name;
+
 		        	email = results.rows.item(0).email;
 		        	mobile = results.rows.item(0).mobile;
         

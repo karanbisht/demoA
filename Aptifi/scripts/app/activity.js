@@ -272,7 +272,8 @@ app.Activity = (function () {
             
             console.log(org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID);
             
-           
+                      app.mobileApp.pane.loader.hide();
+ 
             commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
@@ -348,6 +349,10 @@ app.Activity = (function () {
             
             //commentsDataSource.fetch(function() {               
  		   //});
+            
+            
+                        app.mobileApp.pane.loader.hide();
+
 
              $("#comments-listview").kendoMobileListView({
   		    template: kendo.template($("#commentsTemplate").html()),    		
@@ -362,6 +367,8 @@ app.Activity = (function () {
             $("#progressChat").hide();
 
             
+                        app.mobileApp.pane.loader.hide();
+
             
             if(!app.checkConnection()){
                   if(!app.checkSimulator()){

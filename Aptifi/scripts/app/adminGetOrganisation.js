@@ -329,7 +329,7 @@ app.adminOragnisationList = (function () {
            
            }else{               
 
-               localStorage.setItem(0,ADMIN_FIRST_LOGIN); 
+                              localStorage.setItem("ADMIN_FIRST_LOGIN",0); 
                
                 var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
 				+ adminOrgProfileData[i].organisationID
