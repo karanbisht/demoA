@@ -47,24 +47,22 @@
   		 <div style="float:left;width:80%;"><textarea id="newComment" placeholder="Write a reply..." style="padding-left:5px;padding-right:5px;"></textarea></div>
            <input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>
         </div>
-   </div>      
-    
+   </div>          
 </div>
-
 
 <!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
    # if (user_type !== 'Customer'){ # 
         <div class="comment-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;">
-        <h2 class="person-name">${User()}</h2>
-        <span class="time-span">${add_date}</span>       
-        <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
-        <a class="user-share-txt">${comment}</a>
+            <h2 class="person-name">${User()}</h2>
+            <span class="time-span">${add_date}</span>       
+            <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
+            <a class="user-share-txt">${comment}</a>
        </div>
   # }else{ #
     <div class="comment-content" style="background-color:rgb(203,225,254);padding:10px;border-radius:6px;">
-        <h2 class="person-name">${User()}</h2>
-        <span class="time-span">${add_date}</span>
+               <h2 class="person-name">${User()}</h2>
+               <span class="time-span">${add_date}</span>
               <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
         <a class="user-share-txt">${comment}</a>
     </div>        

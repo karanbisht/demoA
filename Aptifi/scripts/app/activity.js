@@ -227,8 +227,7 @@ app.Activity = (function () {
 	        		},
     
     		        function(error) {
-                                                $("#progressChat").hide();
-
+                        $("#progressChat").hide();
 	        		}
 	    		);                
         }

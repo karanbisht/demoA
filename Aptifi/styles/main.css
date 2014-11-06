@@ -242,7 +242,7 @@ input::-webkit-inner-spin-button {
 
 #friendsApp .header .nav-button-home {
     background-image: url(images/home.png);
-    background-size: 30px 28px;
+    background-size: 30px 30px;
 }
 
 #friendsApp .header .nav-button-back {
@@ -783,7 +783,7 @@ input::-webkit-inner-spin-button {
     
     #friendsApp .header .nav-button-home {
         background-image: url(images/home.png);
-        background-size: 33px 33px;
+        background-size: 30px 30px;
     }
     
     
