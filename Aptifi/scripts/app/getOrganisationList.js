@@ -1714,6 +1714,12 @@ app.OragnisationList = (function () {
             app.mobileApp.navigate('#profileDiv');
 
         }
+        
+        var showCalendar = function(){
+
+            app.mobileApp.navigate('views/eventCalendar.html');
+            
+        }
 
         return {
             //activities: activitiesModel.activities,
@@ -1726,7 +1732,7 @@ app.OragnisationList = (function () {
             showOrgInfoPage:showOrgInfoPage,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
-                   
+            showCalendar:showCalendar,       
             manageGroup:manageGroup,
             about:about,
             setting:setting,

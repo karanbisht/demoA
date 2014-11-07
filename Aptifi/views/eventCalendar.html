@@ -1,0 +1,28 @@
+<!-- class="activities-view-info" -->
+<div data-role="view" id="eventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.show" data-transition="zoom">
+
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+              <div data-role="navbar">     
+                 <span>Event Calendar</span>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callUserLogin">home</a>
+              </div>                                          
+    </div>
+
+
+    <div id="calendarContainerDiv" class="demo-section k-header" style="width:100%; text-align: center;">
+
+         <div id="calendar"></div>
+        
+    </div>
+    
+    
+    <div style="background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;">
+       <p style="color:rgb(53,152,219);">Data: <span id="eventTime"></span></p>
+         
+       <p style="color:rgb(53,152,219);">Event Title:</p> 
+        
+       <p style="color:rgb(53,152,219);">Event Time:</p> 
+    </div>
+       
+</div>

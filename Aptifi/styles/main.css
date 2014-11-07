@@ -1221,3 +1221,13 @@ input.largerCheckbox
     float:right;
 }*/
 
+
+
+.ob-done-date-style {
+    background-color: #85d633;
+    background-image: url(../styles/textures/highlight.png);
+}
+.ob-not-done-date-style {
+    background-color: #EBB500;
+    background-image: url(../styles/textures/highlight.png);
+}
