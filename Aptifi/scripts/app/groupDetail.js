@@ -531,6 +531,13 @@ app.groupDetail = (function () {
                            }                                                                                                              
        			 };
 
+        
+        
+                var showOrgEvent = function(){
+                    app.MenuPage=false;
+                    console.log(organisationID);
+                    app.mobileApp.navigate('views/adminEventCalendar.html');                
+                }
 	           
     	       return {
         	   init: init,
@@ -550,7 +557,8 @@ app.groupDetail = (function () {
            	showGroupNotification:showGroupNotification,
            	showGroupMembers:showGroupMembers,
                showUpdateGroupView:showUpdateGroupView ,
-               showOrgGroupView:showOrgGroupView,        
+               showOrgGroupView:showOrgGroupView,       
+               showOrgEvent:showOrgEvent,    
                saveUpdatedGroupVal:saveUpdatedGroupVal    
            	};
             

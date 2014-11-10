@@ -1,5 +1,5 @@
 <!-- class="activities-view-info" -->
-<div data-role="view" id="eventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.show" data-transition="zoom">
+<div data-role="view" id="adminEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.show" data-transition="zoom">
 
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
@@ -17,7 +17,7 @@
     </div>
     
     
-    <div id="eventDetailDiv" style="background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;display:none;width:94%" data-role="button" data-click="app.eventCalender.eventMoreDetailClick">
+    <div id="eventDetailDiv" style="background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;display:none;width:94%" data-role="button" data-click="app.adminEventCalender.eventMoreDetailClick">
         
        <p style="color:rgb(53,152,088); text-align:left;">Data: <span id="eventDate" style="color:rgb(53,152,219)"></span></p>
         
@@ -28,7 +28,7 @@
         
        <p style="color:rgb(53,152,088);text-align:left;">Event Time: <span id="eventTime" style="color:rgb(53,152,219);"></span></p> -->
         
-        <span style="color:rgb(53,152,088);">Click for More Details</span>
+        <span style="color:rgb(53,152,088);">CLICK TO ADD MORE EVENT</span>
     </div>
        
 </div>
@@ -36,7 +36,7 @@
 
 
 
-<div data-role="view" id="eventCalendarDetail" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.detailShow" data-transition="zoom">
+<div data-role="view" id="adminEventCalendarDetail" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.detailShow" data-transition="zoom">
 
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
@@ -78,3 +78,54 @@
 		    </div>   
             
 		</script>
+
+
+
+
+<div data-role="view" id="adminAddEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.addEventshow" data-transition="zoom">
+
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+              <div data-role="navbar">     
+                 <span> Add Event </span>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callUserLogin">home</a>
+              </div>                                          
+    </div>
+    
+    
+    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
+             
+           <ul data-role="listview" data-style="inset">
+                <li class="username"><input type="text" id="editOrgName" placeholder="Enter New Event Name" /></li>
+           </ul> 
+             
+           <div class="user-share">
+	             <textarea id="editOrgDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
+           </div>
+	    
+            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
+            
+            <div style="margin-top:20px" >
+                <input id="datePicker" />
+            </div>
+            <br/>
+            
+            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
+                <div style="margin-top:20px" >
+                    <input id="dateTimePicker" />
+                </div>
+            
+            
+        </div>
+         
+         
+           <li>
+              <span id="login" data-role="touch" data-bind="events: { tap: saveUpdatedGroupVal }" style="padding:10px;float:right;">
+                        <a data-role="button" style="background-color:#33539E">Save</a>   
+              </span>
+           </li>
+
+
+
+       
+</div>

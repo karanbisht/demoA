@@ -1,27 +1,32 @@
 var app = app || {};
 
-app.eventCalender = (function () {
+app.adminEventCalender = (function () {
 
     
-    var calendarEventModel = (function () {
+    var adminCalendarEventModel = (function () {
 
-        var eventOrgId;
+        var organisationId;
+        var account_Id;
         var groupAllEvent=[];
         var tasks = [];
 
         var init = function(){
-                        
+    
         }
     
-         var show = function(e){
+         var show = function(){
              
              tasks = [];
              multipleEventArray=[];
-                         $("#eventDetailDiv").hide();
+             $("#eventDetailDiv").hide();
 
+             //organisationId = e.view.params.organisationId;
+             //account_Id =e.view.params.account_Id;
+             
 
+             organisationID = localStorage.getItem("orgSelectAdmin");
+             account_Id = localStorage.getItem("ACCOUNT_ID");
 
-             eventOrgId = e.view.params.orgManageID;
              
              document.getElementById("calendar").innerHTML = "";
              
@@ -29,7 +34,7 @@ app.eventCalender = (function () {
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index/"+eventOrgId,
+                    url: "http://54.85.208.215/webservice/event/index/"+organisationId,
                     type:"POST",
                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
            	}
@@ -154,6 +159,7 @@ app.eventCalender = (function () {
 
         var multipleEventArray=[];
         var date2;
+
         function selectedDataByUser(){
 
             console.log("Change :: " + kendo.toString(this.value(), 'd'));
@@ -169,14 +175,14 @@ app.eventCalender = (function () {
 
 
             console.log(groupAllEvent);
+             
+            var checkGotevent=0;
             
             for(var i=0;i<groupAllEvent.length;i++){
 
                 if(date===groupAllEvent[i].event_date){
-
                     $("#eventDate").html(date);
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
-                    
                                                                                         
                                       multipleEventArray.push({
                                           id: groupAllEvent[i].id,
@@ -189,18 +195,21 @@ app.eventCalender = (function () {
                                           org_id: groupAllEvent[i].org_id
    	                               });
 
-
                     //$("#eventTitle").html(groupAllEvent[i].event_name);
                     //$("#eventTime").html(groupAllEvent[i].event_time);
                     $("#eventDetailDiv").show();
-
+                    checkGotevent=1;
                 }   
+            }
+            
+            if(checkGotevent===0){
+                app.mobileApp.navigate('#adminAddEventCalendar');
             }
         }
         
         
         var eventMoreDetailClick = function(){
-             app.mobileApp.navigate('#eventCalendarDetail');
+             app.mobileApp.navigate('#adminEventCalendarDetail');
         }
     
         var detailShow = function(){
@@ -225,15 +234,41 @@ app.eventCalender = (function () {
         }
         
         
+        var addEventshow = function(){
+         
+            
+         
+            $("#datePicker").kendoDatePicker({
+            value: new Date()
+            });
+            
+             
+            $("#dateTimePicker").kendoTimePicker({
+                value: new Date(),
+                format: "h:mm tt",
+                
+                change: function() {
+                        var value = this.value();
+                        console.log(value); //value is the selected date in the timepicker
+                }
+                
+            });
+                       
+            $(".km-scroll-container").css("-webkit-transform", "");
+ 
+        }
+        
+        
     	 return {
         	   init: init,
            	show: show,
                eventMoreDetailClick:eventMoreDetailClick,
+               addEventshow:addEventshow,
                detailShow:detailShow
           };
            
     }());
         
-    return calendarEventModel;
+    return adminCalendarEventModel;
     
 }());

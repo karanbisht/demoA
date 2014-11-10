@@ -90,6 +90,7 @@ app.OragnisationList = (function () {
          var lastMessageShow;
         
 
+        
         function getDataSuccess(tx, results) {                        
             console.log('before Show');
             console.log(results.rows);
@@ -1716,8 +1717,7 @@ app.OragnisationList = (function () {
         }
         
         var showCalendar = function(){
-
-            app.mobileApp.navigate('views/eventCalendar.html');
+            app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);
             
         }
 
