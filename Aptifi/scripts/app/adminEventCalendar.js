@@ -5,7 +5,7 @@ app.adminEventCalender = (function () {
     
     var adminCalendarEventModel = (function () {
 
-        var organisationId;
+        var organisationID;
         var account_Id;
         var groupAllEvent=[];
         var tasks = [];
@@ -25,16 +25,17 @@ app.adminEventCalender = (function () {
              
 
              organisationID = localStorage.getItem("orgSelectAdmin");
+             //alert(organisationID);
              account_Id = localStorage.getItem("ACCOUNT_ID");
 
              
-             document.getElementById("calendar").innerHTML = "";
+             document.getElementById("admincalendar").innerHTML = "";
              
              
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index/"+organisationId,
+                    url: "http://54.85.208.215/webservice/event/index/"+organisationID,
                     type:"POST",
                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
            	}
@@ -129,14 +130,11 @@ app.adminEventCalender = (function () {
          }
         
         
-        function showEventInCalendar(){
-                         
-             console.log(tasks);
-            
+        function showEventInCalendar(){                         
+             console.log(tasks);            
              multipleEventArray=[];
 
-                          
-             $("#calendar").kendoCalendar({
+             $("#admincalendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
              month:{
@@ -151,8 +149,8 @@ app.adminEventCalender = (function () {
               change: selectedDataByUser,              
               
               navigate:function () {
-                $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover");
-                $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover");
+                $(".ob-done-date", "#admincalendar").parent().addClass("ob-done-date-style k-state-hover");
+                $(".ob-not-done-date", "#admincalendar").parent().addClass("ob-not-done-date-style k-state-hover");
               }
             }).data("kendoCalendar");             
         }
@@ -166,7 +164,7 @@ app.adminEventCalender = (function () {
             var date = kendo.toString(this.value(), 'd'); 
                 
             
-            var date2 = kendo.toString(this.value(), 'd'); 
+             date2 = kendo.toString(this.value(), 'd'); 
 
             $("#eventDetailDiv").hide();
  
@@ -180,7 +178,11 @@ app.adminEventCalender = (function () {
             
             for(var i=0;i<groupAllEvent.length;i++){
 
+                //date=date.toString();
+                //groupAllEvent[i].event_date=groupAllEvent[i].event_date.toString();
+                
                 if(date===groupAllEvent[i].event_date){
+
                     $("#eventDate").html(date);
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
                                                                                         
@@ -197,6 +199,7 @@ app.adminEventCalender = (function () {
 
                     //$("#eventTitle").html(groupAllEvent[i].event_name);
                     //$("#eventTime").html(groupAllEvent[i].event_time);
+                    
                     $("#eventDetailDiv").show();
                     checkGotevent=1;
                 }   
@@ -212,12 +215,13 @@ app.adminEventCalender = (function () {
              app.mobileApp.navigate('#adminEventCalendarDetail');
         }
     
+        
         var detailShow = function(){
+            var dateShow = multipleEventArray[0].event_date;
 
             $(".km-scroll-container").css("-webkit-transform", "");
-
             
-            $("#detailEventData").html("Event On "+multipleEventArray[0].event_date);
+            $("#detailEventData").html("Event On "+dateShow);
              console.log(multipleEventArray);                
              var organisationListDataSource = new kendo.data.DataSource({
                   data: multipleEventArray
@@ -236,16 +240,20 @@ app.adminEventCalender = (function () {
         
         var addEventshow = function(){
          
-            
+            $("#addEventName").val('');
+            $("#addEventDesc").val('');
+            console.log(date2);
          
-            $("#datePicker").kendoDatePicker({
-            value: new Date()
+            $("#adddatePicker").kendoDatePicker({
+            value: date2
             });
             
              
-            $("#dateTimePicker").kendoTimePicker({
+            $("#adddateTimePicker").kendoTimePicker({
                 value: new Date(),
+                interval: 15,
                 format: "h:mm tt",
+                timeFormat: "HH:mm", 
                 
                 change: function() {
                         var value = this.value();
@@ -257,13 +265,335 @@ app.adminEventCalender = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
  
         }
+
         
+        var eventNameEdit;
+        var eventDescEdit;
+        var eventDateEdit;
+        var eventTimeEdit;
+        var eventPid;
+        
+        var editEvent = function(e){
+             console.log(e.data.uid);
+              console.log(e.data);
+            
+             eventNameEdit = e.data.event_name;
+             eventDescEdit = e.data.event_desc;
+             eventDateEdit = e.data.event_date;
+             eventTimeEdit = e.data.event_time;
+             eventPid = e.data.id;
+             app.mobileApp.navigate('#adminEditEventCalendar');
+        }
+        
+        
+        var deleteEvent = function(e){
+             console.log(e.data.uid);
+             console.log(e.data);
+
+            var eventPid = e.data.id;
+            
+            console.log('orgID='+organisationID+"pid="+eventPid)
+
+            var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
+            
+            var dataSourceaddGroup = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/event/delete/",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataSaveGroup
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(JSON.stringify(e));
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          
+         });  
+	            
+           dataSourceaddGroup.fetch(function() {
+              var loginDataView = dataSourceaddGroup.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
+                               if(addGroupData.status[0].Msg==='Deleted Successfully'){         
+				        	        app.mobileApp.navigate("#adminEventCalendar");
+        							app.showAlert("Event Deleted Successfully","Notification");
+                               }else{
+                                  app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });
+
+        }
+        
+        
+        var editEventshow = function(){
+
+            console.log(eventNameEdit);
+            
+            $("#editEventName").val(eventNameEdit);
+            
+            $("#editEventDesc").html(eventDescEdit);
+
+            console.log(eventDateEdit);
+
+            $("#editdatePicker").kendoDatePicker({
+            value: eventDateEdit,
+                
+                change: function() {
+                        var value = this.value();
+                        console.log(value); //value is the selected date in the timepicker
+                }
+            });
+                         
+            $("#editdateTimePicker").kendoTimePicker({
+                value: eventTimeEdit,
+                interval: 15,
+                format: "h:mm tt",
+                timeFormat: "HH:mm",                
+                change: function() {
+                        var value = this.value();
+                        console.log(value); //value is the selected date in the timepicker
+                }
+                
+            });            
+
+        }
+        
+
+        
+        
+        var addNewEventFunction = function(){
+            
+            var event_name = $("#addEventName").val();     
+            var event_description = $("#addEventDesc").val();
+
+            var event_Date = $("#adddatePicker").val();
+            var event_Time = $("#adddateTimePicker").val();
+            
+            
+         if (event_name === "Enter New Event Name" || event_name === "") {
+				app.showAlert("Please enter Event Name.","Validation Error");
+         }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
+				app.showAlert("Please enter Event Description.","Validation Error");
+         }else {    
+
+
+                                  
+            var values = event_Date.split('/');            
+            var month = values[0]; // globle variable            
+            var day = values[1];            
+            var year  = values[2];
+             
+            if(day<10){
+                day="0"+day;
+            }
+            
+            
+            var valueTime = event_Time.split(':');            
+            var Hour = valueTime[0]; // globle variable            
+            var Min = valueTime[1];        
+            
+            
+            var valueTimeMin = Min.split(' '); 
+            var minute = valueTimeMin[0];
+            var AmPm  = valueTimeMin[1];
+            if(AmPm==='PM'){
+                if(Hour!=='12' && Hour!==12){
+                    Hour=parseInt(Hour)+12;
+                }
+            }
+            
+            
+            console.log(Hour+"||"+minute+"||"+AmPm);
+            
+            var eventTimeSend = Hour+":"+minute+":00";
+            //eventTimeSend=eventTimeSend.toString();
+             
+            event_Date= year+"-"+month+"-"+day;
+            //event_Date=event_Date.toString();
+            var actionval = "Add";
+
+            
+            console.log(event_name);
+            console.log(event_description);
+            console.log(event_Date);
+            console.log(event_Time);
+
+                
+            
+           console.log("org_id="+organisationID +"txtEventName="+event_name+"txtEventDesc="+event_description+"txtEventDate="+event_Date+"eventStartTime="+eventTimeSend+"action="+actionval);
+                        
+
+             var jsonDataSaveGroup ={"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval}
+            
+             var dataSourceaddGroup = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/event/Add",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataSaveGroup
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               console.log(JSON.stringify(e));
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          
+         });  
+	            
+           dataSourceaddGroup.fetch(function() {
+              var loginDataView = dataSourceaddGroup.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
+                               if(addGroupData.status[0].Msg==='Event added successfully'){         
+				        	        app.mobileApp.navigate("#adminEventCalendar");
+        							app.showAlert("Event Added Successfully","Notification");
+                               }else{
+                                  app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });
+          
+          }   
+
+        }
+        
+
+        var saveEditEventData = function(){
+         
+            var event_name = $("#editEventName").val();     
+            var event_description = $("#editEventDesc").val();
+
+            var event_Date = $("#editdatePicker").val();
+            var event_Time = $("#editdateTimePicker").val();
+            
+            
+         if (event_name === "Enter New Event Name" || event_name === "") {
+				app.showAlert("Please enter Event Name.","Validation Error");
+         }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
+				app.showAlert("Please enter Event Description.","Validation Error");
+         }else {    
+
+            
+                                  
+            var values = event_Date.split('/');            
+            var month = values[0]; // globle variable            
+            var day = values[1];            
+            var year  = values[2];
+             
+            if(day<10){
+                day="0"+day;
+            }
+            
+            event_Date= year+"-"+month+"-"+day;
+            
+            var actionval = "Edit";
+
+            
+            console.log(event_name);
+            console.log(event_description);
+            console.log(event_Date);
+            console.log(event_Time);
+
+                
+            
+           console.log("org_id="+organisationID +"txtEventName="+event_name+"txtEventDesc="+event_description+"txtEventDate="+event_Date+"eventStartTime="+event_Time+"pid="+eventPid+"action="+actionval);
+                        
+             var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval}
+            
+             var dataSourceaddGroup = new kendo.data.DataSource({
+               transport: {
+               read: {
+                   url: "http://54.85.208.215/webservice/event/edit",
+                   type:"POST",
+                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                   data: jsonDataSaveGroup
+           	}
+           },
+           schema: {
+               data: function(data)
+               {	console.log(data);
+               	return [data];
+               }
+           },
+           error: function (e) {
+               //apps.hideLoading();
+               console.log(e);
+               navigator.notification.alert("Please check your internet connection.",
+               function () { }, "Notification", 'OK');
+           }               
+          
+         });  
+	            
+           dataSourceaddGroup.fetch(function() {
+              var loginDataView = dataSourceaddGroup.data();
+				  $.each(loginDataView, function(i, addGroupData) {
+                      console.log(addGroupData.status[0].Msg);           
+                               if(addGroupData.status[0].Msg==='Event updated successfully'){         
+				        	        app.mobileApp.navigate("#adminEventCalendar");
+                               }else{
+                                    app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
+                               }
+                               
+                  });
+  		 });
+            
+          }   
+        }
+        
+        var goToManageOrgPage = function(){
+
+            app.mobileApp.navigate('views/groupDetailView.html');
+   
+        }
+        
+        var goToCalendarPage = function(){
+                        
+            app.mobileApp.navigate('#adminEventCalendar');
+
+        }
+        
+        var goToCalendarPageDetail = function(){
+
+            app.mobileApp.navigate('#adminEventCalendar');
+
+        }
         
     	 return {
         	   init: init,
            	show: show,
+               editEvent:editEvent,
+               deleteEvent:deleteEvent,
+               editEventshow:editEventshow,
+               goToCalendarPage:goToCalendarPage,
+               goToManageOrgPage:goToManageOrgPage,
                eventMoreDetailClick:eventMoreDetailClick,
+               addNewEventFunction:addNewEventFunction,
                addEventshow:addEventshow,
+               goToCalendarPageDetail:goToCalendarPageDetail,
+               saveEditEventData:saveEditEventData,
                detailShow:detailShow
           };
            

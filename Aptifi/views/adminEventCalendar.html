@@ -4,15 +4,15 @@
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span>Event Calendar</span>
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>    
-                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callUserLogin">home</a>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminEventCalender.goToManageOrgPage">Back</a>
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">home</a>
               </div>                                          
     </div>
 
 
     <div id="calendarContainerDiv" class="demo-section k-header" style="width:100%; text-align: center;">
 
-         <div id="calendar"></div>
+         <div id="admincalendar"></div>
         
     </div>
     
@@ -28,7 +28,7 @@
         
        <p style="color:rgb(53,152,088);text-align:left;">Event Time: <span id="eventTime" style="color:rgb(53,152,219);"></span></p> -->
         
-        <span style="color:rgb(53,152,088);">CLICK TO ADD MORE EVENT</span>
+        <span style="color:rgb(53,152,088);">CLICK HERE FOR MORE DETAIL</span>
     </div>
        
 </div>
@@ -41,8 +41,8 @@
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span id="detailEventData"></span>
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>    
-                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callUserLogin">home</a>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPage">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">home</a>
               </div>                                          
     </div>
 
@@ -60,7 +60,6 @@
        		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
              
        		     <h2 id="activityTemplateTitle" style="margin-left:-3px; color:rgb(53,152,219);" >${event_name}</h2>
-                                                    
 
                 <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Detail :</span>       	
                                 <br/>
@@ -72,9 +71,24 @@
                     <br/>
                     <br/>
 
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time: ${event_time}</span>       	
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time: ${event_time}</span>       	            
+            
+            
+                    <!--data-click="app.adminEventCalender.editEvent"-->
+                    <!--data-click="app.adminEventCalender.deleteEvent"-->
+
+                                <br/>
+                    <br/>
+
+                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>
+                        <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
+
+            
+                                <br/>
+                    <br/>
 
        		</div>
+
 		    </div>   
             
 		</script>
@@ -87,8 +101,8 @@
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span> Add Event </span>
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton">Back</a>    
-                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callUserLogin">home</a>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPage">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">home</a>
               </div>                                          
     </div>
     
@@ -96,23 +110,25 @@
     	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
              
            <ul data-role="listview" data-style="inset">
-                <li class="username"><input type="text" id="editOrgName" placeholder="Enter New Event Name" /></li>
+                <li class="username"><input type="text" id="addEventName" placeholder="Enter New Event Name" /></li>
            </ul> 
              
            <div class="user-share">
-	             <textarea id="editOrgDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
+	             <textarea id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
            </div>
-	    
+
+                        <br/>
+
             <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
             
             <div style="margin-top:20px" >
-                <input id="datePicker" />
+                <input id="adddatePicker" />
             </div>
             <br/>
             
             <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
                 <div style="margin-top:20px" >
-                    <input id="dateTimePicker" />
+                    <input id="adddateTimePicker" />
                 </div>
             
             
@@ -120,8 +136,59 @@
          
          
            <li>
-              <span id="login" data-role="touch" data-bind="events: { tap: saveUpdatedGroupVal }" style="padding:10px;float:right;">
+              <span id="login" data-role="touch" data-bind="events: { tap: addNewEventFunction }" style="padding:10px;float:right;">
                         <a data-role="button" style="background-color:#33539E">Save</a>   
+              </span>
+           </li>
+
+
+
+       
+</div>
+
+
+
+<div data-role="view" id="adminEditEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.editEventshow" data-transition="zoom">
+
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+              <div data-role="navbar">     
+                 <span> Edit Event </span>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPageDetail">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">home</a>
+              </div>                                          
+    </div>
+    
+    
+    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
+             
+           <ul data-role="listview" data-style="inset">
+                <li class="username"><input type="text" id="editEventName" placeholder="Enter New Event Name" /></li>
+           </ul> 
+             
+           <div class="user-share">
+	             <textarea id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
+           </div>
+
+                        <br/>
+
+            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
+            
+            <div style="margin-top:20px" >
+                <input id="editdatePicker" />
+            </div>
+            <br/>
+            
+            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
+                <div style="margin-top:20px" >
+                    <input id="editdateTimePicker" />
+                </div>
+            
+        </div>
+         
+         
+           <li>
+              <span id="login" data-role="touch" data-bind="events: { tap: saveEditEventData }" style="padding:10px;float:right;">
+                        <a data-role="button" style="background-color:#33539E">Save Change</a>   
               </span>
            </li>
 

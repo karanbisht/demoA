@@ -1225,9 +1225,12 @@ input.largerCheckbox
 
 .ob-done-date-style {
     background-color: #85d633;
-    background-image: url(../styles/textures/highlight.png);
+    background: #85d633; 
+    color:#ffffff;
 }
 .ob-not-done-date-style {
     background-color: #EBB500;
-    background-image: url(../styles/textures/highlight.png);
+    background: #EBB500;
+    color:#ffffff;
 }
+

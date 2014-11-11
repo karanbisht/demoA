@@ -223,10 +223,7 @@ var activityListViewModel = (function () {
                 pullToRefresh: true
              });        
                 
-                 
- 
               $('#group-listview').data('kendoMobileListView').refresh();
-                
               app.mobileApp.pane.loader.hide();
 
             };

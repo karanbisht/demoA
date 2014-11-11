@@ -81,15 +81,20 @@ app.eventCalender = (function () {
                               for(var i=0 ; i<eventListLength ;i++){
                                  
 
-                                  var eventDaya = loginData.status[0].eventData[i].event_date
+                                  var eventDaya = loginData.status[0].eventData[i].event_date;
+                                  
+                                  console.log(eventDaya);
+                                  
                                   var values = eventDaya.split('-');
                               	var year = values[0]; // globle variable
                               	var month = values[1];
                               	var day = values[2];
                                   
                                   
-                                    tasks[+new Date(year+","+month+","+day)] = "ob-done-date";
-                                  //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
+                                   tasks[+new Date(year+","+month+","+day)] = "ob-done-date";
+                                  
+
+                                     //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
                                      day = day.replace(/^0+/, '');                                     
@@ -143,11 +148,12 @@ app.eventCalender = (function () {
                 '#= data.value #' +
                 '# } #'
             },
+               //footer: false,
               change: selectedDataByUser,              
               
               navigate:function () {
-                $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover");
-                $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover");
+                $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover k-state");
+                $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover k-state");
               }
             }).data("kendoCalendar");             
         }
