@@ -302,6 +302,26 @@ var app = (function (win) {
          //tabstrip.clear();
          //tabstrip.switchTo("#organisationNotiList");        
            app.mobileApp.navigate('#view-all-activities-admin');
+      
+     }else if(app.mobileApp.view()['element']['0']['id']==='adminEventCalendar'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+           app.mobileApp.navigate('views/groupDetailView.html');     
+         
+      }else if(app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail' || app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+           app.mobileApp.navigate('#adminEventCalendar');  
+         
+     }else if(app.mobileApp.view()['element']['0']['id']==='adminEditEventCalendar'){
+         //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+         //tabstrip.clear();
+         //tabstrip.switchTo("#organisationNotiList");        
+         app.mobileApp.navigate('#adminEventCalendarDetail');     
+          
+          
      }else {
         //navigator.app.backHistory();
          app.mobileApp.navigate("#:back");    

@@ -94,7 +94,7 @@ app.adminEventCalender = (function () {
                               	var day = values[2];
                                   
                                   
-                                    tasks[+new Date(year+","+month+","+day)] = "ob-done-date";
+                                    tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
                                   //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
@@ -113,9 +113,6 @@ app.adminEventCalender = (function () {
                                           mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                           org_id: loginData.status[0].eventData[i].org_id
    	                               });
-
-                                  
-
                               }
  
                               showEventInCalendar();
@@ -134,12 +131,14 @@ app.adminEventCalender = (function () {
              console.log(tasks);            
              multipleEventArray=[];
 
+            //class="#= data.dates[+data.date] #"
+            
              $("#admincalendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
              month:{
              content:'# if (typeof data.dates[+data.date] === "string") { #' +
-                '<div class="#= data.dates[+data.date] #">' +
+                '<div style="color:rgb(53,152,219);">' +
                 '#= data.value #' +
                 '</div>' +
                 '# } else { #' +
@@ -162,9 +161,8 @@ app.adminEventCalender = (function () {
 
             console.log("Change :: " + kendo.toString(this.value(), 'd'));
             var date = kendo.toString(this.value(), 'd'); 
-                
             
-             date2 = kendo.toString(this.value(), 'd'); 
+            date2 = kendo.toString(this.value(), 'd'); 
 
             $("#eventDetailDiv").hide();
  
@@ -181,9 +179,21 @@ app.adminEventCalender = (function () {
                 //date=date.toString();
                 //groupAllEvent[i].event_date=groupAllEvent[i].event_date.toString();
                 
-                if(date===groupAllEvent[i].event_date){
+                console.log(JSON.stringify(date));
+                
+                console.log(JSON.stringify(groupAllEvent[i].event_date));
+                
+                var dateToCom=groupAllEvent[i].event_date;
+                
+                date=date.replace(/^"(.*)"$/, '$1');
+                dateToCom=dateToCom.replace(/^"(.*)"$/, '$1');
+                
+                console.log(JSON.stringify(dateToCom));
+
+                if(date===dateToCom){
 
                     $("#eventDate").html(date);
+                    
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
                                                                                         
                                       multipleEventArray.push({
@@ -577,7 +587,7 @@ app.adminEventCalender = (function () {
         
         var goToCalendarPageDetail = function(){
 
-            app.mobileApp.navigate('#adminEventCalendar');
+            app.mobileApp.navigate('#adminEventCalendarDetail');
 
         }
         

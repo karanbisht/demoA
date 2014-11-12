@@ -14,16 +14,79 @@ app.eventCalender = (function () {
         }
     
          var show = function(e){
+               var startDate = new Date(2014,10,15,18,30,0,0,0); // beware: month 0 = january, 11 = december
+               var endDate = new Date(2014,10,15,19,30,0,0,0);
+               var title = "My nice event";
+               var location = "Home";
+               var notes = "Some notes about this event.";
+               var calendarName = "MyCal";
+             
              
              tasks = [];
              multipleEventArray=[];
-                         $("#eventDetailDiv").hide();
-
-
-
-             eventOrgId = e.view.params.orgManageID;
-             
+                         
+             $("#eventDetailDiv").hide();
+             eventOrgId = e.view.params.orgManageID;             
              document.getElementById("calendar").innerHTML = "";
+             
+/*             
+  window.plugins.calendar.createCalendar(calendarName,success,error);
+  // if you want to create a calendar with a specific color, pass in a JS object like this:
+  var createCalOptions = window.plugins.calendar.getCreateCalendarOptions();
+  createCalOptions.calendarName = "My Cal Name";
+  createCalOptions.calendarColor = "#FF0000"; // an optional hex color (with the # char), default is null, so the OS picks a color
+  window.plugins.calendar.createCalendar(createCalOptions,success,error);
+
+  // delete a calendar (iOS only for now)
+  window.plugins.calendar.deleteCalendar(calendarName,success,error);
+
+  // create an event silently (on Android < 4 an interactive dialog is shown)
+  window.plugins.calendar.createEvent(title,location,notes,startDate,endDate,success,error);
+
+  // create an event silently (on Android < 4 an interactive dialog is shown which doesn't use this options) with options:
+  var calOptions = window.plugins.calendar.getCalendarOptions(); // grab the defaults
+  calOptions.firstReminderMinutes = 120; // default is 60, pass in null for no reminder (alarm)
+  calOptions.secondReminderMinutes = 5;
+
+  // Added these options in version 4.2.4:
+  calOptions.recurrence = "monthly"; // supported are: daily, weekly, monthly, yearly
+  calOptions.recurrenceEndDate = new Date(2015,6,1,0,0,0,0,0); // leave null to add events into infinity and beyond
+  calOptions.calendarName = "MyCreatedCalendar"; // iOS only
+  window.plugins.calendar.createEventWithOptions(title,location,notes,startDate,endDate,calOptions,success,error);
+
+  // create an event interactively (only supported on Android)
+  window.plugins.calendar.createEventInteractively(title,location,notes,startDate,endDate,success,error);
+
+  // create an event in a named calendar (iOS only for now)
+  window.plugins.calendar.createEventInNamedCalendar(title,location,notes,startDate,endDate,calendarName,success,error);
+
+  // find events (on iOS this includes a list of attendees (if any))
+  window.plugins.calendar.findEvent(title,location,notes,startDate,endDate,success,error);
+
+  // list all events in a date range (only supported on Android for now)
+  window.plugins.calendar.listEventsInRange(startDate,endDate,success,error);
+
+  // list all calendar names - returns this JS Object to the success callback: [{"id":"1", "name":"first"}, ..]
+  window.plugins.calendar.listCalendars(success,error);
+
+  // find all events in a named calendar (iOS only for now, this includes a list of attendees (if any))
+  window.plugins.calendar.findAllEventsInNamedCalendar(calendarName,success,error);
+
+  // change an event (iOS only for now)
+  var newTitle = "New title!";
+  window.plugins.calendar.modifyEvent(title,location,notes,startDate,endDate,newTitle,location,notes,startDate,endDate,success,error);
+
+  // delete an event (you can pass nulls for irrelevant parameters, note that on Android `notes` is ignored). The dates are mandatory and represent a date range to delete events in.
+  // note that on iOS there is a bug where the timespan must not be larger than 4 years, see issue 102 for details.. call this method multiple times if need be
+  window.plugins.calendar.deleteEvent(newTitle,location,notes,startDate,endDate,success,error);
+
+  // open the calendar app (added in 4.2.8):
+  // - open it at 'today'
+  window.plugins.calendar.openCalendar();
+  // - open at a specific date, here today + 3 days
+  var d = new Date(new Date().getTime() + 3*24*60*60*1000);
+  window.plugins.calendar.openCalendar(d, success, error); // callbacks are optional
+*/
              
              
              var dataSourceLogin = new kendo.data.DataSource({
@@ -82,7 +145,7 @@ app.eventCalender = (function () {
                                  
 
                                   var eventDaya = loginData.status[0].eventData[i].event_date;
-                                  
+                                  console.log("-------karan---------------");
                                   console.log(eventDaya);
                                   
                                   var values = eventDaya.split('-');
@@ -90,10 +153,13 @@ app.eventCalender = (function () {
                               	var month = values[1];
                               	var day = values[2];
                                   
+                                  console.log('------------------date=---------------------');
+                                  console.log(year+"||"+month+"||"+day);
                                   
-                                   tasks[+new Date(year+","+month+","+day)] = "ob-done-date";
+                                   tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
                                   
-
+                                    console.log(tasks);
+                                  
                                      //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
@@ -129,24 +195,36 @@ app.eventCalender = (function () {
          }
         
         
+        var success = function(message) { alert("Success: " + JSON.stringify(message)); };
+        
+        var error = function(message) { alert("Error: " + message); };
+
+        
+        
+        
         function showEventInCalendar(){
                          
              console.log(tasks);
             
-             multipleEventArray=[];
-
-                          
+             multipleEventArray=[];            
+              	
              $("#calendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
              month:{
-             content:'# if (typeof data.dates[+data.date] === "string") { #' +
-                '<div class="#= data.dates[+data.date] #">' +
+             content:
+                //'#console.log(data.date);#' +
+                //'#console.log(data.dates);#' +
+                //'#console.log(typeof data.dates[+data.date]);#' +                 
+                '# if (typeof data.dates[+data.date] === "string" ) { #' +
+                '<div style="color:rgb(53,152,219);">' +
                 '#= data.value #' +
-                '</div>' +
+                '</div>'+
                 '# } else { #' +
                 '#= data.value #' +
+
                 '# } #'
+                 
             },
                //footer: false,
               change: selectedDataByUser,              
@@ -155,8 +233,9 @@ app.eventCalender = (function () {
                 $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover k-state");
                 $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover k-state");
               }
-            }).data("kendoCalendar");             
-        }
+            }).data("kendoCalendar");            
+             
+         }
 
         var multipleEventArray=[];
         var date2;

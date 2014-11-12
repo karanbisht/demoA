@@ -39,7 +39,7 @@
   "iOSStatusBarStyle": "Default",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "1.0.3",
+  "BundleVersion": "1.0.5",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
