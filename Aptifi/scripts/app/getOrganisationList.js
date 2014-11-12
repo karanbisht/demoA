@@ -1720,6 +1720,110 @@ app.OragnisationList = (function () {
             app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);
             
         }
+        
+        var syncCalendar = function(){
+            
+                         
+            var dataSourceLogin = new kendo.data.DataSource({
+                transport: {
+                read: {
+                    url: "http://54.85.208.215/webservice/event/index/19",
+                    type:"POST",
+                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+           	}
+            },
+            schema: {
+               data: function(data)
+               {	
+                   console.log(data);
+               	return [data];
+               }
+            },
+           error: function (e) {
+               console.log(e);               
+               if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }               
+               }                              
+           }               
+          });  
+	            
+           dataSourceLogin.fetch(function() {
+               var loginDataView = dataSourceLogin.data();               
+               var orgDataId = [];
+               var userAllGroupId = [];
+						   
+               $.each(loginDataView, function(i, loginData) {
+                      console.log(loginData.status[0].Msg);
+                               
+                      if(loginData.status[0].Msg==='No Event list'){
+                          
+                          tasks = [];
+                          groupAllEvent=[];
+                          $("#eventDetailDiv").hide();
+                          showEventInCalendar();
+
+                      }else if(loginData.status[0].Msg==='Success'){
+
+                          //groupAllEvent=[];
+                          //tasks = [];
+
+                          
+                          if(loginData.status[0].eventData.length!==0){
+                                                            
+                              var eventListLength = loginData.status[0].eventData.length;
+                              
+                              for(var i=0 ; i<eventListLength ;i++){
+                                 
+
+                                  var eventDaya = loginData.status[0].eventData[i].event_date;
+                                  console.log("-------karan---------------");
+                                  console.log(eventDaya);
+                                  
+                                  var values = eventDaya.split('-');
+                              	var year = values[0]; // globle variable
+                              	var month = values[1];
+                              	var day = values[2];
+                                  
+                                  console.log('------------------date=---------------------');
+                                  console.log(year+"||"+month+"||"+day);
+                                  
+                                   tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
+                                  
+                                    console.log(tasks);
+                                  
+                                     //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
+                                 
+                                  if(day<10){
+                                     day = day.replace(/^0+/, '');                                     
+                                  }
+                                  var saveData = month+"/"+day+"/"+year;
+                                  
+                                                                    
+                                      groupAllEvent.push({
+                                          id: loginData.status[0].eventData[i].id,
+                                          add_date: loginData.status[0].eventData[i].add_date,
+									      event_date: saveData,
+										  event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
+                                          event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
+                                          event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
+                                          mod_date: loginData.status[0].eventData[i].mod_date,                                     
+                                          org_id: loginData.status[0].eventData[i].org_id
+   	                               });
+
+                                  
+
+                              }
+                              
+                          } 
+                    }                
+                });
+  		 }); 
+
+        }
 
         return {
             //activities: activitiesModel.activities,
@@ -1746,6 +1850,7 @@ app.OragnisationList = (function () {
 	        orgShow:orgShow,
             info:info,
             init:init,
+            syncCalendar:syncCalendar,
             show:show,
             callOrganisationLogin:callOrganisationLogin,
             refreshButton:refreshButton,

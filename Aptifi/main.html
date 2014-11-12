@@ -409,7 +409,7 @@
 </style>
 
 
-<div data-role="view" id="settingDiv" data-model="app.Activities">
+<div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList">
 	<div data-role="header" style="border-bottom:2px solid #2D384C">
         <div data-role="navbar">
             Setting
@@ -417,11 +417,16 @@
         </div>
     </div>
       
-    <div data-role="content">
-        <ul data-role="listview">
-		    	<p>Welcome to Setting Page</p>
-        </ul>
-    </div>
+     <div data-role="content">
+  
+         <div style="background-color:rgb(253,255,133) ; margin:25% 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">         
+             
+             <span style="color:rgb(53,152,219);">Sync Organisation Event to Device Calender</span>
+
+         </div>
+        
+        
+     </div>
     
 </div>
 	
