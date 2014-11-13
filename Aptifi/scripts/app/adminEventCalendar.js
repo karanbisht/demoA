@@ -599,7 +599,6 @@ app.adminEventCalender = (function () {
             event_Date= year+"-"+month+"-"+day;
             
             var actionval = "Edit";
-
             
             console.log(event_name);
             console.log(event_description);
