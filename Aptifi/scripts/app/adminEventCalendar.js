@@ -15,14 +15,16 @@ app.adminEventCalender = (function () {
         }
     
          var show = function(){
-             
+            
+
+             $(".km-scroll-container").css("-webkit-transform", "");
+
              tasks = [];
              multipleEventArray=[];
              $("#eventDetailDiv").hide();
 
              //organisationId = e.view.params.organisationId;
              //account_Id =e.view.params.account_Id;
-             
 
              organisationID = localStorage.getItem("orgSelectAdmin");
              //alert(organisationID);
@@ -179,19 +181,27 @@ app.adminEventCalender = (function () {
                 //date=date.toString();
                 //groupAllEvent[i].event_date=groupAllEvent[i].event_date.toString();
                 
-                console.log(JSON.stringify(date));
-                
-                console.log(JSON.stringify(groupAllEvent[i].event_date));
+                console.log(date);
+                console.log(groupAllEvent[i].event_date);
                 
                 var dateToCom=groupAllEvent[i].event_date;
                 
-                date=date.replace(/^"(.*)"$/, '$1');
-                dateToCom=dateToCom.replace(/^"(.*)"$/, '$1');
+                //date=date.trim();//replace(/^"(.*)"$/, '$1');
+                //dateToCom=dateToCom.trim();//.replace(/^"(.*)"$/, '$1');
                 
-                console.log(JSON.stringify(dateToCom));
+                //date=date.replace(/"/g, "");
+                //dateToCom = dateToCom.replace(/"/g, "");
 
+                //console.log(JSON.stringify(date));
+                //console.log(JSON.stringify(dateToCom));
+
+                //alert(date+"||"+dateToCom);
+                
                 if(date===dateToCom){
+                    
+                    //alert("in");
 
+                    $("#eventDetailDiv").show();
                     $("#eventDate").html(date);
                     
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
@@ -210,13 +220,15 @@ app.adminEventCalender = (function () {
                     //$("#eventTitle").html(groupAllEvent[i].event_name);
                     //$("#eventTime").html(groupAllEvent[i].event_time);
                     
-                    $("#eventDetailDiv").show();
                     checkGotevent=1;
+                    //break;
                 }   
             }
             
             if(checkGotevent===0){
                 app.mobileApp.navigate('#adminAddEventCalendar');
+            }else{
+                $("#eventDetailDiv").show();
             }
         }
         
@@ -249,19 +261,24 @@ app.adminEventCalender = (function () {
         
         
         var addEventshow = function(){
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+ 
          
             $("#addEventName").val('');
             $("#addEventDesc").val('');
             console.log(date2);
          
             $("#adddatePicker").kendoDatePicker({
-            value: date2
+            value: date2,
+            min: new Date()    
             });
             
              
             $("#adddateTimePicker").kendoTimePicker({
                 value: new Date(),
                 interval: 15,
+                min: new Date(),
                 format: "h:mm tt",
                 timeFormat: "HH:mm", 
                 
@@ -271,6 +288,34 @@ app.adminEventCalender = (function () {
                 }
                 
             });
+            
+            
+             var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker"); 
+
+                /*addEventDatePicker.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    addEventDatePicker.input.blur();
+				});*/
+            
+                $("#adddatePicker").bind("focus", function() {
+                    $("#adddatePicker").blur();
+                });
+
+            
+            
+                $("#adddateTimePicker").bind("focus", function() {
+                    $("#adddateTimePicker").blur();
+                });
+
+            
+            
+                 /*var addEventTimePicker = $("#adddateTimePicker").data("kendoTimePicker"); 
+				addEventTimePicker.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    addEventTimePicker.input.blur();
+				});  */ 
+            
+            
                        
             $(".km-scroll-container").css("-webkit-transform", "");
  
@@ -349,6 +394,9 @@ app.adminEventCalender = (function () {
         
         var editEventshow = function(){
 
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
             console.log(eventNameEdit);
             
             $("#editEventName").val(eventNameEdit);
@@ -359,6 +407,8 @@ app.adminEventCalender = (function () {
 
             $("#editdatePicker").kendoDatePicker({
             value: eventDateEdit,
+            min: new Date(),
+    
                 
                 change: function() {
                         var value = this.value();
@@ -369,21 +419,50 @@ app.adminEventCalender = (function () {
             $("#editdateTimePicker").kendoTimePicker({
                 value: eventTimeEdit,
                 interval: 15,
+                min: new Date(),
                 format: "h:mm tt",
                 timeFormat: "HH:mm",                
                 change: function() {
                         var value = this.value();
                         console.log(value); //value is the selected date in the timepicker
-                }
-                
+                }                
             });            
 
+            
+            
+             /*var editEventDatePicker = $("#editdatePicker").data("kendoDatePicker"); 
+				editEventDatePicker.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    editEventDatePicker.input.blur();
+				});
+            
+            
+                 var editEventTimePicker = $("#editdateTimePicker").data("kendoTimePicker"); 
+				editEventTimePicker.input.focus(function() {
+	                //$( "#orgforNotification" ).blur();
+                    editEventTimePicker.input.blur();
+				}); */
+            
+
+                $("#editdatePicker").bind("focus", function() {
+                    $("#editdatePicker").blur();
+                });
+            
+                           
+                $("#editdateTimePicker").bind("focus", function() {
+                    $("#editdateTimePicker").blur();
+                });
+
+            
+
+            
         }
         
 
         
         
         var addNewEventFunction = function(){
+           
             
             var event_name = $("#addEventName").val();     
             var event_description = $("#addEventDesc").val();
@@ -591,10 +670,56 @@ app.adminEventCalender = (function () {
 
         }
         
+        var addNewEvent = function(){
+                            
+            app.mobileApp.navigate('#adminAddEventCalendar');
+
+        }
+        
+        var upcommingEventList = function(){
+            app.mobileApp.navigate('#adminEventList');
+        }
+        
+        var eventListShow = function(){
+            //var dateShow = multipleEventArray[0].event_date;
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+            
+            var allEventLength = groupAllEvent.length;
+            
+            if(allEventLength===0){
+                groupAllEvent.push({
+                                          id:0 ,
+                                          add_date:'',
+									      event_date:'',
+										  event_desc: 'This Organization has no event.',                                                                                 										  
+                                          event_name: 'No Event',                                                                                  										  
+                                          event_time: '',                                                                                  										  
+                                          mod_date: '',                                     
+                                          org_id: ''
+   	                               });
+            }
+ 
+ 
+            var organisationListDataSource = new kendo.data.DataSource({
+                  data: groupAllEvent
+             });           
+
+                
+            $("#eventCalendarAllList").kendoMobileListView({
+  		    template: kendo.template($("#calendarEventListTemplate").html()),    		
+     		 dataSource: organisationListDataSource
+            });
+                
+            $('#eventCalendarAllList').data('kendoMobileListView').refresh();
+        }
+        
     	 return {
         	   init: init,
            	show: show,
                editEvent:editEvent,
+               eventListShow:eventListShow,
+               addNewEvent:addNewEvent,
                deleteEvent:deleteEvent,
                editEventshow:editEventshow,
                goToCalendarPage:goToCalendarPage,
@@ -604,6 +729,7 @@ app.adminEventCalender = (function () {
                addEventshow:addEventshow,
                goToCalendarPageDetail:goToCalendarPageDetail,
                saveEditEventData:saveEditEventData,
+               upcommingEventList:upcommingEventList,
                detailShow:detailShow
           };
            

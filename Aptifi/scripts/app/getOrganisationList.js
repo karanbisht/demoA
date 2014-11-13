@@ -1250,6 +1250,14 @@ app.OragnisationList = (function () {
             var joinDate = e.data.joinDate;
             var imageSourceOrg = e.data.imageSourceOrg; 
             var imgData=e.data.imgData;   
+            
+            localStorage.setItem("selectedOrgId",orgID);
+            localStorage.setItem("selectedOrgName",orgName);
+            localStorage.setItem("selectedOrgDesc",orgDesc);
+            localStorage.setItem("selectedOrgRole",role);
+            localStorage.setItem("selectedOrgDOJ",joinDate);
+            localStorage.setItem("selectedOrgImgSou",imageSourceOrg);
+            localStorage.setItem("selectedOrgImgData",imgData);
             //alert(joinDate);
 			app.MenuPage=false;	
             app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID +'&orgName='+orgName+'&orgDesc='+orgDesc+'&account_Id='+account_Id+'&role='+role+'&joinDate='+joinDate +'&imageSourceOrg='+imageSourceOrg+'&imgData='+imgData);
@@ -1260,14 +1268,27 @@ app.OragnisationList = (function () {
             
         var showOrgInfoPage = function(e){
             
-           orgManageID = e.view.params.orgID;
-           var orgName = e.view.params.orgName; 
-           var orgDesc = e.view.params.orgDesc;
-           var account_Id = e.view.params.account_Id;
-           var role = e.view.params.role;                 
-           var joinDate = e.view.params.joinDate;
-           var imageSourceOrg = e.view.params.imageSourceOrg; 
-           var imgData=e.view.params.imgData;   
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
+            
+           orgManageID = localStorage.getItem("selectedOrgId");
+            var orgName = localStorage.getItem("selectedOrgName");
+            var orgDesc = localStorage.getItem("selectedOrgDesc");
+            var role = localStorage.getItem("selectedOrgRole");
+            var joinDate = localStorage.getItem("selectedOrgDOJ");
+            var imageSourceOrg = localStorage.getItem("selectedOrgImgSou");
+            var imgData = localStorage.getItem("selectedOrgImgData");
+            var account_Id = localStorage.getItem("ACCOUNT_ID");
+
+           //orgManageID = e.view.params.orgID;
+           //var orgName = e.view.params.orgName; 
+           //var orgDesc = e.view.params.orgDesc;
+           //var account_Id = e.view.params.account_Id;
+           //var role = e.view.params.role;                 
+           //var joinDate = e.view.params.joinDate;
+           //var imageSourceOrg = e.view.params.imageSourceOrg; 
+           //var imgData=e.view.params.imgData;   
             
             
             
@@ -1312,6 +1333,10 @@ app.OragnisationList = (function () {
                }
         }    
         
+        
+        var gobackOrgMainPage = function(){
+            app.mobileApp.navigate('#organisationNotiList');
+        }
         
         var editProfilePage = function(){        
             app.MenuPage=false;	
@@ -1457,6 +1482,7 @@ app.OragnisationList = (function () {
 		        }
 			}
             
+       
         
        var tempArray=[];
        var adminOrg = 0; 
@@ -1717,13 +1743,161 @@ app.OragnisationList = (function () {
         }
         
         var showCalendar = function(){
-            app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);
-            
+            app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);            
         }
         
         var syncCalendar = function(){
             
-                         
+            var db = app.getDb();
+			db.transaction(getProfileForEventInfoDB, app.errorCB, getProfileEventDBSuccess);
+
+        }
+        
+                
+        var success = function(message) { console.log("Success: " + JSON.stringify(message)); };
+        
+        var error = function(message) { console.log("Error: " + message); };
+        
+        
+                 
+        function getProfileForEventInfoDB(tx) {
+            
+                var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+				app.selectQuery(tx, query, orgDataEventSuccess);
+             
+                var query = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
+				app.selectQuery(tx, query, orgAdminDataEventSuccess);
+	    }
+
+        
+       var tempArrayEvent=[];
+       var adminOrg = 0; 
+        
+  	function orgDataEventSuccess(tx, results) {    
+          var count = results.rows.length;              	
+          if (count !== 0) {                    
+        			for(var x=0; x < count;x++){
+
+                     var pos = $.inArray(results.rows.item(x).org_id, tempArrayEvent);
+                        console.log(pos);
+ 					if (pos === -1) {
+						tempArrayEvent.push(results.rows.item(x).org_id);								                    
+                        }
+            		}             
+                }else{
+                    tempArrayEvent=[];                    
+                } 
+      }
+
+        
+      function orgAdminDataEventSuccess(tx, results) {    
+        	var count = results.rows.length;      	
+                if (count !== 0) {                                        
+        			for(var x=0; x < count;x++){
+                     var pos = $.inArray(results.rows.item(x).org_id, tempArrayEvent);
+                     console.log(pos);
+ 					if (pos === -1) {
+						tempArrayEvent.push(results.rows.item(x).org_id);								                    
+                        }
+            		}             
+                }else{
+                    if(adminOrg===1){
+                      document.getElementById("orgData").innerHTML += '<ul><li>No Organization Added You</li></ul>'   
+                    }
+                }        
+      }
+        
+        
+        
+        
+        function getProfileEventDBSuccess(tx, results) {
+
+            var deviceName = app.devicePlatform();
+			var deviceVersion = device.version;
+            
+            console.log(deviceName+"||"+deviceVersion);
+            
+           
+            
+            var calendarName = "Aptifi";
+            var cal = window.plugins.calendar;
+            
+            
+
+            var orgListLength = tempArrayEvent.length;
+            console.log(orgListLength);
+            
+            if(deviceName==='iOS'){
+
+                //cal.deleteCalendar(calendarName, success, error);    
+                //var options = cal.getCreateCalendarOptions();
+                //options.calendarName = calendarName;
+                //options.calendarColor = "#FF0000"; // passing null make iOS pick a color for you
+                //cal.createCalendar(options, success, error);         
+                
+                
+
+            }            
+            
+            /*             
+  // if you want to create a calendar with a specific color, pass in a JS object like this:
+  var createCalOptions = window.plugins.calendar.getCreateCalendarOptions();
+  createCalOptions.calendarName = "My Cal Name";
+  createCalOptions.calendarColor = "#FF0000"; // an optional hex color (with the # char), default is null, so the OS picks a color
+  window.plugins.calendar.createCalendar(createCalOptions,success,error);
+
+  // delete a calendar (iOS only for now)
+  window.plugins.calendar.deleteCalendar(calendarName,success,error);
+
+  // create an event silently (on Android < 4 an interactive dialog is shown)
+  window.plugins.calendar.createEvent(title,location,notes,startDate,endDate,success,error);
+
+  // create an event silently (on Android < 4 an interactive dialog is shown which doesn't use this options) with options:
+  var calOptions = window.plugins.calendar.getCalendarOptions(); // grab the defaults
+  calOptions.firstReminderMinutes = 120; // default is 60, pass in null for no reminder (alarm)
+  calOptions.secondReminderMinutes = 5;
+
+  // Added these options in version 4.2.4:
+  calOptions.recurrence = "monthly"; // supported are: daily, weekly, monthly, yearly
+  calOptions.recurrenceEndDate = new Date(2015,6,1,0,0,0,0,0); // leave null to add events into infinity and beyond
+  calOptions.calendarName = "MyCreatedCalendar"; // iOS only
+  window.plugins.calendar.createEventWithOptions(title,location,notes,startDate,endDate,calOptions,success,error);
+
+  // create an event interactively (only supported on Android)
+  window.plugins.calendar.createEventInteractively(title,location,notes,startDate,endDate,success,error);
+
+  // create an event in a named calendar (iOS only for now)
+  window.plugins.calendar.createEventInNamedCalendar(title,location,notes,startDate,endDate,calendarName,success,error);
+
+  // find events (on iOS this includes a list of attendees (if any))
+  window.plugins.calendar.findEvent(title,location,notes,startDate,endDate,success,error);
+
+  // list all events in a date range (only supported on Android for now)
+  window.plugins.calendar.listEventsInRange(startDate,endDate,success,error);
+
+  // list all calendar names - returns this JS Object to the success callback: [{"id":"1", "name":"first"}, ..]
+  window.plugins.calendar.listCalendars(success,error);
+
+  // find all events in a named calendar (iOS only for now, this includes a list of attendees (if any))
+  window.plugins.calendar.findAllEventsInNamedCalendar(calendarName,success,error);
+
+  // change an event (iOS only for now)
+  var newTitle = "New title!";
+  window.plugins.calendar.modifyEvent(title,location,notes,startDate,endDate,newTitle,location,notes,startDate,endDate,success,error);
+
+  // delete an event (you can pass nulls for irrelevant parameters, note that on Android `notes` is ignored). The dates are mandatory and represent a date range to delete events in.
+  // note that on iOS there is a bug where the timespan must not be larger than 4 years, see issue 102 for details.. call this method multiple times if need be
+  window.plugins.calendar.deleteEvent(newTitle,location,notes,startDate,endDate,success,error);
+
+  // open the calendar app (added in 4.2.8):
+  // - open it at 'today'
+  window.plugins.calendar.openCalendar();
+  // - open at a specific date, here today + 3 days
+  var d = new Date(new Date().getTime() + 3*24*60*60*1000);
+  window.plugins.calendar.openCalendar(d, success, error); // callbacks are optional
+*/
+            
+            
             var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
@@ -1760,17 +1934,8 @@ app.OragnisationList = (function () {
                       console.log(loginData.status[0].Msg);
                                
                       if(loginData.status[0].Msg==='No Event list'){
-                          
-                          tasks = [];
-                          groupAllEvent=[];
-                          $("#eventDetailDiv").hide();
-                          showEventInCalendar();
 
                       }else if(loginData.status[0].Msg==='Success'){
-
-                          //groupAllEvent=[];
-                          //tasks = [];
-
                           
                           if(loginData.status[0].eventData.length!==0){
                                                             
@@ -1778,17 +1943,16 @@ app.OragnisationList = (function () {
                               
                               for(var i=0 ; i<eventListLength ;i++){
                                  
-
                                   var eventDaya = loginData.status[0].eventData[i].event_date;
-                                  console.log("-------karan---------------");
-                                  console.log(eventDaya);
+                                  var eventTime = loginData.status[0].eventData[i].event_time;
                                   
+                                  console.log(eventTime);
                                   var values = eventDaya.split('-');
                               	var year = values[0]; // globle variable
                               	var month = values[1];
                               	var day = values[2];
                                   
-                                  console.log('------------------date=---------------------');
+                                  /*console.log('------------------date=---------------------');
                                   console.log(year+"||"+month+"||"+day);
                                   
                                    tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
@@ -1801,29 +1965,56 @@ app.OragnisationList = (function () {
                                      day = day.replace(/^0+/, '');                                     
                                   }
                                   var saveData = month+"/"+day+"/"+year;
+                                  */
                                   
-                                                                    
-                                      groupAllEvent.push({
-                                          id: loginData.status[0].eventData[i].id,
-                                          add_date: loginData.status[0].eventData[i].add_date,
-									      event_date: saveData,
-										  event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
-                                          event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
-                                          event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
-                                          mod_date: loginData.status[0].eventData[i].mod_date,                                     
-                                          org_id: loginData.status[0].eventData[i].org_id
-   	                               });
+                                  
+                                                var valueTime = eventTime.split(':');            
+                                                var Hour = valueTime[0]; // globle variable            
+                                                var Min = valueTime[1];        
+                                                var sec = valueTime[2];
+            
+                                    var endHour=23;
+                                    var endMin=59;
+                                    var endSec=0;
+                                                                                                             
+                                    var start = new Date(year+"/"+month+"/"+day+" "+Hour+":"+Min+":"+sec);
+                                  
+                                    //var start = new Date(2015,0,1,20,0,0,0,0);
+                                    var end = new Date(year+"/"+month+"/"+day+" "+endHour+":"+endMin+":"+endSec);
+                                    //var end = new Date(2015,0,1,22,0,0,0,0); 
 
-                                  
+                                    var title = loginData.status[0].eventData[i].event_name;
+                                    var location = 'India';
+                                    var notes = loginData.status[0].eventData[i].event_desc;
+
+
+                                    console.log(start+"||"+end+"||"+title+"||"+location+"||"+notes);
+                                 
+                                     if(deviceName==='Android'){
+
+	                                         cal.createEvent(title, location, notes, start, end, success, error);
+                                        }else if(deviceName==='iOS'){
+                                            cal.createEvent(title, location, notes, start, end, success, error);
+                                            //cal.createEventInNamedCalendar(title,location,notes,start,end,calendarName,success,error);            
+                                       } 
+                                    //cal.findAllEventsInNamedCalendar(calendarName, success, error);
+            
 
                               }
                               
                           } 
                     }                
                 });
-  		 }); 
+  		 });
 
+            
+            
+       
+        
         }
+
+
+
 
         return {
             //activities: activitiesModel.activities,
@@ -1850,6 +2041,7 @@ app.OragnisationList = (function () {
 	        orgShow:orgShow,
             info:info,
             init:init,
+            gobackOrgMainPage:gobackOrgMainPage,
             syncCalendar:syncCalendar,
             show:show,
             callOrganisationLogin:callOrganisationLogin,

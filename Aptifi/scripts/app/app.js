@@ -1131,6 +1131,13 @@ var app = (function (win) {
 
     return result;
   };
+    
+
+    var gobackTOCalendar = function(){
+        alert('hello');
+        app.mobileApp.navigate('#eventCalendar');
+    }
+
        
 
     return {
@@ -1170,6 +1177,7 @@ var app = (function (win) {
         checkConnection:checkConnection,
         helper: AppHelper,
         getfbValue:getfbValue,
+        gobackTOCalendar:gobackTOCalendar,
     
         //registerInEverlive:registerInEverlive,
         //disablePushNotifications:disablePushNotifications,

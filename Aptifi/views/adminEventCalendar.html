@@ -9,7 +9,6 @@
               </div>                                          
     </div>
 
-
     <div id="calendarContainerDiv" class="demo-section k-header" style="width:100%; text-align: center;">
 
          <div id="admincalendar"></div>
@@ -30,6 +29,13 @@
         
         <span style="color:rgb(53,152,088);">CLICK HERE FOR MORE DETAIL</span>
     </div>
+        
+    <div data-role="footer">
+       	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
+                <a id="" data-icon="add" data-role="button" data-bind="click: upcommingEventList" >Event List</a>
+            </div>
+    </div>   
+
        
 </div>
 
@@ -47,6 +53,13 @@
     </div>
 
     <ul id="eventCalendarList" data-style="inset" data-role="listview" data-template="calendarTemplate"   data-bind="source: activities"></ul>
+    
+    
+    <div data-role="footer">
+       	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
+                <a id="" data-icon="add" data-role="button" data-bind="click: addNewEvent" >Add Event</a>
+            </div>
+    </div>   
        
 </div>
 
@@ -80,10 +93,8 @@
                                 <br/>
                     <br/>
 
-                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>
-                        <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
-
-            
+                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
+                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
                                 <br/>
                     <br/>
 
@@ -112,8 +123,9 @@
            <ul data-role="listview" data-style="inset">
                 <li class="username"><input type="text" id="addEventName" placeholder="Enter New Event Name" /></li>
            </ul> 
-             
-           <div class="user-share">
+             <!---class="user-share"-->
+            
+           <div class="textareaClass" >
 	             <textarea id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
            </div>
 
@@ -165,7 +177,7 @@
                 <li class="username"><input type="text" id="editEventName" placeholder="Enter New Event Name" /></li>
            </ul> 
              
-           <div class="user-share">
+           <div class="textareaClass">
 	             <textarea id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
            </div>
 
@@ -190,9 +202,69 @@
               <span id="login" data-role="touch" data-bind="events: { tap: saveEditEventData }" style="padding:10px;float:right;">
                         <a data-role="button" style="background-color:#33539E">Save Change</a>   
               </span>
-           </li>
-
-
-
-       
+           </li>       
 </div>
+
+
+
+
+<div data-role="view" id="adminEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.eventListShow" data-transition="zoom">
+
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+              <div data-role="navbar">     
+                 <span>All Event</span>
+                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPage">Back</a>    
+                 <a class="nav-button nav-button-home hide-text" data-align="right" data-role="button" data-click="app.callAdminOrganisationList">home</a>
+              </div>                                          
+    </div>
+    
+    <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>
+    
+</div>
+
+		<script type="text/x-kendo-template" id="calendarEventListTemplate">
+            <!--data-bind="events: { tap: activitySelected }"-->
+            
+            <div class="cf" data-role="touch" >         
+               
+       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
+             
+       		     <h2 id="activityTemplateTitle" style="margin-left:-3px; color:rgb(53,152,219);" >${event_name}</h2>
+                  #if(id!== 0){#
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Detail :</span>       	
+                    <br/>  
+                              #}#            
+ 
+       		     <span  id="activityTemplateMessage"  style="color:rgb(188,188,188);padding-right:10px;" >${event_desc}</span>            			            
+                    <br/>
+                    <br/>
+                    <br/>
+
+                  #if(id!== 0){#
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Date: ${event_date}</span>       	            
+                                <br/>
+                    <br/>
+
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time: ${event_time}</span>       	            
+                   #}#            
+            
+                    <!--data-click="app.adminEventCalender.editEvent"-->
+                    <!--data-click="app.adminEventCalender.deleteEvent"-->
+
+                   <!--             <br/>
+                    <br/>
+
+                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
+                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
+                                <br/>
+                    <br/>
+
+                    -->
+            
+       		</div>
+
+		    </div>   
+            
+		</script>

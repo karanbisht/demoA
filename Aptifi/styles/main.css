@@ -695,6 +695,25 @@ input::-webkit-inner-spin-button {
     resize: none;
 }
 
+
+.textareaClass {
+    margin: 0;
+    padding: .75em 1em;
+    min-height: 13.5em;
+    border-radius:10px;
+    background-color: #f5f7f8;
+    resize: none;
+}
+
+
+.textareaClass textarea {
+    margin: 0;
+    padding: 2px 2px;
+    width: 100%;
+    min-height: 12.5em;
+    font-size: 1rem
+}
+
 #friendsApp .user-share-noti textarea {
     float: none;
     margin: 0;
