@@ -33,13 +33,16 @@ app.adminEventCalender = (function () {
              
              document.getElementById("admincalendar").innerHTML = "";
              
-             
+
+             var jsonDataLogin = {"org_id":organisationID}
+
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index/"+organisationID,
+                    url: "http://54.85.208.215/webservice/event/index",
                     type:"POST",
-                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                    data: jsonDataLogin
            	}
             },
             schema: {
@@ -181,10 +184,23 @@ app.adminEventCalender = (function () {
                 //date=date.toString();
                 //groupAllEvent[i].event_date=groupAllEvent[i].event_date.toString();
                 
-                console.log(date);
-                console.log(groupAllEvent[i].event_date);
+                //console.log(date);
+                //console.log(groupAllEvent[i].event_date);
                 
-                var dateToCom=groupAllEvent[i].event_date;
+                var dateFmLive = groupAllEvent[i].event_date;
+                
+                 var values = dateFmLive.split('/');
+                              	var monthShow  = values[0]; // globle variable
+                              	var dayShow = values[1];
+                              	var yearShow = values[2];
+                
+                if(monthShow<10){
+                    monthShow = monthShow.replace(/^0+/, '');                                                         
+                }
+                
+                var dateToCom= monthShow+'/'+dayShow+'/'+yearShow;
+
+                console.log(dateToCom);
                 
                 //date=date.trim();//replace(/^"(.*)"$/, '$1');
                 //dateToCom=dateToCom.trim();//.replace(/^"(.*)"$/, '$1');
@@ -199,8 +215,8 @@ app.adminEventCalender = (function () {
                 
                 if(date===dateToCom){
                     
-                    //alert("in");
-
+                    console.log('inside');
+                    
                     $("#eventDetailDiv").show();
                     $("#eventDate").html(date);
                     

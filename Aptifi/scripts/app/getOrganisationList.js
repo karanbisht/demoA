@@ -1767,7 +1767,12 @@ app.OragnisationList = (function () {
              
                 var query = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
 				app.selectQuery(tx, query, orgAdminDataEventSuccess);
-	    }
+
+                var query = 'SELECT * FROM EVENT';
+				app.selectQuery(tx, query, orgEventDelete);
+
+            
+        }
 
         
        var tempArrayEvent=[];
@@ -1776,21 +1781,26 @@ app.OragnisationList = (function () {
   	function orgDataEventSuccess(tx, results) {    
           var count = results.rows.length;              	
           if (count !== 0) {                    
+                    tempArrayEvent=[];
         			for(var x=0; x < count;x++){
-
                      var pos = $.inArray(results.rows.item(x).org_id, tempArrayEvent);
                         console.log(pos);
  					if (pos === -1) {
 						tempArrayEvent.push(results.rows.item(x).org_id);								                    
                         }
-            		}             
+            		} 
+              
                 }else{
                     tempArrayEvent=[];                    
                 } 
+  
+          console.log('---------Array Value1------------');
+          console.log(tempArrayEvent);
       }
 
         
       function orgAdminDataEventSuccess(tx, results) {    
+          
         	var count = results.rows.length;      	
                 if (count !== 0) {                                        
         			for(var x=0; x < count;x++){
@@ -1800,15 +1810,58 @@ app.OragnisationList = (function () {
 						tempArrayEvent.push(results.rows.item(x).org_id);								                    
                         }
             		}             
-                }else{
-                    if(adminOrg===1){
-                      document.getElementById("orgData").innerHTML += '<ul><li>No Organization Added You</li></ul>'   
-                    }
-                }        
+                }   
+                    console.log('---------Array Value2------------');
+                    console.log(tempArrayEvent);
       }
         
         
-        
+      function orgEventDelete(tx, results) {             
+        	var count = results.rows.length;      	
+          console.log("localDBStorage---"+count);
+                if (count !== 0) {                                        
+        			for(var x=0; x < count;x++){
+                     	
+                        
+                        var title = results.rows.item(x).title ;
+                        var location = results.rows.item(x).location ;
+                        var notes = results.rows.item(x).notes ;
+                        var eventDaya = results.rows.item(x).startDate ;
+                        var eventTime = results.rows.item(x).startTime ;
+                                  
+                                  console.log(eventTime);
+                                  var values = eventDaya.split('-');
+                              	var year = values[0]; // globle variable
+                              	var month = values[1];
+                              	var day = values[2];
+                                  
+                                  
+                                                var valueTime = eventTime.split(':');            
+                                                var Hour = valueTime[0]; // globle variable            
+                                                var Min = valueTime[1];        
+                                                var sec = valueTime[2];
+            
+                                    var endHour=23;
+                                    var endMin=59;
+                                    var endSec=0;
+                                                                                                             
+                                    var start = new Date(year+"/"+month+"/"+day+" "+Hour+":"+Min+":"+sec);      
+                                    //var start = new Date(2015,0,1,20,0,0,0,0);
+                                    var end = new Date(year+"/"+month+"/"+day+" "+endHour+":"+endMin+":"+endSec);
+                                    //var end = new Date(2015,0,1,22,0,0,0,0); 
+
+                                    //console.log(start+"||"+end+"||"+title+"||"+location+"||"+notes);
+                        
+                        console.log("--------------------delete-----------------");
+                        
+                          window.plugins.calendar.deleteEvent(title,location,notes,start,end,success,error);
+
+
+            		}             
+                
+                }        
+   
+      }
         
         function getProfileEventDBSuccess(tx, results) {
 
@@ -1817,26 +1870,20 @@ app.OragnisationList = (function () {
             
             console.log(deviceName+"||"+deviceVersion);
             
-           
-            
             var calendarName = "Aptifi";
             var cal = window.plugins.calendar;
             
-            
-
             var orgListLength = tempArrayEvent.length;
             console.log(orgListLength);
             
             if(deviceName==='iOS'){
 
-                //cal.deleteCalendar(calendarName, success, error);    
-                //var options = cal.getCreateCalendarOptions();
-                //options.calendarName = calendarName;
-                //options.calendarColor = "#FF0000"; // passing null make iOS pick a color for you
-                //cal.createCalendar(options, success, error);         
+                cal.deleteCalendar(calendarName, success, error);    
+                var options = cal.getCreateCalendarOptions();
+                options.calendarName = calendarName;
+                options.calendarColor = "#FF0000"; // passing null make iOS pick a color for you
+                cal.createCalendar(options, success, error);         
                 
-                
-
             }            
             
             /*             
@@ -1897,13 +1944,17 @@ app.OragnisationList = (function () {
   window.plugins.calendar.openCalendar(d, success, error); // callbacks are optional
 */
             
-            
+        
+            var jsonDataLogin = {"org_id":tempArrayEvent}         
+            console.log(tempArrayEvent);
+        
             var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index/19",
+                    url: "http://54.85.208.215/webservice/event/index",
                     type:"POST",
-                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                     data: jsonDataLogin
            	}
             },
             schema: {
@@ -1927,9 +1978,10 @@ app.OragnisationList = (function () {
 	            
            dataSourceLogin.fetch(function() {
                var loginDataView = dataSourceLogin.data();               
+               console.log(loginDataView);
                var orgDataId = [];
                var userAllGroupId = [];
-						   
+			   var orgEventData;			   
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
@@ -1940,7 +1992,7 @@ app.OragnisationList = (function () {
                           if(loginData.status[0].eventData.length!==0){
                                                             
                               var eventListLength = loginData.status[0].eventData.length;
-                              
+                                                                                          
                               for(var i=0 ; i<eventListLength ;i++){
                                  
                                   var eventDaya = loginData.status[0].eventData[i].event_date;
@@ -1966,8 +2018,7 @@ app.OragnisationList = (function () {
                                   }
                                   var saveData = month+"/"+day+"/"+year;
                                   */
-                                  
-                                  
+
                                                 var valueTime = eventTime.split(':');            
                                                 var Hour = valueTime[0]; // globle variable            
                                                 var Min = valueTime[1];        
@@ -1977,8 +2028,7 @@ app.OragnisationList = (function () {
                                     var endMin=59;
                                     var endSec=0;
                                                                                                              
-                                    var start = new Date(year+"/"+month+"/"+day+" "+Hour+":"+Min+":"+sec);
-                                  
+                                    var start = new Date(year+"/"+month+"/"+day+" "+Hour+":"+Min+":"+sec);      
                                     //var start = new Date(2015,0,1,20,0,0,0,0);
                                     var end = new Date(year+"/"+month+"/"+day+" "+endHour+":"+endMin+":"+endSec);
                                     //var end = new Date(2015,0,1,22,0,0,0,0); 
@@ -1987,31 +2037,86 @@ app.OragnisationList = (function () {
                                     var location = 'India';
                                     var notes = loginData.status[0].eventData[i].event_desc;
 
-
                                     console.log(start+"||"+end+"||"+title+"||"+location+"||"+notes);
-                                 
-                                     if(deviceName==='Android'){
-
+                                  
+                                      if(deviceName==='Android'){
 	                                         cal.createEvent(title, location, notes, start, end, success, error);
-                                        }else if(deviceName==='iOS'){
-                                            cal.createEvent(title, location, notes, start, end, success, error);
+                                      }else if(deviceName==='iOS'){
+                                          console.log("-----------------insert--------------------");
+                                             cal.createEvent(title, location, notes, start, end, success, error);
                                             //cal.createEventInNamedCalendar(title,location,notes,start,end,calendarName,success,error);            
-                                       } 
+                                      }
                                     //cal.findAllEventsInNamedCalendar(calendarName, success, error);
-            
 
                               }
-                              
                           } 
+                          
+                                                        
+
+                              orgEventData = loginData.status[0].eventData;
+                              saveOrgEvents(orgEventData);
+
                     }                
                 });
   		 });
-
-            
-            
-       
-        
         }
+        
+        
+         
+        var orgEventDataVal;
+        
+        function saveOrgEvents(data) {
+            orgEventDataVal = data;      
+			var db = app.getDb();
+			db.transaction(insertOrgEventData, app.errorCB, showAlertToComplete);
+		};
+        
+        
+        
+             
+      function insertOrgEventData(tx){
+        var query = "DELETE FROM EVENT";
+		app.deleteQuery(tx, query);
+
+        var dataLength = orgEventDataVal.length;
+         
+         var orgData;        
+         var orgLastMsg;
+ 
+
+        for(var i=0;i<dataLength;i++){    
+           
+    	   var query = 'INSERT INTO EVENT(title ,location ,notes ,startDate ,endDate,startTime,endTime) VALUES ("'
+				+ orgEventDataVal[i].event_name
+				+ '","'
+				+ 'India'
+				+ '","'
+				+ orgEventDataVal[i].event_desc
+           	 + '","'
+				+ orgEventDataVal[i].event_date
+    	        + '","'
+			    + ''
+                + '","'
+				+ orgEventDataVal[i].event_time
+                + '","'
+				+ ''
+				+ '")';              
+                app.insertQuery(tx, query);
+        }   
+      
+      }
+        
+        
+        
+      function showAlertToComplete(){
+
+          if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Successfully synchronization Event with Device Calender');           
+          }else{
+                    app.showAlert('Successfully synchronization Event with Device Calender','Notification');            
+          }               
+  
+      }
 
 
 

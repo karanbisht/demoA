@@ -32,14 +32,17 @@ app.eventCalender = (function () {
              
 
              
-             
+
+             var jsonDataLogin = {"org_id":eventOrgId}
+
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index/"+eventOrgId,
+                    url: "http://54.85.208.215/webservice/event/index",
                     type:"POST",
-                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-           	}
+                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+               	 data: jsonDataLogin
+                }
             },
             schema: {
                data: function(data)
@@ -196,9 +199,22 @@ app.eventCalender = (function () {
 
             console.log(groupAllEvent);
             
+            
             for(var i=0;i<groupAllEvent.length;i++){
+                
+                  var dateFmLive = groupAllEvent[i].event_date;                
+                 var values = dateFmLive.split('/');
+                              	var monthShow  = values[0]; // globle variable
+                              	var dayShow = values[1];
+                              	var yearShow = values[2];
+                
+                if(monthShow<10){
+                    monthShow = monthShow.replace(/^0+/, '');                                                         
+                }
+                
+                var dateToCom= monthShow+'/'+dayShow+'/'+yearShow;
 
-                if(date===groupAllEvent[i].event_date){
+                if(date===dateToCom){
 
                     $("#eventDate").html(date);
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 

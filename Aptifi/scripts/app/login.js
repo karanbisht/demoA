@@ -80,6 +80,7 @@ app.Login = (function () {
        
         // Authenticate to use Backend Services as a particular user
         var countCheck=0;
+
         var login = function () {		 
             var deviceName = app.devicePlatform();
             var device_type;
@@ -107,7 +108,7 @@ app.Login = (function () {
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');
                   }else{
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline'); 
                   } 
                }else{
 
@@ -138,7 +139,7 @@ app.Login = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log("------error------");
-               console.log(JSON.stringify(e));
+               console.log(e);
                //app.mobileApp.pane.loader.hide();
              
                if(!app.checkConnection()){
