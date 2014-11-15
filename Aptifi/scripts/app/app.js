@@ -10,6 +10,22 @@ var app = (function (win) {
     var mobileApp;
 
     
+    
+    
+    var serverUrl = function(){
+        return 'http://54.85.208.215/webservice/';
+    }
+    
+    
+
+    var showAppVersion = function() {
+        
+        cordova.getAppVersion(function(version) {
+             showAlert("Current App Version: " + version , "App Version");
+        });
+     }
+
+    
     var showAlert = function(message, title, callback) {
         navigator.notification.alert(message, callback || function () {
         }, title, 'OK');
@@ -23,9 +39,7 @@ var app = (function (win) {
         e.preventDefault();
 
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-
         console.log(message, 'Error');
-
         return true;
     });
     
@@ -116,7 +130,7 @@ var app = (function (win) {
   
       tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , orgDesc TEXT)');
         
-      tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT)');  
+      tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER)');  
         
       tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , group_id INTEGER , customer_id INTEGER)');
         
@@ -447,6 +461,7 @@ var app = (function (win) {
             }else if(deviceName==='iOS'){
                 device_type='AP';
             }*/
+        
         
         if (device.platform === "iOS") {
 
@@ -1145,6 +1160,8 @@ var app = (function (win) {
     return {
         showAlert: showAlert,
         showError: showError,
+        serverUrl:serverUrl,
+        showAppVersion:showAppVersion,
         callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,
         callAdminOrganisationList:callAdminOrganisationList,

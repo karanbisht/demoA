@@ -262,7 +262,7 @@ app.OragnisationList = (function () {
                 transport: {
                 read: {
                    //url: "http://54.85.208.215/webservice/customer/login",
-                    url: "http://54.85.208.215/webservice/organisation/customerOrg/"+account_Id,
+                    url: app.serverUrl()+"organisation/customerOrg/"+account_Id,
                     type:"POST",
                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    //data: jsonDataLogin
@@ -645,7 +645,7 @@ app.OragnisationList = (function () {
            var organisationListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
+                   url: app.serverUrl()+"organisation/managableOrg/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -1204,6 +1204,8 @@ app.OragnisationList = (function () {
             }else{
                 
               if(adminOrgExist===0){
+                  
+                $("#showMoreButton").hide();  
                 orgDbData.push({
 						 org_name:'No Organization',
         		         org_id: '',
@@ -1360,7 +1362,7 @@ app.OragnisationList = (function () {
            var delOrgfromServerDB = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/unsubscribe/"+orgManageID+"/"+account_Id,
+                   url: app.serverUrl()+"customer/unsubscribe/"+orgManageID+"/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -1607,8 +1609,7 @@ app.OragnisationList = (function () {
 
             	var query = "DELETE FROM ADMIN_ORG_GROUP";
 	            app.deleteQuery(tx, query);
-
-                                
+                
 	            var query = 'UPDATE PROFILE_INFO SET login_status=0';
             	app.updateQuery(tx, query);
             }
@@ -1651,6 +1652,11 @@ app.OragnisationList = (function () {
                     };       
         
         
+        var appVersion = function(){
+            app.showAppVersion();
+        }
+        
+        
         var newFName;
         var newLName;
         var newEmail;
@@ -1686,7 +1692,7 @@ app.OragnisationList = (function () {
           var dataSourceRegister = new kendo.data.DataSource({
                transport: {
                read: {
-                   url:"http://54.85.208.215/webservice/customer/editprofile",
+                   url: app.serverUrl()+"customer/editprofile",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataRegister
@@ -1744,6 +1750,10 @@ app.OragnisationList = (function () {
         
         var showCalendar = function(){
             app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);            
+        }
+        
+        var showOrgNews = function(){
+            app.mobileApp.navigate('views/organizationNews.html?orgManageID='+orgManageID);
         }
         
         var syncCalendar = function(){
@@ -1951,7 +1961,7 @@ app.OragnisationList = (function () {
             var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index",
+                    url: app.serverUrl()+"event/index",
                     type:"POST",
                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                      data: jsonDataLogin
@@ -2061,17 +2071,13 @@ app.OragnisationList = (function () {
   		 });
         }
         
-        
          
-        var orgEventDataVal;
-        
+        var orgEventDataVal;        
         function saveOrgEvents(data) {
             orgEventDataVal = data;      
 			var db = app.getDb();
 			db.transaction(insertOrgEventData, app.errorCB, showAlertToComplete);
 		};
-        
-        
         
              
       function insertOrgEventData(tx){
@@ -2132,10 +2138,12 @@ app.OragnisationList = (function () {
             showOrgInfoPage:showOrgInfoPage,
             notificationSelected:notificationSelected,
             //CreatedAtFormatted:CreatedAtFormatted,          
-            showCalendar:showCalendar,       
+            showCalendar:showCalendar,
+            showOrgNews:showOrgNews,
             manageGroup:manageGroup,
             about:about,
             setting:setting,
+            appVersion:appVersion,
             inAppBrowser:inAppBrowser,  
             makeCall:makeCall,
             OnImageLoad:OnImageLoad,

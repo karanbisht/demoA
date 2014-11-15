@@ -26,12 +26,14 @@ app.Activities = (function () {
          var show = function(e){             
            //console.log("plugin test");  
            //console.log(window.plugins);
-            
+        
+                     app.mobileApp.pane.loader.show();
+   
                      StartDbCount=0;
                      EndDbCount=10;
                      totalOrgNotification=0;
                      groupDataShow=[];
-                             $("#showMoreButton").hide();
+                     $("#showMoreButton").hide();
 
            $("#progressNotification").show();
            $(".km-scroll-container").css("-webkit-transform", "");  
@@ -68,8 +70,6 @@ app.Activities = (function () {
             scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
           },*/
              
-             
-             
            //app.mobileApp.pane.loader.show();  
            app.MenuPage=false;
            app.userPosition=false;                                      
@@ -87,7 +87,6 @@ app.Activities = (function () {
              
            $("#navBarHeader").html(orgName);
 
-             
            var db = app.getDb();
              //showDBNotification
 		   db.transaction(getLastOrgNoti, app.errorCB,app.successCB );         
@@ -98,7 +97,6 @@ app.Activities = (function () {
             var query = "SELECT MAX(pid) as pid FROM ORG_NOTIFICATION where org_id="+organisationID;
 			app.selectQuery(tx, query, getOrgLastNotiDataSuccess);
         };    
-
         
                     
         function getOrgLastNotiDataSuccess(tx, results) {
@@ -117,7 +115,7 @@ app.Activities = (function () {
           var organisationALLNewListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id+"/"+lastNotificationPID,
+                   url: app.serverUrl()+"notification/getCustomerNotification/"+ organisationID+"/"+account_Id+"/"+lastNotificationPID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -332,10 +330,12 @@ app.Activities = (function () {
                  console.log(lastNotificationPID);
             }else{
                 lastNotificationPID=0;
+                                $("#showMoreButton").hide();                    
+
 
                            groupDataShow.push({
                                          title: ' No Notification ',
-                                         message: 'No Notification from this Organisation',
+                                         message: 'No Notification from this Organization',
                                          date:'0',  
                                          comment_allow : 'Y',
                                          org_id:'0', 

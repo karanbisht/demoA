@@ -145,7 +145,7 @@ app.registration = (function () {
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
+                   url: app.serverUrl()+"customer/login",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -307,7 +307,7 @@ app.registration = (function () {
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
+                   url: app.serverUrl()+"customer/login",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -481,7 +481,7 @@ function loginSuccessCB() {
              var organisationALLListDataSource = new kendo.data.DataSource({
              transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
+                   url: app.serverUrl()+"notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}

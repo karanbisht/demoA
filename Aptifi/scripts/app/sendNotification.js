@@ -377,7 +377,7 @@ app.sendNotification = (function () {
              var dataSourceSendNotification = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/sendNotification",
+                   url: app.serverUrl()+"notification/sendNotification",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: notificationData
@@ -519,7 +519,7 @@ app.sendNotification = (function () {
              var comboGroupListDataSource = new kendo.data.DataSource({
              transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/index/"+org,
+                   url: app.serverUrl()+"group/index/"+org,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
               	}
@@ -630,7 +630,7 @@ app.sendNotification = (function () {
           var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+org,
+                   url: app.serverUrl()+"customer/getOrgCustomer/"+org,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
               	}

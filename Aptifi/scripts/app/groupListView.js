@@ -45,7 +45,7 @@ var activityListViewModel = (function () {
              var organisationGroupDataSource = new kendo.data.DataSource({                
              transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/index/"+organisationID,
+                   url: app.serverUrl()+"group/index/"+organisationID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -283,7 +283,7 @@ var activityListViewModel = (function () {
          var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/add",
+                   url: app.serverUrl()+"group/add",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -345,7 +345,7 @@ var activityListViewModel = (function () {
              var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/delete",
+                   url: app.serverUrl()+"group/delete",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataDelete

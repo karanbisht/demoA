@@ -68,11 +68,14 @@ app.adminLogin = (function () {
                     document.getElementById('OrgLogin').style.pointerEvents = 'none';
 
                 
+             						
+                password=app.urlEncode(password);
+                console.log(password);
              var jsonDataLogin = {"username":usernameMob ,"password":password}       
              var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/organisation/orgAdminLogin",
+                   url: app.serverUrl()+"organisation/orgAdminLogin",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -167,7 +170,7 @@ app.adminLogin = (function () {
            var organisationListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/organisation/managableOrg/"+account_Id,
+                   url: app.serverUrl()+"organisation/managableOrg/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -292,7 +295,7 @@ app.adminLogin = (function () {
               var organisationALLListDataSource = new kendo.data.DataSource({                
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+account_Id,
+                   url: app.serverUrl()+"notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -409,7 +412,7 @@ app.adminLogin = (function () {
              var organisationGroupDataSource = new kendo.data.DataSource({                
              transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/index/"+userOrgIdArray[i],
+                   url: app.serverUrl()+"group/index/"+userOrgIdArray[i],
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}

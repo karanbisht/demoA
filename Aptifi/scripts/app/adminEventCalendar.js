@@ -39,7 +39,7 @@ app.adminEventCalender = (function () {
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: "http://54.85.208.215/webservice/event/index",
+                    url: app.serverUrl()+"event/index",
                     type:"POST",
                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                     data: jsonDataLogin
@@ -370,7 +370,7 @@ app.adminEventCalender = (function () {
             var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/event/delete/",
+                   url: app.serverUrl()+"event/delete/",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -545,7 +545,7 @@ app.adminEventCalender = (function () {
              var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/event/Add",
+                   url: app.serverUrl()+"event/Add",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -630,7 +630,7 @@ app.adminEventCalender = (function () {
              var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/event/edit",
+                   url: app.serverUrl()+"event/edit",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup

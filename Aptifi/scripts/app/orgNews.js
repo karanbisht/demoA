@@ -1,9 +1,8 @@
 var app = app || {};
 
-app.eventCalender = (function () {
+app.orgNews = (function () {
 
-    
-    var calendarEventModel = (function () {
+    var orgNewsModel = (function () {
 
         var eventOrgId;
         var groupAllEvent=[];
@@ -15,6 +14,7 @@ app.eventCalender = (function () {
     
          var show = function(e){
                
+             console.log('asd');
 
              $(".km-scroll-container").css("-webkit-transform", "");
  
@@ -124,7 +124,7 @@ app.eventCalender = (function () {
                                           org_id: loginData.status[0].eventData[i].org_id
    	                               });
                               }
-                              showEventInCalendar();
+                            
                           } 
                     }                
                 });
@@ -134,114 +134,7 @@ app.eventCalender = (function () {
 
          }
         
-        
 
-        
-        
-        
-        function showEventInCalendar(){
-                         
-             console.log(tasks);
-            
-             multipleEventArray=[];            
-              	
-             $("#calendar").kendoCalendar({
-             //value:new Date(),
-             dates:tasks,
-             month:{
-             content:
-                //'#console.log(data.date);#' +
-                //'#console.log(data.dates);#' +
-                //'#console.log(typeof data.dates[+data.date]);#' +                 
-                '# if (typeof data.dates[+data.date] === "string" ) { #' +
-                '<div style="color:rgb(53,152,219);">' +
-                '#= data.value #' +
-                '</div>'+
-                '# } else { #' +
-                '#= data.value #' +
-
-                '# } #'
-                 
-            },
-               //footer: false,
-              change: selectedDataByUser,              
-              
-              navigate:function () {
-                $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover k-state");
-                $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover k-state");
-              }
-            }).data("kendoCalendar");            
-             
-         }
-
-        var multipleEventArray=[];
-        var date2;
-        function selectedDataByUser(){
-
-            console.log("Change :: " + kendo.toString(this.value(), 'd'));
-            var date = kendo.toString(this.value(), 'd'); 
-                
-            
-            var date2 = kendo.toString(this.value(), 'd'); 
-
-            $("#eventDetailDiv").hide();
- 
-            multipleEventArray=[];
-            document.getElementById("eventTitle").innerHTML = "";
-
-
-            console.log(groupAllEvent);
-            
-            
-            for(var i=0;i<groupAllEvent.length;i++){
-                
-                  var dateFmLive = groupAllEvent[i].event_date;                
-                 var values = dateFmLive.split('/');
-                              	var monthShow  = values[0]; // globle variable
-                              	var dayShow = values[1];
-                              	var yearShow = values[2];
-                
-                if(monthShow<10){
-                    monthShow = monthShow.replace(/^0+/, '');                                                         
-                }
-                
-                var dateToCom= monthShow+'/'+dayShow+'/'+yearShow;
-
-                if(date===dateToCom){
-
-                    $("#eventDate").html(date);
-                    document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
-                    
-                                                                                        
-                                      multipleEventArray.push({
-                                          id: groupAllEvent[i].id,
-                                          add_date: groupAllEvent[i].add_date,
-									      event_date: groupAllEvent[i].event_date,
-										  event_desc: groupAllEvent[i].event_desc,                                                                                 										  
-                                          event_name: groupAllEvent[i].event_name,                                                                                  										  
-                                          event_time: groupAllEvent[i].event_time,                                                                                  										  
-                                          mod_date: groupAllEvent[i].mod_date,                                     
-                                          org_id: groupAllEvent[i].org_id
-   	                               });
-
-
-                    //$("#eventTitle").html(groupAllEvent[i].event_name);
-                    //$("#eventTime").html(groupAllEvent[i].event_time);
-                    $("#eventDetailDiv").show();
-
-                }   
-            }
-        }
-        
-        
-        var eventMoreDetailClick = function(){
-             app.mobileApp.navigate('#eventCalendarDetail');
-        }
-        
-        
-         var gobackToCalendar = function(){
-             app.mobileApp.navigate('#eventCalendar');
-        }
     
         var detailShow = function(){
 
@@ -264,43 +157,6 @@ app.eventCalender = (function () {
             
         }
         
-         var upcommingEventList = function(){
-            app.mobileApp.navigate('#CustomerEventList');
-         }
-        
-        var eventListShow = function(){
-            
-
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
-            var allEventLength = groupAllEvent.length;
-            
-            if(allEventLength===0){
-                groupAllEvent.push({
-                                          id:0 ,
-                                          add_date:'',
-									      event_date:'',
-										  event_desc: 'This Organization has no event.',                                                                                 										  
-                                          event_name: 'No Event',                                                                                  										  
-                                          event_time: '',                                                                                  										  
-                                          mod_date: '',                                     
-                                          org_id: ''
-   	                               });
-            }
- 
- 
-            var organisationListDataSource = new kendo.data.DataSource({
-                  data: groupAllEvent
-             });           
-
-                
-            $("#eventCalendarAllList").kendoMobileListView({
-  		    template: kendo.template($("#calendarEventListTemplate").html()),    		
-     		 dataSource: organisationListDataSource
-            });
-                
-            $('#eventCalendarAllList').data('kendoMobileListView').refresh();
-        }
         
         
         var gobackOrgPage = function(){
@@ -312,16 +168,12 @@ app.eventCalender = (function () {
     	 return {
         	   init: init,
            	show: show,
-               eventListShow:eventListShow,
                gobackOrgPage:gobackOrgPage,
-               gobackToCalendar:gobackToCalendar,
-               upcommingEventList:upcommingEventList,
-               eventMoreDetailClick:eventMoreDetailClick,
                detailShow:detailShow
           };
            
     }());
         
-    return calendarEventModel;
+    return orgNewsModel;
     
 }());

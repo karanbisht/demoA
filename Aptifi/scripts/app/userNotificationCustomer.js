@@ -64,7 +64,7 @@ app.replyedCustomer = (function () {
             transport: {
                read: {
                    //url: "http://54.85.208.215/webservice/notification/getReplycustomerList/"+org_id+"/"+notiId,
-                   url: "http://54.85.208.215/webservice/notification/replyListbyOrg/"+org_id,
+                   url: app.serverUrl()+"notification/replyListbyOrg/"+org_id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   

@@ -28,7 +28,7 @@ app.userGroupList = (function () {
 	        groupListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getGroupByOrgID/"+orgId,
+                   url: app.serverUrl()+"group/getGroupByOrgID/"+orgId,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -121,7 +121,7 @@ app.userGroupList = (function () {
          var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/saveGroup",
+                   url: app.serverUrl()+"group/saveGroup",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup

@@ -67,6 +67,7 @@ app.userNotiComment = (function () {
         
 
         var show = function (e) {
+            app.mobileApp.pane.loader.show();
               title=''
               message='';
               $(".km-scroll-container").css("-webkit-transform", "");
@@ -93,7 +94,7 @@ app.userNotiComment = (function () {
           var userCommentedNotification = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/notificationDetail/"+ notiId+"/"+org_id,
+                   url: app.serverUrl()+"notification/notificationDetail/"+ notiId+"/"+org_id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -212,10 +213,10 @@ app.userNotiComment = (function () {
              var fileTransfer = new FileTransfer();    
              fileTransfer.download(attachedImg,fp,  
         			function(entry) {
-                        app.mobileApp.pane.loader.hide();
+                        //app.mobileApp.pane.loader.hide();
 	        		},    
     		        function(error) {
-                        app.mobileApp.pane.loader.hide();
+                        //app.mobileApp.pane.loader.hide();
 	        		}
 	    		);                
         };
@@ -257,7 +258,7 @@ app.userNotiComment = (function () {
             userCommentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getComment/"+org_id+"/"+notiId+"/"+customerID,
+                   url: app.serverUrl()+"notification/getComment/"+org_id+"/"+notiId+"/"+customerID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -344,7 +345,7 @@ app.userNotiComment = (function () {
           var saveCommentDataSource = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/orgReply",
+                   url: app.serverUrl()+"notification/orgReply",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDatacomment

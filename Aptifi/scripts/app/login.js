@@ -31,10 +31,11 @@ app.Login = (function () {
           //$loginPassword = $('#loginPassword');            
         };
 
+
         var show = function () {
-            //app.mobileApp.pane.showLoading();
-              
+            //app.mobileApp.pane.showLoading();              
             console.log("Login Page");
+                        
             //app.showNativeAlert();            
             app.userPosition=true;
             app.userPosition=true;
@@ -119,12 +120,14 @@ app.Login = (function () {
        		  console.log(username+"||"+device_id+"||"+device_type);
                 
                  localStorage.setItem("username",username); 
-        	              
+                   
+        	     console.log('--------static server URL-----'+app.serverUrl());
+                   
                var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
                var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
+                   url: app.serverUrl()+"customer/login",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin
@@ -359,7 +362,7 @@ app.Login = (function () {
                  
              transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
+                   url: app.serverUrl()+"notification/getCustomerNotification/"+ userOrgIdArray[i]+"/"+userAccountID+"/"+0,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -709,12 +712,14 @@ app.Login = (function () {
            schema: {
                data: function(data)
                {
-                   console.log(data);
+                   console.log('--------Verification Code Sent-----------------');
+                   //console.log(data);
                	return [data];
                }
            },
            error: function (e) {
                //apps.hideLoading();
+               console.log('--------Error in Verification Code Sent-----------------');               
                console.log(e);
                
                if(!app.checkConnection()){
@@ -776,7 +781,7 @@ app.Login = (function () {
           var dataSourceLogin = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/login",
+                   url: app.serverUrl()+"customer/login",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataLogin

@@ -64,7 +64,7 @@ app.addCustomerByAdmin = (function () {
           var dataSourceRegister = new kendo.data.DataSource({
                transport: {
                read: {
-                   url:"http://54.85.208.215/webservice/customer/add",
+                   url: app.serverUrl()+"customer/add",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataRegister

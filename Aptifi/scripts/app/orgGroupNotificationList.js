@@ -17,9 +17,8 @@ app.orgGroupListView = (function () {
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
 
-                     $(".km-scroll-container").css("-webkit-transform", "");
+            $(".km-scroll-container").css("-webkit-transform", "");
 
-          
             var organisationAllNotificationModel = {
             id: 'Id',
             fields: {
@@ -55,7 +54,7 @@ app.orgGroupListView = (function () {
           var organisationALLListDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id,
+                   url: app.serverUrl()+"notification/getCustomerNotification/"+ organisationID+"/"+account_Id,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -146,7 +145,6 @@ app.orgGroupListView = (function () {
         };
         
          var groupNotificationSelected = function (e) {
-            alert("hello");
 			app.MenuPage=false;	
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);

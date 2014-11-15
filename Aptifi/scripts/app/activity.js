@@ -276,7 +276,7 @@ app.Activity = (function () {
             commentsDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID,
+                   url: app.serverUrl()+"notification/getNotificationComment/"+org_id+"/"+notiId+"/"+account_Id+"/"+lastNotiCommentID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
               	}
@@ -571,7 +571,7 @@ app.Activity = (function () {
           var saveCommentDataSource = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/notification/userReply",
+                   url: app.serverUrl()+"notification/userReply",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDatacomment

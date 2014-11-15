@@ -84,7 +84,7 @@ app.subGroupDetail = (function () {
         var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/getCustomerByGroupID/"+groupID+"/"+organisationID,
+                   url: app.serverUrl()+"group/getCustomerByGroupID/"+groupID+"/"+organisationID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -220,7 +220,7 @@ app.subGroupDetail = (function () {
          var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/edit",
+                   url: app.serverUrl()+"group/edit",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -284,7 +284,7 @@ app.subGroupDetail = (function () {
             var MemberDataSource = new kendo.data.DataSource({
             transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/customer/getOrgCustomer/"+organisationID,
+                   url: app.serverUrl()+"customer/getOrgCustomer/"+organisationID,
                    type:"POST",
                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
@@ -386,7 +386,7 @@ app.subGroupDetail = (function () {
             var dataSourceAddMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/addUser",
+                   url: app.serverUrl()+"group/addUser",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataAddMember
@@ -459,7 +459,7 @@ app.subGroupDetail = (function () {
             var dataSourceDeleteMember = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: "http://54.85.208.215/webservice/group/removeUser",
+                   url: app.serverUrl()+"group/removeUser",
                    type:"POST",
                    dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataDeleteMember
