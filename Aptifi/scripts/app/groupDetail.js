@@ -538,20 +538,31 @@ app.groupDetail = (function () {
                     console.log(organisationID);
                     app.mobileApp.navigate('views/adminEventCalendar.html');                
                 }
+        
+        
+                var showOrgNews = function(){
+                    app.MenuPage=false;
+                    console.log(organisationID);
+                    app.mobileApp.navigate('views/adminNews.html');                
+                }
+        
+        
+        
 	           
     	       return {
         	   init: init,
            	show: show,
                manageGroup:manageGroup,
+               showOrgNews:showOrgNews,    
                clickOnOrgMember:clickOnOrgMember,     
                sendNotification:sendNotification,    
                removeMemberClick:removeMemberClick,
                addMemberToGroup:addMemberToGroup,
            	userMessageTab:userMessageTab,
-                   backToOrgAdminList:backToOrgAdminList,
+               backToOrgAdminList:backToOrgAdminList,
                backToOrgDetail:backToOrgDetail,   
-                   showGroupToDelete:showGroupToDelete,
-                   addNemMember:addNemMember,
+               showGroupToDelete:showGroupToDelete,
+               addNemMember:addNemMember,
           	 //addMemberToGroupFunc:addMemberToGroupFunc,
            	removeMemberFromGroup:removeMemberFromGroup,    
            	showGroupNotification:showGroupNotification,
