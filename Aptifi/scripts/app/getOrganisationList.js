@@ -280,14 +280,12 @@ app.OragnisationList = (function () {
                 //app.mobileApp.pane.loader.hide();
                 $("#progress2").hide();
                
-               if(!app.checkConnection()){
-                  if(!app.checkSimulator()){
+                  /*if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                  }
+                  }*/
                 
-               }
                
                 showMoreDBData();  
                
@@ -1749,7 +1747,16 @@ app.OragnisationList = (function () {
         }
         
         var showCalendar = function(){
-            app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID);            
+                
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+             }else{
+                    app.mobileApp.navigate('views/eventCalendar.html?orgManageID='+orgManageID); 
+                 }
         }
         
         var showOrgNews = function(){

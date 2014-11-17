@@ -110,6 +110,17 @@ app.userReplyList = (function () {
         
 
       var show = function(e){
+          
+          
+                
+              if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
+          
 	       app.MenuPage=false;
            app.userPosition=false;
            app.mobileApp.pane.loader.hide();

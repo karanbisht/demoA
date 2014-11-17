@@ -158,6 +158,13 @@ app.Activities = (function () {
                 
                     console.log(e);
                     
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               
+                    
                     var db = app.getDb();
 		            db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
 

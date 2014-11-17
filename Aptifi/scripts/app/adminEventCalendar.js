@@ -16,12 +16,14 @@ app.adminEventCalender = (function () {
     
          var show = function(){
             
+             $("#adminCalProcess").show();
+            
+             $("#eventDetailDiv").hide();
 
              $(".km-scroll-container").css("-webkit-transform", "");
 
              tasks = [];
              multipleEventArray=[];
-             $("#eventDetailDiv").hide();
 
              //organisationId = e.view.params.organisationId;
              //account_Id =e.view.params.account_Id;
@@ -54,13 +56,15 @@ app.adminEventCalender = (function () {
             },
            error: function (e) {
                console.log(e);               
-               if(!app.checkConnection()){
+
+               $("#adminCalProcess").hide();
+
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   }               
-               }                              
+                                             
            }               
           });  
 	            
@@ -80,7 +84,6 @@ app.adminEventCalender = (function () {
                           showEventInCalendar();
 
                       }else if(loginData.status[0].Msg==='Success'){
-
                           groupAllEvent=[];
                           tasks = [];
 
@@ -89,8 +92,9 @@ app.adminEventCalender = (function () {
                                                             
                               var eventListLength = loginData.status[0].eventData.length;
                               
-                              for(var i=0 ; i<eventListLength ;i++){
-                                 
+                              console.log(eventListLength);
+                              
+                              for(var i=0 ; i<eventListLength ;i++){                                 
 
                                   var eventDaya = loginData.status[0].eventData[i].event_date
                                   var values = eventDaya.split('-');
@@ -100,6 +104,7 @@ app.adminEventCalender = (function () {
                                   
                                   
                                     tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
+                                  
                                   //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
@@ -107,7 +112,9 @@ app.adminEventCalender = (function () {
                                   }
                                   var saveData = month+"/"+day+"/"+year;
                                   
-                                                                    
+                                                          
+                                              $("#eventDetailDiv").hide();            
+
                                       groupAllEvent.push({
                                           id: loginData.status[0].eventData[i].id,
                                           add_date: loginData.status[0].eventData[i].add_date,
@@ -138,7 +145,10 @@ app.adminEventCalender = (function () {
 
             //class="#= data.dates[+data.date] #"
             
-             $("#admincalendar").kendoCalendar({
+            document.getElementById("admincalendar").innerHTML = "";
+
+            $("#eventDetailDiv").hide();            
+            $("#admincalendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
              month:{
@@ -157,6 +167,10 @@ app.adminEventCalender = (function () {
                 $(".ob-not-done-date", "#admincalendar").parent().addClass("ob-not-done-date-style k-state-hover");
               }
             }).data("kendoCalendar");             
+            
+
+            $("#adminCalProcess").hide();
+
         }
 
         var multipleEventArray=[];
@@ -213,13 +227,14 @@ app.adminEventCalender = (function () {
 
                 //alert(date+"||"+dateToCom);
                 
-                if(date===dateToCom){
-                    
+
+                var currentDate = app.getPresentDate();
+
+                console.log('------------------date------------------'+currentDate);
+                
+                if(date===dateToCom){                    
                     console.log('inside');
-                    
-                    $("#eventDetailDiv").show();
-                    $("#eventDate").html(date);
-                    
+                    $("#eventDate").html(date);                    
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
                                                                                         
                                       multipleEventArray.push({
@@ -241,8 +256,15 @@ app.adminEventCalender = (function () {
                 }   
             }
             
-            if(checkGotevent===0){
+            
+            if(new Date(date) >= new Date(currentDate) && (checkGotevent===0)){
                 app.mobileApp.navigate('#adminAddEventCalendar');
+            }else if(new Date(date) < new Date(currentDate) && (checkGotevent===0)){                   
+                if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Your Cannot Add Event on Back Date');  
+                  }else{
+                    app.showAlert('Your Cannot Add Event on Back Date',"Event");  
+                  }                                
             }else{
                 $("#eventDetailDiv").show();
             }
@@ -277,9 +299,9 @@ app.adminEventCalender = (function () {
         
         
         var addEventshow = function(){
-
+         
+            
             $(".km-scroll-container").css("-webkit-transform", "");
- 
          
             $("#addEventName").val('');
             $("#addEventDesc").val('');
@@ -289,10 +311,8 @@ app.adminEventCalender = (function () {
             value: date2,
             min: new Date()    
             });
-            
-             
+                         
             $("#adddateTimePicker").kendoTimePicker({
-                value: new Date(),
                 interval: 15,
                 min: new Date(),
                 format: "h:mm tt",
@@ -301,20 +321,27 @@ app.adminEventCalender = (function () {
                 change: function() {
                         var value = this.value();
                         console.log(value); //value is the selected date in the timepicker
-                }
-                
+                }                
             });
             
-            
-             var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker"); 
 
-                /*addEventDatePicker.focus(function() {
-	                //$( "#orgforNotification" ).blur();
-                    addEventDatePicker.input.blur();
-				});*/
+            var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker");
+            
+
+            
+                //$(".k-datepicker input").prop("readonly", true);
+            
+            
+            
+                  /*      $('#adddatePicker').attr("readonly","readonly");
+
+                        $('#adddateTimePicker').attr("readonly","readonly");
+                */
+
+            
             
                 $("#adddatePicker").bind("focus", function() {
-                    $("#adddatePicker").blur();
+                    $("#adddatePicker").blur();                    
                 });
 
             
@@ -322,7 +349,8 @@ app.adminEventCalender = (function () {
                 $("#adddateTimePicker").bind("focus", function() {
                     $("#adddateTimePicker").blur();
                 });
-
+                
+            
             
             
                  /*var addEventTimePicker = $("#adddateTimePicker").data("kendoTimePicker"); 
@@ -332,10 +360,9 @@ app.adminEventCalender = (function () {
 				});  */ 
             
             
-                       
-            $(".km-scroll-container").css("-webkit-transform", "");
- 
+                        
         }
+        
 
         
         var eventNameEdit;
@@ -468,6 +495,11 @@ app.adminEventCalender = (function () {
                 $("#editdateTimePicker").bind("focus", function() {
                     $("#editdateTimePicker").blur();
                 });
+            
+            
+                        /*$('#editdatePicker').attr("readonly","readonly");
+
+                        $('#editdateTimePicker').attr("readonly","readonly");*/
 
             
 

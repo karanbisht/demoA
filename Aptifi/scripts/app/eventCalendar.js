@@ -20,6 +20,8 @@ app.eventCalender = (function () {
  
              tasks = [];
              multipleEventArray=[];
+             
+             $("#CalProcess").show();
                          
              $("#eventDetailDiv").hide();
              //eventOrgId = e.view.params.orgManageID;
@@ -28,9 +30,6 @@ app.eventCalender = (function () {
              eventOrgId = localStorage.getItem("selectedOrgId");
 
              document.getElementById("calendar").innerHTML = "";
-             
-             
-
              
 
              var jsonDataLogin = {"org_id":eventOrgId}
@@ -53,14 +52,15 @@ app.eventCalender = (function () {
             },
            error: function (e) {
                console.log(e);               
-               if(!app.checkConnection()){
+
+               $("#CalProcess").hide();
+
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   }               
-               }                              
-           }               
+           }                              
           });  
 	            
            dataSourceLogin.fetch(function() {
@@ -144,7 +144,10 @@ app.eventCalender = (function () {
              console.log(tasks);
             
              multipleEventArray=[];            
-              	
+
+            document.getElementById("calendar").innerHTML = "";
+
+            
              $("#calendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
@@ -171,16 +174,20 @@ app.eventCalender = (function () {
                 $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover k-state");
               }
             }).data("kendoCalendar");            
+            
+
+            $("#CalProcess").hide();
+
              
          }
 
         var multipleEventArray=[];
         var date2;
+
         function selectedDataByUser(){
 
             console.log("Change :: " + kendo.toString(this.value(), 'd'));
-            var date = kendo.toString(this.value(), 'd'); 
-                
+            var date = kendo.toString(this.value(), 'd');                 
             
             var date2 = kendo.toString(this.value(), 'd'); 
 

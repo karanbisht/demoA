@@ -1053,6 +1053,20 @@ var app = (function (win) {
           return totalTime;
     }
     
+    
+    
+       var getPresentDate = function(){
+          var currentDate = new Date();
+          var month = currentDate.getMonth() + 1;
+          var day = currentDate.getDate();
+          var year = currentDate.getFullYear();
+          if(month<10){
+             month='0'+month;
+          }           
+          var CurDateVal =month+'/'+day+'/'+year;
+          return CurDateVal;
+    }
+    
     var replyUser = function(){
             app.MenuPage=false;	
             app.mobileApp.navigate('views/userReplyView.html');                         
@@ -1196,6 +1210,7 @@ var app = (function (win) {
         checkConnection:checkConnection,
         helper: AppHelper,
         getfbValue:getfbValue,
+        getPresentDate:getPresentDate,
         gobackTOCalendar:gobackTOCalendar,
     
         //registerInEverlive:registerInEverlive,

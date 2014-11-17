@@ -142,6 +142,7 @@ app.sendNotification = (function () {
          
          var showLiveData = function(){
                 //console.log('Hello');
+             
                 console.log(groupDataShowOffline);
                 
              var organisationListDataSource = new kendo.data.DataSource({
@@ -204,6 +205,7 @@ app.sendNotification = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
                }            
+            
             var account_Id = localStorage.getItem("ACCOUNT_ID");          
        };    
              
@@ -675,6 +677,13 @@ app.sendNotification = (function () {
             },
 	            error: function (e) {
         	       console.log(e);
+                    
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               
             	   //navigator.notification.alert("Please check your internet connection.",
                	//function () { }, "Notification", 'OK');                    
            	}

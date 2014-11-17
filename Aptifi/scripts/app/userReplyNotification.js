@@ -10,7 +10,15 @@ app.userReplyNotificationList = (function () {
       };
          
       var show = function(e){
-	    
+          
+            if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+               }
+          
         organisationID = e.view.params.organisationID;
         orgName = e.view.params.orgName; 
                      $(".km-scroll-container").css("-webkit-transform", "");
@@ -109,8 +117,13 @@ app.userReplyNotificationList = (function () {
 	            error: function (e) {
     	           //apps.hideLoading();
         	       console.log(e);
-            	   navigator.notification.alert("Please check your internet connection.",
-               	function () { }, "Notification", 'OK');
+                    
+                   
+                    if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
            	}
 	        
     	    });         

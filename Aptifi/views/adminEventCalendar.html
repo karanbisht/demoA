@@ -9,6 +9,13 @@
               </div>                                          
     </div>
 
+
+    <div class="loader" id="adminCalProcess" style="display:none;margin-top:50%">
+                      <div class="ball"></div>
+                      <div class="loading1">Loading...</div>
+    </div>
+
+    
     <div id="calendarContainerDiv" class="demo-section k-header" style="width:100%; text-align: center;">
 
          <div id="admincalendar"></div>
@@ -16,7 +23,7 @@
     </div>
     
     
-    <div id="eventDetailDiv" style="background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;width:94%" data-role="button" data-click="app.adminEventCalender.eventMoreDetailClick">
+    <div id="eventDetailDiv" style="display:none;background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;width:94%;" data-role="button" data-click="app.adminEventCalender.eventMoreDetailClick">
         
        <p style="color:rgb(53,152,088); text-align:left;">Data: <span id="eventDate" style="color:rgb(53,152,219)"></span></p>
         
@@ -121,25 +128,25 @@
     	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
              
            <ul data-role="listview" data-style="inset">
-                <li class="username"><input type="text" id="addEventName" placeholder="Enter New Event Name" /></li>
+                <li class="username"><input type="text"  id="addEventName" placeholder="Enter New Event Name" /></li>
            </ul> 
              <!---class="user-share"-->
             
            <div class="textareaClass" >
-	             <textarea id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
+	             <textarea style="resize: none" id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
            </div>
 
                         <br/>
 
             <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
             
-            <div style="margin-top:20px" >
+            <div style="margin-top:20px;" >
                 <input id="adddatePicker" />
             </div>
             <br/>
             
             <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
-                <div style="margin-top:20px" >
+                <div style="margin-top:20px;" >
                     <input id="adddateTimePicker" />
                 </div>
             
@@ -221,6 +228,8 @@
     <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>
     
 </div>
+
+
 
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">
             <!--data-bind="events: { tap: activitySelected }"-->

@@ -150,6 +150,13 @@ app.replyedCustomer = (function () {
             	   //navigator.notification.alert("Please check your internet connection.",
                	//function () { }, "Notification", 'OK');
                     
+                
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+                    
                     
                      
                     var showNotiTypes=[
