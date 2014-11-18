@@ -17,8 +17,10 @@ app.adminEventCalender = (function () {
          var show = function(){
             
              $("#adminCalProcess").show();
-            
-             $("#eventDetailDiv").hide();
+             //$("#eventDetailDiv").hide();
+             
+             
+             document.getElementById("eventDetailDiv").style.display = "none";
 
              $(".km-scroll-container").css("-webkit-transform", "");
 
@@ -80,7 +82,11 @@ app.adminEventCalender = (function () {
                           
                           tasks = [];
                           groupAllEvent=[];
-                          $("#eventDetailDiv").hide();
+                          //$("#eventDetailDiv").hide();
+                          
+
+                          document.getElementById("eventDetailDiv").style.display = "none";
+
                           showEventInCalendar();
 
                       }else if(loginData.status[0].Msg==='Success'){
@@ -147,7 +153,6 @@ app.adminEventCalender = (function () {
             
             document.getElementById("admincalendar").innerHTML = "";
 
-            $("#eventDetailDiv").hide();            
             $("#admincalendar").kendoCalendar({
              //value:new Date(),
              dates:tasks,
@@ -183,7 +188,6 @@ app.adminEventCalender = (function () {
             
             date2 = kendo.toString(this.value(), 'd'); 
 
-            $("#eventDetailDiv").hide();
  
             multipleEventArray=[];
             document.getElementById("eventTitle").innerHTML = "";
@@ -214,7 +218,7 @@ app.adminEventCalender = (function () {
                 
                 var dateToCom= monthShow+'/'+dayShow+'/'+yearShow;
 
-                console.log(dateToCom);
+                //console.log(dateToCom);
                 
                 //date=date.trim();//replace(/^"(.*)"$/, '$1');
                 //dateToCom=dateToCom.trim();//.replace(/^"(.*)"$/, '$1');
@@ -230,9 +234,11 @@ app.adminEventCalender = (function () {
 
                 var currentDate = app.getPresentDate();
 
-                console.log('------------------date------------------'+currentDate);
+                console.log(date+'------------------date------------------'+dateToCom);
                 
                 if(date===dateToCom){                    
+
+                    document.getElementById("eventDetailDiv").style.display = "block";
                     console.log('inside');
                     $("#eventDate").html(date);                    
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
@@ -261,12 +267,15 @@ app.adminEventCalender = (function () {
                 app.mobileApp.navigate('#adminAddEventCalendar');
             }else if(new Date(date) < new Date(currentDate) && (checkGotevent===0)){                   
                 if(!app.checkSimulator()){
-                     window.plugins.toast.showLongBottom('Your Cannot Add Event on Back Date');  
+                     window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
                   }else{
-                    app.showAlert('Your Cannot Add Event on Back Date',"Event");  
+                    app.showAlert('You Cannot Add Event on Back Date',"Event");  
                   }                                
             }else{
-                $("#eventDetailDiv").show();
+
+                document.getElementById("eventDetailDiv").style.display = "block";
+
+                //$("#eventDetailDiv").show();
             }
         }
         
