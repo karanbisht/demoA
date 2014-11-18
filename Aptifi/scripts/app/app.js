@@ -992,13 +992,15 @@ var app = (function (win) {
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
                      								layout: "tabstrip-layout",										
-                                                     skin: 'flat'
+                                                     skin: 'flat',
+                                                     useNativeScrolling: true
                                                  	});
    }else if(loginStatusCheck==='1'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#organisationNotiList",
          											layout: "tabstrip-layout",										
-                                                     skin: 'flat'
+                                                     skin: 'flat',
+                                                     useNativeScrolling: true
                                                  	});
        
    }else if(loginStatusCheck==='2'){
