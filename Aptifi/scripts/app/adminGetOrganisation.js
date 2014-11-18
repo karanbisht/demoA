@@ -329,7 +329,8 @@ app.adminOragnisationList = (function () {
            
            }else{               
 
-                              localStorage.setItem("ADMIN_FIRST_LOGIN",0); 
+                              
+                localStorage.setItem("ADMIN_FIRST_LOGIN",0); 
                
                 var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
 				+ adminOrgProfileData[i].organisationID
@@ -346,7 +347,7 @@ app.adminOragnisationList = (function () {
                 + '","'
 				+ adminIncomMsgData[i].total    
                 + '")';              
-            app.insertQuery(tx, query);
+                app.insertQuery(tx, query);
  
            }    
                                         

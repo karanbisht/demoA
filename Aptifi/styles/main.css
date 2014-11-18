@@ -696,22 +696,25 @@ input::-webkit-inner-spin-button {
 }
 
 
-.textareaClass {
+   .textareaClass {
     margin: 0;
     padding: .75em 1em;
-    min-height: 13.5em;
     border-radius:10px;
     background-color: #f5f7f8;
-    resize: none;
+    max-height:200px !important;
+    height:200px !important;     
 }
+
 
 
 .textareaClass textarea {
     margin: 0;
     padding: 2px 2px;
     width: 100%;
-    min-height: 12.5em;
-    font-size: 1rem
+    font-size: 1rem;
+    max-height:180px !important;
+    height:180px !important;     
+    overflow-y:scroll !important;
 }
 
 #friendsApp .user-share-noti textarea {
@@ -1253,3 +1256,18 @@ input.largerCheckbox
     color:#ffffff;
 }
 
+.disabledDay { 
+        
+    color:#cccccc;
+    display: block;
+    overflow: hidden;
+    min-height: 22px;
+    line-height: 22px;
+    padding: 0 .45em 0 .1em;
+    cursor:default;
+}
+
+.ui-datepicker { 
+  margin-left: 100px;
+  z-index: 1000;
+}

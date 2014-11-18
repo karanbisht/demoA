@@ -19,6 +19,11 @@ app.adminEventCalender = (function () {
              $("#adminCalProcess").show();
              //$("#eventDetailDiv").hide();
              
+                         
+             $("#adddatePicker").kendoDatePicker();
+                         $("#adddateTimePicker").kendoTimePicker();
+
+
              
              document.getElementById("eventDetailDiv").style.display = "none";
 
@@ -109,7 +114,7 @@ app.adminEventCalender = (function () {
                               	var day = values[2];
                                   
                                   
-                                    tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
+                                  tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
                                   
                                   //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
@@ -171,11 +176,9 @@ app.adminEventCalender = (function () {
                 $(".ob-done-date", "#admincalendar").parent().addClass("ob-done-date-style k-state-hover");
                 $(".ob-not-done-date", "#admincalendar").parent().addClass("ob-not-done-date-style k-state-hover");
               }
-            }).data("kendoCalendar");             
-            
+            }).data("kendoCalendar");                         
 
             $("#adminCalProcess").hide();
-
         }
 
         var multipleEventArray=[];
@@ -240,9 +243,12 @@ app.adminEventCalender = (function () {
 
                     document.getElementById("eventDetailDiv").style.display = "block";
                     console.log('inside');
-                    $("#eventDate").html(date);                    
+                    
+                    //$("#eventDate").html(date);                    
                     document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
-                                                                                        
+                    
+                    console.log(groupAllEvent[i]);
+                    
                                       multipleEventArray.push({
                                           id: groupAllEvent[i].id,
                                           add_date: groupAllEvent[i].add_date,
@@ -268,9 +274,12 @@ app.adminEventCalender = (function () {
             }else if(new Date(date) < new Date(currentDate) && (checkGotevent===0)){                   
                 if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
-                  }else{
+              }else{
                     app.showAlert('You Cannot Add Event on Back Date',"Event");  
                   }                                
+
+                document.getElementById("eventDetailDiv").style.display = "none";
+  
             }else{
 
                 document.getElementById("eventDetailDiv").style.display = "block";
@@ -316,16 +325,85 @@ app.adminEventCalender = (function () {
             $("#addEventDesc").val('');
             console.log(date2);
          
+            
+             /*$("#admincalendar").kendoCalendar({
+             //value:new Date(),
+             dates:tasks,
+             month:{
+             content:'# if (typeof data.dates[+data.date] === "string") { #' +
+                '<div style="color:rgb(53,152,219);">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+              change: selectedDataByUser,              
+              
+              navigate:function () {
+                $(".ob-done-date", "#admincalendar").parent().addClass("ob-done-date-style k-state-hover");
+                $(".ob-not-done-date", "#admincalendar").parent().addClass("ob-not-done-date-style k-state-hover");
+              }
+            }).data("kendoCalendar");*/                         
+
+            
+            var currentDate = app.getPresentDate();
+            
+            disabledDaysBefore = [
+              +new Date(currentDate)
+            ];
+            
+            
             $("#adddatePicker").kendoDatePicker({
             value: date2,
-            min: new Date()    
-            });
+            dates: disabledDaysBefore,    
+            month:{
+            content:'# if (data.date < data.dates) { #' +   
+                '<div class="disabledDay">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+            position: "bottom left",
+            animation: {
+                 open: {
+                        effects: "slideIn:up"
+                 }                
+               },
+                open: function(e){
+                  $(".disabledDay").parent().removeClass("k-link")
+                  $(".disabledDay").parent().removeAttr("href")
+              },
+
+                 
+                change: function() {
+                        var value = this.value();
+                        console.log(value); 
+                    
+               
+                    /*if(new Date(value) < new Date(currentDate)){                   
+                
+                        if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
+                      }else{
+                            app.showAlert('You Cannot Add Event on Back Date',"Event");  
+                      }                                
+                    
+                    }*/    
+                }
+            }).data("kendoDatePicker");
+            
                          
             $("#adddateTimePicker").kendoTimePicker({
+                value:"10:00 AM",
                 interval: 15,
-                min: new Date(),
                 format: "h:mm tt",
                 timeFormat: "HH:mm", 
+                /*open: function(e) {
+                    e.preventDefault(); //prevent popup opening
+                },*/
                 
                 change: function() {
                         var value = this.value();
@@ -334,31 +412,36 @@ app.adminEventCalender = (function () {
             });
             
 
-            var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker");
-            
-
+                //var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker");            
             
                 //$(".k-datepicker input").prop("readonly", true);
             
             
+
             
-                  /*      $('#adddatePicker').attr("readonly","readonly");
+                       /* $('#adddatePicker').attr("readonly","readonly");
 
                         $('#adddateTimePicker').attr("readonly","readonly");
-                */
+
+            */
+                
 
             
             
+            
+            setTimeout(function(){
                 $("#adddatePicker").bind("focus", function() {
                     $("#adddatePicker").blur();                    
                 });
+            },100); 
 
             
-            
+            setTimeout(function(){            
                 $("#adddateTimePicker").bind("focus", function() {
                     $("#adddateTimePicker").blur();
-                });
-                
+                }); 
+            },100); 
+            
             
             
             
@@ -446,7 +529,6 @@ app.adminEventCalender = (function () {
         
         var editEventshow = function(){
 
-
             $(".km-scroll-container").css("-webkit-transform", "");
 
             console.log(eventNameEdit);
@@ -456,22 +538,46 @@ app.adminEventCalender = (function () {
             $("#editEventDesc").html(eventDescEdit);
 
             console.log(eventDateEdit);
+                        
+            var currentDate = app.getPresentDate();
+            
+            disabledDaysBefore = [
+              +new Date(currentDate)
+            ];
+            
 
             $("#editdatePicker").kendoDatePicker({
             value: eventDateEdit,
-            min: new Date(),
-    
-                
+            dates: disabledDaysBefore,    
+            month:{
+            content:'# if (data.date < data.dates) { #' +   
+                '<div class="disabledDay">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+            position: "bottom left",
+            animation: {
+                 open: {
+                        effects: "slideIn:up"
+                 }                
+               },
+                open: function(e){
+                  $(".disabledDay").parent().removeClass("k-link")
+                  $(".disabledDay").parent().removeAttr("href")
+              },            
                 change: function() {
                         var value = this.value();
                         console.log(value); //value is the selected date in the timepicker
                 }
             });
+            
                          
             $("#editdateTimePicker").kendoTimePicker({
                 value: eventTimeEdit,
                 interval: 15,
-                min: new Date(),
                 format: "h:mm tt",
                 timeFormat: "HH:mm",                
                 change: function() {
@@ -482,28 +588,32 @@ app.adminEventCalender = (function () {
 
             
             
-             /*var editEventDatePicker = $("#editdatePicker").data("kendoDatePicker"); 
-				editEventDatePicker.input.focus(function() {
+               /*var editEventDatePicker = $("#editdatePicker").data("kendoDatePicker"); 
+    				editEventDatePicker.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     editEventDatePicker.input.blur();
 				});
             
             
                  var editEventTimePicker = $("#editdateTimePicker").data("kendoTimePicker"); 
-				editEventTimePicker.input.focus(function() {
+			    	editEventTimePicker.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     editEventTimePicker.input.blur();
-				}); */
+				 }); */
             
-
+            setTimeout(function(){            
                 $("#editdatePicker").bind("focus", function() {
                     $("#editdatePicker").blur();
                 });
+            },100);    
+
             
-                           
+            setTimeout(function(){            
                 $("#editdateTimePicker").bind("focus", function() {
                     $("#editdateTimePicker").blur();
                 });
+            },100);    
+    
             
             
                         /*$('#editdatePicker').attr("readonly","readonly");
