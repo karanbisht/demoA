@@ -23,6 +23,11 @@
     </div>
     
     
+
+     <ul id="eventCalendarFirstAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplateFirstPage"   data-bind="source: activities"></ul>
+
+
+    
     <div id="eventDetailDiv" style="background-color:rgb(253,255,133) ; margin:10px;padding:10px;border-radius:6px;display:none;width:94%" data-role="button" data-click="app.eventCalender.eventMoreDetailClick">
         
        <p style="color:rgb(53,152,088); text-align:left;">Data: <span id="eventDate" style="color:rgb(53,152,219)"></span></p>
@@ -111,6 +116,61 @@
 </div>
 
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">
+            <!--data-bind="events: { tap: activitySelected }"-->
+            
+            <div class="cf" data-role="touch" >         
+               
+       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
+             
+       		     <h2 id="activityTemplateTitle" style="margin-left:-3px; color:rgb(53,152,219);" >${event_name}</h2>
+                  #if(id!== 0){#
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Detail :</span>       	
+                    <br/>  
+                              #}#            
+ 
+       		     <span  id="activityTemplateMessage"  style="color:rgb(188,188,188);padding-right:10px;" >${event_desc}</span>            			            
+                    <br/>
+                    <br/>
+                    <br/>
+
+                  #if(id!== 0){#
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Date: ${event_date}</span>       	            
+                                <br/>
+                    <br/>
+
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time: ${event_time}</span>       	            
+                   #}#            
+            
+                    <!--data-click="app.adminEventCalender.editEvent"-->
+                    <!--data-click="app.adminEventCalender.deleteEvent"-->
+
+                   <!--             <br/>
+                    <br/>
+
+                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
+                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
+                                <br/>
+                    <br/>
+
+                    -->
+            
+       		</div>
+
+		    </div>   
+            
+		</script>
+
+
+
+
+
+
+
+
+
+		<script type="text/x-kendo-template" id="calendarEventListTemplateFirstPage">
             <!--data-bind="events: { tap: activitySelected }"-->
             
             <div class="cf" data-role="touch" >         

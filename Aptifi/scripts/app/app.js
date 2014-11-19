@@ -987,28 +987,22 @@ var app = (function (win) {
     
     //alert(loginStatusCheck);
     
-    if(loginStatusCheck==='0' || loginStatusCheck===null){
-    
+    if(loginStatusCheck==='0' || loginStatusCheck===null){    
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
-                     								layout: "tabstrip-layout",										
-                                                     skin: 'flat',
-                                                     useNativeScrolling: true
+                                                     skin: 'flat'
                                                  	});
    }else if(loginStatusCheck==='1'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#organisationNotiList",
-         											layout: "tabstrip-layout",										
-                                                     skin: 'flat',
-                                                     useNativeScrolling: true
+                                                     skin: 'flat'
                                                  	});
        
    }else if(loginStatusCheck==='2'){
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#view-all-activities-admin",
-         											layout: "tabstrip-layout",										
                                                      skin: 'flat'
-                                                 	});       
+                                                    });       
    }
     
     

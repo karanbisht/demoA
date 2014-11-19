@@ -6,7 +6,6 @@ app.orgNews = (function () {
 
         var eventOrgId;
         var groupAllEvent=[];
-        var tasks = [];
 
         var init = function(){
                         
@@ -14,31 +13,17 @@ app.orgNews = (function () {
     
          var show = function(e){
                
-             console.log('asd');
 
-             $(".km-scroll-container").css("-webkit-transform", "");
- 
-             tasks = [];
-             multipleEventArray=[];
-                         
-             $("#eventDetailDiv").hide();
-             //eventOrgId = e.view.params.orgManageID;
-             
+             $(".km-scroll-container").css("-webkit-transform", "");             
 
              eventOrgId = localStorage.getItem("selectedOrgId");
-
-             document.getElementById("calendar").innerHTML = "";
              
-             
-
-             
-
              var jsonDataLogin = {"org_id":eventOrgId}
 
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: app.serverUrl()+"event/index",
+                    url: app.serverUrl()+"news/index",
                     type:"POST",
                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                	 data: jsonDataLogin
@@ -53,13 +38,11 @@ app.orgNews = (function () {
             },
            error: function (e) {
                console.log(e);               
-               if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   }               
-               }                              
            }               
           });  
 	            
@@ -71,29 +54,36 @@ app.orgNews = (function () {
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='No Event list'){
+                      if(loginData.status[0].Msg==='No News list'){
                           
-                          tasks = [];
                           groupAllEvent=[];
-                          $("#eventDetailDiv").hide();
-                          showEventInCalendar();
+                          
+                          groupAllEvent.push({
+                                          id: 0,
+                                          add_date: 0,
+									      news_date: 0,
+										  news_desc: 'No News from this Organization',                                                                                 										  
+                                          news_name: 'No News',                                                                                  										  
+                                          news_time: '',                                                                                  										  
+                                          mod_date: '',                                     
+                                          org_id: ''
+   	                    });
 
                       }else if(loginData.status[0].Msg==='Success'){
 
                           groupAllEvent=[];
-                          tasks = [];
 
-                          if(loginData.status[0].eventData.length!==0){
+                          if(loginData.status[0].newsData.length!==0){
                                                             
-                              var eventListLength = loginData.status[0].eventData.length;
+                              var eventListLength = loginData.status[0].newsData.length;
                               
                               for(var i=0 ; i<eventListLength ;i++){
-                                 
-                                  var eventDaya = loginData.status[0].eventData[i].event_date;
+                                                                   
+                                  var newsDate = loginData.status[0].newsData[i].news_date;
                                   console.log("-------karan---------------");
-                                  console.log(eventDaya);
+                                  console.log(newsDate);
                                   
-                                  var values = eventDaya.split('-');
+                                  var values = newsDate.split('-');
                               	var year = values[0]; // globle variable
                               	var month = values[1];
                               	var day = values[2];
@@ -101,32 +91,33 @@ app.orgNews = (function () {
                                   console.log('------------------date=---------------------');
                                   console.log(year+"||"+month+"||"+day);
                                   
-                                   tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
-                                  
-                                    console.log(tasks);
-                                  
-                                     //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
+                                  //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
                                      day = day.replace(/^0+/, '');                                     
                                   }
                                   var saveData = month+"/"+day+"/"+year;
-                                  
-                                                                    
+
+                                 
                                       groupAllEvent.push({
-                                          id: loginData.status[0].eventData[i].id,
-                                          add_date: loginData.status[0].eventData[i].add_date,
-									      event_date: saveData,
-										  event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
-                                          event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
-                                          event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
-                                          mod_date: loginData.status[0].eventData[i].mod_date,                                     
-                                          org_id: loginData.status[0].eventData[i].org_id
+                                          id: loginData.status[0].newsData[i].id,
+                                          add_date: loginData.status[0].newsData[i].add_date,
+									      news_date: saveData,
+										  news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
+                                          news_name: loginData.status[0].newsData[i].org_name,                                                                                  										  
+                                          news_time: loginData.status[0].newsData[i].news_time,                                                                                  										  
+                                          mod_date: loginData.status[0].newsData[i].mod_date,                                     
+                                          org_id: loginData.status[0].newsData[i].org_id
    	                               });
                               }
                             
                           } 
-                    }                
+                          
+                    }
+                   
+
+                   showInListView();
+
                 });
   		 }); 
                                                  
@@ -136,24 +127,24 @@ app.orgNews = (function () {
         
 
     
-        var detailShow = function(){
+        var showInListView = function(){
+            
+            console.log(groupAllEvent);
 
             $(".km-scroll-container").css("-webkit-transform", "");
-
             
-            $("#detailEventData").html("Event On "+multipleEventArray[0].event_date);
-             console.log(multipleEventArray);                
+           
              var organisationListDataSource = new kendo.data.DataSource({
-                  data: multipleEventArray
+                  data: groupAllEvent
              });           
 
                 
-            $("#eventCalendarList").kendoMobileListView({
-  		    template: kendo.template($("#calendarTemplate").html()),    		
+            $("#orgNewsList").kendoMobileListView({
+  		    template: kendo.template($("#orgNewsTemplate").html()),    		
      		 dataSource: organisationListDataSource
             });
                 
-            $('#eventCalendarList').data('kendoMobileListView').refresh();
+            $('#orgNewsList').data('kendoMobileListView').refresh();
             
         }
         
@@ -169,7 +160,7 @@ app.orgNews = (function () {
         	   init: init,
            	show: show,
                gobackOrgPage:gobackOrgPage,
-               detailShow:detailShow
+               showInListView:showInListView
           };
            
     }());

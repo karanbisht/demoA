@@ -19,19 +19,10 @@ app.adminNews = (function () {
 
              $(".km-scroll-container").css("-webkit-transform", "");
 
-             tasks = [];
-             multipleEventArray=[];
-             $("#eventDetailDiv").hide();
-
-             //organisationId = e.view.params.organisationId;
-             //account_Id =e.view.params.account_Id;
 
              organisationID = localStorage.getItem("orgSelectAdmin");
              //alert(organisationID);
              account_Id = localStorage.getItem("ACCOUNT_ID");
-
-             
-             document.getElementById("admincalendar").innerHTML = "";
              
 
              var jsonDataLogin = {"org_id":organisationID}
@@ -39,11 +30,11 @@ app.adminNews = (function () {
              var dataSourceLogin = new kendo.data.DataSource({
                 transport: {
                 read: {
-                    url: app.serverUrl()+"event/index",
+                    url: app.serverUrl()+"news/index",
                     type:"POST",
                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                    data: jsonDataLogin
-           	}
+               	 data: jsonDataLogin
+                }
             },
             schema: {
                data: function(data)
@@ -54,13 +45,11 @@ app.adminNews = (function () {
             },
            error: function (e) {
                console.log(e);               
-               if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   }               
-               }                              
            }               
           });  
 	            
@@ -72,58 +61,70 @@ app.adminNews = (function () {
                $.each(loginDataView, function(i, loginData) {
                       console.log(loginData.status[0].Msg);
                                
-                      if(loginData.status[0].Msg==='No Event list'){
+                      if(loginData.status[0].Msg==='No News list'){
                           
-                          tasks = [];
                           groupAllEvent=[];
-                          $("#eventDetailDiv").hide();
-                          showEventInCalendar();
+                          
+                          groupAllEvent.push({
+                                          id: 0,
+                                          add_date: 0,
+									      news_date: 0,
+										  news_desc: 'No News from this Organization',                                                                                 										  
+                                          news_name: 'No News',                                                                                  										  
+                                          news_time: '',                                                                                  										  
+                                          mod_date: '',                                     
+                                          org_id: ''
+   	                    });
 
                       }else if(loginData.status[0].Msg==='Success'){
 
                           groupAllEvent=[];
-                          tasks = [];
 
-                          
-                          if(loginData.status[0].eventData.length!==0){
+                          if(loginData.status[0].newsData.length!==0){
                                                             
-                              var eventListLength = loginData.status[0].eventData.length;
+                              var eventListLength = loginData.status[0].newsData.length;
                               
                               for(var i=0 ; i<eventListLength ;i++){
-                                 
-
-                                  var eventDaya = loginData.status[0].eventData[i].event_date
-                                  var values = eventDaya.split('-');
+                                                                   
+                                  var newsDate = loginData.status[0].newsData[i].news_date;
+                                  console.log("-------karan---------------");
+                                  console.log(newsDate);
+                                  
+                                  var values = newsDate.split('-');
                               	var year = values[0]; // globle variable
                               	var month = values[1];
                               	var day = values[2];
                                   
+                                  console.log('------------------date=---------------------');
+                                  console.log(year+"||"+month+"||"+day);
                                   
-                                    tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
                                   //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
                                   if(day<10){
                                      day = day.replace(/^0+/, '');                                     
                                   }
                                   var saveData = month+"/"+day+"/"+year;
-                                  
-                                                                    
+
+                                 
                                       groupAllEvent.push({
-                                          id: loginData.status[0].eventData[i].id,
-                                          add_date: loginData.status[0].eventData[i].add_date,
-									      event_date: saveData,
-										  event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
-                                          event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
-                                          event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
-                                          mod_date: loginData.status[0].eventData[i].mod_date,                                     
-                                          org_id: loginData.status[0].eventData[i].org_id
+                                          id: loginData.status[0].newsData[i].id,
+                                          add_date: loginData.status[0].newsData[i].add_date,
+									      news_date: saveData,
+										  news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
+                                          news_name: loginData.status[0].newsData[i].org_name,                                                                                  										  
+                                          news_time: loginData.status[0].newsData[i].news_time,                                                                                  										  
+                                          mod_date: loginData.status[0].newsData[i].mod_date,                                     
+                                          org_id: loginData.status[0].newsData[i].org_id
    	                               });
                               }
- 
-                              showEventInCalendar();
-                              
+                            
                           } 
-                    }                
+                          
+                    }
+                   
+
+                   showInListView();
+
                 });
   		 }); 
                                                  
@@ -254,24 +255,20 @@ app.adminNews = (function () {
         }
     
         
-        var detailShow = function(){
-            var dateShow = multipleEventArray[0].event_date;
-
+        var showInListView = function(){
             $(".km-scroll-container").css("-webkit-transform", "");
             
-            $("#detailEventData").html("Event On "+dateShow);
-             console.log(multipleEventArray);                
              var organisationListDataSource = new kendo.data.DataSource({
-                  data: multipleEventArray
+                  data: groupAllEvent
              });           
 
                 
-            $("#eventCalendarList").kendoMobileListView({
-  		    template: kendo.template($("#calendarTemplate").html()),    		
+            $("#orgAllNewsList").kendoMobileListView({
+  		    template: kendo.template($("#newsListTemplate").html()),    		
      		 dataSource: organisationListDataSource
             });
                 
-            $('#eventCalendarList').data('kendoMobileListView').refresh();
+            $('#orgAllNewsList').data('kendoMobileListView').refresh();
             
         }
         
@@ -279,80 +276,121 @@ app.adminNews = (function () {
         var addEventshow = function(){
 
             $(".km-scroll-container").css("-webkit-transform", "");
- 
+          
+            $("#addNewsName").val('');
+            $("#addNewsDesc").val('');
          
-            $("#addEventName").val('');
-            $("#addEventDesc").val('');
-            console.log(date2);
-         
-            $("#adddatePicker").kendoDatePicker({
-            value: date2,
-            min: new Date()    
-            });
+
+            var currentDate = app.getPresentDate();
             
-             
-            $("#adddateTimePicker").kendoTimePicker({
-                value: new Date(),
+            disabledDaysBefore = [
+              +new Date(currentDate)
+            ];
+            
+            
+            $("#adddatePickerNews").kendoDatePicker({
+            value: new Date(),
+            dates: disabledDaysBefore,    
+            month:{
+            content:'# if (data.date < data.dates) { #' +   
+                '<div class="disabledDay">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+            position: "bottom left",
+            animation: {
+                 open: {
+                        effects: "slideIn:up"
+                 }                
+               },
+                open: function(e){
+                  $(".disabledDay").parent().removeClass("k-link")
+                  $(".disabledDay").parent().removeAttr("href")
+              },
+
+                 
+                change: function() {
+                        var value = this.value();
+                        console.log(value); 
+                    
+               
+                    /*if(new Date(value) < new Date(currentDate)){                   
+                
+                        if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
+                      }else{
+                            app.showAlert('You Cannot Add Event on Back Date',"Event");  
+                      }                                
+                    
+                    }*/    
+                }
+            }).data("kendoDatePicker");
+            
+                         
+            $("#adddateTimePickerNews").kendoTimePicker({
+                value:"10:00 AM",
                 interval: 15,
-                min: new Date(),
                 format: "h:mm tt",
                 timeFormat: "HH:mm", 
+                /*open: function(e) {
+                    e.preventDefault(); //prevent popup opening
+                },*/
                 
                 change: function() {
                         var value = this.value();
                         console.log(value); //value is the selected date in the timepicker
-                }
-                
+                }                
             });
+
             
             
-             var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker"); 
 
                 /*addEventDatePicker.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     addEventDatePicker.input.blur();
 				});*/
             
-                $("#adddatePicker").bind("focus", function() {
-                    $("#adddatePicker").blur();
+            setTimeout(function(){
+                $("#adddatePickerNews").bind("focus", function() {
+                    $("#adddatePickerNews").blur();                    
                 });
+            },100); 
 
             
-            
-                $("#adddateTimePicker").bind("focus", function() {
-                    $("#adddateTimePicker").blur();
-                });
+            setTimeout(function(){            
+                $("#adddateTimePickerNews").bind("focus", function() {
+                    $("#adddateTimePickerNews").blur();
+                }); 
+            },100); 
 
             
-            
-                 /*var addEventTimePicker = $("#adddateTimePicker").data("kendoTimePicker"); 
+                 /*var addEventTimePicker = $("#adddateTimePickerNews").data("kendoTimePicker"); 
 				addEventTimePicker.input.focus(function() {
 	                //$( "#orgforNotification" ).blur();
                     addEventTimePicker.input.blur();
 				});  */ 
             
             
-                       
-            $(".km-scroll-container").css("-webkit-transform", "");
- 
+                        
         }
 
         
-        var eventNameEdit;
-        var eventDescEdit;
-        var eventDateEdit;
-        var eventTimeEdit;
-        var eventPid;
+        var newsDescEdit;
+        var newsDateEdit;
+        var newsTimeEdit;
+        var newsPid;
         
         var editNews = function(e){
              console.log(e.data.uid);
-              console.log(e.data);
+             console.log(e.data);
             
-             eventNameEdit = e.data.event_name;
-             eventDescEdit = e.data.event_desc;
-             eventDateEdit = e.data.event_date;
-             eventTimeEdit = e.data.event_time;
-             eventPid = e.data.id;
+             newsDescEdit = e.data.news_desc;
+             newsDateEdit = e.data.news_date;
+             newsTimeEdit = e.data.news_time;
+             newsPid = e.data.id;
              app.mobileApp.navigate('#adminEditNews');
         }
         
@@ -361,16 +399,16 @@ app.adminNews = (function () {
              console.log(e.data.uid);
              console.log(e.data);
 
-            var eventPid = e.data.id;
+            organisationID = localStorage.getItem("orgSelectAdmin");
             
-            console.log('orgID='+organisationID+"pid="+eventPid)
+            console.log('orgID='+organisationID+"pid="+newsPid)
 
-            var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
+            var jsonDataSaveGroup = {"orgID":organisationID,"pid":newsPid}
             
             var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: app.serverUrl()+"event/delete/",
+                   url: app.serverUrl()+"news/delete/",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -385,8 +423,12 @@ app.adminNews = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(JSON.stringify(e));
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }               
+
            }               
           
          });  
@@ -396,8 +438,8 @@ app.adminNews = (function () {
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
                                if(addGroupData.status[0].Msg==='Deleted Successfully'){         
-				        	        app.mobileApp.navigate("#adminEventCalendar");
-        							app.showAlert("Event Deleted Successfully","Notification");
+				        	        app.mobileApp.navigate("#adminOrgNewsList");
+        							app.showAlert("News Deleted Successfully","Notification");
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -410,67 +452,83 @@ app.adminNews = (function () {
         
         var editNewsshow = function(){
 
-
             $(".km-scroll-container").css("-webkit-transform", "");
-
-            console.log(eventNameEdit);
+                        
+            $("#editNewsDesc").html(newsDescEdit); 
+                       
             
-            $("#editEventName").val(eventNameEdit);
+            $("#editdatePickerNews").kendoDatePicker({                
+            value: newsDateEdit,
+            dates: disabledDaysBefore,    
+            month:{
+            content:'# if (data.date < data.dates) { #' +   
+                '<div class="disabledDay">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+            position: "bottom left",
+            animation: {
+                 open: {
+                        effects: "slideIn:up"
+                 }                
+               },
+                open: function(e){
+                  $(".disabledDay").parent().removeClass("k-link")
+                  $(".disabledDay").parent().removeAttr("href")
+              },
+
+                 
+                change: function() {
+                        var value = this.value();
+                        console.log(value); 
+                    
+               
+                    /*if(new Date(value) < new Date(currentDate)){                   
+                
+                        if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
+                      }else{
+                            app.showAlert('You Cannot Add Event on Back Date',"Event");  
+                      }                                
+                    
+                    }*/    
+                }
+            }).data("kendoDatePicker");
             
-            $("#editEventDesc").html(eventDescEdit);
-
-            console.log(eventDateEdit);
-
-            $("#editdatePicker").kendoDatePicker({
-            value: eventDateEdit,
-            min: new Date(),
-    
+                         
+            $("#editdateTimePickerNews").kendoTimePicker({
+                value:newsTimeEdit,
+                interval: 15,
+                format: "h:mm tt",
+                timeFormat: "HH:mm", 
+                /*open: function(e) {
+                    e.preventDefault(); //prevent popup opening
+                },*/
                 
                 change: function() {
                         var value = this.value();
                         console.log(value); //value is the selected date in the timepicker
-                }
-            });
-                         
-            $("#editdateTimePicker").kendoTimePicker({
-                value: eventTimeEdit,
-                interval: 15,
-                min: new Date(),
-                format: "h:mm tt",
-                timeFormat: "HH:mm",                
-                change: function() {
-                        var value = this.value();
-                        console.log(value); //value is the selected date in the timepicker
                 }                
-            });            
+            });
+            
+                        
 
-            
-            
-             /*var editEventDatePicker = $("#editdatePicker").data("kendoDatePicker"); 
-				editEventDatePicker.input.focus(function() {
-	                //$( "#orgforNotification" ).blur();
-                    editEventDatePicker.input.blur();
-				});
-            
-            
-                 var editEventTimePicker = $("#editdateTimePicker").data("kendoTimePicker"); 
-				editEventTimePicker.input.focus(function() {
-	                //$( "#orgforNotification" ).blur();
-                    editEventTimePicker.input.blur();
-				}); */
-            
 
-                $("#editdatePicker").bind("focus", function() {
-                    $("#editdatePicker").blur();
+            setTimeout(function(){
+                $("#editdatePickerNews").bind("focus", function() {
+                    $("#editdatePickerNews").blur();                    
                 });
-            
-                           
-                $("#editdateTimePicker").bind("focus", function() {
-                    $("#editdateTimePicker").blur();
-                });
+            },100); 
 
             
-
+            setTimeout(function(){            
+                $("#editdateTimePickerNews").bind("focus", function() {
+                    $("#editdateTimePickerNews").blur();
+                }); 
+            },100); 
             
         }
         
@@ -478,21 +536,17 @@ app.adminNews = (function () {
         
         
         var addNewNewsFunction = function(){
-           
+                       
+            organisationID = localStorage.getItem("orgSelectAdmin");
             
-            var event_name = $("#addEventName").val();     
-            var event_description = $("#addEventDesc").val();
+            var event_description = $("#addNewsDesc").val();
 
-            var event_Date = $("#adddatePicker").val();
-            var event_Time = $("#adddateTimePicker").val();
+            var event_Date = $("#adddatePickerNews").val();
+            var event_Time = $("#adddateTimePickerNews").val();
             
-            
-         if (event_name === "Enter New Event Name" || event_name === "") {
-				app.showAlert("Please enter Event Name.","Validation Error");
-         }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
-				app.showAlert("Please enter Event Description.","Validation Error");
+         if (event_description === "Please Enter News Here" || event_description === "") {
+				app.showAlert("Please enter News.","Validation Error");
          }else {    
-
 
                                   
             var values = event_Date.split('/');            
@@ -530,22 +584,21 @@ app.adminNews = (function () {
             var actionval = "Add";
 
             
-            console.log(event_name);
             console.log(event_description);
             console.log(event_Date);
             console.log(event_Time);
 
                 
             
-           console.log("org_id="+organisationID +"txtEventName="+event_name+"txtEventDesc="+event_description+"txtEventDate="+event_Date+"eventStartTime="+eventTimeSend+"action="+actionval);
+           console.log("org_id="+organisationID +"txtNewsDesc="+event_description+"txtNewsDate="+event_Date+"txtNewsTime="+eventTimeSend);
                         
 
-             var jsonDataSaveGroup ={"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval}
+             var jsonDataSaveGroup ={"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend}
             
              var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: app.serverUrl()+"event/Add",
+                   url: app.serverUrl()+"news/add",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -561,8 +614,11 @@ app.adminNews = (function () {
                //apps.hideLoading();
                console.log(e);
                console.log(JSON.stringify(e));
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }               
            }               
           
          });  
@@ -571,9 +627,13 @@ app.adminNews = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Event added successfully'){         
-				        	        app.mobileApp.navigate("#adminEventCalendar");
-        							app.showAlert("Event Added Successfully","Notification");
+                               if(addGroupData.status[0].Msg==='News added successfully'){  
+                                    $(".km-scroll-container").css("-webkit-transform", "");
+                        
+                                     $("#addNewsDesc").val(''); 
+   				        	        app.mobileApp.navigate("#adminAddNews");
+                                    
+        							app.showAlert("News Added Successfully","Notification");
                                }else{
                                   app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -588,20 +648,13 @@ app.adminNews = (function () {
 
         var saveEditNewsData = function(){
          
-            var event_name = $("#editEventName").val();     
-            var event_description = $("#editEventDesc").val();
-
-            var event_Date = $("#editdatePicker").val();
-            var event_Time = $("#editdateTimePicker").val();
+            var event_description = $("#editNewsDesc").val();
+            var event_Date = $("#editdatePickerNews").val();
+            var event_Time = $("#editdateTimePickerNews").val();
             
-            
-         if (event_name === "Enter New Event Name" || event_name === "") {
-				app.showAlert("Please enter Event Name.","Validation Error");
-         }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
-				app.showAlert("Please enter Event Description.","Validation Error");
-         }else {    
-
-            
+          if (event_description === "Please Enter News Here" || event_description === "") {
+		    		app.showAlert("Please Enter News .","Validation Error");
+          }else {    
                                   
             var values = event_Date.split('/');            
             var month = values[0]; // globle variable            
@@ -614,23 +667,20 @@ app.adminNews = (function () {
             
             event_Date= year+"-"+month+"-"+day;
             
-            var actionval = "Edit";
-            
-            console.log(event_name);
             console.log(event_description);
             console.log(event_Date);
             console.log(event_Time);
 
                 
-            
-           console.log("org_id="+organisationID +"txtEventName="+event_name+"txtEventDesc="+event_description+"txtEventDate="+event_Date+"eventStartTime="+event_Time+"pid="+eventPid+"action="+actionval);
-                        
-             var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval}
+              console.log(organisationID+"||"+event_description+"||"+event_Date+"||"+event_Time+"||"+newsPid);
+              
+                                    
+             var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid}
             
              var dataSourceaddGroup = new kendo.data.DataSource({
                transport: {
                read: {
-                   url: app.serverUrl()+"event/edit",
+                   url: app.serverUrl()+"news/edit",
                    type:"POST",
                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                    data: jsonDataSaveGroup
@@ -645,8 +695,11 @@ app.adminNews = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  }               
            }               
           
          });  
@@ -655,8 +708,9 @@ app.adminNews = (function () {
               var loginDataView = dataSourceaddGroup.data();
 				  $.each(loginDataView, function(i, addGroupData) {
                       console.log(addGroupData.status[0].Msg);           
-                               if(addGroupData.status[0].Msg==='Event updated successfully'){         
-				        	        app.mobileApp.navigate("#adminEventCalendar");
+                               if(addGroupData.status[0].Msg==='News updated successfully'){         
+				        	        app.mobileApp.navigate("#adminOrgNewsList");
+                                    app.showAlert("News Updated Successfully","Notification");
                                }else{
                                     app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
                                }
@@ -676,6 +730,13 @@ app.adminNews = (function () {
         var goToAddNewsPage = function(){
                         
             app.mobileApp.navigate('#adminAddNews');
+
+        }
+        
+        
+        var goToNewsListPage = function(){
+
+            app.mobileApp.navigate('#adminOrgNewsList');
 
         }
         
@@ -738,6 +799,7 @@ app.adminNews = (function () {
                deleteNews:deleteNews,
                editNewsshow:editNewsshow,
                goToAddNewsPage:goToAddNewsPage,
+               goToNewsListPage:goToNewsListPage,
                goToManageOrgPage:goToManageOrgPage,
                eventMoreDetailClick:eventMoreDetailClick,
                addNewNewsFunction:addNewNewsFunction,
@@ -745,7 +807,7 @@ app.adminNews = (function () {
                orgAllNewsList:orgAllNewsList,
                saveEditNewsData:saveEditNewsData,
                upcommingEventList:upcommingEventList,
-               detailShow:detailShow
+               showInListView:showInListView
           };
            
     }());

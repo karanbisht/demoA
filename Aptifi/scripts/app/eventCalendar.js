@@ -31,6 +31,8 @@ app.eventCalender = (function () {
 
              document.getElementById("calendar").innerHTML = "";
              
+             $("#eventCalendarFirstAllList").show();
+             
 
              var jsonDataLogin = {"org_id":eventOrgId}
 
@@ -127,6 +129,8 @@ app.eventCalender = (function () {
                               showEventInCalendar();
                           } 
                     }                
+                   
+                   eventListFirstShow();
                 });
   		 }); 
                                                  
@@ -149,7 +153,7 @@ app.eventCalender = (function () {
 
             
              $("#calendar").kendoCalendar({
-             //value:new Date(),
+             value:new Date(),
              dates:tasks,
              month:{
              content:
@@ -199,6 +203,7 @@ app.eventCalender = (function () {
 
             console.log(groupAllEvent);
             
+            var dateExist =0;
             
             for(var i=0;i<groupAllEvent.length;i++){
                 
@@ -234,9 +239,20 @@ app.eventCalender = (function () {
 
                     //$("#eventTitle").html(groupAllEvent[i].event_name);
                     //$("#eventTime").html(groupAllEvent[i].event_time);
+                    dateExist=1;
                     $("#eventDetailDiv").show();
 
                 }   
+            }
+            
+            if(dateExist!==0){                
+                $("#eventDetailDiv").show();
+                $("#eventCalendarFirstAllList").hide();
+
+            }else{
+                $("#eventCalendarFirstAllList").show();
+                $("#eventDetailDiv").hide();
+
             }
         }
         
@@ -277,7 +293,6 @@ app.eventCalender = (function () {
         
         var eventListShow = function(){
             
-
             $(".km-scroll-container").css("-webkit-transform", "");
             
             var allEventLength = groupAllEvent.length;
@@ -310,6 +325,46 @@ app.eventCalender = (function () {
         }
         
         
+
+        
+        
+         var eventListFirstShow = function(){
+            
+            $(".km-scroll-container").css("-webkit-transform", "");
+            
+            var allEventLength = groupAllEvent.length;
+            
+            if(allEventLength===0){
+                groupAllEvent.push({
+                                          id:0 ,
+                                          add_date:'',
+									      event_date:'',
+										  event_desc: 'This Organization has no event.',                                                                                 										  
+                                          event_name: 'No Event',                                                                                  										  
+                                          event_time: '',                                                                                  										  
+                                          mod_date: '',                                     
+                                          org_id: ''
+   	                               });
+            }
+ 
+ 
+            var organisationListDataSourceFirst = new kendo.data.DataSource({
+                  data: groupAllEvent
+             });           
+
+                
+            $("#eventCalendarFirstAllList").kendoMobileListView({
+  		    template: kendo.template($("#calendarEventListTemplate").html()),  		
+     		 dataSource: organisationListDataSourceFirst
+            });
+             
+             $('#eventCalendarFirstAllList').data('kendoMobileListView').refresh();
+    
+        }
+        
+        
+        
+        
         var gobackOrgPage = function(){
                         
             app.mobileApp.navigate('views/userOrgManage.html');            
@@ -320,6 +375,7 @@ app.eventCalender = (function () {
         	   init: init,
            	show: show,
                eventListShow:eventListShow,
+             eventListFirstShow:eventListFirstShow,
                gobackOrgPage:gobackOrgPage,
                gobackToCalendar:gobackToCalendar,
                upcommingEventList:upcommingEventList,

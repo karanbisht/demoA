@@ -15,7 +15,7 @@ app.adminEventCalender = (function () {
         }
     
          var show = function(){
-            
+                                      
              $("#adminCalProcess").show();
              //$("#eventDetailDiv").hide();
              
@@ -319,8 +319,11 @@ app.adminEventCalender = (function () {
         var addEventshow = function(){
          
             
-            $(".km-scroll-container").css("-webkit-transform", "");
+            //$(".km-scroll-container").css("-webkit-transform", "");
          
+                        
+            $(".km-native-scroller").scrollTop(0);
+
             $("#addEventName").val('');
             $("#addEventDesc").val('');
             console.log(date2);
