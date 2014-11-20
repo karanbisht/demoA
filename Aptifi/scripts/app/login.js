@@ -145,13 +145,11 @@ app.Login = (function () {
                console.log(e);
                //app.mobileApp.pane.loader.hide();
              
-               if(!app.checkConnection()){
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                   } 
-               }
              
                $("#progress").hide();
 
@@ -724,9 +722,9 @@ app.Login = (function () {
                console.log(e);
                
                   if(!app.checkSimulator()){
-                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                     window.plugins.toast.showLongBottom('Verification Code not send . Please click on Regenerate Code');  
                   }else{
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert('Verification Code not send . Please click on Regenerate Code' , 'Verification Code');  
                   }
                
                //navigator.notification.alert("Please check your internet connection.",

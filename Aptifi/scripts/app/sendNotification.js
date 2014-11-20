@@ -42,7 +42,7 @@ app.sendNotification = (function () {
               click : function(e){
                      console.log(e.dataItem.value);
                      notificationTypeSelected=e.dataItem.value;
-                     app.mobileApp.pane.loader.show(); 
+                     //app.mobileApp.pane.loader.show(); 
                      $("#selectTypeDiv").hide();
                      $("#sendNotificationDivMsg").show();
                      app.mobileApp.pane.loader.hide();     
@@ -181,7 +181,7 @@ app.sendNotification = (function () {
              //scroller.reset();
 
             
-            app.mobileApp.pane.loader.show();
+            //app.mobileApp.pane.loader.show();
 
             localStorage.setItem("SELECTED_GROUP",'');
             localStorage.setItem("SELECTED_CUSTOMER",'');
@@ -513,7 +513,7 @@ app.sendNotification = (function () {
          
          var sendNotificationOrg = function(e){
              console.log(e.data.org_id);
-             app.mobileApp.pane.loader.show();            
+             //app.mobileApp.pane.loader.show();            
              var org = e.data.org_id;       
 
              localStorage.setItem("SELECTED_ORG",org);
@@ -755,7 +755,7 @@ app.sendNotification = (function () {
              console.log(e.data.pid);
              var group = e.data.pid;
              localStorage.setItem("SELECTED_GROUP",group);
-             app.mobileApp.pane.loader.show();              
+             //app.mobileApp.pane.loader.show();              
               $("#selectGroupDiv").hide();
              //$("#selectTypeDiv").show();
               $("#selectCustomerToSend").show();
@@ -763,7 +763,7 @@ app.sendNotification = (function () {
          };
                   
          var escapeGroupClick = function(){                 
-             app.mobileApp.pane.loader.show(); 
+             //app.mobileApp.pane.loader.show(); 
              $("#selectGroupDiv").hide();
              $("#selectCustomerToSend").hide();
              
@@ -797,7 +797,7 @@ app.sendNotification = (function () {
          };
          
          var escapeGroupGoCustClick = function(){                 
-             app.mobileApp.pane.loader.show(); 
+             //app.mobileApp.pane.loader.show(); 
              $("#selectGroupDiv").hide();
              $("#selectCustomerToSend").show();
              app.mobileApp.pane.loader.hide();    

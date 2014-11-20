@@ -1422,7 +1422,7 @@ app.OragnisationList = (function () {
             tempArray=[];
             $(".km-scroll-container").css("-webkit-transform", "");
 
-            app.mobileApp.pane.loader.show();
+            //app.mobileApp.pane.loader.show();
             app.MenuPage=false;    
             
    		    /*var showMore = localStorage.getItem("ShowMore");

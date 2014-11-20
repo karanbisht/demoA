@@ -233,8 +233,12 @@ app.registration = (function () {
            error: function (e) {
                //apps.hideLoading();
                console.log(e);
-               navigator.notification.alert("Please check your internet connection.",
-               function () { }, "Notification", 'OK');
+
+               if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Verification Code not send . Please click on Regenerate Code');  
+                  }else{
+                    app.showAlert('Verification Code not send . Please click on Regenerate Code' , 'Verification Code');  
+                  }           
            } 
            });  
  	            
