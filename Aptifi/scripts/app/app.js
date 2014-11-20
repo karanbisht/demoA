@@ -1,6 +1,5 @@
 var app = (function (win) {
-    'use strict';
-
+   'use strict';
     var db;
     var fp;
     var userTypeDBValue=[];
@@ -1161,7 +1160,6 @@ var app = (function (win) {
     
 
     var gobackTOCalendar = function(){
-        alert('hello');
         app.mobileApp.navigate('#eventCalendar');
     }
 

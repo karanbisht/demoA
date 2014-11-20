@@ -42,7 +42,7 @@ app.Activities = (function () {
              
         
            var scroller = app.mobileApp.scroller();
-               scroller.reset();
+           scroller.reset();
 
              
             /*var scroller = app.mobileApp.scroller();
