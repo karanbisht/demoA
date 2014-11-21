@@ -209,8 +209,8 @@ app.OragnisationList = (function () {
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
             //app.mobileApp.pane.loader.show();
                           
-            var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
-	   	 tabStrip.switchTo("#organisationNotiList");
+            //var tabStrip = $("#upperMainTab").data("kendoMobileTabStrip");
+	   	 //tabStrip.switchTo("#organisationNotiList");
 
            //console.log(getDataOrgDB);
            //console.log(getDataCountDB);  
