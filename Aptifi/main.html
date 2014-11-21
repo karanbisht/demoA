@@ -6,7 +6,15 @@
         <script src="cordova.js"></script>
 
         <!--<style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>-->
+
+        <!--<link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
+
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://cdn.kendostatic.com/2013.2.716/js/kendo.all.min.js"></script>-->
         
+
          <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
          <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" /> 
          <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
@@ -36,7 +44,6 @@
         <!--<script src="scripts/app/gallery.js" type="text/javascript"></script>-->
         <script src="Plugins/PushPlugin-master/www/PushNotification.js"></script>
 
-        
         <script src="scripts/app/adminReplyMessage.js" type="text/javascript"></script>
         <!--<script src="scripts/app/notification.js" type="text/javascript"></script>
         <script src="scripts/app/notificationView.js" type="text/javascript"></script>
@@ -103,7 +110,9 @@
                  <span data-role="view-title"></span> 
              	<!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		         
                   
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>    
+                 <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
+                  
+                  <a data-role="button" data-rel="drawer" href="#my-drawer" data-icon="drawer-button" data-align="left"></a>
 
                  <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
                  <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
@@ -119,6 +128,39 @@
               </div>     
            </div>
         </div>
+        
+      
+        
+        
+      <div data-role="drawer" id="my-drawer" style="width: 270px" data-views="[]">
+      <ul data-role="listview" data-type="group">
+        <li>Mailbox
+            <ul>
+                <li data-icon="inbox"><a href="" data-transition="none">Inbox</a></li>
+                <li data-icon="star"><a href="" data-transition="none">Starred Items</a></li>
+                <li data-icon="compose"><a href="" data-transition="none">Drafts</a></li>
+                <li data-icon="sent"><a href="" data-transition="none">Sent Items</a></li>
+                <li data-icon="trash"><a href="" data-transition="none">Deleted Items</a></li>
+                <li data-icon="spam"><a href="" data-transition="none">Spam</a></li>
+            </ul>
+        </li>
+        <li>Tasks
+            <ul>
+                <li>To Do</li>
+                <li>In Progress</li>
+                <li>Done</li>
+                <li>High Priority</li>
+                <li>Low Priority</li>
+            </ul>
+        </li>
+        <li>Account
+            <ul>
+                <li data-icon="settings">Settings</li>
+                <li data-icon="off">Log Out</li>
+            </ul>
+        </li>
+      </ul>
+     </div>
         
         
       
