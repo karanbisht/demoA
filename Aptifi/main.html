@@ -9,102 +9,6 @@
 
         
         
-    <style>
-    .km-root .left-btn
-    {
-        position: absolute;
-        z-index: 9999;
-        top: 7em;
-        left: -1em;
-        padding-right: 0;
-        padding-left: 0;
-        width: 5em;
-        line-height: 4em;
-        border-radius: 10em;
-        -webkit-border-radius: 10em;
-        border: 1px solid rgba(255,255,255,.8);
-        background: rgba(0,0,0,.8);
-        color: #fff;
-        box-shadow: 0 0 .5em #000;
-        -webkit-box-shadow: 0 0 .6em #222;
-    }
-
-    .mobileExample .km-wp-light .km-button.left-btn
-    {
-        background: rgba(0,0,0,.8);
-        text-align: center;
-    }
-
-    .km-root .left-btn .km-icon.km-notext
-    {
-        display: block;
-        margin: 1em auto;
-    }
-
-    .km-ios #left-drawer .km-content, .km-ios7 #left-drawer .km-content, .km-android #left-drawer .km-content, .km-blackberry #left-drawer .km-content,
-    .km-ios #left-drawer .km-list > li, .km-ios7 #left-drawer .km-list > li, .km-android #left-drawer .km-list > li, .km-blackberry #left-drawer .km-list > li,
-    .km-ios #left-drawer .km-listview-link > .km-icon, .km-ios7 #left-drawer .km-listview-link > .km-icon, .km-android #left-drawer .km-listview-link > .km-icon, .km-blackberry #left-drawer .km-listview-link > .km-icon,
-    .km-ios #left-drawer .km-list li > .km-icon, .km-ios7 #left-drawer .km-list li > .km-icon, .km-android #left-drawer .km-list li > .km-icon, .km-blackberry #left-drawer .km-list li > .km-icon,
-    #right-drawer .km-content
-    {
-        background-color: #4e4e4e;
-        color: #fff;
-    }
-
-    .km-ios #left-drawer .km-group-title,
-    .km-ios7 #left-drawer .km-group-title,
-    .km-blackberry #left-drawer .km-group-title
-    {
-        background-color: #6e6e6e;
-        color: #fff;
-    }
-
-    #left-drawer .km-navbar, #right-drawer .km-navbar,
-    .km-tablet .km-ios #left-drawer .km-view-title,
-    .km-tablet .km-ios #right-drawer .km-view-title,
-    .km-ios7 #left-drawer .km-view-title,
-    .km-ios7 #right-drawer .km-view-title,
-    .km-tablet .km-ios7 #left-drawer .km-view-title,
-    .km-tablet .km-ios7 #right-drawer .km-view-title
-    {
-	background-color: #2e2e2e;
-        color: #fff;
-        text-shadow: 0 -1px rgba(0,0,0,.5);
-    }
-
-    .km-drawer-button:before, .km-drawer-button:after { content: "\E077"; }
-    .km-contacts:before, .km-contacts:after { content: "\E0E4"; }
-    .km-camera:before, .km-camera:after { content: "\E0D0"; }
-    .km-printer:before, .km-printer:after { content: "\E07E"; }
-    .km-comments:before, .km-comments:after { content: "\E093"; }
-    .km-graph:before, .km-graph:after { content: "\E04B"; }
-
-
-    #two-drawer-home h2
-    {
-        display: inline-block;
-        font-size: 1em;
-        line-height: 3em;
-        margin: 0 0 0 1em;
-    }
-
-    #two-drawer-home img
-    {
-        float: left;
-        width: 3em;
-        height: 3em;
-        margin: 0;
-        border: 1px solid rgba(0,0,0,.2);
-        -webkit-border-radius: 4em;
-        border-radius: 4em;
-    }
-
-    .km-ios #two-drawer-home .km-listview
-    {
-        background-color: #eaf1f5;
-    }
-    </style>
-        
         <!--<style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>-->
 
         <!--<link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
@@ -212,12 +116,12 @@
                   
                  <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
                   
-                  <a data-role="button" data-rel="drawer" href="#left-drawer" data-icon="drawer-button" data-align="left"></a>
+                  <a data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
 
                  <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
                  <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
                   
-                 <a id="more" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">More</a>                                       
+                 <!--<a id="more" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">More</a>-->                                       
  
               </div>              
                             
@@ -229,25 +133,7 @@
            </div>
         </div>
         
-      
-        
-        
-      <div data-role="drawer" id="left-drawer" style="width: 120px" data-title="Aptifi" class="activities-view" data-views="['organisationNotiList','organisationDiv','profileDiv']">
-          <header data-role="header">
-                <div data-role="navbar">
-                    <span data-role="view-title"></span>
-                </div>
-          </header>
-          
-          <ul data-role="listview" >
-                 <a data-icon="comments" href="#organisationNotiList" data-transition="none">Notification</a>
-                 <a data-icon="globe" href="#organisationDiv" data-transition="none">Organization</a>
-                 <a data-icon="contacts" href="#profileDiv" data-transition="none">Profile</a>                
-          </ul>
-     </div>
-        
-        
-      
+         
         <!-- maxlength="10" pattern="[0-9]*"-->
         <!--WELCOME VIEW -->
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
@@ -561,11 +447,14 @@
       
      <div data-role="content">
   
-         <div style="background-color:rgb(253,255,133) ; margin:25% 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">         
-             
+         <div style="background-color:rgb(253,255,133) ; margin:25% 10px 10px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">                      
              <span style="color:rgb(53,152,219);">Synchronization Events with Device Calender</span>
-
-         </div>                
+         </div>
+                        
+         <div style="background-color:rgb(253,255,133) ; margin:20px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="appVersion">                      
+             <span style="color:rgb(53,152,219);">App Version</span>
+         </div>
+         
      </div>    
   </div>
 	
@@ -647,16 +536,58 @@
 		</script>
         
         
+        
+        
+        
+       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
+          <header data-role="header">
+                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);">
+                    <span data-role="view-title"></span>
+                </div>
+          </header>
+          
+          <ul data-role="listview">
+                 <li><a data-icon="comments" href="#organisationNotiList" data-transition="none">Notification</a></li>
+                 <li><a data-icon="globe" href="#organisationDiv" data-transition="none">Organization</a></li>
+                 <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Profile</a></li>
+                 <li><a data-icon="settings" href="#settingDiv" data-transition="none">Setting</a></li>
+                 <li><a data-icon="about" href="#infoDiv" data-transition="none">About Us</a></li>
+                 <li><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">Admin</a></li>
+
+          </ul>
+       </div>
+        
+        
         <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
+        
+        
+        
+       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
+          <header data-role="header">
+                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);">
+                    <span data-role="view-title"></span>
+                </div>
+          </header>
+          
+          <ul data-role="listview">
+                 <li><a data-icon="comments" href="#organisationNotiList" data-transition="none">Manage Org</a></li>
+                 <li><a data-icon="globe" href="#organisationDiv" data-transition="none">Incoming Msg</a></li>
+                 <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Send Notification</a></li>
+                 <li><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">User</a></li>
+
+          </ul>
+       </div>
         
         
         <div data-role="layout" data-id="mobile-tabstrip-admin">
            <div data-role="header" >               
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
-                 <a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>                         
+                 <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>-->                         
+ 
+                 <a data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-                 <a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a> 
+                 <!--<a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a>--> 
               </div>              
                             
 	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">

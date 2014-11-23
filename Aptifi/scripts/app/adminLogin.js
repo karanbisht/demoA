@@ -22,7 +22,10 @@ app.adminLogin = (function () {
 
         var show = function (e) {
             
-            account_Id = e.view.params.account_Id;
+            //account_Id = e.view.params.account_Id;
+
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+
             app.userPosition=false;
             app.MenuPage=false;	
 
