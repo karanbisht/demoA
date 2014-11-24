@@ -451,7 +451,7 @@
              <span style="color:rgb(53,152,219);">Synchronization Events with Device Calender</span>
          </div>
                         
-         <div style="background-color:rgb(253,255,133) ; margin:20px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="appVersion">                      
+         <div style="background-color:rgb(253,255,133) ; margin:20px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.appVersion">                      
              <span style="color:rgb(53,152,219);">App Version</span>
          </div>
          
@@ -539,14 +539,14 @@
         
         
         
-       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
+       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
           <header data-role="header">
                 <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
           </header>
           
-          <ul data-role="listview">
+          <ul data-role="listview" style="overflow:hidden;">
                  <li><a data-icon="comments" href="#organisationNotiList" data-transition="none">Notification</a></li>
                  <li><a data-icon="globe" href="#organisationDiv" data-transition="none">Organization</a></li>
                  <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Profile</a></li>
@@ -752,17 +752,11 @@
     
       </div>
       
-      <!--
-       <li style="width:90%;margin-bottom:30px;margin-right:15%;margin-left:5%;list-style-type: none;">
-         <img id="largeImage" src="" alt="" align="right"  style="height:70px; width:70px;margin-right:10px;float:right;border:none;" />
-             <span data-role="button" style="background-color: #09B201;width:50%;margin-top:20px;" data-bind="click: getPhotoVal">
-	             Add Attachment
-             </span> 
-           <span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
-                 <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
-            </span>
-       </li>	
-        -->
+      
+
+            
+            
+        
             
      <!--<li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
           <span data-role="button" style="background-color:#33539E;width:90%;float:left;" data-bind="click: sendNotificationMessage">
@@ -770,13 +764,22 @@
           </span>
      </li>-->
       
-        
+     
+      <span id="fileAttached" style="background-color: transparent;border:none;display:none;color:#ffffff"></span> 
+      
   </div>
       
        <div id="sendNotiDiv" data-role="footer" style="background-color: #2e2e2e;padding:5px;padding-bottom:3px; display:none;">
         <div style="display:inline;padding:3px;">
-           <a style="background:transparent; border:none;" data-icon="toprated" data-align="left" data-role="button" data-bind="click: getPhotoVal"></a> 
 
+            <a style="background:transparent; border:none;;float:left" data-icon="toprated" data-align="left" data-role="button" data-bind="click: getPhotoVal"></a> 
+
+            <img id="largeImage" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+            
+            <span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;height:30px; width:30px;background-color: transparent;border:none;display:none;">  
+                 <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
+            </span>
+            
            <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
 
            <input id="scheduleButton" type="button" value="Schedule" style="width:24%;height:30px;background-color:#4583ED;border:none;color:#ffffff;margin-right:5px;float:right;" data-role="button" data-bind="click: scheduleNotification"/>            
@@ -787,13 +790,13 @@
  </div>
         
                 
-       <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
+       <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:160px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
           <header data-role="header">
-                <div data-role="navbar" style="width: 140px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                <div data-role="navbar" style="width: 160px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
           </header>
-          <ul data-role="listview">
+          <ul data-role="listview" style="overflow:hidden;">
                  <li><a data-icon="globe" href="#view-all-activities-admin" data-transition="none">Manage Org</a></li>
                  <li><a data-icon="volume" href="#view-all-activities-userReply" data-transition="none">Messages</a></li>
                  <li><a data-icon="comments" href="#sendNotificationDiv" data-transition="none">Notification</a></li>

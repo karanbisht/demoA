@@ -259,7 +259,15 @@ var app = (function (win) {
      //}else if(app.MenuPage){
          
      }else if(app.mobileApp.view()['element']['0']['id']==='organisationNotiList'){
-             navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
+                 	e.preventDefault();
+        		navigator.notification.confirm('Do you really want to exit from App?', function (confirmed) {           
+            	if (confirmed === true || confirmed === 1) {
+                    navigator.app.exitApp();
+            	}
+        	}, 'Exit', ['OK', 'Cancel']);        
+
+         
+            /*navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             	if (checkLogout === true || checkLogout === 1) {
                      app.mobileApp.pane.loader.show();    
                     
@@ -268,7 +276,7 @@ var app = (function (win) {
                        db.transaction(updateLoginStatus, updateLoginStatusError,updateLoginStatusSuccess);
                    }, 100);
             	}
-        	}, 'Logout', ['OK', 'Cancel']);
+        	}, 'Logout', ['OK', 'Cancel']);*/
 
      }else if(app.mobileApp.view()['element']['0']['id']==='view-all-activities-admin'){
            var account_Id = localStorage.getItem("ACCOUNT_ID");

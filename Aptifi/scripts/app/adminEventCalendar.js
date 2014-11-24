@@ -21,7 +21,7 @@ app.adminEventCalender = (function () {
              
                          
              $("#adddatePicker").kendoDatePicker();
-                         $("#adddateTimePicker").kendoTimePicker();
+             $("#adddateTimePicker").kendoTimePicker();
 
 
              
