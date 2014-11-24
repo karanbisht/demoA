@@ -174,7 +174,7 @@ app.orgListView = (function () {
 		                                         bagCount : 'C',
                                                  attached :results.rows.item(i).attached,
                                                  previousDate:previousDate, 
-                                                 attachedImg :'http://54.85.208.215/assets/attachment/'+results.rows.item(i).attached
+                                                 attachedImg :results.rows.item(i).attached
                        });
                     
                   previousDate= notiDate;  

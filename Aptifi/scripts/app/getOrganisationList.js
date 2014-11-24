@@ -81,6 +81,9 @@ app.OragnisationList = (function () {
             
                 var query = "SELECT * FROM JOINED_ORG_ADMIN";
 				app.selectQuery(tx, query, getAdminDataSuccess);
+            
+                var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            	app.updateQuery(tx, query);
 
         }; 
         

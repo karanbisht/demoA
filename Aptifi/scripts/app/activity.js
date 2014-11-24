@@ -207,7 +207,7 @@ app.Activity = (function () {
              //alert('2');
             $("#progressChat").show();
               //alert(attached);
-             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+             var attachedImg =attached;
             
              var imgPathData = app.getfbValue();    
              var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
@@ -437,7 +437,7 @@ app.Activity = (function () {
       
       function orgLogoShow(){
           if(orgLogoToShow!==null  && orgLogoToShow!=='null' && orgLogoToShow!==''){
-          var imgPath = 'http://54.85.208.215/assets/upload_logo/'+orgLogoToShow;
+          var imgPath = orgLogoToShow;
           $("#orgLogoImg").attr('src', imgPath);
               }else{
            var imgPath = 'styles/images/habicon.png';

@@ -1357,10 +1357,14 @@ input.largerCheckbox
 
     .km-drawer-button:before, .km-drawer-button:after { content: "\E077"; }
     .km-contacts:before, .km-contacts:after { content: "\E0E4"; }
-    .km-camera:before, .km-camera:after { content: "\E0D0"; }
-    .km-printer:before, .km-printer:after { content: "\E07E"; }
+    .km-camera:before, .km-camera:after { content: "\e322"; }
+    .km-printer:before, .km-printer:after { content: "\e312"; }
     .km-comments:before, .km-comments:after { content: "\E093"; }
     .km-graph:before, .km-graph:after { content: "\e0ac"; }
+    .km-volume:before, .km-volume:after { content: "\e099"; }
+    .km-toprated:before, .km-toprated:after { content: "\e084"; }
+    .km-sounds:before, .km-sounds:after { content: "\e038"; }
+
 
 
     #two-drawer-home h2
@@ -1387,3 +1391,19 @@ input.largerCheckbox
         background-color: #eaf1f5;
     }
 
+
+  #left-drawer a {
+        display: block;
+        text-decoration: none;
+    }
+
+
+  #left-drawer1 a {
+        display: block;
+        text-decoration: none;
+    }
+
+.km-listview-link::after
+{
+    display: none;
+}

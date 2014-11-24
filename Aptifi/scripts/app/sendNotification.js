@@ -6,6 +6,9 @@ app.sendNotification = (function () {
     var dataToSend ;
     var noGroup=0;
     var noCustomer=0;
+     var schedule = 0 ; 
+    var scheduleDate;
+    var scheduleTime;
 
     var groupChecked = [];
 	 var sendNotificationViewModel = (function () {
@@ -45,6 +48,7 @@ app.sendNotification = (function () {
                      //app.mobileApp.pane.loader.show(); 
                      $("#selectTypeDiv").hide();
                      $("#sendNotificationDivMsg").show();
+                     $("#sendNotiDiv").show();
                      app.mobileApp.pane.loader.hide();     
               }
              });
@@ -167,12 +171,17 @@ app.sendNotification = (function () {
 
             noGroup=0;
             noCustomer=0;
+            schedule = 0;
+             scheduleDate='';
+             scheduleTime='';
             
             $("#removeAttachment").hide(); 
              $(".km-scroll-container").css("-webkit-transform", "");
              dataToSend='';
              pictureSource=navigator.camera.PictureSourceType;
              destinationType=navigator.camera.DestinationType;
+           
+            closeSchedule();
             
             //$notificationDesc.val('');
            // validator.hideMessages();
@@ -190,13 +199,90 @@ app.sendNotification = (function () {
             $("#notificationDesc").val('');
             
             var largeImage = document.getElementById('largeImage');
-            largeImage.src ='';
+            //largeImage.src ='';
             document.getElementById('comment_allow').checked = false;
             
             $("#selectGroupDiv").hide();
             $("#selectTypeDiv").hide();
             $("#sendNotificationDivMsg").hide();
+            $("#sendNotiDiv").hide();
             $("#selectCustomerToSend").hide();
+           
+            
+
+            var currentDate = app.getPresentDate();            
+            disabledDaysBefore = [
+              +new Date(currentDate)
+            ];
+                        
+
+            $("#scheduleDatePicker").kendoDatePicker({
+            value: new Date(),
+            dates: disabledDaysBefore,    
+            month:{
+            content:'# if (data.date < data.dates) { #' +   
+                '<div class="disabledDay">' +
+                '#= data.value #' +
+                '</div>' +
+                '# } else { #' +
+                '#= data.value #' +
+                '# } #'
+            },
+            position: "bottom left",
+            animation: {
+                 open: {
+                        effects: "slideIn:up"
+                 }                
+               },
+                open: function(e){
+                  $(".disabledDay").parent().removeClass("k-link")
+                  $(".disabledDay").parent().removeAttr("href")
+              },
+
+                 
+                change: function() {
+                        var value = this.value();
+                        console.log(value); 
+                    
+
+                    scheduleDate=value;
+
+
+               
+                    /*if(new Date(value) < new Date(currentDate)){                   
+                
+                        if(!app.checkSimulator()){
+                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
+                      }else{
+                            app.showAlert('You Cannot Add Event on Back Date',"Event");  
+                      }                                
+                    
+                    }*/    
+                }
+            }).data("kendoDatePicker");
+            
+                         
+            $("#scheduleTimePicker").kendoTimePicker({
+                value:"10:00 AM",
+                interval: 15,
+                format: "h:mm tt",
+                timeFormat: "HH:mm", 
+                /*open: function(e) {
+                    e.preventDefault(); //prevent popup opening
+                },*/
+                
+                change: function() {
+                        var value = this.value();
+                        console.log(value); //value is the selected date in the timepicker
+                    
+
+                        scheduleTime=value;
+
+                }                
+            });
+
+            
+            
             
             if(!app.checkConnection()){
                   if(!app.checkSimulator()){
@@ -286,10 +372,12 @@ app.sendNotification = (function () {
             app.showAlert('Please Organization Group or Customer.','Validation Error'); 
                $("#selectGroupDiv").show(); 
                $("#sendNotificationDivMsg").hide();
+              $("#sendNotiDiv").hide();
           }else if(cmbGroup ==='0' && (cmbCust==='' || cmbCust==="null")){
             app.showAlert('Please Customer to Send Notification.','Validation Error'); 
                            $("#selectCustomerToSend").show(); 
                            $("#sendNotificationDivMsg").hide();
+              $("#sendNotiDiv").hide();
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -839,22 +927,18 @@ app.sendNotification = (function () {
                   // console.log(imageURI);
                   // Get image handle
                   var largeImage = document.getElementById('largeImage');
-
                   // Unhide image elements
                   //
                   largeImage.style.display = 'block';
-
                   // Show the captured photo
                   // The inline CSS rules are used to resize the image
                   //
                   largeImage.src = imageURI;
-                  dataToSend = imageURI;
-              
-                  $("#removeAttachment").show();
-              
-             // alert(imageURI);
-              console.log(imageURI);
-              //dataToSend = imageURI;
+                  dataToSend = imageURI;              
+                  $("#removeAttachment").show();              
+                  //alert(imageURI);
+                  console.log(imageURI);
+                  //dataToSend = imageURI;
           }
          
           function onFail(message) {
@@ -866,10 +950,43 @@ app.sendNotification = (function () {
             largeImage.src ='';
             $("#removeAttachment").hide(); 
          }
+         
+        
 
+         var scheduleNotification = function(){
+             
+             if(schedule>0){
+            
+                 sendNotificationMessage();
+                 
+             }else{
+           
+             $("#selectScheduleDT").show();
+             $("#sendButton").hide();
+             document.getElementById("scheduleButton").value= "Send Schedule";
+             $("#scheduleButton").css("width", "180");
+             $("#scheduleButton").attr("data-bind","sendNotificationMessage()");
+                          schedule++;
+            }
+         }
+         
+         var closeSchedule = function(){
+
+             schedule=0;
+             scheduleDate='';
+             scheduleTime='';
+
+             $("#selectScheduleDT").hide();
+             $("#sendButton").show();
+             document.getElementById("scheduleButton").value= "Schedule";
+             $("#scheduleButton").css("width", "100");  
+         }
+         
     	 return {
         	   init: init,
            	show: show,
+               closeSchedule:closeSchedule,
+               scheduleNotification:scheduleNotification,
                beforeShow:beforeShow,
                skipToSeletType:skipToSeletType,
                sendNotificationOrg:sendNotificationOrg,

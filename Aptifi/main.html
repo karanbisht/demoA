@@ -333,8 +333,8 @@
   	<div data-role="view" id="infoDiv" data-model="app.Activities">
 		<div data-role="header" style="border-bottom:2px solid #2D384C">
         	<div data-role="navbar">
-            	Sakshay Web Technologies
-         	<a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton" ></a>
+            	Sakshay
+         	<a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton" ></a>
          	</div>
     	</div>
           
@@ -441,7 +441,7 @@
 	<div data-role="header" style="border-bottom:2px solid #2D384C">
         <div data-role="navbar">
             Setting
-            <a class="nav-button nav-button-back hide-text" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
         </div>
     </div>
       
@@ -541,7 +541,7 @@
         
        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
           <header data-role="header">
-                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);">
+                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
           </header>
@@ -552,7 +552,7 @@
                  <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Profile</a></li>
                  <li><a data-icon="settings" href="#settingDiv" data-transition="none">Setting</a></li>
                  <li><a data-icon="about" href="#infoDiv" data-transition="none">About Us</a></li>
-                 <li><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">Admin</a></li>
+                 <li id="goToAdmin"><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">Admin</a></li>
 
           </ul>
        </div>
@@ -561,40 +561,21 @@
         <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
         
         
-        
-       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
-          <header data-role="header">
-                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);">
-                    <span data-role="view-title"></span>
-                </div>
-          </header>
-          
-          <ul data-role="listview">
-                 <li><a data-icon="comments" href="#organisationNotiList" data-transition="none">Manage Org</a></li>
-                 <li><a data-icon="globe" href="#organisationDiv" data-transition="none">Incoming Msg</a></li>
-                 <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Send Notification</a></li>
-                 <li><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">User</a></li>
-
-          </ul>
-       </div>
-        
-        
         <div data-role="layout" data-id="mobile-tabstrip-admin">
            <div data-role="header" >               
-              <div data-role="navbar">     
+              <div data-role="navbar" style="border-bottom: 1px solid #ffffff;">     
                  <span data-role="view-title"></span> 
-                 <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>-->                         
- 
-                 <a data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
+                 <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>-->                          
+                 <a data-role="button" data-rel="drawer" href="#left-drawer1" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
                  <!--<a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a>--> 
               </div>              
                             
-	          <div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
+	          <!--<div id="upperTabAdmin" data-role="tabstrip" style="border-top:2px solid #2D384C">
 	            <a id="manageGroupView" data-icon="organize" data-role="button" href="#view-all-activities-admin" >Manage Org</a>
     	        <a id="replyUserView" data-icon="compose" data-role="button" href="#view-all-activities-userReply" >Incoming Msg</a>
         	    <a id="sendNotificationView" data-icon="action" data-role="button" href="sendNotificationDiv" >Send Notification</a>
-              </div>     
+              </div>-->     
            </div>
         </div>
 
@@ -631,7 +612,7 @@
 <!--data-pull-to-refresh="true"-->
 
         
-<div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+  <div data-role="view" id="sendNotificationDiv" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
     
   <div id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
       
@@ -732,14 +713,13 @@
     
   <div id="sendNotificationDivMsg" style="display:none;overflow:hidden">
     
-    <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
-        <li class="username" style="background-color: #f5f7f8; margin-top:9px;border:none;"><input type="text" class="k-textbox" id="notificationTitleValue" placeholder="Notification Title" autofocus/></li>
-    </ul>
+      <ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
+        <li class="username" style="background-color: #f5f7f8;border:none;"><input type="text" id="notificationTitleValue" placeholder="Notification Title" autofocus/></li>
+      </ul>
 			   
 
-     <div class="textareaClass" style="margin-right:10px;margin-left:10px;border-radius:6px;">
-        <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>
-        
+     <div class="textareaClass" style="background-color:#ffffff;margin-right:15px;margin-left:15px;border-radius:6px;">
+        <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>        
         <div class="loader" id="progressSendNotification" style="display:none;">
                       <div class="ball"></div>
                       <div class="loading1">Loading...</div>
@@ -748,11 +728,31 @@
      </div>
           
       
-    <li style="color:#1B205E;margin:10px;list-style-type: none;">
+      <li style="color:#1B205E;margin:10px;list-style-type: none;">
          <span style="color:#F5F7F8;" ><input type="checkbox" id="comment_allow" class="largerCheckbox" value="" />Comment Allow</span>
-    </li> 
+      </li> 
       
       
+      <div id="selectScheduleDT" style="margin:10px;border-radius:6px;border:1px solid #ffffff;padding:10px;display:none;">
+
+          <a style="background:transparent; border:none;float:right" data-icon="sounds" data-align="right" data-role="button" data-bind="click: closeSchedule"></a> 
+
+          <span style="color:#ffffff;text-align:center;">Select Date and Time to schedule Notification</span>
+          <br/>          
+
+          <div style="padding:10px,10px;">
+                    <input id="scheduleDatePicker"/>              
+          </div>          
+
+          <br/>
+
+          <div style="padding:10px,10px;">
+                    <input id="scheduleTimePicker"/>
+          </div>
+    
+      </div>
+      
+      <!--
        <li style="width:90%;margin-bottom:30px;margin-right:15%;margin-left:5%;list-style-type: none;">
          <img id="largeImage" src="" alt="" align="right"  style="height:70px; width:70px;margin-right:10px;float:right;border:none;" />
              <span data-role="button" style="background-color: #09B201;width:50%;margin-top:20px;" data-bind="click: getPhotoVal">
@@ -762,16 +762,44 @@
                  <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
             </span>
        </li>	
-
+        -->
             
-     <li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
+     <!--<li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
           <span data-role="button" style="background-color:#33539E;width:90%;float:left;" data-bind="click: sendNotificationMessage">
 	         <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Send Notification</a>
           </span>
-     </li>
-   
-  </div>           
-</div>
+     </li>-->
+      
+        
+  </div>
+      
+       <div id="sendNotiDiv" data-role="footer" style="background-color: #2e2e2e;padding:5px;padding-bottom:3px; display:none;">
+        <div style="display:inline;padding:3px;">
+           <a style="background:transparent; border:none;" data-icon="toprated" data-align="left" data-role="button" data-bind="click: getPhotoVal"></a> 
+
+           <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
+
+           <input id="scheduleButton" type="button" value="Schedule" style="width:24%;height:30px;background-color:#4583ED;border:none;color:#ffffff;margin-right:5px;float:right;" data-role="button" data-bind="click: scheduleNotification"/>            
+
+        </div>
+      </div> 
+      
+ </div>
+        
+                
+       <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
+          <header data-role="header">
+                <div data-role="navbar" style="width: 140px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                    <span data-role="view-title"></span>
+                </div>
+          </header>
+          <ul data-role="listview">
+                 <li><a data-icon="globe" href="#view-all-activities-admin" data-transition="none">Manage Org</a></li>
+                 <li><a data-icon="volume" href="#view-all-activities-userReply" data-transition="none">Messages</a></li>
+                 <li><a data-icon="comments" href="#sendNotificationDiv" data-transition="none">Notification</a></li>
+                 <li><a data-icon="graph" href="#organisationNotiList" data-transition="none" >User</a></li>
+          </ul>
+       </div>
 
 		<script type="text/x-kendo-template" id="orgNameTemplate"> 
     		<div class="cf" data-role="touch" data-bind="events: { tap: sendNotificationOrg }">				            

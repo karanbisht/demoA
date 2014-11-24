@@ -58,7 +58,7 @@ app.userReplyList = (function () {
         		                                 orgDesc: results.rows.item(i).orgDesc,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
-                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+                                                 imageSource:results.rows.item(i).imageSource,
        		                                  count : results.rows.item(i).count,
                                                  bagCount : results.rows.item(i).bagCount,
                                                  showCount: showData 
@@ -67,7 +67,7 @@ app.userReplyList = (function () {
                     }
                    
 
-                               tabstrip1.badge(1, totalShowData);
+                               //tabstrip1.badge(1, totalShowData);
 
                 }else{
                                      groupDataShow.push({

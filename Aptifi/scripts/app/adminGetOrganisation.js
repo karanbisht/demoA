@@ -74,7 +74,7 @@ app.adminOragnisationList = (function () {
                     }
                    
                    ShowBagCount=totalCount-bagCount;
-                   tabstrip1.badge(1, ShowBagCount);
+                   //tabstrip1.badge(1, ShowBagCount);
 
 
                }else{
@@ -137,10 +137,10 @@ app.adminOragnisationList = (function () {
              
             localStorage.setItem("loginStatusCheck",2);
  
-            var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
+            /*var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
 	   	 tabStrip.switchTo("#view-all-activities-admin");
 
-            tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");
+            tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");*/
  
             groupDataShow=[];
             joinOrgID=[]; 
@@ -589,7 +589,8 @@ app.adminOragnisationList = (function () {
 			};
         
         
-	    var onComboChange = function(){
+	    
+            var onComboChange = function(){
                  //$("#activities-listview").empty();
             	 //var activities;
        		  var selectData = $("#groupSelect").data("kendoComboBox");    
@@ -810,6 +811,10 @@ app.adminOragnisationList = (function () {
             }
 
 
+            function listViewClick(e) {
+                console.log(e.item); // The clicked item as a jQuery object
+            }
+            
 
         return {
             //activities: activitiesModel.activities,
@@ -828,6 +833,7 @@ app.adminOragnisationList = (function () {
             setting:setting,
             orgShow:orgShow,
             info:info,
+            listViewClick:listViewClick,
             init:init,
             beforeShow:beforeShow,
             show:show,
