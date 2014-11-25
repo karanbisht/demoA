@@ -65,27 +65,29 @@
     background: #3598db;
 }
 
-#friendsApp.km-flat,
-#friendsApp.km-flat .km-navbar,
-#friendsApp.km-flat .km-content {
+#Aptifi.km-flat,
+#Aptifi.km-flat .km-navbar,
+#Aptifi.km-flat .km-content {
     border: 0 none;
     background-color: #2d3e50;
     color: #fff;
     font-family: "Open Sans", sans-serif;
+    overflow-y:hidden;
+
 }
 
-#friendsApp .center-block {
+#Aptifi .center-block {
     display: block;
     margin-right: auto;
     margin-left: auto;
 }
 
-#friendsApp .hide-text {
+#Aptifi .hide-text {
     overflow: hidden;
     text-indent: -999px;
 }
 
-#friendsApp .center-text {
+#Aptifi .center-text {
     text-align: center;
 }
 
@@ -122,13 +124,13 @@
     color: #b6c5c6;
 }
 
-#friendsApp.km-flat form .km-list > li {
+#Aptifi.km-flat form .km-list > li {
     padding: .7em .7em .5em;
     border-color: #eaeced;
 }
 
-#friendsApp.km-flat form .km-listinset > li:first-child,
-#friendsApp.km-flat form .km-listgroupinset .km-list > li:first-child {
+#Aptifi.km-flat form .km-listinset > li:first-child,
+#Aptifi.km-flat form .km-listgroupinset .km-list > li:first-child {
     border-width: 0 0 1px;
     border-color: #eaeced;
     -webkit-border-radius: 2px 2px 0 0;
@@ -136,8 +138,8 @@
     border-radius: 2px 2px 0 0;
 }
 
-#friendsApp.km-flat form .km-listinset > li:last-child,
-#friendsApp.km-flat form .km-listgroupinset .km-list > li:last-child {
+#Aptifi.km-flat form .km-listinset > li:last-child,
+#Aptifi.km-flat form .km-listgroupinset .km-list > li:last-child {
     border: 0 none;
     -webkit-border-radius: 0 0 2px 2px;
     -moz-border-radius: 0 0 2px 2px;
@@ -151,26 +153,26 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-#friendsApp.km-flat .km-list input[type="text"]:not(.k-input),
-#friendsApp.km-flat .km-list input[type="password"],
-#friendsApp.km-flat .km-list input[type="email"],
-#friendsApp.km-flat .km-list input[type="date"],
-#friendsApp.km-flat .km-list input[type="number"],
-#friendsApp.km-flat textarea,
-#friendsApp.km-flat select {
+#Aptifi.km-flat .km-list input[type="text"]:not(.k-input),
+#Aptifi.km-flat .km-list input[type="password"],
+#Aptifi.km-flat .km-list input[type="email"],
+#Aptifi.km-flat .km-list input[type="date"],
+#Aptifi.km-flat .km-list input[type="number"],
+#Aptifi.km-flat textarea,
+#Aptifi.km-flat select {
     position: static;
     width: 100%;
     height: 30px;
     font-size: 1rem;
 }
 
-#friendsApp.km-flat select {
+#Aptifi.km-flat select {
     padding: .4em .2em;
 }
 
 /* Buttons */
 
-#friendsApp .btn {
+#Aptifi .btn {
     position: relative;
     margin: 0 -1px;
     padding: .6em 0;
@@ -179,17 +181,17 @@ input::-webkit-inner-spin-button {
     font-size: 1.2rem;
 }
 
-#friendsApp .disabled .btn {
+#Aptifi .disabled .btn {
     opacity: .35;
 }
 
-#friendsApp .btn-login,
-#friendsApp .signup-view .btn-signup {
+#Aptifi .btn-login,
+#Aptifi .signup-view .btn-signup {
     background-color: #09B201;
 }
 
 
-#friendsApp .register{
+#Aptifi .register{
     background-color: #33539E;
 }
 .register{
@@ -197,38 +199,38 @@ input::-webkit-inner-spin-button {
 }
 
 
-#friendsApp .signup-view .btn-signup,
-#friendsApp .btn-delete {
+#Aptifi .signup-view .btn-signup,
+#Aptifi .btn-delete {
     display: block;
     text-align: center;
 }
 
-#friendsApp .btn-delete {
+#Aptifi .btn-delete {
     background-color: #e84c3d;
 }
 
-#friendsApp .oauth-item .btn {
+#Aptifi .oauth-item .btn {
     background-position: 50% 50%;
     background-repeat: no-repeat;
 }
 
-#friendsApp .btn-login-fb {
+#Aptifi .btn-login-fb {
     background-image: url(images/icon-facebook.png);
 }
 
-#friendsApp .btn-login-google {
+#Aptifi .btn-login-google {
     background-image: url(images/icon-google.png);
 }
 
-#friendsApp .btn-login-liveid {
+#Aptifi .btn-login-liveid {
     background-image: url(images/icon-liveid.png);
 }
 
-#friendsApp .btn-login-adsf {
+#Aptifi .btn-login-adsf {
     background-image: url(images/icon-adsf.png);
 }
 
-#friendsApp .header .nav-button {
+#Aptifi .header .nav-button {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -240,25 +242,25 @@ input::-webkit-inner-spin-button {
     background-repeat: no-repeat;
 }
 
-#friendsApp .header .nav-button-home {
+#Aptifi .header .nav-button-home {
     background-image: url(images/home.png);
     background-size: 30px 30px;
 }
 
-#friendsApp .header .nav-button-back {
+#Aptifi .header .nav-button-back {
     background-image: url(images/icon-arrow_left.png);
     background-size: 30px 30px;
     /*background-position: .65em 50%;*/
 }
 
-#friendsApp .header .nav-button-add {
+#Aptifi .header .nav-button-add {
     background-image: url(images/icon-add.png);
     background-size: 50px 50px; 
 }
 
 
-#friendsApp .header .nav-button-cancel,
-#friendsApp .header .nav-button-post {
+#Aptifi .header .nav-button-cancel,
+#Aptifi .header .nav-button-post {
     width: auto;
     height: 2.5em;
     font-size: .85rem;
@@ -271,56 +273,56 @@ input::-webkit-inner-spin-button {
 
 /* App Header */
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header {
+#Aptifi.km-flat.km-on-ios.km-black-translucent-status-bar .header {
     min-height: 20px;
     background-color: #2d3e50;
 }
 
-#friendsApp.km-flat .header .km-navbar {
+#Aptifi.km-flat .header .km-navbar {
     min-height: 3.15em;
 }
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-navbar {
+#Aptifi.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-navbar {
     min-height: 4.5em;
 }
 
-#friendsApp.km-flat .header .km-view-title {
+#Aptifi.km-flat .header .km-view-title {
     margin-top: .4em;
     font-size: 1rem;
 }
 
-#friendsApp.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-view-title {
+#Aptifi.km-flat.km-on-ios.km-black-translucent-status-bar .header .km-view-title {
   margin-top: .4em;
 }
 
 /* App Footer */
 
-#friendsApp .welcome-scrn .km-footer {
+#Aptifi .welcome-scrn .km-footer {
     background-color: transparent;
     color: #fff;
     text-align: center;
 }
 
-#friendsApp .welcome-scrn .km-footer p {
+#Aptifi .welcome-scrn .km-footer p {
     font-size: .75rem;
 }
 
 /* Welcome screen */
 
-#friendsApp .app-logo,
-#friendsApp .app-name {
+#Aptifi .app-logo,
+#Aptifi .app-name {
     margin-top: 2em;
     margin-bottom: 2em;
 }
 
-#friendsApp .app-logo {
+#Aptifi .app-logo {
     width: 290px;
     height: 45px;
     background: transparent url(images/logo-telerik_devcloud.png) no-repeat 0 0;
 }
 
 
-#friendsApp .app-name small {
+#Aptifi .app-name small {
     display: block;
     font-weight: 400;
     font-size: 1.15rem;
@@ -365,116 +367,121 @@ input::-webkit-inner-spin-button {
     text-align: center; 
 }
 
-#friendsApp .welcome-scrn .group-wrp {
+#Aptifi .welcome-scrn .group-wrp {
     margin: -1em 1em 0;
     padding: 0;
     list-style-type: none;
     text-align: center;
 }
 
-#friendsApp .welcome-scrn .group-wrp li {
+#Aptifi .welcome-scrn .group-wrp li {
   margin: 1.5em 0 0;
 }
 
-#friendsApp .welcome-scrn .group-wrp .btn {
+#Aptifi .welcome-scrn .group-wrp .btn {
     display: block;
 }
 
-#friendsApp .welcome-scrn .group-wrp .oauth {
+#Aptifi .welcome-scrn .group-wrp .oauth {
     margin-right: -1%;
     margin-left: -1%;
 }
 
-#friendsApp .welcome-scrn .group-wrp .oauth .oauth-item {
+#Aptifi .welcome-scrn .group-wrp .oauth .oauth-item {
     float: left;
     margin: 0 1%;
     width: 23%;
 }
 
-#friendsApp .welcome-scrn .group-wrp .oauth .btn {
+#Aptifi .welcome-scrn .group-wrp .oauth .btn {
     overflow: hidden;
     height: 45px;
     text-indent: -999px;
 }
 
-#friendsApp .welcome-scrn .group-wrp .oauth .btn span,
-#friendsApp .welcome-scrn .group-wrp .btn-signup span {
+#Aptifi .welcome-scrn .group-wrp .oauth .btn span,
+#Aptifi .welcome-scrn .group-wrp .btn-signup span {
     font-weight: 500;
     font-size: 1rem;
 }
 
-#friendsApp .welcome-scrn .group-wrp .btn-signup {
+#Aptifi .welcome-scrn .group-wrp .btn-signup {
     border: 0 none;
     background-color: transparent;
 }
 
 /* No API Key screen */
 
-#friendsApp .noapikey-scrn p {
+#Aptifi .noapikey-scrn p {
     line-height: 1.5;
     color: #e4e4e4;
 }
 
-#friendsApp .noapikey-scrn p strong,
-#friendsApp .noapikey-scrn p span {
+#Aptifi .noapikey-scrn p strong,
+#Aptifi .noapikey-scrn p span {
     color: #fff;
 }
 
-#friendsApp .noapikey-scrn p span {
+#Aptifi .noapikey-scrn p span {
     font-weight: 600;
 }
 
 /* Signup */
 
-#friendsApp .signup-view .select-wrp {
+#Aptifi .signup-view .select-wrp {
     -webkit-border-radius: 0 0 2px 2px;
     -moz-border-radius: 0 0 2px 2px;
     border-radius: 0 0 2px 2px;
 }
 
-#friendsApp.km-flat .signup-view .km-listinset > li:last-child {
+#Aptifi.km-flat .signup-view .km-listinset > li:last-child {
     margin: .5em 0 0;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
 
-#friendsApp .txtarea-wrp textarea {
+#Aptifi .txtarea-wrp textarea {
     float: none;
     height: 5.5em;
     resize: none;
 }
 
-#friendsApp .signup-view .signup-btn-wrp {
+#Aptifi .signup-view .signup-btn-wrp {
     margin: 0 1em;
 }
 
-#friendsApp .signup-view .select-wrp select {
+#Aptifi .signup-view .select-wrp select {
     color: #b6c5c6;
 }
 
-#friendsApp .signup-view .select-wrp option:first-child {
+#Aptifi .signup-view .select-wrp option:first-child {
     color: #b6c5c6;
 }
 
 
-#friendsApp .activities-view-info .km-content,
-#friendsApp .activities-view-info .km-listview {
+#Aptifi .activities-view-info .km-content,
+#Aptifi .activities-view-info .km-listview {
     /*background-color: #EDEFF4;*/
      background-color: #888888;
+     scroll-behavior: smooth;
+     overflow-y:hidden;
+
 }
 
 
 
-#friendsApp .activities-view-notification .km-content{
+#Aptifi .activities-view-notification .km-content{
         background-color: #fff;
+         scroll-behavior: smooth;    
 }
 
-#friendsApp .activities-view-notification .km-listview {
+#Aptifi .activities-view-notification .km-listview {
     background-color: #EDEFF4;
+         scroll-behavior: smooth;
 }
 
-#friendsApp .activities-view-notification .km-list > li {
+#Aptifi .activities-view-notification .km-list > li {
     overflow: visible;
     padding: .75em 0;
     border-width: 0 0 1px;
@@ -483,16 +490,19 @@ input::-webkit-inner-spin-button {
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #34495e;
+         scroll-behavior: smooth;
 }
 
 
 
-#friendsApp .leftDrawer-view .km-content,
-#friendsApp .leftDrawer-view .km-listview {
+#Aptifi .leftDrawer-view .km-content,
+#Aptifi .leftDrawer-view .km-listview {
     background-color: #2e2e2e;
+    overflow-y:hidden;
+
 }
 
-#friendsApp .leftDrawer-view .km-list > li{
+#Aptifi .leftDrawer-view .km-list > li{
     overflow: visible;
     padding: .75em 0;
     padding-left:10px;
@@ -508,16 +518,19 @@ input::-webkit-inner-spin-button {
 
 /* Activities */
 
-#friendsApp .activities-view .km-content,
-#friendsApp .activity-view .km-content,
-#friendsApp .add-activity-view .km-content,
-#friendsApp .add-comment-view .km-content,
-#friendsApp .activities-view .km-listview {
+#Aptifi .activities-view .km-content,
+#Aptifi .activity-view .km-content,
+#Aptifi .add-activity-view .km-content,
+#Aptifi .add-comment-view .km-content,
+#Aptifi .activities-view .km-listview {
     background-color: #fff;
+       overflow-y:hidden;
+
+         scroll-behavior: smooth;
 }
 
-#friendsApp .activities-view .km-list > li,
-#friendsApp .activity-view .km-list > li {
+#Aptifi .activities-view .km-list > li,
+#Aptifi .activity-view .km-list > li {
     overflow: visible;
     padding: .75em 0;
     border-width: 0 0 1px;
@@ -526,6 +539,7 @@ input::-webkit-inner-spin-button {
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #34495e;
+         scroll-behavior: smooth;
 }
 
 .pageLayoutClass .km-list > li {
@@ -545,16 +559,16 @@ input::-webkit-inner-spin-button {
 }
 
 
-#friendsApp .activity-view .comments-wrp {
+#Aptifi .activity-view .comments-wrp {
     margin-top: 1em;
     /*border-top: 1px solid #eaeced;*/
 }
 
-#friendsApp .activities-view .km-list > li:first-child {
+#Aptifi .activities-view .km-list > li:first-child {
     padding-top: 0;
 }
 
-#friendsApp .user-avatar {
+#Aptifi .user-avatar {
     float: left;
     width: 50px;
     height:50px;
@@ -563,7 +577,7 @@ input::-webkit-inner-spin-button {
     background-repeat:no-repeat; 
 }
 
-#friendsApp .user-avatar img {
+#Aptifi .user-avatar img {
     /*width: 100%;*/
     /*height: 100%;*/    
     border-radius: 6px;
@@ -581,7 +595,7 @@ input::-webkit-inner-spin-button {
     border-radius: 25px;*/
 }
 
-#friendsApp .activity-content {
+#Aptifi .activity-content {
     position: relative;
     padding-left: 5em;
     font-size: .85rem;
@@ -589,16 +603,16 @@ input::-webkit-inner-spin-button {
 
 
 
-#friendsApp .activity-content .person-name,
-#friendsApp .add-activity-view .person-name,
-#friendsApp .add-comment-view .person-name,
-#friendsApp .activity-content .time-span {
+#Aptifi .activity-content .person-name,
+#Aptifi .add-activity-view .person-name,
+#Aptifi .add-comment-view .person-name,
+#Aptifi .activity-content .time-span {
     font-weight: 600;
 }
 
-#friendsApp .add-activity-view .person-name,
-#friendsApp .add-comment-view .person-name,
-#friendsApp .activity-content .person-name {
+#Aptifi .add-activity-view .person-name,
+#Aptifi .add-comment-view .person-name,
+#Aptifi .activity-content .person-name {
     display: block;
     margin: 0 0 .5em;
     color: #3598db;
@@ -622,7 +636,7 @@ input::-webkit-inner-spin-button {
 
 
 /*
-#friendsApp .person-name {
+#Aptifi .person-name {
     overflow: hidden;
     width: 70%;
     text-overflow: ellipsis;
@@ -630,16 +644,16 @@ input::-webkit-inner-spin-button {
 }*/
 
 
-#friendsApp .activities-view .person-name,
-#friendsApp .add-activity-view .person-name,
-#friendsApp .add-comment-view .person-name {
+#Aptifi .activities-view .person-name,
+#Aptifi .add-activity-view .person-name,
+#Aptifi .add-comment-view .person-name {
     overflow: hidden;
     width: 70%;
     text-overflow: ellipsis;
     white-space: nowrap;    
 }
 
-#friendsApp .activity-content .time-span {
+#Aptifi .activity-content .time-span {
     position: absolute;
     bottom: 5px;
     right: 0;
@@ -648,53 +662,53 @@ input::-webkit-inner-spin-button {
     font-size: .5rem;
 }
 
-#friendsApp .activity-content .comment-content .time-span {
+#Aptifi .activity-content .comment-content .time-span {
     bottom: 12px;
     font-size: .6rem;
 }
 
-#friendsApp .user-share-txt {
+#Aptifi .user-share-txt {
     color: #34495e;
 }
 
-#friendsApp .activity-content .comment-content .user-share-txt {
+#Aptifi .activity-content .comment-content .user-share-txt {
     font-size: .75rem;
 }
 
-#friendsApp .activity-view .person-name,
-#friendsApp .add-activity-view .person-name,
-#friendsApp .add-comment-view .person-name {
+#Aptifi .activity-view .person-name,
+#Aptifi .add-activity-view .person-name,
+#Aptifi .add-comment-view .person-name {
     margin: .85em 0 1em;
 }
 
-#friendsApp .activity-view .comment-content .person-name {
+#Aptifi .activity-view .comment-content .person-name {
     margin: 0;
     color: #6c7884;
     font-size: .85rem;
 }
 
-#friendsApp .add-activity-view .person-name,
-#friendsApp .add-comment-view .person-name {
+#Aptifi .add-activity-view .person-name,
+#Aptifi .add-comment-view .person-name {
     padding-left: .75em;
 }
 
-#friendsApp .activity-view .picture {
+#Aptifi .activity-view .picture {
     margin: 1em 0 0;
 }
 
-#friendsApp .user-share {
+#Aptifi .user-share {
     position: relative;
     margin: 2.35em 0 0;
 }
 
-#friendsApp .user-share:before {
+#Aptifi .user-share:before {
     position: absolute;
     width: 0;
     height: 0;
     content: '';
 }
 
-#friendsApp .user-share:before {
+#Aptifi .user-share:before {
     top: -10px;
     left: 16px;
     border-right: 9px solid transparent;
@@ -702,7 +716,7 @@ input::-webkit-inner-spin-button {
     border-left: 9px solid transparent;
 }
 
-#friendsApp .user-share textarea {
+#Aptifi .user-share textarea {
     float: none;
     margin: 0;
     padding: .75em 1em;
@@ -734,7 +748,7 @@ input::-webkit-inner-spin-button {
     overflow-y:scroll !important;
 }
 
-#friendsApp .user-share-noti textarea {
+#Aptifi .user-share-noti textarea {
     float: none;
     margin: 0;
     padding: .75em 1em;
@@ -744,28 +758,28 @@ input::-webkit-inner-spin-button {
     resize: none;
 }
 
-/*#friendsApp .activity-view .km-footer {
+/*#Aptifi .activity-view .km-footer {
     padding: 0 1em 1em;
     background: #fff none;
 }*/
 
-#friendsApp .add-activity-view .km-leftitem,
-#friendsApp .add-comment-view .km-leftitem {
+#Aptifi .add-activity-view .km-leftitem,
+#Aptifi .add-comment-view .km-leftitem {
     left: 1em;
 }
 
-#friendsApp .add-activity-view .km-rightitem,
-#friendsApp .add-comment-view .km-rightitem,
-#friendsApp .activity-view .km-rightitem {
+#Aptifi .add-activity-view .km-rightitem,
+#Aptifi .add-comment-view .km-rightitem,
+#Aptifi .activity-view .km-rightitem {
     right: 1em;
 }
 
-#friendsApp.km-black-translucent-status-bar .km-navbar .km-leftitem,
-#friendsApp.km-black-translucent-status-bar .km-navbar .km-rightitem {
+#Aptifi.km-black-translucent-status-bar .km-navbar .km-leftitem,
+#Aptifi.km-black-translucent-status-bar .km-navbar .km-rightitem {
     margin-top: .4em;
 }
 
-#friendsApp .k-invalid-msg {
+#Aptifi .k-invalid-msg {
     display: none;
     margin: 1rem 0 0;
     padding: 0 1rem;
@@ -778,7 +792,7 @@ input::-webkit-inner-spin-button {
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 144dpi) {
 
-    #friendsApp .app-logo {
+    #Aptifi .app-logo {
         background-image: url(images/logo-telerik_devcloud@2x.png);
         background-size: 247px 32px;
     }
@@ -793,40 +807,40 @@ input::-webkit-inner-spin-button {
         background-size: 10px 12px;
     }
 
-    #friendsApp .btn-login-fb {
+    #Aptifi .btn-login-fb {
         background-image: url(images/icon-facebook@2x.png);
         background-size: 11px 18px;
     }
 
-    #friendsApp .btn-login-google {
+    #Aptifi .btn-login-google {
         background-image: url(images/icon-google@2x.png);
         background-size: 20px 20px;
     }
 
-    #friendsApp .btn-login-liveid {
+    #Aptifi .btn-login-liveid {
         background-image: url(images/icon-liveid@2x.png);
         background-size: 22px 20px;
     }
 
-    #friendsApp .btn-login-adsf {
+    #Aptifi .btn-login-adsf {
         background-image: url(images/icon-adsf@2x.png);
         background-size: 21px 20px;
     }
 
-    #friendsApp .header .nav-button-back {
+    #Aptifi .header .nav-button-back {
         /*background-image: url(images/icon-arrow_left@2x.png);
         background-size: 9px 20px;*/
         background-image: url(images/icon-arrow_left.png);
         background-size: 30px 30px; 
     }
     
-    #friendsApp .header .nav-button-home {
+    #Aptifi .header .nav-button-home {
         background-image: url(images/home.png);
         background-size: 30px 30px;
     }
     
     
-    #friendsApp .header .nav-button-add {
+    #Aptifi .header .nav-button-add {
         background-image: url(images/icon-add@2x.png);
         background-size: 50px 50px;
     }
@@ -1332,6 +1346,8 @@ input.largerCheckbox
     {
         background-color: #4e4e4e;
         color: #fff;
+           overflow-y:hidden;
+
     }
 
     .km-ios #left-drawer .km-group-title,
@@ -1406,4 +1422,13 @@ input.largerCheckbox
 .km-listview-link::after
 {
     display: none;
+}
+
+
+.km-vertical-scrollbar{
+    display: none;    
+}
+
+.km-touch-scrollbar{
+    display: none;    
 }

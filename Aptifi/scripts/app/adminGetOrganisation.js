@@ -68,7 +68,7 @@ app.adminOragnisationList = (function () {
         		                                 orgDesc: results.rows.item(i).orgDesc,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
-                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+                                                 imageSource:results.rows.item(i).imageSource,
 		                                         count:results.rows.item(i).count					
                                        });
                     }

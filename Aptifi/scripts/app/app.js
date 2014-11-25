@@ -997,7 +997,7 @@ var app = (function (win) {
     if(loginStatusCheck==='0' || loginStatusCheck===null){    
     mobileApp = new kendo.mobile.Application(document.body, {
         											 initial: "#welcome",
-                                                     skin: 'flat'
+                                                     skin: 'flat'                                                                           
                                                  	});
    }else if(loginStatusCheck==='1'){
     mobileApp = new kendo.mobile.Application(document.body, {

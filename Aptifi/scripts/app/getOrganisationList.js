@@ -157,7 +157,7 @@ app.OragnisationList = (function () {
         		                                 orgDesc: lastNotifi,
                                                  organisationID:results.rows.item(i).org_id,
                                                  org_logo:results.rows.item(i).imageSource,
-                                                 imageSource:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,
+                                                 imageSource:results.rows.item(i).imageSource,
 		                                         bagCount : bagCountValue,
                                                  countData:countValue,
                                                  count : countVal
@@ -1130,7 +1130,7 @@ app.OragnisationList = (function () {
         		         org_id: results.rows.item(i).org_id,
                          role:'O',
                          imgData:results.rows.item(i).imageSource,   
-                         imageSourceOrg:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,   
+                         imageSourceOrg:results.rows.item(i).imageSource,   
                          orgDesc:results.rows.item(i).orgDesc,                      
                          joinDate:results.rows.item(i).joinedDate                   
                        });
@@ -1194,7 +1194,7 @@ app.OragnisationList = (function () {
         		         org_id: results.rows.item(i).org_id,
                          role:'C',
                          imgData:results.rows.item(i).imageSource,   
-                         imageSourceOrg:'http://54.85.208.215/assets/upload_logo/'+results.rows.item(i).imageSource,   
+                         imageSourceOrg:results.rows.item(i).imageSource,   
                          orgDesc:results.rows.item(i).orgDesc,                      
                          joinDate:results.rows.item(i).joinedDate                   
                        });

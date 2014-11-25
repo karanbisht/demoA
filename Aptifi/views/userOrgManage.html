@@ -1,7 +1,7 @@
 <!-- class="activities-view-info" -->
 <!--data-use-native-scrolling="true"-->
 
-<div data-role="view" id="userOrgManage" data-id="innerActivity" class="activities-view"  data-model="app.OragnisationList" data-show ="app.OragnisationList.showOrgInfoPage" data-transition="zoom">
+<div data-role="view" id="userOrgManage" data-id="innerActivity" class="activities-view"  data-model="app.OragnisationList"  data-show ="app.OragnisationList.showOrgInfoPage" data-transition="zoom">
 
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
@@ -22,11 +22,23 @@
          </ul>         
  	</div> 
 
-              
+<br/>              
+
     
-    <div id="showCalendar" style="color:#3598DB;margin:10px;width:93%" data-role="button" data-click="app.OragnisationList.showCalendar">SHOW CALENDAR EVENT</div>
+    <br/>              
+<br/>              
+
+    <li style="margin-top:15px;text-align:center;width:93%">
+              <span id="login" data-role="touch" style="padding:10px;width:93%">
+                    <a data-role="button"  data-click="app.OragnisationList.showCalendar" style="background-color:#33539E;">SHOW CALENDAR EVENT</a>   
+              </span>
+    </li>
     
-    <div id="showNews" style="color:#3598DB;margin:10px;width:93%" data-role="button" data-click="app.OragnisationList.showOrgNews">SHOW ORGANIZATION NEWS</div>
+    <li style="margin-top:15px;text-align:center;width:93%">
+              <span id="login" data-role="touch" style="padding:10px;width:93%">
+                    <a data-role="button" data-click="app.OragnisationList.showOrgNews" style="background-color:#33539E;">SHOW ORGANIZATION NEWS</a>   
+              </span>
+    </li>
 
   
     <div data-role="footer">
