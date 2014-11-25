@@ -10,6 +10,9 @@ app.sendNotification = (function () {
     var scheduleDate;
     var scheduleTime;
     var sending_option='now';
+    var tasks;
+    var scheduleDiv = 0;
+ 
 
     var groupChecked = [];
 	 var sendNotificationViewModel = (function () {
@@ -377,8 +380,8 @@ app.sendNotification = (function () {
              console.log(cmmt_allow);
                 var notificationValue = $("#notificationDesc").val();
                 var titleValue = $("#notificationTitleValue").val();
-                
                 //alert(titleValue +"||"+notificationValue);            
+             
              
               console.log(notificationValue+"||"+titleValue+"||"+type+"||"+cmmt_allow+"||"+cmbGroup+"||"+cmbCust+"||"+org_id);
                    
@@ -387,10 +390,25 @@ app.sendNotification = (function () {
 
                console.log(scheduleDate+"||"+scheduleTime+"||"+sending_option);
                
-               if(sending_option==='later'){
+               
+               if(scheduleDiv===1){
                    
-                   console.log('later');
+                sending_option='later';    
+                console.log('later div open');
                 var schedule_Date = $("#scheduleDatePicker").val();
+
+               
+               
+               var values = schedule_Date.split('/');
+               
+               var month = values[0]; // globle variable
+               var day = values[1];
+               var year = values[2];
+                                  
+               console.log('------------------date=---------------------');
+               console.log(year+"||"+month+"||"+day);
+
+               
                 var schedule_Time = $("#scheduleTimePicker").val();
                
                 var valueTime = schedule_Time.split(':');            
@@ -414,6 +432,13 @@ app.sendNotification = (function () {
                 schedule_Time = Hour+":"+minute+":00";
                
                
+                var second ="00";
+                                                 
+                tasks = +new Date(year+"/"+month+"/"+day+" "+Hour+":"+minute+":"+second);
+                                  
+                console.log(tasks);
+
+               
  
                console.log(schedule_Date+"||"+schedule_Time);
                                   
@@ -433,20 +458,16 @@ app.sendNotification = (function () {
                                   */
 
 
-               console.log('1');
-
+                   console.log('1');
                    var sendNotificationTime = new Date(schedule_Date+" "+schedule_Time);     
                    
                    //var unixtime = Date.parse(schedule_Date+" "+schedule_Time).getTime()/1000
-
-               console.log(sendNotificationTime);
-               
-              }else{
-                                     console.log('now');
-
-                  sending_option='now';
-                  sendNotificationTime='';
-              }
+                   console.log(sendNotificationTime);
+             }else{
+               tasks='';  
+               sending_option='now';    
+  
+             }  
                
                
           if(org_id===null){
@@ -455,12 +476,12 @@ app.sendNotification = (function () {
             app.showAlert('Please Organization Group or Customer.','Validation Error'); 
                $("#selectGroupDiv").show(); 
                $("#sendNotificationDivMsg").hide();
-              $("#sendNotiDiv").hide();
+               $("#sendNotiDiv").hide();
           }else if(cmbGroup ==='0' && (cmbCust==='' || cmbCust==="null")){
             app.showAlert('Please Customer to Send Notification.','Validation Error'); 
                            $("#selectCustomerToSend").show(); 
                            $("#sendNotificationDivMsg").hide();
-              $("#sendNotiDiv").hide();
+                           $("#sendNotiDiv").hide();
           }else if(type===''){
             app.showAlert('Please select Notification Type','Validation Error');     
           }else if(titleValue===''){
@@ -468,9 +489,7 @@ app.sendNotification = (function () {
           }else if(notificationValue===''){
             app.showAlert('Please select Notification Message','Validation Error');           
           }else{ 
-
               $("#progressSendNotification").show();
-
               //var url = "http://54.85.208.215/webservice/notification/sendNotification";
               
              if(dataToSend!==undefined && dataToSend!=="undefined"&& dataToSend!==''){ 
@@ -490,7 +509,7 @@ app.sendNotification = (function () {
                         params.org_id = org_id;
                         params.comment_allow = cmmt_allow;
                         params.sending_option = sending_option;
-                        params.send_date = sendNotificationTime;
+                        params.send_date = tasks;
                    
                         var options = new FileUploadOptions();
                         options.fileKey = "attached";
@@ -507,8 +526,8 @@ app.sendNotification = (function () {
                         options.chunkedMode = false;
                         var ft = new FileTransfer();
 
-                   
-                  
+                        console.log(tasks);
+
                   
                  /* 
                  var deviceName = app.devicePlatform();             
@@ -547,7 +566,9 @@ app.sendNotification = (function () {
 
              }else{
  
-              var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":sendNotificationTime}
+              console.log(tasks);
+                 
+              var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks}
  
                             
              var dataSourceSendNotification = new kendo.data.DataSource({
@@ -1069,20 +1090,20 @@ app.sendNotification = (function () {
             largeImage.src ='';
             $("#removeAttachment").hide(); 
             $("#largeImage").hide();
+            dataToSend=''; 
  
          }
          
         
 
          var scheduleNotification = function(){
-             
-             if(schedule>0){
             
+             scheduleDiv=1;
+             
+             if(schedule>0){            
                  sendNotificationMessage();
-                 sending_option='now';
-                 
-             }else{
-           
+                 sending_option='now';                 
+             }else{           
              $("#selectScheduleDT").show();
              $("#sendButton").hide();
              sending_option='later';
@@ -1095,9 +1116,11 @@ app.sendNotification = (function () {
          
          var closeSchedule = function(){
 
+             scheduleDiv=0;
              schedule=0;
              scheduleDate='';
              scheduleTime='';
+             tasks='';
              sending_option='now';
              $("#selectScheduleDT").hide();
              $("#sendButton").show();
