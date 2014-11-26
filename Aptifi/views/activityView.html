@@ -10,15 +10,23 @@
     
     <!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">
-        <div class="user-avatar">
+        <!--<div class="user-avatar">
             <img id="orgLogoImg" />
-        </div>
+        </div>-->
+        
         <div>
-	        <div class="activity-content">
+	        <div class="notiList-content">
+
+                <div class="dateDisplay">                  
+                  <span id="notiDate">${date}</span> 
+                  <hr class="dateLine"/>
+                  <span></span>
+                </div>
+
     	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-        	    <li id="titleContainer" style="background-color:#FDFF85;padding:10px;border-radius:6px;">
-            		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>                     
-              		<h2 id="personName" class="chatTitle" data-bind='text:title' style="margin-left:-3px;"></h2>      
+        	    <li id="titleContainer">
+            		  <!--<img src="styles/images/arrow.png" style="margin-left:-19px;"/>-->                     
+              		<h2 id="personName" class="notiNameList" style="margin-left:-3px;"></h2>      
               		<span id="activityText" data-bind="text: message" class="user-share-txt"></span>
                     
                      <!--<img id="notiImg" data-bind="attr: { src:attachedImg, alt: imageAlt }" />-->
@@ -26,7 +34,7 @@
             <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
             </div>
             <br/>
-            <div id="notiImage"></div>
+            <div id="notiImage" style="max-height:300px;height:auto;width:100%;margin-top:10px;"></div>
        </div> 
         
              <div class="loader" id="progressChat" style="display:none;margin-top:50%">
@@ -42,10 +50,11 @@
     </div>   
     
    
-   <div id="commentPanel" data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">
+   <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;padding:3px;">
-  		 <div style="float:left;width:79%;"><textarea id="newComment" placeholder="Write a reply..." style="padding-left:5px;padding-right:5px;"></textarea></div>
-           <input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>
+  		 <div style="float:left;width:87%;border-radius:6px;bacground-color:#ffffff"><textarea id="newComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;"></textarea></div>
+           <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>-->
+           <a style="background:transparent; border:none;margin-left:5px;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>              
         </div>
    </div>          
 </div>
@@ -53,18 +62,18 @@
 <!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
    # if (user_type !== 'Customer'){ # 
-        <div class="comment-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;">
-            <h2 class="person-name">${User()}</h2>
-            <span class="time-span">${add_date}</span>       
+        <div class="comment-content" style="background-color:rgb(242,242,242);padding:10px;border-radius:6px;">
+            <!--<h2 class="person-name">${User()}</h2>
+            <span class="time-span">${add_date}</span>-->       
             <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
             <a class="user-share-txt">${comment}</a>
-       </div>
+        </div>
   # }else{ #
-    <div class="comment-content" style="background-color:rgb(203,225,254);padding:10px;border-radius:6px;">
-               <h2 class="person-name">${User()}</h2>
-               <span class="time-span">${add_date}</span>
-              <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
+    <div class="user-comment-content">
+               <!--<h2 class="person-name">${User()}</h2>
+               <span class="time-span">${add_date}</span>-->
         <a class="user-share-txt">${comment}</a>
+        <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
     </div>        
    # } #
 </script>

@@ -720,6 +720,8 @@ app.Login = (function () {
                console.log('--------Error in Verification Code Sent-----------------');               
                console.log(e);
                
+                               $("#progress").hide();
+
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Verification Code not send . Please click on Regenerate Code');  
                   }else{

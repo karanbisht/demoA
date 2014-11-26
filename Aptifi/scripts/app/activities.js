@@ -299,6 +299,8 @@ app.Activities = (function () {
                   
                        var dateString = results.rows.item(i).send_date;
                    //alert(dateString);
+
+                    /*
                        var split = dateString .split(' ');
                            console.log(split[0]+" || "+split[1]);
                        var notiDate= app.formatDate(split[0]);
@@ -311,7 +313,10 @@ app.Activities = (function () {
 
                        var notiTime=app.timeConvert(timeVal);
                        console.log(notiTime);
-                    
+                    */
+
+                     var notiDate="30/11/2014";                    
+                     var notiTime="4:30 Pm";
                     
                       //var currentDate = app.currentDataFormate();
                       //console.log(currentDate);

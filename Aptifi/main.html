@@ -6,11 +6,7 @@
 
         
         <script src="cordova.js"></script>
-
         
-        
-        <!--<style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>-->
-
         <!--<link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
         <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
         <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
@@ -464,18 +460,18 @@
     		
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
 
-            #if(org_logo===null || org_logo==='null'){#   
-                 <div class="user-avatar">
-                    <img src="styles/images/habicon.png">
-                 </div>
-            #}else{#
-                 <div class="user-avatar">
-                    <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
-                 </div>             
-            #}#  
+                #if(org_logo===null || org_logo==='null'){#   
+                     <div class="user-avatar">
+                        <img src="styles/images/habicon.png">
+                     </div>
+                #}else{#
+                     <div class="user-avatar">
+                        <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />  
+                     </div>             
+                #}#  
              
-       		 <div class="activity-content" >
-       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${orgName}</h2>
+       		 <div class="orgList-content">
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;">${orgName}</h2>
             		#if(countData!==0){#
 						<div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
             		#}# 
@@ -485,7 +481,7 @@
                                 #orgDescVal = orgDesc;#  
                                 #}#
 
-       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>            			            
+       		     <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>            			            
        		 </div>
 		    </div>
 		</script>

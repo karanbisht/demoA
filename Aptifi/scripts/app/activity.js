@@ -564,6 +564,9 @@ app.Activity = (function () {
                 //var org_id = localStorage.getItem("UserOrgID");
  			   //var customer_id = localStorage.getItem("UserID");
                 
+             
+               if(comment!=='Reply' && comment!==''){
+                   
                 console.log("SHOWING DATA" + notiId +"||"+account_Id+"||"+org_id);
                 
           var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
@@ -615,12 +618,32 @@ app.Activity = (function () {
                                  
                                  $("#newComment").val('');
                              }else{
-                                 app.showAlert(commentData.status[0].Msg ,'Notification'); 
+                                 //app.showAlert(commentData.status[0].Msg ,'Notification'); 
+                       
+                                 if(!app.checkSimulator()){
+                                      window.plugins.toast.showShortBottom(commentData.status[0].Msg);   
+                                 }else{
+                                      app.showAlert("commentData.status[0].Msg","Notification");  
+                                 }
+                       
                              }
                          });
                });
 
-            }
+           
+           }else{
+                                  
+               if(!app.checkSimulator()){
+               
+                   window.plugins.toast.showShortBottom("Please enter your Reply");   
+                   
+               }else{
+               
+                   app.showAlert("Please enter your Reply","Notification");  
+                   
+               }
+           }        
+          }  
       
         };
 
