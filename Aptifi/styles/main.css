@@ -188,7 +188,7 @@ input::-webkit-inner-spin-button {
 
 #Aptifi .btn-login,
 #Aptifi .signup-view .btn-signup {
-    background-color: #09B201;
+    background-color: #7FBF4D;
 }
 
 
@@ -641,6 +641,18 @@ input::-webkit-inner-spin-button {
     text-align: justify;
 }
 
+.calendarEvent-List {
+    position: relative;
+    font-size: .85rem;
+    padding:10px;
+    text-align: justify;
+}
+
+.calendarEvent-Click {
+    width:100%;
+    font-size: .85rem;
+    padding:10px;
+}
 
 #Aptifi .orgList-content {
     position: relative;
@@ -736,8 +748,39 @@ input::-webkit-inner-spin-button {
     background-color:rgb(217,244,195);
     padding:10px;
     border-radius:6px;
+    display:inline-block;
+    text-overflow: ellipsis;
 }
 
+.user-share-txt-user{
+     text-align:left;
+    float:left;
+}
+
+.user-comment-List{
+    float:right;
+    text-align:right;
+    padding-left: 3em;
+    padding-right:10px;
+    font-size: .85rem;
+}
+
+.admin-comment-content{    
+    background-color:rgb(242,242,242);
+    padding:10px;
+    border-radius:6px;
+    display:inline-block;
+    text-overflow: ellipsis;
+
+}
+
+.admin-comment-List{
+    position: relative;
+    padding-right: 3em;
+    padding-left:10px;
+    font-size: .85rem;    
+    
+}
 
 
 
@@ -989,10 +1032,15 @@ input::-webkit-inner-spin-button {
 }
 
 .dateLine{
-  width:78% ;
+  width:75% ;
   float:right;
   color:#DADADA; 
   height:.5px;  
+}
+
+.dateValue{
+  width:25% ;
+  float:left;
 }
 
 .divBagVal{
@@ -1103,7 +1151,7 @@ input.largerCheckbox
 
 .loader {
 	background-color: transparent;
-	width: 190px;
+	width: 100px;
 	z-index: 999;
 	font-size:18px;
 	border-radius: 4px;
@@ -1169,7 +1217,7 @@ input.largerCheckbox
     width: 28px;
     height: 28px;
     z-index:999;
-    color:#3598DB;
+    color:#7FBF4D;
 }
 
 
@@ -1306,14 +1354,14 @@ input.largerCheckbox
 */
 
 .ball {
-    background-color: rgba(0,0,0,0);
-    border: 5px solid rgba(0,183,229,0.9);
-    opacity: .9;
+    background-color: rgba(242,242,242, 0.8);
+    border: 5px solid rgba(127,191,77, 0.8);
+    opacity: .7;
     border-top: 5px solid ;
     border-left: 5px solid ;
-    border-radius: 25px;
-    width: 25px;
-    height: 25px;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
     -moz-animation: spin .5s infinite linear;
     -webkit-animation: spin .5s infinite linear;
 }
@@ -1369,8 +1417,8 @@ input.largerCheckbox
 
 
 .ob-done-date-style {
-    background-color: #85d633;
-    background: #85d633; 
+    background-color: #7FBF4D;
+    background: #7FBF4D; 
     color:#ffffff;
 }
 .ob-not-done-date-style {
@@ -1505,13 +1553,13 @@ input.largerCheckbox
   #left-drawer a {
         display: block;
         text-decoration: none;
-    }
+   }
 
 
   #left-drawer1 a {
         display: block;
         text-decoration: none;
-    }
+   }
 
 .km-listview-link::after
 {
@@ -1526,3 +1574,19 @@ input.largerCheckbox
 .km-touch-scrollbar{
     display: none;    
 }
+
+.manageOrgDiv{
+    background-color:#E4F6D5;
+    width:50%;
+    height:80px;
+    color:#52554F;
+    border-radius:3px;
+    text-align:center;
+}
+
+.k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;}
+.k-calendar .k-state-hover { background: #7FBF4D; }
+.k-calendar .k-state { background: #7FBF4D; } 
+ #calendar .k-footer {background: #7FBF4D;}
+ #calendar .k-header {background: #7FBF4D;}
+

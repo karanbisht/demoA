@@ -16,7 +16,6 @@
         
         <div>
 	        <div class="notiList-content">
-
                 <div class="dateDisplay">                  
                   <span id="notiDate">${date}</span> 
                   <hr class="dateLine"/>
@@ -39,10 +38,10 @@
         
              <div class="loader" id="progressChat" style="display:none;margin-top:50%">
                       <div class="ball"></div>
-                      <div class="loading1">Loading...</div>
+                      <!--<div class="loading1">Loading...</div>-->
              </div>
 
-        <div class="commentContent" >
+        <div id="commentListContainer" >
             <div class="comments-wrp">
                 <ul id="comments-listview" data-template="commentsTemplate"  class="commentClasList"></ul>
             </div>
@@ -52,7 +51,7 @@
    
    <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;padding:3px;">
-  		 <div style="float:left;width:87%;border-radius:6px;bacground-color:#ffffff"><textarea id="newComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;"></textarea></div>
+  		 <div style="float:left;width:85%;border-radius:6px;bacground-color:#ffffff"><textarea id="newComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;"></textarea></div>
            <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>-->
            <a style="background:transparent; border:none;margin-left:5px;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>              
         </div>
@@ -62,17 +61,19 @@
 <!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
    # if (user_type !== 'Customer'){ # 
-        <div class="comment-content" style="background-color:rgb(242,242,242);padding:10px;border-radius:6px;">
+    #document.getElementById("commentListContainer").className = "admin-comment-List";#
+        <div class="admin-comment-content">
             <!--<h2 class="person-name">${User()}</h2>
             <span class="time-span">${add_date}</span>-->       
             <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
             <a class="user-share-txt">${comment}</a>
         </div>
   # }else{ #
+      #document.getElementById("commentListContainer").className = "user-comment-List";# 
     <div class="user-comment-content">
                <!--<h2 class="person-name">${User()}</h2>
                <span class="time-span">${add_date}</span>-->
-        <a class="user-share-txt">${comment}</a>
+        <a class="user-share-txt-user">${comment}</a>
         <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
     </div>        
    # } #

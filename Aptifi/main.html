@@ -109,8 +109,8 @@
            <div data-role="header">         
               <div data-role="navbar">     
                  <span data-role="view-title"></span> 
-             	<!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		         
-                  
+
+                 <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		                           
                  <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
                   
                   <a data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
@@ -133,16 +133,15 @@
          
         <!-- maxlength="10" pattern="[0-9]*"-->
         <!--WELCOME VIEW -->
-        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
-            <div data-role="header"></div>
-          <div id="selectionDiv"> 
-            <h1 class="app-name center-text">Aptifi </h1>
 
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
+          <div id="selectionDiv" style="margin-top:120%; position:absolute; left:0px; right:0px;">
             <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">                
-                <ul data-role="listview" data-style="inset">
-                    <li class="username" style="padding:10px;border-radius:6px;" ><input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10;/></li>
-                </ul>
-            
+                
+              <ul data-role="listview" data-style="inset">
+                  <li class="username" style="padding:10px;border-radius:3px;background-color:#303645;color:#ffffff" ><input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff"/></li>
+              </ul>
+                
               <ol class="group-wrp" style="margin-top:20px;">
                 <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: login }">
@@ -150,14 +149,13 @@
                     </span>
                 </li>
               </ol>    
-            </form> 
-           
-              
+                
+            </form>
           </div>  
             
-           <div class="loader" id="progress" style="display:none;margin-top:10px;">
+           <div class="loader" id="progress" style="display:none;margin-top:48%;">
                       <div class="ball"></div>
-                      <div class="loading">Loading...</div>
+                      <!--<div class="loading">Loading...</div>-->
            </div>
            
                       
@@ -177,13 +175,13 @@
          
                     <ol class="reg-group-wrp" style="margin-bottom:10px;">
                 
-                        <li>
-                            <span id="registration" data-role="touch" style="float:right;margin-right:10px;" data-bind="events: { tap: clickforValificationCode }">
-                                <a data-role="button" style="background-color:#313C50">Ok</a>
+                        <li style="width:100%">
+                            <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D" data-bind="events: { tap: clickforValificationCode }">
+                                Ok
                             </span>
                     
-                            <span id="registration" data-role="touch" style="float:left;margin-left:10px;" data-bind="events: { tap: cancelButtonRC }">
-                                <a data-role="button" style="background-color:#313C50">Cancel</a>
+                            <span id="registration" data-role="touch" style="float:left;margin-left:10px;height:40px;padding-top:10px;width:40%;background-color:#303645;" data-bind="events: { tap: cancelButtonRC }">
+                                Cancel
                             </span>
              		   </li>
 				     </ol>
@@ -224,7 +222,7 @@
          
                <div class="loader" id="progressRandomCode" style="display:none;">
                       <div class="ball"></div>
-                      <div class="loading1">Loading...</div>
+                      <!--<div class="loading1">Loading...</div>-->
                </div>
             
              <ol class="reg-group-wrp" style="margin-bottom:25px;">
@@ -277,7 +275,7 @@
     
              <div class="loader" id="progress2" style="display:none;margin-top:48%">
                       <div class="ball"></div>
-                      <div class="loading1">Loading...</div>
+                      <!--<div class="loading1">Loading...</div>-->
              </div>
 
     
@@ -582,7 +580,7 @@
      <div>
          <div class="loader" id="progressAdmin" style="display:none;margin-top:48%">
                       <div class="ball"></div>
-                      <div class="loading1">Loading...</div>
+                      <!--<div class="loading1">Loading...</div>-->
          </div>
          
     	<ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
@@ -719,7 +717,7 @@
         <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>        
         <div class="loader" id="progressSendNotification" style="display:none;">
                       <div class="ball"></div>
-                      <div class="loading1">Loading...</div>
+                      <!--<div class="loading1">Loading...</div>-->
         </div>
 
      </div>

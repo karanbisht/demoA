@@ -16,19 +16,31 @@
 
            <img id="organisationLogo" style="max-height:250px;width:100%">
   
-           <p style="color:#042E6F;font-weight:bold;">Organization Description :<br/><br/><span id="OrgDescData" style="color:#042E6F;"></span></p>
+           <p style="color:#B0D695;">Organization Description :<br/><br/><span id="OrgDescData" style="color:#838383;"></span></p>
 
-           <p style="color:#042E6F;font-weight:bold;">Join On : <span style="color:#042E6F" id="orgJoinData"></span></p>
+           <p style="color:#B0D695;">Join On : <span style="color:#838383" id="orgJoinData"></span></p>
          </ul>         
  	</div> 
 
-<br/>              
 
     
-    <br/>              
-<br/>              
+    <div style="margin:10px;width:94%;">
+        <table style="width:100%">
+            <tr>
+                <td class="manageOrgDiv" data-role="touch" data-bind="events: { tap: showOrgNews }">
+                    News Feed
+                </td>
+                <td style="width:10px;"></td>
+                <td class="manageOrgDiv" data-role="touch" data-bind="events: { tap: showCalendar }">
+                    Calendar
+                </td>
 
-    <li style="margin-top:15px;text-align:center;width:93%">
+            </tr>
+        </table>
+        
+    </div>
+
+    <!--<li style="margin-top:15px;text-align:center;width:93%">
               <span id="login" data-role="touch" style="padding:10px;width:93%">
                     <a data-role="button"  data-click="app.OragnisationList.showCalendar" style="background-color:#33539E;">SHOW CALENDAR EVENT</a>   
               </span>
@@ -38,7 +50,7 @@
               <span id="login" data-role="touch" style="padding:10px;width:93%">
                     <a data-role="button" data-click="app.OragnisationList.showOrgNews" style="background-color:#33539E;">SHOW ORGANIZATION NEWS</a>   
               </span>
-    </li>
+    </li>-->
 
   
     <div data-role="footer">
