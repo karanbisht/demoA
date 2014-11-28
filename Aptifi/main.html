@@ -27,6 +27,7 @@
    	 <link href="kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet" />-->
         
         <link href="styles/main.css" rel="stylesheet" />
+        <!--<link href="styles/style.css" rel="stylesheet" />-->
 
 
         <!--<script src="http://cdn.kendostatic.com/2014.2.1008/js/jquery.min.js"></script>
@@ -97,7 +98,7 @@
     </head>
     <body id="Aptifi">
         
-        <div data-role="layout" data-id="default">
+        <div data-role="layout" data-id="default" class="AptifiBackImage">
             <!--View content will render here-->
         </div>
         
@@ -113,7 +114,7 @@
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		                           
                  <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
                   
-                  <a data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
+                  <a id="topMenu" data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
 
                  <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
                  <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
@@ -135,8 +136,9 @@
         <!--WELCOME VIEW -->
 
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
-          <div id="selectionDiv" style="margin-top:120%; position:absolute; left:0px; right:0px;">
-            <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">                
+          
+          <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-bottom:15px;">
+             <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">                
                 
               <ul data-role="listview" data-style="inset">
                   <li class="username" style="padding:10px;border-radius:3px;background-color:#303645;color:#ffffff" ><input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff"/></li>
@@ -176,32 +178,26 @@
                     <ol class="reg-group-wrp" style="margin-bottom:10px;">
                 
                         <li style="width:100%">
-                            <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D" data-bind="events: { tap: clickforValificationCode }">
+                            <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCode }">
                                 Ok
                             </span>
                     
-                            <span id="registration" data-role="touch" style="float:left;margin-left:10px;height:40px;padding-top:10px;width:40%;background-color:#303645;" data-bind="events: { tap: cancelButtonRC }">
+                            <span id="registration" data-role="touch" style="float:left;margin-left:10px;height:40px;padding-top:10px;width:40%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRC }">
                                 Cancel
                             </span>
              		   </li>
 				     </ol>
-  
-                    
-                </div>
+            </div>
     
     
-    
-    
- 
          <div  data-role="view"  id="validationRow" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;overflow:hidden;">
+             <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin-top:-10px;background-color: transparent;border:none;display:block;">  
+                 <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
+             </span>
 
-         <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin-top:-10px;background-color: transparent;border:none;display:block;">  
-             <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
-         </span>
-
-         <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
-       	Verification
-		 </div>
+             <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
+              	Verification
+		     </div>
       
     
           <form id="verification-form" data-bind="events: { keyup: checkEnterCode }" class="">
@@ -228,11 +224,11 @@
              <ol class="reg-group-wrp" style="margin-bottom:25px;">
                 <li>
                     <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: doneVerification }">
-                        <a data-role="button" style="background-color:#313C50">Next</a>
+                        <a data-role="button" style="background-color:#7FBF4D;color:#ffffff;">Next</a>
                     </span>
                     
                     <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: clickforRegenerateCode }">
-                        <a data-role="button" style="background-color:#313C50">Regenerate</a>
+                        <a data-role="button" style="background-color:#313C50;color:#ffffff">Regenerate</a>
                     </span>
                 </li>
 	         </ol>
@@ -534,20 +530,20 @@
         
         
         
-       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
+       <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
           <header data-role="header">
-                <div data-role="navbar" style="width: 120px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
           </header>
           
           <ul data-role="listview" style="overflow:hidden;">
-                 <li><a data-icon="comments" href="#organisationNotiList" data-transition="none">Notification</a></li>
-                 <li><a data-icon="globe" href="#organisationDiv" data-transition="none">Organization</a></li>
-                 <li><a data-icon="contacts" href="#profileDiv" data-transition="none">Profile</a></li>
-                 <li><a data-icon="settings" href="#settingDiv" data-transition="none">Setting</a></li>
-                 <li><a data-icon="about" href="#infoDiv" data-transition="none">About Us</a></li>
-                 <li id="goToAdmin"><a data-icon="graph" href="views/organisationLogin.html" data-transition="none">Admin</a></li>
+                 <li ><a id="side-noti-icon"  href="#organisationNotiList" data-transition="none"></a></li>
+                 <li ><a id="side-org-icon"  href="#organisationDiv" data-transition="none"></a></li>
+                 <li ><a id="side-profile-icon"  href="#profileDiv" data-transition="none"></a></li>
+                 <li ><a id="side-setting-icon"  href="#settingDiv" data-transition="none"></a></li>
+                 <li ><a id="side-about-icon"  href="#infoDiv" data-transition="none"></a></li>
+                 <li id="goToAdmin"><a id="side-admin-icon" href="views/organisationLogin.html" data-transition="none"></a></li>
 
           </ul>
        </div>
@@ -785,17 +781,18 @@
  </div>
         
                 
-       <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:160px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
+       <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:100px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
           <header data-role="header">
-                <div data-role="navbar" style="width: 160px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                <div data-role="navbar" style="width: 100px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
           </header>
+           
           <ul data-role="listview" style="overflow:hidden;">
-                 <li><a data-icon="globe" href="#view-all-activities-admin" data-transition="none">Manage Org</a></li>
-                 <li><a data-icon="volume" href="#view-all-activities-userReply" data-transition="none">Messages</a></li>
-                 <li><a data-icon="comments" href="#sendNotificationDiv" data-transition="none">Notification</a></li>
-                 <li><a data-icon="graph" href="#organisationNotiList" data-transition="none" >User</a></li>
+                 <li><a id="side-admin-manageOrg-icon" href="#view-all-activities-admin" data-transition="none"></a></li>
+                 <li><a id="side-admin-message-icon"  href="#view-all-activities-userReply" data-transition="none"></a></li>
+                 <li><a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a></li>
+                 <li><a id="side-admin-user-icon"  href="#organisationNotiList" data-transition="none" ></a></li>
           </ul>
        </div>
 

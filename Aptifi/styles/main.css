@@ -77,6 +77,44 @@
 
 }
 
+#Aptifi.km-flat #welcome,
+#Aptifi.km-flat #welcome .km-navbar,
+#Aptifi.km-flat #welcome .km-content {
+    background-color: #2A3144;  
+    background: url("images/background.png") no-repeat center center fixed #000; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #2A3144;
+    font-family: "Open Sans", sans-serif;
+}
+
+#Aptifi.km-flat #regenerateDiv,
+#Aptifi.km-flat #regenerateDiv .km-navbar,
+#Aptifi.km-flat #regenerateDiv .km-content {
+    background-color: #ffffff;  
+     background: url(""); 
+    -webkit-background-size: none;
+    -moz-background-size: none;
+    -o-background-size: none;
+    font-family: "Open Sans", sans-serif;
+}
+
+
+#Aptifi.km-flat #validationRow,
+#Aptifi.km-flat #validationRow .km-navbar,
+#Aptifi.km-flat #validationRow .km-content {
+    background-color: #ffffff;  
+     background: url(""); 
+    -webkit-background-size: none;
+    -moz-background-size: none;
+    -o-background-size: none;
+    font-family: "Open Sans", sans-serif;
+}
+
+
+
 #Aptifi .center-block {
     display: block;
     margin-right: auto;
@@ -350,7 +388,7 @@ input::-webkit-inner-spin-button {
 }
 
 #login-form .username:before {
-    background-image: url(images/mobIcon.png);
+    background-image: url(images/phone-icon.png);
 }
 
 #login-form .password:before {
@@ -365,7 +403,8 @@ input::-webkit-inner-spin-button {
     padding: 0;
     margin-top:20px;
     list-style-type: none;
-    text-align: center; 
+    text-align: center;
+    background-color:#ffffff;
 }
 
 #Aptifi .welcome-scrn .group-wrp {
@@ -525,9 +564,7 @@ input::-webkit-inner-spin-button {
 #Aptifi .add-comment-view .km-content,
 #Aptifi .activities-view .km-listview {
     background-color: #fff;
-       overflow-y:hidden;
-
-         scroll-behavior: smooth;
+    overflow-y:hidden;
 }
 
 #Aptifi .activities-view .km-list > li,
@@ -540,7 +577,7 @@ input::-webkit-inner-spin-button {
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #34495e;
-         scroll-behavior: smooth;
+ 
 }
 
 .pageLayoutClass .km-list > li {
@@ -910,7 +947,7 @@ input::-webkit-inner-spin-button {
     }
 
     #login-form .username:before {
-        background-image: url(images/mobIcon.png);
+        background-image: url(images/phone-icon.png);
         background-size: 12px 13px;
     }
 
@@ -1035,7 +1072,7 @@ input::-webkit-inner-spin-button {
   width:75% ;
   float:right;
   color:#DADADA; 
-  height:.5px;  
+  height:.02px;  
 }
 
 .dateValue{
@@ -1578,7 +1615,8 @@ input.largerCheckbox
 .manageOrgDiv{
     background-color:#E4F6D5;
     width:50%;
-    height:80px;
+    height:90px;
+    padding:10px;
     color:#52554F;
     border-radius:3px;
     text-align:center;
@@ -1590,3 +1628,136 @@ input.largerCheckbox
  #calendar .k-footer {background: #7FBF4D;}
  #calendar .k-header {background: #7FBF4D;}
 
+
+#side-noti-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/notification.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+    
+}
+
+#side-org-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/organization.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#side-profile-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/profile.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#side-setting-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/setting.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+
+#side-about-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/about.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+
+#side-admin-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/admin.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#show-news-icon{
+    background-color: #2D344B;  
+    background: url("images/manageOrg/add-news-icon.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height:50px;    
+    width:50px;
+}
+
+
+#show-calander-icon{
+    background-color: #2D344B;  
+    background: url("images/manageOrg/add-event-icon.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    height:50px;
+    margin: 5px auto;
+    width:50px;
+}
+
+#side-admin-manageOrg-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/manage-org.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#side-admin-message-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/incoming-msg.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#side-admin-notification-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/send-notification-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#side-admin-user-icon{
+    background-color: #2D344B;  
+    background: url("images/sideMenu/admin.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height:75px;
+    width:75px;
+    margin-left:0px;
+}
+
+#topMenu{
+    background: url("images/sideMenu/top-menu.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height:30px;
+    width:30px;
+    margin-left:0px;    
+}
