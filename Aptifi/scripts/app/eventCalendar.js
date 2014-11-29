@@ -54,7 +54,6 @@ app.eventCalender = (function () {
             },
            error: function (e) {
                console.log(e);               
-
                $("#CalProcess").hide();
 
                   if(!app.checkSimulator()){
@@ -161,9 +160,9 @@ app.eventCalender = (function () {
                 //'#console.log(data.dates);#' +
                 //'#console.log(typeof data.dates[+data.date]);#' +                 
                 '# if (typeof data.dates[+data.date] === "string" ) { #' +
-                '<div style="color:rgb(127,191,77);">' +
+                '<div style="color:rgb(103,152,189);"><u>' +
                 '#= data.value #' +
-                '</div>'+
+                '</u></div>'+
                 '# } else { #' +
                 '#= data.value #' +
 

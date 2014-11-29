@@ -13,16 +13,13 @@
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
 
             <div class="cf" data-role="touch" >         
-       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
+       		<div >
   
                  #if(id!==0){#
-                 <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Date: ${news_date}</span>       	                         
-                           	
-                                 <br/>
-                                 <br/>
+                 <span id="activityTemplateDate"  class="notiNameList"  >News Date: ${news_date}</span>       	                         
                  #}#
             
-               		 <span  id="activityTemplateMessage"  style="color:rgb(188,188,188);padding-right:10px;" >${news_desc}</span>            			            
+                 <span  id="activityTemplateMessage"  class="orgContentMsg" >${news_desc}</span>            			            
 		       </div>   
             </div>   
             

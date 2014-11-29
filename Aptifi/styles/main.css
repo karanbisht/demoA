@@ -684,6 +684,13 @@ input::-webkit-inner-spin-button {
 }
 
 
+.displayContentAboutUS {
+    font-size: .85rem;
+    text-align: justify;
+    color:#212121;
+}
+
+
 #Aptifi .notiList-content {
     position: relative;
     font-size: .85rem;
@@ -1629,7 +1636,7 @@ input.largerCheckbox
 }
 
 .k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;}
-.k-calendar .k-state-selected .k-state-hover { background: #7FBF4D; }
+.k-calendar .k-state-selected .k-state-hover { background: #7FBF4D;}
 .k-calendar .k-state { background: #7FBF4D; }
 .k-calendar a.k-state { background: #7FBF4D; } 
  
