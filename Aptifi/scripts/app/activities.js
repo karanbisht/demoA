@@ -27,7 +27,7 @@ app.Activities = (function () {
            //console.log("plugin test");  
            //console.log(window.plugins);
         
-                     app.mobileApp.pane.loader.show();
+                     //app.mobileApp.pane.loader.show();
    
                      StartDbCount=0;
                      EndDbCount=10;
@@ -297,7 +297,11 @@ app.Activities = (function () {
                 //groupDataShow=[];
             	for(var i =0 ; i<count ; i++){
                   
-                       var dateString = results.rows.item(i).send_date;
+                    var dateString = results.rows.item(i).send_date;                    
+                    
+                    var notiDate = app.timeConverter(dateString);
+                    
+                    
                    //alert(dateString);
 
                     /*
@@ -315,8 +319,8 @@ app.Activities = (function () {
                        console.log(notiTime);
                     */
 
-                     var notiDate="30/11/2014";                    
-                     var notiTime="4:30 Pm";
+                     //var notiDate="30/11/2014";                    
+                      //var notiTime="4:30 Pm";
                     
                       //var currentDate = app.currentDataFormate();
                       //console.log(currentDate);
@@ -325,7 +329,6 @@ app.Activities = (function () {
 												 message: results.rows.item(i).message,
         		                                 org_id: results.rows.item(i).org_id,
                                                  date:notiDate,
-                                                 time:notiTime,
                                                  title:results.rows.item(i).title,
                                                  pid :results.rows.item(i).pid ,
                                                  comment_allow:results.rows.item(i).comment_allow ,
@@ -605,7 +608,7 @@ app.Activities = (function () {
             
             //alert(messageVal);
             
-            app.mobileApp.navigate('views/activityView.html?message=' + messageVal +'&title='+titleVal+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached+'&type='+type);
+            app.mobileApp.navigate('views/activityView.html?message=' + messageVal +'&title='+titleVal+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached+'&type='+type +'&date='+e.data.date);
         };
         
         var groupSelected = function (e) {

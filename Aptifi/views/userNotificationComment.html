@@ -12,34 +12,40 @@
   
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">    
     
-        <div class="user-avatar">
-            <img src="styles/images/notification1.png" />
-        </div>
         <div>
-	        <div class="activity-content">
+    	     <div class="notiList-content">
+                <div class="dateDisplay">                  
+                  <span id="notiDateadmin" class="dateValue"></span> 
+                  <hr class="dateLine"/>
+                  <span></span>
+                </div>
+                <br/>
     	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-        	    <li style="background-color:#FDFF85;padding:10px;border-radius:6px;">
-            		  <img src="styles/images/arrow.png" style="margin-left:-19px;"/>  
-              		<h2 id="personNameTitle" class="chatTitle" style="margin-left:-3px;"></h2>      
+        	    <li id="titleContainer">
+                    
+                      <h2 id="personNameTitle" class="notiNameList" style="margin-left:-3px;"></h2>      
               		<span id="activityTextMessage" class="user-share-txt"></span>
             	</li>    
-            <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
+                <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
             </div>
-    	   <div id="notiAdminImage"></div>
+            <br/>
+    	   <div id="notiAdminImage" style="max-height:300px;height:auto;width:100%;margin-top:10px;"></div>
        </div>
-        <div class="commentContent" >
+        
+        <div id="commentListContainer">
             <div class="comments-wrp">
-                <ul id="userComments-listview" data-template="userCommentsTemplate" data-pull-to-refresh="true" class="commentClasList"></ul>
+                <ul id="userComments-listview" data-template="userCommentsTemplate" class="commentClasList"></ul>
             </div>
         </div>
     
 	</div>
     
     
-   <div id="commentPanel" data-role="footer" style="background-color:#E0E0E0;padding:3px;padding-bottom:3px;">
+   <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;padding:3px;">
-  		 <div style="float:left;width:79%;"><textarea id="newAdminComment" placeholder="Write a reply..." style="padding-left:5px;padding-right:5px;"></textarea></div>
-           <input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveAdminComment"/>
+  		 <div style="float:left;width:85%;border-radius:6px;bacground-color:#ffffff"><textarea id="newAdminComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;"></textarea></div>
+           <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveAdminComment"/>-->        
+           <a style="background:transparent; border:none;margin-left:5px;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveAdminComment"></a>
         </div>
    </div>      
 
@@ -49,17 +55,24 @@
 
 <script type="text/x-kendo-template" id="userCommentsTemplate">
    # if (user_type !== 'Customer'){ # 
-        <div class="comment-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;">
-        <h2 class="person-name">${User()}</h2>
-        <span class="time-span">${add_date}</span>       
+
+      #document.getElementById("commentListContainer").className = "user-comment-List";#
+
+        <div class="user-comment-content">
+         <!--<h2 class="person-name">${User()}</h2>
+             <span class="time-span">${add_date}</span>-->       
            <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
-       <a class="user-share-txt">${comment}</a>
+         <a class="user-share-txt">${comment}</a>
        </div>
   # }else{ #
-    <div class="comment-content" style="background-color:rgb(203,225,254);padding:10px;border-radius:6px;">
-        <h2 class="person-name">${User()}</h2>
-        <span class="time-span">${add_date}</span>
-               <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
+       
+       #document.getElementById("commentListContainer").className = "admin-comment-List";# 
+  
+    <div class="admin-comment-content">
+        <!--<h2 class="person-name">${User()}</h2>
+        <span class="time-span">${add_date}</span>-->
+       
+        <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
         <a class="user-share-txt">${comment}</a>
     </div>        
    # } #

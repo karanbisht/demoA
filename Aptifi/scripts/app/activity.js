@@ -20,6 +20,7 @@ app.Activity = (function () {
     var lastNotiCommentID;
     var orgLogoToShow;
     var type;
+    var date;
     
     var activityViewModel = (function () {
         
@@ -131,6 +132,7 @@ app.Activity = (function () {
             comment_allow = e.view.params.comment_allow;
             attached = e.view.params.attached;
             type= e.view.params.type;
+            date = e.view.params.date;
             
             message=app.proURIDecoder(message);
             title =app.proURIDecoder(title);
@@ -174,6 +176,7 @@ app.Activity = (function () {
             console.log(org_id+"||"+notiId+"||"+account_Id);            
             $("#personName").html(title);
             $("#activityText").html(message);
+            $("#notiDate").html(date);
                                        
            var db = app.getDb();
 		                 

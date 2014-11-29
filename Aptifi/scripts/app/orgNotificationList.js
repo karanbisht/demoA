@@ -149,7 +149,10 @@ app.orgListView = (function () {
             	for(var i =0 ; i<count ; i++){ 
                     
                     var dateString = results.rows.item(i).send_date;
-                       var split = dateString .split(' ');
+                    var notiDate = app.timeConverter(dateString);
+                    
+
+                       /*var split = dateString .split(' ');
                            console.log(split[0]+" || "+split[1]);
                        var notiDate= app.formatDate(split[0]);
                            console.log(notiDate);
@@ -160,14 +163,13 @@ app.orgListView = (function () {
                             console.log(timeVal);
 
                        var notiTime=app.timeConvert(timeVal);
-                       console.log(notiTime);
+                       console.log(notiTime);*/
 
  
                       groupDataShow.push({
 												 message: results.rows.item(i).message,
         		                                 org_id: results.rows.item(i).org_id,
                                                  date:notiDate,
-                                                 time:notiTime,
                                                  title:results.rows.item(i).title,
                                                  pid :results.rows.item(i).pid ,
                                                  comment_allow:results.rows.item(i).comment_allow ,
@@ -215,12 +217,11 @@ app.orgListView = (function () {
                        
               $("#admin-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminNotiTemplate").html()),    		
-     		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true
+     		 dataSource: organisationALLListDataSource
  		     });             
-             $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
+              $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
             
-            $("#progressAdminNoti").hide();
+              $("#progressAdminNoti").hide();
         };
 
          var groupNotificationSelected = function (e) {

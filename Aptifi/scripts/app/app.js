@@ -1171,7 +1171,50 @@ var app = (function (win) {
         app.mobileApp.navigate('#eventCalendar');
     }
 
+    
+    var convertTimeSpan = function(timeSpanVal){
+
+        var date = new Date(timeSpanVal*1000);                    
+        
+        alert(date);
+        
+        
+                    var hours = date.getHours();
+                            // minutes part from the timestamp
+        
+                    var minutes = "0" + date.getMinutes();
+                            // seconds part from the timestamp
+                    var seconds = "0" + date.getSeconds();
+                            // will display time in 10:30:23 format
+                    var formattedTime = hours + ':' + minutes.substr(minutes.length-2) + ':' + seconds.substr(seconds.length-2);                 
+                    alert(formattedTime);
+    }
        
+    
+    function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp*1000);
+     
+   var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+   var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      
+        
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var day = days[a.getDay()];                      
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var dayNight = hour < 12 ? ' AM' : ' PM'; // Set AM/PM
+
+  if(hour > 12){
+      hour = hour -12;
+  }       
+     
+  //var sec = a.getSeconds();
+        
+  var time = day + ', ' + date +' '+ month + ' ' + year + ', ' + hour + ':' + min +' ' +dayNight ;        
+  return time;
+}
 
     return {
         showAlert: showAlert,
@@ -1182,6 +1225,8 @@ var app = (function (win) {
         callOrganisationLogin:callOrganisationLogin,
         callAdminOrganisationList:callAdminOrganisationList,
         replyUser:replyUser,
+        convertTimeSpan:convertTimeSpan,
+        timeConverter:timeConverter,
         ScaleImage:ScaleImage,
         checkIfFileExists:checkIfFileExists,
         sendNotification:sendNotification,

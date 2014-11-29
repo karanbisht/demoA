@@ -4,9 +4,6 @@
         <title></title>
         <meta charset="utf-8" />
 
-        
-        <script src="cordova.js"></script>
-        
         <!--<link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
         <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
         <link href="http://cdn.kendostatic.com/2013.2.716/styles/kendo.mobile.all.min.css" rel="stylesheet" type="text/css" />
@@ -33,6 +30,8 @@
         <!--<script src="http://cdn.kendostatic.com/2014.2.1008/js/jquery.min.js"></script>
         <script src="http://cdn.kendostatic.com/2014.2.1008/js/kendo.all.min.js"></script>-->
 
+
+        <script src="cordova.js"></script>
         <script src="kendo/js/jquery.min.js"></script>
         <script src="kendo/js/kendo.all.min.js"></script>
         
@@ -41,7 +40,7 @@
         <!--<script src="scripts/app/identity-provider.js"></script>-->
         
    	 <script src="scripts/app/app.js" type="text/javascript"></script>
-        <script src="scripts/app/iscroll.js" type="text/javascript"></script>
+        <!--<script src="scripts/app/iscroll.js" type="text/javascript"></script>-->
         <!--<script src="scripts/app/gallery.js" type="text/javascript"></script>-->
         <script src="Plugins/PushPlugin-master/www/PushNotification.js"></script>
 
@@ -114,7 +113,11 @@
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		                           
                  <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
                   
-                  <a id="topMenu" data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
+                  <!--<a class="topMenu" data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-align="left"></a>
+                  -->
+                                   
+                  <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer" data-align="left" data-role="button"><img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>		                           
+
 
                  <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
                  <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
@@ -155,7 +158,7 @@
             </form>
           </div>  
             
-           <div class="loader" id="progress" style="display:none;margin-top:48%;">
+           <div class="loader" id="progress" style="display:none;margin-top:75%;">
                       <div class="ball"></div>
                       <!--<div class="loading">Loading...</div>-->
            </div>
@@ -171,12 +174,11 @@
 				        <span id="userRegMobNum" style="color:#61B85C;"></span>
 					 </div>
     
-                    <div style="text-align:center;color:#BCBCBC;padding-top:10px;">        
+                    <div style="text-align:center;color:#BCBCBC;padding-top:10px;">  
 				        The Verification Code will be sent to this number . If you'd like to change your phone number , please select [Cancel] 
 				    </div>
          
-                    <ol class="reg-group-wrp" style="margin-bottom:10px;">
-                
+                    <ol class="reg-group-wrp" style="margin-bottom:10px;">                
                         <li style="width:100%">
                             <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCode }">
                                 Ok
@@ -557,7 +559,13 @@
               <div data-role="navbar" style="border-bottom: 1px solid #ffffff;">     
                  <span data-role="view-title"></span> 
                  <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout">Back</a>-->                          
-                 <a data-role="button" data-rel="drawer" href="#left-drawer1" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
+                 <!--
+                  <a data-role="button" data-rel="drawer" href="#left-drawer1" style="background:transparent; border:none;" data-icon="drawer-button" data-align="left"></a>
+                  -->
+
+                  <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer1" data-align="left" data-role="button"><img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>		                           
+
+                  
                  <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
                  <!--<a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a>--> 
               </div>              

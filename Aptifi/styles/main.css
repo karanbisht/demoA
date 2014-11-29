@@ -77,6 +77,9 @@
 
 }
 
+
+
+
 #Aptifi.km-flat #welcome,
 #Aptifi.km-flat #welcome .km-navbar,
 #Aptifi.km-flat #welcome .km-content {
@@ -89,6 +92,22 @@
     color: #2A3144;
     font-family: "Open Sans", sans-serif;
 }
+
+
+
+#Aptifi.km-flat #OrgLogin,
+#Aptifi.km-flat #OrgLogin .km-content {
+    background-color: #2A3144;  
+    background: url("images/bg.png") no-repeat center center fixed #000; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #2A3144;
+    font-family: "Open Sans", sans-serif;
+}
+
+
 
 #Aptifi.km-flat #regenerateDiv,
 #Aptifi.km-flat #regenerateDiv .km-navbar,
@@ -504,21 +523,16 @@ input::-webkit-inner-spin-button {
 #Aptifi .activities-view-info .km-listview {
     /*background-color: #EDEFF4;*/
      background-color: #888888;
-     scroll-behavior: smooth;
      overflow-y:hidden;
-
 }
-
 
 
 #Aptifi .activities-view-notification .km-content{
         background-color: #fff;
-         scroll-behavior: smooth;    
 }
 
 #Aptifi .activities-view-notification .km-listview {
     background-color: #EDEFF4;
-         scroll-behavior: smooth;
 }
 
 #Aptifi .activities-view-notification .km-list > li {
@@ -530,7 +544,6 @@ input::-webkit-inner-spin-button {
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #34495e;
-         scroll-behavior: smooth;
 }
 
 
@@ -827,13 +840,6 @@ input::-webkit-inner-spin-button {
     font-size: .85rem;
 }
 
-.time-span{
-    position: absolute;
-    bottom:45%;
-    left: 0;
-    color: #6c7884;
-    font-size: .5rem;    
-}
 
 
 #Aptifi .add-activity-view .person-name,
@@ -1069,14 +1075,14 @@ input::-webkit-inner-spin-button {
 }
 
 .dateLine{
-  width:75% ;
+  width:37% ;
   float:right;
   color:#DADADA; 
   height:.02px;  
 }
 
 .dateValue{
-  width:25% ;
+  width:63% ;
   float:left;
 }
 
@@ -1623,8 +1629,10 @@ input.largerCheckbox
 }
 
 .k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;}
-.k-calendar .k-state-hover { background: #7FBF4D; }
-.k-calendar .k-state { background: #7FBF4D; } 
+.k-calendar .k-state-selected .k-state-hover { background: #7FBF4D; }
+.k-calendar .k-state { background: #7FBF4D; }
+.k-calendar a.k-state { background: #7FBF4D; } 
+ 
  #calendar .k-footer {background: #7FBF4D;}
  #calendar .k-header {background: #7FBF4D;}
 
@@ -1725,7 +1733,7 @@ input.largerCheckbox
 
 #side-admin-message-icon{
     background-color: #2D344B;  
-    background: url("images/sideMenu/incoming-msg.png");
+    background: url("images/sideMenu/incoming-msg-1.png");
     background-size: 75px 75px;
     background-repeat: no-repeat;
     height:75px;
@@ -1745,7 +1753,7 @@ input.largerCheckbox
 
 #side-admin-user-icon{
     background-color: #2D344B;  
-    background: url("images/sideMenu/admin.png");
+    background: url("images/sideMenu/user-back.png");
     background-size: 75px 75px;
     background-repeat: no-repeat;
     height:75px;
@@ -1753,11 +1761,54 @@ input.largerCheckbox
     margin-left:0px;
 }
 
-#topMenu{
-    background: url("images/sideMenu/top-menu.png");
+.adminLiText{
+    padding-left:50px;
+}
+
+
+#adminOrgNoti-icon{
+    background: url("images/manageOrg/org-notification-icon.png");
     background-size: 30px 30px;
     background-repeat: no-repeat;
-    height:30px;
-    width:30px;
-    margin-left:0px;    
+    height:40px;
+    margin:10px;
+}
+
+#adminOrgMem-icon{
+    background: url("images/manageOrg/org-member-icon.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height:40px;
+    margin:10px;
+}
+
+#adminOrgGroup-icon{
+    background: url("images/manageOrg/org-group-icon.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height:40px;
+    margin:10px;
+}
+
+#adminOrgEvent-icon{
+    background: url("images/manageOrg/add-event-icon.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height:40px;
+    margin:10px;
+}
+
+
+#adminOrgNew-icon{
+    background: url("images/manageOrg/add-news-icon.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height:40px;
+    margin:10px;
+}
+
+
+#Aptifi #adminOrgNoti-icon .km-list > li{
+    border-color: #eaeced;
+
 }

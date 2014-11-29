@@ -20,7 +20,7 @@ app.groupDetail = (function () {
            
         var show = function (e) {
             app.MenuPage=false;
-            app.mobileApp.pane.loader.hide();       
+            //app.mobileApp.pane.loader.hide();       
             
             
             //organisationID = e.view.params.organisationID;

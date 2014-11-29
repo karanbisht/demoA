@@ -21,6 +21,8 @@ app.replyedCustomer = (function () {
                   //message = e.view.params.message;
                   //title = e.view.params.title;
          
+                  $("#loaderReplyCustomer").show();
+          
                   org_id = e.view.params.org_id;
                   userCount = e.view.params.count;
           
@@ -90,7 +92,7 @@ app.replyedCustomer = (function () {
                                     if(orgVal.Msg ==="You don't have access"){   
                                      
                                         groupDataShow.push({
-                                         user_fname: "You Don't have access",
+                                         user_fname: "You Don't have access , please login again in Admin Panel",
                                          user_lname: '',
                                          customerID:0,  
                                          user_type : '',
@@ -150,7 +152,8 @@ app.replyedCustomer = (function () {
             	   //navigator.notification.alert("Please check your internet connection.",
                	//function () { }, "Notification", 'OK');
                     
-                
+                   $("#loaderReplyCustomer").hide();
+                    
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
@@ -189,7 +192,9 @@ app.replyedCustomer = (function () {
 			});
 
 
-          
+
+                             $("#loaderReplyCustomer").hide();
+
                      var db = app.getDb();
 		             db.transaction(updateBagCount, app.errorCB, app.successCB);   
 
@@ -209,7 +214,7 @@ app.replyedCustomer = (function () {
             console.log(e.data.user_fname);
        	 console.log(e.data.customerID);
             app.MenuPage=false;
-            app.mobileApp.navigate('views/userNotificationComment.html?org_id='+org_id+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname+'&notification_id='+e.data.notification_id);
+            app.mobileApp.navigate('views/userNotificationComment.html?org_id='+org_id+'&customerID='+e.data.customerID+'&userName='+e.data.user_fname+'&notification_id='+e.data.notification_id+'&date='+e.data.add_date);
        };
        
         	   return {

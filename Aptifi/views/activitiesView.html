@@ -46,18 +46,17 @@
               </div>
               #}#-->
               
-       		<div class="notiList-content">
-              
+       		<div class="notiList-content">              
                 <div class="dateDisplay">                  
                   <span id="activityTemplateDate" class="dateValue">${date}</span> 
                   <hr class="dateLine"/>
                   <span></span>
                 </div>
 
+              <br/>
               #if(title!=='' && title!=='null' && title!==null){#
               
        		  <h2 class="notiNameList" style="margin-left:-3px;">${title}</h2>               
-       		  <!--<span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${time}</span>-->       	
                    
               #}#
  				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
@@ -81,19 +80,10 @@
            #}else{#
 
              <div class="cf">            
-       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
-       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
-                   #if(org_id!=='0'){#
-        		     <span id="activityTemplateDate" class="time-span" style="padding-right:2px;">${CreatedAtFormatted()}</span>
-            	  #}#
- 				   <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
-       		     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>            			            
-            
-                    #if(attached!=='' && attached!=='0' ){#
-                      <br/>  
-                      <img src= ${attachedImg} style="height:100px ; width:auto;margin-top:10px;" /> 
-                    #}#            
-            
+       		<div style="padding-left:10px;">
+       		     <h2 class="notiNameList" style="margin-left:-3px;" >${title}</h2>
+       		     <a id="activityTemplateMessage" class="orgContentMsg"  >${message}</a>            			            
+                        
        		</div>
 		    </div>  
                

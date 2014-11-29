@@ -27,6 +27,7 @@ app.userNotiComment = (function () {
       var attached;
       var comment_allow;
       var pid;
+      var date;
         
        var init = function () {
  			
@@ -87,9 +88,8 @@ app.userNotiComment = (function () {
 			userName = e.view.params.userName;
             //attached = e.view.params.attached;
             notiId=e.view.params.notification_id;
-            
+            date=e.view.params.date;
 
-            
             
           var userCommentedNotification = new kendo.data.DataSource({
             transport: {
@@ -139,6 +139,7 @@ app.userNotiComment = (function () {
 
                      $("#personNameTitle").html(title);
                      $("#activityTextMessage").html(message);
+                     $("#notiDateadmin").html(date);
                      
                      console.log(attached+"||"+comment_allow+"||"+message+"||"+pid+"||"+title);
                      

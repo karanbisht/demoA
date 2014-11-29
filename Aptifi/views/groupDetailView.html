@@ -10,48 +10,45 @@
 	
 	
     
-       <div class="welcome-scrn form-view" >           
-            <ol class="group-wrp"  Style="margin-top:20%">
-                <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: showGroupNotification }">
-                        <a data-role="button" class="btn btn-login">Organization Notification</a>
-                    </span>
-                </li>
-  
-                <li class="reg-Button">
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showGroupMembers}">
-                        <a data-role="button" class="btn register">Organization Members</a>
-                    </span>
+       <div>           
+            
+           <ul id="allAdminManageList" data-role="listview" style="padding:10px;">
+                
+                <li id="adminOrgNoti-icon">
+                    <div data-role="touch" data-bind="events: { tap: showGroupNotification }">
+                       <span class="adminLiText">Organization Notification </span>
+                    </div>
                 </li>
                 
-                <!--<li>
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showUpdateGroupView}">
-                        <a data-role="button" class="btn btn-login">Update Organisation</a>
-                    </span>
-                </li>-->
+                <li id="adminOrgMem-icon">
+                    <div data-role="touch" data-bind="events: {tap: showGroupMembers}">
+                        <span class="adminLiText">Organization Members</span>
+                    </div>
+                </li>
                 
-                <li class="reg-Button">
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showOrgGroupView}">
-                        <a data-role="button" class="btn btn-login">Organization Group</a>
-                    </span>
+                
+                <li id="adminOrgGroup-icon">
+                    <div data-role="touch" data-bind="events: {tap: showOrgGroupView}">
+                        <span class="adminLiText">Organization Group</span>
+                    </div>
                 </li>
                 
 
-                <li class="reg-Button">
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showOrgEvent}">
-                        <a data-role="button" class="btn register">Add Event</a>
-                    </span>
+                <li id="adminOrgEvent-icon">
+                    <div data-role="touch" data-bind="events: {tap: showOrgEvent}">
+                        <span class="adminLiText">Add Event</span>
+                    </div>
                 </li>
                 
                 
-                <li class="reg-Button">
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showOrgNews}">
-                        <a data-role="button" class="btn btn-login">Add News</a>
-                    </span>
+                <li id="adminOrgNew-icon">
+                    <div  data-role="touch" data-bind="events: {tap: showOrgNews}">
+                        <span class="adminLiText">Add News</span>
+                    </div>
                 </li>
 
                 
-			</ol>	           
+			</ul>	           
       </div> 
 
    
