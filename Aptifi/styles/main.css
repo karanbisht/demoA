@@ -42,6 +42,8 @@
     clear: both;
 }
 
+.km-flat .km-tabstrip,
+
 .km-flat .km-loader,
 .km-flat .km-rowinsert,
 .km-flat .km-state-active,
@@ -83,7 +85,7 @@
 #Aptifi.km-flat #welcome,
 #Aptifi.km-flat #welcome .km-navbar,
 #Aptifi.km-flat #welcome .km-content {
-    background-color: #2A3144;  
+    background: #2A3144;  
     background: url("images/background.png") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -729,14 +731,14 @@ input::-webkit-inner-spin-button {
 #Aptifi .activity-content .person-name {
     display: block;
     margin: 0 0 .5em;
-    color: #3598db;
+    color: #7FBF4D;
     font-size: 1.1rem;
 }
 
 .deleteGroupShow {
     display: block;
     margin: 0 0 .5em;
-    color: #3598db;
+    color: #7FBF4D;
     font-size: 1.1rem;
     border-bottom: 10px solid #f5f7f8;
 }
@@ -797,7 +799,7 @@ input::-webkit-inner-spin-button {
 
 #Aptifi .activity-view .comment-content .person-name {
     margin: 0;
-    color: #6c7884;
+    color: #7FBF4D;
     font-size: .85rem;
 }
 
@@ -843,7 +845,7 @@ input::-webkit-inner-spin-button {
 
 .person-name{
     margin: 0;
-    color: #6c7884;
+    color: #7FBF4D;
     font-size: .85rem;
 }
 
@@ -1030,7 +1032,7 @@ input::-webkit-inner-spin-button {
 .commentContent .person-name {
     display: block;
     margin: 0 0 .5em;
-    color: #3598db;
+    color: #7FBF4D;
     font-size: 1.1rem;
 }
 
@@ -1085,6 +1087,7 @@ input::-webkit-inner-spin-button {
   width:37% ;
   float:right;
   color:#DADADA; 
+  opacity: .2;  
   height:.02px;  
 }
 

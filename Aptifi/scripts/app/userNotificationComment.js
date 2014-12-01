@@ -68,7 +68,9 @@ app.userNotiComment = (function () {
         
 
         var show = function (e) {
-            app.mobileApp.pane.loader.show();
+            $("#adminCommentPage").show();
+            $("#status-container-adminComment").hide();
+            app.mobileApp.pane.loader.hide();
               title=''
               message='';
               $(".km-scroll-container").css("-webkit-transform", "");
@@ -140,6 +142,8 @@ app.userNotiComment = (function () {
                      $("#personNameTitle").html(title);
                      $("#activityTextMessage").html(message);
                      $("#notiDateadmin").html(date);
+                                 app.mobileApp.pane.loader.hide();
+
                      
                      console.log(attached+"||"+comment_allow+"||"+message+"||"+pid+"||"+title);
                      
@@ -197,27 +201,29 @@ app.userNotiComment = (function () {
             var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />');
 			img.attr('src', fp);
 			img.appendTo('#notiAdminImage');
+            app.mobileApp.pane.loader.hide();
         };
         
         var imagePathNotExist = function(){
              //alert('2');
-             app.mobileApp.pane.loader.show();                
-             var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;
+             //app.mobileApp.pane.loader.show();                
+             var attachedImg =attached;
              var imgPathData = app.getfbValue();    
              var fp = imgPathData+"/Aptifi/"+'Aptifi_'+notiId+'.jpg';
             
              var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
  			img.attr('src', attachedImg);
  			img.appendTo('#notiAdminImage'); 
+            app.mobileApp.pane.loader.hide();
 
  	
              var fileTransfer = new FileTransfer();    
              fileTransfer.download(attachedImg,fp,  
         			function(entry) {
-                        //app.mobileApp.pane.loader.hide();
+                         app.mobileApp.pane.loader.hide();
 	        		},    
     		        function(error) {
-                        //app.mobileApp.pane.loader.hide();
+                        app.mobileApp.pane.loader.hide();
 	        		}
 	    		);                
         };
@@ -329,7 +335,11 @@ app.userNotiComment = (function () {
         		schema: {
            		model:  userCommentModel
 				}			 
+                 
 		     });                                
+
+            $("#adminCommentPage").hide();
+            $("#status-container-adminComment").show();
 
         }
         

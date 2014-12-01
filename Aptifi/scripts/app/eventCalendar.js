@@ -21,8 +21,7 @@ app.eventCalender = (function () {
              tasks = [];
              multipleEventArray=[];
              
-             $("#CalProcess").show();
-                         
+             $("#CalProcess").show();                         
              $("#eventDetailDiv").hide();
              //eventOrgId = e.view.params.orgManageID;
              

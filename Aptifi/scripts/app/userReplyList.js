@@ -96,8 +96,7 @@ app.userReplyList = (function () {
               
              $("#user-Reply-listview").kendoMobileListView({
   		    template: kendo.template($("#userReplyTemplate").html()),    		
-     		 dataSource: organisationListDataSource,
-              pullToRefresh: true		 
+     		 dataSource: organisationListDataSource
 		     });
                                    
               $('#user-Reply-listview').data('kendoMobileListView').refresh();

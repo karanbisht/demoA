@@ -137,7 +137,6 @@ app.orgGroupListView = (function () {
              $("#admin-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminNotiTemplate").html()),    		
      		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true,
         		schema: {
            		model:  organisationAllNotificationModel
 				}			 

@@ -21,7 +21,10 @@ app.replyedCustomer = (function () {
                   //message = e.view.params.message;
                   //title = e.view.params.title;
          
+                      app.mobileApp.pane.loader.hide();
+
                   $("#loaderReplyCustomer").show();
+                  $("#reply-customer-listview").hide();
           
                   org_id = e.view.params.org_id;
                   userCount = e.view.params.count;
@@ -153,7 +156,7 @@ app.replyedCustomer = (function () {
                	//function () { }, "Notification", 'OK');
                     
                    $("#loaderReplyCustomer").hide();
-                    
+                              $("#reply-customer-listview").show();
                   if(!app.checkSimulator()){
                      window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                   }else{
@@ -174,6 +177,7 @@ app.replyedCustomer = (function () {
   		          template: kendo.template($("#errorTemplate").html()),
                     dataSource: dataSource  
      		       });
+                    
            	}
     	    });         
          
@@ -192,9 +196,12 @@ app.replyedCustomer = (function () {
 			});
 
 
+                      app.mobileApp.pane.loader.hide();
+
 
                              $("#loaderReplyCustomer").hide();
-
+                             $("#reply-customer-listview").show();
+          
                      var db = app.getDb();
 		             db.transaction(updateBagCount, app.errorCB, app.successCB);   
 

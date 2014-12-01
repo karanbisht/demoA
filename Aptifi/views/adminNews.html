@@ -34,7 +34,7 @@
          
            <li>
               <span id="login" data-role="touch" data-bind="events: { tap: addNewNewsFunction }" style="padding:10px;float:right;">
-                    <a data-role="button" style="background-color:#33539E">Save</a>   
+                    <a data-role="button" style="background-color:#7FBF4D">Save</a>   
               </span>
            </li>
     
@@ -56,7 +56,7 @@
         <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span> All News </span>
-                 <a style="background:transparent; border:none;" data-align="left" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>    
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>    
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
               </div>                                          
         </div>
@@ -72,18 +72,16 @@
             
             <div class="cf" data-role="touch" data-bind="events: { tap: editNews }">         
                
-       		<div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
+       		<div >
 
                           #if(id!==0){#
                               
-                                <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Date: ${news_date}</span>       	            
+                                <span id="activityTemplateDate"  class="notiNameList" >News Date: ${news_date}</span>       	            
     
                          #}#
 
-                              <br/>
-                              <br/>
 
-                        <span  id="activityTemplateMessage"  style="color:rgb(188,188,188);padding-right:10px;" >${news_desc}</span>            			            
+                        <span  id="activityTemplateMessage"  class="orgContentMsg" >${news_desc}</span>            			            
                   
                                     
                                     <!--
@@ -107,7 +105,7 @@
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span> Edit News </span>
-                 <a style="background:transparent; border:none;" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>    
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>    
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
               </div>                                          
     </div>
@@ -140,7 +138,7 @@
          
            <li>
               <span id="login" data-role="touch" data-bind="events: { tap: saveEditNewsData }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#33539E">Save Change</a>   
+                        <a data-role="button" style="background-color:#7FBF4D">Save Change</a>   
               </span>
            </li>     
     

@@ -16,6 +16,7 @@ app.orgListView = (function () {
       var adminNotificationShow = function(e){
 
           $("#progressAdminNoti").show();
+          $("#admin-noti-listview").hide();
 
             organisationID = e.view.params.organisationID;
        	 account_Id = e.view.params.account_Id;
@@ -222,6 +223,8 @@ app.orgListView = (function () {
               $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
             
               $("#progressAdminNoti").hide();
+                      $("#admin-noti-listview").show();
+
         };
 
          var groupNotificationSelected = function (e) {

@@ -1341,6 +1341,10 @@ app.OragnisationList = (function () {
             app.mobileApp.navigate('#organisationNotiList');
         }
         
+        var orgDescMainPage = function(){
+            app.mobileApp.navigate('#organisationDiv');
+        }
+        
         var editProfilePage = function(){        
             app.MenuPage=false;	
             app.mobileApp.navigate('views/editProfile.html');       
@@ -2173,6 +2177,7 @@ app.OragnisationList = (function () {
             editProfileFunc:editProfileFunc,
             editProfilePage:editProfilePage,
             editProfileShow:editProfileShow,
+            orgDescMainPage:orgDescMainPage,
             logout: logout
         };
 

@@ -179,8 +179,7 @@ app.groupDetail = (function () {
             
     	    $("#groupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
-       		 template: kendo.template($("#groupMemberTemplate").html()),
-                pullToRefresh: true, 
+       		 template: kendo.template($("#groupMemberTemplate").html())
 			});
             
             

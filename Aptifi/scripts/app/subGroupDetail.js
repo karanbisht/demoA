@@ -50,10 +50,13 @@ app.subGroupDetail = (function () {
         var groupMemberData=[];
         var showSubGroupMembers = function(){
             app.MenuPage=false;
+            app.mobileApp.pane.loader.hide();
             app.mobileApp.navigate('#subGroupMemberShow');         
             console.log(organisationID);
             console.log(groupID);
-                       
+                   
+            app.mobileApp.pane.loader.hide();
+            
             var UserModel ={
             id: 'Id',
             fields: {
@@ -104,7 +107,9 @@ app.subGroupDetail = (function () {
                                  $.each(groupValue, function(i, orgVal) {
                                     console.log(orgVal);
 
-                   	             if(orgVal.Msg ==='No member in group'){     
+                   	             if(orgVal.Msg ==='No member in group'){
+                                        app.mobileApp.pane.loader.hide();
+                                        
                                      groupDataShow.push({
                                          mobile: '',
                                          first_name: '',
@@ -118,6 +123,8 @@ app.subGroupDetail = (function () {
 	                                
                                     }else if(orgVal.Msg==='Success'){
                                     
+                                        app.mobileApp.pane.loader.hide();
+                                        
                                         $("#deleteGroupMemberBtn").show();  
                                         console.log(orgVal.customerInfo.length);  
                                         for(var i=0;i<orgVal.customerInfo.length;i++){
@@ -166,16 +173,19 @@ app.subGroupDetail = (function () {
     	    });         
          
             
-            MemberDataSource.fetch(function() {
+            /*MemberDataSource.fetch(function() {
                 
- 		   });
+ 		   });*/
 	
-                     
+    
+            app.mobileApp.pane.loader.hide();
+            
     	    $("#subGroupMember-listview").kendoMobileListView({
         		dataSource: MemberDataSource,
        		 template: kendo.template($("#subGroupMemberTemplate").html())
 			});
-                                   
+            
+            app.mobileApp.pane.loader.hide();
         };
         
         

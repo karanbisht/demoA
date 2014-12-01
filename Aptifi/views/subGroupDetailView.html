@@ -8,26 +8,28 @@
     	     </div>
 	</div>
     
-       <div class="welcome-scrn form-view" >           
-            <ol class="group-wrp"  Style="margin-top:40%">
-                <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: showSubGroupNotification }">
-                        <a data-role="button" class="btn btn-login">Group Notification</a>
-                    </span>
-                </li>
-  
-                <li class="reg-Button">
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showSubGroupMembers}">
-                        <a data-role="button" class="btn register">Group Members</a>
-                    </span>
+       <div>                       
+           <ul id="allAdminManageList" data-role="listview" style="padding:10px;">
+                                
+                <li id="adminOrgNoti-icon">
+                    <div data-role="touch" data-bind="events: { tap: showSubGroupNotification }">
+                       <span class="adminLiText">Group Notification</span>
+                    </div>
                 </li>
                 
-                <li>
-                    <span id="registration" data-role="touch" data-bind="events: {tap: showUpdateSubGroupView}">
-                        <a data-role="button" class="btn btn-login">Update Group</a>
-                    </span>
+                <li id="adminOrgMem-icon">
+                    <div data-role="touch" data-bind="events: {tap: showSubGroupMembers}">
+                        <span class="adminLiText">Group Members</span>
+                    </div>
                 </li>
-			</ol>	           
+
+                <li id="adminOrgMem-icon">
+                    <div data-role="touch" data-bind="events: {tap: showUpdateSubGroupView}">
+                        <span class="adminLiText">Update Group</span>
+                    </div>
+                </li>
+                                
+			</ul>	           
       </div> 
 </div>    
 
@@ -59,7 +61,7 @@
          
            <li>
               <span id="login" data-role="touch" data-bind="events: { tap: saveUpdatedGroupVal }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#33539E">Save</a>   
+                        <a data-role="button" style="background-color:#7FBF4D">Save</a>   
               </span>
            </li>
 </div>
@@ -93,7 +95,7 @@
 
 
 
-<div data-role="view" id="addMemberToSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-init="app.subGroupDetail.initAddMember" data-show="app.subGroupDetail.showAddMember">            
+ <div data-role="view" id="addMemberToSubGroup" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-init="app.subGroupDetail.initAddMember" data-show="app.subGroupDetail.showAddMember">            
        <div data-role="header">           
                <div data-role="navbar">           
                     Add Members To Group
@@ -112,7 +114,7 @@
               
            <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: addMemberToGroupFunc }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#33539E" >Add</a>
+                        <a data-role="button" style="background-color:#7FBF4D" >Add</a>
                     </span>
            </li>
 </div> 
@@ -139,7 +141,7 @@
          
         <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: removeMemberClick}" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#33539E">Delete</a>
+                        <a data-role="button" style="background-color:#7FBF4D">Delete</a>
                     </span>
         </li>
 </div>

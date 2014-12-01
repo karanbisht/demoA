@@ -21,6 +21,9 @@ var activityListViewModel = (function () {
                 
               var show = function(e){
                   
+                  $("#admin-groupList-loader").show();
+                  $("#group-listview").hide();
+                  
                    $(".km-scroll-container").css("-webkit-transform", "");
                    var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
                    tabStrip.clear();
@@ -69,7 +72,7 @@ var activityListViewModel = (function () {
                                        console.log("--------------------------No Group");
                                   	   groupDataShow.push({
                                                  orgName: '',
-        		                                 groupID:'',
+        		                                 groupID:0,
                                                  groupName:'No Group',
                                                  organisationID:'',
                                                  groupDesc:'No Group in this Organization',
@@ -219,13 +222,13 @@ var activityListViewModel = (function () {
                            
              $("#group-listview").kendoMobileListView({
   		      template: kendo.template($("#groupTemplate").html()),    		
-     		   dataSource: organisationListDataSource,
-                pullToRefresh: true
+     		   dataSource: organisationListDataSource
              });        
                 
               $('#group-listview').data('kendoMobileListView').refresh();
-              app.mobileApp.pane.loader.hide();
-
+              
+                 $("#admin-groupList-loader").hide();
+                  $("#group-listview").show();
             };
 
             var backToOrgDetail = function(){

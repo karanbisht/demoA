@@ -163,9 +163,9 @@ app.adminEventCalender = (function () {
              dates:tasks,
              month:{
              content:'# if (typeof data.dates[+data.date] === "string") { #' +
-                '<div style="color:rgb(53,152,219);">' +
+                '<div style="color:rgb(53,152,219);"><u>' +
                 '#= data.value #' +
-                '</div>' +
+                '</u></div>' +
                 '# } else { #' +
                 '#= data.value #' +
                 '# } #'
@@ -195,6 +195,7 @@ app.adminEventCalender = (function () {
             multipleEventArray=[];
             document.getElementById("eventTitle").innerHTML = "";
 
+            $("#eventDate").html(date2);
 
             console.log(groupAllEvent);
              
@@ -245,7 +246,7 @@ app.adminEventCalender = (function () {
                     console.log('inside');
                     
                     //$("#eventDate").html(date);                    
-                    document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(53,152,219);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
+                    document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(147,147,147);">' + groupAllEvent[i].event_name + ' at ' +groupAllEvent[i].event_time+'</li></ul>' 
                     
                     console.log(groupAllEvent[i]);
                     

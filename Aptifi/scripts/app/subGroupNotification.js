@@ -191,8 +191,7 @@ app.orgsubGroupListView = (function () {
             
              $("#admin-sub-noti-listview").kendoMobileListView({
   		    template: kendo.template($("#adminSubNotiTemplate").html()),    		
-     		 dataSource: organisationALLListDataSource,
-              pullToRefresh: true        				 
+     		 dataSource: organisationALLListDataSource
 		     });              
             
              $('#admin-sub-noti-listview').data('kendoMobileListView').refresh(); 

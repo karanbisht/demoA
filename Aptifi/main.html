@@ -193,9 +193,6 @@
     
     
          <div  data-role="view"  id="validationRow" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;overflow:hidden;">
-             <span id="" data-role="button" data-bind="click: cancelButtonRC" style="margin-top:-10px;background-color: transparent;border:none;display:block;">  
-                 <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
-             </span>
 
              <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
               	Verification
@@ -224,14 +221,22 @@
                </div>
             
              <ol class="reg-group-wrp" style="margin-bottom:25px;">
-                <li>
-                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: doneVerification }">
-                        <a data-role="button" style="background-color:#7FBF4D;color:#ffffff;">Next</a>
-                    </span>
+                <li style="width:100%">
                     
-                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: clickforRegenerateCode }">
-                        <a data-role="button" style="background-color:#313C50;color:#ffffff">Regenerate</a>
+                    <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:25.33%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: doneVerification }">
+                        Next
                     </span>
+
+
+                    <span id="registration" data-role="touch" style="float:left;margin-right:10px;height:40px;padding-top:10px;width:25.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRC }">
+                        Cancel
+                    </span>
+
+                    
+                    <span id="registration" data-role="touch" style="float:left;margin-right:5px;height:40px;padding-top:10px;width:33.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: clickforRegenerateCode }">
+                        Regenerate
+                    </span>
+
                 </li>
 	         </ol>
             
@@ -327,7 +332,7 @@
 		<div data-role="header" style="border-bottom:2px solid #2D384C">
         	<div data-role="navbar">
             	Sakshay
-         	<a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton" ></a>
+         	<a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage" ></a>
          	</div>
     	</div>
           
@@ -364,7 +369,7 @@
       <ul data-role="listview" data-style="inset" data-type="group">
         <li>
             <ul>
-                <li><h2><span id="userfname"></span></h2><h2><span id="userlname"></span></h2><img src="styles/images/userProfile.png" /></li>
+                <li><h2><span id="userfname"></span></h2><h2><span id="userlname"></span></h2><img src="styles/images/avatar1.png" /></li>
             </ul>
         </li>
          
@@ -434,7 +439,7 @@
 	<div data-role="header" style="border-bottom:2px solid #2D384C">
         <div data-role="navbar">
             Setting
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage"></a>
         </div>
     </div>
       
@@ -546,7 +551,6 @@
                  <li ><a id="side-setting-icon"  href="#settingDiv" data-transition="none"></a></li>
                  <li ><a id="side-about-icon"  href="#infoDiv" data-transition="none"></a></li>
                  <li id="goToAdmin"><a id="side-admin-icon" href="views/organisationLogin.html" data-transition="none"></a></li>
-
           </ul>
        </div>
         
@@ -615,7 +619,7 @@
     
   <div id="selectOrgDiv" style="background-color:#F5F5F5; margin:10px 10px 10px 10px; padding-bottom:10px; padding-top:10px; border-radius:6px;">
       
-     <p style="color:#1B205E; text-align:center ; margin-bottom:5px;">Select Organization to send Notification</p>
+     <p style="color:#7FBF4D; text-align:center ; margin-bottom:5px;">Select Organization to send Notification</p>
       
          <ul id="organisation-Name-listview" data-style="inset" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
              <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -631,7 +635,7 @@
               <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
         </span>
        
-        <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group </p>
+        <p style="color:#7FBF4D;text-align:center;margin-bottom:5px;">Select Group to send Notification to particular group </p>
         	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->   
         <div id="group-Name-listview" class="k-listview">  </div>
         
@@ -643,11 +647,11 @@
 	    
                <li>                   
                     <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:left;">
-                     	 <a data-role="button" style="background-color:#33539E">Skip</a>   
+                     	 <a data-role="button" style="background-color:#303645">Skip</a>   
                     </span>
             
                     <span id="login" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="padding:10px;float:right;">
-                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                     	 <a data-role="button" style="background-color:#7FBF4D">Next</a>   
                     </span>
                </li>
 
@@ -660,18 +664,18 @@
        <span id="" data-role="button" data-bind="click: removeImage" style="margin:0px;background-color: transparent;border:none;display:none;">  
            <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
        </span>    
-             <p style="color:#1B205E;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
+             <p style="color:#7FBF4D;text-align:center;margin-bottom:5px;">Select Customer to send Notification</p>
         
     	
         <div id="customer-Name-listview" class="k-listview">  </div>
         
         <li>
                     <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:left;">
-                     	 <a data-role="button" style="background-color:#33539E">Skip</a>   
+                     	 <a data-role="button" style="background-color:#303645">Skip</a>   
                     </span>
             
                     <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
-                     	 <a data-role="button" style="background-color:#33539E">Next</a>   
+                     	 <a data-role="button" style="background-color:#7FBF4D">Next</a>   
                     </span>
 
         </li>
@@ -686,7 +690,7 @@
              <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;margin-right:10px;">
        </span>
        
-       <p style="color:#1B205E;text-align:center;padding-bottom:5px;margin-bottom:5px;">Select Notification Type</p>
+       <p style="color:#7FBF4D;text-align:center;padding-bottom:5px;margin-bottom:5px;">Select Notification Type</p>
        <ul id="type-Name-listview" data-style="inset" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        
     	   <p id="no-activities-span" hidden="hidden" class="no-items-msg">
@@ -779,7 +783,7 @@
                  <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
             </span>
             
-           <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
+           <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
 
            <input id="scheduleButton" type="button" value="Schedule" style="width:24%;height:30px;background-color:#4583ED;border:none;color:#ffffff;margin-right:5px;float:right;" data-role="button" data-bind="click: scheduleNotification"/>            
 
@@ -907,12 +911,10 @@
          <script type="text/x-kendo-template" id="errorTemplate">    		
             <div class="cf" style="margin-top:10%;border:none">
      
-
                  <div class="error-avatar">
 					    <img src="styles/images/error.png"/>
         		</div>
      
-
                  <div class="error-content">
                		  <h5 style="color:rgb();text-align:center" >${message}</h5>
      

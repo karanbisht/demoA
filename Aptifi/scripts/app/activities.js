@@ -36,6 +36,7 @@ app.Activities = (function () {
                      $("#showMoreButton").hide();
 
            $("#progressNotification").show();
+           $("#activities-listview").hide();  
            $(".km-scroll-container").css("-webkit-transform", "");  
            groupDataShow=[];
            $('#activities-listview').data('kendoMobileListView').refresh();
@@ -531,6 +532,8 @@ app.Activities = (function () {
              $('#activities-listview').data('kendoMobileListView').refresh();          
              //setTimeout(function(){
              $("#progressNotification").hide();
+                        $("#activities-listview").show();  
+
                  
              //app.mobileApp.pane.loader.hide();
              //},10); 

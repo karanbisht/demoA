@@ -20,6 +20,7 @@ app.Login = (function () {
         var regClickButton;
         var userOrgName=[];
         var userGropuName=[];
+        var userGropuName=[];
         var JoinedOrganisationYN=1;
  
         

@@ -136,7 +136,6 @@ app.userReplyNotificationList = (function () {
              $("#userReply-notification-listview").kendoMobileListView({
   		    template: kendo.template($("#userReplyNotificationTemplate").html()),    		
      		 dataSource: userReplyNotification,
-              pullToRefresh: true,
         		schema: {
            		model:  userNotificationModel
 				}			 

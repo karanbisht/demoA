@@ -9,6 +9,13 @@
 	   </div>
 	<!-- data-append-on-refresh="true" -->
 	 <div>
+       
+         <div class="loader" id="admin-groupList-loader" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+                      <!--<div class="loading1">Loading...</div>-->
+         </div>
+
+         
       <ul id="group-listview" data-style="inset" data-role="listview" data-pull-to-refresh="true"  data-template="groupTemplate"  data-bind="source:groupListData"></ul>
     	<p id="no-notification-span" hidden="hidden" class="no-items-msg">
     	   <b>You have no Notification yet.</b>
@@ -26,9 +33,10 @@
 
 <!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="groupTemplate" data-role="touch" data-bind="events: { tap: groupSelected }">
-    		<div data-role="touch" data-bind="events: { tap: groupSelected }" class="cf">
+    		#if(groupID!==0 && groupID!=='0' ){#
+            <div data-role="touch" data-bind="events: { tap: groupSelected }" class="cf">
    		     <div class="user-avatar">
-					<img src="styles/images/group1.png" />
+					<img src="styles/images/manageOrg/org-group-icon-h.png" />
 		        </div>
        		 <div class="activity-content">
        		     <h2 id="" class="person-name">${groupName}</h2>
@@ -38,4 +46,15 @@
                     <a id="activityTemplateMessage" class="user-share-txt">${groupDesc}</a>
        		 </div>
 		    </div>
+           #}else{#
+               <div class="cf">
+   		     <div class="user-avatar">
+					<img src="styles/images/manageOrg/org-group-icon-h.png" />
+		        </div>
+       		 <div class="activity-content">
+       		     <h2 id="" class="person-name">${groupName}</h2>
+                    <a id="activityTemplateMessage" class="user-share-txt">${groupDesc}</a>
+       		 </div>
+		    </div>
+           #}#   
 		</script>

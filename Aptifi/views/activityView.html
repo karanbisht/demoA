@@ -51,7 +51,7 @@
    
    <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;padding:3px;">
-  		 <div style="float:left;width:85%;border-radius:6px;bacground-color:#ffffff"><textarea id="newComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;"></textarea></div>
+  		 <div style="float:left;width:85%;border-radius:6px;border:none;bacground-color:#ffffff"><textarea id="newComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;border:none;"></textarea></div>
            <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>-->
            <a style="background:transparent; border:none;margin-left:5px;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>              
         </div>
@@ -64,17 +64,17 @@
     #document.getElementById("commentListContainer").className = "admin-comment-List";#
         <div class="admin-comment-content">
             <!--<h2 class="person-name">${User()}</h2>
-            <span class="time-span">${add_date}</span>-->       
-            <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
+            <span class="time-span">${add_date}</span>-->
+            <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;position:center;"/>
             <a class="user-share-txt">${comment}</a>
         </div>
   # }else{ #
       #document.getElementById("commentListContainer").className = "user-comment-List";# 
-    <div class="user-comment-content">
+    <div class="user-comment-content" id="userCommentContainer">
                <!--<h2 class="person-name">${User()}</h2>
                <span class="time-span">${add_date}</span>-->
         <a class="user-share-txt-user">${comment}</a>
-        <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
+        <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;position:center;"/>
     </div>        
    # } #
 </script>
