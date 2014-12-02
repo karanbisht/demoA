@@ -131,27 +131,35 @@
     </div>
     
     
-    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
-             
-           <ul data-role="listview" data-style="inset">
-                <li class="username"><input type="text"  id="addEventName" placeholder="Enter New Event Name" /></li>
-           </ul> 
+    	   
+    <div data-role="content">
+    	<div id="enterNotification" class="textWithTextArea" >             
+
+            <span id="activityTemplateDate" class="defineTitleText" >Event Title :</span> 
+            <br/>
+                <input type="text"  id="addEventName" class="defineTextBox"  placeholder="Enter New Event Name" />
+            <br/>
+  
              <!---class="user-share"-->
             
-           <div class="textareaClass" >
+           <!--<div class="textareaClass" >
 	             <textarea id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
            </div>
+           <br/>-->
+            
+           <span id="activityTemplateDate"  class="defineTitleText" >Event Detail :</span> 
+	       <textarea rows="9" class="defineTextArea" id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>               
+           <br/>
 
-                        <br/>
 
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span> 
             
             <div style="margin-top:20px;" >
                 <input id="adddatePicker" style="width:180px;"/>
             </div>
             <br/>
             
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText">Event Time :</span> 
                 <div style="margin-top:20px;" >
                     <input id="adddateTimePicker" style="width:180px;"/>
                 </div>
@@ -160,12 +168,10 @@
         </div>
          
          
-           <li>
-              <span id="login" data-role="touch" data-bind="events: { tap: addNewEventFunction }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#7FBF4D">Save</a>   
-              </span>
+           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewEventFunction }">
+                Save   
            </li>
-       
+    </div> 
 </div>
 
 
@@ -181,26 +187,39 @@
     </div>
     
     
-    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
-             
-           <ul data-role="listview" data-style="inset">
-                <li class="username"><input type="text" id="editEventName" placeholder="Enter New Event Name" /></li>
-           </ul> 
-             
-           <div class="textareaClass">
-	             <textarea id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
-           </div>
+   <div data-role="content">
+    	<div id="enterNotification" class="textWithTextArea" >             
             
+           <!--<ul data-role="listview" data-style="inset">
+                <li class="username"><input type="text" id="editEventName" placeholder="Enter New Event Name" /></li>
+           </ul>--> 
+            
+
+            <span id="activityTemplateDate"  class="defineTitleText">Event Title :</span> 
+            <br/>
+                <input type="text"  id="editEventName" class="defineTextBox"  placeholder="Enter New Event Name" />
             <br/>
 
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Date :</span> 
+             
+           <!--<div class="textareaClass">
+	             <textarea id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
+           </div>
+            <br/>
+            -->
+                        
+           <span id="activityTemplateDate"  class="defineTitleText">Event Detail :</span> 
+	       <textarea rows="9" class="defineTextArea" id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>               
+           <br/>
+
+            
+            <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span> 
             
             <div style="margin-top:20px" >
                 <input id="editdatePicker" />
             </div>
             <br/>
             
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">Event Start Time :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText">Event Time :</span> 
                 <div style="margin-top:20px" >
                     <input id="editdateTimePicker" />
                 </div>
@@ -208,11 +227,10 @@
         </div>
          
          
-           <li>
-              <span id="login" data-role="touch" data-bind="events: { tap: saveEditEventData }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#7FBF4D">Save Change</a>   
-              </span>
+           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditEventData }">
+                       Save Change   
            </li>       
+   </div>      
 </div>
 
 

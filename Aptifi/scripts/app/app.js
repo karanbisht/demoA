@@ -445,6 +445,9 @@ var app = (function (win) {
                                                  	});*/
     var onDeviceReady = function() {
         // Handle "backbutton" event
+        
+        //console.log(navigator);
+        
         document.addEventListener('backbutton', onBackKeyDown, false);
         
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);

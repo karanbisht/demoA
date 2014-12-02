@@ -9,22 +9,28 @@
     </div>
     
     
-    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">             
+    <div data-role="content">
+    	<div id="enterNotification" class="textWithTextArea" >             
             
-           <div class="textareaClass" >
+           <!--<div class="textareaClass" >
 	             <textarea id="addNewsDesc" placeholder="Please Enter News Here"></textarea>    
            </div>
+           <br/>-->
+            
+           <span id="activityTemplateDate"  class="defineTitleText" >News :</span> 
+	       <textarea rows="9" class="defineTextArea" id="addNewsDesc" placeholder="Please Enter News Here"></textarea>               
            <br/>
 
+
             
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Date :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span> 
             
             <div style="margin-top:20px;" >
                 <input id="adddatePickerNews" style="width:180px;"/>
             </div>
             <br/>
             
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Time :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText" >News Time :</span> 
                 <div style="margin-top:20px;" >
                     <input id="adddateTimePickerNews" style="width:180px;"/>
                 </div>
@@ -32,12 +38,10 @@
         </div>
          
          
-           <li>
-              <span id="login" data-role="touch" data-bind="events: { tap: addNewNewsFunction }" style="padding:10px;float:right;">
-                    <a data-role="button" style="background-color:#7FBF4D">Save</a>   
-              </span>
+           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewNewsFunction }">
+                 Save
            </li>
-    
+    </div>
 
     <div data-role="footer">
        	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
@@ -110,37 +114,42 @@
               </div>                                          
     </div>
     
+   
+        <div data-role="content">
     
-    	<div id="enterNotification" class="share-form-wrp" data-role="listview" data-style="inset">
-             
-           <div class="textareaClass">
-	             <textarea id="editNewsDesc" placeholder="Please Enter News Here"></textarea>    
-           </div>
+          <div id="enterNotification" class="textWithTextArea">
             
-                       <br/>
-
+           
+           <span id="activityTemplateDate"  class="defineTitleText" >News :</span> 
+	       <textarea rows="9" class="defineTextArea" id="editNewsDesc" placeholder="Please Enter News Here"></textarea>               
+           <br/>
+            
+           <!--<div class="textareaClass">
+	             <textarea id="editNewsDesc" placeholder="Please Enter News Here"></textarea>    
+           </div>            
+                <br/>
+            -->
              
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Date :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span> 
             
             <div style="margin-top:20px;" >
                 <input id="editdatePickerNews" style="width:180px;"/>
             </div>
             <br/>
             
-            <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(53,152,088)">News Time :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText" >News Time :</span> 
                 <div style="margin-top:20px;" >
                     <input id="editdateTimePickerNews" style="width:180px;"/>
                 </div>
             
             
-        </div>
-         
-         
-           <li>
-              <span id="login" data-role="touch" data-bind="events: { tap: saveEditNewsData }" style="padding:10px;float:right;">
-                        <a data-role="button" style="background-color:#7FBF4D">Save Change</a>   
-              </span>
+          </div>
+                 
+           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditNewsData }">
+                  Save Change   
            </li>     
+            
+        </div>    
     
         <div data-role="footer">
        	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
