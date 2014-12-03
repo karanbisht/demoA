@@ -1685,6 +1685,11 @@ input.largerCheckbox
  #calendar .k-footer {background: #7FBF4D;}
  #calendar .k-header {background: #7FBF4D;}
 
+ #admincalendar .k-footer {background: #7FBF4D;}
+ #admincalendar .k-header {background: #7FBF4D;}
+
+ 
+
 .k-calendar td {
    border-radius:0px;     
        border-color:#7FBF4D;    
@@ -1902,13 +1907,13 @@ input.largerCheckbox
 }
 
 .defineTextArea{
-        position: static;
-
+    position: static;
     margin:10px auto 10px auto;   
     padding:10px;
     width:100%;
     border-radius:3px;
     border-color:#E5E5E5;
+    
     /*background-color:rgb(217,244,195);*/
     font-size:15px;
 }
