@@ -1700,6 +1700,18 @@ input.largerCheckbox
    border-color:#7FBF4D;   
 }
 
+.k-list>.k-state-selected{
+     background: #7FBF4D;
+    color:#ffffff;
+    border-color:#7FBF4D;   
+}
+
+.k-link>.k-state-selected{
+     background: #7FBF4D;
+    color:#ffffff;
+    border-color:#7FBF4D;   
+}
+
 .k-state-selected >.k-state-focused{
     background: #7FBF4D;
     color:#ffffff;
@@ -1907,7 +1919,6 @@ input.largerCheckbox
 }
 
 .defineTextArea{
-    position: static;
     margin:10px auto 10px auto;   
     padding:10px;
     width:100%;
