@@ -1919,6 +1919,7 @@ input.largerCheckbox
 }
 
 .defineTextArea{
+    position: static;
     margin:10px auto 10px auto;   
     padding:10px;
     width:100%;
