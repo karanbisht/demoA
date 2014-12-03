@@ -41,7 +41,9 @@ app.Login = (function () {
             app.userPosition=true;
             app.userPosition=true;
             $('#loginUsername').val('');
-        
+           
+            $("#selectionDiv").show();
+            
             //$('#loginPassword').val('');                        
             //console.log('TESTINGGGGGG');
             //console.log(window);
@@ -645,6 +647,8 @@ app.Login = (function () {
           $(".km-scroll-container").css("-webkit-transform", "");
   
           $("#regenerateDiv").show();
+                        $("#selectionDiv").hide();
+
           $("#validationRow").hide(); 
           $("#userRegMobNum").html('+91'+ username);    
             
@@ -682,6 +686,7 @@ app.Login = (function () {
  
             $("#regenerateDiv").hide();
 			$("#validationRow").show();
+            $("#selectionDiv").hide();
             $("#regDoneButton").hide();
             $("#selectionDiv").css("z-index", "-1");
 			$("#selectionDiv").css("opacity", .1);	
@@ -739,6 +744,8 @@ app.Login = (function () {
 						//console.log(registrationDataView);
                		    	//app.showAlert("The Verification Code will be sent to this number." , "Notification");
                				$("#validationRow").show();
+                                   $("#selectionDiv").hide();
+
                				regClickButton=1;
                           });                  	
     		};

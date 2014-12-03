@@ -19,7 +19,9 @@ app.sendNotification = (function () {
 
       var orgId = localStorage.getItem("UserOrgID"); 
       console.log(orgId);
-      var account_Id;          
+         
+      var account_Id;
+         
       var pictureSource;   // picture source
       var destinationType; // sets the format of returned value
    
@@ -152,20 +154,27 @@ app.sendNotification = (function () {
                 //console.log('Hello');
              
                 console.log(groupDataShowOffline);
+
                 
              var organisationListDataSource = new kendo.data.DataSource({
                   data: groupDataShowOffline
               });                           
              
+                          console.log(organisationListDataSource);
+
+            
+             
              $("#organisation-Name-listview").kendoMobileListView({
   		    template: kendo.template($("#orgNameTemplate").html()),    		
      		 dataSource: organisationListDataSource
-              //pullToRefresh: true
 		     });
-                                        
+                
+             console.log('showwwwwwwwwww');
               $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
-              app.mobileApp.pane.loader.hide();
+              //app.mobileApp.pane.loader.hide();
               $("#selectOrgDiv").show();
+             
+             
 
             };
     
@@ -211,12 +220,14 @@ app.sendNotification = (function () {
             document.getElementById('comment_allow').checked = false;
             
             $("#selectGroupDiv").hide();
+                          $("#selectGroupFooter").hide();
+
             $("#selectTypeDiv").hide();
             $("#sendNotificationDivMsg").hide();
             $("#sendNotiDiv").hide();
             $("#selectCustomerToSend").hide();
-           
-            
+                                                               $("#selectCustomerFooter").hide();
+
 
             var currentDate = app.getPresentDate();            
             disabledDaysBefore = [
@@ -303,8 +314,6 @@ app.sendNotification = (function () {
                 }); 
             },100); 
 
-            
-            
             
             if(!app.checkConnection()){
                   if(!app.checkSimulator()){
@@ -475,11 +484,15 @@ app.sendNotification = (function () {
           }else if(cmbGroup ==='' && (cmbCust==='' || cmbCust==="null")){
             app.showAlert('Please Organization Group or Customer.','Validation Error'); 
                $("#selectGroupDiv").show(); 
+                            $("#selectGroupFooter").show();
+
                $("#sendNotificationDivMsg").hide();
                $("#sendNotiDiv").hide();
           }else if(cmbGroup ==='0' && (cmbCust==='' || cmbCust==="null")){
             app.showAlert('Please Customer to Send Notification.','Validation Error'); 
-                           $("#selectCustomerToSend").show(); 
+                           $("#selectCustomerToSend").show();
+                           $("#selectCustomerFooter").show();
+
                            $("#sendNotificationDivMsg").hide();
                            $("#sendNotiDiv").hide();
           }else if(type===''){
@@ -759,6 +772,8 @@ app.sendNotification = (function () {
                                      
                                      if(groupValue[0].Msg==='No Group list'){
                                          $("#selectGroupDiv").hide();
+                                                       $("#selectGroupFooter").hide();
+
                                          $("#selectOrgDiv").hide();
                                             noGroup=1;        
                                          
@@ -780,6 +795,8 @@ app.sendNotification = (function () {
                                      }
                                           $("#selectOrgDiv").hide();
                                           $("#selectGroupDiv").show();
+                                                       $("#selectGroupFooter").show();
+
 
                                    }
                                      
@@ -927,13 +944,16 @@ app.sendNotification = (function () {
          
          
          var skipToSeletType = function(){
-           $("#selectCustomerToSend").hide();          
+           $("#selectCustomerToSend").hide();
+                                        $("#selectCustomerFooter").hide();
             escapeGroupClick();
         };
 
          
           var NextToSeletType = function(){
            $("#selectCustomerToSend").hide();
+                                                      $("#selectCustomerFooter").hide();
+
           
             var customer = [];
 		    
@@ -950,13 +970,17 @@ app.sendNotification = (function () {
          
           var skipToCustomerType = function(){
            $("#selectGroupDiv").hide();
+              $("#selectGroupFooter").hide();
            $("#selectCustomerToSend").show();
+           $("#selectCustomerFooter").show();   
           };
 
          
          
            var NextToCustomerType = function(){
             $("#selectGroupDiv").hide();
+                             $("#selectGroupFooter").hide();
+
                
             var group = [];
 		    
@@ -967,7 +991,8 @@ app.sendNotification = (function () {
             group = String(group);        
             console.log(group);      
             localStorage.setItem("SELECTED_GROUP",group); 
-            $("#selectCustomerToSend").show();                               
+            $("#selectCustomerToSend").show();                            
+                                      $("#selectCustomerFooter").show();    
         };
         
          
@@ -978,8 +1003,11 @@ app.sendNotification = (function () {
              localStorage.setItem("SELECTED_GROUP",group);
              //app.mobileApp.pane.loader.show();              
               $("#selectGroupDiv").hide();
+                           $("#selectGroupFooter").hide();
+
              //$("#selectTypeDiv").show();
               $("#selectCustomerToSend").show();
+                                        $("#selectCustomerFooter").show();
              app.mobileApp.pane.loader.hide();              
          };
                   
@@ -987,7 +1015,11 @@ app.sendNotification = (function () {
              //app.mobileApp.pane.loader.show(); 
              $(".km-scroll-container").css("-webkit-transform", "");
              $("#selectGroupDiv").hide();
+                           $("#selectGroupFooter").hide();
+
              $("#selectCustomerToSend").hide();
+                                                     $("#selectCustomerFooter").hide();
+
              
             //alert(noGroup +"||"+ noCustomer);
              
@@ -1022,7 +1054,10 @@ app.sendNotification = (function () {
              //app.mobileApp.pane.loader.show(); 
              $(".km-scroll-container").css("-webkit-transform", "");
              $("#selectGroupDiv").hide();
+                           $("#selectGroupFooter").hide();
+
              $("#selectCustomerToSend").show();
+                                        $("#selectCustomerFooter").show();
              app.mobileApp.pane.loader.hide();    
          };
          

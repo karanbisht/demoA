@@ -167,7 +167,7 @@ app.OragnisationList = (function () {
             }else{
                                       groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organization',
+                                         orgDesc: 'Not a customer of any organization',
                                          organisationID:'0',
                                          imageSource:'',
                                          org_logo :null,  
@@ -318,7 +318,7 @@ app.OragnisationList = (function () {
                               
                                  groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organization',
+                                         orgDesc: 'Not a customer of any organization',
                                          organisationID:'0',
                                          imageSource:'',
                                          org_logo :null,  
@@ -367,7 +367,7 @@ app.OragnisationList = (function () {
                               
                                  groupDataShow.push({
                                          orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organization',
+                                         orgDesc: 'Not a customer of any organization',
                                          organisationID:'0',
                                          imageSource:'',
                                          org_logo :null,  
@@ -1209,12 +1209,12 @@ app.OragnisationList = (function () {
                 $("#showMoreButton").hide();  
                 orgDbData.push({
 						 org_name:'No Organization',
-        		         org_id: '',
+        		         org_id: '0',
                          role:'',
                          imgData:null,   
                          imageSourceOrg:'',   
-                         orgDesc:'You are not a customer of any organization',                      
-                         joinDate:'Not Yet Joined'                   
+                         orgDesc:'Not a customer of any organization',                      
+                         joinDate:'0'                   
                  });
               }
             }
@@ -1320,9 +1320,15 @@ app.OragnisationList = (function () {
                 $("#manageOrgFooter").hide();
             }
    
-            joinDate = app.formatDate(joinDate);
             
-           $("#orgJoinData").html(joinDate); 
+            if(joinDate!==0 && joinDate!=='0' ){               
+   
+                joinDate = app.formatDate(joinDate);
+                $("#orgJoinData").html(joinDate);
+            }else{
+                $("#joinedDate").hide();
+            }
+            
            $("#navBarOrgHeader").html(orgName);        
            $("#OrgDescData").html(orgDesc); 
    

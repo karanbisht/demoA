@@ -38,13 +38,13 @@
         The Verification Code will be sent to this number . If you'd like to change your phone number , please select [Cancel] 
     </div>
          <ol class="reg-group-wrp" style="margin-bottom:10px;">
-                <li>
-                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: clickforValificationCodeR }">
-                        <a data-role="button" style="background-color:#313C50">Ok</a>
+                <li style="width:100%">
+                    <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCodeR }">
+                        Ok
                     </span>
                     
-                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: cancelButtonRCR }">
-                        <a data-role="button" style="background-color:#313C50">Cancel</a>
+                    <span id="registration" data-role="touch" style="float:left;margin-left:10px;height:40px;padding-top:10px;width:40%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRCR }">
+                        Cancel
                     </span>
                 </li>
 	     </ol>
@@ -59,9 +59,10 @@
              <img src="styles/images/removeAttachment.png" alt="Smiley face" height="20" width="20" style="float:right;">
      </span>-->
   
-    <div style="background-color:#313C50;color:#ffffff;text-align:center;padding:10px;">
+    <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
        Verification
     </div>
+        
        <form id="reg-verification-form" data-bind="events: { keyup: checkEnterCode }" class="">
 
             <div style="text-align:center;color:#313C50;padding-top:10px;">
@@ -75,14 +76,18 @@
                    </li> 
                 </ul>
             </div>
-         <ol class="reg-group-wrp" style="margin-bottom:10px;">
-                <li>
-                    <span id="registration" data-role="touch" style="float:right;margin-left:10px;" data-bind="events: { tap: doneVerificationR }">
-                        <a data-role="button" style="background-color:#313C50">Next</a>
+         <ol class="reg-group-wrp" style="margin-bottom:25x;">
+                <li style="width:100%">
+                    <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:25.33%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: doneVerificationR }">
+                        Next
                     </span>
                     
-                    <span id="registration" data-role="touch" style="float:left;" data-bind="events: { tap: clickforRegenerateCodeR }">
-                        <a data-role="button" style="background-color:#313C50">Regenerate</a>
+                    <span id="registration" data-role="touch" style="float:left;margin-right:10px;height:40px;padding-top:10px;width:25.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRCR }">
+                        Cancel
+                    </span>
+                    
+                    <span id="registration" data-role="touch" style="float:left;margin-right:5px;height:40px;padding-top:10px;width:33.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: clickforRegenerateCodeR }">
+                        Regenerate
                     </span>
                 </li>
 	     </ol>

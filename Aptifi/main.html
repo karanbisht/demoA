@@ -140,7 +140,7 @@
 
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
           
-          <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-bottom:15px;">
+          <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;">
              <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">                
                 
               <ul data-role="listview" data-style="inset">
@@ -164,7 +164,7 @@
            </div>
            
                       
-            <div  data-role="view" id="regenerateDiv" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:300px;width:94%;overflow:hidden;">
+            <div  data-role="view" id="regenerateDiv" class="activities-view" style=" position:absolute;right:0;background-color:#ffffff;display:none;margin:20% auto 10px auto; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:300px;width:94%;max-width:600px;overflow:hidden;">
 
 				    <div style="vertical-align:middle; text-align:center">
        				<img src="styles/images/msgIcon.png" height="100" width="100"/>
@@ -192,7 +192,7 @@
             </div>
     
     
-         <div  data-role="view"  id="validationRow" class="activities-view" style=" background-color:#ffffff;display:none;margin:20% 10px 10px 10px; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;overflow:hidden;">
+         <div  data-role="view"  id="validationRow" class="activities-view" style="position:absolute;right:0;background-color:#ffffff;display:none;margin:20% auto 10px auto; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;max-width:600px;overflow:hidden;">
 
              <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
               	Verification
@@ -223,7 +223,7 @@
              <ol class="reg-group-wrp" style="margin-bottom:25px;">
                 <li style="width:100%">
                     
-                    <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:25.33%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: doneVerification }">
+                    <span id="registration" data-role="touch" style="float:right;margin-right:10px;width:30.33%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: doneVerification }">
                         Next
                     </span>
 
@@ -329,7 +329,7 @@
 
 
   	<div data-role="view" id="infoDiv" class="activities-view" data-model="app.Activities">
-		<div data-role="header" style="border-bottom:2px solid #2D384C">
+		<div data-role="header" style="border-bottom:2px solid #F0F0F0">
         	<div data-role="navbar">
             	Sakshay
          	<a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage" ></a>
@@ -436,23 +436,24 @@
 
 
   <div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList">
-	<div data-role="header" style="border-bottom:2px solid #2D384C">
+	<div data-role="header" style="border-bottom:2px solid #F0F0F0">
         <div data-role="navbar">
             Setting
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage"></a>
         </div>
     </div>
       
-     <div data-role="content">
-  
-         <div style="background-color:rgb(127,191,77) ; margin:25% 10px 10px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">                      
-             <span style="color:rgb(255,255,255);">Synchronization Events with Device Calender</span>
-         </div>
+     <div data-role="content"> 
+         <div style="position:absolute;right:0;margin:20% auto 10px auto;max-width:600;width:94%;">
+
+             <div style="background-color:rgb(127,191,77);margin:25% auto 10px auto;padding:10px;border-radius:30px;max-width:600;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">                      
+                 <span style="color:rgb(255,255,255);">Synchronization Events with Device Calender</span>
+             </div>
                         
-         <div style="background-color:rgb(127,191,77) ; margin:20px 10px;padding:10px;border-radius:30px;width:94%" data-role="button" data-click="app.OragnisationList.appVersion">                      
-             <span style="color:rgb(255,255,255);">App Version</span>
+             <div style="background-color:rgb(127,191,77);margin:20px auto;padding:10px;border-radius:30px;max-width:600;width:94%" data-role="button" data-click="app.OragnisationList.appVersion">                      
+                 <span style="color:rgb(255,255,255);">App Version</span>
+             </div>
          </div>
-         
      </div>    
   </div>
 	
@@ -491,6 +492,7 @@
    	<!-- Activities ListView Template -->
 		<script type="text/x-kendo-template" id="orgTemplate"> 
     		
+            #if(org_id!==0 &&  org_id!=='0'){#
             <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
                  #if(imgData===null ||imgData==='null' ){#            
         	        <div class="user-avatar">
@@ -523,6 +525,19 @@
                  <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
         		</div>
     		</div>
+         #}else{#
+               <div class="cf" >				            
+                    <div class="user-avatar">
+            	        <img src="styles/images/habicon.png"/>
+        	        </div>
+                
+	    		<div class="activity-content">
+       		     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                               
+                     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a> 
+        		</div>
+    		</div>
+               #}#
 		</script>
 
 		<script type="text/x-kendo-template" id="errorTemplate">    		
@@ -602,7 +617,7 @@
 
 <div data-role="view" id="view-all-activities-userReply" data-id="innerActivity" data-title="Reply To User" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.userReplyList" data-init="app.userReplyList.init"  data-show="app.userReplyList.show" data-before-Show="app.userReplyList.beforeShow">	
 	 <div>
-    	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate" data-pull-to-refresh="true" data-bind="source: activities"></ul>
+    	<ul id="user-Reply-listview" data-style="inset" data-role="listview" data-template="userReplyTemplate"  data-bind="source: activities"></ul>
          <p id="no-activities-span" hidden="hidden" class="no-items-msg">
 	    	   <b>You have no Notification for you.</b>
     	</p>
@@ -624,7 +639,7 @@
         
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
     
-   <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;">
+      <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;">
        
         <p style="color:#343434;">Select Group to send Notification to particular group </p>
         	<!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->   
@@ -636,18 +651,8 @@
 	           <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Skip</a>
           </span>       
        </div>-->   
-	    
-              <ol class="reg-group-wrp" style="margin-bottom:10px;">                
-                        <li style="width:100%">
-                            <span id="registration" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" >
-                                Next
-                            </span>
-                    
-                            <span id="registration" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" >
-                                Skip
-                            </span>
-             		   </li>
-		      </ol>
+          
+ 
 
        <!--
                <li>                   
@@ -661,30 +666,31 @@
                </li>
         -->
    </div>
+      
+      
+                   <div id="selectGroupFooter" data-role="footer" style="background:#ffffff;padding-bottom:10px; display:none;">  
+               <ol class="reg-group-wrp" >                
+                        <li style="width:100%">
+                            <span id="registration" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" >
+                                Next
+                            </span>
+                    
+                            <span id="registration" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" >
+                                Skip
+                            </span>
+             		   </li>
+		      </ol>
+            </div>
     
  <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->   
    
       
-   <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none">
+     <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;">
 
        <p style="color:#343434;">Select Customer to send Notification</p>        
     	
         <div id="customer-Name-listview" class="k-listview" style="border:none;">  </div>
         
-       
-       
-
-       <ol class="reg-group-wrp" style="margin-bottom:10px;">                
-                        <li style="width:100%">
-                            <span id="registration" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" >
-                                Next
-                            </span>
-                    
-                            <span id="registration" data-role="touch" data-bind="events: { tap: skipToSeletType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" >
-                                Skip
-                            </span>
-             		   </li>
-		</ol>
 
         <!--<li>
                     <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:left;">
@@ -696,15 +702,28 @@
                     </span>
 
         </li>-->
+ 
+     </div>
 
-   </div>
-    
+      
+             <div id="selectCustomerFooter" data-role="footer" style="background:#ffffff;padding-bottom:10px; display:none;">  
+               <ol class="reg-group-wrp" >                
+                        <li style="width:100%">
+                            <span id="registration" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" >
+                                Next
+                            </span>
+                    
+                            <span id="registration" data-role="touch" data-bind="events: { tap: skipToSeletType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" >
+                                Skip
+                            </span>
+             		   </li>
+		        </ol>
+             </div>    
     <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
     
-   <div id="selectTypeDiv" style="display:none;background-color:rgb(242,242,242); margin:10px 10px 10px 10px; border-radius:6px;padding:5px;">
-       <p style="color:#7FBF4D;text-align:center;">Select Notification Type</p>
-       
-       <ul id="type-Name-listview" style="border-radius:6px;margin:0px 10px 10px 10px" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
+   <div id="selectTypeDiv" style="display:none;margin:10px 10px 10px 10px;border:none;">
+       <p style="color:#343434;">Select Notification Type</p>       
+       <ul id="type-Name-listview" style="border:none;" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
        
    </div> 
     
@@ -751,11 +770,12 @@
 	  <textarea rows="12" class="defineTextArea" id="editEventDesc" placeholder="Write Notification Message to Send ?"></textarea>               
       <br/>
           
+      <!--class="largerCheckbox"-->
       
       <li style="color:#1B205E;list-style-type: none;">
          <span> 
          <span style="color:rgb(127,191,77)" >Comment Allow</span>
-         <input type="checkbox" id="comment_allow" class="largerCheckbox" value="" /> 
+         <input type="checkbox" id="comment_allow" value="" /> 
          </span>    
       </li> 
       
@@ -833,9 +853,9 @@
        </div>
 
 		<script type="text/x-kendo-template" id="orgNameTemplate"> 
-    		<li class="cf" data-role="touch" data-bind="events: { tap: sendNotificationOrg }">				            
-	    		<span style="border:none;"> ${org_name} </span>
-        	</li>            
+    		<span class="deleteGroupShow1" data-role="touch" data-bind="events: { tap: sendNotificationOrg }">				            
+	    		${org_name}
+        	</span>            
 		</script>
 
 
@@ -875,9 +895,8 @@
         </script>
 
 
-		<script type="text/x-kendo-template" id="typeNameTemplate">            
-            	
-            <div class="sendNotificationNameList">				            
+		<script type="text/x-kendo-template" id="typeNameTemplate">                        	
+            <div class="sendNotiText">				            
 	    		    <span id="activityTemplateTitle" style="margin:10px;">${text}</span>
         	</div>         
             

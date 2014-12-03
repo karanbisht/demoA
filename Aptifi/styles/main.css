@@ -6,8 +6,7 @@
 
 .outerSelect{
     width:100%;
-    text-align:left;
-    
+    text-align:left;    
 }
 
 .reg-Button{
@@ -224,6 +223,13 @@ input::-webkit-inner-spin-button {
     width: 100%;
     height: 30px;
     font-size: 1rem;
+}
+
+.replyTextArea{
+    position: static;
+    width: 100%;
+    height: 30px;
+    font-size: 1rem;    
 }
 
 #Aptifi.km-flat select {
@@ -618,7 +624,7 @@ input::-webkit-inner-spin-button {
 }
 
 #Aptifi .activities-view .km-list > li:first-child {
-    padding-top: 0;
+    padding-top: .75em;
 }
 
 #Aptifi .user-avatar {
@@ -742,6 +748,15 @@ input::-webkit-inner-spin-button {
     font-size: 1.1rem;
     border-bottom: 1px solid #f5f7f8;
 }
+
+
+.deleteGroupShow1 {
+    display: block;
+    margin:5px 10px;
+    color: #676767;
+    font-size: 1.1rem;   
+}
+
 
 .firstName{
      color:#797979;   
@@ -1661,7 +1676,7 @@ input.largerCheckbox
     text-align:center;
 }
 
-.k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;}
+.k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;border-color:#7FBF4D;}
 .k-calendar .k-state-selected .k-state-hover { background: #7FBF4D;}
 .k-calendar .k-state { background: #7FBF4D; }
 .k-calendar a.k-state { background: #7FBF4D; } 
@@ -1669,6 +1684,35 @@ input.largerCheckbox
  #calendar .k-footer {background: #7FBF4D;}
  #calendar .k-header {background: #7FBF4D;}
 
+.k-calendar td {
+   border-radius:0px;     
+       border-color:#7FBF4D;    
+}
+
+.k-calendar td>.k-link{
+   border-radius:0px;     
+   border-color:#7FBF4D;   
+}
+
+.k-state-selected >.k-state-focused{
+    background: #7FBF4D;
+    color:#ffffff;
+    border-color:#7FBF4D;
+}
+
+.k-state-selected>a{
+    color:#fff;
+    background-color:#7FBF4D;
+    border-color:#7FBF4D;
+
+}
+
+.k-state-selected>.k-link{
+    color:#fff;
+    background-color:#7FBF4D;
+    border-color:#7FBF4D;
+
+}
 
 #side-noti-icon{
     background-color: #2D344B;  
@@ -1798,6 +1842,9 @@ input.largerCheckbox
     padding-left:50px;
 }
 
+.sendNotiText{
+    padding-left:10px;
+}
 
 #adminOrgNoti-icon{
     background: url("images/manageOrg/org-notification-icon.png");
@@ -1848,21 +1895,23 @@ input.largerCheckbox
 
 
 .textWithTextArea{
-    padding:10px;    
+    padding:10px; 
+    margin:10px auto 10px auto;   
+
 }
 
 .defineTextArea{
-    width:94%;
-    margin:10px;   
+    margin:10px auto 10px auto;   
     padding:10px;
+    width:100%;
     border-radius:3px;
     /*background-color:rgb(217,244,195);*/
     font-size:15px;
 }
 
 .defineTextBox{
-    margin:10px; 
-    width:94%;
+    width:100%;
+    margin:10px auto 10px auto; 
     border-radius:3px;
     padding:10px;
     /*background-color:rgb(217,244,195);*/     
