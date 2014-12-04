@@ -1664,7 +1664,17 @@ app.OragnisationList = (function () {
         
         
         var appVersion = function(){
-            app.showAppVersion();
+                $("#appVersionDiv").show();
+                $('#contentDiv').css('background-color', '#636363');
+                $("#settingOptionDiv").hide();
+            var value = app.showAppVersion();
+                $("#appVersion").html(value);
+        }
+        
+        var closeVersionPopUp = function(){
+              $("#settingOptionDiv").show();   
+            $("#appVersionDiv").hide();    
+            $('#contentDiv').css('background-color', '#ffffff');
         }
         
         
@@ -1773,7 +1783,15 @@ app.OragnisationList = (function () {
         }
         
         var showOrgNews = function(){
-            app.mobileApp.navigate('views/organizationNews.html?orgManageID='+orgManageID);
+             if(!app.checkConnection()){
+                  if(!app.checkSimulator()){
+                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                  }else{
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                  } 
+             }else{
+                app.mobileApp.navigate('views/organizationNews.html?orgManageID='+orgManageID);
+            }            
         }
         
         var syncCalendar = function(){
@@ -2183,6 +2201,7 @@ app.OragnisationList = (function () {
             editProfileFunc:editProfileFunc,
             editProfilePage:editProfilePage,
             editProfileShow:editProfileShow,
+            closeVersionPopUp:closeVersionPopUp,
             orgDescMainPage:orgDescMainPage,
             logout: logout
         };

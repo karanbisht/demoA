@@ -15,14 +15,42 @@ app.adminEventCalender = (function () {
         }
     
          var show = function(){
-                                      
+             
+             $('#addEventDesc').removeClass('txtstuff');
+             
              $("#adminCalProcess").show();
              //$("#eventDetailDiv").hide();
-             
-                         
+                                      
              $("#adddatePicker").kendoDatePicker();
              $("#adddateTimePicker").kendoTimePicker();
+             /*$("#addEventDesc").kendoEditor({
+                        tools: [
 
+                        ]
+                    });*/
+             
+             /*$("#editor").kendoEditor();*/
+             
+             
+                 var txt = $('#addEventDesc'),
+                 hiddenDiv = $(document.createElement('div')),
+                 content = null;
+    
+                 txt.addClass('txtstuff');
+                 hiddenDiv.addClass('hiddendiv common');
+
+                 $('body').append(hiddenDiv);
+
+                 txt.on('keyup', function () {
+
+                    content = $(this).val();
+    
+                    content = content.replace(/\n/g, '<br>');
+                    hiddenDiv.html(content + '<br class="lbr">');
+    
+                    $(this).css('height', hiddenDiv.height());
+
+                });
 
              
              document.getElementById("eventDetailDiv").style.display = "none";

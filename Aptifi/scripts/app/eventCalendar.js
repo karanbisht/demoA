@@ -153,21 +153,6 @@ app.eventCalender = (function () {
              $("#calendar").kendoCalendar({
              value:new Date(),
              dates:tasks,
-             month:{
-             content:
-                //'#console.log(data.date);#' +
-                //'#console.log(data.dates);#' +
-                //'#console.log(typeof data.dates[+data.date]);#' +                 
-                '# if (typeof data.dates[+data.date] === "string" ) { #' +
-                '<div style="color:rgb(103,152,189);"><u>' +
-                '#= data.value #' +
-                '</u></div>'+
-                '# } else { #' +
-                '#= data.value #' +
-
-                '# } #'
-                 
-            },
                //footer: false,
               change: selectedDataByUser,              
               

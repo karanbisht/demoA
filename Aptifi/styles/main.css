@@ -73,7 +73,8 @@
     border: 0 none;
     background-color: #7FBF4D;
     color: #fff;
-    font-family: "Open Sans", sans-serif;
+    /*font-family: "Open Sans", sans-serif;*/
+    font-family: Arial, Helvetica, sans-serif;
     overflow-y:hidden;
 
 }
@@ -91,7 +92,7 @@
     -o-background-size: cover;
     background-size: cover;
     color: #2A3144;
-    font-family: "Open Sans", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -105,7 +106,7 @@
     -o-background-size: cover;
     background-size: cover;
     color: #2A3144;
-    font-family: "Open Sans", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -118,7 +119,7 @@
     -webkit-background-size: none;
     -moz-background-size: none;
     -o-background-size: none;
-    font-family: "Open Sans", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -130,7 +131,7 @@
     -webkit-background-size: none;
     -moz-background-size: none;
     -o-background-size: none;
-    font-family: "Open Sans", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -1677,16 +1678,16 @@ input.largerCheckbox
     text-align:center;
 }
 
-.k-calendar .k-state-selected { background: #7FBF4D;color:#ffffff;border-color:#7FBF4D;}
-.k-calendar .k-state-selected .k-state-hover { background: #7FBF4D;}
-.k-calendar .k-state { background: #7FBF4D; }
-.k-calendar a.k-state { background: #7FBF4D; } 
+.k-calendar .k-state-selected { background-color: #7FBF4D;color:#ffffff;border-color:#7FBF4D;}
+.k-calendar .k-state-selected .k-state-hover { background-color: #7FBF4D;}
+.k-calendar .k-state { background-color: #7FBF4D; }
+.k-calendar a.k-state { background-color: #7FBF4D; } 
  
- #calendar .k-footer {background: #7FBF4D;}
- #calendar .k-header {background: #7FBF4D;}
+ #calendar .k-footer {background-color: #7FBF4D;}
+ #calendar .k-header {background-color: #7FBF4D;}
 
- #admincalendar .k-footer {background: #7FBF4D;}
- #admincalendar .k-header {background: #7FBF4D;}
+ #admincalendar .k-footer {background-color: #7FBF4D;}
+ #admincalendar .k-header {background-color: #7FBF4D;}
 
  
 
@@ -1701,19 +1702,19 @@ input.largerCheckbox
 }
 
 .k-list>.k-state-selected{
-     background: #7FBF4D;
+    background-color: #7FBF4D;
     color:#ffffff;
     border-color:#7FBF4D;   
 }
 
 .k-link>.k-state-selected{
-     background: #7FBF4D;
+    background-color: #7FBF4D;
     color:#ffffff;
     border-color:#7FBF4D;   
 }
 
 .k-state-selected >.k-state-focused{
-    background: #7FBF4D;
+    background-color: #7FBF4D;
     color:#ffffff;
     border-color:#7FBF4D;
 }
@@ -1908,7 +1909,6 @@ input.largerCheckbox
 
 #Aptifi #adminOrgNoti-icon .km-list > li{
     border-color: #eaeced;
-
 }
 
 
@@ -1918,13 +1918,27 @@ input.largerCheckbox
 
 }
 
+.common {
+    width: 100%;
+    min-height: 80px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    border-radius:3px;
+    border-color:#E5E5E5;
+    padding-right:5px;
+    padding-left:5px;
+
+}
+
 .defineTextArea{
-    position: static;
     margin:10px auto 10px auto;   
     padding:10px;
     width:100%;
+    min-height: 50px;
     border-radius:3px;
     border-color:#E5E5E5;
+    overflow: hidden;
     
     /*background-color:rgb(217,244,195);*/
     font-size:15px;
@@ -1934,14 +1948,13 @@ input.largerCheckbox
     width:100%;
     margin:10px auto 10px auto; 
     border-radius:3px;
-       border-color:#E5E5E5;
+    border-color:#E5E5E5;
  
     padding:10px;
     /*background-color:rgb(217,244,195);*/     
 }
 
-.defineTitleText{
-    
+.defineTitleText{    
     color:#676767;
 
 }
@@ -1955,3 +1968,54 @@ input.largerCheckbox
     border-radius:3px;
     list-style-type: none;    
 }
+
+
+.popUpDivToShow{
+    text-align:center;
+    background-color:#ffffff ; 
+    color:#000000;
+    margin:25% auto 25% auto;
+    padding:15px;
+    position:absolute;
+    right:0;
+    left:0;
+    max-width:300px;
+    max-height:300px;
+    border-radius:3px;     
+    border:1px solid #000;
+    display:none;
+    z-index:999;
+    overflow:hidden;
+}
+
+
+
+
+
+.txtstuff {
+    resize: none; /* remove this if you want the user to be able to resize it in modern browsers */
+    overflow: hidden;
+}
+
+.hiddendiv {
+    display: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* future version of deprecated 'word-wrap' */
+}
+
+/* the styles for 'commmon' are applied to both the textarea and the hidden clone */
+/* these must be the same for both */
+/*.common {
+    width: 500px;
+    min-height: 50px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    overflow: hidden;
+}*/
+
+.lbr {
+    line-height: 3px;
+}
+
+
