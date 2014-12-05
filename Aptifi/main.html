@@ -650,7 +650,7 @@
 <!--data-pull-to-refresh="true"-->
 
         
-  <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow">
+  <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow" >
     
       <div id="selectOrgDiv" style="margin:10px 10px 10px 10px;border:none;">      
          <p style="color:#343434;">Select Organization to send Notification</p>      
@@ -785,13 +785,21 @@
         <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>        
       </div>-->
       
-                
+      
+      
       <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Notification Detail :</span> 
-	  <textarea rows="12" class="defineTextArea" id="editEventDesc" placeholder="Write Notification Message to Send ?"></textarea>               
-      <br/>
+	  
+            <br/>
+            <br/>
+
+           <textarea  id="notificationDesc" placeholder="Write Notification Message to Send ?" class="common"></textarea> 
+
+      <!--<textarea rows="12" class="defineTextArea" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>-->               
+
+                  <br/>
+                    <br/>
       
       
-      <textarea id="editor" rows="10" cols="30" style="height:440px"></textarea>
           
       <!--class="largerCheckbox"-->
       
@@ -805,7 +813,7 @@
       
       <div id="selectScheduleDT" style="margin:10px;border-radius:6px;border:1px solid #7FBF4D;padding:10px;display:none;">
 
-          <a style="background:transparent; border:none;float:right" data-icon="sounds" data-align="right" data-role="button" data-bind="click: closeSchedule"></a> 
+          <a style="float:right" data-icon="sounds" data-align="right" data-role="button" data-bind="click: closeSchedule"></a> 
 
           <span style="color:#7FBF4D;text-align:center;">Select Date and Time to schedule Notification</span>
           <br/>          

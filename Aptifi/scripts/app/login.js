@@ -95,8 +95,9 @@ app.Login = (function () {
                 device_type='AP';
              }
                          
-            var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
-            //var device_id = localStorage.getItem("deviceTokenID");            
+            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                              
+            var device_id = localStorage.getItem("deviceTokenID");          
+            alert(device_id);
             console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
@@ -759,6 +760,11 @@ app.Login = (function () {
         var doneVerification = function(){
              //varifiCode='123456';
 
+            
+            
+            
+            
+            
             $(".km-scroll-container").css("-webkit-transform", "");
             
 			var validationCodeId = $("#validationCodeId").val();
@@ -777,8 +783,8 @@ app.Login = (function () {
                 										    device_type='AP';
 									             }
 
-                   var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
-                   //var device_id = localStorage.getItem("deviceTokenID");                          
+                   //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+                   var device_id = localStorage.getItem("deviceTokenID");                          
                    //console.log(device_id);
                     
           var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}       

@@ -2020,3 +2020,46 @@ input.largerCheckbox
 }
 
 
+.km-android input
+{
+    /*-webkit-user-modify: inherit;*/
+    position: static;
+    width: 100%;
+    height: 30px;
+    font-size: 1rem;
+}
+
+
+.km-root .km-on-android input
+{
+    /*-webkit-user-modify: inherit;*/
+    position: static;
+    width: 100%;
+    height: 30px;
+    font-size: 1rem;
+}
+
+
+
+.km-on-android.km-2 .km-list > li,
+.km-on-android.km-3 .km-list > li
+ {
+    bottom: 10000px;
+    -webkit-transform: translatey(10000px);
+    transform: translatey(10000px);
+}
+
+.km-root .km-on-android .km-list > li
+{
+    bottom: auto;
+    -webkit-transform: none;
+    -moz-transform: none;
+}
+
+
+.km-android .km-list > li
+{
+    bottom: auto;
+    -webkit-transform: none;
+    -moz-transform: none;
+}

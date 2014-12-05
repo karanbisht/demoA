@@ -181,10 +181,37 @@ app.sendNotification = (function () {
                                        
         var show = function(e){
             
-            $("#editor").kendoEditor();
+            //var getData = new Date('2014/12/5') / 1000
+            //alert(getData);            
             
             $(".km-scroll-container").css("-webkit-transform", "");
 
+            
+
+            $('#notificationDesc').css('height','80px');
+
+                 var txt = $('#notificationDesc'),
+                 hiddenDiv = $(document.createElement('div')),
+                 content = null;
+    
+                 txt.addClass('txtstuff');
+                 hiddenDiv.addClass('hiddendiv common');
+
+                 $('body').append(hiddenDiv);
+
+                 txt.on('keyup', function () {
+
+                    content = $(this).val();
+    
+                    content = content.replace(/\n/g, '<br>');
+                    hiddenDiv.html(content + '<br class="lbr">');
+    
+                    $(this).css('height', hiddenDiv.height());
+
+                });
+
+            
+            
              noGroup=0;
              noCustomer=0;
              schedule = 0;
@@ -596,7 +623,7 @@ app.sendNotification = (function () {
  
               console.log(tasks);
                  
-              var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks}
+              var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}
  
                             
              var dataSourceSendNotification = new kendo.data.DataSource({
@@ -617,7 +644,11 @@ app.sendNotification = (function () {
            },
            error: function (e) {
                //apps.hideLoading();
+
                console.log(e);
+               
+               alert(JSON.stringify(e));
+               
                //navigator.notification.alert("Please check your internet connection.",
                //function () { }, "Notification", 'OK');
                
