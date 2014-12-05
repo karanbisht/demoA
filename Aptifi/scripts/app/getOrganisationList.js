@@ -1667,7 +1667,8 @@ app.OragnisationList = (function () {
                 $("#appVersionDiv").show();
                 $('#contentDiv').css('background-color', '#636363');
                 $("#settingOptionDiv").hide();
-            var value = app.showAppVersion();
+                var value = app.showAppVersion();
+            alert(value);
                 $("#appVersion").html(value);
         }
         

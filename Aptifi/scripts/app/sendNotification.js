@@ -181,6 +181,8 @@ app.sendNotification = (function () {
                                        
         var show = function(e){
             
+            $("#editor").kendoEditor();
+            
             $(".km-scroll-container").css("-webkit-transform", "");
 
              noGroup=0;
@@ -336,12 +338,25 @@ app.sendNotification = (function () {
          
          
          var getPhotoVal = function(){
-                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
+                    quality: 50,
+                    targetWidth: 300,
+                    targetHeight: 300,
                     destinationType: destinationType.FILE_URI,
                     sourceType: pictureSource.SAVEDPHOTOALBUM });
 
          };
                           
+                  
+         var getTakePhoto = function(){
+                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
+                    quality: 50,
+                    targetWidth: 300,
+                    targetHeight: 300,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: pictureSource.CAMERA,
+                    saveToPhotoAlbum:true});
+         };
 
          var sendNotificationMessage = function () {    
            //alert(dataToSend);undefined
@@ -1072,7 +1087,7 @@ app.sendNotification = (function () {
          };
          
          
-          var getPhoto =function() {
+          /*var getPhoto =function() {
               //alert('123');
               // Retrieve image file location from specified source
               
@@ -1080,17 +1095,9 @@ app.sendNotification = (function () {
                     correctOrientation: true,
                     destinationType : navigator.camera.DestinationType.DATA_URI,
                     sourceType : navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
-                    });
+                    });                            
               
-              
-                  /*navigator.gallery.getPicture(onGallerySuccess, onFail, {
-		                quality : 100,
-		                targetWidth : 800,
-		                targetHeight : 600
-	          	});*/
-              
-              
-          }
+          }*/
                   
           function onPhotoURISuccess(imageURI) {
                   // Uncomment to view the image file URI
@@ -1178,8 +1185,9 @@ app.sendNotification = (function () {
                NextToSeletType:NextToSeletType,
                groupCheckData:groupCheckData,
                onChangeNotiGroup:onChangeNotiGroup,
-               getPhoto:getPhoto,
+               //getPhoto:getPhoto,
                getPhotoVal:getPhotoVal,
+               getTakePhoto:getTakePhoto,
                removeImage:removeImage,
                sendNotificationMessage:sendNotificationMessage
          };

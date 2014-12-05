@@ -1998,6 +1998,7 @@ input.largerCheckbox
 }
 
 .hiddendiv {
+    padding:5px;
     display: none;
     white-space: pre-wrap;
     word-wrap: break-word;

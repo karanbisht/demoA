@@ -16,8 +16,13 @@ app.adminEventCalender = (function () {
     
          var show = function(){
              
-             $('#addEventDesc').removeClass('txtstuff');
-             
+             //$('#addEventDesc').removeClass('txtstuff');
+
+             /*hiddenDiv = $(document.createElement('div')),
+             hiddenDiv.removeClass('hiddendiv common');
+             $('body').remove(hiddenDiv);*/
+
+
              $("#adminCalProcess").show();
              //$("#eventDetailDiv").hide();
                                       
@@ -32,25 +37,6 @@ app.adminEventCalender = (function () {
              /*$("#editor").kendoEditor();*/
              
              
-                 var txt = $('#addEventDesc'),
-                 hiddenDiv = $(document.createElement('div')),
-                 content = null;
-    
-                 txt.addClass('txtstuff');
-                 hiddenDiv.addClass('hiddendiv common');
-
-                 $('body').append(hiddenDiv);
-
-                 txt.on('keyup', function () {
-
-                    content = $(this).val();
-    
-                    content = content.replace(/\n/g, '<br>');
-                    hiddenDiv.html(content + '<br class="lbr">');
-    
-                    $(this).css('height', hiddenDiv.height());
-
-                });
 
              
              document.getElementById("eventDetailDiv").style.display = "none";
@@ -218,6 +204,29 @@ app.adminEventCalender = (function () {
             var date = kendo.toString(this.value(), 'd'); 
             
             date2 = kendo.toString(this.value(), 'd'); 
+            
+ 
+                 $('#addEventDesc').css('height','80px');
+
+                 var txt = $('#addEventDesc'),
+                 hiddenDiv = $(document.createElement('div')),
+                 content = null;
+    
+                 txt.addClass('txtstuff');
+                 hiddenDiv.addClass('hiddendiv common');
+
+                 $('body').append(hiddenDiv);
+
+                 txt.on('keyup', function () {
+
+                    content = $(this).val();
+    
+                    content = content.replace(/\n/g, '<br>');
+                    hiddenDiv.html(content + '<br class="lbr">');
+    
+                    $(this).css('height', hiddenDiv.height());
+
+                });
 
  
             multipleEventArray=[];

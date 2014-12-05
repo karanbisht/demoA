@@ -789,6 +789,9 @@
       <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Notification Detail :</span> 
 	  <textarea rows="12" class="defineTextArea" id="editEventDesc" placeholder="Write Notification Message to Send ?"></textarea>               
       <br/>
+      
+      
+      <textarea id="editor" rows="10" cols="30" style="height:440px"></textarea>
           
       <!--class="largerCheckbox"-->
       
@@ -818,11 +821,6 @@
           </div>
     
       </div>
-      
-      
-
-            
-            
         
             
      <!--<li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
@@ -839,13 +837,17 @@
        <div id="sendNotiDiv" data-role="footer" style="background-color: #2e2e2e;padding:5px;padding-bottom:3px; display:none;">
         <div style="display:inline;padding:3px;">
 
-            <a style="background:transparent; border:none;;float:left" data-icon="toprated" data-align="left" data-role="button" data-bind="click: getPhotoVal"></a> 
+            <!--<a style="background:transparent; border:none;;float:left" data-icon="toprated" data-align="left" data-role="button" data-bind="click: getPhotoVal"></a>--> 
+
+            <a style="background:transparent; border:none;;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#inboxActions" ></a>
 
             <img id="largeImage" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
             
-            <span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;height:30px; width:30px;background-color: transparent;border:none;display:none;">  
+            <a id="removeAttachment" style="background:transparent; border:none;display:none;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a> 
+
+            <!--<span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;height:30px; width:30px;background-color: transparent;border:none;display:none;">  
                  <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
-            </span>
+            </span>-->
             
            <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
 
@@ -853,6 +855,12 @@
 
         </div>
       </div> 
+      
+        <ul data-role="actionsheet" id="inboxActions">
+            <li class="km-actionsheet-title"></li>
+            <li><a href="#" data-role="button" data-bind="click: getTakePhoto">Take Photo</a></li>
+            <li><a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a></li>
+        </ul>
       
  </div>
         

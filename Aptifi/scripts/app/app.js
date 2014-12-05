@@ -18,10 +18,14 @@ var app = (function (win) {
     
 
     var showAppVersion = function() {
-        
+        var versionData;
         cordova.getAppVersion(function(version) {
-             showAlert("Current App Version: " + version , "App Version");
+             //showAlert("Current App Version: " + version , "App Version");
+            versionData=version;
         });
+        
+        return versionData;
+        
      }
 
     
