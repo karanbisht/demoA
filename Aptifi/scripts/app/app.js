@@ -1137,6 +1137,8 @@ var app = (function (win) {
       'direction': direction,
       'duration': 800,
       'slowdownfactor' : slowdownfactor,
+      'iosdelay'       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
+      'androiddelay'   :  150,   
       'href': hrf
     };
     window.plugins.nativepagetransitions.slide(
