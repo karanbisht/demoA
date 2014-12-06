@@ -1,76 +1,67 @@
 <div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show" data-after-show="app.replyedCustomer.afterShow">
-      <div data-role="header">        
-           <div data-role="navbar">      
-               Customer
-               <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
-               <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
-               <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-    	   </div>
-	  </div>
-	
-             <div class="loader" id="loaderReplyCustomer" style="display:none;margin-top:50%">
-                      <div class="ball"></div>
-                      <!--<div class="loading1">Loading...</div>-->
-             </div>
+    <div data-role="header">
+        <div data-role="navbar">
+            Customer
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
+        </div>
+    </div>
 
-    
-	 <div>
-    	<ul id="reply-customer-listview"  data-style="inset" data-role="listview"  data-template="replyCustomerTemplate" data-bind="source: activities"></ul>
-	         <p id="no-Group-span" hidden="hidden" class="no-items-msg">
-	     	   <b>You have no Notification for you.</b>
-        	 </p>
- 	</div> 
+    <div class="loader" id="loaderReplyCustomer" style="display:none;margin-top:50%">
+        <div class="ball"></div>
+        <!--<div class="loading1">Loading...</div>-->
+    </div>
+
+    <div>
+        <ul id="reply-customer-listview"  data-style="inset" data-role="listview"  data-template="replyCustomerTemplate" data-bind="source: activities"></ul>
+        <p id="no-Group-span" hidden="hidden" class="no-items-msg">
+            <b>You have no Notification for you.</b>
+        </p>
+    </div> 
          
 </div>
 
-
-
-	<script type="text/x-kendo-template" id="replyCustomerTemplate">
+<script type="text/x-kendo-template" id="replyCustomerTemplate">
         
-        #if(customerID!==0){#
-			<div class="cf" data-role="touch" data-bind="events: { tap: customerSelected }">
-        		<div class="user-avatar">
-					<img src="styles/images/avatar1.png"/>
-        		</div>
-               <div class="activity-content" style="margin-left:5px">
-       		     <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
-                    <a id=""  style="color:rgb(188,188,188);" >${comment}</a>            			            
-                    
-        	   </div>
-			</div>
+    #if (customerID!==0) {#
+        <div class="cf" data-role="touch" data-bind="events: { tap: customerSelected }">
+            <div class="user-avatar">
+                <img src="styles/images/avatar1.png"/>
+            </div>
+            <div class="activity-content" style="margin-left:5px">
+                <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
+                <a id=""  style="color:rgb(188,188,188);" >${comment}</a>
+            </div>
+        </div>
+    #}else {#
+        <div class="cf" data-role="touch">
+            <div class="user-avatar">
+                <img src="styles/images/avatar1.png"/>
+            </div>
+            <div class="activity-content" style="margin-left:5px">
+                <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
+                <a id=""  style="color:rgb(188,188,188);" >${comment}</a>
+            </div>
+        </div> 
+    #}#    
+</script>
         
-       #}else{#
-           
-            <div class="cf" data-role="touch">
-        		<div class="user-avatar">
-					<img src="styles/images/avatar1.png"/>
-        		</div>
-               <div class="activity-content" style="margin-left:5px">
-       		     <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
-                    <a id=""  style="color:rgb(188,188,188);" >${comment}</a>            			            
-                    
-        	   </div>
-			</div> 
-            
-        #}#    
-	</script>
-
-
- <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="margin-top:40%;border:none">
-
-                 <div class="error-avatar">
-					    <img src="styles/images/error.png"/>
-        		</div>
-
-                 <div class="error-content">
-               		  <h5 style="color:rgb();text-align:center" >${message}</h5>
-     
-                      <p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
-                          Try Again
-                      </p>
-
-                 </div>
-             </div>
+<script type="text/x-kendo-template" id="errorTemplate">    		
+    <div class="cf" style="margin-top:40%;border:none">
     
+        <div class="error-avatar">
+            <img src="styles/images/error.png"/>
+        </div>
+    
+        <div class="error-content">
+            <h5 style="color:rgb();text-align:center" >${message}</h5>
+            
+            <p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
+                Try Again
+            </p>
+            
+        </div>
+    </div>
+                
 </script>

@@ -2,819 +2,726 @@ var app = app || {};
 
 app.adminOragnisationList = (function () {
     'use strict'
- //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
+    //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
- var activitiesDataSource;   
- var validator;
- var account_Id;
+    var activitiesDataSource;   
+    var validator;
+    var account_Id;
     
- var loginType,groupId,userId;
+    var loginType, groupId, userId;
   
- 		   var userlName;
-            var userfName;
-            var userMobile;
-            var userEmail;
-            var userOrgName;
-            var userGropuName;   
-            var tabstrip1;
+    var userlName;
+    var userfName;
+    var userMobile;
+    var userEmail;
+    var userOrgName;
+    var userGropuName;   
+    var tabstrip1;
 
-        var organisationViewModel = (function () {
-            
-        var beforeShow=function(){
-           var db = app.getDb();
-		   db.transaction(getDataOrg, app.errorCB, showLiveData);   
+    var organisationViewModel = (function () {
+        var beforeShow = function() {
+            var db = app.getDb();
+            db.transaction(getDataOrg, app.errorCB, showLiveData);   
         };
-            
     
-        var getDataOrg = function(tx){
-            	var query = "SELECT * FROM ADMIN_ORG";
-				app.selectQuery(tx, query, getDataSuccess);
+        var getDataOrg = function(tx) {
+            var query = "SELECT * FROM ADMIN_ORG";
+            app.selectQuery(tx, query, getDataSuccess);
             
-               var db = app.getDb();
-               db.transaction(updateProfileTab,app.errorCB,app.successCB);
+            var db = app.getDb();
+            db.transaction(updateProfileTab, app.errorCB, app.successCB);
+        };
+        
+        var updateProfileTab = function(tx) {
+            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=1';
+            app.updateQuery(tx, query);
         };
             
+        var groupDataShow = [];
+        var totalCount = 0;
+        var bagCount = 0;
+        var bagCount1 = 0;
+            
+        var ShowBagCount = 0;    
         
-        var updateProfileTab = function(tx){
-                var query = 'UPDATE PROFILE_INFO SET Admin_login_status=1';
-            	app.updateQuery(tx, query);
-        };
+        function getDataSuccess(tx, results) {                        
+            groupDataShow = [];
             
-        var groupDataShow=[];
-        var totalCount=0;
-        var bagCount=0;
-        var bagCount1=0;
-
-            
-        var ShowBagCount=0;    
-        
-            function getDataSuccess(tx, results) {                        
-            groupDataShow=[];
-            
-			var count = results.rows.length;                    		            
-               if (count !== 0) {                
-                   
-            	    for(var i =0 ; i<count ; i++){                
-                        totalCount=results.rows.item(i).count + totalCount;
+            var count = results.rows.length;                    		            
+            if (count !== 0) {                
+                for (var i = 0 ; i < count ; i++) {                
+                    totalCount = results.rows.item(i).count + totalCount;
                         
-                        bagCount1=results.rows.item(i).bagCount;                        
-                        if(bagCount1===null || bagCount1==="null"){
-                            bagCount1=0;
-                        }
-                        
-                        bagCount=bagCount1+bagCount;
-                                    groupDataShow.push({
-												 orgName: results.rows.item(i).org_name,
-        		                                 orgDesc: results.rows.item(i).orgDesc,
-                                                 organisationID:results.rows.item(i).org_id,
-                                                 org_logo:results.rows.item(i).imageSource,
-                                                 imageSource:results.rows.item(i).imageSource,
-		                                         count:results.rows.item(i).count					
-                                       });
+                    bagCount1 = results.rows.item(i).bagCount;                        
+                    if (bagCount1===null || bagCount1==="null") {
+                        bagCount1 = 0;
                     }
+                        
+                    bagCount = bagCount1 + bagCount;
+                    groupDataShow.push({
+                                           orgName: results.rows.item(i).org_name,
+                                           orgDesc: results.rows.item(i).orgDesc,
+                                           organisationID:results.rows.item(i).org_id,
+                                           org_logo:results.rows.item(i).imageSource,
+                                           imageSource:results.rows.item(i).imageSource,
+                                           count:results.rows.item(i).count					
+                                       });
+                }
                    
-                   ShowBagCount=totalCount-bagCount;
-                   //tabstrip1.badge(1, ShowBagCount);
-
-
-               }else{
-                       totalCount=0;
-                                     groupDataShow.push({
-                                         orgName: 'Welcome to Aptifi',
-                                         orgDesc: 'You are not a customer of any organization',
-                                         organisationID:'0',
-                                         org_logo:null,
-                                         imageSource:null,
-                                         count : 0    
-    	                               });          
-               }
-  
-             }               
+                ShowBagCount = totalCount - bagCount;
+                //tabstrip1.badge(1, ShowBagCount);
+            }else {
+                totalCount = 0;
+                groupDataShow.push({
+                                       orgName: 'Welcome to Aptifi',
+                                       orgDesc: 'You are not a customer of any organization',
+                                       organisationID:'0',
+                                       org_logo:null,
+                                       imageSource:null,
+                                       count : 0    
+                                   });          
+            }
+        }               
             
-            
-            
-             var showLiveData = function(){
-                //console.log('Hello');
-                console.log(groupDataShow);
-                $("#progressAdmin").hide();
- 
+        var showLiveData = function() {
+            //console.log('Hello');
+            console.log(groupDataShow);
+            $("#progressAdmin").hide();
                 
-                 //alert('LiveShow');
+            //alert('LiveShow');
                  
-                 var organisationListDataSource = new kendo.data.DataSource({
-                      data: groupDataShow
-                  });           
-
+            var organisationListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });           
                 
-             $("#admin-org-listview").kendoMobileListView({
-  		    template: kendo.template($("#adminOrganisationTemplate").html()),    		
-     		 dataSource: organisationListDataSource
-             });
+            $("#admin-org-listview").kendoMobileListView({
+                                                             template: kendo.template($("#adminOrganisationTemplate").html()),    		
+                                                             dataSource: organisationListDataSource
+                                                         });
                
-              $("#progressAdmin").hide();
-              $('#admin-org-listview').data('kendoMobileListView').refresh();
-                
+            $("#progressAdmin").hide();
+            $('#admin-org-listview').data('kendoMobileListView').refresh();
                
-               if(!app.checkConnection()){
-                  if(!app.checkSimulator()){
-                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                  }else{
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                  } 
-               }
-
-                 
-            };
-    
+                } 
+            }
+        };
             
-        var init = function(){
-           app.MenuPage=false;
-           app.userPosition=false;
+        var init = function() {
+            app.MenuPage = false;
+            app.userPosition = false;
         };
 
-         var show = function(e){
+        var show = function(e) {
             //alert('show');
-             
-            localStorage.setItem("loginStatusCheck",2);
+            localStorage.setItem("loginStatusCheck", 2);
  
             /*var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
-	   	 tabStrip.switchTo("#view-all-activities-admin");
+            tabStrip.switchTo("#view-all-activities-admin");
 
             tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");*/
  
-            groupDataShow=[];
-            joinOrgID=[]; 
+            groupDataShow = [];
+            joinOrgID = []; 
              
-                 totalCount=0;
-                 bagCount=0;
-                 bagCount1=0;
-
+            totalCount = 0;
+            bagCount = 0;
+            bagCount1 = 0;
   
-           $(".km-scroll-container").css("-webkit-transform", "");
-           $("#progressAdmin").show();             
-               app.MenuPage=false;
-               app.userPosition=false;
-               //app.mobileApp.pane.loader.hide();
+            $(".km-scroll-container").css("-webkit-transform", "");
+            $("#progressAdmin").show();             
+            app.MenuPage = false;
+            app.userPosition = false;
+            //app.mobileApp.pane.loader.hide();
                                      
-               //account_Id = e.view.params.account_Id;
-               account_Id = localStorage.getItem("ACCOUNT_ID");
-               //alert(account_Id);
-             
+            //account_Id = e.view.params.account_Id;
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            //alert(account_Id);
 
             var organisationListDataSource = new kendo.data.DataSource({
-            transport: {
-               read: {
-                   url: app.serverUrl()+"organisation/managableOrg/"+account_Id,
-                   type:"POST",
-                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-              	}
-              },
-       	 schema: {                                
-                 data: function(data)
-                   {	
-                       var datacheck=0;
-                       var allData=0;
-                       
-                       //console.log(data);
-               	    //return [data];
-                       
-                                    $.each(data, function(i, groupValue) {
-                                        //alert("IN");
-                                             console.log(groupValue);   
-                                            if(groupValue[0].Msg ==='No Orgnisation to manage'){     
-
-                                                //beforeShow();
-                                                
-                                                if(!app.checkSimulator()){
-                                                     window.plugins.toast.showLongBottom('No Organization to Manage.');  
-                                                }else{
-                                                     app.showAlert('No Organization to Manage.' , 'Notification');  
-                                                }
-
-
-                                                app.mobileApp.navigate('#organisationNotiList');
-                                                
-                                            }else if(groupValue[0].Msg==='Success'){
-                                                    console.log(groupValue[0].orgData.length);  
-                                                    var adminOrgInformation = groupValue[0].orgData;
-                                                    var adminIncomMsg = groupValue[0].last;
-                                                    saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
-                                            }
-                                     });
-                                	return [data];
-                   }                                                            
+                                                                           transport: {
+                    read: {
+                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
+                                                                                       type:"POST",
+                                                                                       dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                   }
                 },
-	            error: function (e) {
-    	           console.log(e);
+                                                                           schema: {                                
+                    data: function(data) {	
+                        var datacheck = 0;
+                        var allData = 0;
+                       
+                        //console.log(data);
+                        //return [data];
+                       
+                        $.each(data, function(i, groupValue) {
+                            //alert("IN");
+                            console.log(groupValue);   
+                            if (groupValue[0].Msg ==='No Orgnisation to manage') {     
+                                //beforeShow();
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom('No Organization to Manage.');  
+                                }else {
+                                    app.showAlert('No Organization to Manage.' , 'Notification');  
+                                }
 
-                               $("#progressAdmin").hide();             
+                                app.mobileApp.navigate('#organisationNotiList');
+                            }else if (groupValue[0].Msg==='Success') {
+                                console.log(groupValue[0].orgData.length);  
+                                var adminOrgInformation = groupValue[0].orgData;
+                                var adminIncomMsg = groupValue[0].last;
+                                saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
+                            }
+                        });
+                        return [data];
+                    }                                                            
+                },
+                                                                           error: function (e) {
+                                                                               console.log(e);
 
-                    beforeShow();
-                                     if(!app.checkSimulator()){
-                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-                                     }else{
-                                      app.showAlert("Network problem . Please try again later","Notification");  
-                                     }
-  
-            	}	        
-    	     });
+                                                                               $("#progressAdmin").hide();             
+
+                                                                               beforeShow();
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                               }else {
+                                                                                   app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                               }
+                                                                           }	        
+                                                                       });
                         
             organisationListDataSource.fetch(function() {
-                 /*
+                /*
                 var loginAdminDataView = organisationListDataSource.data();
-                             $.each(loginAdminDataView, function(i, groupValue) {
-                                  console.log(groupValue);                                     
-                   	             if(groupValue.status[0].Msg ==='Not a customer to any organisation'){     
-
-                                    }else if(groupValue.status[0].Msg==='Success'){
-                                        console.log(groupValue.status[0].orgData.length);  
-                                        var adminOrgInformation = groupValue.status[0].orgData;
-                                        saveAdminOrgInfo(adminOrgInformation); 
-                                    }
-                                 });
+                $.each(loginAdminDataView, function(i, groupValue) {
+                console.log(groupValue);                                     
+                if(groupValue.status[0].Msg ==='Not a customer to any organisation'){     
+                }else if(groupValue.status[0].Msg==='Success'){
+                console.log(groupValue.status[0].orgData.length);  
+                var adminOrgInformation = groupValue.status[0].orgData;
+                saveAdminOrgInfo(adminOrgInformation); 
+                }
+                });
                 */
- 		   });
-
+            });
         };
                         
         var adminOrgProfileData;        
         var adminIncomMsgData;  
             
-        function saveAdminOrgInfo(data1 , data2 ) {
+        function saveAdminOrgInfo(data1 , data2) {
             adminOrgProfileData = data1;  
             adminIncomMsgData = data2;
 
             var db = app.getDb();
-			db.transaction(getAdminOrgIdFmDB, app.errorCB, nowGetLiveData);        
+            db.transaction(getAdminOrgIdFmDB, app.errorCB, nowGetLiveData);        
+        };
 
-		};
-
-        var userOrgIdArray=[];
+        var userOrgIdArray = [];
 
         var joinOrgID = [];
                     
-        var getAdminOrgIdFmDB = function(tx){
+        var getAdminOrgIdFmDB = function(tx) {
             var query = 'SELECT org_id FROM ADMIN_ORG';
-			app.selectQuery(tx, query, getOrgDataSuccess);   
+            app.selectQuery(tx, query, getOrgDataSuccess);   
         } 
         
-        
-       function getOrgDataSuccess(tx, results){
-                  var count = results.rows.length;
-                 joinOrgID = [];
-		          if (count !== 0) {
-                     for(var i=0;i<count;i++){
-                           joinOrgID.push(parseInt(results.rows.item(i).org_id));
-			         }
-                  }
-       }
-
+        function getOrgDataSuccess(tx, results) {
+            var count = results.rows.length;
+            joinOrgID = [];
+            if (count !== 0) {
+                for (var i = 0;i < count;i++) {
+                    joinOrgID.push(parseInt(results.rows.item(i).org_id));
+                }
+            }
+        }
             
-       var nowGetLiveData = function(){       
-			var db = app.getDb();
-			db.transaction(insertAdminOrgInfo, app.errorCB, beforeShow);
-       } 
-     
+        var nowGetLiveData = function() {       
+            var db = app.getDb();
+            db.transaction(insertAdminOrgInfo, app.errorCB, beforeShow);
+        } 
 
-      function insertAdminOrgInfo(tx){
-        userOrgIdArray=[];
-          //var query = "DELETE FROM ADMIN_ORG";
-	  	//app.deleteQuery(tx, query);
+        function insertAdminOrgInfo(tx) {
+            userOrgIdArray = [];
+            //var query = "DELETE FROM ADMIN_ORG";
+            //app.deleteQuery(tx, query);
 
-          console.log(adminOrgProfileData);
+            console.log(adminOrgProfileData);
 
-          var dataLength = adminOrgProfileData.length;
-          console.log(dataLength);
-       
+            var dataLength = adminOrgProfileData.length;
+            console.log(dataLength);
 
-          //alert(dataLength);
-          console.log("------------------DATA---------------------");
-          console.log(joinOrgID);
+            //alert(dataLength);
+            console.log("------------------DATA---------------------");
+            console.log(joinOrgID);
           
-         for(var i=0;i<dataLength;i++){       
-                                 
-           userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
+            for (var i = 0;i < dataLength;i++) {       
+                userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
-             console.log(adminOrgProfileData[i].organisationID);
-             adminOrgProfileData[i].organisationID=parseInt(adminOrgProfileData[i].organisationID);
+                console.log(adminOrgProfileData[i].organisationID);
+                adminOrgProfileData[i].organisationID = parseInt(adminOrgProfileData[i].organisationID);
 
-          var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgID);           
+                var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgID);           
 		  
-             //alert(JSON.stringify(joinOrgID));
-             //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
+                //alert(JSON.stringify(joinOrgID));
+                //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
          
-         if (pos === -1) {              
-             //alert("insert");
-             joinOrgID.push(adminOrgProfileData[i].organisationID);      
+                if (pos === -1) {              
+                    //alert("insert");
+                    joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
+                    var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
 
-           var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
-
-           if(first_login===0){
-
-             var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
-				+ adminOrgProfileData[i].organisationID
-				+ '","'
-				+ adminOrgProfileData[i].org_name
-				+ '","'
-				+ adminOrgProfileData[i].role
-           	 + '","'
-				+ adminOrgProfileData[i].org_logo
-                + '","'
-				+ adminOrgProfileData[i].org_desc
-                + '","'
-				+ adminIncomMsgData[i].total    
-                + '")';              
-            app.insertQuery(tx, query);
-           
-           }else{               
-
-                              
-                localStorage.setItem("ADMIN_FIRST_LOGIN",0); 
+                    if (first_login===0) {
+                        var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
+                                    + adminOrgProfileData[i].organisationID
+                                    + '","'
+                                    + adminOrgProfileData[i].org_name
+                                    + '","'
+                                    + adminOrgProfileData[i].role
+                                    + '","'
+                                    + adminOrgProfileData[i].org_logo
+                                    + '","'
+                                    + adminOrgProfileData[i].org_desc
+                                    + '","'
+                                    + adminIncomMsgData[i].total    
+                                    + '")';              
+                        app.insertQuery(tx, query);
+                    }else {               
+                        localStorage.setItem("ADMIN_FIRST_LOGIN", 0); 
                
-                var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
-				+ adminOrgProfileData[i].organisationID
-				+ '","'
-				+ adminOrgProfileData[i].org_name
-				+ '","'
-				+ adminOrgProfileData[i].role
-           	 + '","'
-				+ adminOrgProfileData[i].org_logo
-                + '","'
-				+ adminOrgProfileData[i].org_desc
-                + '","'
-				+ adminIncomMsgData[i].total    
-                + '","'
-				+ adminIncomMsgData[i].total    
-                + '")';              
-                app.insertQuery(tx, query);
- 
-           }    
-                                        
-         }else{        
-               //alert("update");
-              // alert(adminOrgProfileData[i].org_name);               
-                    var queryUpdate = "UPDATE ADMIN_ORG SET org_name='"+adminOrgProfileData[i].org_name+"',orgDesc='"+adminOrgProfileData[i].org_desc+"',imageSource='"+adminOrgProfileData[i].org_logo+"',count='"+adminIncomMsgData[i].total+"' where org_id="+adminOrgProfileData[i].organisationID;
+                        var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
+                                    + adminOrgProfileData[i].organisationID
+                                    + '","'
+                                    + adminOrgProfileData[i].org_name
+                                    + '","'
+                                    + adminOrgProfileData[i].role
+                                    + '","'
+                                    + adminOrgProfileData[i].org_logo
+                                    + '","'
+                                    + adminOrgProfileData[i].org_desc
+                                    + '","'
+                                    + adminIncomMsgData[i].total    
+                                    + '","'
+                                    + adminIncomMsgData[i].total    
+                                    + '")';              
+                        app.insertQuery(tx, query);
+                    }    
+                }else {        
+                    //alert("update");
+                    // alert(adminOrgProfileData[i].org_name);               
+                    var queryUpdate = "UPDATE ADMIN_ORG SET org_name='" + adminOrgProfileData[i].org_name + "',orgDesc='" + adminOrgProfileData[i].org_desc + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
                     app.updateQuery(tx, queryUpdate);                                        
-         }                      
-                               
-       }            
-          checkDeletedData();
-     }         
-            
-            
+                }                      
+            }            
+            checkDeletedData();
+        }         
             
         var orgIdToDel;
-        var checkDeletedData = function(){
-                        
+        var checkDeletedData = function() {
             var liveIdLength;
             var dbIdLength;
             
-            liveIdLength=userOrgIdArray.length;
-            dbIdLength=joinOrgID.length;
+            liveIdLength = userOrgIdArray.length;
+            dbIdLength = joinOrgID.length;
             
             //alert(JSON.stringify(userOrgIdArray));
             
-            for(var i=0;i<dbIdLength;i++){
-              
-               //alert(JSON.stringify(joinOrgID[i]));
-                
-               var dataVal = userOrgIdArray.indexOf(joinOrgID[i]);
-               //alert(dataVal);
+            for (var i = 0;i < dbIdLength;i++) {
+                //alert(JSON.stringify(joinOrgID[i]));
+                var dataVal = userOrgIdArray.indexOf(joinOrgID[i]);
+                //alert(dataVal);
                 //var pos = $.inArray(joinOrgID[i], userLiveOrgIdArray[j]);           
   
-                if(dataVal===-1){
-                        orgIdToDel=joinOrgID[i];
-                        var db = app.getDb();
-                        db.transaction(delOrgDataId, app.errorCB,app.successCB);                          
+                if (dataVal===-1) {
+                    orgIdToDel = joinOrgID[i];
+                    var db = app.getDb();
+                    db.transaction(delOrgDataId, app.errorCB, app.successCB);                          
                 } 
-
             }            
         }
 
-         function delOrgDataId(tx) {
-                var query = "DELETE FROM ADMIN_ORG where org_id="+orgIdToDel;
-        	    app.deleteQuery(tx, query);
+        function delOrgDataId(tx) {
+            var query = "DELETE FROM ADMIN_ORG where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query);
              
-                var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id="+orgIdToDel;
-        	    app.deleteQuery(tx, query);
-         } 
-            
-            
-            
+            var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query);
+        } 
             
         /*var offlineQueryDB = function(tx){
-            var query = 'SELECT * FROM GetNotification';
-			app.selectQuery(tx, query, offlineTestQuerySuccess);
+        var query = 'SELECT * FROM GetNotification';
+        app.selectQuery(tx, query, offlineTestQuerySuccess);
         };
         
         var offlineTestQuerySuccess = function(tx, results) {
-            $("#activities-listview").empty();
-			var count = results.rows.length;
-			if (count !== 0) {
-				for (var i = 0; i < count; i++) {
-					var Title = results.rows.item(i).Title;
-					var Message = results.rows.item(i).Message;
-					var CreatedAt = results.rows.item(i).CreatedAt; 
-                    var template;
+        $("#activities-listview").empty();
+        var count = results.rows.length;
+        if (count !== 0) {
+        for (var i = 0; i < count; i++) {
+        var Title = results.rows.item(i).Title;
+        var Message = results.rows.item(i).Message;
+        var CreatedAt = results.rows.item(i).CreatedAt; 
+        var template;
                     
-                    //if(i===0){
-                      //  template = kendo.template($("#activityTemplate").html());
-       			//	 $("#activities-listview").html(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
-                    //    $("#activities-listview").on('click', offlineActivitySelected);
-       			 //}else{
+        //if(i===0){
+        //  template = kendo.template($("#activityTemplate").html());
+        //	 $("#activities-listview").html(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
+        //    $("#activities-listview").on('click', offlineActivitySelected);
+        //}else{
 
-	                template = kendo.template($("#activityTemplate").html());
-					$("#activities-listview").append(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
-					kendo.bind($('#activityTemplate'), activitiesDataSource);
-                    //}
-                 }
-       		}else{
-                   	$("#activities-listview").html("You are Currently Offline and data not available in local storage");
-               }
+        template = kendo.template($("#activityTemplate").html());
+        $("#activities-listview").append(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
+        kendo.bind($('#activityTemplate'), activitiesDataSource);
+        //}
+        }
+        }else{
+        $("#activities-listview").html("You are Currently Offline and data not available in local storage");
+        }
         };
                  
         var CreatedAtFormatted = function(value){
-            return app.helper.formatDate(value);
+        return app.helper.formatDate(value);
         };
 
-		var offlineQueryDBSuccess = function(){
-            console.log("Query Success");
+        var offlineQueryDBSuccess = function(){
+        console.log("Query Success");
         };
         */
     
         var organisationSelected = function (e) {
-            var organisationID=e.data.organisationID;
+            var organisationID = e.data.organisationID;
             //uid=' + e.data.uid
-			app.MenuPage=false;
-            localStorage.setItem("orgSelectAdmin",organisationID);
-            localStorage.setItem("orgNameAdmin",e.data.orgName);
-            localStorage.setItem("orgDescAdmin",e.data.orgDesc);
+            app.MenuPage = false;
+            localStorage.setItem("orgSelectAdmin", organisationID);
+            localStorage.setItem("orgNameAdmin", e.data.orgName);
+            localStorage.setItem("orgDescAdmin", e.data.orgDesc);
 
-            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID +'&account_Id='+account_Id+'&orgName='+e.data.orgName+'&orgDesc='+e.data.orgDesc);
+            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + e.data.orgName + '&orgDesc=' + e.data.orgDesc);
         };
         
         var groupSelected = function (e) {
-            console.log("karan Bisht"+e);
-			app.MenuPage=false;	
+            console.log("karan Bisht" + e);
+            app.MenuPage = false;	
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
          
         var offlineActivitySelected = function (i) {
             console.log(i);
-			app.MenuPage=false;	
+            app.MenuPage = false;	
             console.log("click");
             //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
         
-        
         var notificationSelected = function (e) {
-			app.MenuPage=false;	
+            app.MenuPage = false;	
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
 
         // Navigate to app home
         var navigateHome = function () {
-            app.MenuPage=false;
+            app.MenuPage = false;
             app.mobileApp.navigate('#welcome');
         };
         
-        var inAppBrowser= function() {
-            app.MenuPage=false;
-            window.open('http://www.sakshay.in','_blank');
+        var inAppBrowser = function() {
+            app.MenuPage = false;
+            window.open('http://www.sakshay.in', '_blank');
         };
                         
-        var makeCall = function(){
-            app.MenuPage=false;
+        var makeCall = function() {
+            app.MenuPage = false;
             document.location.href = 'tel:+91-971-781-8898';
         };
        
-        var about = function(){
-             app.MenuPage=false;
-             //document.location.href="#view-all-notification";
-             //document.location.href="views/MessageChatLayout.html";
-             document.location.href="#infoDiv";
+        var about = function() {
+            app.MenuPage = false;
+            //document.location.href="#view-all-notification";
+            //document.location.href="views/MessageChatLayout.html";
+            document.location.href = "#infoDiv";
         };
         
-        
-        var manageGroup =function(){
-            app.MenuPage=false;	
+        var manageGroup = function() {
+            app.MenuPage = false;	
             //app.mobileApp.pane.loader.show();
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         
-        var setting = function(){
-             app.MenuPage=false;
-             document.location.href="#settingDiv";
+        var setting = function() {
+            app.MenuPage = false;
+            document.location.href = "#settingDiv";
         };       
-        
               
-        var refreshButton = function(){
-            
+        var refreshButton = function() {
         };
                 
-        var info = function(){
-            
+        var info = function() {
         };
         
-        var orgShow = function(){
-          app.MenuPage=false;
+        var orgShow = function() {
+            app.MenuPage = false;
             
-          var orgDataSource= [];   
-          var userOrgName = localStorage.getItem("userOrgName"); 
-          console.log(userOrgName);
+            var orgDataSource = [];   
+            var userOrgName = localStorage.getItem("userOrgName"); 
+            console.log(userOrgName);
           
-          //studentAnswerArray[i] = answerString.toString().split(',');
+            //studentAnswerArray[i] = answerString.toString().split(',');
             
-          orgDataSource.push({userOrgName:userOrgName});                                   
+            orgDataSource.push({userOrgName:userOrgName});                                   
           
-           $("#organisation-listview").kendoMobileListView({
-  		    template: kendo.template($("#orgTemplate").html()),    		
-     		 dataSource: orgDataSource
-		   });
-            
-            
+            $("#organisation-listview").kendoMobileListView({
+                                                                template: kendo.template($("#orgTemplate").html()),    		
+                                                                dataSource: orgDataSource
+                                                            });
         };
-        
 
-            // var onComboSelect = function() {
-               // alert("combo");
-                // var selectData = $("#groupSelect").data("kendoComboBox");
-                 //alert(selectData.value());
+        // var onComboSelect = function() {
+        // alert("combo");
+        // var selectData = $("#groupSelect").data("kendoComboBox");
+        //alert(selectData.value());
                  
-          	 //var dataItem = this.dataItem(e.item.index());      
-      	     //alert( dataItem.text + " : " + dataItem.value );
-               /*  
+        //var dataItem = this.dataItem(e.item.index());      
+        //alert( dataItem.text + " : " + dataItem.value );
+        /*  
                  
-                 
-                   $("#get").click(function() {
-                        var categoryInfo = "\nCategory: { id: " + categories.value() + ", name: " + categories.text() + " }",
-                            productInfo = "\nProduct: { id: " + products.value() + ", name: " + products.text() + " }",
-                            orderInfo = "\nOrder: { id: " + orders.value() + ", name: " + orders.text() + " }";
+        $("#get").click(function() {
+        var categoryInfo = "\nCategory: { id: " + categories.value() + ", name: " + categories.text() + " }",
+        productInfo = "\nProduct: { id: " + products.value() + ", name: " + products.text() + " }",
+        orderInfo = "\nOrder: { id: " + orders.value() + ", name: " + orders.text() + " }";
 
-                        alert("Order details:\n" + categoryInfo + productInfo + orderInfo);
-                 */
-        	//};
-        
+        alert("Order details:\n" + categoryInfo + productInfo + orderInfo);
+        */
+        //};
        
-       var onChangeNotiGroup = function(){
-            	 var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
-             	var groupSelectedNoti = selectDataNoti.value();
-             	return groupSelectedNoti;
-       };
+        var onChangeNotiGroup = function() {
+            var selectDataNoti = $("#groupSelectNotification").data("kendoComboBox");    
+            var groupSelectedNoti = selectDataNoti.value();
+            return groupSelectedNoti;
+        };
         
+        var onAdminComboChange = function() {
+            var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
+            var groupSelected = selectData.value();
+            //var query = new Everlive.Query().where().equal('Group',groupSelected);
+            //notificationModel();
         
-        
-        var onAdminComboChange = function(){
-       		  var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
-           	  var groupSelected = selectData.value();
-    		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
-                  		//notificationModel();
-        
-            			   if(groupSelected==='All'){
-    			             app.Activities.activities.filter({
+            if (groupSelected==='All') {
+                app.Activities.activities.filter({
 							                	
-        	    								});
-                           }else{		
-                                                app.Activities.activities.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: groupSelected
-        	    								});
-                                }
-
+                                                 });
+            }else {		
+                app.Activities.activities.filter({
+                                                     field: 'Group',
+                                                     operator: 'eq',
+                                                     value: groupSelected
+                                                 });
+            }
             
-                      kendo.bind($('#activityTemplate'), activitiesDataSource);                              
-			};
-        
-        
+            kendo.bind($('#activityTemplate'), activitiesDataSource);                              
+        };
 	    
-            var onComboChange = function(){
-                 //$("#activities-listview").empty();
-            	 //var activities;
-       		  var selectData = $("#groupSelect").data("kendoComboBox");    
-           	  var groupSelected = selectData.value();
-    		              //var query = new Everlive.Query().where().equal('Group',groupSelected);
-                  		//notificationModel();
+        var onComboChange = function() {
+            //$("#activities-listview").empty();
+            //var activities;
+            var selectData = $("#groupSelect").data("kendoComboBox");    
+            var groupSelected = selectData.value();
+            //var query = new Everlive.Query().where().equal('Group',groupSelected);
+            //notificationModel();
         
-            			   if(groupSelected==='All'){
-    			              app.Activities.activities.filter({
+            if (groupSelected==='All') {
+                app.Activities.activities.filter({
 							                	
                                  
-        	    			  });
-                           }else{		
-                                                app.Activities.activities.filter({
-							                	field: 'Group',
-                								operator: 'eq',
-                								value: groupSelected
-        	    								});
-                                }
+                                                 });
+            }else {		
+                app.Activities.activities.filter({
+                                                     field: 'Group',
+                                                     operator: 'eq',
+                                                     value: groupSelected
+                                                 });
+            }
 
-                      kendo.bind($('#activityTemplate'), activitiesDataSource);
-                                    	         
-   		 //var $notificationContainer = $('#activities-listview');
+            kendo.bind($('#activityTemplate'), activitiesDataSource);
+            //var $notificationContainer = $('#activities-listview');
             //$notificationContainer.empty();
-           // var notificationModel1 = (function () { 
-
-             /*   var notiCModel = {
-            				id: 'Id',
-            				fields: {
-				                CreatedAt: {
-                					    field: 'CreatedAt',
-        					            defaultValue: new Date()
-		                					},
-                                   Message: {
-					                    field: 'Message',
-                    					defaultValue: ''
-               							 },
-				                   Title :{
-                   					 field: 'Title',
-					                    defaultValue: ''  
-                							}
-            					    },
-	            					CreatedAtFormatted: function () {
-        	        						return app.helper.formatDate(this.get('CreatedAt'));
-					    	        }
-	        			};
-                
-					
-                
-			   if(groupSelected==='All'){
-		                dataSource = new kendo.data.DataSource({
-                                            type: 'everlive',
-        						            schema: {
-          									      model: notiCModel
-        										    },
-
-									            transport: {
-								                // Required by Backend Services
-								                typeName: 'GetNotification'
-    									        },
-            									                pageSize: '100',
-                    					    				    page: 1,
-											    				serverPaging: true,
-                            
-                                            change: function (e) {
-									                if (e.items && e.items.length > 0) {
-                    										$('#no-activities-span').hide();
-									                } else {
-										                    $('#no-activities-span').show();
-                									}
-           									 }    
-   						  			  });
-                  
-               }else{
-	            	        dataSource = new kendo.data.DataSource({
-                                            type: 'everlive',
-                                            filter: { field: "Group", value:groupSelected },
- 									       schema: {
-          									      model: notiCModel
-        										    },
-
-									        transport: {
-									            typeName: 'GetNotification'
-    									    },
-												                pageSize: '100',
-                                								page: 1,
-															    serverPaging: true,
-                                            change: function (e) {
-									                if (e.items && e.items.length > 0) {
-                    										$('#no-activities-span').hide();
-									                } else {
-										                    $('#no-activities-span').show();
-                									}
-           									 }    
-   						  			  });
-					}               
-                
-               	 console.log(dataSource);
-                    $("#activities-listview").kendoMobileListView({
-                	style: "inset",    
-           		 dataSource: dataSource,
-	                template: kendo.template($("#activityTemplate").html()),
-            		endlessScroll: true,
-            		scrollTreshold: 30,
-            			click: function (e) {
-	
-                        }
-        			});
-                	$("#activities-listview").data("kendoMobileListView").dataSource.fetch();
-                    $("#activities-listview").data("kendoMobileListView").refresh();
-             */   
-				//	}());             
-
-/*                $("#activities-listview").kendoMobileListView({
-				 	dataSource: dataSource,
-	                 template: kendo.template($("#activityTemplate").html()),
-				 	//template: $("#activityTemplate").html(),
-     				endlessScroll: true,
-					 scrollTreshold: 30
-    			});
-*/                
-                
-               // if ($("#activities-listview").data("kendoMobileListView") == undefined) {
-     	
-				/*}else {
-                                        console.log("hello2");
-    				$("#activities-listview").data("kendoMobileListView").dataSource = dataSource;
-    				$("#activities-listview").data("kendoMobileListView").refresh();
-				}*/
-                
+            // var notificationModel1 = (function () { 
+            /*   var notiCModel = {
+            id: 'Id',
+            fields: {
+            CreatedAt: {
+            field: 'CreatedAt',
+            defaultValue: new Date()
+            },
+            Message: {
+            field: 'Message',
+            defaultValue: ''
+            },
+            Title :{
+            field: 'Title',
+            defaultValue: ''  
+            }
+            },
+            CreatedAtFormatted: function () {
+            return app.helper.formatDate(this.get('CreatedAt'));
+            }
             };
-        
-    
+            if(groupSelected==='All'){
+            dataSource = new kendo.data.DataSource({
+            type: 'everlive',
+            schema: {
+            model: notiCModel
+            },
+            transport: {
+            // Required by Backend Services
+            typeName: 'GetNotification'
+            },
+            pageSize: '100',
+            page: 1,
+            serverPaging: true,
+            change: function (e) {
+            if (e.items && e.items.length > 0) {
+            $('#no-activities-span').hide();
+            } else {
+            $('#no-activities-span').show();
+            }
+            }    
+            });
+            }else{
+            dataSource = new kendo.data.DataSource({
+            type: 'everlive',
+            filter: { field: "Group", value:groupSelected },
+            schema: {
+            model: notiCModel
+            },
+            transport: {
+            typeName: 'GetNotification'
+            },
+            pageSize: '100',
+            page: 1,
+            serverPaging: true,
+            change: function (e) {
+            if (e.items && e.items.length > 0) {
+            $('#no-activities-span').hide();
+            } else {
+            $('#no-activities-span').show();
+            }
+            }    
+            });
+            }               
+            console.log(dataSource);
+            $("#activities-listview").kendoMobileListView({
+            style: "inset",    
+            dataSource: dataSource,
+            template: kendo.template($("#activityTemplate").html()),
+            endlessScroll: true,
+            scrollTreshold: 30,
+            click: function (e) {
+            }
+            });
+            $("#activities-listview").data("kendoMobileListView").dataSource.fetch();
+            $("#activities-listview").data("kendoMobileListView").refresh();
+            */   
+            //	}());             
+            /*                $("#activities-listview").kendoMobileListView({
+            dataSource: dataSource,
+            template: kendo.template($("#activityTemplate").html()),
+            //template: $("#activityTemplate").html(),
+            endlessScroll: true,
+            scrollTreshold: 30
+            });
+            */                
+            // if ($("#activities-listview").data("kendoMobileListView") == undefined) {
+            /*}else {
+            console.log("hello2");
+            $("#activities-listview").data("kendoMobileListView").dataSource = dataSource;
+            $("#activities-listview").data("kendoMobileListView").refresh();
+            }*/
+        };
            
-          var initNotifi = function () {       
-      	    app.MenuPage=false; 
-          };
+        var initNotifi = function () {       
+            app.MenuPage = false; 
+        };
         
-        var showNotifi = function(){
-            app.MenuPage=false; 
+        var showNotifi = function() {
+            app.MenuPage = false; 
             
-             console.log(userlName+"||"+userfName+"||"+userMobile+"||"+userEmail+"||"+userOrgName+"||"+userGropuName);
-             $("#orgData").val('');
-             $("#groupData").val('');
+            console.log(userlName + "||" + userfName + "||" + userMobile + "||" + userEmail + "||" + userOrgName + "||" + userGropuName);
+            $("#orgData").val('');
+            $("#groupData").val('');
             
-            
-             var userlName = localStorage.getItem("userlName");
-             var userfName = localStorage.getItem("userfName");
-             var userEmail = localStorage.getItem("userEmail");
-             var userGropuName = localStorage.getItem("userGropuName"); 
-             var userOrgName = localStorage.getItem("userOrgName");
-             var userMobile = localStorage.getItem("userMobile");
+            var userlName = localStorage.getItem("userlName");
+            var userfName = localStorage.getItem("userfName");
+            var userEmail = localStorage.getItem("userEmail");
+            var userGropuName = localStorage.getItem("userGropuName"); 
+            var userOrgName = localStorage.getItem("userOrgName");
+            var userMobile = localStorage.getItem("userMobile");
             
             $("#userEmailId").html(userEmail); 
             $("#userMobileNo").html(userMobile);
             $("#userlname").html(userlName);
             $("#userfname").html(userfName); 
              
-            for(var x=0; x < userOrgName.length;x++){
+            for (var x = 0; x < userOrgName.length;x++) {
                 document.getElementById("orgData").innerHTML += userOrgName[x];   
             } 
             
-			for(var y=0; y < userGropuName.length;y++){
+            for (var y = 0; y < userGropuName.length;y++) {
                 document.getElementById("groupData").innerHTML += userGropuName[y];
-			}
-
+            }
         };
             
-        var callOrganisationLogin = function(){
-          app.MenuPage=false;	
-          //window.location.href = "views/organisationLogin.html"; 
-          app.mobileApp.navigate('views/organisationLogin.html?account_Id='+account_Id);      
+        var callOrganisationLogin = function() {
+            app.MenuPage = false;	
+            //window.location.href = "views/organisationLogin.html"; 
+            app.mobileApp.navigate('views/organisationLogin.html?account_Id=' + account_Id);      
         };
-        
     	         
         // Logout user
         
-       var logout = function () {                   
-           navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
-            	if (checkLogout === true || checkLogout === 1) {                    
-                   //app.mobileApp.pane.loader.show();    
-                   setTimeout(function() {
-                       var db = app.getDb();
-                       db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError,updateAdminLoginStatusSuccess);
-                   	 //window.location.href = "index.html";
-                   }, 100);
-            	}
-        	}, 'Logout', ['OK', 'Cancel']);
+        var logout = function () {                   
+            navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
+                if (checkLogout === true || checkLogout === 1) {                    
+                    //app.mobileApp.pane.loader.show();    
+                    setTimeout(function() {
+                        var db = app.getDb();
+                        db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError, updateAdminLoginStatusSuccess);
+                        //window.location.href = "index.html";
+                    }, 100);
+                }
+            }, 'Logout', ['OK', 'Cancel']);
         };
             
-            
-              function updateAdminLoginStatus(tx) {
-                
-                /*var query = "DELETE FROM ADMIN_ORG";
-        	    app.deleteQuery(tx, query);
+        function updateAdminLoginStatus(tx) {
+            /*var query = "DELETE FROM ADMIN_ORG";
+            app.deleteQuery(tx, query);
+            var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+            app.deleteQuery(tx, query);
+            var query = "DELETE FROM ADMIN_ORG_GROUP";
+            app.deleteQuery(tx, query);*/
+            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            app.updateQuery(tx, query);
+        }
 
-            	var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
-	            app.deleteQuery(tx, query);
+        function updateAdminLoginStatusSuccess() {
+            var account_Id = localStorage.getItem("ACCOUNT_ID");
+            var userType = localStorage.getItem("USERTYPE");   
 
-            	var query = "DELETE FROM ADMIN_ORG_GROUP";
-	            app.deleteQuery(tx, query);*/
-                                                
-	            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
-            	app.updateQuery(tx, query);
-            }
-            
+            //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
+            app.mobileApp.navigate('#organisationNotiList');
+        }
 
-            function updateAdminLoginStatusSuccess() {
-                        var account_Id = localStorage.getItem("ACCOUNT_ID");
-                        var userType = localStorage.getItem("USERTYPE");   
+        function updateAdminLoginStatusError(err) {
+            console.log(err);
+        }
 
-                //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-                app.mobileApp.navigate('#organisationNotiList');
-            }
-
-            function updateAdminLoginStatusError(err) {
-	            console.log(err);
-            }
-
-
-            function listViewClick(e) {
-                console.log(e.item); // The clicked item as a jQuery object
-            }
-            
+        function listViewClick(e) {
+            console.log(e.item); // The clicked item as a jQuery object
+        }
 
         return {
             //activities: activitiesModel.activities,
@@ -829,7 +736,7 @@ app.adminOragnisationList = (function () {
             makeCall:makeCall,
             initNotifi:initNotifi,
             showNotifi:showNotifi,
-			about:about,
+            about:about,
             setting:setting,
             orgShow:orgShow,
             info:info,
@@ -841,9 +748,7 @@ app.adminOragnisationList = (function () {
             refreshButton:refreshButton,
             logout: logout
         };
-
     }());
 
     return organisationViewModel;
-
 }());

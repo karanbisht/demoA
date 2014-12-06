@@ -2,84 +2,78 @@
     <div data-role="header">
         <div data-role="navbar">
             Notification
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
             <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>            <!--<a id="replyButton" class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>-->
         </div>
     </div>
-		
-    
+
     <!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
-    
-        <div class="loader" id="adminCommentPage" style="display:block;margin-top:48%">
-               <div class="ball"></div>
-               <!--<div class="loading1">Loading...</div>-->
-        </div>
-  
-    <div id="status-container-adminComment" class="user-status-wrp cf" data-role="listview" data-style="inset">    
-    
+
+    <div class="loader" id="adminCommentPage" style="display:block;margin-top:48%">
+        <div class="ball"></div>
+        <!--<div class="loading1">Loading...</div>-->
+    </div>
+
+    <div id="status-container-adminComment" class="user-status-wrp cf" data-role="listview" data-style="inset">
+
         <div>
-    	     <div class="notiList-content">
-                <div class="dateDisplay">                  
-                  <span id="notiDateadmin" class="dateValue"></span> 
-                  <hr class="dateLine"/>
-                  <span></span>
+            <div class="notiList-content">
+                <div class="dateDisplay">
+                    <span id="notiDateadmin" class="dateValue"></span>
+                    <hr class="dateLine"/>
+                    <span></span>
                 </div>
                 <br/>
-    	        <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
-        	    <li id="titleContainer">
-                    
-                      <h2 id="personNameTitle" class="notiNameList" style="margin-left:-3px;"></h2>      
-              		<span id="activityTextMessage" class="user-share-txt"></span>
-            	</li>    
-                <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->            
+                <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
+                <li id="titleContainer">
+
+                    <h2 id="personNameTitle" class="notiNameList" style="margin-left:-3px;"></h2>
+                    <span id="activityTextMessage" class="user-share-txt"></span>
+                </li>
+                <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
             </div>
             <br/>
-    	   <div id="notiAdminImage" style="max-height:300px;height:auto;width:100%;margin-top:10px;"></div>
-       </div>
-        
+            <div id="notiAdminImage" style="max-height:300px;height:auto;width:100%;margin-top:10px;"></div>
+        </div>
+
         <div id="commentListContainer">
             <div class="comments-wrp">
                 <ul id="userComments-listview" data-template="userCommentsTemplate" class="commentClasList"></ul>
             </div>
         </div>
-    
-	</div>
-    
-    
-   <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
+
+    </div>
+
+    <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;">
-  		 <div style="float:left;width:86%;border-radius:6px;bacground-color:#ffffff"><textarea class="replyTextArea" id="newAdminComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;border:none;"></textarea></div>
-           <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveAdminComment"/>-->        
-           <a style="background:transparent;width:11%;border:none;float:right;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveAdminComment"></a>
+            <div style="float:left;width:86%;border-radius:6px;bacground-color:#ffffff">
+                <textarea class="replyTextArea" id="newAdminComment" placeholder="Reply" style="padding:5px;margin-left:5px;border-radius:6px;border:none;"></textarea>
+            </div>
+            <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveAdminComment"/>-->
+            <a style="background:transparent;width:11%;border:none;float:right;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveAdminComment"></a>
         </div>
-   </div>      
+    </div>
 
 </div>
 
-
-
 <script type="text/x-kendo-template" id="userCommentsTemplate">
-   # if (user_type !== 'Customer'){ # 
-
-      #document.getElementById("commentListContainer").className = "user-comment-List";#
-
+    # if (user_type !== 'Customer') { # 
+        #document.getElementById("commentListContainer").className = "user-comment-List";#
         <div class="user-comment-content">
-         <!--<h2 class="person-name">${User()}</h2>
-             <span class="time-span">${add_date}</span>-->       
-           <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
-         <a class="user-share-txt">${comment}</a>
-       </div>
-  # }else{ #
-       
-       #document.getElementById("commentListContainer").className = "admin-comment-List";# 
-  
-    <div class="admin-comment-content">
-        <!--<h2 class="person-name">${User()}</h2>
-        <span class="time-span">${add_date}</span>-->
-       
-        <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
-        <a class="user-share-txt">${comment}</a>
-    </div>        
-   # } #
+            <!--<h2 class="person-name">${User()}</h2>
+            <span class="time-span">${add_date}</span>-->
+            <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>
+            <a class="user-share-txt">${comment}</a>
+        </div>
+    # }else { #
+        #document.getElementById("commentListContainer").className = "admin-comment-List";# 
+        <div class="admin-comment-content">
+            <!--<h2 class="person-name">${User()}</h2>
+            <span class="time-span">${add_date}</span>-->
+            <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>
+            <a class="user-share-txt">${comment}</a>
+        </div>        
+    # } #
 </script>
+        

@@ -3,27 +3,35 @@
     <div data-role="header">
         <div data-role="navbar">
             Add Member
-                              
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>     
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
 
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->		                        	
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+
+            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
             <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: addNewRegistration">Add</a>
             <a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>-->
         </div>
     </div>
-  
-    	<div>
-          <form>
-                <ul data-role="listview" data-style="inset">
-                    <li class="username"><input type="text" class="k-textbox" id="regFirstName" placeholder="First Name" /></li>
-                    <li class="password"><input type="text" class="k-textbox" id="regLastName" placeholder="Last Name" /></li>
-                    <li class="password"><input type="email" class="k-textbox" id="regEmail" placeholder="Email" /></li>
-                    <li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="regMobile" placeholder="Mobile Number" /></li>                   
-                 </ul>
-          </form>    
-    	</div>  
-                <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
-                        Save
+
+    <div>
+        <form>
+            <ul data-role="listview" data-style="inset">
+                <li class="username">
+                    <input type="text" class="k-textbox" id="regFirstName" placeholder="First Name" />
                 </li>
-</div>   
+                <li class="password">
+                    <input type="text" class="k-textbox" id="regLastName" placeholder="Last Name" />
+                </li>
+                <li class="password">
+                    <input type="email" class="k-textbox" id="regEmail" placeholder="Email" />
+                </li>
+                <li class="username">
+                    <input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="regMobile" placeholder="Mobile Number" />
+                </li>
+            </ul>
+        </form>
+    </div>
+    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
+        Save
+    </li>
+</div> 

@@ -1,33 +1,37 @@
-        <div data-role="view" id="OrgLogin" data-layout="mobile-tabstrip" data-title="Aptifi" class="welcome-scrn form-view" data-model="app.adminLogin" data-init="app.adminLogin.init" data-show="app.adminLogin.show" >
-            
-            <div style="margin-top:30%;margin-left:15px;margin-bottom:15%;"><span style="color:#82879A;font-size:35px;font-weight:normal;">Organization</span><br/><span style="color:#FBFFFF;font-size:25px;margin-top:30px;font-weight:normal;">Login</span></div>
-                        
-            <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
-                <ul data-role="listview" data-style="inset">
-                    <li class="username" style="padding:10px;border-radius:3px;border:3px solid #373D4D;background-color:#303645;color:#ffffff;margin-bottom:10px;"><input type="number" pattern="[0-9]*" step="0.01" id="loginMob"  placeholder="Mobile Number" maxlength=10; style="border:none;"/></li>
-                    <li class="password" style="padding:10px;border-radius:3px;border:3px solid #373D4D;background-color:#303645;color:#ffffff;margin-bottom:10px;"><input type="password" id="loginPassword" placeholder="Password" style="border:none;" /></li>
-                </ul>
+<div data-role="view" id="OrgLogin" data-layout="mobile-tabstrip" data-title="Aptifi" class="welcome-scrn form-view" data-model="app.adminLogin" data-init="app.adminLogin.init" data-show="app.adminLogin.show" >
 
-                <span style="color:#8CAC7B;margin:15px;" data-bind="click: forgetPass"><u>Forget Password?</u></span>
+    <div style="margin-top:30%;margin-left:15px;margin-bottom:15%;">
+        <span style="color:#82879A;font-size:35px;font-weight:normal;">Organization</span><br/><span style="color:#FBFFFF;font-size:25px;margin-top:30px;font-weight:normal;">Login</span>
+    </div>
 
-                
-                                
-              <ol class="group-wrp"style="margin-top:15px;">
-                <li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: login }">
-                        <a data-role="button" class="btn btn-login">Login</a>
-                    </span>
-                </li>
-              </ol>  
-                
-            </form> 
-             
-            
-               <div class="loader" id="progress1" style="display:none;margin-top:10px;">
-                      <div class="ball"></div>
-                      <!--<div class="loading">Loading...</div>-->
-               </div>
+    <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
+        <ul data-role="listview" data-style="inset">
+            <li class="username" style="padding:10px;border-radius:3px;border:3px solid #373D4D;background-color:#303645;color:#ffffff;margin-bottom:10px;">
+                <input type="number" pattern="[0-9]*" step="0.01" id="loginMob"  placeholder="Mobile Number" maxlength=10; style="border:none;"/>
+            </li>
+            <li class="password" style="padding:10px;border-radius:3px;border:3px solid #373D4D;background-color:#303645;color:#ffffff;margin-bottom:10px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="border:none;" />
+            </li>
+        </ul>
 
-            
-            <!--<div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>-->
-        </div>
+        <span style="color:#8CAC7B;margin:15px;" data-bind="click: forgetPass">
+            <u>Forget Password?</u>
+        </span>
+
+        <ol class="group-wrp"style="margin-top:15px;">
+            <li>
+                <span id="login" data-role="touch" data-bind="events: { tap: login }">
+                    <a data-role="button" class="btn btn-login">Login</a>
+                </span>
+            </li>
+        </ol>  
+    
+    </form>
+
+    <div class="loader" id="progress1" style="display:none;margin-top:10px;">
+        <div class="ball"></div>
+        <!--<div class="loading">Loading...</div>-->
+    </div>
+
+    <!--<div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>-->
+</div>

@@ -3,27 +3,29 @@
 
 <div data-role="view" id="userOrgManage" data-id="innerActivity" class="activities-view"  data-model="app.OragnisationList"  data-show ="app.OragnisationList.showOrgInfoPage" data-transition="zoom">
 
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
-              <div data-role="navbar">     
-                 <span id="navBarOrgHeader">Organization</span>
-                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.orgDescMainPage"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
-              </div>                                          
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">
+        <div data-role="navbar">
+            <span id="navBarOrgHeader">Organization</span>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.orgDescMainPage"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
+        </div>
     </div>
 
-     <div style="z-index: 100;">     
-         <ul id="manageOrgDesc" data-style="inset" data-role="listview" style="background-color: white;z-index: 100;">
+    <div style="z-index: 100;">
+        <ul id="manageOrgDesc" data-style="inset" data-role="listview" style="background-color: white;z-index: 100;">
 
-           <img id="organisationLogo" style="max-height:250px;width:100%">
-  
-           <p style="color:#B0D695;">Organization Description :<br/><br/><span id="OrgDescData" style="color:#838383;"></span></p>
+            <img id="organisationLogo" style="max-height:250px;width:100%">
 
-           <p style="color:#B0D695;" id="joinedDate">Join On : <span style="color:#838383" id="orgJoinData"></span></p>
-         </ul>         
- 	</div> 
+            <p style="color:#B0D695;">
+                Organization Description :<br/><br/><span id="OrgDescData" style="color:#838383;"></span>
+            </p>
 
+            <p style="color:#B0D695;" id="joinedDate">
+                Join On : <span style="color:#838383" id="orgJoinData"></span>
+            </p>
+        </ul>
+    </div>
 
-    
     <div style="margin:10px;width:94%;">
         <table style="width:100%">
             <tr>
@@ -39,26 +41,25 @@
 
             </tr>
         </table>
-        
+
     </div>
 
     <!--<li style="margin-top:15px;text-align:center;width:93%">
-              <span id="login" data-role="touch" style="padding:10px;width:93%">
-                    <a data-role="button"  data-click="app.OragnisationList.showCalendar" style="background-color:#33539E;">SHOW CALENDAR EVENT</a>   
-              </span>
+    <span id="login" data-role="touch" style="padding:10px;width:93%">
+    <a data-role="button"  data-click="app.OragnisationList.showCalendar" style="background-color:#33539E;">SHOW CALENDAR EVENT</a>   
+    </span>
     </li>
     
     <li style="margin-top:15px;text-align:center;width:93%">
-              <span id="login" data-role="touch" style="padding:10px;width:93%">
-                    <a data-role="button" data-click="app.OragnisationList.showOrgNews" style="background-color:#33539E;">SHOW ORGANIZATION NEWS</a>   
-              </span>
+    <span id="login" data-role="touch" style="padding:10px;width:93%">
+    <a data-role="button" data-click="app.OragnisationList.showOrgNews" style="background-color:#33539E;">SHOW ORGANIZATION NEWS</a>   
+    </span>
     </li>-->
 
-  
     <div data-role="footer">
-       	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
-                <a id="" data-icon="trash" data-role="button" data-bind="click: unsubscribeOrg" >Click Here To Unsubscribe</a>
-            </div>
+        <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
+            <a id="" data-icon="trash" data-role="button" data-bind="click: unsubscribeOrg" >Click Here To Unsubscribe</a>
+        </div>
     </div>
-    
+
 </div>
