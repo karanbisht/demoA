@@ -82,7 +82,7 @@ app.Activity = (function () {
             }
         };
 
-        /*function loaded() {
+        function loaded() {
         setTimeout(function() {    
         myScroll = new iScroll('notiImage', {
         bounce : false,
@@ -101,7 +101,7 @@ app.Activity = (function () {
         e.preventDefault();
         }, false);
         
-        */
+       
 
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
@@ -171,7 +171,7 @@ app.Activity = (function () {
             }
 
             if (attached!== null && attached!=='' && attached!=="0") {
-                //loaded(); 
+                loaded(); 
                 //$('#notiImage').css({"height":"200px"});
                 $('#notiImage').css({"max-height":"200px"});
                 //$('#notiImage').css({"width":'auto'});
