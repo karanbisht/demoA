@@ -243,8 +243,32 @@ app.adminNews = (function () {
         var addEventshow = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
           
+
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
+            
+            
+            $('#addNewsDesc').css('height', '80px');
+
+            var txt = $('#addNewsDesc'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv common');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+            
+            
 
             var currentDate = app.getPresentDate();
             
@@ -396,7 +420,28 @@ app.adminNews = (function () {
         
         var editNewsshow = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
-                        
+            
+            
+            $('#editNewsDesc').css('height', '80px');
+
+            var txt = $('#editNewsDesc'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv common');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+            
             $("#editNewsDesc").html(newsDescEdit); 
             
             $("#editdatePickerNews").kendoDatePicker({                

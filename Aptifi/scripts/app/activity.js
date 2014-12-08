@@ -108,6 +108,9 @@ app.Activity = (function () {
 
             groupDataShow = [];            
 
+
+            $('#newComment').val(' ');
+
             //console.log('TESTINGGGGGG');
             //console.log(window);
             //console.log(window.plugins);
@@ -117,6 +120,31 @@ app.Activity = (function () {
             listScroller = e.view.scroller;
             listScroller.reset();
 
+            
+            
+            $('#newComment').css('height', '30px');
+
+            var txt = $('#newComment'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv replyTextArea');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+
+            
+            
+            
             message = e.view.params.message;
             title = e.view.params.title;
             org_id = e.view.params.org_id;
@@ -571,10 +599,13 @@ app.Activity = (function () {
                             refreshComment(); 
                             if (commentData.status[0].Msg === 'Reply sent successfully') {
                                 lastNotiCommentID = lastNotiCommentID + 1;
+                                            $('#newComment').css('height', '30px');
+
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom('Reply sent successfully');   
                                 }else {
                                     app.showAlert("Reply sent successfully", "Notification");  
+                                    
                                 }
                                  
                                 $("#newComment").val('');

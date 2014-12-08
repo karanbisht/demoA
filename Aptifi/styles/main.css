@@ -59,7 +59,6 @@
 }
 
 .km-flat .km-tabstrip,
-
 .km-flat .km-loader,
 .km-flat .km-rowinsert,
 .km-flat .km-state-active,
@@ -85,9 +84,9 @@
     background: #7FBF4D;
 }
 
-#Aptifi.km-flat,
-#Aptifi.km-flat .km-navbar,
-#Aptifi.km-flat .km-content
+/*#Aptifi.km-flat,*/
+#Aptifi.km-flat .km-navbar
+/*#Aptifi.km-flat .km-content*/
 {
     border: 0 none;
     background-color: #7FBF4D;
@@ -253,10 +252,13 @@ input::-webkit-inner-spin-button
 
 .replyTextArea
 {
-    position: static;
+    /*position: static;*/
     width: 100%;
-    height: 30px;
-    font-size: 1rem; 
+    min-height: 30px;
+    font-size: 1rem;     
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+
 }
 
 #Aptifi.km-flat select
@@ -921,6 +923,8 @@ white-space: nowrap;
 
 .user-comment-content
 {
+ 
+    text-align:left;
     background-color: rgb(217, 244, 195);
     padding: 10px;
     border-radius: 6px;
@@ -931,13 +935,12 @@ white-space: nowrap;
 .user-share-txt-user
 {
     text-align: left;
-    float: left;
+    /*float: left;*/
 }
 
 .user-comment-List
 {
-    float: right;
-    text-align: right;
+    text-align:right;
     padding-left: 3em;
     padding-right: 10px;
     font-size: .85rem;
@@ -1778,13 +1781,21 @@ float:right;
 
 .km-vertical-scrollbar
 {
-    display: none; 
+    /*display: none;*/
+    
+    visibility:hidden;
+
 }
 
 .km-touch-scrollbar
 {
-    display: none; 
+    /*display: none;*/ 
+    
+        visibility:hidden;
+
 }
+
+
 
 .manageOrgDiv
 {

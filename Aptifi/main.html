@@ -373,7 +373,7 @@
 </style>
 
 
-  <div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList">
+  <div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.settingShow">
     	<div data-role="header" style="border-bottom:2px solid #F0F0F0">
             <div data-role="navbar">
                 Setting
@@ -517,12 +517,12 @@
           </header>
           
           <ul data-role="listview" style="overflow:hidden;">
-                 <li ><a id="side-noti-icon" onclick="app.slide('left', 'red', 3, '#organisationNotiList')" data-transition="none"></a></li>
-                 <li ><a id="side-org-icon" onclick="app.slide('left', 'red', 3, '#organisationDiv')" data-transition="none"></a></li>
-                 <li ><a id="side-profile-icon" onclick="app.slide('left', 'red', 3, '#profileDiv')" data-transition="none"></a></li>
-                 <li ><a id="side-setting-icon" onclick="app.slide('left', 'red', 3, '#settingDiv')" data-transition="none"></a></li>
-                 <li ><a id="side-about-icon"  onclick="app.slide('left', 'red', 3, '#infoDiv')" data-transition="none"></a></li>
-                 <li id="goToAdmin" ><a id="side-admin-icon" onclick="app.slide('right', 'red', 3, 'views/organisationLogin.html')" data-transition="none"></a></li>
+                 <li ><a id="side-noti-icon"  href="#organisationNotiList" data-transition="none"></a></li>
+                 <li ><a id="side-org-icon" href="#organisationDiv" data-transition="none"></a></li>
+                 <li ><a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a></li>
+                 <li ><a id="side-setting-icon" onclick="app.slide('left', 'red', 1, '#settingDiv')" data-transition="none"></a></li>
+                 <li ><a id="side-about-icon"  onclick="app.slide('left', 'red', 1, '#infoDiv')" data-transition="none"></a></li>
+                 <li id="goToAdmin" ><a id="side-admin-icon"  onclick="app.flip('right','green','#views/organisationLogin.html')"></a></li>
           </ul>
        </div>
         
@@ -587,8 +587,7 @@
 <!--data-pull-to-refresh="true"-->
 
         
-  <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow" >
-    
+  <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-before-Show="app.sendNotification.beforeShow" data-pull-to-refresh="true">
       <div id="selectOrgDiv" style="margin:10px 10px 10px 10px;border:none;">      
          <p style="color:#343434;">Select Organization to send Notification</p>      
          <ul id="organisation-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
@@ -821,7 +820,7 @@
                  <li><a id="side-admin-manageOrg-icon" href="#view-all-activities-admin" data-transition="none"></a></li>
                  <li><a id="side-admin-message-icon"  href="#view-all-activities-userReply" data-transition="none"></a></li>
                  <li><a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a></li>
-                 <li><a id="side-admin-user-icon"  href="#organisationNotiList" data-transition="none" ></a></li>
+                 <li><a id="side-admin-user-icon"  onclick="app.flip('left','green','#organisationNotiList')"  data-transition="none" ></a></li>
           </ul>
        </div>
 

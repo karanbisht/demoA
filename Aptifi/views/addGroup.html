@@ -1,4 +1,4 @@
-<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.GroupList" data-init="app.GroupList.init">
+<div data-role="view" id="view-all-activities" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.GroupList" data-init="app.GroupList.init"  data-show="app.GroupList.addGroupShow">
     <div data-role="header">
         <div data-role="navbar">
             Add Group
@@ -18,8 +18,14 @@
             </ul>-->
 
             <input type="text"  id="newGroup" class="defineTextBox"  placeholder="Enter New Group Name" />
-  
-            <textarea rows="8" class="defineTextArea" id="newGroupDesc" placeholder="Write Group description here (Optional) ?"></textarea>
+ 
+            <br/>
+            <br/>
+                   <textarea  id="newGroupDesc" placeholder="Write Group description here (Optional) ?" class="common"></textarea> 
+            <br/>
+            <br/>
+
+            <!--<textarea rows="8" class="defineTextArea" id="newGroupDesc" placeholder="Write Group description here (Optional) ?"></textarea>-->
 
         </div>
 

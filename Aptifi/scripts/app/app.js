@@ -15,11 +15,9 @@ var app = (function (win) {
     var showAppVersion = function() {
         cordova.getAppVersion(function(version) {
             //showAlert("Current App Version: " + version , "App Version");
-             return versionData;
+                             localStorage.setItem("AppVersion", version);
         });
-        
         //alert(versionData);
-       
     }
     
     var showAlert = function(message, title, callback) {
@@ -219,9 +217,9 @@ var app = (function (win) {
         states[Connection.NONE] = 'No network connection';		
 
         if (states[networkState] === 'No network connection') {
-            return  false;    
+            return false;    
         }else {
-            return  true;
+            return true;
         }
     };
     
@@ -1124,32 +1122,75 @@ var app = (function (win) {
         return ts;            
     }
     
-     function slide(direction, color, slowdownfactor, hrf) {
-    if (!hrf) {
-      setTimeout(function () {
-        // update the page inside this timeout
-        document.querySelector("#title").innerHTML = direction;
-        document.querySelector("html").style.background = color;
-      }, 20);
+    function slide(direction, color, slowdownfactor, hrf) {
+        if (!hrf) {
+            setTimeout(function () {
+                // update the page inside this timeout
+                document.querySelector("#title").innerHTML = direction;
+                document.querySelector("html").style.background = color;
+            }, 20);
+        }
+        // not passing in options makes the plugin fall back to the defaults defined in the JS API
+        var theOptions = {
+            'direction': direction,
+            'duration': 700,
+            'slowdownfactor' : slowdownfactor,
+            'iosdelay'       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
+            'androiddelay'   :  150,   
+            'href': hrf
+        };
+        
+        if(!checkSimulator()){
+        
+           window.plugins.nativepagetransitions.slide(
+            theOptions,
+            function () {
+                console.log('------------------- slide transition finished');
+            },
+            function (msg) {
+                //alert('error: ' + msg);
+            });
+            
+        }else{
+            
+             app.mobileApp.navigate(hrf);  
+        }    
     }
-    // not passing in options makes the plugin fall back to the defaults defined in the JS API
-    var theOptions = {
-      'direction': direction,
-      'duration': 800,
-      'slowdownfactor' : slowdownfactor,
-      'iosdelay'       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
-      'androiddelay'   :  150,   
-      'href': hrf
-    };
-    window.plugins.nativepagetransitions.slide(
-        theOptions,
+    
+    
+      function flip(direction, color, href) {
+    setTimeout(function () {
+      // update the page inside this timeout
+      document.querySelector("#title").innerHTML = direction;
+      document.querySelector("html").style.background = color;
+    }, 10);
+          
+   if(!checkSimulator()){
+       
+    window.plugins.nativepagetransitions.flip({
+          'direction': direction,
+          'duration': 700,
+          'iosdelay': 20,
+          'href': href
+        },
         function () {
-          console.log('------------------- slide transition finished');
+          console.log('------------------- flip transition finished');
         },
         function (msg) {
-          alert('error: ' + msg);
+          //alert('error: ' + msg);
         });
-   }
+       
+     }else{
+                      app.mobileApp.navigate(href);  
+
+     }  
+  }
+
+
+  // demo for hooking the Android backbutton to the slide 'right'
+      document.addEventListener('backbutton', function() {
+        slide('right', 'purple');
+  }, false);
 
     return {
         showAlert: showAlert,
@@ -1196,6 +1237,7 @@ var app = (function (win) {
         gobackTOCalendar:gobackTOCalendar,
         getPresntTimeStamp:getPresntTimeStamp,
         slide:slide,
+        flip:flip,
     
         //registerInEverlive:registerInEverlive,
         //disablePushNotifications:disablePushNotifications,

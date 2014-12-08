@@ -65,6 +65,9 @@ app.userNotiComment = (function () {
         var show = function (e) {
             $("#adminCommentPage").show();
             $("#status-container-adminComment").hide();
+
+            $('#newAdminComment').val(' ');
+
             app.mobileApp.pane.loader.hide();
             title = ''
             message = '';
@@ -75,7 +78,31 @@ app.userNotiComment = (function () {
 
             listScroller = e.view.scroller;
             listScroller.reset();
-           
+        
+            
+            $('#newAdminComment').css('height', '30px');
+
+            var txt = $('#newAdminComment'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv replyTextArea');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+
+            
+            
+            
             //message = e.view.params.message;
             //title = e.view.params.title;
             org_id = e.view.params.org_id;

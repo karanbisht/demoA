@@ -494,6 +494,27 @@ app.adminEventCalender = (function () {
 
             console.log(eventNameEdit);
             
+
+            $('#editEventDesc').css('height', '80px');
+
+            var txt = $('#editEventDesc'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv common');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+            
             $("#editEventName").val(eventNameEdit);
             
             $("#editEventDesc").html(eventDescEdit);

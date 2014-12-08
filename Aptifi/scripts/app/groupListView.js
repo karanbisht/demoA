@@ -15,7 +15,37 @@ app.GroupList = (function () {
         var init = function () {
             //console.log('helloasda');
             $('#newGroup').val('');
+            $('#newGroupDesc').val('');
+
         };
+        
+        var addGroupShow = function(){
+         
+            $('#newGroup').val('');
+            $('#newGroupDesc').val('');
+            
+                        $('#newGroupDesc').css('height', '80px');
+
+            var txt = $('#newGroupDesc'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv common');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
+
+
+        }
                 
         var show = function(e) {
             $("#admin-groupList-loader").show();
@@ -24,7 +54,10 @@ app.GroupList = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
             tabStrip.clear();
-  
+ 
+            
+            
+            
             //organisationID = e.view.params.organisationId;  
             //account_Id = e.view.params.account_Id;
             //orgName= e.view.params.orgName;
@@ -387,6 +420,7 @@ app.GroupList = (function () {
             deleteGroup:deleteGroup,
             backToOrgDetail:backToOrgDetail,
             showGroup:showGroup,
+            addGroupShow:addGroupShow,
             addGroupFunc:addGroupFunc                        
             //groupListData:GroupsListModel.groupListData
         };

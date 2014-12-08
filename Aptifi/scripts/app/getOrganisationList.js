@@ -1482,12 +1482,15 @@ app.OragnisationList = (function () {
             document.location.href = "#settingDiv";
         };       
         
+        var settingShow = function(){
+            app.showAppVersion();
+        }
+        
         var appVersion = function() {
             $("#appVersionDiv").show();
             $('#contentDiv').css('background-color', '#636363');
             $("#settingOptionDiv").hide();
-            var value = app.showAppVersion();
-            //alert(value);
+            var value =localStorage.getItem("AppVersion");
             $("#appVersion").html(value);
         }
         
@@ -1939,6 +1942,7 @@ app.OragnisationList = (function () {
             organisationSelected: organisationSelected,
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
+            settingShow:settingShow,
             //afterShow:afterShow,
             showOrgInfoPage:showOrgInfoPage,
             notificationSelected:notificationSelected,
