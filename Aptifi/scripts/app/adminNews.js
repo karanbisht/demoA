@@ -676,27 +676,38 @@ app.adminNews = (function () {
         }
         
         var goToManageOrgPage = function() {
-            app.mobileApp.navigate('views/groupDetailView.html');
+            //app.mobileApp.navigate('views/groupDetailView.html');
+                                                       app.slide('rigth', 'green' ,'3' ,'#views/groupDetailView.html');
+
         }
         
         var goToAddNewsPage = function() {
-            app.mobileApp.navigate('#adminAddNews');
+            //app.mobileApp.navigate('#adminAddNews');
+                                                   app.slide('rigth', 'green' ,'3' ,'#adminAddNews');
+
         }
         
         var goToNewsListPage = function() {
-            app.mobileApp.navigate('#adminOrgNewsList');
+            //app.mobileApp.navigate('#adminOrgNewsList');
+                                       app.slide('rigth', 'green' ,'3' ,'#adminOrgNewsList');
+
         }
         
         var orgAllNewsList = function() {
-            app.mobileApp.navigate('#adminOrgNewsList');
+            //app.mobileApp.navigate('#adminOrgNewsList');
+                           app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
+
         }
         
         var addNewEvent = function() {
-            app.mobileApp.navigate('#adminAddEventCalendar');
+            //app.mobileApp.navigate('#adminAddEventCalendar');
+               app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
         }
         
         var upcommingEventList = function() {
-            app.mobileApp.navigate('#adminEventList');
+            //app.mobileApp.navigate('#adminEventList');
+                                                            app.slide('left', 'green' ,'3' ,'#adminEventList');    
+
         }
         
         var eventListShow = function() {

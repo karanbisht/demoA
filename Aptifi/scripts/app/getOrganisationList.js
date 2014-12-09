@@ -914,7 +914,14 @@ app.OragnisationList = (function () {
             //uid=' + e.data.uid
             
             app.MenuPage = false;	
-            app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&bagCount=' + bagCount + '&orgName=' + e.data.orgName);
+            localStorage.setItem("user_SelectOrgID", organisationID);
+            localStorage.setItem("user_ACCOUNT_ID", account_Id);
+            localStorage.setItem("user_orgBagCount", bagCount);
+            localStorage.setItem("user_selectedOrgName", e.data.orgName);
+
+            //app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&bagCount=' + bagCount + '&orgName=' + e.data.orgName);
+        
+            app.slide('left', 'green' ,'3' ,'#views/activitiesView.html');    
         };
        
         var groupSelected = function (e) {
@@ -939,12 +946,15 @@ app.OragnisationList = (function () {
         // Navigate to app home
         var navigateHome = function () {
             app.MenuPage = false;
-            app.mobileApp.navigate('#welcome');
+            //app.mobileApp.navigate('#welcome');
+            app.slide('right', 'green' ,'3' ,'#welcome');    
+
         };
         
         var replyUser = function() {
             app.MenuPage = false;	
             app.mobileApp.navigate('views/userReplyView.html');                         
+            
         };
         
         var manageGroup = function() {
@@ -956,7 +966,8 @@ app.OragnisationList = (function () {
         var sendNotification = function() {
             app.MenuPage = false;
             //document.location.href="#sendNotificationDiv";
-            app.mobileApp.navigate('views/sendNotification.html');           
+            //app.mobileApp.navigate('views/sendNotification.html');
+            app.slide('left', 'green' ,'3' ,'#views/sendNotification.html');
         };
         
         var refreshButton = function() {
@@ -1135,7 +1146,10 @@ app.OragnisationList = (function () {
             localStorage.setItem("selectedOrgImgData", imgData);
             //alert(joinDate);
             app.MenuPage = false;	
-            app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID + '&orgName=' + orgName + '&orgDesc=' + orgDesc + '&account_Id=' + account_Id + '&role=' + role + '&joinDate=' + joinDate + '&imageSourceOrg=' + imageSourceOrg + '&imgData=' + imgData);
+            //app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID + '&orgName=' + orgName + '&orgDesc=' + orgDesc + '&account_Id=' + account_Id + '&role=' + role + '&joinDate=' + joinDate + '&imageSourceOrg=' + imageSourceOrg + '&imgData=' + imgData);
+    
+            app.slide('left', 'green' ,'3' ,'#views/userOrgManage.html');    
+
         };    
            
         var orgManageID;
@@ -1203,7 +1217,9 @@ app.OragnisationList = (function () {
         }    
         
         var gobackOrgMainPage = function() {
-            app.mobileApp.navigate('#organisationNotiList');
+            //app.mobileApp.navigate('#organisationNotiList');
+            app.slide('right', 'green' ,'3' ,'#organisationNotiList');    
+
         }
         
         var orgDescMainPage = function() {

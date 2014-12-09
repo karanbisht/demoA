@@ -42,7 +42,9 @@ app.subGroupDetail = (function () {
         var showSubGroupMembers = function() {
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();
-            app.mobileApp.navigate('#subGroupMemberShow');         
+            //app.mobileApp.navigate('#subGroupMemberShow');
+                                        app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
+
             console.log(organisationID);
             console.log(groupID);
                    
@@ -429,7 +431,10 @@ app.subGroupDetail = (function () {
         
         var removeMemberFromGroup = function() {           
             app.MenuPage = false;
-            app.mobileApp.navigate('#removeMemberFromSubGroup');            
+                                                    app.slide('left', 'green' ,'3' ,'#removeMemberFromSubGroup');
+
+            //app.mobileApp.navigate('#removeMemberFromSubGroup');            
+            
         };
                  
         var removeMemberClick = function() {
@@ -555,11 +560,15 @@ app.subGroupDetail = (function () {
         };
         
         var backToPrePage = function() {
-            app.mobileApp.navigate('views/subGroupDetailView.html');
+            //app.mobileApp.navigate('views/subGroupDetailView.html');
+                                                    app.slide('right', 'green' ,'3' ,'#views/subGroupDetailView.html');
+
         }
 
         var goToPrePageOrg = function() {
-            app.mobileApp.navigate('views/groupListPage.html');
+            //app.mobileApp.navigate('views/groupListPage.html');
+                                        app.slide('right', 'green' ,'3' ,'#views/groupListPage.html');
+
         }
 	           
         return {

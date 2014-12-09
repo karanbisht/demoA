@@ -125,7 +125,9 @@ app.orgNews = (function () {
         }
         
         var gobackOrgPage = function() {
-            app.mobileApp.navigate('views/userOrgManage.html');            
+            //app.mobileApp.navigate('views/userOrgManage.html'); 
+                            app.slide('right', 'green' ,'3' ,'#views/userOrgManage.html');
+ 
         }
         
         return {

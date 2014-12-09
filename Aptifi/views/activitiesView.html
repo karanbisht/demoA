@@ -1,7 +1,7 @@
 <!--data-layout="innerPages"-->
 <!--data-use-native-scrolling="true"-->
 
-<div data-role="view" id="view-all-activities" data-id="innerActivity" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow">
+<div data-role="view" id="view-all-activities" data-id="innerActivity" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
     <div data-role="header">
         <div data-role="navbar">
             <span id="navBarHeader">Notification</span>
@@ -10,7 +10,7 @@
             <a data-role="button" style="background:transparent; border:none;" data-icon="printer" data-align="right"></a>
 
             <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.Activities.goToAppFirstView"></a>
             <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
             <!--<a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>-->
         </div>

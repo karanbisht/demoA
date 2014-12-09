@@ -66,10 +66,16 @@ app.Activities = (function () {
             app.MenuPage = false;
             app.userPosition = false;                                      
 
-            organisationID = e.view.params.organisationID;
-            account_Id = e.view.params.account_Id;
-            bagCount = e.view.params.bagCount; 
-            orgName = e.view.params.orgName;
+            //organisationID = e.view.params.organisationID;
+            //account_Id = e.view.params.account_Id;
+            //bagCount = e.view.params.bagCount; 
+            //orgName = e.view.params.orgName;
+            
+            organisationID = localStorage.getItem("user_SelectOrgID");
+            account_Id = localStorage.getItem("user_ACCOUNT_ID");
+            bagCount = localStorage.getItem("user_orgBagCount");
+            orgName = localStorage.getItem("user_selectedOrgName");
+            
            
             //alert(bagCount);
              
@@ -757,6 +763,12 @@ app.Activities = (function () {
             $("#activities-listview").data("kendoMobileListView").refresh();
             }*/
         };
+        
+        var goToAppFirstView =  function(){
+
+            app.slide('right', 'green' ,'3' ,'#organisationNotiList');
+
+        }
 
         return {
             //activities: activitiesModel.activities,
@@ -776,6 +788,7 @@ app.Activities = (function () {
             setting:setting,
             info:info,
             init:init,
+            goToAppFirstView:goToAppFirstView,
             show:show,
             afterShow:afterShow,
             showMoreButtonPress:showMoreButtonPress,

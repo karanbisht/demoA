@@ -471,13 +471,16 @@ app.adminLogin = (function () {
         }
 
         var goToAdminDashboard = function() {
+            
             //app.mobileApp.pane.loader.hide();
             $("#progress1").hide();
 
             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
             app.userPosition = false;
-            app.mobileApp.navigate('#view-all-activities-admin'); 
+            //app.mobileApp.navigate('#view-all-activities-admin'); 
+            app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
+            
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         };
  

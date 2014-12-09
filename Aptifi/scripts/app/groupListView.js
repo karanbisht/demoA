@@ -266,12 +266,16 @@ app.GroupList = (function () {
                 
         var addGroup = function() {
             app.MenuPage = false;	
-            app.mobileApp.navigate('views/addGroup.html');    
+            //app.mobileApp.navigate('views/addGroup.html');    
+                 app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
+ 
         };
         
         var deleteGroup = function() {
             app.MenuPage = false;	
-            app.mobileApp.navigate('views/deleteGroup.html');    
+            //app.mobileApp.navigate('views/deleteGroup.html');
+                               app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
+ 
         };
     
         var goToGroupList = function() {

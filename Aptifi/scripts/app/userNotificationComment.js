@@ -174,10 +174,10 @@ app.userNotiComment = (function () {
             document.getElementById("notiAdminImage").innerHTML = "";
             
             if (attached!== null && attached!=='' && attached!==undefined && attached!=='0') {             
-                //loaded(); 
-                //$('#notiAdminImage').css({"height":"200px"});
-                $('#notiAdminImage').css({"height":"auto"});
-                $('#notiAdminImage').css({"width":'auto'});
+                loaded(); 
+                $('#notiAdminImage').css({"max-height":"200px"});
+                //$('#notiAdminImage').css({"height":"auto"});
+                //$('#notiAdminImage').css({"width":'auto'});
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
 
                 var imgPathData = app.getfbValue();    
@@ -205,7 +205,7 @@ app.userNotiComment = (function () {
         var imagePathExist = function() {
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
-            var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />');
+            var img = $('<img id="imgShowAdmin" style="max-height:200px" />');
             img.attr('src', fp);
             img.appendTo('#notiAdminImage');
             app.mobileApp.pane.loader.hide();
@@ -218,7 +218,7 @@ app.userNotiComment = (function () {
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
-            var img = $('<img id="imgShowAdmin" style="width:100%;height:100%" />'); //Equivalent: $(document.createElement('img'))
+            var img = $('<img id="imgShowAdmin" style="max-height:200px" />'); //Equivalent: $(document.createElement('img'))
             img.attr('src', attachedImg);
             img.appendTo('#notiAdminImage'); 
             app.mobileApp.pane.loader.hide();

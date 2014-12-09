@@ -401,7 +401,10 @@ app.adminOragnisationList = (function () {
             localStorage.setItem("orgNameAdmin", e.data.orgName);
             localStorage.setItem("orgDescAdmin", e.data.orgDesc);
 
-            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + e.data.orgName + '&orgDesc=' + e.data.orgDesc);
+            //app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + e.data.orgName + '&orgDesc=' + e.data.orgDesc);
+        
+            app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
+
         };
         
         var groupSelected = function (e) {

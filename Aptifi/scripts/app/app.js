@@ -234,19 +234,29 @@ var app = (function (win) {
         //if(app.userPosition){        
         if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
             e.preventDefault();
-            navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
+            
+                                navigator.app.exitApp();
+
+            /*navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
                 if (confirmed === true || confirmed === 1) {
                     navigator.app.exitApp();
                 }
-            }, 'Exit', ['OK', 'Cancel']);        
+            }, 'Exit', ['OK', 'Cancel']);*/
+            
             //}else if(app.MenuPage){
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
             e.preventDefault();
-            navigator.notification.confirm('Do you really want to exit from App?', function (confirmed) {           
+            
+                                navigator.app.exitApp();
+
+            
+            
+            /*navigator.notification.confirm('Do you really want to exit from App?', function (confirmed) {           
                 if (confirmed === true || confirmed === 1) {
                     navigator.app.exitApp();
                 }
-            }, 'Exit', ['OK', 'Cancel']);        
+            }, 'Exit', ['OK', 'Cancel']);*/
+            
             /*navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
             if (checkLogout === true || checkLogout === 1) {
             app.mobileApp.pane.loader.show();    
@@ -257,16 +267,20 @@ var app = (function (win) {
             }
             }, 'Logout', ['OK', 'Cancel']);*/
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-admin') {
-            var account_Id = localStorage.getItem("ACCOUNT_ID");
-            var userType = localStorage.getItem("USERTYPE");   
+            //var account_Id = localStorage.getItem("ACCOUNT_ID");
+            //var userType = localStorage.getItem("USERTYPE");   
 
-            navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
+
+            flip('right','green','#organisationNotiList');
+            /*navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
                 if (checkLogout === true || checkLogout === 1) {
                     app.mobileApp.pane.loader.show();    
                     var db = app.getDb();
                     db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError, updateAdminLoginStatusSuccess);
                 }
-            }, 'Logout', ['OK', 'Cancel']);
+            }, 'Logout', ['OK', 'Cancel']);*/
+            
+            
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
@@ -913,7 +927,7 @@ var app = (function (win) {
     if (loginStatusCheck==='0' || loginStatusCheck===null) {    
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#welcome",
-                                                     skin: 'flat'                                                                           
+                                                     skin: 'flat'                                                       
                                                  });
     }else if (loginStatusCheck==='1') {
         mobileApp = new kendo.mobile.Application(document.body, {
@@ -1148,6 +1162,8 @@ var app = (function (win) {
                 console.log('------------------- slide transition finished');
             },
             function (msg) {
+
+                app.mobileApp.navigate(hrf);  
                 //alert('error: ' + msg);
             });
             
@@ -1178,6 +1194,8 @@ var app = (function (win) {
         },
         function (msg) {
           //alert('error: ' + msg);
+          app.mobileApp.navigate(href);  
+
         });
        
      }else{
@@ -1186,10 +1204,10 @@ var app = (function (win) {
      }  
   }
 
-
+    //purple
   // demo for hooking the Android backbutton to the slide 'right'
       document.addEventListener('backbutton', function() {
-        slide('right', 'purple');
+        slide('right', 'green');
   }, false);
 
     return {

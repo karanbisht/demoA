@@ -192,12 +192,15 @@ app.groupDetail = (function () {
         
         var manageGroup = function() {
             app.MenuPage = false;	
-            app.mobileApp.navigate('views/groupListPage.html');           
+            //app.mobileApp.navigate('views/groupListPage.html');
+                    app.slide('left', 'green' ,'3' ,'#views/groupListPage.html');
+ 
         };
         
         var sendNotification = function() {
             app.MenuPage = false;
             app.mobileApp.navigate('views/sendNotification.html');
+            
         };
         
         var saveUpdatedGroupVal = function() {
@@ -265,7 +268,9 @@ app.groupDetail = (function () {
         }
         
         var backToOrgAdminList = function() {       
-            app.mobileApp.navigate('#view-all-activities-admin');      
+            //app.mobileApp.navigate('#view-all-activities-admin');  
+            app.slide('right', 'green' ,'3' ,'#view-all-activities-admin');
+ 
         }   
         
         /*var addMemberToGroupFunc = function(){
@@ -492,13 +497,17 @@ app.groupDetail = (function () {
         var showOrgEvent = function() {
             app.MenuPage = false;
             console.log(organisationID);
-            app.mobileApp.navigate('views/adminEventCalendar.html');                
+            //app.mobileApp.navigate('views/adminEventCalendar.html');                
+                                                        app.slide('left', 'green' ,'3' ,'#views/adminEventCalendar.html');
+
         }
         
         var showOrgNews = function() {
             app.MenuPage = false;
             console.log(organisationID);
-            app.mobileApp.navigate('views/adminNews.html');                
+            //app.mobileApp.navigate('views/adminNews.html');
+                                                               app.slide('left', 'green' ,'3' ,'#views/adminNews.html');
+
         }
 	           
         return {

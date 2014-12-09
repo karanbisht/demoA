@@ -760,23 +760,33 @@ app.adminEventCalender = (function () {
         }
         
         var goToManageOrgPage = function() {
-            app.mobileApp.navigate('views/groupDetailView.html');
+            //app.mobileApp.navigate('views/groupDetailView.html');
+                                                            app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
+
         }
         
         var goToCalendarPage = function() {
-            app.mobileApp.navigate('#adminEventCalendar');
+            //app.mobileApp.navigate('#adminEventCalendar');
+                                                app.slide('right', 'green' ,'3' ,'#adminEventCalendar');    
+
         }
         
         var goToCalendarPageDetail = function() {
-            app.mobileApp.navigate('#adminEventCalendarDetail');
+            //app.mobileApp.navigate('#adminEventCalendarDetail');
+                                    app.slide('right', 'green' ,'3' ,'#adminEventCalendarDetail');    
+
         }
         
         var addNewEvent = function() {
-            app.mobileApp.navigate('#adminAddEventCalendar');
+            //app.mobileApp.navigate('#adminAddEventCalendar');
+                        app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');    
+
         }
         
         var upcommingEventList = function() {
-            app.mobileApp.navigate('#adminEventList');
+            //app.mobileApp.navigate('#adminEventList');
+            app.slide('left', 'green' ,'3' ,'#adminEventList');    
+
         }
         
         var eventListShow = function() {
