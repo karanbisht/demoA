@@ -921,6 +921,13 @@ white-space: nowrap;
     font-size: .85rem;
 }
 
+.user-share-txt-user
+{
+    text-align: left;
+    /*float: left;*/
+}
+
+
 .user-comment-content
 {
  
@@ -932,11 +939,6 @@ white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.user-share-txt-user
-{
-    text-align: left;
-    /*float: left;*/
-}
 
 .user-comment-List
 {
@@ -959,9 +961,49 @@ white-space: nowrap;
 {
     position: relative;
     padding-right: 3em;
-    padding-left: 10px;
     font-size: .85rem; 
 }
+
+
+.Org-user-comment-content
+{
+ 
+    background-color: rgb(242, 242, 242);
+    text-align:left;
+    padding: 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+
+
+.Org-user-comment-List
+{
+    text-align:left;
+    padding-right: 3em;
+    font-size: .85rem;
+}
+
+.Org-admin-comment-content
+{ 
+    background-color: rgb(217, 244, 195);
+    text-align:right;
+    padding: 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+
+.Org-admin-comment-List
+{
+    text-align:right;
+    position: relative;
+    padding-left: 3em;
+    font-size: .85rem; 
+}
+
+
+
 
 .person-name
 {

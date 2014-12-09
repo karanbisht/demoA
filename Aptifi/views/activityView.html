@@ -62,20 +62,18 @@
 <!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
     # if (user_type !== 'Customer') { # 
-        #document.getElementById("commentListContainer").className = "admin-comment-List";#
-        <div class="admin-comment-content">
+        <div class="admin-comment-List">
             <!--<h2 class="person-name">${User()}</h2>
             <span class="time-span">${add_date}</span>-->
-            <img src="styles/images/arrow.png" style="float:left;margin-left:-19px;position:center;"/>
-            <a class="user-share-txt">${comment}</a>
+            <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;position:center;"/>-->
+            <a class="admin-comment-content">${comment}</a>
         </div>
     # }else { #
-        #document.getElementById("commentListContainer").className = "user-comment-List";# 
-        <div class="user-comment-content" id="userCommentContainer">
+        <div class="user-comment-List" id="userCommentContainer">
             <!--<h2 class="person-name">${User()}</h2>
             <span class="time-span">${add_date}</span>-->
-            <a class="user-share-txt-user">${comment}</a>
-            <img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;position:center;"/>
+            <a class="user-comment-content">${comment}</a>
+            <!--<img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;position:center;"/>-->
         </div>        
     # } #
 </script>
