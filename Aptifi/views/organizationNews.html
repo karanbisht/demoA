@@ -16,7 +16,7 @@
                      
                  <div class="notiList-content">
                     <div class="dateDisplay">
-                    <span id="activityTemplateDate" class="dateValue">${news_date}</span>
+                    <span id="activityTemplateDate" class="dateValue">${news_date} ${news_time}</span>
                     <hr class="dateLine"/>
                     <span></span>
                 </div>
@@ -25,6 +25,14 @@
                 <br/>
             
                 <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>            			            
+
+            
+                 #if (news_image!=='' && news_image!=='0') {#
+                    <br/>
+                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
+                #}#            
+
+            
             
             </div>   
           </div> 

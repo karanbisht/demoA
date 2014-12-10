@@ -103,7 +103,8 @@ app.eventCalender = (function () {
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
-                                                       event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
+                                                       event_name: loginData.status[0].eventData[i].event_name, 
+                                                       event_image : loginData.status[0].eventData[i].event_image,
                                                        event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
@@ -181,7 +182,8 @@ app.eventCalender = (function () {
                                                 add_date: groupAllEvent[i].add_date,
                                                 event_date: groupAllEvent[i].event_date,
                                                 event_desc: groupAllEvent[i].event_desc,                                                                                 										  
-                                                event_name: groupAllEvent[i].event_name,                                                                                  										  
+                                                event_name: groupAllEvent[i].event_name,
+                                                event_image:groupAllEvent[i].event_image,
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
                                                 mod_date: groupAllEvent[i].mod_date,                                     
                                                 org_id: groupAllEvent[i].org_id
@@ -244,7 +246,8 @@ app.eventCalender = (function () {
                                        event_date:'',
                                        event_desc: 'This Organization has no event.',                                                                                 										  
                                        event_name: 'No Event',                                                                                  										  
-                                       event_time: '',                                                                                  										  
+                                       event_time: '', 
+                                       event_image:'',
                                        mod_date: '',                                     
                                        org_id: ''
                                    });
@@ -274,7 +277,8 @@ app.eventCalender = (function () {
                                        event_date:'',
                                        event_desc: 'This Organization has no event.',                                                                                 										  
                                        event_name: 'No Event',                                                                                  										  
-                                       event_time: '',                                                                                  										  
+                                       event_time: '',
+                                       event_image:'',
                                        mod_date: '',                                     
                                        org_id: ''
                                    });

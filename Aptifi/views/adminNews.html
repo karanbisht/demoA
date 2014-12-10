@@ -18,13 +18,12 @@
            <br/>-->
             
            <span id="activityTemplateDate"  class="defineTitleText" >News :</span> 
-                                    <br/>
-            <br/>
+                <br/>
+                <br/>
 
            <textarea  id="addNewsDesc" placeholder="Please Enter News Here" class="common"></textarea> 
-
-            <br/>
-            <br/>
+                <br/>
+                <br/>
  
  
 	       <!--<textarea rows="9" class="defineTextArea" id="addNewsDesc" placeholder="Please Enter News Here"></textarea>               
@@ -44,13 +43,42 @@
                     <input id="adddateTimePickerNews" style="width:180px;"/>
                 </div>
           
+          
+            
+            <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;">
+                <div style="display:inline;">
+                    
+                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
+
+                        <img id="attachedImgNews" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+
+                    <a id="removeNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
+
+                </div>
+                
+                <ul data-role="actionsheet" id="newsImgSelect">
+                    <li class="km-actionsheet-title"></li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getTakePhoto">Take Photo</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
+                    </li>
+                </ul>
+            </div>
+            
+            
         </div>
-         
+         <br/>
          
            <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewNewsFunction }">
                  Save
            </li>
+
     </div>
+    
+
+
 
     <div data-role="footer">
        	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
@@ -89,24 +117,27 @@
 
                 <div class="notiList-content">
             
-                          #if(id!==0){#
+                 #if(id!==0){#
 
                     <div class="dateDisplay">
-                        <span id="activityTemplateDate" class="dateValue">${news_date}</span>
+                        <span id="activityTemplateDate" class="dateValue">${news_date} ${news_time}</span>
                         <hr class="dateLine"/>
                         <span></span>
-                    </div>
-           
-                                                       
-                              #}#
+                    </div>                                            
+                #}#
 
                 <br/>
                 <br/>
             
-                <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>            			            
+                <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>          
+                              
+                    
+                #if (news_image!=='' && news_image!=='0') {#
+                    <br/>
+                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
+                #}#    
 
-
-		    </div>   
+  		    </div>   
 
             
 		    </div>   

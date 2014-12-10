@@ -6,6 +6,10 @@ app.adminNews = (function () {
         var account_Id;
         var groupAllEvent = [];
         var tasks = [];
+        var newsDataToSend;
+        var pictureSource;   // picture source
+        var destinationTypeNews; // sets the format of returned value
+
 
         var init = function() {
         }
@@ -13,10 +17,19 @@ app.adminNews = (function () {
         var show = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
 
+            pictureSource = navigator.camera.PictureSourceType;
+            destinationTypeNews = navigator.camera.DestinationType;
+
+            
             organisationID = localStorage.getItem("orgSelectAdmin");
             //alert(organisationID);
             account_Id = localStorage.getItem("ACCOUNT_ID");
 
+            
+            $("#removeNewsAttachment").hide(); 
+            $("#attachedImgNews").hide();
+            newsDataToSend = '';
+            
             var jsonDataLogin = {"org_id":organisationID}
 
             var dataSourceLogin = new kendo.data.DataSource({
@@ -61,10 +74,12 @@ app.adminNews = (function () {
                                                news_date: 0,
                                                news_desc: 'No News from this Organization',                                                                                 										  
                                                news_name: 'No News',                                                                                  										  
-                                               news_time: '',                                                                                  										  
+                                               news_time: '', 
+                                               news_image:'',
                                                mod_date: '',                                     
                                                org_id: ''
                                            });
+                        
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
 
@@ -96,7 +111,8 @@ app.adminNews = (function () {
                                                        add_date: loginData.status[0].newsData[i].add_date,
                                                        news_date: saveData,
                                                        news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
-                                                       news_name: loginData.status[0].newsData[i].org_name,                                                                                  										  
+                                                       news_name: loginData.status[0].newsData[i].org_name,
+                                                       news_image : loginData.status[0].newsData[i].news_image,
                                                        news_time: loginData.status[0].newsData[i].news_time,                                                                                  										  
                                                        mod_date: loginData.status[0].newsData[i].mod_date,                                     
                                                        org_id: loginData.status[0].newsData[i].org_id
@@ -555,11 +571,47 @@ app.adminNews = (function () {
                 console.log(event_Date);
                 console.log(event_Time);
             
-                console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
 
-                var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend}
-            
-                var dataSourceaddGroup = new kendo.data.DataSource({
+                        if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
+                        //alert("1");
+                        if (newsDataToSend.substring(0, 21)==="content://com.android") {
+                            photo_split = newsDataToSend.split("%3A");
+                            newsDataToSend = "content://media/external/images/media/" + photo_split[1];
+                        }
+                        var params = new Object();
+                        params.org_id = organisationID;  //you can send additional info with the file
+                        params.txtNewsDesc = event_description;
+                        params.txtNewsDate = event_Date;
+                        params.txtNewsTime = eventTimeSend;
+                                               
+                        var options = new FileUploadOptions();
+                        options.fileKey = "news_image";
+                        options.fileName = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
+              
+                        console.log("-------------------------------------------");
+                        console.log(options.fileName);
+              
+                        options.mimeType = "image/jpeg";
+                        options.params = params;
+                        options.headers = {
+                            Connection: "close"
+                        }
+                        options.chunkedMode = false;
+                        var ft = new FileTransfer();
+
+                        console.log(tasks);
+                 
+                        console.log("----------------------------------------------check-----------");
+                        //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
+                        ft.upload(newsDataToSend, 'http://54.85.208.215/webservice/news/add', win, fail, options , true);
+                    
+                    }else {
+                
+                    console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
+
+                    var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend}
+                
+                    var dataSourceaddGroup = new kendo.data.DataSource({
                                                                        transport: {
                         read: {
                                                                                    url: app.serverUrl() + "news/add",
@@ -604,7 +656,45 @@ app.adminNews = (function () {
                     });
                 });
             }   
+          }      
         }
+        
+        
+        function win(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+          
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('News Added Successfully');   
+            }else {
+                app.showAlert("News Added Successfully", "Notification"); 
+            }
+              
+            $("#addNewsDesc").val('');             
+            
+            var largeImage = document.getElementById('attachedImgNews');
+            largeImage.src = '';
+            
+            $("#removeNewsAttachment").hide();
+
+            app.mobileApp.navigate("#adminAddNews");
+        }
+         
+        function fail(error) {
+            console.log(error);
+            console.log("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+
+ 
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+            }else {
+                app.showAlert("Network problem . Please try again later", "Notification");  
+            }
+        }
+
 
         var saveEditNewsData = function() {
             var event_description = $("#editNewsDesc").val();
@@ -741,11 +831,75 @@ app.adminNews = (function () {
             $('#eventCalendarAllList').data('kendoMobileListView').refresh();
         }
         
+        
+        
+            var getTakePhoto = function() {
+            navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            saveToPhotoAlbum:true
+                                        });
+        };
+        
+        
+           var getPhotoVal = function() {
+            navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                        });
+        };
+        
+        
+           function onPhotoURISuccessData(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            var largeImage = document.getElementById('attachedImgNews');
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+            newsDataToSend = imageURI;              
+            $("#removeNewsAttachment").show(); 
+            $("#attachedImgNews").show();
+
+            //alert(imageURI);
+            console.log(imageURI);
+            //newsDataToSend = imageURI;
+        }
+         
+        function onFail(message) {
+            console.log('Failed because: ' + message);
+            $("#removeNewsAttachment").hide(); 
+            $("#attachedImgNews").hide();
+        }
+         
+        var removeImage = function() {
+            var largeImage = document.getElementById('largeImage');
+            largeImage.src = '';
+            $("#removeNewsAttachment").hide(); 
+            $("#attachedImgNews").hide();
+            newsDataToSend = ''; 
+        }
+        
+        
         return {
             init: init,
             show: show,
             editNews:editNews,
             eventListShow:eventListShow,
+            getTakePhoto:getTakePhoto,
+            getPhotoVal:getPhotoVal,
+            removeImage:removeImage,
             addNewEvent:addNewEvent,
             deleteNews:deleteNews,
             editNewsshow:editNewsshow,

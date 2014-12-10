@@ -57,7 +57,8 @@ app.orgNews = (function () {
                                                news_date: 0,
                                                news_desc: 'No News from this Organization',                                                                                 										  
                                                news_name: 'No News',                                                                                  										  
-                                               news_time: '',                                                                                  										  
+                                               news_time: '',
+                                               news_image:'',
                                                mod_date: '',                                     
                                                org_id: ''
                                            });
@@ -92,7 +93,8 @@ app.orgNews = (function () {
                                                        add_date: loginData.status[0].newsData[i].add_date,
                                                        news_date: saveData,
                                                        news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
-                                                       news_name: loginData.status[0].newsData[i].org_name,                                                                                  										  
+                                                       news_name: loginData.status[0].newsData[i].org_name, 
+                                                       news_image : loginData.status[0].newsData[i].news_image,
                                                        news_time: loginData.status[0].newsData[i].news_time,                                                                                  										  
                                                        mod_date: loginData.status[0].newsData[i].mod_date,                                     
                                                        org_id: loginData.status[0].newsData[i].org_id
@@ -129,6 +131,9 @@ app.orgNews = (function () {
                             app.slide('right', 'green' ,'3' ,'#views/userOrgManage.html');
  
         }
+        
+
+
         
         return {
             init: init,

@@ -4,6 +4,7 @@ app.adminEventCalender = (function () {
     var adminCalendarEventModel = (function () {
         var organisationID;
         var account_Id;
+        var eventDataToSend;
         var groupAllEvent = [];
         var tasks = [];
         
@@ -20,6 +21,12 @@ app.adminEventCalender = (function () {
                                       
             $("#adddatePicker").kendoDatePicker();
             $("#adddateTimePicker").kendoTimePicker();
+            
+            $("#removeEventAttachment").hide(); 
+            $("#attachedImgEvent").hide();
+            eventDataToSend = '';
+            
+            
             /*$("#addEventDesc").kendoEditor({
             tools: [
 
@@ -635,7 +642,49 @@ app.adminEventCalender = (function () {
                 event_Date = year + "-" + month + "-" + day;
                 //event_Date=event_Date.toString();
                 var actionval = "Add";
-            
+
+                
+                
+                
+                        if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
+                        //alert("1");
+                        if (eventDataToSend.substring(0, 21)==="content://com.android") {
+                            photo_split = eventDataToSend.split("%3A");
+                            eventDataToSend = "content://media/external/images/media/" + photo_split[1];
+                        }
+                        var params = new Object();
+                        params.org_id = organisationID;  //you can send additional info with the file
+                        params.txtEventName = event_name;
+                        params.txtEventDesc = event_description;
+                        params.txtEventDate = event_Date;                            
+                        params.eventStartTime = eventTimeSend;
+                        params.action = actionval;    
+                                               
+                        var options = new FileUploadOptions();
+                        options.fileKey = "event_image";
+                        options.fileName = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);
+              
+                        console.log("-------------------------------------------");
+                        console.log(options.fileName);
+              
+                        options.mimeType = "image/jpeg";
+                        options.params = params;
+                        options.headers = {
+                            Connection: "close"
+                        }
+                        options.chunkedMode = false;
+                        var ft = new FileTransfer();
+
+                        console.log(tasks);
+                 
+                        console.log("----------------------------------------------check-----------");
+                        //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
+                        ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/Add', win, fail, options , true);
+                    
+                    }else {
+
+                
+                
                 console.log(event_name);
                 console.log(event_description);
                 console.log(event_Date);
@@ -684,7 +733,45 @@ app.adminEventCalender = (function () {
                     });
                 });
             }   
+                
+          }      
         }
+        
+        
+        function win(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+          
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('News Added Successfully');   
+            }else {
+                app.showAlert("Event Added Successfully", "Notification"); 
+            }
+              
+            var largeImage = document.getElementById('attachedImgEvent');
+            largeImage.src = '';
+            
+            $("#removeEventAttachment").hide();
+
+            app.mobileApp.navigate("#adminEventCalendar");
+        }
+         
+        function fail(error) {
+            console.log(error);
+            console.log("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+
+ 
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+            }else {
+                app.showAlert("Network problem . Please try again later", "Notification");  
+            }
+        }
+
+
 
         var saveEditEventData = function() {
             var event_name = $("#editEventName").val();     
@@ -820,9 +907,76 @@ app.adminEventCalender = (function () {
             $('#eventCalendarAllList').data('kendoMobileListView').refresh();
         }
         
+        
+        
+        
+                    var getTakePhoto = function() {
+            navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            saveToPhotoAlbum:true
+                                        });
+        };
+        
+        
+           var getPhotoVal = function() {
+            navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                        });
+        };
+        
+        
+           function onPhotoURISuccessData(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            var largeImage = document.getElementById('attachedImgEvent');
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+               
+            eventDataToSend = imageURI;              
+            $("#removeEventAttachment").show(); 
+            $("#attachedImgEvent").show();
+
+            //alert(imageURI);
+            console.log(imageURI);
+            //eventDataToSend = imageURI;
+        }
+         
+        function onFail(message) {
+            console.log('Failed because: ' + message);
+            $("#removeEventAttachment").hide(); 
+            $("#attachedImgEvent").hide();
+        }
+         
+        var removeImage = function() {
+            var largeImage = document.getElementById('largeImage');
+            largeImage.src = '';
+            $("#removeEventAttachment").hide(); 
+            $("#attachedImgEvent").hide();
+            eventDataToSend = ''; 
+        }
+
+        
+        
         return {
             init: init,
             show: show,
+            getTakePhoto:getTakePhoto,
+            getPhotoVal:getPhotoVal,
+            removeImage:removeImage,
             editEvent:editEvent,
             eventListShow:eventListShow,
             addNewEvent:addNewEvent,

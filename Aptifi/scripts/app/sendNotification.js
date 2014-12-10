@@ -149,7 +149,6 @@ app.sendNotification = (function () {
         var show = function(e) {
             
             $(".km-scroll-container").css("-webkit-transform", "");
-
             $('#notificationDesc').css('height', '80px');
 
             var txt = $('#notificationDesc'),
@@ -182,6 +181,7 @@ app.sendNotification = (function () {
             $("#largeImage").hide();
              
             dataToSend = '';
+           
             pictureSource = navigator.camera.PictureSourceType;
             destinationType = navigator.camera.DestinationType;
            
