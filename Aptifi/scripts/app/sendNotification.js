@@ -147,6 +147,7 @@ app.sendNotification = (function () {
         };
                                        
         var show = function(e) {
+            
             $(".km-scroll-container").css("-webkit-transform", "");
 
             $('#notificationDesc').css('height', '80px');

@@ -930,7 +930,6 @@ white-space: nowrap;
 
 .user-comment-content
 {
- 
     text-align:left;
     background-color: rgb(217, 244, 195);
     padding: 10px;
@@ -946,28 +945,41 @@ white-space: nowrap;
     padding-left: 3em;
     padding-right: 10px;
     font-size: .85rem;
+    background-image: url('images/arrowR.png');
+    background-position:right;
+    background-repeat: no-repeat;
+
 }
 
 .admin-comment-content
 { 
     background-color: rgb(242, 242, 242);
+    margin-left:10px;
     padding: 10px;
     border-radius: 6px;
     display: inline-block;
     text-overflow: ellipsis;
+    /*background:url('images/arrow.png') ;*/
 }
+
+
+
 
 .admin-comment-List
 {
     position: relative;
     padding-right: 3em;
     font-size: .85rem; 
+    background-image: url('images/arrow.png');
+    background-position:left;
+    background-repeat: no-repeat;
+
 }
 
 
 .Org-user-comment-content
-{
- 
+{ 
+    margin-left:10px;
     background-color: rgb(242, 242, 242);
     text-align:left;
     padding: 10px;
@@ -982,10 +994,15 @@ white-space: nowrap;
     text-align:left;
     padding-right: 3em;
     font-size: .85rem;
+    background-image: url('images/arrow.png');
+    background-position:left;
+    background-repeat: no-repeat;
+
 }
 
 .Org-admin-comment-content
 { 
+    margin-right:10px;
     background-color: rgb(217, 244, 195);
     text-align:right;
     padding: 10px;
@@ -1000,6 +1017,11 @@ white-space: nowrap;
     position: relative;
     padding-left: 3em;
     font-size: .85rem; 
+    
+    background-image: url('images/arrowR.png');
+    background-position:right;
+    background-repeat: no-repeat;
+
 }
 
 

@@ -13,13 +13,19 @@
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
 
             <div class="cf" data-role="touch" >         
-       		<div>
-                 #if(id!==0){#
-                 <span id="activityTemplateDate"  class="notiNameList"  >News Date: ${news_date}</span>       	                         
-                 #}#
+                     
+                 <div class="notiList-content">
+                    <div class="dateDisplay">
+                    <span id="activityTemplateDate" class="dateValue">${news_date}</span>
+                    <hr class="dateLine"/>
+                    <span></span>
+                </div>
+           
+                <br/>
+                <br/>
             
-                 <span  id="activityTemplateMessage"  class="orgContentMsg" >${news_desc}</span>            			            
-		       </div>   
+                <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>            			            
+            
             </div>   
-            
+          </div> 
 		</script>

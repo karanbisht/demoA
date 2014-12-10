@@ -85,27 +85,32 @@
             
             <div class="cf" data-role="touch" data-bind="events: { tap: editNews }">         
                
-       		<div >
+            
 
+                <div class="notiList-content">
+            
                           #if(id!==0){#
-                              
-                                <span id="activityTemplateDate"  class="notiNameList" >News Date: ${news_date}</span>       	            
-    
-                         #}#
 
+                    <div class="dateDisplay">
+                        <span id="activityTemplateDate" class="dateValue">${news_date}</span>
+                        <hr class="dateLine"/>
+                        <span></span>
+                    </div>
+           
+                                                       
+                              #}#
 
-                        <span  id="activityTemplateMessage"  class="orgContentMsg" >${news_desc}</span>            			            
-                  
-                                    
-                                    <!--
-                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editNews }"><u>Edit News</u></div>                            
-                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteNews }"><u>Delete News</u></div> </div>
-                            -->
+                <br/>
+                <br/>
+            
+                <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>            			            
 
-       		</div>
 
 		    </div>   
+
             
+		    </div>   
+
 		</script>
 
 

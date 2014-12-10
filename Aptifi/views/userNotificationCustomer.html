@@ -31,7 +31,16 @@
             </div>
             <div class="activity-content" style="margin-left:5px">
                 <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
-                <a id=""  style="color:rgb(188,188,188);" >${comment}</a>
+
+                    
+            #if (comment.length > 80) {#
+                #commentVal = comment.substr(0, 80) + '..';#
+            #}else {#
+                #commentVal = comment;#  
+            #}#
+
+        
+                <a id=""  style="color:rgb(188,188,188);" >${commentVal}</a>
             </div>
         </div>
     #}else {#
