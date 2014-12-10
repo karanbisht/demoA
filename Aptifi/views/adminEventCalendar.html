@@ -270,6 +270,32 @@
             
         </div>
          
+            <div id="editEventAttachment" style="margin-top:10px;margin-bottom:10px;">
+                <div style="display:inline;">
+                    
+                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" ></a>
+
+                        <img id="attachedImgEvent" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+
+                    <a id="removeEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
+
+                </div>
+                
+                <ul data-role="actionsheet" id="editEventImgSelect">
+                    <li class="km-actionsheet-title"></li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getTakePhoto">Take Photo</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
+                    </li>
+                </ul>
+            </div>
+        
+                <br/>
+                <br/>
+
+
          
            <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditEventData }">
                        Save Change   
