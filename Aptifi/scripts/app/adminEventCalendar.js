@@ -962,7 +962,7 @@ app.adminEventCalender = (function () {
         }
          
         var removeImage = function() {
-            var largeImage = document.getElementById('largeImage');
+            var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();

@@ -884,7 +884,7 @@ app.adminNews = (function () {
         }
          
         var removeImage = function() {
-            var largeImage = document.getElementById('largeImage');
+            var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
             $("#removeNewsAttachment").hide(); 
             $("#attachedImgNews").hide();
