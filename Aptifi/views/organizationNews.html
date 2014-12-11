@@ -7,7 +7,11 @@
               </div>                                          
     </div>
     
-    <ul id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></ul>
+            <div class="loader" id="newsLoader" style="display:none;margin-top:48%">
+                      <div class="ball"></div>
+            </div>
+
+            <ul id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></ul>
 </div>
 
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
@@ -24,7 +28,7 @@
                 <br/>
                 <br/>
             
-                <a id="activityTemplateMessage" class="orgContentMsg">${news_desc}</a>            			            
+                <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			            
 
             
                  #if (news_image!=='' && news_image!=='0') {#

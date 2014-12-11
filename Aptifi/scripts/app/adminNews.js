@@ -273,6 +273,9 @@ app.adminNews = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
+            var largeImage = document.getElementById('attachedImgNews');
+            largeImage.src = '';
+            
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
@@ -370,6 +373,7 @@ app.adminNews = (function () {
         var newsDescEdit;
         var newsDateEdit;
         var newsTimeEdit;
+        var newsImageEdit;
         var newsPid;
         
         var editNews = function(e) {
@@ -379,6 +383,7 @@ app.adminNews = (function () {
             newsDescEdit = e.data.news_desc;
             newsDateEdit = e.data.news_date;
             newsTimeEdit = e.data.news_time;
+            newsImageEdit = e.data.news_image;
             newsPid = e.data.id;
             app.mobileApp.navigate('#adminEditNews');
         }
@@ -436,8 +441,7 @@ app.adminNews = (function () {
         
         var editNewsshow = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
-            
-            
+                        
             $('#editNewsDesc').css('height', '80px');
 
             var txt = $('#editNewsDesc'),
@@ -459,7 +463,22 @@ app.adminNews = (function () {
             });
             
             $("#editNewsDesc").html(newsDescEdit); 
+
+            if(newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!==''){
+
+            var largeImage = document.getElementById('attachedImgEditNews');
+            largeImage.style.display = 'block';
+            largeImage.src = newsImageEdit;
+            //$("#removeEditNewsAttachment").show();                
+                }else{            
+            var largeImage = document.getElementById('attachedImgEditNews');
+            largeImage.style.display = 'none';
+            largeImage.src = '';
+            //$("#removeEditNewsAttachment").hide();
+
+                }
             
+
             $("#editdatePickerNews").kendoDatePicker({                
                                                          value: newsDateEdit,
                                                          dates: disabledDaysBefore,    
@@ -676,11 +695,13 @@ app.adminNews = (function () {
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
             
+            $("#attachedImgNews").hide();
             $("#removeNewsAttachment").hide();
 
             app.mobileApp.navigate("#adminAddNews");
         }
          
+                
         function fail(error) {
             console.log(error);
             console.log("An error has occurred: Code = " + error.code);
@@ -719,6 +740,42 @@ app.adminNews = (function () {
                 console.log(event_Date);
                 console.log(event_Time);
                 
+                
+                                        if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
+                        //alert("1");
+                        if (newsDataToSend.substring(0, 21)==="content://com.android") {
+                            photo_split = newsDataToSend.split("%3A");
+                            newsDataToSend = "content://media/external/images/media/" + photo_split[1];
+                        }
+                        var params = new Object();
+                        params.org_id = organisationID;  //you can send additional info with the file
+                        params.txtNewsDesc = event_description;
+                        params.txtNewsDate = event_Date;
+                        params.txtNewsTime = event_Time;
+                                               
+                        var options = new FileUploadOptions();
+                        options.fileKey = "news_image";
+                        options.fileName = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
+              
+                        console.log("-------------------------------------------");
+                        console.log(options.fileName);
+              
+                        options.mimeType = "image/jpeg";
+                        options.params = params;
+                        options.headers = {
+                            Connection: "close"
+                        }
+                        options.chunkedMode = false;
+                        var ft = new FileTransfer();
+
+                        console.log(tasks);
+                 
+                        console.log("----------------------------------------------check-----------");
+                        //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
+                        ft.upload(newsDataToSend, 'http://54.85.208.215/webservice/news/edit', winEdit, fail, options , true);
+                    
+                    }else {
+                        
                 console.log(organisationID + "||" + event_description + "||" + event_Date + "||" + event_Time + "||" + newsPid);
                                     
                 var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid}
@@ -763,6 +820,23 @@ app.adminNews = (function () {
                     });
                 });
             }   
+          }
+        }
+        
+        
+        function winEdit(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+          
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('News updated successfully');   
+            }else {
+                app.showAlert("News updated successfully", "Notification"); 
+            }
+                        
+            app.mobileApp.navigate("#adminOrgNewsList");
+
         }
         
         var goToManageOrgPage = function() {
@@ -892,14 +966,78 @@ app.adminNews = (function () {
         }
         
         
+        
+            var getTakePhotoEdit = function() {
+            navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            saveToPhotoAlbum:true
+                                        });
+        };
+        
+        
+           var getPhotoValEdit = function() {
+            navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                        });
+        };
+        
+        
+           function onPhotoURISuccessDataEdit(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            var largeImage = document.getElementById('attachedImgEditNews');
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+            newsDataToSend = imageURI;              
+            //$("#removeEditNewsAttachment").show(); 
+            $("#attachedImgEditNews").show();
+
+            //alert(imageURI);
+            console.log(imageURI);
+            //newsDataToSend = imageURI;
+        }
+         
+        function onFailEdit(message) {
+            console.log('Failed because: ' + message);
+            //$("#removeEditNewsAttachment").hide(); 
+            //$("#attachedImgEditNews").hide();
+        }
+         
+        var removeImageEdit = function() {
+            var largeImage = document.getElementById('attachedImgNews');
+            largeImage.src = '';
+            $("#removeEditNewsAttachment").hide(); 
+            $("#attachedImgEditNews").hide();
+            newsDataToSend = ''; 
+        }
+        
+        
+        
         return {
             init: init,
             show: show,
             editNews:editNews,
             eventListShow:eventListShow,
             getTakePhoto:getTakePhoto,
+            getPhotoValEdit:getPhotoValEdit,
+            getTakePhotoEdit:getTakePhotoEdit,
             getPhotoVal:getPhotoVal,
             removeImage:removeImage,
+            removeImageEdit:removeImageEdit,
             addNewEvent:addNewEvent,
             deleteNews:deleteNews,
             editNewsshow:editNewsshow,

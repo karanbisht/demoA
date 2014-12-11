@@ -688,6 +688,8 @@ app.sendNotification = (function () {
         }
          
         var sendNotificationOrg = function(e) {
+            
+            $("#selectOrgLoader").show();
             console.log(e.data.org_id);
             //app.mobileApp.pane.loader.show();            
             var org = e.data.org_id;       
@@ -736,6 +738,8 @@ app.sendNotification = (function () {
                                 $("#selectOrgDiv").hide();
                                 $("#selectGroupDiv").show();
                                 $("#selectGroupFooter").show();
+                                $("#selectOrgLoader").hide();
+
                             }
                         });
                        
@@ -749,6 +753,9 @@ app.sendNotification = (function () {
                                                                              //navigator.notification.alert("Please check your internet connection.",
                                                                              //function () { }, "Notification", 'OK');
                 
+                                                                                                             $("#selectOrgLoader").hide();
+
+                                                                             
                                                                              var showNotiTypes = [
                                                                                  { message: "Your request has not been processed due to a connection error . Please try again"}
                                                                              ];
@@ -879,8 +886,6 @@ app.sendNotification = (function () {
         };
          
         var NextToSeletType = function() {
-            $("#selectCustomerToSend").hide();
-            $("#selectCustomerFooter").hide();
           
             var customer = [];
 		    
@@ -889,9 +894,25 @@ app.sendNotification = (function () {
             });
             
             customer = String(customer);        
-            console.log(customer);       
+            console.log(customer);
+            
+            
+         if(customer.length!==0 && customer.length!=='0'){
+
+            $("#selectCustomerToSend").hide();
+            $("#selectCustomerFooter").hide();
+          
             localStorage.setItem("SELECTED_CUSTOMER", customer);  
             escapeGroupClick();
+         }else{
+             
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Select Atleast One Customer.');   
+                        }else {
+                            app.showAlert("Select Atleast One Customer.", "Notification");  
+                        }
+             
+         }   
         };
          
         var skipToCustomerType = function() {
@@ -902,10 +923,8 @@ app.sendNotification = (function () {
         };
          
         var NextToCustomerType = function() {
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
-               
-            var group = [];
+
+                        var group = [];
 		    
             $(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
@@ -913,9 +932,25 @@ app.sendNotification = (function () {
             
             group = String(group);        
             console.log(group);      
+              
+         if(group.length!==0 && group.length!=='0'){
+                         
+            $("#selectGroupDiv").hide();
+            $("#selectGroupFooter").hide();
+
             localStorage.setItem("SELECTED_GROUP", group); 
             $("#selectCustomerToSend").show();                            
             $("#selectCustomerFooter").show();    
+         
+         }else{
+             
+                       if (!app.checkSimulator()) {
+                              window.plugins.toast.showShortBottom('Select Atleast One Group.');   
+                        }else {
+                            app.showAlert("Select Atleast One Group.", "Notification");  
+                        }
+
+         }    
         };
          
         var sendNotificationGroup = function(e) {
@@ -969,6 +1004,8 @@ app.sendNotification = (function () {
 
             $("#selectCustomerToSend").show();
             $("#selectCustomerFooter").show();
+            $("#selectOrgLoader").hide();
+
             app.mobileApp.pane.loader.hide();    
         };
 

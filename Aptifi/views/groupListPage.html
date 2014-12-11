@@ -34,9 +34,7 @@
 <script type="text/x-kendo-template" id="groupTemplate" data-role="touch" data-bind="events: { tap: groupSelected }">
     #if (groupID!==0 && groupID!=='0') {#
 <div data-role="touch" data-bind="events: { tap: groupSelected }" class="cf">
-    <div class="user-avatar">
-        <img src="styles/images/manageOrg/org-group-icon-h.png" />
-    </div>
+    <div class="group-img-show"></div>
     <div class="activity-content">
         <h2 id="" class="person-name">${groupName}</h2>
         #if (addDate!==0) {#
@@ -47,10 +45,8 @@
 </div>
     #}else {#
         <div class="cf">
-            <div class="user-avatar">
-                <img src="styles/images/manageOrg/org-group-icon-h.png" />
-            </div>
-            <div class="activity-content">
+        <div class="group-img-show"></div>
+        <div class="activity-content">
                 <h2 id="" class="person-name">${groupName}</h2>
                 <a id="activityTemplateMessage" class="user-share-txt">${groupDesc}</a>
             </div>

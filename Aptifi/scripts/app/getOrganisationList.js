@@ -1622,6 +1622,7 @@ app.OragnisationList = (function () {
         }
         
         var syncCalendar = function() {
+            $("#savingDeviceCalenderLoader").show();
             var db = app.getDb();
             db.transaction(getProfileForEventInfoDB, app.errorCB, getProfileEventDBSuccess);
         }
@@ -1819,7 +1820,9 @@ app.OragnisationList = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    console.log(e);              
+                                                                                $("#savingDeviceCalenderLoader").hide();
+
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -1944,6 +1947,9 @@ app.OragnisationList = (function () {
         }
         
         function showAlertToComplete() {
+
+            $("#savingDeviceCalenderLoader").hide();
+
             if (!app.checkSimulator()) {
                 window.plugins.toast.showLongBottom('Successfully synchronization Event with Device Calender');           
             }else {

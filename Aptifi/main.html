@@ -375,6 +375,10 @@
                         <span style="color:rgb(255,255,255);">App Version</span>
                     </div>
                 </div>
+                
+                 <div class="loader" id="savingDeviceCalenderLoader" style="display:none;margin-top:48%">
+                    <div class="ball"></div>
+                 </div>
 
                 <div id="appVersionDiv" class="popUpDivToShow">
 
@@ -395,9 +399,7 @@
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
                     
                 #if (org_logo===null || org_logo==='null') {#   
-                    <div class="user-avatar">
-                        <img src="styles/images/habicon.png">
-                    </div>
+                    <div class="org-img-show"></div>
                 #}else {#
                     <div class="user-avatar">
                         <img id="logo" data-bind="attr: { src: imageSource, alt: imageAlt }" />
@@ -425,10 +427,10 @@
                     
             #if (org_id!==0 && org_id!=='0') {#
             <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
-                #if (imgData===null || imgData==='null') {#            
-                    <div class="user-avatar">
-                        <img src="styles/images/habicon.png"/>
-                    </div>
+
+            #if (imgData===null || imgData==='null') {#            
+                                   <div class="org-img-show"></div>
+
                 #}else {#
                     #console.log(imgData)#
                     #console.log(imageSourceOrg)#
@@ -455,10 +457,8 @@
             </div>
             #}else {#
                 <div class="cf" >
-                    <div class="user-avatar">
-                        <img src="styles/images/habicon.png"/>
-                    </div>
-                    <div class="activity-content">
+                       <div class="org-img-show"></div>
+                 <div class="activity-content">
                         <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
                         <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>
                     </div>
@@ -566,6 +566,11 @@
                 <div id="selectOrgDiv" style="margin:10px 10px 10px 10px;border:none;">
                     <p style="color:#343434;">Select Organization to send Notification</p>
                     <ul id="organisation-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
+                </div>
+
+                
+                <div class="loader" id="selectOrgLoader" style="display:none;">
+                    <div class="ball"></div>
                 </div>
 
                 <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
@@ -832,9 +837,7 @@
         <script type="text/x-kendo-template" id="adminOrganisationTemplate">
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">        
                 #if (org_logo===null || org_logo==='null') {#            
-                    <div class="user-avatar">
-                        <img src="styles/images/habicon.png"/>
-                    </div>
+                    <div class="org-img-show"></div>
                 #}else {#
                     <div class="user-avatar">
                         <img src=${imageSource} />
@@ -858,9 +861,7 @@
         <script type="text/x-kendo-template" id="userReplyTemplate">
             <div class="cf" data-role="touch" data-bind="events: { tap: clickOnUserName }" >
                 #if (org_logo===null || org_logo==='null') {#            
-                    <div class="user-avatar">
-                        <img src="styles/images/habicon.png"/>
-                    </div>
+                    <div class="org-img-show"></div>
                 #}else {#
                     <div class="user-avatar">
                         <img src=${imageSource} />
@@ -942,7 +943,7 @@
         <script src="scripts/app/adminEventCalendar.js" type="text/javascript"></script>
         <script src="scripts/app/sendNotification.js" type="text/javascript"></script>
         <script src="scripts/app/userReplyList.js" type="text/javascript"></script>
-        <script src="scripts/app/userReplyNotification.js" type="text/javascript"></script>
+        <!--<script src="scripts/app/userReplyNotification.js" type="text/javascript"></script>-->
         <script src="scripts/app/userNotificationComment.js" type="text/javascript"></script>
         <script src="scripts/app/getOrganisationList.js" type="text/javascript"></script>
         <script src="scripts/app/adminLogin.js" type="text/javascript"></script>

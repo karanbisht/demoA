@@ -374,7 +374,9 @@ app.groupDetail = (function () {
             customer = String(customer);        
             console.log(customer);            
             console.log(organisationID);
+          
             
+           if(customer.length!==0 && customer.length!=='0'){
             var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
                         
             var dataSourceDeleteMember = new kendo.data.DataSource({
@@ -423,7 +425,15 @@ app.groupDetail = (function () {
                         app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
-            });    
+            }); 
+          }else{
+              
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Please Select Member To Delete.');   
+                        }else {
+                            app.showAlert("Please Select Member To Delete.", "Notification");  
+                        }
+          }      
         };
         
         var showOrgGroupView = function() {

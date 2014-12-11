@@ -108,6 +108,7 @@ app.GroupList = (function () {
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
                                 }else if (orgVal.Msg==='Success') {
+                                     $("#tabDeleteGroup").show();
                                     console.log("--------------------------Success");
 
                                     console.log(orgVal.groupData.length);
@@ -212,7 +213,9 @@ app.GroupList = (function () {
                                                addDate:results.rows.item(i).addDate
                                            });
                     }
-                }               
+                }  
+                                $("#tabDeleteGroup").show();
+
             }else {                    
                 groupDataShow.push({
                                        orgName: '',
@@ -346,6 +349,9 @@ app.GroupList = (function () {
             
             groupID = String(groupID);
             
+            
+        if(groupID.length!==0 && groupID.length!=='0'){
+
             console.log(groupID + "||" + organisationID);
             
             var jsonDataDelete = {"group_id":groupID ,"orgID":organisationID}
@@ -401,6 +407,15 @@ app.GroupList = (function () {
             function(error){
             });
             });*/
+            
+         }else{
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Please Select Group To Delete.');   
+                        }else {
+                            app.showAlert("Please Select Group To Delete.", "Notification");  
+                        }
+
+         }   
         };
           
         var showGroup = function() {

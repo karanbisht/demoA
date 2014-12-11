@@ -180,9 +180,10 @@ app.replyedCustomer = (function () {
 
             app.mobileApp.pane.loader.hide();
 
-            $("#loaderReplyCustomer").hide();
-            $("#reply-customer-listview").show();
-          
+           setTimeout(function(){
+                $("#loaderReplyCustomer").hide();
+                $("#reply-customer-listview").show();
+           },100);
             var db = app.getDb();
             db.transaction(updateBagCount, app.errorCB, app.successCB);   
         };

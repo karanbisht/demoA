@@ -9,6 +9,9 @@ app.orgNews = (function () {
         }
     
         var show = function(e) {
+            
+            $("#newsLoader").show();
+            
             $(".km-scroll-container").css("-webkit-transform", "");             
 
             eventOrgId = localStorage.getItem("selectedOrgId");
@@ -65,6 +68,8 @@ app.orgNews = (function () {
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
 
+                        console.log(loginData.status[0].newsData);
+                        
                         if (loginData.status[0].newsData.length!==0) {
                             var eventListLength = loginData.status[0].newsData.length;
                               
@@ -111,6 +116,8 @@ app.orgNews = (function () {
     
         var showInListView = function() {
             console.log(groupAllEvent);
+                        $("#newsLoader").hide();
+
 
             $(".km-scroll-container").css("-webkit-transform", "");
            

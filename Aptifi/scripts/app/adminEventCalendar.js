@@ -128,7 +128,8 @@ app.adminEventCalender = (function () {
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
-                                                       event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
+                                                       event_desc: loginData.status[0].eventData[i].event_desc,
+                                                       event_image : loginData.status[0].eventData[i].event_image,
                                                        event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
                                                        event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
@@ -261,7 +262,8 @@ app.adminEventCalender = (function () {
                                                 id: groupAllEvent[i].id,
                                                 add_date: groupAllEvent[i].add_date,
                                                 event_date: groupAllEvent[i].event_date,
-                                                event_desc: groupAllEvent[i].event_desc,                                                                                 										  
+                                                event_desc: groupAllEvent[i].event_desc,
+                                                event_image : groupAllEvent[i].event_image,
                                                 event_name: groupAllEvent[i].event_name,                                                                                  										  
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
                                                 mod_date: groupAllEvent[i].mod_date,                                     
@@ -433,6 +435,7 @@ app.adminEventCalender = (function () {
         var eventDescEdit;
         var eventDateEdit;
         var eventTimeEdit;
+        var eventImageEdit;
         var eventPid;
         
         var editEvent = function(e) {
@@ -443,6 +446,7 @@ app.adminEventCalender = (function () {
             eventDescEdit = e.data.event_desc;
             eventDateEdit = e.data.event_date;
             eventTimeEdit = e.data.event_time;
+            eventImageEdit = e.data.event_image;
             eventPid = e.data.id;
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
@@ -497,10 +501,12 @@ app.adminEventCalender = (function () {
         }
         
         var editEventshow = function() {
+            
+            //alert(eventDataToSend);
+            
             $(".km-scroll-container").css("-webkit-transform", "");
 
-            console.log(eventNameEdit);
-            
+            console.log(eventNameEdit);            
 
             $('#editEventDesc').css('height', '80px');
 
@@ -526,6 +532,22 @@ app.adminEventCalender = (function () {
             
             $("#editEventDesc").html(eventDescEdit);
 
+            
+            
+            console.log(eventImageEdit);
+            
+            if(eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!==''){
+            var largeImage = document.getElementById('attachedImgEditEvent');
+            largeImage.style.display = 'block';
+            largeImage.src = eventImageEdit;
+            //$("#removeEditEventAttachment").show(); 
+            }else{
+            var largeImage = document.getElementById('attachedImgEditEvent');
+            largeImage.style.display = 'none';
+            largeImage.src = '';
+            //$("#removeEditEventAttachment").hide();    
+            }
+            
             console.log(eventDateEdit);
                         
             var currentDate = app.getPresentDate();
@@ -802,7 +824,47 @@ app.adminEventCalender = (function () {
                 console.log(event_description);
                 console.log(event_Date);
                 console.log(event_Time);
+                
+                if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
+                    //alert(eventDataToSend);
+                        console.log("image sending function");
+                        if (eventDataToSend.substring(0, 21)==="content://com.android") {
+                            photo_split = eventDataToSend.split("%3A");
+                            eventDataToSend = "content://media/external/images/media/" + photo_split[1];
+                        }
+                        var params = new Object();
+                        params.org_id = organisationID;  //you can send additional info with the file
+                        params.txtEventName = event_name;
+                        params.txtEventDesc = event_description;
+                        params.txtEventDate = event_Date;                            
+                        params.eventStartTime = event_Time;
+                        params.action = actionval;    
+                                               
+                        var options = new FileUploadOptions();
+                        options.fileKey = "event_image";
+                        options.fileName = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);
+              
+                        console.log("-------------------------------------------");
+                        console.log(options.fileName);
+              
+                        options.mimeType = "image/jpeg";
+                        options.params = params;
+                        options.headers = {
+                            Connection: "close"
+                        }
+                        options.chunkedMode = false;
+                        var ft = new FileTransfer();
+
+                        console.log(tasks);
+                 
+                        console.log("----------------------------------------------check-----------");
+                        //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
+                        ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/edit', winEdit, fail, options , true);
+                    
+                    }else {
             
+                     //alert(eventDataToSend);
+
                 console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
                         
                 var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval}
@@ -844,11 +906,28 @@ app.adminEventCalender = (function () {
                     });
                 });
             }   
+          }      
         }
+        
+        
+        function winEdit(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+          
+            if (!app.checkSimulator()) {
+                window.plugins.toast.showShortBottom('Event updated successfully');   
+            }else {
+                app.showAlert("Event updated successfully", "Notification"); 
+            }
+              
+            app.mobileApp.navigate("#adminEventCalendar");
+        }
+        
         
         var goToManageOrgPage = function() {
             //app.mobileApp.navigate('views/groupDetailView.html');
-                                                            app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
+            app.slide('right', 'green' ,'3' ,'#views/groupDetailView.html');    
 
         }
         
@@ -968,6 +1047,74 @@ app.adminEventCalender = (function () {
             $("#attachedImgEvent").hide();
             eventDataToSend = ''; 
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                
+                    var getTakePhotoEdit = function() {
+            navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            saveToPhotoAlbum:true
+                                        });
+        };
+        
+        
+           var getPhotoValEdit = function() {
+            navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                        });
+        };
+        
+        
+           function onPhotoURISuccessDataEdit(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            var largeImage = document.getElementById('attachedImgEditEvent');
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+               
+            eventDataToSend = imageURI;              
+            //$("#removeEditEventAttachment").show(); 
+            $("#attachedImgEditEvent").show();
+
+            //alert(imageURI);
+            console.log(imageURI);
+            //eventDataToSend = imageURI;
+        }
+         
+        function onFailEdit(message) {
+            console.log('Failed because: ' + message);
+            //$("#removeEditEventAttachment").hide(); 
+            //$("#attachedImgEditEvent").hide();
+        }
+         
+        var removeImageEdit = function() {
+            var largeImage = document.getElementById('attachedImgEvent');
+            largeImage.src = '';
+            $("#removeEditEventAttachment").hide(); 
+            $("#attachedImgEditEvent").hide();
+            eventDataToSend = ''; 
+        }
 
         
         
@@ -976,7 +1123,10 @@ app.adminEventCalender = (function () {
             show: show,
             getTakePhoto:getTakePhoto,
             getPhotoVal:getPhotoVal,
+            getTakePhotoEdit:getTakePhotoEdit,
+            getPhotoValEdit:getPhotoValEdit,
             removeImage:removeImage,
+            removeImageEdit:removeImageEdit,
             editEvent:editEvent,
             eventListShow:eventListShow,
             addNewEvent:addNewEvent,
