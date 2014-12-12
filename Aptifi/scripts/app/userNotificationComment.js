@@ -213,7 +213,6 @@ app.userNotiComment = (function () {
         
         var imagePathNotExist = function() {
             //alert('2');
-            //app.mobileApp.pane.loader.show();                
             var attachedImg = attached;
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';

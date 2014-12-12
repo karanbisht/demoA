@@ -347,27 +347,22 @@ app.adminNews = (function () {
                                                             }                
                                                         });
 
-            /*addEventDatePicker.focus(function() {
-            //$( "#orgforNotification" ).blur();
-            addEventDatePicker.input.blur();
-            });*/
+            $("#adddatePickerNews").attr("readonly","readonly");
+            $("#adddateTimePickerNews").attr("readonly","readonly");
             
-            setTimeout(function() {
+            $('#adddatePickerNews').attr('disabled','disabled');
+                        $('#adddateTimePickerNews').attr('disabled','disabled');
+            
                 $("#adddatePickerNews").bind("focus", function() {
                     $("#adddatePickerNews").blur();                    
                 });
-            }, 100); 
             
-            setTimeout(function() {            
                 $("#adddateTimePickerNews").bind("focus", function() {
                     $("#adddateTimePickerNews").blur();
                 }); 
-            }, 100); 
-            /*var addEventTimePicker = $("#adddateTimePickerNews").data("kendoTimePicker"); 
-            addEventTimePicker.input.focus(function() {
-            //$( "#orgforNotification" ).blur();
-            addEventTimePicker.input.blur();
-            });  */ 
+
+
+            
         }
         
         var newsDescEdit;
@@ -530,18 +525,21 @@ app.adminNews = (function () {
                                                                  console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
+            
+                        $("#editdatePickerNews").attr("readonly","readonly");
+            $("#editdateTimePickerNews").attr("readonly","readonly");
 
-            setTimeout(function() {
+                       $('#editdatePickerNews').attr('disabled','disabled');
+                        $('#editdateTimePickerNews').attr('disabled','disabled');
+            
                 $("#editdatePickerNews").bind("focus", function() {
                     $("#editdatePickerNews").blur();                    
                 });
-            }, 100); 
             
-            setTimeout(function() {            
                 $("#editdateTimePickerNews").bind("focus", function() {
                     $("#editdateTimePickerNews").blur();
                 }); 
-            }, 100); 
+
         }
         
         var addNewNewsFunction = function() {
@@ -752,6 +750,7 @@ app.adminNews = (function () {
                         params.txtNewsDesc = event_description;
                         params.txtNewsDate = event_Date;
                         params.txtNewsTime = event_Time;
+                        params.pid = newsPid;    
                                                
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";

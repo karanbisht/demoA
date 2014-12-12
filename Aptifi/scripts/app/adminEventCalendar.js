@@ -832,12 +832,16 @@ app.adminEventCalender = (function () {
                             photo_split = eventDataToSend.split("%3A");
                             eventDataToSend = "content://media/external/images/media/" + photo_split[1];
                         }
+                    
+                console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
+
                         var params = new Object();
                         params.org_id = organisationID;  //you can send additional info with the file
                         params.txtEventName = event_name;
                         params.txtEventDesc = event_description;
                         params.txtEventDate = event_Date;                            
                         params.eventStartTime = event_Time;
+                        params.pid = eventPid;    
                         params.action = actionval;    
                                                
                         var options = new FileUploadOptions();

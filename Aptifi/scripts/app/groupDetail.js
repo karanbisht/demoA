@@ -16,7 +16,7 @@ app.groupDetail = (function () {
            
         var show = function (e) {
             app.MenuPage = false;
-            //app.mobileApp.pane.loader.hide();       
+            app.mobileApp.pane.loader.hide();       
             
             //organisationID = e.view.params.organisationID;
             //account_Id = e.view.params.account_Id;
@@ -42,14 +42,18 @@ app.groupDetail = (function () {
 
         var groupDataShow = [];
 
+        
         var showGroupMembers = function() {            
-            $("#progressAdminOrgMem").show();         
-            
             app.MenuPage = false;
-            app.mobileApp.navigate('#groupMemberShow');         
-            console.log("karaasa" + organisationID)
-                     
-            var UserModel = {
+            app.mobileApp.navigate('#groupMemberShow');                              
+        };
+        
+        
+        var orgMemberShow = function(){
+         
+          $("#progressAdminOrgMem").show();         
+         
+                var UserModel = {
                 id: 'Id',
                 fields: {
                     mobile: {
@@ -76,6 +80,8 @@ app.groupDetail = (function () {
                 }
             };
             
+                        app.mobileApp.pane.loader.hide();
+
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
@@ -161,15 +167,17 @@ app.groupDetail = (function () {
                 
             //});
             
+                        app.mobileApp.pane.loader.hide();
+
             $("#groupMember-listview").kendoMobileListView({
                                                                dataSource: MemberDataSource,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
+                app.mobileApp.pane.loader.hide();
             
-            setTimeout(function() {
                 $("#progressAdminOrgMem").hide();
-            });
-        };
+
+        }
         
         var showGroupToDelete = function() {
             console.log("---------------------GROUP DATA----------------");
@@ -538,6 +546,7 @@ app.groupDetail = (function () {
             removeMemberFromGroup:removeMemberFromGroup,    
             showGroupNotification:showGroupNotification,
             showGroupMembers:showGroupMembers,
+            orgMemberShow:orgMemberShow,
             showUpdateGroupView:showUpdateGroupView ,
             showOrgGroupView:showOrgGroupView,       
             showOrgEvent:showOrgEvent,    

@@ -131,7 +131,6 @@ app.registration = (function () {
                             var device_id = localStorage.getItem("deviceTokenID");
                             //console.log(device_id);
             
-                            app.mobileApp.pane.loader.show();                
                             //app.mobileApp.pane.loader.hide();           
                             console.log(username + "||" + device_id + "||" + device_type);
                 

@@ -19,6 +19,7 @@ app.replyedCustomer = (function () {
             //title = e.view.params.title;
          
             app.mobileApp.pane.loader.hide();
+            app.mobileApp.pane.loader.hide();
 
             $("#loaderReplyCustomer").show();
             $("#reply-customer-listview").hide();
@@ -60,7 +61,8 @@ app.replyedCustomer = (function () {
 
                 }
             };
-            
+
+            app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
@@ -169,6 +171,7 @@ app.replyedCustomer = (function () {
             //MemberDataSource.fetch(function() {
                 
             //});
+            app.mobileApp.pane.loader.hide();
     	    
             $("#reply-customer-listview").kendoMobileListView({
                                                                   dataSource: MemberDataSource,
