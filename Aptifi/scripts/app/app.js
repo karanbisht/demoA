@@ -1209,6 +1209,15 @@ var app = (function (win) {
       document.addEventListener('backbutton', function() {
         slide('right', 'green');
   }, false);
+    
+    
+    function htmlDecode(value) {
+	if (value) {
+		return $('<div />').html(value).text();
+	} else {
+		return '';
+	}
+    }
 
     return {
         showAlert: showAlert,
@@ -1254,6 +1263,7 @@ var app = (function (win) {
         getPresentDate:getPresentDate,
         gobackTOCalendar:gobackTOCalendar,
         getPresntTimeStamp:getPresntTimeStamp,
+        htmlDecode:htmlDecode,
         slide:slide,
         flip:flip,
     

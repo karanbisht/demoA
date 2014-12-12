@@ -263,6 +263,10 @@ app.adminNews = (function () {
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
             
+            $("#adddatePickerNews").parent().css('width',"160px");
+            $("#adddateTimePickerNews").parent().css('width',"160px");
+            $("#adddatePickerNews").removeClass( "k-input" );
+            $("#adddateTimePickerNews").removeClass( "k-input" );            
             
             $('#addNewsDesc').css('height', '80px');
 
@@ -347,19 +351,10 @@ app.adminNews = (function () {
                                                             }                
                                                         });
 
-            $("#adddatePickerNews").attr("readonly","readonly");
-            $("#adddateTimePickerNews").attr("readonly","readonly");
             
-            $('#adddatePickerNews').attr('disabled','disabled');
-                        $('#adddateTimePickerNews').attr('disabled','disabled');
+                 $('#adddatePickerNews').attr('disabled','disabled');
+                 $('#adddateTimePickerNews').attr('disabled','disabled');
             
-                $("#adddatePickerNews").bind("focus", function() {
-                    $("#adddatePickerNews").blur();                    
-                });
-            
-                $("#adddateTimePickerNews").bind("focus", function() {
-                    $("#adddateTimePickerNews").blur();
-                }); 
 
 
             
@@ -446,6 +441,14 @@ app.adminNews = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
+            $("#editdatePickerNews").removeAttr('disabled');
+            $("#editdateTimePickerNews").removeAttr('disabled');
+
+            $("#editdatePickerNews").parent().css('width',"160px");
+            $("#editdateTimePickerNews").parent().css('width',"160px");
+            $("#editdatePickerNews").removeClass( "k-input" );
+            $("#editdateTimePickerNews").removeClass( "k-input" );        
+
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
@@ -457,7 +460,8 @@ app.adminNews = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
-            $("#editNewsDesc").html(newsDescEdit); 
+            $("#editNewsDesc").html(app.htmlDecode(newsDescEdit)); 
+            
 
             if(newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!==''){
 
@@ -525,21 +529,10 @@ app.adminNews = (function () {
                                                                  console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
-            
-                        $("#editdatePickerNews").attr("readonly","readonly");
-            $("#editdateTimePickerNews").attr("readonly","readonly");
 
-                       $('#editdatePickerNews').attr('disabled','disabled');
-                        $('#editdateTimePickerNews').attr('disabled','disabled');
-            
-                $("#editdatePickerNews").bind("focus", function() {
-                    $("#editdatePickerNews").blur();                    
-                });
-            
-                $("#editdateTimePickerNews").bind("focus", function() {
-                    $("#editdateTimePickerNews").blur();
-                }); 
-
+                $('#editdatePickerNews').attr('disabled','disabled');
+                $('#editdateTimePickerNews').attr('disabled','disabled');
+                        
         }
         
         var addNewNewsFunction = function() {
@@ -739,7 +732,7 @@ app.adminNews = (function () {
                 console.log(event_Time);
                 
                 
-                                        if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
+                 if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
                         //alert("1");
                         if (newsDataToSend.substring(0, 21)==="content://com.android") {
                             photo_split = newsDataToSend.split("%3A");
@@ -858,7 +851,11 @@ app.adminNews = (function () {
         
         var orgAllNewsList = function() {
             //app.mobileApp.navigate('#adminOrgNewsList');
-                           app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
+             
+              $("#adddatePickerNews").removeAttr('disabled');
+              $("#adddateTimePickerNews").removeAttr('disabled');
+      
+            app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
 
         }
         

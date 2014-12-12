@@ -18,10 +18,7 @@ app.adminEventCalender = (function () {
             $('body').remove(hiddenDiv);*/
             $("#adminCalProcess").show();
             //$("#eventDetailDiv").hide();
-                                      
-            $("#adddatePicker").kendoDatePicker();
-            $("#adddateTimePicker").kendoTimePicker();
-            
+                                                  
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
             eventDataToSend = '';
@@ -325,6 +322,16 @@ app.adminEventCalender = (function () {
             $("#addEventDesc").val('');
             console.log(date2);
             
+            $("#adddatePickerEvent").removeAttr('disabled');
+            $("#adddateTimePickerEvent").removeAttr('disabled');
+
+            
+            $("#adddatePickerEvent").parent().css('width',"160px");
+            $("#adddateTimePickerEvent").parent().css('width',"160px");
+            $("#adddatePickerEvent").removeClass( "k-input" );
+            $("#adddateTimePickerEvent").removeClass( "k-input" );            
+
+            
             /*$("#admincalendar").kendoCalendar({
             //value:new Date(),
             dates:tasks,
@@ -351,7 +358,7 @@ app.adminEventCalender = (function () {
                 +new Date(currentDate)
             ];
             
-            $("#adddatePicker").kendoDatePicker({
+            $("#adddatePickerEvent").kendoDatePicker({
                                                     value: date2,
                                                     dates: disabledDaysBefore,    
                                                     month:{
@@ -388,7 +395,7 @@ app.adminEventCalender = (function () {
                                                     }
                                                 }).data("kendoDatePicker");
                          
-            $("#adddateTimePicker").kendoTimePicker({
+            $("#adddateTimePickerEvent").kendoTimePicker({
                                                         value:"10:00 AM",
                                                         interval: 15,
                                                         format: "h:mm tt",
@@ -403,28 +410,24 @@ app.adminEventCalender = (function () {
                                                         }                
                                                     });
 
-            //var addEventDatePicker = $("#adddatePicker").data("kendoDatePicker");            
+            //var addEventDatePicker = $("#adddatePickerEvent").data("kendoDatePicker");            
             
             //$(".k-datepicker input").prop("readonly", true);
             
-            /* $('#adddatePicker').attr("readonly","readonly");
+            /* $('#adddatePickerEvent').attr("readonly","readonly");
 
-            $('#adddateTimePicker').attr("readonly","readonly");
+            $('#adddateTimePickerEvent').attr("readonly","readonly");
 
             */
             
-            setTimeout(function() {
-                $("#adddatePicker").bind("focus", function() {
-                    $("#adddatePicker").blur();                    
-                });
-            }, 100); 
+
             
-            setTimeout(function() {            
-                $("#adddateTimePicker").bind("focus", function() {
-                    $("#adddateTimePicker").blur();
-                }); 
-            }, 100); 
-            /*var addEventTimePicker = $("#adddateTimePicker").data("kendoTimePicker"); 
+              $('#adddatePickerEvent').attr('disabled','disabled');
+              $('#adddateTimePickerEvent').attr('disabled','disabled');
+            
+
+            
+            /*var addEventTimePicker = $("#adddateTimePickerEvent").data("kendoTimePicker"); 
             addEventTimePicker.input.focus(function() {
             //$( "#orgforNotification" ).blur();
             addEventTimePicker.input.blur();
@@ -528,9 +531,16 @@ app.adminEventCalender = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
-            $("#editEventName").val(eventNameEdit);
-            
+            $("#editEventName").val(eventNameEdit);            
             $("#editEventDesc").html(eventDescEdit);
+
+            $("#editdatePicker").removeAttr('disabled');
+            $("#editdateTimePicker").removeAttr('disabled');
+            
+            $("#editdatePicker").parent().css('width',"160px");
+            $("#editdateTimePicker").parent().css('width',"160px");
+            $("#editdatePicker").removeClass( "k-input" );
+            $("#editdateTimePicker").removeClass( "k-input" );            
 
             
             
@@ -607,17 +617,12 @@ app.adminEventCalender = (function () {
             editEventTimePicker.input.blur();
             }); */
             
-            setTimeout(function() {            
-                $("#editdatePicker").bind("focus", function() {
-                    $("#editdatePicker").blur();
-                });
-            }, 100);    
             
-            setTimeout(function() {            
-                $("#editdateTimePicker").bind("focus", function() {
-                    $("#editdateTimePicker").blur();
-                });
-            }, 100);    
+            
+             $('#editdatePicker').attr('disabled','disabled');
+             $('#editdateTimePicker').attr('disabled','disabled');
+            
+            
             /*$('#editdatePicker').attr("readonly","readonly");
             $('#editdateTimePicker').attr("readonly","readonly");*/
         }
@@ -626,8 +631,8 @@ app.adminEventCalender = (function () {
             var event_name = $("#addEventName").val();     
             var event_description = $("#addEventDesc").val();
 
-            var event_Date = $("#adddatePicker").val();
-            var event_Time = $("#adddateTimePicker").val();
+            var event_Date = $("#adddatePickerEvent").val();
+            var event_Time = $("#adddateTimePickerEvent").val();
             
             if (event_name === "Enter New Event Name" || event_name === "") {
                 app.showAlert("Please enter Event Name.", "Validation Error");

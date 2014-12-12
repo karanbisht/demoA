@@ -116,7 +116,6 @@ app.groupDetail = (function () {
                                                            orgID:'0'
                                                        });     
                                     $("#adminRemoveMember").hide();
-                                    $("#progressAdminOrgMem").hide();
                                 }else if (orgVal.Msg==='Success') {
                                     console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < orgVal.allCustomer.length;i++) {
@@ -175,8 +174,10 @@ app.groupDetail = (function () {
                                                            });
                 app.mobileApp.pane.loader.hide();
             
+            setTimeout(function(){
                 $("#progressAdminOrgMem").hide();
-
+            },300);
+                
         }
         
         var showGroupToDelete = function() {
