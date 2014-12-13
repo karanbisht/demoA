@@ -1089,9 +1089,7 @@ var app = (function (win) {
     
     var convertTimeSpan = function(timeSpanVal) {
         var date = new Date(timeSpanVal * 1000);                    
-        
-        alert(date);
-        
+               
         var hours = date.getHours();
         // minutes part from the timestamp
         
@@ -1134,6 +1132,19 @@ var app = (function (win) {
     var getPresntTimeStamp = function() {
         var ts = Math.round((new Date()).getTime() / 1000);
         return ts;            
+    }
+    
+    var formatTime = function(timeString){        
+        var split = timeString .split(':');
+        console.log(split[0] + " || " + split[1]);
+   
+        split[1] = split[1] + split[0] < 12 ? ' am' : ' pm'; // Set AM/PM
+        split[0] = +split[0] % 12 || 12; // Adjust hours
+
+        console.log(split[0]+"||"+split[1]);
+
+       return split.join(''); // return adjusted time or original string
+
     }
     
     function slide(direction, color, slowdownfactor, hrf) {
@@ -1235,6 +1246,7 @@ var app = (function (win) {
         sendNotification:sendNotification,
         errorCB:errorCB,
         successCB:successCB,
+        formatTime:formatTime,
         getPresentDateTime:getPresentDateTime,
         checkSimulator:checkSimulator,
         showNativeAlert:showNativeAlert,

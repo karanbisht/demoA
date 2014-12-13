@@ -317,13 +317,14 @@ app.Activity = (function () {
                               
                                 orgNotiCommentData = groupValue[0].AllComment;
                                 console.log(commentLength);
-                                         
+                               
                                 for (var j = 0;j < commentLength;j++) {
                                     var dateString = groupValue[0].AllComment[j].add_date;
                                     var split = dateString .split(' ');
                                     console.log(split[0] + " || " + split[1]);
                                     var commentDate = app.formatDate(split[0]);
-                                    //alert(commentDate);
+                                    //var commentTime = app.timeConvert(split[1]);
+                                    //alert(commentTime);
                                          
                                     groupDataShow.push({
                                                            comment: groupValue[0].AllComment[j].comment,
@@ -462,6 +463,9 @@ app.Activity = (function () {
                     var split = dateString .split(' ');
                     console.log(split[0] + " || " + split[1]);
                     var commentDate = app.formatDate(split[0]);
+                    //var commentTime = app.formatTime(split[1]);
+                    //alert(commentTime);
+
                     //alert(commentDate);
                     
                     groupDataShow.push({
