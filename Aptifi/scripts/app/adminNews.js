@@ -87,7 +87,7 @@ app.adminNews = (function () {
                             var eventListLength = loginData.status[0].newsData.length;
                               
                             for (var i = 0 ; i < eventListLength ;i++) {
-                                var newsDate = loginData.status[0].newsData[i].news_date;
+                                /*var newsDate = loginData.status[0].newsData[i].news_date;
                                 console.log("-------karan---------------");
                                 console.log(newsDate);
                                   
@@ -104,16 +104,22 @@ app.adminNews = (function () {
                                 if (day < 10) {
                                     day = day.replace(/^0+/, '');                                     
                                 }
-                                var saveData = month + "/" + day + "/" + year;
+                                var saveData = month + "/" + day + "/" + year;*/
+                                
+                                    var newsDateString = loginData.status[0].newsData[i].news_date;
+                                    var newsTimeString = loginData.status[0].newsData[i].news_time;
+                                    var newsDate = app.formatDate(newsDateString);
+                                    var newsTime = app.formatTime(newsTimeString);
+
                                  
                                 groupAllEvent.push({
                                                        id: loginData.status[0].newsData[i].id,
                                                        add_date: loginData.status[0].newsData[i].add_date,
-                                                       news_date: saveData,
+                                                       news_date: newsDate,
                                                        news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
                                                        news_name: loginData.status[0].newsData[i].org_name,
                                                        news_image : loginData.status[0].newsData[i].news_image,
-                                                       news_time: loginData.status[0].newsData[i].news_time,                                                                                  										  
+                                                       news_time: newsTime,                                                                                  										  
                                                        mod_date: loginData.status[0].newsData[i].mod_date,                                     
                                                        org_id: loginData.status[0].newsData[i].org_id
                                                    });
@@ -470,7 +476,7 @@ app.adminNews = (function () {
             largeImage.src = newsImageEdit;
             //$("#removeEditNewsAttachment").show();                
                 }else{            
-            var largeImage = document.getElementById('attachedImgEditNews');
+            var largeImage = document.getElementById('attachedImgEditNews');        
             largeImage.style.display = 'none';
             largeImage.src = '';
             //$("#removeEditNewsAttachment").hide();

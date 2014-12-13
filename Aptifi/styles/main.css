@@ -782,7 +782,6 @@ input::-webkit-inner-spin-button
 {
     position: relative;
     font-size: .85rem;
-    padding: 10px;
     text-align: justify;
 }
 
@@ -790,7 +789,6 @@ input::-webkit-inner-spin-button
 {
     position: relative;
     font-size: .85rem;
-    padding: 10px;
     text-align: justify;
 }
 
@@ -830,7 +828,7 @@ input::-webkit-inner-spin-button
 {
     display: block;
     margin: 5px 5px;
-    color: #7FBF4D;
+    color: #676767;
     font-size: 1.1rem;
     border-bottom: 1px solid #f5f7f8;
 }
@@ -925,6 +923,28 @@ white-space: nowrap;
 {
     text-align: left;
     /*float: left;*/
+}
+
+
+.user-time-span
+{
+    position: relative;   
+    color: #6c7884;
+    bottom:-5px;
+    float:left;
+    /*text-transform: uppercase;*/
+    font-size: .5rem;
+}
+
+
+.admin-time-span
+{
+    position: relative;
+    color: #6c7884;
+    bottom:-5px;
+    float:right;
+    /*text-transform: uppercase;*/
+    font-size: .5rem;
 }
 
 
@@ -1365,6 +1385,11 @@ background: #fff none;
 #admin-noti-listview > li
 {
     border: none;
+}
+
+#orgAllNewsList > li
+{
+    border: none;    
 }
 
 #userReply-notification-listview > li

@@ -120,7 +120,7 @@
                  #if(id!==0){#
 
                     <div class="dateDisplay">
-                        <span id="activityTemplateDate" class="dateValue">${news_date} ${news_time}</span>
+                        <span id="activityTemplateDate" class="dateValue">${news_date} , ${news_time}</span>
                         <hr class="dateLine"/>
                         <span></span>
                     </div>                                            
@@ -197,10 +197,10 @@
             
           </div>
             
-          <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;">
-                <div style="display:inline;">                    
+          <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:100px; width:100%;">
+                <div style="display:inline;height:100px; width:100%;">                    
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" ></a>
-                    <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:100px; width:100px;margin-left:10px;float:left;border:none;display:none" />
                     <!--<a id="removeEditNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImageEdit"></a>-->
                 </div>
                 
@@ -215,8 +215,6 @@
                 </ul>
             </div>   
             
-            <br/>
-                        <br/>
 
            <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditNewsData }">
                   Save Change   

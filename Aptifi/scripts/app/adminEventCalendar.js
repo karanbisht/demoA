@@ -103,7 +103,12 @@ app.adminEventCalender = (function () {
                               
                             console.log(eventListLength);
                               
-                            for (var i = 0 ; i < eventListLength ;i++) {                                 
+                            for (var i = 0 ; i < eventListLength ;i++) {         
+                                 var eventDateString = loginData.status[0].eventData[i].event_date;
+                                 var eventTimeString = loginData.status[0].eventData[i].event_time;
+                                 var eventDate = app.formatDate(eventDateString);
+                                 var eventTime = app.formatTime(eventTimeString);
+                                
                                 var eventDaya = loginData.status[0].eventData[i].event_date
                                 var values = eventDaya.split('-');
                                 var year = values[0]; // globle variable
@@ -118,17 +123,18 @@ app.adminEventCalender = (function () {
                                     day = day.replace(/^0+/, '');                                     
                                 }
                                 var saveData = month + "/" + day + "/" + year;
-                                                          
+                                                        
                                 $("#eventDetailDiv").hide();            
 
                                 groupAllEvent.push({
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
+                                                       event_show_date:eventDate,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,
                                                        event_image : loginData.status[0].eventData[i].event_image,
                                                        event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
-                                                       event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
+                                                       event_time: eventTime,                                                                                  										  
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
@@ -260,6 +266,7 @@ app.adminEventCalender = (function () {
                                                 add_date: groupAllEvent[i].add_date,
                                                 event_date: groupAllEvent[i].event_date,
                                                 event_desc: groupAllEvent[i].event_desc,
+                                                event_show_date:groupAllEvent[i].event_show_date,
                                                 event_image : groupAllEvent[i].event_image,
                                                 event_name: groupAllEvent[i].event_name,                                                                                  										  
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
@@ -286,7 +293,8 @@ app.adminEventCalender = (function () {
 
                 document.getElementById("eventDetailDiv").style.display = "none";
             }else {
-                document.getElementById("eventDetailDiv").style.display = "block";
+                eventMoreDetailClick();
+                //document.getElementById("eventDetailDiv").style.display = "block";
                 //$("#eventDetailDiv").show();
             }
         }

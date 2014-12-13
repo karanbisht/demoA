@@ -291,11 +291,13 @@ app.userNotiComment = (function () {
                                     var dateString = groupValue[0].AllComment[j].add_date;
                                     var split = dateString .split(' ');
                                     console.log(split[0] + " || " + split[1]);
-                                    var commentDate = app.formatDate(split[0]);
+                                     var commentDate = app.formatDate(split[0]);
+                                     var commentTime = app.formatTime(split[1]);
                                          
                                     groupDataShow.push({
                                                            comment: groupValue[0].AllComment[j].comment,
                                                            add_date: commentDate,
+                                                           add_time: commentTime,
                                                            user_type: groupValue[0].AllComment[j].user_type,
                                                            user_id: groupValue[0].AllComment[j].user_id
                                                            //notification_id: groupValue[0].replyData[j].notification_id,

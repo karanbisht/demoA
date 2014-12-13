@@ -78,6 +78,11 @@ app.eventCalender = (function () {
                                 var eventDaya = loginData.status[0].eventData[i].event_date;
                                 console.log("-------karan---------------");
                                 console.log(eventDaya);
+                                
+                                 var eventDateString = loginData.status[0].eventData[i].event_date;
+                                 var eventTimeString = loginData.status[0].eventData[i].event_time;
+                                 var eventDate = app.formatDate(eventDateString);
+                                 var eventTime = app.formatTime(eventTimeString);
                                   
                                 var values = eventDaya.split('-');
                                 var year = values[0]; // globle variable
@@ -102,10 +107,11 @@ app.eventCalender = (function () {
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
+                                                       event_show_date:eventDate,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
                                                        event_name: loginData.status[0].eventData[i].event_name, 
                                                        event_image : loginData.status[0].eventData[i].event_image,
-                                                       event_time: loginData.status[0].eventData[i].event_time,                                                                                  										  
+                                                       event_time: eventTime,                                                                                 										  
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
@@ -192,6 +198,7 @@ app.eventCalender = (function () {
                                                 event_date: groupAllEvent[i].event_date,
                                                 event_desc: groupAllEvent[i].event_desc,                                                                                 										  
                                                 event_name: groupAllEvent[i].event_name,
+                                                event_show_date:groupAllEvent[i].event_show_date,
                                                 event_image:groupAllEvent[i].event_image,
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
                                                 mod_date: groupAllEvent[i].mod_date,                                     
@@ -206,11 +213,12 @@ app.eventCalender = (function () {
             }
             
             if (dateExist!==0) {                
-                $("#eventDetailDiv").show();
-                $("#eventCalendarFirstAllList").hide();
+                //$("#eventDetailDiv").show();
+                eventMoreDetailClick();
+                //$("#eventCalendarFirstAllList").hide();
             }else {
                 $("#eventCalendarFirstAllList").show();
-                $("#eventDetailDiv").hide();
+                //$("#eventDetailDiv").hide();
             }
         }
         

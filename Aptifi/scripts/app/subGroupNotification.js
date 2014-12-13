@@ -136,11 +136,14 @@ app.orgsubGroupListView = (function () {
             if (count !== 0) {
                 groupDataShow = [];
                 for (var i = 0 ; i < count ; i++) {    
+                             var dateString = results.rows.item(i).send_date;
+                             var notiDate = app.timeConverter(dateString);
+
                     groupDataShow.push({
 
                                            message: results.rows.item(i).message,
                                            org_id: results.rows.item(i).org_id,
-                                           date:results.rows.item(i).send_date,
+                                           date:notiDate,
                                            title:results.rows.item(i).title,
                                            pid :results.rows.item(i).pid ,
                                            comment_allow:results.rows.item(i).comment_allow ,

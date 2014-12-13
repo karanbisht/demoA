@@ -118,6 +118,13 @@ app.replyedCustomer = (function () {
                                     console.log(orgVal.customerList.length);  
                                         
                                     for (var i = 0;i < orgVal.customerList.length;i++) {
+                                         var dateString = orgVal.customerList[i].add_date;
+                                         var split = dateString .split(' ');
+                                         console.log(split[0] + " || " + split[1]);
+                                         var commentDate = app.formatDate(split[0]);
+                                         var commentTime = app.formatTime(split[1]);
+                                         var date_show= commentDate +' '+commentTime;
+ 
                                         groupDataShow.push({
                                                                user_fname: orgVal.customerList[i].user_fname,
                                                                user_lname : orgVal.customerList[i].user_lname,
@@ -126,7 +133,7 @@ app.replyedCustomer = (function () {
                                                                //orgID:orgVal.customerList[i].orgID,
                                                                comment:orgVal.customerList[i].comment,
                                                                notification_id:orgVal.customerList[i].notification_id,
-                                                               add_date:orgVal.customerList[i].add_date,
+                                                               add_date:date_show,
                                                                user_id:orgVal.customerList[i].user_id
                                                            });
                                     }     

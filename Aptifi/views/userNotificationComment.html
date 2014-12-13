@@ -28,7 +28,7 @@
                 <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
                 <li id="titleContainer">
 
-                    <h2 id="personNameTitle" class="notiNameList" style="margin-left:-3px;"></h2>
+                    <h2 id="personNameTitle" class="notiNameList" style="margin-left:0px;"></h2>
                     <span id="activityTextMessage" class="user-share-txt"></span>
                 </li>
                 <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
@@ -63,14 +63,23 @@
             <!--<h2 class="person-name">${User()}</h2>
             <span class="time-span">${add_date}</span>-->
             <!--<img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;"/>-->
-            <a class="Org-admin-comment-content">${comment}</a>
+            <div class="Org-admin-comment-content">
+                <a>${comment}</a>
+                            <br/>
+                <span class="user-time-span">${add_date} ${add_time}</span>
+            </div>
         </div>
     # }else { #
         <div class="Org-user-comment-List">
             <!--<h2 class="person-name">${User()}</h2>
             <span class="time-span">${add_date}</span>-->
             <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->
-            <a class="Org-user-comment-content">${comment}</a>
+            <div class="Org-user-comment-content">
+                    <a>${comment}</a>
+                    <br/>
+                    <span class="admin-time-span">${add_date} ${add_time}</span>
+            </div>
+
         </div>        
     # } #
 </script>

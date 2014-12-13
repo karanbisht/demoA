@@ -1138,12 +1138,20 @@ var app = (function (win) {
         var split = timeString .split(':');
         console.log(split[0] + " || " + split[1]);
    
-        split[1] = split[1] + split[0] < 12 ? ' am' : ' pm'; // Set AM/PM
-        split[0] = +split[0] % 12 || 12; // Adjust hours
+        var dayNight = split[0] < 12 ? 'am' : 'pm'; // Set AM/PM
 
-        console.log(split[0]+"||"+split[1]);
-
-       return split.join(''); // return adjusted time or original string
+        if (split[0] > 12) {
+            split[0] = split[0] - 12;
+        }
+   
+        /*if (split[1] < 10) {
+            split[1] = '0' + split[1];  
+        }*/      
+     
+        //var sec = a.getSeconds();
+        
+        var time = split[0] + ':' + split[1] + ' ' + dayNight ;        
+        return time;
 
     }
     

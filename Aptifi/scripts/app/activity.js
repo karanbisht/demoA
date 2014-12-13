@@ -323,12 +323,15 @@ app.Activity = (function () {
                                     var split = dateString .split(' ');
                                     console.log(split[0] + " || " + split[1]);
                                     var commentDate = app.formatDate(split[0]);
+                                    var commentTime = app.formatTime(split[1]);
+
                                     //var commentTime = app.timeConvert(split[1]);
                                     //alert(commentTime);
                                          
                                     groupDataShow.push({
                                                            comment: groupValue[0].AllComment[j].comment,
                                                            add_date: commentDate,
+                                                           add_time: commentTime,
                                                            user_id : groupValue[0].AllComment[j].user_id,
                                                            user_type : groupValue[0].AllComment[j].user_type
                                                        });
@@ -463,14 +466,16 @@ app.Activity = (function () {
                     var split = dateString .split(' ');
                     console.log(split[0] + " || " + split[1]);
                     var commentDate = app.formatDate(split[0]);
-                    //var commentTime = app.formatTime(split[1]);
-                    //alert(commentTime);
+                    
+                    var commentTime = app.formatTime(split[1]);
 
+                    //alert(commentTime);
                     //alert(commentDate);
                     
                     groupDataShow.push({
                                            comment: results.rows.item(i).comment,
                                            add_date: commentDate,
+                                           add_time: commentTime,
                                            user_id : results.rows.item(i).user_id,
                                            user_type : results.rows.item(i).user_type
                                        });
