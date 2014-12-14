@@ -149,6 +149,11 @@ app.sendNotification = (function () {
             
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
+            
+            $("#scheduleDatePicker").parent().css('width',"160px");
+            $("#scheduleTimePicker").parent().css('width',"160px");
+            $("#scheduleDatePicker").removeClass( "k-input" );
+            $("#scheduleTimePicker").removeClass( "k-input" );            
 
             var txt = $('#notificationDesc'),
                 hiddenDiv = $(document.createElement('div')),
