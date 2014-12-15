@@ -457,7 +457,7 @@ input::-webkit-inner-spin-button
 {
     position: absolute;
     top: 50%;
-    right: .75em;
+    left: .75em;
     display: block;
     margin-top: -.5em;
     width: 1em;
@@ -1395,6 +1395,11 @@ background: #fff none;
 #userReply-notification-listview > li
 {
     border: none;
+}
+
+#orgNewsList > li 
+{
+    border: none;    
 }
 
 input.largerCheckbox

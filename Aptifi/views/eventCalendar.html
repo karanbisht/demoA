@@ -15,10 +15,10 @@
                       <!--<div class="loading1">Loading...</div>-->
     </div>
     
-<br/>
+    <br/>
     <span style="color:#7FBF4D;margin:20px 0px 20px 10px;">Calander</span>
-<br/>    
-<br/>
+    <br/>    
+    <br/>
 
     <div id="calendarContainerDiv" style="width:100%; text-align: center;">
 
@@ -74,15 +74,14 @@
        		     <h2 id="activityTemplateTitle" style="margin-left:0px; color:rgb(122,184,77);" >${event_name}</h2>
                                                     
        		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;" >${event_desc}</span>            			            
-                    <br/>
             
                     #if (event_image!=='' && event_image!=='0') {#
                         <br/>
                         <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
                          <br/>
                     #}#            
-
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(122,184,77)">Event Start Time: <span style="color:rgb(147,147,147);"> ${event_time}</span></span>       	
+                    <br/>
+                    <span id="activityTemplateDate"  style="margin-top:5px;padding-right:2px;color:rgb(122,184,77)">Event Start Time: <span style="color:rgb(147,147,147);"> ${event_time}</span></span>       	
 
        		</div>
 		    </div>   
@@ -115,8 +114,7 @@
              
        		     <h2 id="activityTemplateTitle" style="margin-left:0px; color:rgb(122,184,77);" >${event_name}</h2>
   
-       		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;margin-top:10px;text-align:justify;" >${event_desc}</span>            			            
-                    <br/>
+       		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;text-align:justify;" >${event_desc}</span>            			            
             
                      #if (event_image!=='' && event_image!=='0') {#
                         <br/>
@@ -124,12 +122,13 @@
                          <br/>
                     #}#            
 
+                    <br/>
             
 
                   #if(id!== 0){#
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(122,184,77)">Event Start Date:<span style="color:rgb(147,147,147);"> ${event_date} </span></span>       	            
+                    <span id="activityTemplateDate"  style="float:left;margin-top:5px;padding-right:2px;color:rgb(122,184,77)">Date:<span style="color:rgb(147,147,147);"> ${event_show_date} </span></span>       	            
 
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(122,184,77)">Event Start Time:<span style="color:rgb(147,147,147);">${event_time}</span></span>       	            
+                    <span id="activityTemplateDate"  style="float:right;margin-top:5px;padding-right:2px;color:rgb(122,184,77)">Time:<span style="color:rgb(147,147,147);">${event_time}</span></span>       	            
                    #}#            
             
                     <!--data-click="app.adminEventCalender.editEvent"-->

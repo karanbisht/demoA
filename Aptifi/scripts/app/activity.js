@@ -105,7 +105,6 @@ app.Activity = (function () {
 
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
-
             groupDataShow = [];            
 
 
@@ -219,7 +218,7 @@ app.Activity = (function () {
             //alert('1');
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
-            var img = $('<img id="imgShow" style="max-height:200px" />'); //Equivalent: $(document.createElement('img'))
+            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
         }
@@ -233,7 +232,7 @@ app.Activity = (function () {
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
-            var img = $('<img id="imgShow" style="max-height:200px"  />'); //Equivalent: $(document.createElement('img'))
+            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
             
             //alert(attachedImg);
             
@@ -251,6 +250,8 @@ app.Activity = (function () {
                                   }
                 );                
         }
+        
+    
         
         var commentShow = function() {            
             app.mobileApp.pane.loader.hide();
