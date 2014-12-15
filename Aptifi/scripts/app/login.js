@@ -38,8 +38,7 @@ app.Login = (function () {
             //app.showNativeAlert();            
             app.userPosition = true;
             app.userPosition = true;
-            $('#loginUsername').val('');
-           
+            $('#loginUsername').val('');           
             $("#selectionDiv").show();
             
             //$('#loginPassword').val('');                        
@@ -169,17 +168,14 @@ app.Login = (function () {
                             if (loginData.status[0].Msg==='User not registered') {
                                 //console.log('reg');
                                 //app.mobileApp.pane.loader.hide();
-                                $("#progress").hide();
-                                                    
+                                $("#progress").hide();                                                    
                                 document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-
                                 app.userPosition = false;
                                 app.mobileApp.navigate('views/registrationView.html?mobile=' + username + '&type=reg');  
                             }else if (loginData.status[0].Msg==='Create profile') {
                                 //app.mobileApp.pane.loader.hide();
                                 $("#progress").hide();
                                 document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-
                                 app.userPosition = false;
                                 var accountId = loginData.status[0].AccountID;
                                 app.mobileApp.navigate('views/registrationView.html?mobile=' + accountId + '&type=pro');       
@@ -187,7 +183,6 @@ app.Login = (function () {
                                 //app.mobileApp.pane.loader.hide();
                                 $("#progress").hide();
                                 document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-
                                 clickforRegenerateCode();   
                             }else if (loginData.status[0].Msg==='Success') {
                                 clickforRegenerateCode();   
