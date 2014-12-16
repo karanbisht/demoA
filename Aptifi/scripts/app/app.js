@@ -417,6 +417,9 @@ var app = (function (win) {
     skin: 'flat'
     });*/
     var onDeviceReady = function() {
+        
+        window.analytics.Start();
+        
         // Handle "backbutton" event
         //console.log(navigator);
         document.addEventListener('backbutton', onBackKeyDown, false);
