@@ -1,3 +1,69 @@
+<div data-role="view" id="adminEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.eventListShow" >
+
+    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+              <div data-role="navbar">     
+                 <span>All Event List</span>
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToManageOrgPage"></a>    
+                 <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminEventCalender.goToCalendarPage"></a>
+              </div>                                          
+    </div>
+    
+        <div class="loader" id="adminEventListLoader" style="display:none;margin-top:50%">
+                      <div class="ball"></div>
+        </div>
+
+    
+    <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>
+    
+</div>
+
+
+
+		<script type="text/x-kendo-template" id="calendarEventListTemplate">
+            <!--data-bind="events: { tap: activitySelected }"-->
+            
+            <div class="cf" data-role="touch" data-bind="events: { tap: editEvent }">         
+               
+       		<div class="calendarEvent-List" >
+             
+       		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
+
+ 
+         		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
+ 
+
+                    #if (event_image!=='' && event_image!=='0') {#
+                        <br/>
+                        <img src= ${event_image} style="max-height:200px;margin-top:10px;" />
+                        <br/>
+                    #}#    
+            
+                        <br/>
+
+                  #if(id!== 0){#
+                    <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date: ${event_show_date}</span>       	            
+                    <span id="activityTemplateDate"  style="float:right;color:rgb(122,184,77);margin-top:5px;">Time: ${event_time}</span>       	            
+                   #}#            
+            
+                    <!--data-click="app.adminEventCalender.editEvent"-->
+                    <!--data-click="app.adminEventCalender.deleteEvent"-->
+
+                   <!--             <br/>
+                    <br/>
+
+                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
+                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
+                                <br/>
+                    <br/>
+
+                    -->
+            
+       		</div>
+
+		    </div>   
+            
+		</script>
+
 
 
 <!-- class="activities-view-info" -->
@@ -5,7 +71,7 @@
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span>Event Calendar</span>
-                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToManageOrgPage"></a>
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToEventListPage"></a>
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
               </div>                                          
     </div>
@@ -16,9 +82,6 @@
                       <!--<div class="loading1">Loading...</div>-->
     </div>
 
-
-    <br/>
-    <span style="color:#7FBF4D;margin:20px 0px 20px 10px;">Calander</span>
     <br/>    
     <br/>
 
@@ -45,11 +108,11 @@
         <span style="color:rgb(122,184,77);text-align:center;margin-left:15px;">CLICK HERE FOR MORE DETAIL</span>
     </div>
         
-    <div data-role="footer">
+    <!--<div data-role="footer">
        	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
                 <a id="" data-icon="more" data-role="button" data-bind="click: upcommingEventList" >Event List</a>
             </div>
-    </div>   
+    </div>-->   
 
        
 </div>
@@ -91,12 +154,10 @@
 
                     #if (event_image!=='' && event_image!=='0') {#
                         <br/>
-                        <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
-                                <br/>
-
-                    #}#    
-                                    
-                                <br/>
+                            <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
+                        <br/>
+                    #}#                                       
+                        <br/>
 
                     <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date:<span style="color:rgb(147,147,147);"> ${event_show_date} </span></span>       	            
 
@@ -184,12 +245,12 @@
         </div>
          
         
-            <div id="eventAttachment" style="margin-top:10px;margin-bottom:10px;">
+            <div id="eventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;">
                     
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
 
-                    <img id="attachedImgEvent" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEvent" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none" />
 
                     <a id="removeEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
 
@@ -222,8 +283,9 @@
 
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
-                 <span> Edit Event </span>
-                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPageDetail"></a>    
+                 <span> Edit Event </span>                 
+                 <a id="backCalender" style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPageDetail"></a>    
+                 <a id="backEventList" style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToEventListPage"></a> 
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
               </div>                                          
     </div>
@@ -275,12 +337,11 @@
             
         </div>
          
-            <div id="editEventAttachment" style="margin-top:10px;margin-bottom:10px;height:100px; width:100%;">
-                <div style="display:inline;height:100px; width:100%;">
+            <div id="editEventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
+                <div style="display:inline;">
                     
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" ></a>
-
-                    <img id="attachedImgEditEvent" src="" alt="" align="right"  style="height:100px; width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEditEvent" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none" />
 
                     <!--<a id="removeEditEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImageEdit"></a>-->
 
@@ -296,78 +357,9 @@
                     </li>
                 </ul>
             </div>
-        
-
          
            <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditEventData }">
                        Save Change   
            </li>       
    </div>      
 </div>
-
-
-
-
-<div data-role="view" id="adminEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.eventListShow" >
-
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
-              <div data-role="navbar">     
-                 <span>All Event List</span>
-                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPage"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
-              </div>                                          
-    </div>
-    
-    <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>
-    
-</div>
-
-
-
-		<script type="text/x-kendo-template" id="calendarEventListTemplate">
-            <!--data-bind="events: { tap: activitySelected }"-->
-            
-            <div class="cf" data-role="touch" >         
-               
-       		<div class="calendarEvent-List" >
-             
-       		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
-
- 
-         		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
- 
-
-                    #if (event_image!=='' && event_image!=='0') {#
-                        <br/>
-                        <img src= ${event_image} style="max-height:200px;margin-top:10px;" />
-                        <br/>
-                    #}#    
-            
-                        <br/>
-
-                  #if(id!== 0){#
-                    <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date: ${event_show_date}</span>       	            
-                    <span id="activityTemplateDate"  style="float:right;color:rgb(122,184,77);margin-top:5px;">Time: ${event_time}</span>       	            
-                   #}#            
-            
-                    <!--data-click="app.adminEventCalender.editEvent"-->
-                    <!--data-click="app.adminEventCalender.deleteEvent"-->
-
-                   <!--             <br/>
-                    <br/>
-
-                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
-                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
-                                <br/>
-                    <br/>
-
-                    -->
-            
-       		</div>
-
-		    </div>   
-            
-		</script>
-
-
-

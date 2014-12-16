@@ -15,6 +15,11 @@ app.adminNews = (function () {
         }
     
         var show = function() {
+            
+             $("#adminNewsListLoader").show();
+            $("#orgAllNewsList").hide();
+
+            
             $(".km-scroll-container").css("-webkit-transform", "");
 
             pictureSource = navigator.camera.PictureSourceType;
@@ -48,7 +53,11 @@ app.adminNews = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    console.log(e);             
+                                                                    
+                                                                                 $("#adminNewsListLoader").hide();
+                                                                                 $("#orgAllNewsList").show();
+
                                                                     if (!app.checkSimulator()) {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
@@ -249,6 +258,10 @@ app.adminNews = (function () {
         
         var showInListView = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
+
+           $("#adminNewsListLoader").hide();
+           $("#orgAllNewsList").show();
+
             
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupAllEvent
@@ -483,6 +496,12 @@ app.adminNews = (function () {
 
                 }
             
+            var currentDate = app.getPresentDate();
+            
+            disabledDaysBefore = [
+                +new Date(currentDate)
+            ];
+
 
             $("#editdatePickerNews").kendoDatePicker({                
                                                          value: newsDateEdit,

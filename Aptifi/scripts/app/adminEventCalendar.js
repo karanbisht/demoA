@@ -134,7 +134,8 @@ app.adminEventCalender = (function () {
                                                        event_desc: loginData.status[0].eventData[i].event_desc,
                                                        event_image : loginData.status[0].eventData[i].event_image,
                                                        event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
-                                                       event_time: eventTime,                                                                                  										  
+                                                       event_time: eventTime,
+                                                       page:2,
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
@@ -270,7 +271,8 @@ app.adminEventCalender = (function () {
                                                 event_image : groupAllEvent[i].event_image,
                                                 event_name: groupAllEvent[i].event_name,                                                                                  										  
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
-                                                mod_date: groupAllEvent[i].mod_date,                                     
+                                                mod_date: groupAllEvent[i].mod_date,
+                                                page:2,
                                                 org_id: groupAllEvent[i].org_id
                                             });
 
@@ -333,6 +335,8 @@ app.adminEventCalender = (function () {
             $("#adddatePickerEvent").removeAttr('disabled');
             $("#adddateTimePickerEvent").removeAttr('disabled');
 
+            var largeImage = document.getElementById('attachedImgEvent');
+            largeImage.src = '';
             
             $("#adddatePickerEvent").parent().css('width',"160px");
             $("#adddateTimePickerEvent").parent().css('width',"160px");
@@ -448,17 +452,18 @@ app.adminEventCalender = (function () {
         var eventTimeEdit;
         var eventImageEdit;
         var eventPid;
+        var pageToGo;
         
         var editEvent = function(e) {
             console.log(e.data.uid);
             console.log(e.data);
-            
             eventNameEdit = e.data.event_name;
             eventDescEdit = e.data.event_desc;
             eventDateEdit = e.data.event_date;
             eventTimeEdit = e.data.event_time;
             eventImageEdit = e.data.event_image;
             eventPid = e.data.id;
+            pageToGo = e.data.page;
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
         
@@ -515,6 +520,7 @@ app.adminEventCalender = (function () {
             
             //alert(eventDataToSend);
             
+            
             $(".km-scroll-container").css("-webkit-transform", "");
 
             console.log(eventNameEdit);            
@@ -528,6 +534,13 @@ app.adminEventCalender = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
+            if(pageToGo===1){
+                $("#backCalender").hide();
+                $("#backEventList").show();               
+            }else{
+                $("#backEventList").hide();
+                $("#backCalender").show();
+            }
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
@@ -916,7 +929,19 @@ app.adminEventCalender = (function () {
                     $.each(loginDataView, function(i, addGroupData) {
                         console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='Event updated successfully') {         
-                            app.mobileApp.navigate("#adminEventCalendar");
+                                        if(pageToGo===1){
+                                         app.mobileApp.navigate("#adminEventList");
+                                        }else{
+                                          app.mobileApp.navigate("#adminEventCalendar");
+                                        }
+                            
+                                        if (!app.checkSimulator()) {
+                                                window.plugins.toast.showShortBottom('Event updated successfully');   
+                                        }else {
+                                                app.showAlert("Event updated successfully", "Notification"); 
+                                        }
+
+
                         }else {
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                         }
@@ -937,8 +962,12 @@ app.adminEventCalender = (function () {
             }else {
                 app.showAlert("Event updated successfully", "Notification"); 
             }
-              
-            app.mobileApp.navigate("#adminEventCalendar");
+         
+                                        if(pageToGo===1){
+                                         app.mobileApp.navigate("#adminEventList");
+                                        }else{
+                                          app.mobileApp.navigate("#adminEventCalendar");
+                                        }
         }
         
         
@@ -973,24 +1002,136 @@ app.adminEventCalender = (function () {
         }
         
         var eventListShow = function() {
-            //var dateShow = multipleEventArray[0].event_date;
-            $(".km-scroll-container").css("-webkit-transform", "");
+
+
+            $("#adminEventListLoader").show();
+            $("#eventCalendarAllList").hide();
+
             
-            var allEventLength = groupAllEvent.length;
+            $(".km-scroll-container").css("-webkit-transform", "");            
             
-            if (allEventLength===0) {
-                groupAllEvent.push({
+            tasks = [];
+            multipleEventArray = [];
+
+            organisationID = localStorage.getItem("orgSelectAdmin");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+             
+            var jsonDataLogin = {"org_id":organisationID}
+
+            var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.serverUrl() + "event/index",
+                                                                            type:"POST",
+                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                            data: jsonDataLogin
+                                                                        }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {
+                                                                    console.log(e);               
+                                                                                $("#adminEventListLoader").hide();
+                                                                                $("#eventCalendarAllList").show();
+
+                                                                    if (!app.checkSimulator()) {
+                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                    }else {
+                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                    }               
+                                                                }               
+                                                            });  
+	            
+            dataSourceLogin.fetch(function() {
+                var loginDataView = dataSourceLogin.data();               
+                var orgDataId = [];
+                var userAllGroupId = [];
+						   
+                $.each(loginDataView, function(i, loginData) {
+                    console.log(loginData.status[0].Msg);
+                               
+                    if (loginData.status[0].Msg==='No Event list') {
+                        tasks = [];
+                        groupAllEvent = [];
+                        
+                                  groupAllEvent.push({
                                        id:0 ,
                                        add_date:'',
                                        event_date:'',
                                        event_desc: 'This Organization has no event.',                                                                                 										  
-                                       event_name: 'No Event',                                                                                  										  
+                                       event_name: 'No Event', 
+                                       event_image:'',
                                        event_time: '',                                                                                  										  
                                        mod_date: '',                                     
                                        org_id: ''
                                    });
-            }
+
+                    }else if (loginData.status[0].Msg==='Success') {
+                        groupAllEvent = [];
+                        tasks = [];
+                          
+                        if (loginData.status[0].eventData.length!==0) {
+                            var eventListLength = loginData.status[0].eventData.length;
+                              
+                            console.log(eventListLength);
+                              
+                            for (var i = 0 ; i < eventListLength ;i++) {         
+                                 var eventDateString = loginData.status[0].eventData[i].event_date;
+                                 var eventTimeString = loginData.status[0].eventData[i].event_time;
+                                 var eventDate = app.formatDate(eventDateString);
+                                 var eventTime = app.formatTime(eventTimeString);
+                                
+                                var eventDaya = loginData.status[0].eventData[i].event_date
+                                var values = eventDaya.split('-');
+                                var year = values[0]; // globle variable
+                                var month = values[1];
+                                var day = values[2];
+                                                                                 
+                                if (day < 10) {
+                                    day = day.replace(/^0+/, '');                                     
+                                }
+                                var saveData = month + "/" + day + "/" + year;
+                        
+                                
+
+                                groupAllEvent.push({
+                                                       id: loginData.status[0].eventData[i].id,
+                                                       add_date: loginData.status[0].eventData[i].add_date,
+                                                       event_date:saveData,
+                                                       event_show_date:eventDate,
+                                                       event_desc: loginData.status[0].eventData[i].event_desc,
+                                                       event_image : loginData.status[0].eventData[i].event_image,
+                                                       event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
+                                                       event_time: eventTime,                                                                                  										  
+                                                       mod_date: loginData.status[0].eventData[i].mod_date,
+                                                       page:1,
+                                                       org_id: loginData.status[0].eventData[i].org_id
+                                                   });
+                            }
  
+                            showInListView();
+                        } 
+                    }                
+                });
+            }); 
+
+            
+        }
+        
+        
+        var showInListView = function(){
+            
+          $("#adminEventListLoader").hide();
+          $("#eventCalendarAllList").show();
+
+            
+             $(".km-scroll-container").css("-webkit-transform", "");
+
+             
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupAllEvent
                                                                        });           
@@ -1001,10 +1142,9 @@ app.adminEventCalender = (function () {
                                                            });
                 
             $('#eventCalendarAllList').data('kendoMobileListView').refresh();
+
+            
         }
-        
-        
-        
         
                     var getTakePhoto = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
@@ -1034,9 +1174,8 @@ app.adminEventCalender = (function () {
             // console.log(imageURI);
             // Get image handle
             var largeImage = document.getElementById('attachedImgEvent');
-            // Unhide image elements
-            //
             largeImage.style.display = 'block';
+               
             // Show the captured photo
             // The inline CSS rules are used to resize the image
             //
@@ -1068,7 +1207,11 @@ app.adminEventCalender = (function () {
         
         
         
-        
+        var goToEventListPage = function(){
+         
+                            app.mobileApp.navigate('#adminEventList');
+
+        }
         
         
         
@@ -1132,7 +1275,6 @@ app.adminEventCalender = (function () {
             $("#attachedImgEditEvent").hide();
             eventDataToSend = ''; 
         }
-
         
         
         return {
@@ -1145,6 +1287,7 @@ app.adminEventCalender = (function () {
             removeImage:removeImage,
             removeImageEdit:removeImageEdit,
             editEvent:editEvent,
+            goToEventListPage:goToEventListPage,
             eventListShow:eventListShow,
             addNewEvent:addNewEvent,
             deleteEvent:deleteEvent,
