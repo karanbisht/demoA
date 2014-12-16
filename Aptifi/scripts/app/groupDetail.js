@@ -517,7 +517,7 @@ app.groupDetail = (function () {
             app.MenuPage = false;
             console.log(organisationID);
             //app.mobileApp.navigate('views/adminEventCalendar.html');                
-                                                        app.slide('left', 'green' ,'3' ,'#views/adminEventCalendar.html');
+            app.slide('left', 'green' ,'3' ,'#views/adminEventCalendar.html');
 
         }
         

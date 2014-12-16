@@ -1,3 +1,5 @@
+
+
 <!-- class="activities-view-info" -->
 <div data-role="view" id="adminEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.show">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
@@ -13,6 +15,7 @@
                       <div class="ball"></div>
                       <!--<div class="loading1">Loading...</div>-->
     </div>
+
 
     <br/>
     <span style="color:#7FBF4D;margin:20px 0px 20px 10px;">Calander</span>
@@ -82,7 +85,7 @@
                
        		<div class="calendarEvent-List" >
              
-       		     <h2 id="activityTemplateTitle" style="margin-left:0px; color:rgb(122,184,77);" >${event_name}</h2>
+       		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div>
 
        		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;margin-top:10px;text-align:justify;" >${event_desc}</span>            			            
 
@@ -328,7 +331,7 @@
                
        		<div class="calendarEvent-List" >
              
-       		     <h2 id="activityTemplateTitle" style="margin-left:0px; color:rgb(122,184,77);" >${event_name}</h2>
+       		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
 
  
          		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
@@ -365,4 +368,6 @@
 		    </div>   
             
 		</script>
+
+
 

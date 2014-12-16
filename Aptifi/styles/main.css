@@ -287,6 +287,7 @@ input::-webkit-inner-spin-button
 #Aptifi .signup-view .btn-signup
 {
     background-color: #7FBF4D;
+    color:#ffffff;
 }
 
 #Aptifi .register
@@ -700,9 +701,9 @@ input::-webkit-inner-spin-button
     /*border-top: 1px solid #eaeced;*/
 }
 
-#Aptifi .activities-view .km-list > li:first-child
+#Aptifi .activities-view .km-list > li:first-child   /* Height of first child from TOP by karan*/
 {
-    padding-top: .75em;
+    padding-top: .15em;
 }
 
 #Aptifi .user-avatar
@@ -724,6 +725,8 @@ input::-webkit-inner-spin-button
     display: inline-block;
     max-width: 50px;
     max-height: 50px;
+    background-position: center center; 
+
     
     /*min-width:60%;
     min-height:60%;*/
@@ -769,6 +772,7 @@ input::-webkit-inner-spin-button
     padding-left: 5em;
     font-size: .85rem;
     text-align: justify;
+    
 }
 
 .displayContentAboutUS
@@ -797,6 +801,16 @@ input::-webkit-inner-spin-button
     width: 100%;
     font-size: .85rem;
     padding: 10px;
+}
+
+.HeadingClass
+{
+    margin-left:0px;
+    margin-bottom:5px;
+    color:rgb(122,184,77);
+    font-size: 1.5em;
+    font-weight:bold;
+
 }
 
 #Aptifi .orgList-content
@@ -2107,7 +2121,8 @@ float:right;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 40px;
-    margin: 10px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
 }
 
 #adminOrgMem-icon
@@ -2116,7 +2131,8 @@ float:right;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 40px;
-    margin: 10px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
 }
 
 #adminOrgGroup-icon
@@ -2125,7 +2141,8 @@ float:right;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 40px;
-    margin: 10px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
 }
 
 #adminOrgEvent-icon
@@ -2134,7 +2151,8 @@ float:right;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 40px;
-    margin: 10px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
 }
 
 #adminOrgNew-icon
@@ -2143,7 +2161,8 @@ float:right;
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 40px;
-    margin: 10px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
 }
 
 #Aptifi #adminOrgNoti-icon .km-list > li
@@ -2208,7 +2227,8 @@ float:right;
     text-align: center;
     list-style: none;
     border-radius: 3px;
-    list-style-type: none; 
+    list-style-type: none;
+    color:#ffffff;
 }
 
 .popUpDivToShow
