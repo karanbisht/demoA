@@ -147,6 +147,8 @@ app.Login = (function () {
              
                                                                             $("#progress").hide();
 
+                                                                            app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from Login API .');
+
                                                                             document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
                                                                             //navigator.notification.alert("Please check your internet connection.",
                                                                             //function () { }, "Notification", 'OK');               
@@ -481,7 +483,9 @@ app.Login = (function () {
             localStorage.setItem("FIRST_LOGIN", 1); 
             localStorage.setItem("ADMIN_FIRST_LOGIN", 1); 
             app.userPosition = false;	
-           
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
+            app.analyticsService.viewModel.userLoginStatus();
             app.mobileApp.navigate('#organisationNotiList');
             //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
         }
@@ -666,7 +670,10 @@ app.Login = (function () {
                                                                          //apps.hideLoading();
                                                                          console.log('--------Error in Verification Code Sent-----------------');               
                                                                          console.log(e);
-               
+              
+                                                                                                                                                     
+                                                                         app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS.');
+
                                                                          $("#progress").hide();
 
                                                                          if (!app.checkSimulator()) {
@@ -739,6 +746,9 @@ app.Login = (function () {
                                                                             $("#progressRandomCode").hide();
                                                                             //app.mobileApp.pane.loader.hide();
                
+
+                                                                            app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from LOGIN API after Authentication .');
+
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
                                                                                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  

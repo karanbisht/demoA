@@ -30,10 +30,10 @@ var app = (function (win) {
     };
 
     win.addEventListener('error', function (e) {
-        e.preventDefault();
-
+        e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
         console.log(message, 'Error');
+        app.analyticsService.viewModel.trackException(e,'Error in Aptifi App -:'+ message);
         return true;
     });
     
@@ -177,6 +177,9 @@ var app = (function (win) {
             localStorage.setItem("loginStatusCheck", 0);
             localStorage.setItem("adminloginStatusCheck", 0);
         }
+        
+                navigator.splashscreen.hide();
+
     };
     
     var selectQuery = function(tx, query, successFunction) {
@@ -198,6 +201,7 @@ var app = (function (win) {
     var errorCB = function(err) {
         //alert("error--"+err.message);
         console.log("Error processing SQL: " + err.message);
+        app.analyticsService.viewModel.trackException(e,"Error in Sqlite local Storage processing : " + err.message);
     };
     
     // Transaction success callback
@@ -417,16 +421,17 @@ var app = (function (win) {
     skin: 'flat'
     });*/
     var onDeviceReady = function() {
-        
-        window.analytics.Start();
-        
+                
         // Handle "backbutton" event
         //console.log(navigator);
+        showAppVersion();
+
         document.addEventListener('backbutton', onBackKeyDown, false);
+        document.addEventListener("pause", onPause, false);
+        document.addEventListener("resume", onResume, false);
         
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
         
-        navigator.splashscreen.hide();
         fixViewResize();
         
         //console.log('apppppppppppp');
@@ -445,6 +450,16 @@ var app = (function (win) {
         }else if(deviceName==='iOS'){
         device_type='AP';
         }*/
+        
+         if(navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(oncallback);
+        }
+        else
+        {
+            app.analyticsService.viewModel.setAnalyticMonitor();
+        }
+
         
         if (device.platform === "iOS") {
             localStorage.setItem("DEVICE_TYPE", "AP");
@@ -486,15 +501,50 @@ var app = (function (win) {
         }
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
+        
+        //navigator.splashscreen.hide();
     };    
     
-    function successHandler (result) {
+    
+    var oncallback = function(position)
+    {
+        var latitude = position.coords.latitude,
+            longitude = position.coords.longitude;
+        app.analyticsService.viewModel.setAnalyticMonitor(latitude,longitude);
+    };
+    
+    
+    var onPause = function(e){
+        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
+        app.analyticsService.viewModel.monitorStop();
+    };
+    
+    var onResume = function(){ 
+        app.analyticsService.viewModel.monitorStart();
+        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
+        var loginStatus = localStorage.getItem("loginStatusCheck");
+        
+     
+
+        if(loginStatus !== '0' || loginStatus !== 0)
+        {
+            app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
+        }
+        else
+        {
+            app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
+        }
+       
+    };
+    
+    
+    /*function successHandler (result) {
         //alert('result = ' + result);
     }
     
     function errorHandler (error) {
         //alert('error = ' + error);
-    }
+    }*/
        
     // Handle "deviceready" event
     document.addEventListener('deviceready', onDeviceReady, false);
@@ -589,6 +639,7 @@ var app = (function (win) {
  
     var apnFailedRegistration = function(error) {
         console.log("Error: " + error.toString());
+        app.analyticsService.viewModel.trackException(e,"Error in APN PUSH Registration : " + error.toString());
     }
     
     var messageDB;
@@ -774,12 +825,16 @@ var app = (function (win) {
                     break;
                 case 'error':
                     //alert('GCM error = ' + e.msg);
+                        app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + e.msg);
                     break;
                 default:
                     //alert('An unknown GCM event has occurred.');
                     break;
             }
         } catch (err) {
+
+                   app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + err);
+ 
             //alert(err);
         }
         finally {    

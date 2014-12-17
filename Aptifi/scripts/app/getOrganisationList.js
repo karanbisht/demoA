@@ -263,8 +263,9 @@ app.OragnisationList = (function () {
                                                                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else{
                                                                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }*/
-               
+                                                                    }*/               
+                                                                    app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Organization List API.');
+
                                                                     showMoreDBData();  
                                                                     //navigator.notification.alert("Please check your internet connection.",
                                                                     //function () { }, "Notification", 'OK');
@@ -619,6 +620,7 @@ app.OragnisationList = (function () {
                                                                            error: function (e) {
                                                                                console.log(e);
 
+                                                                               app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Manage Organization List API.');
                                                                                showMoreDBData();  
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
@@ -920,7 +922,7 @@ app.OragnisationList = (function () {
             localStorage.setItem("user_selectedOrgName", e.data.orgName);
 
             //app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&bagCount=' + bagCount + '&orgName=' + e.data.orgName);
-        
+            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification List");            
             app.slide('left', 'green' ,'3' ,'#views/activitiesView.html');    
         };
        
@@ -1262,8 +1264,9 @@ app.OragnisationList = (function () {
                     }                       
                 },
                                                                    error: function (e) {
-                                                                       console.log(e);
-                                                                   }
+                                                                     console.log(e);
+                                                                     app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from unsubscribe Organiazation .');      
+                                                                  }
 	        
                                                                });         
              
@@ -1563,7 +1566,10 @@ app.OragnisationList = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
-                                                                           app.mobileApp.pane.loader.hide();
+                                                                           //app.mobileApp.pane.loader.hide();
+                                                                           
+                                                                           app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Edit Profile API.');
+
                                                                            navigator.notification.alert("Please check your internet connection.",
                                                                                                         function () {
                                                                                                         }, "Notification", 'OK');
@@ -1821,8 +1827,10 @@ app.OragnisationList = (function () {
                 },
                                                                 error: function (e) {
                                                                     console.log(e);              
-                                                                                $("#savingDeviceCalenderLoader").hide();
+                                                                    $("#savingDeviceCalenderLoader").hide();
 
+                                                                    app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Event List API.');
+                                                                    
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  

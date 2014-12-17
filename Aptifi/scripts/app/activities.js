@@ -152,7 +152,9 @@ app.Activities = (function () {
                                                                                              window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                                          }else {
                                                                                              app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                                         } 
+                                                                                         }
+                                                                                         
+                                                                                         app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Organization Notification List.');
                     
                                                                                          var db = app.getDb();
                                                                                          db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
@@ -551,7 +553,7 @@ app.Activities = (function () {
             var titleVal = app.urlEncode(title);
             
             //alert(messageVal);
-            
+            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
             app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date);
         };
         

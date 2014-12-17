@@ -353,7 +353,7 @@ app.Activity = (function () {
                                                                    /*navigator.notification.alert("Please check your internet connection.",
                                                                    function () { }, "Notification", 'OK');
                                                                    */
-                    
+                                                                   app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Notification Comment .');
                                                                    if (!app.checkConnection()) {
                                                                        if (!app.checkSimulator()) {
                                                                            window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -592,6 +592,7 @@ app.Activity = (function () {
                                                                                   navigator.notification.alert("Please check your internet connection.",
                                                                                                                function () {
                                                                                                                }, "Notification", 'OK');
+                                                                                  app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Reply API .');
                
                                                                                   if (!app.checkSimulator()) {
                                                                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
