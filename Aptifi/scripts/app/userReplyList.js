@@ -186,6 +186,9 @@ app.userReplyList = (function () {
             console.log(e.data.count);
             //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
             //app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName); 
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Reply To Customer in Admin");            
+            
             app.mobileApp.navigate('views/userNotificationCustomer.html?org_id=' + e.data.organisationID + '&count=' + e.data.count); 
             
         }

@@ -36,6 +36,9 @@ app.groupDetail = (function () {
            
         var showGroupNotification = function() {
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
+
             app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID + '&account_Id=' + account_Id);
             //app.mobileApp.navigate('#groupNotificationShow');
         };   
@@ -45,6 +48,9 @@ app.groupDetail = (function () {
         
         var showGroupMembers = function() {            
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
+
             app.mobileApp.navigate('#groupMemberShow');                              
         };
         
@@ -202,6 +208,9 @@ app.groupDetail = (function () {
         var manageGroup = function() {
             app.MenuPage = false;	
             //app.mobileApp.navigate('views/groupListPage.html');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Group List in Admin");            
+
                     app.slide('left', 'green' ,'3' ,'#views/groupListPage.html');
  
         };
@@ -268,6 +277,9 @@ app.groupDetail = (function () {
         
         var addMemberToGroup = function() {
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");            
+
             //app.mobileApp.navigate('#addMemberToGroup');
             app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
         };

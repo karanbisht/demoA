@@ -34,6 +34,9 @@ app.subGroupDetail = (function () {
            
         var showSubGroupNotification = function() {
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Group Notification in Admin");            
+
             app.mobileApp.navigate('views/subGroupNotificationList.html?organisationID=' + organisationID + '&group_ID=' + groupID);
             //app.mobileApp.navigate('#groupNotificationShow');
         };   
@@ -43,7 +46,10 @@ app.subGroupDetail = (function () {
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();
             //app.mobileApp.navigate('#subGroupMemberShow');
-                                        app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
+
+            app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
 
             console.log(organisationID);
             console.log(groupID);
@@ -176,6 +182,9 @@ app.subGroupDetail = (function () {
 
         var showUpdateSubGroupView = function() {
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit Group Info Page in Admin");            
+
             app.mobileApp.navigate('#updateSubGroupInfo');      
                
             $("#editGroupName").val(GroupName);

@@ -286,6 +286,9 @@ app.adminEventCalender = (function () {
             
             if (new Date(date) >= new Date(currentDate) && (checkGotevent===0)) {
                 app.mobileApp.navigate('#adminAddEventCalendar');
+
+                app.analyticsService.viewModel.trackFeature("User navigate to Add New Calendar in Admin");            
+
             }else if (new Date(date) < new Date(currentDate) && (checkGotevent===0)) {                   
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
@@ -302,7 +305,10 @@ app.adminEventCalender = (function () {
         }
         
         var eventMoreDetailClick = function() {
-            app.mobileApp.navigate('#adminEventCalendarDetail');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
+
+            app.mobileApp.navigate('#adminEventCalendarDetail');           
         }
         
         var detailShow = function() {
@@ -464,6 +470,10 @@ app.adminEventCalender = (function () {
             eventImageEdit = e.data.event_image;
             eventPid = e.data.id;
             pageToGo = e.data.page;
+            
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
+
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
         

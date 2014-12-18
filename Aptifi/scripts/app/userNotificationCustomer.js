@@ -209,6 +209,9 @@ app.replyedCustomer = (function () {
             console.log(e.data.user_fname);
             console.log(e.data.customerID);
             app.MenuPage = false;
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
+
             app.mobileApp.navigate('views/userNotificationComment.html?org_id=' + org_id + '&customerID=' + e.data.customerID + '&userName=' + e.data.user_fname + '&notification_id=' + e.data.notification_id + '&date=' + e.data.add_date);
         };
        

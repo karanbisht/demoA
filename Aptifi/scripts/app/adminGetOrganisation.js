@@ -402,7 +402,9 @@ app.adminOragnisationList = (function () {
             localStorage.setItem("orgDescAdmin", e.data.orgDesc);
 
             //app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + e.data.orgName + '&orgDesc=' + e.data.orgDesc);
-        
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Organization Detail View in Admin");            
+
             app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
 
         };
@@ -452,6 +454,7 @@ app.adminOragnisationList = (function () {
         var manageGroup = function() {
             app.MenuPage = false;	
             //app.mobileApp.pane.loader.show();
+            
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         

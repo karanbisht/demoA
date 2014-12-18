@@ -223,6 +223,9 @@ app.eventCalender = (function () {
         }
         
         var eventMoreDetailClick = function() {
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
+
             app.mobileApp.navigate('#eventCalendarDetail');
         }
         

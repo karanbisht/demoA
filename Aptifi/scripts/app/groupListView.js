@@ -263,25 +263,36 @@ app.GroupList = (function () {
             localStorage.setItem("groupIdAdmin", e.data.groupID);
             localStorage.setItem("groupNameAdmin", e.data.groupName);
             localStorage.setItem("groupDescAdmin", e.data.groupDesc);
+            
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Group in Admin");            
              
             app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID + '&orgID=' + e.data.orgID + '&groupName=' + e.data.groupName + '&groupDesc=' + e.data.groupDesc);
         };
                 
         var addGroup = function() {
             app.MenuPage = false;	
-            //app.mobileApp.navigate('views/addGroup.html');    
-                 app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
+            //app.mobileApp.navigate('views/addGroup.html');  
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
+
+            app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
  
         };
         
         var deleteGroup = function() {
             app.MenuPage = false;	
             //app.mobileApp.navigate('views/deleteGroup.html');
-                               app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
+
+             app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
  
         };
     
         var goToGroupList = function() {
+            app.analyticsService.viewModel.trackFeature("User navigate to Group List Page in Admin");            
+
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);                
         }
          

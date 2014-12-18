@@ -183,8 +183,7 @@ app.OragnisationList = (function () {
 
         var show = function(e) {       
             $("#progress2").show();
-            $('#organisation-listview').data('kendoMobileListView').refresh();
-            
+            $('#organisation-listview').data('kendoMobileListView').refresh();            
             $(".km-scroll-container").css("-webkit-transform", "");
              
             var scroller = e.view.scroller;
@@ -1149,7 +1148,9 @@ app.OragnisationList = (function () {
             //alert(joinDate);
             app.MenuPage = false;	
             //app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID + '&orgName=' + orgName + '&orgDesc=' + orgDesc + '&account_Id=' + account_Id + '&role=' + role + '&joinDate=' + joinDate + '&imageSourceOrg=' + imageSourceOrg + '&imgData=' + imgData);
-    
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Manage Organization List"); 
+
             app.slide('left', 'green' ,'3' ,'#views/userOrgManage.html');    
 
         };    
@@ -1225,11 +1226,18 @@ app.OragnisationList = (function () {
         }
         
         var orgDescMainPage = function() {
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Organization Admin List Page");            
+
             app.mobileApp.navigate('#organisationDiv');
+            
         }
         
         var editProfilePage = function() {        
             app.MenuPage = false;	
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit Profile Page");            
+
             app.mobileApp.navigate('views/editProfile.html');       
         }
         
@@ -1424,6 +1432,9 @@ app.OragnisationList = (function () {
             app.MenuPage = false;	
             //window.location.href = "views/organisationLogin.html"; 
             console.log(account_Id);
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Admin Login Page");            
+
             app.mobileApp.navigate('views/organisationLogin.html?account_Id=' + account_Id);      
         };
     	         
@@ -1611,6 +1622,9 @@ app.OragnisationList = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
             }else {
+
+                app.analyticsService.viewModel.trackFeature("User navigate to Calendar List Page");            
+
                 app.mobileApp.navigate('views/eventCalendar.html?orgManageID=' + orgManageID); 
             }
         }
@@ -1623,6 +1637,9 @@ app.OragnisationList = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
             }else {
+
+                app.analyticsService.viewModel.trackFeature("User navigate to News List Page");            
+
                 app.mobileApp.navigate('views/organizationNews.html?orgManageID=' + orgManageID);
             }            
         }

@@ -394,6 +394,10 @@ app.adminNews = (function () {
             newsTimeEdit = e.data.news_time;
             newsImageEdit = e.data.news_image;
             newsPid = e.data.id;
+            
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit News in Admin");            
+
             app.mobileApp.navigate('#adminEditNews');
         }
         
@@ -864,13 +868,19 @@ app.adminNews = (function () {
         
         var goToAddNewsPage = function() {
             //app.mobileApp.navigate('#adminAddNews');
-                                                   app.slide('rigth', 'green' ,'3' ,'#adminAddNews');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Add News in Admin");            
+
+            app.slide('rigth', 'green' ,'3' ,'#adminAddNews');
 
         }
         
         var goToNewsListPage = function() {
             //app.mobileApp.navigate('#adminOrgNewsList');
-                                       app.slide('rigth', 'green' ,'3' ,'#adminOrgNewsList');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
+
+            app.slide('rigth', 'green' ,'3' ,'#adminOrgNewsList');
 
         }
         
@@ -879,14 +889,19 @@ app.adminNews = (function () {
              
               $("#adddatePickerNews").removeAttr('disabled');
               $("#adddateTimePickerNews").removeAttr('disabled');
-      
+
+            app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
+
             app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
 
         }
         
         var addNewEvent = function() {
             //app.mobileApp.navigate('#adminAddEventCalendar');
-               app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
+
+            app.analyticsService.viewModel.trackFeature("User navigate to Add Event in Admin");            
+
+            app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
         }
         
         var upcommingEventList = function() {
