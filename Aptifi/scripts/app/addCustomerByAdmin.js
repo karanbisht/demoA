@@ -11,6 +11,7 @@ app.addCustomerByAdmin = (function () {
         var backToRegPage = false;
         var username;
         var organisationID;
+        var addMoreMobile;
             
         var regInit = function () {
             app.userPosition = false;
@@ -29,6 +30,7 @@ app.addCustomerByAdmin = (function () {
             $regEmail.val('');
             $regMobile.val('');
             organisationID = e.view.params.organisationID;
+            addMoreMobile=0;
         };
         
         var registerR = function() {
@@ -50,7 +52,14 @@ app.addCustomerByAdmin = (function () {
             } else if (mobile === "Mobile Number" || mobile === "") {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");   
+                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");  
+            }else if(addMoreMobile!==0){  
+                for(var i=1;i<=addMoreMobile;i++){
+                    var newMobile = $("#regMobile"+i).val();
+                    if (!app.validateMobile(newMobile)) {
+                        app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                        
+                    }
+                }                
             }else {    
                 console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 var jsonDataRegister;
@@ -109,9 +118,14 @@ app.addCustomerByAdmin = (function () {
             app.groupDetail.showGroupMembers();
         };
         
+        var addMoreMobileNo = function(){    
+            addMoreMobile++;
+            $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="regMobile'+addMoreMobile+'" placeholder="Mobile Number" /></li>');
+        }
         return {
             regInit: regInit,
             addNewRegistration: addNewRegistration,
+            addMoreMobileNo:addMoreMobileNo,
             registerR: registerR
         };
     }());

@@ -425,7 +425,7 @@ var app = (function (win) {
         // Handle "backbutton" event
         //console.log(navigator);
 
-        showAppVersion();
+        //showAppVersion();
 
         document.addEventListener('backbutton', onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
