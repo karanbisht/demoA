@@ -64,7 +64,7 @@ var app = (function (win) {
     var devicePlatform = function() {
         return device.platform;
     };
-
+    
     var isKeySet = function (key) {
         var regEx = /^\$[A-Z_]+\$$/;
         return !isNullOrEmpty(key) && !regEx.test(key);
@@ -201,7 +201,7 @@ var app = (function (win) {
     var errorCB = function(err) {
         //alert("error--"+err.message);
         console.log("Error processing SQL: " + err.message);
-        app.analyticsService.viewModel.trackException(e,"Error in Sqlite local Storage processing : " + err.message);
+        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
     };
     
     // Transaction success callback
@@ -395,7 +395,7 @@ var app = (function (win) {
     function updateAdminLoginStatusSuccess() {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
         var userType = localStorage.getItem("USERTYPE");   
-
+        
         app.mobileApp.navigate('#organisationNotiList');
         //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
     }
@@ -424,6 +424,7 @@ var app = (function (win) {
                 
         // Handle "backbutton" event
         //console.log(navigator);
+
         showAppVersion();
 
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -459,8 +460,7 @@ var app = (function (win) {
         {
             app.analyticsService.viewModel.setAnalyticMonitor();
         }
-
-        
+                
         if (device.platform === "iOS") {
             localStorage.setItem("DEVICE_TYPE", "AP");
 
@@ -639,7 +639,7 @@ var app = (function (win) {
  
     var apnFailedRegistration = function(error) {
         console.log("Error: " + error.toString());
-        app.analyticsService.viewModel.trackException(e,"Error in APN PUSH Registration : " + error.toString());
+        app.analyticsService.viewModel.trackException(error,"Error in APN PUSH Registration : " + error.toString());
     }
     
     var messageDB;

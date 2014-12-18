@@ -116,8 +116,8 @@ app.Activity = (function () {
  
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
-            listScroller = e.view.scroller;
-            listScroller.reset();
+            //listScroller = e.view.scroller;
+            //listScroller.reset();
 
             
             

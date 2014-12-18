@@ -34,8 +34,8 @@ app.Activities = (function () {
             groupDataShow = [];
             $('#activities-listview').data('kendoMobileListView').refresh();
         
-            var scroller = app.mobileApp.scroller();
-            scroller.reset();
+            //var scroller = app.mobileApp.scroller();
+            //scroller.reset();
              
             /*var scroller = app.mobileApp.scroller();
             console.log("scrollheight " + scroller.scrollHeight() + " height: " + scroller.height());

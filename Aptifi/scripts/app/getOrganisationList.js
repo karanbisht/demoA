@@ -186,8 +186,8 @@ app.OragnisationList = (function () {
             $('#organisation-listview').data('kendoMobileListView').refresh();            
             $(".km-scroll-container").css("-webkit-transform", "");
              
-            var scroller = e.view.scroller;
-            scroller.reset();
+            //var scroller = e.view.scroller;
+            //scroller.reset();
              
             //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');             
             //app.mobileApp.pane.loader.show();
