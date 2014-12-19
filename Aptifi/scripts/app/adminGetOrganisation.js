@@ -118,6 +118,21 @@ app.adminOragnisationList = (function () {
 
         var show = function(e) {
             //alert('show');
+            
+            /*$("#uploadBatchWindow")
+                .kendoWindow({
+                    actions: ["Maximize", "Close"],
+                    // minHeight: 175, // Being set because of IE gayness
+                    minWidth: 300,
+                    modal: true,
+                    resizable: true,
+                    title: "Choose File to Upload",
+                    visible: false
+            })
+                    .data("kendoWindow")
+                    .center().open();
+            
+            */
             localStorage.setItem("loginStatusCheck", 2);
  
             /*var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");

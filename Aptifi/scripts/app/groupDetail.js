@@ -86,8 +86,7 @@ app.groupDetail = (function () {
                 }
             };
             
-                        app.mobileApp.pane.loader.hide();
-
+            app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
@@ -173,6 +172,8 @@ app.groupDetail = (function () {
             //});
             
                         app.mobileApp.pane.loader.hide();
+
+            console.log(MemberDataSource);
 
             $("#groupMember-listview").kendoMobileListView({
                                                                dataSource: MemberDataSource,
@@ -468,10 +469,74 @@ app.groupDetail = (function () {
             app.groupDetail.showGroupMembers();
         };
 		        
+        var memberSelectedOrgID;
+        var memberSelectedCustID;
+        
         var clickOnOrgMember = function(e) {
             console.log('member click'); 
             console.log(e.data);
+            memberSelectedOrgID=e.data.orgID;
+            memberSelectedCustID=e.data.customerID;
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
+            app.mobileApp.navigate('#editMemberInAdmin');       
         };
+        
+
+        var editMemberShow = function() {
+           // $("#editFirstName").val(fname);
+           // $("#editLastName").val(lnameVal);
+           // $("#editEmail").val(email);
+            //$("#editMobile").val(mobile);            
+            //document.getElementById("editMobile").readOnly = true;
+            
+            $("#alternateMobileList").append('<li style="color:#5992CB"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobile'+addMoreEditMobile+'" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo()">Remove</a></li>');
+            
+            /*var dataSourceMemberDetail = new kendo.data.DataSource({
+                                                                   transport: {
+                    read: {
+                                                                    url: app.serverUrl() + "customerDetail/" + memberSelectedOrgID +"/"+memberSelectedCustID,
+                                                                    type:"POST",
+                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                              }
+                },
+                                                                   schema: {
+                    data: function(data) {
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                   error: function (e) {
+                                                                       //apps.hideLoading();
+                                                                       console.log(e);
+                                                                       navigator.notification.alert("Please check your internet connection.",
+                                                                                                    function () {
+                                                                                                    }, "Notification", 'OK');
+                                                                   }               
+                                                               });  
+	            
+            dataSourceMemberDetail.fetch(function() {
+                var loginDataView = dataSourceMemberDetail.data();
+                $.each(loginDataView, function(i, addGroupData) {
+                    console.log(addGroupData.status[0].Msg);           
+                    if (addGroupData.status[0].Msg==='Success') {
+                        
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Group Updated Successfully');   
+                        }else {
+                            app.showAlert("Group Updated Successfully", "Notification");  
+                        }
+
+                        //app.showAlert("Group Updated Successfully","Notification");
+                        app.mobileApp.navigate('views/groupListPage.html');
+                    }else {
+                        app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
+                    }                               
+                });
+            });
+            
+            */
+        }
+
         
         var userMessageTab = function(e) {
             var tempArray = [];
@@ -537,15 +602,32 @@ app.groupDetail = (function () {
             app.MenuPage = false;
             console.log(organisationID);
             //app.mobileApp.navigate('views/adminNews.html');
-                                                               app.slide('left', 'green' ,'3' ,'#views/adminNews.html');
-
+            app.slide('left', 'green' ,'3' ,'#views/adminNews.html');
+        }
+        
+        var addMoreMobileNoPage = function(){
+            app.slide('left', 'green' ,'3' ,'#addAlternateNumber');
+        }
+        
+        var addMoreMobileNoFunc = function(){
+            addMoreEditMobile++;
+            $("#alternateMobile").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobile'+addMoreEditMobile+'" placeholder="Mobile Number" /></li>');
+        }
+        
+        var addMoreEditMobile;        
+        
+        var addAlternateNo = function(){
+          $("#alternateMobile").empty();
+          addMoreEditMobile=0;    
         }
 	           
+        
         return {
             init: init,
             show: show,
             manageGroup:manageGroup,
-            showOrgNews:showOrgNews,    
+            showOrgNews:showOrgNews,
+            addAlternateNo:addAlternateNo,
             clickOnOrgMember:clickOnOrgMember,     
             sendNotification:sendNotification,    
             removeMemberClick:removeMemberClick,
@@ -555,9 +637,12 @@ app.groupDetail = (function () {
             backToOrgDetail:backToOrgDetail,   
             showGroupToDelete:showGroupToDelete,
             addNemMember:addNemMember,
+            addMoreMobileNoFunc:addMoreMobileNoFunc,
+            addMoreMobileNoPage:addMoreMobileNoPage,
             //addMemberToGroupFunc:addMemberToGroupFunc,
             removeMemberFromGroup:removeMemberFromGroup,    
             showGroupNotification:showGroupNotification,
+            editMemberShow:editMemberShow,
             showGroupMembers:showGroupMembers,
             orgMemberShow:orgMemberShow,
             showUpdateGroupView:showUpdateGroupView ,

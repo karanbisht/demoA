@@ -158,6 +158,132 @@
     </li>
 </div>
 
+
+<div data-role="view" id="editMemberInAdmin" data-layout="default" class="activities-view" data-model="app.groupDetail"
+     data-show="app.groupDetail.editMemberShow" data-transition="zoom">
+    <div data-role="header">
+        <div data-role="navbar">
+            Edit Member
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
+
+            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
+            <!--<a class="nav-button nav-button-add hide-text" data-align="right" data-role="button" data-bind="click: addNewRegistration">Add</a>
+            <a style="width: 2em;height:2.5em;padding-bottom:2px;border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png" style="background-position: .65em 50%;"/></a>-->
+        </div>
+    </div>
+
+    <div>
+        <form>
+            <ul data-role="listview" data-style="inset">
+                <li class="username">
+                    <input type="text" class="k-textbox" id="editFirstName" placeholder="First Name" />
+                </li>
+                <li class="password">
+                    <input type="text" class="k-textbox" id="editLastName" placeholder="Last Name" />
+                </li>
+                <li class="password">
+                    <input type="email" class="k-textbox" id="editEmail" placeholder="Email" />
+                </li>
+                <li class="password">
+                    <input type="text" class="k-textbox" id="staticMobile" placeholder="Mobile Number" readonly />
+                </li>
+            </ul>
+
+            <a style="padding-left:10px;color:#5992CB" data-role="touch" data-bind="events: { tap: addMoreMobileNoPage }">Add More Number</a>
+
+            <div id="showAlternateList" style="padding-left:10px;padding-top:10px;">Alternate Number
+                    <ul  id="alternateMobileList" data-role="listview" data-style="inset"></ul>
+            </div>
+
+
+        </form>
+    </div>
+
+    <li id="registrationNextR" class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfileFunc }">
+        Save
+    </li>
+</div>
+
+<script>
+    function removeAlternateNo(){
+        alert("Hello");
+
+        var dataSourceDeleteAlternateNo = new kendo.data.DataSource({
+                                                                       transport: {
+                        read: {
+                                                                                   url: app.serverUrl() + "customer/removeAlternate/",
+                                                                                   type:"POST",
+                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                               }
+                    },
+                                                                       schema: {
+                        data: function(data) {
+                            console.log(data);
+                            return [data];
+                        }
+                    },
+                                                                       error: function (e) {
+                                                                           //apps.hideLoading();
+                                                                           console.log(e);
+                                                                           //app.mobileApp.pane.loader.hide();
+                                                                           
+                                                                           app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Edit Profile API.');
+
+                                                                           navigator.notification.alert("Please check your internet connection.",
+                                                                                                        function () {
+                                                                            }, "Notification", 'OK');
+                                                                       }               
+                                                                   });  
+             
+                dataSourceDeleteAlternateNo.fetch(function() {
+                    var loginDataView = dataSourceDeleteAlternateNo.data();
+                    console.log(loginDataView);       
+                    $.each(loginDataView, function(i, loginData) {
+                        console.log(loginData.status[0].Msg);
+                               
+                        if (loginData.status[0].Msg==='Profile Updated') {
+                            app.showAlert("Profile Updated", "Notification");
+                            var db = app.getDb();
+                            db.transaction(updateLocalDB, app.errorCB, afterUpdateProfile);                          
+                        }else {
+                            app.showAlert(loginData.status[0].Msg , 'Notification'); 
+                        }
+                    });
+                });
+            }
+</script>
+
+<div data-role="view" id="addAlternateNumber" data-layout="default" class="activities-view" data-model="app.groupDetail"
+     data-show="app.groupDetail.addAlternateNo" data-transition="zoom">
+
+    <div data-role="header">
+        <div data-role="navbar">
+            Add Alternate Number
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
+        </div>
+    </div>
+
+    <div>
+        <form>
+            <ul data-role="listview" data-style="inset">
+                <li class="password" style="border-bottom:1px solid #eaeced;">
+                    <input type="text" class="k-textbox" id="editMobile" placeholder="Mobile Number"/>
+                </li>                
+            </ul>
+            <ul  id="alternateMobile" data-role="listview" data-style="inset"></ul>
+            <a style="padding-left:10px;margin-top:-10px;color:#5992CB" data-role="touch" data-bind="events: { tap: addMoreMobileNoFunc }">Add More</a>
+        </form>
+    </div>
+    
+    <li id="registrationNextR" class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfileFunc }">
+        Save
+    </li>
+    
+</div>
+
+
 <script  type="text/x-kendo-template" id="Member-Delete-template">
     <div class="deleteGroupShow">
         <label >

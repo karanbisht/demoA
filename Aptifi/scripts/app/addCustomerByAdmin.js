@@ -12,6 +12,9 @@ app.addCustomerByAdmin = (function () {
         var username;
         var organisationID;
         var addMoreMobile;
+        var countMobile;
+        var mobileArray = [];
+        var firstTime;
             
         var regInit = function () {
             app.userPosition = false;
@@ -31,6 +34,12 @@ app.addCustomerByAdmin = (function () {
             $regMobile.val('');
             organisationID = e.view.params.organisationID;
             addMoreMobile=0;
+            countMobile=0;
+            firstTime=0;
+            mobileArray=[];
+
+            $("#addMemberUl").empty();
+
         };
         
         var registerR = function() {
@@ -40,6 +49,11 @@ app.addCustomerByAdmin = (function () {
             var lname = $regLastName.val();
             var email = $regEmail.val();
             var mobile = $regMobile.val();
+            if(firstTime===0){
+            countMobile=addMoreMobile;
+            }else{
+              firstTime++;  
+            }
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", "Validation Error");
@@ -52,19 +66,35 @@ app.addCustomerByAdmin = (function () {
             } else if (mobile === "Mobile Number" || mobile === "") {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");  
-            }else if(addMoreMobile!==0){  
-                for(var i=1;i<=addMoreMobile;i++){
-                    var newMobile = $("#regMobile"+i).val();
-                    if (!app.validateMobile(newMobile)) {
-                        app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                        
-                    }
-                }                
-            }else {    
-                console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
-                var jsonDataRegister;
+                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
+            }else if(countMobile!==0){  
+                mobileArray=[];
+                mobileArray.push(mobile);
+                var count=0;
+               
+                alert(countMobile);
+               
+                for(var i=1;i<=countMobile;i++){
+                    var newMobile = $("#regMobile"+i).val(); 
+                    if(newMobile === "Mobile Number" || newMobile === ""){
+                        count++;                        
+                    }else if (!app.validateMobile(newMobile)) {
+                        app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                                                  
+                    }else{
+                        count++;
+                        mobileArray.push(newMobile);
+                    } 
+                }             
+
+                if(count===countMobile){
+                    alert('inside');
+                    
+                                    console.log(mobileArray);
+
+
+                                    var jsonDataRegister;
                           
-                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobile,"org_id":organisationID} 
+                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID} 
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {
@@ -84,6 +114,71 @@ app.addCustomerByAdmin = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
+                                                                           console.log(JSON.stringify(e));           
+
+                                                                           app.mobileApp.pane.loader.hide();
+                                                                           navigator.notification.alert("Please check your internet connection.",
+                                                                                                        function () {
+                                                                                                        }, "Notification", 'OK');
+                                                                       }               
+                                                                   });  
+             
+                dataSourceRegister.fetch(function() {
+                    var loginDataView = dataSourceRegister.data();
+                    console.log(loginDataView);       
+                    $.each(loginDataView, function(i, loginData) {
+                        console.log(loginData.status[0].Msg);
+                               
+                        if (loginData.status[0].Msg==='Customer added successfully') {
+                            app.showAlert("Member Added Successfully", "Notification");
+                            refreshOrgMember();
+                            $regFirstName.val('');
+                            $regLastName.val('');
+                            $regEmail.val('');
+                            $regMobile.val('');
+                            //app.mobileApp.navigate('#groupMemberShow');
+                        }else {
+                            app.showAlert(loginData.status[0].Msg , 'Notification'); 
+                        }
+                    });
+                });
+            
+
+                } 
+            }else{    
+                
+                if(addMoreMobile===0){
+                    mobileArray.push(mobile);
+                }
+                
+                console.log(mobileArray);
+                console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
+                var jsonDataRegister;
+                          
+                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID} 
+       
+                var dataSourceRegister = new kendo.data.DataSource({
+                                                                       transport: {
+                        read: {
+                                                                                   url: app.serverUrl() + "customer/add",
+                                                                                   type:"POST",
+                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                   data: jsonDataRegister
+                                                                               }
+                    },
+                                                                       schema: {
+                        data: function(data) {
+                            console.log(data);
+                            return [data];
+                        }
+                    },
+                                                                       error: function (e) {
+                                                                           //apps.hideLoading();
+                                                                           console.log(e);
+
+                                                                           console.log(JSON.stringify(e));           
+
+                                                                           
                                                                            app.mobileApp.pane.loader.hide();
                                                                            navigator.notification.alert("Please check your internet connection.",
                                                                                                         function () {
@@ -122,6 +217,8 @@ app.addCustomerByAdmin = (function () {
             addMoreMobile++;
             $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="regMobile'+addMoreMobile+'" placeholder="Mobile Number" /></li>');
         }
+        
+        
         return {
             regInit: regInit,
             addNewRegistration: addNewRegistration,
