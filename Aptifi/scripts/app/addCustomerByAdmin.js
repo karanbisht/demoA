@@ -72,7 +72,7 @@ app.addCustomerByAdmin = (function () {
                 mobileArray.push(mobile);
                 var count=0;
                
-                alert(countMobile);
+                //alert(countMobile);
                
                 for(var i=1;i<=countMobile;i++){
                     var newMobile = $("#regMobile"+i).val(); 
@@ -87,7 +87,7 @@ app.addCustomerByAdmin = (function () {
                 }             
 
                 if(count===countMobile){
-                    alert('inside');
+                    //alert('inside');
                     
                                     console.log(mobileArray);
 

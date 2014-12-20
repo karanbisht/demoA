@@ -16,7 +16,7 @@ app.adminNews = (function () {
     
         var show = function() {
             
-             $("#adminNewsListLoader").show();
+            $("#adminNewsListLoader").show();
             $("#orgAllNewsList").hide();
 
             

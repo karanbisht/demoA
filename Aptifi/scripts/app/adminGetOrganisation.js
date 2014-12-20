@@ -95,9 +95,9 @@ app.adminOragnisationList = (function () {
                                                                        });           
                 
             $("#admin-org-listview").kendoMobileListView({
-                                                             template: kendo.template($("#adminOrganisationTemplate").html()),    		
-                                                             dataSource: organisationListDataSource
-                                                         });
+                                             template: kendo.template($("#adminOrganisationTemplate").html()),    		
+                                             dataSource: organisationListDataSource
+                                       });
                
             $("#progressAdmin").hide();
             $('#admin-org-listview').data('kendoMobileListView').refresh();
@@ -158,13 +158,13 @@ app.adminOragnisationList = (function () {
             //alert(account_Id);
 
             var organisationListDataSource = new kendo.data.DataSource({
-                                                                           transport: {
-                    read: {
+                                                             transport: {
+                                                            read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
-                },
+                                                                   },
                                                                            schema: {                                
                     data: function(data) {	
                         var datacheck = 0;
@@ -183,8 +183,8 @@ app.adminOragnisationList = (function () {
                                 }else {
                                     app.showAlert('No Organization to Manage.' , 'Notification');  
                                 }
-
                                 app.mobileApp.navigate('#organisationNotiList');
+                                
                             }else if (groupValue[0].Msg==='Success') {
                                 console.log(groupValue[0].orgData.length);  
                                 var adminOrgInformation = groupValue[0].orgData;

@@ -173,7 +173,11 @@
         </div>
     </div>
 
-    <div>
+       <div class="loader" id="adminEditCustomer" style="display:none;margin-top:50%">
+            <div class="ball"></div>
+       </div>
+    
+    <div id="editOrgMemberContent">
         <form>
             <ul data-role="listview" data-style="inset">
                 <li class="username">
@@ -186,7 +190,7 @@
                     <input type="email" class="k-textbox" id="editEmail" placeholder="Email" />
                 </li>
                 <li class="password">
-                    <input type="text" class="k-textbox" id="staticMobile" placeholder="Mobile Number" readonly />
+                    <input type="text" class="k-textbox" id="staticMobile" placeholder="Mobile Number"/>
                 </li>
             </ul>
 
@@ -198,25 +202,36 @@
 
 
         </form>
-    </div>
 
     <li id="registrationNextR" class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfileFunc }">
         Save
     </li>
+   </div>
+     
 </div>
 
 <script>
-    function removeAlternateNo(){
-        alert("Hello");
+    function removeAlternateNo(num){
+        var li_Count = num+1;        
+        var arrayval = JSON.parse(localStorage["ALTER_ARRAY"]);
+        console.log(arrayval);       
+        
+        var orgId = arrayval[num].org_id;
+        var custNo = arrayval[num].customerId;
+        var alterId = arrayval[num].id;
+        
+        console.log(orgId+"/"+custNo+"/"+alterId);
 
         var dataSourceDeleteAlternateNo = new kendo.data.DataSource({
+           
                                                                        transport: {
                         read: {
-                                                                                   url: app.serverUrl() + "customer/removeAlternate/",
+                                                                                   url: app.serverUrl() + "customer/removeAlternate/"+orgId+"/"+custNo+"/"+alterId,
+                                                                                   //url:"http://54.85.208.215/webservice/customer/removeAlternate/19/422/424",                            
                                                                                    type:"POST",
-                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                                }
-                    },
+                             },
                                                                        schema: {
                         data: function(data) {
                             console.log(data);
@@ -237,15 +252,19 @@
                                                                    });  
              
                 dataSourceDeleteAlternateNo.fetch(function() {
+                    console.log("----------------------------------");
                     var loginDataView = dataSourceDeleteAlternateNo.data();
                     console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
                         console.log(loginData.status[0].Msg);
                                
-                        if (loginData.status[0].Msg==='Profile Updated') {
-                            app.showAlert("Profile Updated", "Notification");
-                            var db = app.getDb();
-                            db.transaction(updateLocalDB, app.errorCB, afterUpdateProfile);                          
+                        if (loginData.status[0].Msg==='Success') {
+
+                            //alert("#editMobileLi"+li_Count);
+                            $("#editMobileLi"+li_Count).empty();
+                            $("#editMobileLi"+li_Count).css("border","none");
+                            app.showAlert("Alternate Number Remove Successfully.", "Notification");
+                            
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
                         }
@@ -269,7 +288,7 @@
         <form>
             <ul data-role="listview" data-style="inset">
                 <li class="password" style="border-bottom:1px solid #eaeced;">
-                    <input type="text" class="k-textbox" id="editMobile" placeholder="Mobile Number"/>
+                    <input type="text" class="k-textbox" id="editMobileAlterPage" placeholder="Mobile Number"/>
                 </li>                
             </ul>
             <ul  id="alternateMobile" data-role="listview" data-style="inset"></ul>
