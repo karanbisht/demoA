@@ -270,7 +270,7 @@ var app = (function (win) {
             }, 100);
             }
             }, 'Logout', ['OK', 'Cancel']);*/
-        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-admin') {
+        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
             //var account_Id = localStorage.getItem("ACCOUNT_ID");
             //var userType = localStorage.getItem("USERTYPE");   
 
@@ -994,7 +994,7 @@ var app = (function (win) {
                                                  });
     }else if (loginStatusCheck==='2') {
         mobileApp = new kendo.mobile.Application(document.body, {
-                                                     initial: "#view-all-activities-admin",
+                                                     initial: "#view-all-activities-GroupDetail",
                                                      skin: 'flat'
                                                  });       
     }

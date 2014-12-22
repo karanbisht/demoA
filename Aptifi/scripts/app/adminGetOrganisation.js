@@ -496,9 +496,9 @@ app.adminOragnisationList = (function () {
             orgDataSource.push({userOrgName:userOrgName});                                   
           
             $("#organisation-listview").kendoMobileListView({
-                                                                template: kendo.template($("#orgTemplate").html()),    		
-                                                                dataSource: orgDataSource
-                                                            });
+                         template: kendo.template($("#orgTemplate").html()),    		
+                         dataSource: orgDataSource
+            });
         };
 
         // var onComboSelect = function() {

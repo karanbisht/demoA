@@ -530,6 +530,44 @@
                 </div>-->
             </div>
         </div>
+        
+        
+        
+  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="as" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show">
+    <div>
+        <ul id="allAdminManageList" data-role="listview" style="padding:5px 10px 10px 10px;">
+            <li id="adminOrgNoti-icon" style="padding-top:10px;">
+                <div data-role="touch" data-bind="events: { tap: showGroupNotification }">
+                    <span class="adminLiText">Organization Notification </span>
+                </div>
+            </li>
+
+            <li id="adminOrgMem-icon">
+                <div data-role="touch" data-bind="events: {tap: showGroupMembers}">
+                    <span class="adminLiText">Organization Members</span>
+                </div>
+            </li>
+
+            <li id="adminOrgGroup-icon">
+                <div data-role="touch" data-bind="events: {tap: showOrgGroupView}">
+                    <span class="adminLiText">Organization Group</span>
+                </div>
+            </li>
+
+            <li id="adminOrgEvent-icon">
+                <div data-role="touch" data-bind="events: {tap: showOrgEvent}">
+                    <span class="adminLiText">Manage Event</span>
+                </div>
+            </li>
+
+            <li id="adminOrgNew-icon">
+                <div  data-role="touch" data-bind="events: {tap: showOrgNews}">
+                    <span class="adminLiText">Manage News</span>
+                </div>
+            </li>
+        </ul>
+      </div>
+  </div>
 
         <!--data-before-Show="app.adminOragnisationList.beforeShow"-->
 
@@ -776,16 +814,20 @@
 
         </div>
 
-        <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:100px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-admin','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
+        <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:140px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['view-all-activities-GroupDetail','view-all-activities-userReply','sendNotificationDiv','#organisationNotiList']">
+
             <header data-role="header">
-                <div data-role="navbar" style="width: 100px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                <div data-role="navbar" style="width: 140px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
             </header>
 
-            <ul data-role="listview" style="overflow:hidden;">
+            <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
                 <li>
-                    <a id="side-admin-manageOrg-icon" href="#view-all-activities-admin" data-transition="none"></a>
+                        <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()">Organization</a>
+                </li>
+                <li>
+                    <a id="side-admin-manageOrg-icon" href="#view-all-activities-GroupDetail" data-transition="none"></a>
                 </li>
                 <li>
                     <a id="side-admin-message-icon"  href="#view-all-activities-userReply" data-transition="none"></a>
@@ -798,6 +840,63 @@
                 </li>
             </ul>
         </div>
+        
+        <script>
+            
+            function clickSelectOrg(){
+             var checkOpen = localStorage.getItem("open");
+             if(checkOpen==='0' || checkOpen==='5'){
+                $("#dynamicLi").empty();
+                $("#dynamicLi").hide(); 
+            
+                localStorage.setItem("open", 1);
+                
+                $("#drawerItemLi li:eq(0)").after('<li id="dynamicLi" style="margin:-10px;"></li>');
+ 
+                 var adminOrgDataval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                
+                 var objectLength = Object.keys(adminOrgDataval).length;
+                                  
+                for(i=0;i<objectLength;i++){
+                    var orgId = adminOrgDataval[i].organisationID;
+                    var org_name = adminOrgDataval[i].org_name;
+                    $("#dynamicLi").append('<li style="border-bottom: 1px solid #f5f7f8;"><a id="ID" style="padding-top:15px;padding-bottom:15px;" data-transition="none" data-role="button" onclick="selectOrgFmDrawer('+i+')">'+org_name+'</a></li>');
+                }
+                 
+                $("#dynamicLi").hide().slideDown({duration: 500});
+                    
+              }else{
+                localStorage.setItem("open", 0);                  
+                $( "#dynamicLi" ).slideUp("slow");
+
+              }  
+                                
+            }
+
+            
+                            
+                function selectOrgFmDrawer(data){
+                    var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);
+                    console.log(arrayval);       
+        
+                    var orgId = arrayval[data].id;
+                    var org_name = arrayval[data].org_name;
+                    
+                    
+                        localStorage.setItem("orgSelectAdmin",orgId);                  
+                        localStorage.setItem("orgNameAdmin",org_name);                  
+         
+                     /*var navbar = app.mobileApp.view()                
+                    .header
+                    .find(".km-navbar")
+                    .data("kendoMobileNavBar");
+                    navbar.title(org_name);*/
+                    app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+     
+                }
+
+            
+        </script>
+
 
         <script type="text/x-kendo-template" id="orgNameTemplate"> 
             <span class="deleteGroupShow1" data-role="touch" data-bind="events: { tap: sendNotificationOrg }"> ${org_name} </span>            

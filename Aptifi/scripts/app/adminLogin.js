@@ -48,9 +48,7 @@ app.adminLogin = (function () {
             }else { 
                 usernameMob = $("#loginMob").val();
                 password = $("#loginPassword").val();
-
                 console.log(usernameMob + "||" + password);
-            
                 if (usernameMob === "Mobile Number" || usernameMob === "") {
                     app.showAlert("Please enter your Mobile No.", "Validation Error");
                 } else if (!validateMobile(usernameMob)) {
@@ -160,7 +158,7 @@ app.adminLogin = (function () {
                     data: function(data) {	
                         var datacheck = 0;
                         var allData = 0;
-                       
+                        var adminOrgInfo =[];
                         //console.log(data);
                         //return [data];
                        
@@ -173,11 +171,28 @@ app.adminLogin = (function () {
                                 }else {
                                     app.showAlert('No Organization to Manage , Login not allow.' , 'Notification');  
                                 }
-                                        
+ 
+                                adminOrgInfo=[];
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
+                                
                                 $("#progress1").hide();  
                             }else if (groupValue[0].Msg==='Success') {
                                 console.log(groupValue[0].orgData.length);  
-                                var adminOrgInformation = groupValue[0].orgData;
+                                var adminOrgInformation = groupValue[0].orgData;           
+                              
+                              localStorage.setItem("orgSelectAdmin",groupValue[0].orgData[0].organisationID);                  
+                              localStorage.setItem("orgNameAdmin",groupValue[0].orgData[0].org_name);                  
+
+                              for (var i = 0 ; i < adminOrgInformation.length ;i++) {
+                                  
+                                  adminOrgInfo.push({
+                                                       id: groupValue[0].orgData[i].organisationID,
+                                                       org_name:groupValue[0].orgData[i].org_name
+                                                   });
+                              }                           
+                             localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
+                                
+                                
                                 goToAdminDashboard();
                                 //saveAdminOrgInfo(adminOrgInformation); 
                             }
@@ -480,10 +495,14 @@ app.adminLogin = (function () {
             app.userPosition = false;
             //app.mobileApp.navigate('#view-all-activities-admin'); 
 
+            localStorage.setItem("open", 5);
+            
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
+            //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
             
+            app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         };
  

@@ -1,91 +1,3 @@
-<div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" >
-
-    <div data-role="header">
-        <div data-role="navbar">
-            <span id="adminOrgHeader">Organization</span>
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.groupDetail.backToOrgAdminList"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-        </div>
-    </div>
-
-    <div>
-
-        <ul id="allAdminManageList" data-role="listview" style="padding:5px 10px 10px 10px;">
-
-            <li id="adminOrgNoti-icon" style="padding-top:10px;">
-                <div data-role="touch" data-bind="events: { tap: showGroupNotification }">
-                    <span class="adminLiText">Organization Notification </span>
-                </div>
-            </li>
-
-            <li id="adminOrgMem-icon">
-                <div data-role="touch" data-bind="events: {tap: showGroupMembers}">
-                    <span class="adminLiText">Organization Members</span>
-                </div>
-            </li>
-
-            <li id="adminOrgGroup-icon">
-                <div data-role="touch" data-bind="events: {tap: showOrgGroupView}">
-                    <span class="adminLiText">Organization Group</span>
-                </div>
-            </li>
-
-            <li id="adminOrgEvent-icon">
-                <div data-role="touch" data-bind="events: {tap: showOrgEvent}">
-                    <span class="adminLiText">Manage Event</span>
-                </div>
-            </li>
-
-            <li id="adminOrgNew-icon">
-                <div  data-role="touch" data-bind="events: {tap: showOrgNews}">
-                    <span class="adminLiText">Manage News</span>
-                </div>
-            </li>
-
-        </ul>
-    </div>
-
-</div>
-
-<div data-role="view" id="updateGroupInfo" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.groupDetail" >
-    <div data-role="header">
-        <div data-role="navbar">
-            Update Ogranization
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
-
-        </div>
-    </div>
-
-    <div id="enterNotification" class="textWithTextArea">
-
-        <!--<ul data-role="listview" data-style="inset">
-        <li class="username"><input type="text" id="editOrgName" placeholder="Enter New Organization Name" /></li>
-        </ul> 
-             
-        <div class="user-share">
-        <textarea id="editOrgDesc" placeholder="Write Organization description here (Optional) ?"></textarea>    
-        </div>-->
-
-        <input type="text"  id="editOrgName" class="defineTextBox"  placeholder="Enter New Organization Name" />
-
-            <br/>
-            <br/>
-                   <textarea  id="editOrgDesc" placeholder="Write Organization description here (Optional) ?" class="common"></textarea> 
-            <br/>
-            <br/>
-
-        <!--<textarea rows="8" class="defineTextArea" id="editOrgDesc" placeholder="Write Organization description here (Optional) ?"></textarea>-->
-
-    </div>
-
-    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveUpdatedGroupVal }">
-        Save
-    </li>
-</div>
-
 <div data-role="view" id="groupMemberShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.groupDetail" data-show ="app.groupDetail.orgMemberShow">
     <div data-role="header">
         <div data-role="navbar">
@@ -337,3 +249,44 @@
         </div>
     </div>
 </script>
+
+
+
+<div data-role="view" id="updateGroupInfo" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.groupDetail" >
+    <div data-role="header">
+        <div data-role="navbar">
+            Update Ogranization
+            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+
+        </div>
+    </div>
+
+    <div id="enterNotification" class="textWithTextArea">
+
+        <!--<ul data-role="listview" data-style="inset">
+        <li class="username"><input type="text" id="editOrgName" placeholder="Enter New Organization Name" /></li>
+        </ul> 
+             
+        <div class="user-share">
+        <textarea id="editOrgDesc" placeholder="Write Organization description here (Optional) ?"></textarea>    
+        </div>-->
+
+        <input type="text"  id="editOrgName" class="defineTextBox"  placeholder="Enter New Organization Name" />
+
+            <br/>
+            <br/>
+                   <textarea  id="editOrgDesc" placeholder="Write Organization description here (Optional) ?" class="common"></textarea> 
+            <br/>
+            <br/>
+
+        <!--<textarea rows="8" class="defineTextArea" id="editOrgDesc" placeholder="Write Organization description here (Optional) ?"></textarea>-->
+
+    </div>
+
+    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveUpdatedGroupVal }">
+        Save
+    </li>
+</div>
+
