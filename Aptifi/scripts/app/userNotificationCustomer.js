@@ -24,8 +24,9 @@ app.replyedCustomer = (function () {
             $("#loaderReplyCustomer").show();
             $("#reply-customer-listview").hide();
           
-            org_id = e.view.params.org_id;
-            userCount = e.view.params.count;
+            org_id = localStorage.getItem("orgSelectAdmin");
+            userCount= localStorage.getItem("incommingMsgCount"); 
+            //userCount = e.view.params.count;
           
             //notiId = e.view.params.notiId;
             //comment_allow = e.view.params.comment_allow;

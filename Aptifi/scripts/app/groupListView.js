@@ -251,7 +251,8 @@ app.GroupList = (function () {
 
         var backToOrgDetail = function() {
             groupDataShow = [];         
-            app.mobileApp.navigate('views/groupDetailView.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                 
+            //app.mobileApp.navigate('views/groupDetailView.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                 
+            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
         }
     
         var groupSelected = function (e) {

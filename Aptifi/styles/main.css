@@ -1357,12 +1357,13 @@ background: #fff none;
 
 .divBagVal
 {
-    background-color: #FFA840;
+    background-color: #7FBF4D;
     float: right;
     width: 25px;
     height: 25px;
     border-radius: 12px;
     color: #ffffff;
+    font-size:12px;
 }
 
 #comments-listview > li
@@ -1907,12 +1908,28 @@ float:right;
 {
     background-color: #E4F6D5;
     width: 50%;
-    height: 90px;
+    height: 100px;
     padding: 10px;
     color: #52554F;
     border-radius: 3px;
     text-align: center;
 }
+
+
+
+.manageOrgDivAdmin
+{
+    background-color: #E4F6D5;
+    width: 49.5%;
+    padding: 10px;
+    margin:10px;
+    color: #52554F;
+    border-radius: 3px;
+    text-align: center;
+}
+
+
+
 
 .k-calendar .k-state-selected { background-color: #7FBF4D; color: #ffffff; border-color: #7FBF4D; }
 .k-calendar .k-state-selected .k-state-hover { background-color: #7FBF4D; }
@@ -2061,6 +2078,64 @@ float:right;
     width: 50px;
 }
 
+
+#show-admin-noti-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/org-notification.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
+#show-admin-member-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/org-member.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
+
+#show-admin-group-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/org-group.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
+
+#show-admin-event-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/add-events.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
+#show-admin-news-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/add-news.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
 #side-admin-manageOrg-icon
 {
     background-color: #2D344B; 
@@ -2069,7 +2144,7 @@ float:right;
     background-repeat: no-repeat;
     height: 75px;
     width: 75px;
-    margin-left: 0px;
+    margin-left: 15px;
 }
 
 #side-admin-message-icon
@@ -2080,7 +2155,7 @@ float:right;
     background-repeat: no-repeat;
     height: 75px;
     width: 75px;
-    margin-left: 0px;
+    margin-left: 15px;
 }
 
 #side-admin-notification-icon
@@ -2091,7 +2166,7 @@ float:right;
     background-repeat: no-repeat;
     height: 75px;
     width: 75px;
-    margin-left: 0px;
+    margin-left: 15px;
 }
 
 #side-admin-user-icon
@@ -2102,7 +2177,7 @@ float:right;
     background-repeat: no-repeat;
     height: 75px;
     width: 75px;
-    margin-left: 0px;
+    margin-left: 15px;
 }
 
 .adminLiText

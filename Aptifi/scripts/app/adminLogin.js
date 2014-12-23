@@ -177,6 +177,7 @@ app.adminLogin = (function () {
                                 
                                 $("#progress1").hide();  
                             }else if (groupValue[0].Msg==='Success') {
+                                
                                 console.log(groupValue[0].orgData.length);  
                                 var adminOrgInformation = groupValue[0].orgData;           
                               
@@ -194,6 +195,7 @@ app.adminLogin = (function () {
                                 
                                 
                                 goToAdminDashboard();
+                                
                                 //saveAdminOrgInfo(adminOrgInformation); 
                             }
                         });
@@ -496,7 +498,10 @@ app.adminLogin = (function () {
             //app.mobileApp.navigate('#view-all-activities-admin'); 
 
             localStorage.setItem("open", 5);
-            
+
+            localStorage.setItem("loginStatusCheck", 2);
+
+                        
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
             //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    

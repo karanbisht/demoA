@@ -146,6 +146,7 @@ app.sendNotification = (function () {
         };
                                        
         var show = function(e) {
+            sendNotificationOrg();
             
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
@@ -693,8 +694,11 @@ app.sendNotification = (function () {
         var sendNotificationOrg = function(e) {
             
             $("#selectOrgLoader").show();
-            console.log(e.data.org_id);
-            var org = e.data.org_id;       
+            //console.log(e.data.org_id);
+            //var org = e.data.org_id;       
+
+
+            var org = localStorage.getItem("orgSelectAdmin");
 
             localStorage.setItem("SELECTED_ORG", org);
              

@@ -983,8 +983,8 @@ app.adminEventCalender = (function () {
         
         var goToManageOrgPage = function() {
             //app.mobileApp.navigate('views/groupDetailView.html');
-            app.slide('right', 'green' ,'3' ,'#views/groupDetailView.html');    
-
+            //app.slide('right', 'green' ,'3' ,'#views/groupDetailView.html');    
+              app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
         }
         
         var goToCalendarPage = function() {

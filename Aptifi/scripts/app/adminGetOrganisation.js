@@ -261,6 +261,8 @@ app.adminOragnisationList = (function () {
         } 
 
         function insertAdminOrgInfo(tx) {
+            //alert('insertDB');
+            
             userOrgIdArray = [];
             //var query = "DELETE FROM ADMIN_ORG";
             //app.deleteQuery(tx, query);
@@ -290,6 +292,7 @@ app.adminOragnisationList = (function () {
                     joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
                     var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
+                    alert(first_login);
 
                     if (first_login===0) {
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'

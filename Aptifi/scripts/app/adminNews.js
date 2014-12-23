@@ -862,8 +862,8 @@ app.adminNews = (function () {
         
         var goToManageOrgPage = function() {
             //app.mobileApp.navigate('views/groupDetailView.html');
-                                                       app.slide('rigth', 'green' ,'3' ,'#views/groupDetailView.html');
-
+           //app.slide('rigth', 'green' ,'3' ,'#views/groupDetailView.html');
+            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
         }
         
         var goToAddNewsPage = function() {

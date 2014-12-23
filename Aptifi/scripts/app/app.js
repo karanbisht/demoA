@@ -163,6 +163,7 @@ var app = (function (win) {
     };
     
     var loginStatusQuerySuccess = function() {
+        
         console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);
         
         if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
@@ -176,10 +177,8 @@ var app = (function (win) {
             //app.mobileApp.navigate('index.html');
             localStorage.setItem("loginStatusCheck", 0);
             localStorage.setItem("adminloginStatusCheck", 0);
-        }
-        
-                navigator.splashscreen.hide();
-
+        }        
+            navigator.splashscreen.hide();
     };
     
     var selectQuery = function(tx, query, successFunction) {
@@ -1013,14 +1012,17 @@ var app = (function (win) {
         app.MenuPage = false;	
         console.log(account_Id);
         //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-        app.mobileApp.navigate('#organisationNotiList');
+        //app.mobileApp.navigate('#organisationNotiList');
+         app.slide('right', 'green' ,'3' ,'#organisationNotiList');
     };
     
     var callAdminOrganisationList = function() {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
         app.userPosition = false;
         //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
-        app.mobileApp.navigate('#view-all-activities-admin'); 
+        //app.mobileApp.navigate('#view-all-activities-admin'); 
+        //app.mobileApp.navigate('#view-all-activities-GroupDetail');
+         app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
     }; 
     
     var getPresentDateTime = function() {

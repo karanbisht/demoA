@@ -13,6 +13,8 @@ app.groupDetail = (function () {
     var account_Id;
        
     var groupDetailViewModel = (function () {
+       
+        
         var init = function () {
         };
            
@@ -26,6 +28,9 @@ app.groupDetail = (function () {
             //orgName= e.view.params.orgName;
             //orgDesc= e.view.params.orgDesc;
             
+
+            localStorage.setItem("open", 0);                  
+            $( "#dynamicLi" ).slideUp("slow");
 
             localStorage.setItem("loginStatusCheck", 2);
 
@@ -45,7 +50,7 @@ app.groupDetail = (function () {
                     .data("kendoMobileNavBar");
                     navbar.title(orgName);
 
-            
+            $("#setOrgName").html(orgName);
             
             var organisationListDataSource = new kendo.data.DataSource({
                                                        transport: {
@@ -112,10 +117,60 @@ app.groupDetail = (function () {
                 */
             });
             
+             var db = app.getDb();
+            db.transaction(updateProfileTab, app.errorCB, app.successCB);
+            
         };
         
         
-                var adminOrgProfileData;        
+               function getListCountDB() {
+                    var db = app.getDb();
+                    db.transaction(getDataOrgDB, app.errorCB, app.successCB);   
+                };
+    
+                function getDataOrgDB(tx) {
+                       var org_id_db = localStorage.getItem("orgSelectAdmin"); 
+                       var query = "SELECT * FROM ADMIN_ORG where org_id="+org_id_db;
+                       app.selectQuery(tx, query, getDataSuccessDB);
+                };
+            
+            
+          function getDataSuccessDB(tx, results) {                                    
+             var count = results.rows.length;
+            if (count !== 0) { 
+                    var bagCountData = results.rows.item(0).bagCount;                  
+                    var countData = results.rows.item(0).count;
+                   
+                    if (countData===null || countData==="null") {
+                        countData = 0; 
+                    }
+                   
+                    if (bagCountData===null || bagCountData==="null") {
+                        bagCountData = 0;
+                    }
+                   
+                //alert(countData);
+                //alert(bagCountData);
+    
+                localStorage.setItem("incommingMsgCount",countData);                  
+    
+                
+                var showData = countData - bagCountData;
+                //alert(showData);
+                
+                $("#countToShow").html(showData);            
+            }            
+          }
+
+
+               
+        var updateProfileTab = function(tx) {
+            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=1';
+            app.updateQuery(tx, query);
+        };
+            
+        
+        var adminOrgProfileData;        
         var adminIncomMsgData;  
             
         function saveAdminOrgInfo(data1 , data2) {
@@ -147,10 +202,15 @@ app.groupDetail = (function () {
             
         var nowGetLiveData = function() {       
             var db = app.getDb();
-            db.transaction(insertAdminOrgInfo, app.errorCB, app.successCB);
+            db.transaction(insertAdminOrgInfo, app.errorCB, getListCountDB);
         } 
+       
+
 
         function insertAdminOrgInfo(tx) {
+
+            //alert('insertDB');
+
             userOrgIdArray = [];
             //var query = "DELETE FROM ADMIN_ORG";
             //app.deleteQuery(tx, query);
@@ -180,7 +240,8 @@ app.groupDetail = (function () {
                     joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
                     var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
-
+                    //alert("data-:"+first_login);
+                    
                     if (first_login===0) {
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
                                     + adminOrgProfileData[i].organisationID
@@ -275,11 +336,13 @@ app.groupDetail = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
 
-            app.mobileApp.navigate('#groupMemberShow');                              
+            app.mobileApp.navigate('views/orgMemberPage.html');                              
         };
         
         
         var orgMemberShow = function(){
+            
+          var organisationID = localStorage.getItem("orgSelectAdmin");
          
           $("#progressAdminOrgMem").show();         
          
@@ -510,12 +573,13 @@ app.groupDetail = (function () {
         };
         
         var backToOrgDetail = function() {
-            app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
+           // app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
+            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');    
         }
         
         var backToOrgAdminList = function() {       
             //app.mobileApp.navigate('#view-all-activities-admin');  
-            app.slide('right', 'green' ,'3' ,'#view-all-activities-admin');
+            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
  
         }   
         
@@ -686,6 +750,8 @@ app.groupDetail = (function () {
             app.MenuPage = false;
             console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
+            
+
         };
  
         function refreshOrgMember() {  
