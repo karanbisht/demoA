@@ -22,32 +22,30 @@
 
 
 		<script type="text/x-kendo-template" id="newsListTemplate" >            
+            
+           #if(id!==0){#
             <div class="cf" data-role="touch" data-bind="events: { tap: editNews }">         
-
                 <div class="notiList-content">            
-                 #if(id!==0){#
                     <div class="dateDisplay">
                         <span id="activityTemplateDate" class="dateValue">${news_date} , ${news_time}</span>
                         <hr class="dateLine"/>
                         <span></span>
                     </div>                                            
-                #}#
-
                 <br/>
-                <br/>
-            
+                <br/>            
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
-                              
-                    
                 #if (news_image!=='' && news_image!=='0') {#
                     <br/>
                     <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
                 #}#    
-
-  		    </div>   
-
-            
+  		    </div>               
 		    </div>   
+         #}else{#
+            <div class="cf">         
+                <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
+            </div>                            
+          #}#
+   
 
 		</script>
 

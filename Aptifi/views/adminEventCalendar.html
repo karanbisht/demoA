@@ -21,16 +21,14 @@
 
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">
             <!--data-bind="events: { tap: activitySelected }"-->
-            
+          #if(id!== 0){#
+  
             <div class="cf" data-role="touch" data-bind="events: { tap: editEvent }">         
                
        		<div class="calendarEvent-List" >
              
        		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
-
- 
          		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
- 
 
                     #if (event_image!=='' && event_image!=='0') {#
                         <br/>
@@ -40,28 +38,25 @@
             
                         <br/>
 
-                  #if(id!== 0){#
                     <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date: ${event_show_date}</span>       	            
                     <span id="activityTemplateDate"  style="float:right;color:rgb(122,184,77);margin-top:5px;">Time: ${event_time}</span>       	            
-                   #}#            
-            
-                    <!--data-click="app.adminEventCalender.editEvent"-->
-                    <!--data-click="app.adminEventCalender.deleteEvent"-->
-
-                   <!--             <br/>
-                    <br/>
-
-                   <div style="margin-top:10px;color:rgb(53,152,219);"><div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
-                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
-                                <br/>
-                    <br/>
-
-                    -->
             
        		</div>
 
 		    </div>   
+              
+         #}else{#            
+              <div class="cf">                        
+       		<div class="calendarEvent-List" >
+             
+       		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
+         		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
+       		</div>
+
+		    </div>   
+
             
+         #}#
 		</script>
 
 

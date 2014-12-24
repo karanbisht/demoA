@@ -75,8 +75,7 @@ app.adminNews = (function () {
                     console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No News list') {
-                        groupAllEvent = [];
-                          
+                        groupAllEvent = [];                          
                         groupAllEvent.push({
                                                id: 0,
                                                add_date: 0,

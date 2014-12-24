@@ -1123,9 +1123,11 @@ app.adminEventCalender = (function () {
                                                    });
                             }
  
-                            showInListView();
+                            
                         } 
-                    }                
+                    }
+                    
+                    showInListView();
                 });
             }); 
 

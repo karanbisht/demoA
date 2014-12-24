@@ -533,7 +533,7 @@
         
         
         
-  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show"> 
+  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show">
       <div>
         <table style="margin:10px;">
             <tr>
@@ -930,7 +930,8 @@
                     <a id="side-admin-manageOrg-icon" href="#view-all-activities-GroupDetail" data-transition="none"></a>
                 </li>
                 <li>
-                    <a id="side-admin-message-icon"  href="#subGroupMemberReplyShow" data-transition="none"><div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;"></div></a>          
+                    <div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;margin-right:40px;padding-top:5px;"></div>
+                    <a id="side-admin-message-icon"  href="#subGroupMemberReplyShow" data-transition="none"></a>                              
                 </li>
                 <li>
                     <a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a>
@@ -1081,11 +1082,11 @@
             </li>
         </script>
 
+        
         <script type="text/x-kendo-template" id="typeNameTemplate">                        	
             <div class="sendNotiText">
                 <span id="activityTemplateTitle" style="margin:10px;">${text}</span>
-            </div>         
-            
+            </div>                     
         </script>
 
         <script type="text/x-kendo-template" id="adminOrganisationTemplate">

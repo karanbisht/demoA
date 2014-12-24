@@ -1907,8 +1907,8 @@ float:right;
 .manageOrgDiv
 {
     background-color: #E4F6D5;
-    width: 50%;
-    height: 100px;
+    width: 49.5%;
+    height: 120px;
     padding: 10px;
     color: #52554F;
     border-radius: 3px;
@@ -1923,6 +1923,7 @@ float:right;
     width: 49.5%;
     padding: 10px;
     margin:10px;
+    height: 120px;
     color: #52554F;
     border-radius: 3px;
     text-align: center;

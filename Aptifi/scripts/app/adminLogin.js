@@ -487,21 +487,14 @@ app.adminLogin = (function () {
             }                                  
         }
 
-        var goToAdminDashboard = function() {
-            
+        var goToAdminDashboard = function() {            
             //app.mobileApp.pane.loader.hide();
             $("#progress1").hide();
-
             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-
             app.userPosition = false;
             //app.mobileApp.navigate('#view-all-activities-admin'); 
-
             localStorage.setItem("open", 5);
-
-            localStorage.setItem("loginStatusCheck", 2);
-
-                        
+            localStorage.setItem("loginStatusCheck", 2);                        
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
             //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
@@ -520,6 +513,5 @@ app.adminLogin = (function () {
             checkEnter:checkEnter
         };
     }());
-
     return adminLoginViewModel;
 }());
