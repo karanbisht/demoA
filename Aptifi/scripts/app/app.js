@@ -860,7 +860,7 @@ var app = (function (win) {
                     + '","'
                     + attachedDB
                     + '","'
-                    + messageDB
+                    + notificationMsg
                     + '","'
                     + titleDB
                     + '","'

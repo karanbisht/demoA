@@ -569,21 +569,21 @@ app.sendNotification = (function () {
                                                                                            //apps.hideLoading();
                                                                                            console.log(e);
                
-                                                                                           alert(JSON.stringify(e));
+                                                                                           //alert(JSON.stringify(e));
                
                                                                                            //navigator.notification.alert("Please check your internet connection.",
                                                                                            //function () { }, "Notification", 'OK');
                
                                                                                            if (!app.checkSimulator()) {
-                                                                                               //window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                               window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                                            }else {
-                                                                                               //app.showAlert("Network problem . Please try again later","Notification");  
+                                                                                               app.showAlert("Network problem . Please try again later","Notification");  
                                                                                            }
                    
                                                                                            if (!app.checkSimulator()) {
-                                                                                               window.plugins.toast.showShortBottom('Notification Send Successfully');   
+                                                                                               //window.plugins.toast.showShortBottom('Notification Send Successfully');   
                                                                                            }else {
-                                                                                               app.showAlert("Notification Send Successfully", "Notification"); 
+                                                                                               //app.showAlert("Notification Send Successfully", "Notification"); 
                                                                                            }
                                                                                            $("#notificationTitleValue").val('');            
                                                                                            $("#notificationDesc").val('');

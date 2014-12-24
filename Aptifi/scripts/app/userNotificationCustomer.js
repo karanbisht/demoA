@@ -26,6 +26,7 @@ app.replyedCustomer = (function () {
           
             org_id = localStorage.getItem("orgSelectAdmin");
             userCount= localStorage.getItem("incommingMsgCount"); 
+            
             //userCount = e.view.params.count;
           
             //notiId = e.view.params.notiId;
