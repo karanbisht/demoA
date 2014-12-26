@@ -519,6 +519,8 @@
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
 
+
+
                     <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.adminOragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
                     <!--<a id="goToAdmin" data-align="right" data-role="button" data-click="app.adminOragnisationList.logout">User</a>-->
                 </div>
@@ -710,7 +712,7 @@
 
         <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
 
-            <div data-role="content">
+          <div data-role="content">
                 <!--<div id="selectOrgDiv" style="margin:10px 10px 10px 10px;border:none;">
                     <p style="color:#343434;">Select Organization to send Notification</p>
                     <ul id="organisation-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
@@ -772,10 +774,10 @@
 
                 <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
 
-                <div id="selectTypeDiv" style="display:none;margin:10px 10px 10px 10px;border:none;">
+                <!--<div id="selectTypeDiv" style="display:none;margin:10px 10px 10px 10px;border:none;">
                     <p style="color:#343434;">Select Notification Type</p>
                     <ul id="type-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
-                </div>
+                </div>-->
 
                 <!-- <div style="margin-left:10px">
                 <p style="color:#1B205E">Select Organisation to send Notification</p>
@@ -787,10 +789,6 @@
                 <span style="margin-left:12px;"><input id="groupforNotification" placeholder="Select Group"/></span>
                 </div>-->
 
-                <!--<div style="margin-left:10px">
-                <p style="color:#1B205E">Notification Type</p>               
-                <span style="margin-left:12px;"><input id="notificationType" /></span>
-                </div>-->
 
                 <div class="loader" id="progressSendNotification" style="display:none;margin-top:50%">
                     <div class="ball"></div>
@@ -821,9 +819,16 @@
                     <!--<textarea rows="12" class="defineTextArea" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>-->
 
                     <br/>
-                    <br/>
+                  <br/>
+
+                    <div>
+                            <span style="color:rgb(127,191,77)">Notification Type</span>               
+                            <span><input id="notificationType" /></span>
+                    </div>
 
                     <!--class="largerCheckbox"-->
+                    
+                       <br/>
 
                     <li style="color:#1B205E;list-style-type: none;">
                         <span> <span style="color:rgb(127,191,77)" >Comment Allow</span>
@@ -846,8 +851,16 @@
                         <div style="padding:10px,10px;">
                             <input id="scheduleTimePicker"/>
                         </div>
-
                     </div>
+                    
+                          <br/>
+                          <br/>
+                          <br/>
+             
+
+                    <a style="background:transparent;color:rgb(127,191,77);border:none;" data-role="button" data-bind="click:goBackToGroupCustomer">Click here to change selected Group or customer</a>
+
+                    
 
                     <!--<li style="width:100%;margin-bottom:30px;margin-right:5%;margin-left:5%;list-style-type: none;">
                     <span data-role="button" style="background-color:#33539E;width:90%;float:left;" data-bind="click: sendNotificationMessage">
@@ -883,9 +896,11 @@
             <div id="selectCustomerFooter" data-role="footer" style="background:#ffffff;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
                     <li style="width:100%">
-                        <span id="registration" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" > Next </span>
+                        <span id="customerNextButton" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" > Next </span>
 
-                        <span id="registration" data-role="touch" data-bind="events: { tap: skipToSeletType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" > Skip </span>
+                        <!--<span id="registration" data-role="touch" data-bind="events: { tap: skipToSeletType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" > Skip </span>-->
+
+                        <span id="customerBackButton" data-role="touch" data-bind="events: { tap: goBackToGroup }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;" > Back </span>
                     </li>
                 </ol>
             </div>
@@ -1057,10 +1072,10 @@
             </div>-->
 
             <li class="deleteGroupShow">
-                <lable>
+                <label>
                     <input type="checkbox" value="${pid}" />
                     <span class="firstName">#:group_name#</span>
-                </lable>
+                </label>
             </li>
 
             <!--<div class="deleteGroupShow" data="${pid}">
@@ -1077,7 +1092,7 @@
         <script type="text/x-kendo-template" id="customerNameTemplate">            
             <li class="deleteGroupShow">
                 <span>
-                    <input type="checkbox" value="${customerID}" /> <span class="firstName">#:first_name#</span> <span class="lastName">#:last_name#</span>
+                    <label><input type="checkbox" value="${customerID}" /> <span class="firstName">#:first_name#</span> <span class="lastName">#:last_name#</span></label>
                 </span>
             </li>
         </script>

@@ -93,7 +93,7 @@ app.groupDetail = (function () {
 
                                                                                $("#progressAdmin").hide();             
 
-                                                                               beforeShow();
+                                                                               //beforeShow();
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                                }else {

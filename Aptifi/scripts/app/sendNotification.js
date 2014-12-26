@@ -28,11 +28,11 @@ app.sendNotification = (function () {
             app.userPosition = false;
             //validator = $('#enterNotification').kendoValidator().data('kendoValidator');                                 
 
-            var showNotiTypes = [
+            /*var showNotiTypes = [
                 { text: "Promotion", value: "P" },
                 { text: "Invitaion", value: "V" },
                 { text: "Information", value: "I" },
-                { text: "Reminder", value: "R" },
+               { text: "Reminder", value: "R" },
                 { text: "Alert", value: "A" }      
             ];
             
@@ -52,7 +52,10 @@ app.sendNotification = (function () {
                                                                  app.mobileApp.pane.loader.hide();     
                                                              }
                                                          });
-            /*$("#notificationType").kendoComboBox({
+            */
+            
+
+            $("#notificationType").kendoComboBox({
             dataTextField: "text",
             dataValueField: "value",
             dataSource: [
@@ -67,7 +70,8 @@ app.sendNotification = (function () {
             suggest: true
             //index: 0
             });
-            */
+            
+            
             /*$("#type-Name-listview").kendoMobileListView({
             template: kendo.template($("#typeNameTemplate").html()),    		
             dataSource: dataSource,
@@ -211,7 +215,7 @@ app.sendNotification = (function () {
             
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
-            $("#selectTypeDiv").hide();
+            //$("#selectTypeDiv").hide();
             $("#sendNotificationDivMsg").hide();
             $("#sendNotiDiv").hide();
             $("#selectCustomerToSend").hide();
@@ -298,7 +302,7 @@ app.sendNotification = (function () {
                 } 
             }            
             
-            var account_Id = localStorage.getItem("ACCOUNT_ID");          
+            //var account_Id = localStorage.getItem("ACCOUNT_ID");          
         };    
                               
         var onChangeNotiGroup = function() {
@@ -358,11 +362,11 @@ app.sendNotification = (function () {
              
                 //alert(cmbGroup);
              
-                //var selectedType = $("#notificationType").data("kendoComboBox");
-                //var type=selectedType.value();
+                var selectedType = $("#notificationType").data("kendoComboBox");
+                var type=selectedType.value();
              
-                var type = notificationTypeSelected;
-                //alert(type);
+                //var type = notificationTypeSelected;
+                alert(type);
              
                 var cmmt_allow ;
                 if ($("#comment_allow").prop('checked')) {
@@ -891,6 +895,17 @@ app.sendNotification = (function () {
             escapeGroupClick();
         };
          
+        var goBackToGroup = function(){
+         
+                $("#selectGroupDiv").show();
+                $("#selectGroupFooter").show();
+
+                $("#selectCustomerToSend").hide();
+                $("#selectCustomerFooter").hide();
+
+        }
+        
+        
         var NextToSeletType = function() {
           
             var customer = [];
@@ -992,7 +1007,10 @@ app.sendNotification = (function () {
 
                 app.mobileApp.navigate('#view-all-activities-admin'); 
             }else {
-                $("#selectTypeDiv").show();
+                //$("#selectTypeDiv").show();
+                $("#sendNotificationDivMsg").show();
+                $("#sendNotiDiv").show();   
+                
             }
              
             $(".km-scroll-container").css("-webkit-transform", "");
@@ -1002,6 +1020,8 @@ app.sendNotification = (function () {
          
         var escapeGroupGoCustClick = function() {                 
             $(".km-scroll-container").css("-webkit-transform", "");
+            $("#customerBackButton").hide();
+            $("#customerNextButton").css("width","90%");
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
 
@@ -1011,6 +1031,33 @@ app.sendNotification = (function () {
 
             app.mobileApp.pane.loader.hide();    
         };
+        
+        goBackToGroupCustomer = function(){
+            $(".km-scroll-container").css("-webkit-transform", "");
+            
+            if(noGroup===1){
+
+                $("#selectGroupDiv").hide();
+                $("#selectGroupFooter").hide();
+
+                $("#selectCustomerToSend").show();
+                $("#selectCustomerFooter").show();
+
+                
+            }else{
+
+                $("#selectGroupDiv").show();
+                $("#selectGroupFooter").show();
+
+                $("#selectCustomerToSend").hide();
+                $("#selectCustomerFooter").hide();
+
+
+            }
+            
+            $("#sendNotificationDivMsg").hide();
+            $("#sendNotiDiv").hide(); 
+        }
 
         var groupCheckData = function() {
             $(':checkbox:checked').each(function(i) {
@@ -1105,6 +1152,7 @@ app.sendNotification = (function () {
             scheduleNotification:scheduleNotification,
             beforeShow:beforeShow,
             skipToSeletType:skipToSeletType,
+            goBackToGroup:goBackToGroup,
             sendNotificationOrg:sendNotificationOrg,
             sendNotificationGroup:sendNotificationGroup,
             escapeGroupClick:escapeGroupClick,
@@ -1112,6 +1160,7 @@ app.sendNotification = (function () {
             NextToCustomerType:NextToCustomerType,
             NextToSeletType:NextToSeletType,
             groupCheckData:groupCheckData,
+            goBackToGroupCustomer:goBackToGroupCustomer,
             onChangeNotiGroup:onChangeNotiGroup,
             //getPhoto:getPhoto,
             getPhotoVal:getPhotoVal,
