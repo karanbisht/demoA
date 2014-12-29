@@ -73,9 +73,11 @@ app.adminEventCalender = (function () {
                                                                     if (!app.checkSimulator()) {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }               
-                                                                }               
+                                                                        app.showAlert('Network unavailable . Please try again later' , 'Notification');  
+                                                                    }           
+                                                                    
+                                                                                         
+                                                                                                                     }               
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
@@ -505,9 +507,11 @@ app.adminEventCalender = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        console.log(JSON.stringify(e));
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                        if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                         }else {
+                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                         }
                                                                    }               
           
                                                                });  
@@ -771,9 +775,11 @@ app.adminEventCalender = (function () {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
                                                                            console.log(JSON.stringify(e));
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                            if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                         }else {
+                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                         }
                                                                        }               
           
                                                                    });  
@@ -1052,7 +1058,23 @@ app.adminEventCalender = (function () {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
                                                                         app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }               
+                                                                    }   
+                                                                    
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Event List in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#eventCalendarAllList").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
                                                                 }               
                                                             });  
 	            

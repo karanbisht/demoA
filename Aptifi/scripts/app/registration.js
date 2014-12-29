@@ -66,6 +66,8 @@ app.registration = (function () {
             } else {   
                 //app.mobileApp.navigate('views/selectOrganisationView.html');                     
                 console.log(fname + "||" + lname + "||" + email + "||" + username);
+                
+                $("#progressRegister").show();
                 var jsonDataRegister;
                 var goToUrl;
              
@@ -98,6 +100,9 @@ app.registration = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
+
+                                                                           $("#progressRegister").hide();
+
                                                                            console.log(e);
                                                                            app.mobileApp.pane.loader.hide();
                                                                            navigator.notification.alert("Please check your internet connection.",
@@ -154,6 +159,7 @@ app.registration = (function () {
                                                                                 error: function (e) {
                                                                                     //apps.hideLoading();
                                                                                     console.log(e);
+                                                                                    $("#progressRegister").hide();
                                                                                     app.mobileApp.pane.loader.hide();
                                                                                     navigator.notification.alert("Please check your internet connection.",
                                                                                                                  function () {
@@ -169,7 +175,10 @@ app.registration = (function () {
                                 $.each(loginDataView, function(i, loginData) {
                                     console.log(loginData.status[0].Msg);
                                     if (loginData.status[0].Msg==='Authentication Required') {
-                                        app.mobileApp.pane.loader.hide();   
+                                        app.mobileApp.pane.loader.hide();
+
+                                        $("#progressRegister").hide();
+
                                         clickforRegenerateCodeR();   
                                     }
                                 });

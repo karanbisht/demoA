@@ -466,13 +466,6 @@
             #}#
         </script>
 
-        <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="height:200px;">
-                <div class="activity-content" >
-                    <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${message}</h2>
-                </div>
-            </div>
-        </script>
 
         <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Aptifi" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
 
@@ -823,7 +816,7 @@
 
                     <div>
                             <span style="color:rgb(127,191,77)">Notification Type</span>               
-                            <span><input id="notificationType" /></span>
+                            <span><input id="notificationType" onkeydown="return false;" style="width:180px;"/></span>
                     </div>
 
                     <!--class="largerCheckbox"-->
@@ -996,7 +989,7 @@
                     var orgId = arrayval[data].id;
                     var org_name = arrayval[data].org_name;
                     
-                    //alert(org_name);
+                    //alert(orgId);
                     
                         localStorage.setItem("orgSelectAdmin",orgId);                  
                         localStorage.setItem("orgNameAdmin",org_name);                  
@@ -1158,7 +1151,7 @@
         </script>
 
         <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="margin-top:10%;border:none">
+            <div class="cf" style="margin-top:30%;border:none">
 
                 <div class="error-avatar">
                     <img src="styles/images/error.png"/>
@@ -1167,9 +1160,9 @@
                 <div class="error-content">
                     <h5 style="color:rgb();text-align:center" >${message}</h5>
 
-                    <p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
+                    <!--<p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
                         Try Again
-                    </p>
+                    </p>-->
 
                 </div>
             </div>
@@ -1188,7 +1181,7 @@
         <script src="scripts/app/app.js" type="text/javascript"></script>
         <script src="Plugins/PushPlugin-master/www/PushNotification.js"></script>
 
-        <script src="scripts/app/adminReplyMessage.js" type="text/javascript"></script>
+        <!--<script src="scripts/app/adminReplyMessage.js" type="text/javascript"></script>-->
 
         <!--<script src="scripts/app/notification.js" type="text/javascript"></script>
         <script src="scripts/app/notificationView.js" type="text/javascript"></script>

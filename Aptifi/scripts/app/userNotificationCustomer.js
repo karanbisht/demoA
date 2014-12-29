@@ -90,19 +90,11 @@ app.replyedCustomer = (function () {
                             $.each(groupValue, function(i, orgVal) {
                                 console.log(orgVal);
                                      
-                                if (orgVal.Msg ==="You don't have access") {   
-                                    groupDataShow.push({
-                                                           user_fname: "You Don't have access , please login again in Admin Panel",
-                                                           user_lname: '',
-                                                           customerID:0,  
-                                                           user_type : '',
-                                                           //orgID:0,
-                                                           comment:'',
-                                                           notification_id:'',
-                                                           add_date:'',
-                                                           user_id:0
-    	                               
-                                                       });                                      
+                                if(orgVal.Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.mobileApp.navigate('views/organisationLogin.html');   
+                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                      
                                 }else if (orgVal.Msg ==='No list found') {   
                                     groupDataShow.push({
                                                            user_fname: 'No Customer found',

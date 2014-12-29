@@ -53,7 +53,7 @@ app.sendNotification = (function () {
                                                              }
                                                          });
             */
-            
+
 
             $("#notificationType").kendoComboBox({
             dataTextField: "text",
@@ -70,8 +70,18 @@ app.sendNotification = (function () {
             suggest: true
             //index: 0
             });
+                        
             
+            var input = $("#notificationType").data("kendoComboBox").input;
+            input.attr("readonly", "readonly");
             
+            /*$('#notificationType').attr('readonly','readonly');
+            
+            var combobox = $("#notificationType").data("kendoComboBox"); 
+            combobox.input.focus(function() {
+                combobox.input.blur();
+            });*/
+
             /*$("#type-Name-listview").kendoMobileListView({
             template: kendo.template($("#typeNameTemplate").html()),    		
             dataSource: dataSource,
@@ -155,10 +165,16 @@ app.sendNotification = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
             
+
+            $("#notificationType").data("kendoComboBox").value("");
+
             $("#scheduleDatePicker").parent().css('width',"160px");
             $("#scheduleTimePicker").parent().css('width',"160px");
             $("#scheduleDatePicker").removeClass( "k-input" );
-            $("#scheduleTimePicker").removeClass( "k-input" );            
+            $("#scheduleTimePicker").removeClass( "k-input" );
+
+            //$('#notificationType').attr('disabled','disabled');
+
 
             var txt = $('#notificationDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -184,6 +200,7 @@ app.sendNotification = (function () {
             scheduleDate = '';
             scheduleTime = '';
             sending_option = 'now';
+            
             $("#progressSendNotification").hide();
             
             $("#removeAttachment").hide(); 
@@ -366,7 +383,7 @@ app.sendNotification = (function () {
                 var type=selectedType.value();
              
                 //var type = notificationTypeSelected;
-                alert(type);
+                //alert(type);
              
                 var cmmt_allow ;
                 if ($("#comment_allow").prop('checked')) {
@@ -732,6 +749,11 @@ app.sendNotification = (function () {
                                          
                                 localStorage.setItem("SELECTED_GROUP", 0); 
                                 escapeGroupGoCustClick();
+                                
+                            }else if(groupValue[0].Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.mobileApp.navigate('views/organisationLogin.html');   
+                                    localStorage.setItem("loginStatusCheck", 1);                                
                             }else {
                                 var orgLength = groupValue[0].groupData.length;
 
@@ -762,22 +784,28 @@ app.sendNotification = (function () {
                                                                              console.log(e);
                                                                              //navigator.notification.alert("Please check your internet connection.",
                                                                              //function () { }, "Notification", 'OK');
-                
-                                                                                                             $("#selectOrgLoader").hide();
 
                                                                              
-                                                                             var showNotiTypes = [
-                                                                                 { message: "Your request has not been processed due to a connection error . Please try again"}
-                                                                             ];
-                        
-                                                                             var dataSource = new kendo.data.DataSource({
-                                                                                                                            data: showNotiTypes
-                                                                                                                        });
+                                                                             
+                                                                             $("#selectOrgLoader").hide();
+
+
+                                                                             
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
                     
-                                                                             $("#group-Name-listview").kendoMobileListView({
-                                                                                                                               template: kendo.template($("#errorTemplate").html()),
-                                                                                                                               dataSource: dataSource  
-                                                                                                                           });
+                                                                     $("#group-Name-listview").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
                                                                      });
@@ -854,6 +882,9 @@ app.sendNotification = (function () {
                                                                        orgID:orgVal.allCustomer[i].orgID
                                                                    });
                                     }     
+                                }else if(orgVal.Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.mobileApp.navigate('views/organisationLogin.html');                                     
                                 } 
                             });
                         });
@@ -871,6 +902,22 @@ app.sendNotification = (function () {
                                                                      }else {
                                                                          app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                                                                      } 
+                                                                     
+                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Customer for Send Notification in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#customer-Name-listview").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');                    
                                                                  }	        
@@ -1169,6 +1216,6 @@ app.sendNotification = (function () {
             sendNotificationMessage:sendNotificationMessage
         };
     }());
-        
+     
     return sendNotificationViewModel;
 }());

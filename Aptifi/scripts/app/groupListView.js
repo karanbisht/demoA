@@ -107,6 +107,13 @@ app.GroupList = (function () {
                     
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
+                                }else if(orgVal.Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    
+                                    app.mobileApp.navigate('views/organisationLogin.html');   
+                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                
+                              
                                 }else if (orgVal.Msg==='Success') {
                                      $("#tabDeleteGroup").show();
                                     console.log("--------------------------Success");

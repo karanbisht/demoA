@@ -162,10 +162,8 @@ var app = (function (win) {
         }
     };
     
-    var loginStatusQuerySuccess = function() {
-        
-        console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);
-        
+    var loginStatusQuerySuccess = function() {        
+        console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);        
         if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
             //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
             localStorage.setItem("loginStatusCheck", 1);

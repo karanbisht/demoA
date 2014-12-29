@@ -623,7 +623,7 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "1");
             $("#selectionDiv").css("opacity", 1);
             $("#regDoneButton").show();*/
-            window.location.href = "index.html"; 
+            window.location.href = "main.html"; 
         };
         
         var backToIndex = function() {

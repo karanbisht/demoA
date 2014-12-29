@@ -13,8 +13,6 @@ app.groupDetail = (function () {
     var account_Id;
        
     var groupDetailViewModel = (function () {
-       
-        
         var init = function () {
         };
            
@@ -22,15 +20,14 @@ app.groupDetail = (function () {
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();       
             
-            var adminOrgInfo=[];
+            var adminOrgInfo = [];
             //organisationID = e.view.params.organisationID;
             //account_Id = e.view.params.account_Id;
             //orgName= e.view.params.orgName;
             //orgDesc= e.view.params.orgDesc;
-            
 
             localStorage.setItem("open", 0);                  
-            $( "#dynamicLi" ).slideUp("slow");
+            $("#dynamicLi").slideUp("slow");
 
             localStorage.setItem("loginStatusCheck", 2);
 
@@ -38,51 +35,58 @@ app.groupDetail = (function () {
             account_Id = localStorage.getItem("ACCOUNT_ID");
             orgName = localStorage.getItem("orgNameAdmin");
             orgDesc = localStorage.getItem("orgDescAdmin");
-            
+            var db = app.getDb();
+            db.transaction(updateProfileTab, app.errorCB, app.successCB);
+
             //localStorage.setItem("orgNameAdmin",e.data.orgName);
             //localStorage.setItem("orgDescAdmin",e.data.orgDesc);
 
-           // $("#adminOrgHeader").html(orgName);
+            // $("#adminOrgHeader").html(orgName);
             
-                    var navbar = app.mobileApp.view()                
-                    .header
-                    .find(".km-navbar")
-                    .data("kendoMobileNavBar");
-                    navbar.title(orgName);
+            var navbar = app.mobileApp.view()                
+                .header
+                .find(".km-navbar")
+                .data("kendoMobileNavBar");
+            navbar.title(orgName);
 
             $("#setOrgName").html(orgName);
             
             var organisationListDataSource = new kendo.data.DataSource({
-                                                       transport: {
-                                                            read: {
+                                                                           transport: {
+                    read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
-                                                                   },
+                },
                                                                            schema: {                                
                     data: function(data) {	
-                       
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
                             console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {                                   
-                              adminOrgInfo=[];
-                              localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
+                                adminOrgInfo = [];
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
+                                                     
+                            }else if(groupValue[0].Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    
+                                    app.mobileApp.navigate('views/organisationLogin.html');   
+                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                
                             }else if (groupValue[0].Msg==='Success') {
                                 console.log(groupValue[0].orgData.length);
                                 var adminOrgInformation = groupValue[0].orgData;                                
                                 var adminIncomMsg = groupValue[0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
               
-                              for (var i = 0 ; i < adminOrgInformation.length ;i++) {
-
-                                  adminOrgInfo.push({
-                                                       id: groupValue[0].orgData[i].organisationID,
-                                                       org_name:groupValue[0].orgData[i].org_name
-                                                   });
-                              }                           
-                             localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
+                                for (var i = 0 ; i < adminOrgInformation.length ;i++) {
+                                    adminOrgInfo.push({
+                                                          id: groupValue[0].orgData[i].organisationID,
+                                                          org_name:groupValue[0].orgData[i].org_name
+                                                      });
+                                }                           
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
                             }
                         });
                         return [data];
@@ -117,58 +121,49 @@ app.groupDetail = (function () {
                 */
             });
             
-             var db = app.getDb();
-            db.transaction(updateProfileTab, app.errorCB, app.successCB);
-            
         };
         
-        
-               function getListCountDB() {
-                    var db = app.getDb();
-                    db.transaction(getDataOrgDB, app.errorCB, app.successCB);   
-                };
+        function getListCountDB() {
+            var db = app.getDb();
+            db.transaction(getDataOrgDB, app.errorCB, app.successCB);   
+        };
     
-                function getDataOrgDB(tx) {
-                       var org_id_db = localStorage.getItem("orgSelectAdmin"); 
-                       var query = "SELECT * FROM ADMIN_ORG where org_id="+org_id_db;
-                       app.selectQuery(tx, query, getDataSuccessDB);
-                };
+        function getDataOrgDB(tx) {
+            var org_id_db = localStorage.getItem("orgSelectAdmin"); 
+            var query = "SELECT * FROM ADMIN_ORG where org_id=" + org_id_db;
+            app.selectQuery(tx, query, getDataSuccessDB);
+        };
             
-            
-          function getDataSuccessDB(tx, results) {                                    
-             var count = results.rows.length;
+        function getDataSuccessDB(tx, results) {                                    
+            var count = results.rows.length;
             if (count !== 0) { 
-                    var bagCountData = results.rows.item(0).bagCount;                  
-                    var countData = results.rows.item(0).count;
+                var bagCountData = results.rows.item(0).bagCount;                  
+                var countData = results.rows.item(0).count;
                    
-                    if (countData===null || countData==="null") {
-                        countData = 0; 
-                    }
+                if (countData===null || countData==="null") {
+                    countData = 0; 
+                }
                    
-                    if (bagCountData===null || bagCountData==="null") {
-                        bagCountData = 0;
-                    }
+                if (bagCountData===null || bagCountData==="null") {
+                    bagCountData = 0;
+                }
                    
                 //alert(countData);
                 //alert(bagCountData);
     
-                localStorage.setItem("incommingMsgCount",countData);                  
-    
+                localStorage.setItem("incommingMsgCount", countData);                  
                 
                 var showData = countData - bagCountData;
                 //alert(showData);
                 
                 $("#countToShow").html(showData);            
             }            
-          }
-
-
+        }
                
         var updateProfileTab = function(tx) {
             var query = 'UPDATE PROFILE_INFO SET Admin_login_status=1';
             app.updateQuery(tx, query);
         };
-            
         
         var adminOrgProfileData;        
         var adminIncomMsgData;  
@@ -204,13 +199,9 @@ app.groupDetail = (function () {
             var db = app.getDb();
             db.transaction(insertAdminOrgInfo, app.errorCB, getListCountDB);
         } 
-       
-
 
         function insertAdminOrgInfo(tx) {
-
             //alert('insertDB');
-
             userOrgIdArray = [];
             //var query = "DELETE FROM ADMIN_ORG";
             //app.deleteQuery(tx, query);
@@ -329,7 +320,6 @@ app.groupDetail = (function () {
         };   
 
         var groupDataShow = [];
-
         
         var showGroupMembers = function() {            
             app.MenuPage = false;
@@ -339,14 +329,12 @@ app.groupDetail = (function () {
             app.mobileApp.navigate('views/orgMemberPage.html');                              
         };
         
-        
-        var orgMemberShow = function(){
-            
-          var organisationID = localStorage.getItem("orgSelectAdmin");
+        var orgMemberShow = function() {
+            var organisationID = localStorage.getItem("orgSelectAdmin");
          
-          $("#progressAdminOrgMem").show();         
+            $("#progressAdminOrgMem").show();         
          
-                var UserModel = {
+            var UserModel = {
                 id: 'Id',
                 fields: {
                     mobile: {
@@ -421,7 +409,13 @@ app.groupDetail = (function () {
                                                                orgID:orgVal.allCustomer[i].orgID
                                                            });
                                     }     
-                                } 
+                                }else if(orgVal.Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    
+                                    app.mobileApp.navigate('views/organisationLogin.html');   
+                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                }
+ 
                             });
                         });
                        
@@ -435,14 +429,22 @@ app.groupDetail = (function () {
                                                                      console.log(e);
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
-                    
+                                                                     
+                                                                     if (!app.checkSimulator()) {
+                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                     }else {
+                                                                         app.showAlert('Network unavailable . Please try again later' , 'Network Problem');  
+                                                                     }
+                                                                                         
+                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Member in Admin Panel.');
+                         
                                                                      var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];
-                        
+                       
                                                                      var dataSource = new kendo.data.DataSource({
                                                                                                                     data: showNotiTypes
-                                                                                                                });
+                                                                                                     });
                     
                                                                      $("#groupMember-listview").kendoMobileListView({
                                                                                                                         template: kendo.template($("#errorTemplate").html()),
@@ -458,7 +460,7 @@ app.groupDetail = (function () {
                 
             //});
             
-                        app.mobileApp.pane.loader.hide();
+            app.mobileApp.pane.loader.hide();
 
             console.log(MemberDataSource);
 
@@ -466,12 +468,11 @@ app.groupDetail = (function () {
                                                                dataSource: MemberDataSource,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
-                app.mobileApp.pane.loader.hide();
+            app.mobileApp.pane.loader.hide();
             
-            setTimeout(function(){
+            setTimeout(function() {
                 $("#progressAdminOrgMem").hide();
-            },300);
-                
+            }, 300);
         }
         
         var showGroupToDelete = function() {
@@ -499,22 +500,22 @@ app.groupDetail = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Group List in Admin");            
 
-                    app.slide('left', 'green' ,'3' ,'#views/groupListPage.html');
- 
+            app.slide('left', 'green' , '3' , '#views/groupListPage.html');
         };
         
         var sendNotification = function() {
             app.MenuPage = false;
             app.mobileApp.navigate('views/sendNotification.html');
-            
         };
         
         var saveUpdatedGroupVal = function() {
             console.log(selectedGroupId);
             var group_status = 'A';
-            var org_id = 1; 
+            var org_id = localStorage.getItem("orgSelectAdmin"); 
             var group_name = $("#editOrgName").val();     
             var group_description = $("#editOrgDesc").val();
+            
+            //alert(org_id);
             
             var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
             console.log(selectedGroupId);
@@ -573,14 +574,13 @@ app.groupDetail = (function () {
         };
         
         var backToOrgDetail = function() {
-           // app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
-            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');    
+            // app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
+            app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');    
         }
         
         var backToOrgAdminList = function() {       
             //app.mobileApp.navigate('#view-all-activities-admin');  
-            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
- 
+            app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');
         }   
         
         /*var addMemberToGroupFunc = function(){
@@ -684,74 +684,70 @@ app.groupDetail = (function () {
             customer = String(customer);        
             console.log(customer);            
             console.log(organisationID);
-          
             
-           if(customer.length!==0 && customer.length!=='0'){
-            var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
+            if (customer.length!==0 && customer.length!=='0') {
+                var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
                         
-            var dataSourceDeleteMember = new kendo.data.DataSource({
-                                                                       transport: {
-                    read: {
-                                                                                   url: app.serverUrl() + "customer/removeCustomer",
-                                                                                   type:"POST",
-                                                                                   dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   data: jsonDataDeleteMember
-                                                                               }
-                },
-                                                                       schema: {
-                    data: function(data) {
-                        console.log(data);
-                        return [data];
-                    }
-                },
-                                                                       error: function (e) {
-                                                                           //apps.hideLoading();
-                                                                           console.log(e);
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
-                                                                       }               
+                var dataSourceDeleteMember = new kendo.data.DataSource({
+                                                                           transport: {
+                        read: {
+                                                                                       url: app.serverUrl() + "customer/removeCustomer",
+                                                                                       type:"POST",
+                                                                                       dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                       data: jsonDataDeleteMember
+                                                                                   }
+                    },
+                                                                           schema: {
+                        data: function(data) {
+                            console.log(data);
+                            return [data];
+                        }
+                    },
+                                                                           error: function (e) {
+                                                                               //apps.hideLoading();
+                                                                               console.log(e);
+                                                                               navigator.notification.alert("Please check your internet connection.",
+                                                                                                            function () {
+                                                                                                            }, "Notification", 'OK');
+                                                                           }               
           
-                                                                   });  
+                                                                       });  
 	            
-            dataSourceDeleteMember.fetch(function() {
-                var loginDataView = dataSourceDeleteMember.data();
-                $.each(loginDataView, function(i, deleteGroupData) {
-                    console.log('karan bisht');
-                    console.log(deleteGroupData.status[0].Msg);
-                    console.log(deleteGroupData.status[0].Code);
+                dataSourceDeleteMember.fetch(function() {
+                    var loginDataView = dataSourceDeleteMember.data();
+                    $.each(loginDataView, function(i, deleteGroupData) {
+                        console.log('karan bisht');
+                        console.log(deleteGroupData.status[0].Msg);
+                        console.log(deleteGroupData.status[0].Code);
                       
-                    if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
-                        if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Member Deleted Successfully');   
-                        }else {
-                            app.showAlert("Member Deleted Successfully", "Notification");  
-                        }
+                        if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom('Member Deleted Successfully');   
+                            }else {
+                                app.showAlert("Member Deleted Successfully", "Notification");  
+                            }
                                    
-                        //app.showAlert("Member Deleted Successfully","Notification");
-                        app.mobileApp.navigate('#groupMemberShow');
-                        refreshOrgMember();
-                    }else {
-                        app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
-                    }
-                });
-            }); 
-          }else{
-              
-                        if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Please Select Member To Delete.');   
+                            //app.showAlert("Member Deleted Successfully","Notification");
+                            app.mobileApp.navigate('#groupMemberShow');
+                            refreshOrgMember();
                         }else {
-                            app.showAlert("Please Select Member To Delete.", "Notification");  
+                            app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                         }
-          }      
+                    });
+                }); 
+            }else {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('Please Select Member To Delete.');   
+                }else {
+                    app.showAlert("Please Select Member To Delete.", "Notification");  
+                }
+            }      
         };
         
         var showOrgGroupView = function() {
             app.MenuPage = false;
             console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
-            
-
         };
  
         function refreshOrgMember() {  
@@ -765,53 +761,51 @@ app.groupDetail = (function () {
         var clickOnOrgMember = function(e) {
             console.log('member click'); 
             console.log(e.data);
-            memberSelectedOrgID=e.data.orgID;
-            memberSelectedCustID=e.data.customerID;        
+            memberSelectedOrgID = e.data.orgID;
+            memberSelectedCustID = e.data.customerID;        
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
             app.mobileApp.navigate('#editMemberInAdmin');       
         };
-        
 
         var alernateMobileVal;
         
         var editMemberShow = function() {
-
             $(".km-scroll-container").css("-webkit-transform", "");  
 
             $("#adminEditCustomer").show();            
             $("#editOrgMemberContent").hide();
             
-            alernateMobileVal=0;
-            countMobile=0;
-            alternateNumInfo=[];
-            mobileArray=[];
+            alernateMobileVal = 0;
+            countMobile = 0;
+            alternateNumInfo = [];
+            mobileArray = [];
             $("#showAlternateList").show();
             $("#alternateMobileList").empty();
 
             var dataSourceMemberDetail = new kendo.data.DataSource({
-                                                                   transport: {
+                                                                       transport: {
                     read: {
-                                                                    url: app.serverUrl() + "customer/customerDetail/" + memberSelectedOrgID +"/"+memberSelectedCustID,
-                                                                    type:"POST",
-                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                              }
+                                                                                   url: app.serverUrl() + "customer/customerDetail/" + memberSelectedOrgID + "/" + memberSelectedCustID,
+                                                                                   type:"POST",
+                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                               }
                 },
-                                                                   schema: {
-                        data: function(data) {
-                            console.log(data);
-                            return [data];
-                        }
+                                                                       schema: {
+                    data: function(data) {
+                        console.log(data);
+                        return [data];
+                    }
                 },
-                                                                   error: function (e) {
-                                                                       //apps.hideLoading();
-                                                                       console.log(e);
-                                                                                   $("#adminEditCustomer").hide();            
-                                                                                   $("#editOrgMemberContent").show();
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
-                                                                   }               
-                                                               });  
+                                                                       error: function (e) {
+                                                                           //apps.hideLoading();
+                                                                           console.log(e);
+                                                                           $("#adminEditCustomer").hide();            
+                                                                           $("#editOrgMemberContent").show();
+                                                                           navigator.notification.alert("Please check your internet connection.",
+                                                                                                        function () {
+                                                                                                        }, "Notification", 'OK');
+                                                                       }               
+                                                                   });  
 	            
             dataSourceMemberDetail.fetch(function() {
                 var loginDataView = dataSourceMemberDetail.data();                                    
@@ -819,57 +813,47 @@ app.groupDetail = (function () {
 
                 console.log(loginDataView);
                 $.each(loginDataView, function(i, addGroupData) {
-                    
                     console.log("----- DATA RESULT---------");
                     console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Success') {
-                        
-                           var cust_Mobile_no = addGroupData.status[0].customerDetail[0].uacc_username;
-                           var cust_email = addGroupData.status[0].customerDetail[0].user_email;
-                           var cust_fname = addGroupData.status[0].customerDetail[0].user_fname;
-                           var cust_lname = addGroupData.status[0].customerDetail[0].user_lname;
+                        var cust_Mobile_no = addGroupData.status[0].customerDetail[0].uacc_username;
+                        var cust_email = addGroupData.status[0].customerDetail[0].user_email;
+                        var cust_fname = addGroupData.status[0].customerDetail[0].user_fname;
+                        var cust_lname = addGroupData.status[0].customerDetail[0].user_lname;
 
-                            $("#editFirstName").val(cust_fname);
-                            $("#editLastName").val(cust_lname);
-                            $("#editEmail").val(cust_email);
-                            $("#staticMobile").val(cust_Mobile_no);
+                        $("#editFirstName").val(cust_fname);
+                        $("#editLastName").val(cust_lname);
+                        $("#editEmail").val(cust_email);
+                        $("#staticMobile").val(cust_Mobile_no);
                         
-                       if (addGroupData.status[0].alternate.length!==0 && addGroupData.status[0].alternate.length!==undefined ) { 
-                           var alternateNoAdded = addGroupData.status[0].alternate.length;                          
+                        if (addGroupData.status[0].alternate.length!==0 && addGroupData.status[0].alternate.length!==undefined) { 
+                            var alternateNoAdded = addGroupData.status[0].alternate.length;                          
                             for (var i = 0 ; i < alternateNoAdded ;i++) {
-                                
                                 alernateMobileVal++;
                                 alternateNumInfo.push({
-                                                       count:i,
-                                                       id: addGroupData.status[0].alternate[i].custID,
-                                                       alternateNo: addGroupData.status[0].alternate[i].uacc_username,
-                                                       customerId: memberSelectedCustID,
-                                                       org_id: addGroupData.status[0].alternate[i].orgID
-                                                   });
+                                                          count:i,
+                                                          id: addGroupData.status[0].alternate[i].custID,
+                                                          alternateNo: addGroupData.status[0].alternate[i].uacc_username,
+                                                          customerId: memberSelectedCustID,
+                                                          org_id: addGroupData.status[0].alternate[i].orgID
+                                                      });
 
-                                $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi'+alernateMobileVal+'"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobile'+alernateMobileVal+'" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo('+i+')">Remove</a></li>');
-                                $("#editMobile"+alernateMobileVal).val(addGroupData.status[0].alternate[i].uacc_username);  
+                                $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
+                                $("#editMobile" + alernateMobileVal).val(addGroupData.status[0].alternate[i].uacc_username);  
                             }                           
-                             localStorage["ALTER_ARRAY"] = JSON.stringify(alternateNumInfo);
-                         }else{
-                             $("#showAlternateList").hide();
-                         }  
-
-                        
+                            localStorage["ALTER_ARRAY"] = JSON.stringify(alternateNumInfo);
+                        }else {
+                            $("#showAlternateList").hide();
+                        }  
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
-                    
 
                     $("#adminEditCustomer").hide();            
                     $("#editOrgMemberContent").show();
-
                 });
             });
-            
-            
         }
-
         
         var userMessageTab = function(e) {
             var tempArray = [];
@@ -927,54 +911,51 @@ app.groupDetail = (function () {
             app.MenuPage = false;
             console.log(organisationID);
             //app.mobileApp.navigate('views/adminEventCalendar.html');                
-            app.slide('left', 'green' ,'3' ,'#views/adminEventCalendar.html');
-
+            app.slide('left', 'green' , '3' , '#views/adminEventCalendar.html');
         }
         
         var showOrgNews = function() {
             app.MenuPage = false;
             console.log(organisationID);
             //app.mobileApp.navigate('views/adminNews.html');
-            app.slide('left', 'green' ,'3' ,'#views/adminNews.html');
+            app.slide('left', 'green' , '3' , '#views/adminNews.html');
         }
         
         var countMobile;
-        var mobileArray=[];
+        var mobileArray = [];
         
-        var addMoreMobileNoPage = function(){
-            
-            app.slide('left', 'green' ,'3' ,'#addAlternateNumber');
+        var addMoreMobileNoPage = function() {
+            app.slide('left', 'green' , '3' , '#addAlternateNumber');
         }
         
-        var addMoreMobileNoFunc = function(){
+        var addMoreMobileNoFunc = function() {
             addMoreEditMobile++;
-            $("#alternateMobile").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobileMoreNo'+addMoreEditMobile+'" placeholder="Mobile Number" /></li>');
+            $("#alternateMobile").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobileMoreNo' + addMoreEditMobile + '" placeholder="Mobile Number" /></li>');
         }
         
         var addMoreEditMobile;        
         
-        var addAlternateNo = function(){
-          $(".km-scroll-container").css("-webkit-transform", "");  
-          $("#alternateMobile").empty();
-          addMoreEditMobile=0;
-          $("#editMobileAlterPage").val('');  
-          countMobile=1;  
+        var addAlternateNo = function() {
+            $(".km-scroll-container").css("-webkit-transform", "");  
+            $("#alternateMobile").empty();
+            addMoreEditMobile = 0;
+            $("#editMobileAlterPage").val('');  
+            countMobile = 1;  
         }
                       
         var editProfileFunc = function() {
-   
             //alert(memberSelectedCustID);
-            
             var fname = $("#editFirstName").val();
             var lname = $("#editLastName").val();
             var email = $("#editEmail").val();
             var mobile = $("#staticMobile").val();
             var alterEditMob = $("#editMobileAlterPage").val();
             
+            var organisationID=localStorage.getItem("orgSelectAdmin");
             /*if(firstTime===0){
             countMobile=addMoreMobile;
             }else{
-              firstTime++;  
+            firstTime++;  
             }*/
             
             if (fname === "First Name" || fname === "") {
@@ -989,98 +970,95 @@ app.groupDetail = (function () {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
                 app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
-            }else if(countMobile!==0){  
-
-                if(alterEditMob=== "Mobile Number" || alterEditMob === "") {
+            }else if (countMobile!==0) {  
+                if (alterEditMob=== "Mobile Number" || alterEditMob === "") {
                     app.showAlert("Please enter your Mobile Number.", "Validation Error");
                 } else if (!app.validateMobile(alterEditMob)) {
                     app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
-                }else{
-                
-                //alert("addMoreButton");
-
-                mobileArray=[];
-                //mobileArray.push(mobile);
-                mobileArray.push(alterEditMob);    
-                var count=0;
+                }else {
+                    //alert("addMoreButton");
+                    mobileArray = [];
+                    //mobileArray.push(mobile);
+                    mobileArray.push(alterEditMob);    
+                    var count = 0;
                
-                //alert(countMobile);
+                    //alert(countMobile);
                
-                for(var i=1;i<=addMoreEditMobile;i++){
-                    var newMobile = $("#editMobileMoreNo"+i).val(); 
-                    if(newMobile === "Mobile Number" || newMobile === ""){
-                        count++;                        
-                    }else if (!app.validateMobile(newMobile)) {
-                        app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                                                  
-                    }else{
-                        count++;
-                        mobileArray.push(newMobile);
-                    } 
-                }             
-
-                if(count===addMoreEditMobile){
-                    //alert('inside');
-                    
-                                    console.log(mobileArray);
-
-
-                                    var jsonDataRegister;
-                    
-                jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname} 
-       
-                var dataSourceRegister = new kendo.data.DataSource({
-                                                                       transport: {
-                        read: {
-                                                                                   url: app.serverUrl() + "customer/saveAlternate",
-                                                                                   type:"POST",
-                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   data: jsonDataRegister
-                                                                               }
-                    },
-                                                                       schema: {
-                        data: function(data) {
-                            console.log(data);
-                            return [data];
-                        }
-                    },
-                                                                       error: function (e) {
-                                                                           //apps.hideLoading();
-                                                                           console.log(e);
-                                                                           console.log(JSON.stringify(e));           
-
-                                                                           app.mobileApp.pane.loader.hide();
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
-                                                                       }               
-                                                                   });  
-             
-                dataSourceRegister.fetch(function() {
-                    var loginDataView = dataSourceRegister.data();
-                    console.log(loginDataView);       
-                    $.each(loginDataView, function(i, loginData) {
-                        console.log(loginData.status[0].Msg);                               
-                        if (loginData.status[0].Msg==='Success') {
-                            app.showAlert("Customer detatil updated successfully", "Notification");
-                            app.mobileApp.navigate('#groupMemberShow');
-
-                            //app.mobileApp.navigate('#groupMemberShow');
+                    for (var i = 1;i <= addMoreEditMobile;i++) {
+                        var newMobile = $("#editMobileMoreNo" + i).val(); 
+                        if (newMobile === "Mobile Number" || newMobile === "") {
+                            count++;                        
+                        }else if (!app.validateMobile(newMobile)) {
+                            app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                                                  
                         }else {
-                            app.showAlert(loginData.status[0].Msg , 'Notification'); 
-                        }
-                    });
-                });
-            
-               }
-              } 
-            }else{    
-                  //alert("editPageSave");
-                mobileArray=[];                    
+                            count++;
+                            mobileArray.push(newMobile);
+                        } 
+                    }             
+
+                    if (count===addMoreEditMobile) {
+                        //alert('inside');
+                        console.log(mobileArray);
+
+                        var jsonDataRegister;
+                        //alert(localStorage.getItem("orgSelectAdmin"));
+                        //alert(organisationID);
+                        
+                        jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname} 
+       
+                        console.log(jsonDataRegister);
+                        
+                        var dataSourceRegister = new kendo.data.DataSource({
+                                                                               transport: {
+                                read: {
+                                                                                           url: app.serverUrl() + "customer/saveAlternate",
+                                                                                           type:"POST",
+                                                                                           dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                           data: jsonDataRegister
+                                                                                       }
+                            },
+                                                                               schema: {
+                                data: function(data) {
+                                    console.log(data);
+                                    return [data];
+                                }
+                            },
+                                                                               error: function (e) {
+                                                                                   //apps.hideLoading();
+                                                                                   console.log(e);
+                                                                                   console.log(JSON.stringify(e));           
+
+                                                                                   app.mobileApp.pane.loader.hide();
+                                                                                   navigator.notification.alert("Please check your internet connection.",
+                                                                                                                function () {
+                                                                                                                }, "Notification", 'OK');
+                                                                               }               
+                                                                           });  
+             
+                        dataSourceRegister.fetch(function() {
+                            var loginDataView = dataSourceRegister.data();
+                            console.log(loginDataView);       
+                            $.each(loginDataView, function(i, loginData) {
+                                console.log(loginData.status[0].Msg);                               
+                                if (loginData.status[0].Msg==='Success') {
+                                    app.showAlert("Customer detatil updated successfully", "Notification");
+                                    app.mobileApp.navigate('#groupMemberShow');
+                                    //app.mobileApp.navigate('#groupMemberShow');
+                                }else {
+                                    app.showAlert(loginData.status[0].Msg , 'Notification'); 
+                                }
+                            });
+                        });
+                    }
+                } 
+            }else {    
+                //alert("editPageSave");
+                mobileArray = [];                    
                 mobileArray.push(mobile);
                 
                 console.log(mobileArray);
                 console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
-                var jsonDataRegister;
+                //var jsonDataRegister;
 
                 jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID} 
        
@@ -1104,7 +1082,6 @@ app.groupDetail = (function () {
                                                                            console.log(e);
 
                                                                            console.log(JSON.stringify(e));           
-
                                                                            
                                                                            app.mobileApp.pane.loader.hide();
                                                                            navigator.notification.alert("Please check your internet connection.",
@@ -1129,7 +1106,6 @@ app.groupDetail = (function () {
                 });
             }
         };
-	           
         
         return {
             init: init,

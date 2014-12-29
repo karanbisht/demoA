@@ -3,7 +3,7 @@ var app = app || {};
 app.adminNews = (function () {
     var adminNewsEventModel = (function () {
         var organisationID;
-        var account_Id;
+        //var account_Id;
         var groupAllEvent = [];
         var tasks = [];
         var newsDataToSend;
@@ -28,7 +28,7 @@ app.adminNews = (function () {
             
             organisationID = localStorage.getItem("orgSelectAdmin");
             //alert(organisationID);
-            account_Id = localStorage.getItem("ACCOUNT_ID");
+            //account_Id = localStorage.getItem("ACCOUNT_ID");
 
             
             $("#removeNewsAttachment").hide(); 
@@ -62,7 +62,23 @@ app.adminNews = (function () {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
                                                                         app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }               
+                                                                    }           
+                                                                    
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization News List in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#orgAllNewsList").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
                                                                 }               
                                                             });  
 	            
