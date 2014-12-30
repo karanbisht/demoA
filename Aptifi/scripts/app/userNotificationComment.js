@@ -66,7 +66,7 @@ app.userNotiComment = (function () {
             $("#adminCommentPage").show();
             $("#status-container-adminComment").hide();
 
-            $('#newAdminComment').val(' ');
+            $('#newAdminComment').val('');
 
             app.mobileApp.pane.loader.hide();
             title = ''
@@ -343,10 +343,22 @@ app.userNotiComment = (function () {
         }
         
         var saveAdminComment = function () {    
+
             console.log('click save');
-                   
+            
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else {  
+            
             var comment = $("#newAdminComment").val();
               
+
+            if (comment!=='' && comment!=='Reply') {
+ 
             console.log("SHOWING DATA" + org_id + "||" + notiId + "||" + comment + "||" + customerID);
                 
             var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
@@ -393,7 +405,18 @@ app.userNotiComment = (function () {
                         app.showAlert(commentData.status[0].Msg , 'Notification'); 
                     }
                 });
-            });
+              });
+                 
+            }else {
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom("Please enter your Reply");   
+                    }else {
+                        app.showAlert("Please enter your Reply", "Notification");  
+                    }
+            }  
+
+          }        
+      
         };
         
         var removeActivity = function () {

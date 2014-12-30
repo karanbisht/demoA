@@ -51,6 +51,7 @@
 
 
 <script type="text/x-kendo-template" id="groupMemberTemplate">
+    #if(orgID!=='0'){#
     <div class="cf" data-role="touch" data-bind="events: { tap: clickOnOrgMember }">
         <div class="user-avatar-img-show"></div>
         <div class="activity-content" >
@@ -59,6 +60,17 @@
             <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
         </div>
     </div>
+    #}else{#
+    <div class="cf">
+        <div class="user-avatar-img-show"></div>
+        <div class="activity-content" >
+            <h2 id="" class="person-name">${first_name} ${last_name}</h2>
+            <span id="" class="time-span" >${mobile}</span>
+            <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
+        </div>
+    </div>
+        
+        #}#
 </script>
 
 
@@ -94,16 +106,16 @@
         <form>
             <ul data-role="listview" data-style="inset">
                 <li class="username">
-                    <input type="text" class="k-textbox" id="editFirstName" placeholder="First Name" />
+                    <input type="text" id="editFirstName" placeholder="First Name" />
                 </li>
                 <li class="password">
-                    <input type="text" class="k-textbox" id="editLastName" placeholder="Last Name" />
+                    <input type="text"  id="editLastName" placeholder="Last Name" />
                 </li>
                 <li class="password">
-                    <input type="email" class="k-textbox" id="editEmail" placeholder="Email" />
+                    <input type="email" id="editEmail" placeholder="Email" />
                 </li>
                 <li class="password">
-                    <input type="text" class="k-textbox" id="staticMobile" placeholder="Mobile Number"/>
+                    <input type="number" pattern="[0-9]*" step="0.01" id="staticMobile" placeholder="Mobile Number"/>
                 </li>
             </ul>
 
@@ -201,7 +213,7 @@
         <form>
             <ul data-role="listview" data-style="inset">
                 <li class="password" style="border-bottom:1px solid #eaeced;">
-                    <input type="text" class="k-textbox" id="editMobileAlterPage" placeholder="Mobile Number"/>
+                    <input type="number" pattern="[0-9]*" step="0.01" id="editMobileAlterPage" placeholder="Mobile Number"/>
                 </li>                
             </ul>
             <ul  id="alternateMobile" data-role="listview" data-style="inset"></ul>

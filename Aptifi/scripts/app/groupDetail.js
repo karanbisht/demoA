@@ -155,6 +155,10 @@ app.groupDetail = (function () {
                 
                 var showData = countData - bagCountData;
                 //alert(showData);
+
+                if(showData < 0){
+                     showData=0;   
+                }
                 
                 $("#countToShow").html(showData);            
             }            
@@ -838,7 +842,7 @@ app.groupDetail = (function () {
                                                           org_id: addGroupData.status[0].alternate[i].orgID
                                                       });
 
-                                $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
+                                $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
                                 $("#editMobile" + alernateMobileVal).val(addGroupData.status[0].alternate[i].uacc_username);  
                             }                           
                             localStorage["ALTER_ARRAY"] = JSON.stringify(alternateNumInfo);
@@ -930,7 +934,7 @@ app.groupDetail = (function () {
         
         var addMoreMobileNoFunc = function() {
             addMoreEditMobile++;
-            $("#alternateMobile").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="editMobileMoreNo' + addMoreEditMobile + '" placeholder="Mobile Number" /></li>');
+            $("#alternateMobile").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" id="editMobileMoreNo' + addMoreEditMobile + '" placeholder="Mobile Number" /></li>');
         }
         
         var addMoreEditMobile;        

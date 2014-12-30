@@ -331,6 +331,10 @@ app.subGroupDetail = (function () {
                                                                   orgID:orgVal.allCustomer[i].orgID
                                                               });
                                     }        
+                                }else if(orgVal.Msg==='No Customer in this organisation'){
+                                     app.showAlert("No Member to Add in Group", "Notification");
+                                     app.mobileApp.navigate('#subGroupMemberShow');
+
                                 }    
                             });
                         });
@@ -372,10 +376,11 @@ app.subGroupDetail = (function () {
                                                                  }	        
                                                              });         
                                                    
+        
             $("#addMemberData-listview").kendoListView({
-                                                           template: kendo.template($("#Sub-Member-Add-template").html()),
-                                                           dataSource: MemberDataSource
-                                                       });
+                        template: kendo.template($("#Sub-Member-Add-template").html()),
+                        dataSource: MemberDataSource
+            });
         };
         
         var addMemberToGroupFunc = function() {

@@ -234,9 +234,8 @@ var app = (function (win) {
         //alert(app.mobileApp.view()['element']['0']['id']);
         //if(app.userPosition){        
         if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
-            e.preventDefault();
-            
-                                navigator.app.exitApp();
+             e.preventDefault();           
+             navigator.app.exitApp();
 
             /*navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
                 if (confirmed === true || confirmed === 1) {
@@ -246,9 +245,8 @@ var app = (function (win) {
             
             //}else if(app.MenuPage){
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
-            e.preventDefault();
-            
-                                navigator.app.exitApp();
+            e.preventDefault();            
+            navigator.app.exitApp();
 
             
             
@@ -272,7 +270,7 @@ var app = (function (win) {
             //var userType = localStorage.getItem("USERTYPE");   
 
 
-            flip('right','green','#organisationNotiList');
+            //flip('right','green','#organisationNotiList');
             /*navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
                 if (checkLogout === true || checkLogout === 1) {
                     app.mobileApp.pane.loader.show();    
@@ -281,7 +279,12 @@ var app = (function (win) {
                 }
             }, 'Logout', ['OK', 'Cancel']);*/
             
-            
+        
+        }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv') {
+            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+            //tabstrip.clear();
+            //tabstrip.switchTo("#organisationNotiList");        
+            app.mobileApp.navigate("#organisationNotiList");      
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
@@ -296,7 +299,7 @@ var app = (function (win) {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
             //tabstrip.switchTo("#organisationNotiList");        
-            app.mobileApp.navigate("views/groupDetailView.html");
+            app.mobileApp.navigate("#view-all-activities-GroupDetail");
         }else if (app.mobileApp.view()['element']['0']['id']==='subGroupMemberShow') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
@@ -311,17 +314,17 @@ var app = (function (win) {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
             //tabstrip.switchTo("#organisationNotiList");        
-            app.mobileApp.navigate('views/groupDetailView.html');    
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');    
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
             //tabstrip.switchTo("#organisationNotiList");        
-            app.mobileApp.navigate('#view-all-activities-admin');
+            //app.mobileApp.navigate('#view-all-activities-admin');
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendar') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
             //tabstrip.switchTo("#organisationNotiList");        
-            app.mobileApp.navigate('views/groupDetailView.html');     
+            app.mobileApp.navigate('#adminEventList');     
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail' || app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();
@@ -510,7 +513,6 @@ var app = (function (win) {
         app.analyticsService.viewModel.setAnalyticMonitor(latitude,longitude);
     };
     
-    
     var onPause = function(e){
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
         app.analyticsService.viewModel.monitorStop();
@@ -520,8 +522,6 @@ var app = (function (win) {
         app.analyticsService.viewModel.monitorStart();
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
         var loginStatus = localStorage.getItem("loginStatusCheck");
-        
-     
 
         if(loginStatus !== '0' || loginStatus !== 0)
         {
@@ -530,8 +530,7 @@ var app = (function (win) {
         else
         {
             app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
-        }
-       
+        }       
     };
     
     
@@ -747,14 +746,20 @@ var app = (function (win) {
                 case 'message': 
                     //alert(e);                      
                     console.log('----------------------');
-                    console.log(JSON.stringify(e));           
+                    console.log(JSON.stringify(e));
+
+                    console.log(e.foreground);
+
                     //alert(e.title);            
             
-                    account_IdDB = localStorage.getItem("ACCOUNT_ID"); 
-            
-                    //alert(account_IdDB);            
+                    account_IdDB = localStorage.getItem("ACCOUNT_ID");             
+                    console.log(account_IdDB);            
+
+                    console.log(JSON.stringify(e.payload));           
             
                     var messageSplitVal = e.payload.split('#####');
+                    console.log(messageSplitVal);
+                    
                     messageDB = messageSplitVal[0];
                     orgIdDB = messageSplitVal[1];
                     notiIdDB = messageSplitVal[2];
@@ -764,25 +769,40 @@ var app = (function (win) {
                     commentAllowDB = messageSplitVal[6];
                     notificationMsg = messageSplitVal[7];
 
+                    console.log('---data-------');
                     //send_DateDB= getPresentDateTime();           
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
             
+                        console.log(typeDB);
+                
                     if (typeDB!=='Add Customer') {
+                        
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';
                         }
 
+                        console.log(e.foreground);
+                        
                         if (e.foreground) {
+                            console.log('1');
                             if (typeDB!=='Reply') {
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
                             }
                         }else {
+                            console.log('2');
+
                             if (typeDB!=='Reply') {
+
+                                console.log('3');
+
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                             }else {
+
+                                console.log('4');
+
                                 typeDB = "Reply";
                                 var temp;
                                 temp = messageDB;
@@ -908,7 +928,7 @@ var app = (function (win) {
         app.insertQuery(tx, query);               
     }
     
-    function goToAppPage() {
+    function goToAppPage() {        
         console.log('DATA VALUE4');
 
         var db = app.getDb();
@@ -920,7 +940,7 @@ var app = (function (win) {
 
         var messageDBVal = app.urlEncode(messageDB); 
         var titleDBVal = app.urlEncode(titleDB);
-        
+           console.log('go to page');     
         app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
     }
     

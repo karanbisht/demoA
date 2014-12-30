@@ -107,7 +107,6 @@ app.Activity = (function () {
             app.mobileApp.pane.loader.hide();
             groupDataShow = [];            
 
-
             $('#newComment').val(' ');
 
             //console.log('TESTINGGGGGG');
@@ -118,12 +117,10 @@ app.Activity = (function () {
             $commentsContainer.empty();        
             //listScroller = e.view.scroller;
             //listScroller.reset();
-
-            
             
             $('#newComment').css('height', '30px');
 
-            var txt = $('#newComment'),
+                var txt = $('#newComment'),
                 hiddenDiv = $(document.createElement('div')),
                 content = null;
     
@@ -186,7 +183,11 @@ app.Activity = (function () {
                         
             if (comment_allow===1 || comment_allow==='1') {
                 $("#commentPanel").show();                
+                $("#newComment").val('');
+                $("#newComment").attr("placeholder","Reply");
+
             }else {
+                
                 $("#commentPanel").css("z-index", "-1");
                 $("#commentPanel").css("opacity", .4);	
                 document.getElementById('commentPanel').style.pointerEvents = 'none';
@@ -567,13 +568,13 @@ app.Activity = (function () {
                 //var org_id = localStorage.getItem("UserOrgID");
                 //var customer_id = localStorage.getItem("UserID");
              
-                if (comment!=='Reply' && comment!=='') {
+                if (comment!=='' && comment!=='Reply') {
                     console.log("SHOWING DATA" + notiId + "||" + account_Id + "||" + org_id);
                 
                     var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
                    
                     var saveCommentDataSource = new kendo.data.DataSource({
-                                                                              transport: {
+                            transport: {
                             read: {
                                                                                           url: app.serverUrl() + "notification/userReply",
                                                                                           type:"POST",

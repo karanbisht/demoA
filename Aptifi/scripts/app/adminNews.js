@@ -293,6 +293,10 @@ app.adminNews = (function () {
         var addEventshow = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
           
+           
+            $("#adddatePickerNews").removeAttr('disabled');           
+            $("#adddateTimePickerNews").removeAttr('disabled');
+
 
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
@@ -700,10 +704,11 @@ app.adminNews = (function () {
                         if (addGroupData.status[0].Msg==='News added successfully') {  
                             $(".km-scroll-container").css("-webkit-transform", "");
                         
-                            $("#addNewsDesc").val(''); 
-                            app.mobileApp.navigate("#adminAddNews");
-                                    
+                            $("#addNewsDesc").val('');                                     
                             app.showAlert("News Added Successfully", "Notification");
+
+                            app.mobileApp.navigate("#adminOrgNewsList");
+
                         }else {
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                         }

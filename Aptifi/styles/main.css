@@ -1342,7 +1342,7 @@ background: #fff none;
 
 .dateLine
 {
-    width: 45%;
+    width: 40%;
     float: right;
     color: #DADADA; 
     opacity: .2; 
@@ -1351,7 +1351,7 @@ background: #fff none;
 
 .dateValue
 {
-    width: 55%;
+    width: 60%;
     float: left;
 }
 
@@ -2416,8 +2416,8 @@ overflow: hidden;
     display: inline-block;
     text-align: center;
     vertical-align: middle; 
-
 }
+
 
 
 /*.km-android input

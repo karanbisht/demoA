@@ -122,6 +122,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String titleDB=messageSplitVal[4];
         String attachedDB=messageSplitVal[5];
         String commentAllowDB=messageSplitVal[6];
+        String notificationMsg = messageSplitVal[7];
 
 
 		NotificationCompat.Builder mBuilder =
