@@ -1342,7 +1342,7 @@ background: #fff none;
 
 .dateLine
 {
-    width: 37%;
+    width: 45%;
     float: right;
     color: #DADADA; 
     opacity: .2; 
@@ -1351,7 +1351,7 @@ background: #fff none;
 
 .dateValue
 {
-    width: 63%;
+    width: 55%;
     float: left;
 }
 
