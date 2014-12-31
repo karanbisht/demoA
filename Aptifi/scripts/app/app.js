@@ -334,7 +334,7 @@ var app = (function (win) {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
             //tabstrip.clear();adminEventCalendarDetail
             //tabstrip.switchTo("#organisationNotiList");        
-            app.mobileApp.navigate('#adminEventCalendarDetail');     
+            app.mobileApp.navigate('#adminEventList');     
         }else {
             //navigator.app.backHistory();
             app.mobileApp.navigate("#:back");    

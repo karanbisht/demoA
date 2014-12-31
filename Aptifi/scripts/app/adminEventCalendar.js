@@ -315,7 +315,6 @@ app.adminEventCalender = (function () {
         
         var detailShow = function() {
             var dateShow = multipleEventArray[0].event_date;
-
             $(".km-scroll-container").css("-webkit-transform", "");
             
             $("#detailEventData").html("Event On " + dateShow);

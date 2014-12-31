@@ -1207,7 +1207,17 @@ app.OragnisationList = (function () {
                 $("#joinedDate").hide();
             }
             
-            $("#navBarOrgHeader").html(orgName);        
+          
+            var orgNameVal ;
+                                  
+                   if (orgName.length > 25) {
+                       orgNameVal = orgName.substr(0, 25) + '..';
+                   }else {
+                       orgNameVal = orgName;  
+                   }
+  
+            
+            $("#navBarOrgHeader").html(orgNameVal);        
             $("#OrgDescData").html(orgDesc); 
             
             if (!app.checkConnection()) {
