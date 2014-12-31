@@ -32,13 +32,21 @@ app.registration = (function () {
 
         var addNewRegistration = function (e) {
             app.userPosition = false;
-            if (!backToRegPage) {
                 $regFirstName.val('');
                 $regLastName.val('');
                 $regEmail.val('');
-            }
+            
             username = e.view.params.mobile;
             comingFrom = e.view.params.type
+            
+
+            document.getElementById('selectionDivR').style.pointerEvents = 'auto'; 
+
+            $("#selectionDivR").css("z-index", "999");
+            $("#selectionDivR").css("opacity", 1);	
+
+            
+            
         };
         
         /* var clearSelectOrganisation = function(){
@@ -272,7 +280,19 @@ app.registration = (function () {
             $("#selectionDivR").css("z-index", "1");
             $("#selectionDivR").css("opacity", 1);
             $("#regDoneButtonR").show();*/
-            window.location.href = "index.html"; 
+            //window.location.href = "index.html"; 
+            
+            
+            app.mobileApp.navigate('#welcome');
+            $("#selectionDiv").show();
+            $("#regenerateDivR").hide();
+            $("#validationRowR").hide();
+            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+            $("#selectionDiv").css("z-index", "999");
+            $("#selectionDiv").css("opacity", 1);	
+
+            $('#validationCodeIdR').val('');
+
         };
         
         var backToIndex = function() {

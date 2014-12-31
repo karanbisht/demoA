@@ -332,7 +332,7 @@ var app = (function (win) {
             app.mobileApp.navigate('#adminEventCalendar');  
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEditEventCalendar') {
             //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
+            //tabstrip.clear();adminEventCalendarDetail
             //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventCalendarDetail');     
         }else {
@@ -700,7 +700,7 @@ var app = (function (win) {
                         var db = app.getDb();
                         db.transaction(insertOrgNotiData, app.errorCB, app.successCB);   
                     }
-                }, 'Notification', ['Move To', 'Cancel']);        
+                }, 'Notification', ['View', 'Close']);        
             }else {
                 showAlert(messageDB , "Notification");
             } 
@@ -747,7 +747,7 @@ var app = (function (win) {
                     //alert(e);                      
                     console.log('----------------------');
                     console.log(JSON.stringify(e));
-
+                    console.log(JSON.stringify(e.event));
                     console.log(e.foreground);
 
                     //alert(e.title);            
@@ -755,9 +755,9 @@ var app = (function (win) {
                     account_IdDB = localStorage.getItem("ACCOUNT_ID");             
                     console.log(account_IdDB);            
 
-                    console.log(JSON.stringify(e.payload));           
+                    console.log(JSON.stringify(e.payload.default));           
             
-                    var messageSplitVal = e.payload.split('#####');
+                    var messageSplitVal = e.payload.default.split('#####');
                     console.log(messageSplitVal);
                     
                     messageDB = messageSplitVal[0];
@@ -878,7 +878,7 @@ var app = (function (win) {
                     + '","'
                     + attachedDB
                     + '","'
-                    + notificationMsg
+                    + messageDB
                     + '","'
                     + titleDB
                     + '","'
@@ -913,7 +913,7 @@ var app = (function (win) {
                     + '","'
                     + attachedDB
                     + '","'
-                    + messageDB
+                    + notificationMsg
                     + '","'
                     + titleDB
                     + '","'
@@ -1296,16 +1296,17 @@ var app = (function (win) {
         });
        
      }else{
-                      app.mobileApp.navigate(href);  
-
+         app.mobileApp.navigate(href);  
      }  
   }
 
     //purple
   // demo for hooking the Android backbutton to the slide 'right'
-      document.addEventListener('backbutton', function() {
+
+    /*document.addEventListener('backbutton', function() {
         slide('right', 'green');
-  }, false);
+    }, false);*/
+    
     
     
     function htmlDecode(value) {

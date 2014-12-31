@@ -101,7 +101,7 @@
 #Aptifi.km-flat #welcome .km-content
 {
     background: #2A3144; 
-    background: url("images/background.png") no-repeat center center fixed #000; 
+    background: url("images/background.jpg") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -1305,6 +1305,18 @@ background: #fff none;
     font-weight: 600; 
 }
 
+.orgNameListFirstPage
+{
+    display: block;
+    margin: .1em 0 .5em;
+    color: #57A70C;
+    font-size: 1.2rem; 
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    font-weight: 600; 
+}
 .sendNotificationNameList
 {
     display: block;

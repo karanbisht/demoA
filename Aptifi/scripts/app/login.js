@@ -623,7 +623,18 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "1");
             $("#selectionDiv").css("opacity", 1);
             $("#regDoneButton").show();*/
-            window.location.href = "main.html"; 
+            
+            $("#selectionDiv").show();
+            $("#regenerateDiv").hide();
+            $("#validationRow").hide();
+            $('#validationCodeId').val('');
+            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
+            $("#selectionDiv").css("z-index", "999");
+            $("#selectionDiv").css("opacity", 1);	
+
+
+            //app.mobileApp.navigate('main.html');
+            //window.location.href = "main.html"; 
         };
         
         var backToIndex = function() {

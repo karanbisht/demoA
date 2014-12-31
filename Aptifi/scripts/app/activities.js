@@ -83,7 +83,16 @@ app.Activities = (function () {
              
             // $("#fav-list-navbar").data("kendoMobileNavBar").title("foo");
              
-            $("#navBarHeader").html(orgName);
+
+            var OrgDisplayName;
+            if (orgName.length > 25) {
+                    OrgDisplayName = orgName.substr(0, 25) + '..';
+            }else {
+                    OrgDisplayName = orgName;
+                
+            }
+
+            $("#navBarHeader").html(OrgDisplayName);
 
             var db = app.getDb();
             //showDBNotification

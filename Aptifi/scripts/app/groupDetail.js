@@ -43,11 +43,20 @@ app.groupDetail = (function () {
 
             // $("#adminOrgHeader").html(orgName);
             
+               
+            var OrgDisplayName;
+            if (orgName.length > 20) {
+                    OrgDisplayName = orgName.substr(0, 20) + '..';
+            }else {
+                    OrgDisplayName = orgName;
+                
+            }
+            
             var navbar = app.mobileApp.view()                
                 .header
                 .find(".km-navbar")
                 .data("kendoMobileNavBar");
-            navbar.title(orgName);
+            navbar.title(OrgDisplayName);
 
             $("#setOrgName").html(orgName);
             

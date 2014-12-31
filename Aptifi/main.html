@@ -198,7 +198,7 @@
             </div>
 
             <div id="organisationListView">
-                <ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-bind="source: activities" ></ul>
+                <ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-bind="source: activities"></ul>
                 <p id="no-activities-span" hidden="hidden" class="no-items-msg">
                     <b>You have no Notification for you.</b>
                 </p>
@@ -407,7 +407,7 @@
                 #}#  
                         
                 <div class="orgList-content">
-                    <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;">${orgName}</h2>
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;">${orgName}</h2>
                     #if (countData!==0) {#
                         <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
                     #}# 
@@ -440,7 +440,7 @@
                     </div>
                 #}#    
                 <div class="activity-content">
-                    <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
                     #if (role==='O') {#
                         <div style="text-align:center;float:right;">
                             <img src="styles/images/admin.png" style="width=35px;height:25px;" />
@@ -994,11 +994,18 @@
                         localStorage.setItem("orgSelectAdmin",orgId);                  
                         localStorage.setItem("orgNameAdmin",org_name);                  
          
+                     var OrgDisplayName;
+                        if (org_name.length > 20) {
+                            OrgDisplayName = org_name.substr(0, 20) + '..';
+                        }else {
+                            OrgDisplayName = org_name;
+                        }
+                    
                      var navbar = app.mobileApp.view()                
                     .header
                     .find(".km-navbar")
                     .data("kendoMobileNavBar");
-                    navbar.title(org_name);
+                    navbar.title(OrgDisplayName);
                     
                     localStorage.setItem("open", 0);                  
                     $("#setOrgName").html(org_name);

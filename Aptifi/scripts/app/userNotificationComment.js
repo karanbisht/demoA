@@ -345,6 +345,9 @@ app.userNotiComment = (function () {
         var saveAdminComment = function () {    
 
             console.log('click save');
+
+            app.mobileApp.pane.loader.hide();
+
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -380,10 +383,18 @@ app.userNotiComment = (function () {
                 },
                                                                       error: function (e) {
                                                                           //apps.hideLoading();
+
+                                                                          app.mobileApp.pane.loader.hide();
+                                                                          
                                                                           console.log(e);
-                                                                          navigator.notification.alert("Please check your internet connection.",
-                                                                                                       function () {
-                                                                                                       }, "Notification", 'OK');
+                                                                           if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                         }else {
+                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                         }
+                                                                                         
+                                                                                         app.analyticsService.viewModel.trackException(e,'Api Call , Unable to saving response for Admin Comment .');
+                    
                                                                       }               
                                                                   });  
 	            
@@ -391,6 +402,8 @@ app.userNotiComment = (function () {
                 var commentDataView = saveCommentDataSource.data();
                 console.log(commentDataView);
                 $.each(commentDataView, function(i, commentData) {           
+                                app.mobileApp.pane.loader.hide();
+
                     console.log(commentData.status[0].Msg);
                     if (commentData.status[0].Msg === 'Reply sent successfully') {
                         if (!app.checkSimulator()) {
@@ -404,6 +417,9 @@ app.userNotiComment = (function () {
                     }else {
                         app.showAlert(commentData.status[0].Msg , 'Notification'); 
                     }
+                    
+                                app.mobileApp.pane.loader.hide();
+
                 });
               });
                  
