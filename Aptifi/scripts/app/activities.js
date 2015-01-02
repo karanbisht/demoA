@@ -1,16 +1,13 @@
 var app = app || {};
 
 app.Activities = (function () {
-    var activitiesDataSource;   
-    var validator;
-    var loginType, groupId, userId;
-    var userlName;
+  
+ 
     var organisationID;  
     var account_Id;  
     var bagCount;
     var groupDataShow = [];
     var lastNotificationPID;
-    var DBGETDATAVALUE;
     var orgName;
     var orgId = localStorage.getItem("UserOrgID");                              
 
@@ -19,9 +16,6 @@ app.Activities = (function () {
         }   
         
         var show = function(e) {             
-            //console.log("plugin test");  
-            //console.log(window.plugins);
-            //app.mobileApp.pane.loader.show();
             StartDbCount = 0;
             EndDbCount = 10;
             totalOrgNotification = 0;
@@ -32,57 +26,17 @@ app.Activities = (function () {
             $("#activities-listview").hide();  
             $(".km-scroll-container").css("-webkit-transform", "");  
             groupDataShow = [];
-            $('#activities-listview').data('kendoMobileListView').refresh();
+            //$('#activities-listview').data('kendoMobileListView').refresh();
         
-            //var scroller = app.mobileApp.scroller();
-            //scroller.reset();
-             
-            /*var scroller = app.mobileApp.scroller();
-            console.log("scrollheight " + scroller.scrollHeight() + " height: " + scroller.height());
-            var offset = scroller.height();
-            if (offset === 0)
-            offset = 100;
-            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
-            */
-             
-            /*var scroller = e.view.scroller;
-            var offset = scroller.height();
-            if (offset === 0)
-            offset = 100;
-            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
-             
-            //scroller.reset();
-             
-            /*scrollViewToBottom: function (view) {
-            var scroller = view.scroller;
-            console.log("scrollheight " + scroller.scrollHeight() + " height: " + scroller.height());
-            var offset = scroller.height();
-            if (offset == 0)
-            offset = 100;
-            scroller.scrollTo(0, scroller.scrollHeight() * -1 + offset);
-            },*/
-             
-            //app.mobileApp.pane.loader.show();  
             app.MenuPage = false;
             app.userPosition = false;                                      
 
-            //organisationID = e.view.params.organisationID;
-            //account_Id = e.view.params.account_Id;
-            //bagCount = e.view.params.bagCount; 
-            //orgName = e.view.params.orgName;
             
             organisationID = localStorage.getItem("user_SelectOrgID");
             account_Id = localStorage.getItem("user_ACCOUNT_ID");
             bagCount = localStorage.getItem("user_orgBagCount");
             orgName = localStorage.getItem("user_selectedOrgName");
-            
-           
-            //alert(bagCount);
-             
-            console.log(organisationID + "||" + orgName + "||" + account_Id + "||" + bagCount);
-             
-            // $("#fav-list-navbar").data("kendoMobileNavBar").title("foo");
-             
+                         
 
             var OrgDisplayName;
             if (orgName.length > 25) {
@@ -95,7 +49,6 @@ app.Activities = (function () {
             $("#navBarHeader").html(OrgDisplayName);
 
             var db = app.getDb();
-            //showDBNotification
             db.transaction(getLastOrgNoti, app.errorCB, app.successCB);       
         };
                     
@@ -112,10 +65,7 @@ app.Activities = (function () {
             if (lastNotificationPID===null) {
                 lastNotificationPID = 0;
             }
-            //alert(lastNotificationPID);
-
             if (count !== 0) {
-                //alert('inside');
                 var organisationALLNewListDataSource = new kendo.data.DataSource({
                                                                                      transport: {
                         read: {
@@ -136,15 +86,11 @@ app.Activities = (function () {
                                     console.log();
 
                                     if (orgVal.Msg ==='No notification') {     
-                                        //alert('NO notification');    
                                         var db = app.getDb();
                                         db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
                                     }else if (orgVal.Msg==='Success') {
-                                        //alert('success');    
                                         console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
-                                        console.log('dattttttttttttttttttttttttttttttttttaaaaaaaaa');
-                                        console.log(orgNotificationData);
                                         saveOrgNotification(orgNotificationData);                                                                                     
                                     }
                                 });    
@@ -169,7 +115,7 @@ app.Activities = (function () {
                                                                                          db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
                                                                                      }	        
                                                                                  });        
-                organisationALLNewListDataSource.read();
+                organisationALLNewListDataSource.fetch();
             }else {
                 var db = app.getDb();
                 db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
@@ -258,10 +204,7 @@ app.Activities = (function () {
         };    
         
         function getOrgTotalNotiData(tx, results) {
-            totalOrgNotification = results.rows.item(0).TOTAL_DATA;
-            //alert(totalOrgNotification);
-            //alert(EndDbCount);
-            
+            totalOrgNotification = results.rows.item(0).TOTAL_DATA;            
             if (StartDbCount + 10 >= totalOrgNotification) {
                 StartDbCount = totalOrgNotification;
                 $("#showMoreButton").hide();
@@ -273,10 +216,7 @@ app.Activities = (function () {
         function getOrgNotiDataSuccess(tx, results) {
             //groupDataShow=[];
             var count = results.rows.length;
-            //alert("countData- "+count);
-            //var current = new Date();   
-            DBGETDATAVALUE = count;           
-            
+             
             var previousDate = '';
             //alert(count);
             if (count !== 0) {
@@ -286,30 +226,6 @@ app.Activities = (function () {
                     var dateString = results.rows.item(i).send_date;                    
                     
                     var notiDate = app.timeConverter(dateString);
-                    
-                    //alert(dateString);
-
-                    /*
-                    var split = dateString .split(' ');
-                    console.log(split[0]+" || "+split[1]);
-                    var notiDate= app.formatDate(split[0]);
-                    console.log(notiDate);
-                    
-                    var splitTime =split[1].split(':');
-                    console.log(splitTime);
-                    var timeVal = splitTime[0]+':'+splitTime[1];
-                    console.log(timeVal);
-
-                    var notiTime=app.timeConvert(timeVal);
-                    console.log(notiTime);
-                    */
-
-                    //var notiDate="30/11/2014";                    
-                    //var notiTime="4:30 Pm";
-                    
-                    //var currentDate = app.currentDataFormate();
-                    //console.log(currentDate);
-                    //alert(results.rows.item(i).title);
                     groupDataShow.push({
                                            message: results.rows.item(i).message,
                                            org_id: results.rows.item(i).org_id,
@@ -347,14 +263,9 @@ app.Activities = (function () {
         };       
         
         var showMoreButtonPress = function() {
-            //console.log(JSON.stringify(groupDataShow));
             StartDbCount = StartDbCount + 10;
             EndDbCount = 10;
-            
-            /*if(StartDbCount+5>=totalOrgNotification){
-            StartDbCount=totalOrgNotification;
-            }*/
-            
+                       
             showDBNotification();
         }
 
@@ -364,111 +275,11 @@ app.Activities = (function () {
         };    
             
         var insertBagCount = function(tx) {             
-            //alert('ssss'+bagCount);
-            //alert('ssss'+organisationID);
             var query = "UPDATE JOINED_ORG SET bagCount='" + bagCount + "' WHERE org_id='" + organisationID + "'" ;
             app.updateQuery(tx, query);
         };   
             
         var showLiveData = function() {
-            /*   
-            var organisationAllNotificationModel = {
-            id: 'Id',
-            fields: {
-            title: {
-            field: 'title',
-            defaultValue: ''
-            },
-            message :{
-            field: 'message',
-            defaultValue: ''  
-            },
-            notificationID: {
-            field: 'notificationID',
-            defaultValue: null
-            },
-            CreatedAt: {
-            field: 'date',
-            defaultValue: new Date()
-            }                  
-            },            
-            CreatedAtFormatted: function () {
-            return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            };
-            console.log(lastNotificationPID);
-            var organisationALLListDataSource = new kendo.data.DataSource({
-            transport: {
-            read: {
-            url: "http://54.85.208.215/webservice/notification/getCustomerNotification/"+ organisationID+"/"+account_Id+"/"+lastNotificationPID,
-            type:"POST",
-            dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-            }
-            },
-            schema: {
-            model: organisationAllNotificationModel,                                
-            data: function(data)
-            {
-            console.log(data);
-            var orgNotificationData; 
-            $.each(data, function(i, groupValue) {
-            console.log(groupValue);
-            $.each(groupValue, function(i, orgVal) {
-            console.log();
-            if(orgVal.Msg ==='No notification' && DBGETDATAVALUE===0){     
-            groupDataShow.push({
-            title: ' No Notification ',
-            message: 'No Notification from this Organisation',
-            date:'0',  
-            comment_allow : 'Y',
-            org_id:'0', 
-            pid:'',
-            bagCount : '',
-            attachedImg :'',  
-            attached:''  
-            });                   
-            }else if(orgVal.Msg==='Success'){
-            console.log(orgVal.notificationList.length);  
-            orgNotificationData = orgVal.notificationList;
-            for(var i=0;i<orgVal.notificationList.length;i++){
-            groupDataShow.push({
-            message: orgVal.notificationList[i].message,
-            org_id: orgVal.notificationList[i].org_id,
-            date:orgVal.notificationList[i].send_date,
-            title:orgVal.notificationList[i].title,
-            pid :orgVal.notificationList[i].pid ,
-            comment_allow:orgVal.notificationList[i].comment_allow ,
-            bagCount : 'C',
-            attached :orgVal.notificationList[i].attached,
-            attachedImg :'http://54.85.208.215/assets/attachment/'+orgVal.notificationList[i].attached
-            });
-            }
-            saveOrgNotification(orgNotificationData);                                                                                     
-            }
-            });    
-            });
-            console.log(groupDataShow);
-            return groupDataShow;
-            }                       
-            },
-            error: function (e) {
-            //apps.hideLoading();
-            console.log(e);
-            //navigator.notification.alert("Please check your internet connection.",
-            //function () { }, "Notification", 'OK');
-            var showNotiTypes=[
-            { message: "Please Check Your Internet Connection"}
-            ];
-            var dataSource = new kendo.data.DataSource({
-            data: showNotiTypes
-            });
-            $("#activities-listview").kendoMobileListView({
-            template: kendo.template($("#errorTemplate").html()),
-            dataSource: dataSource  
-            });
-            }
-            });         
-            */           
             var organisationALLListDataSource = new kendo.data.DataSource({
                                                                               data: groupDataShow
                                                                           });
@@ -500,47 +311,7 @@ app.Activities = (function () {
             }
         };
         
-        /*var offlineQueryDB = function(tx){
-        var query = 'SELECT * FROM GetNotification';
-        app.selectQuery(tx, query, offlineTestQuerySuccess);
-        };
-        
-        var offlineTestQuerySuccess = function(tx, results) {
-        $("#activities-listview").empty();
-        var count = results.rows.length;
-        if (count !== 0) {
-        for (var i = 0; i < count; i++) {
-        var Title = results.rows.item(i).Title;
-        var Message = results.rows.item(i).Message;
-        var CreatedAt = results.rows.item(i).CreatedAt; 
-        var template;
-                    
-        //if(i===0){
-        //  template = kendo.template($("#activityTemplate").html());
-        //	 $("#activities-listview").html(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
-        //    $("#activities-listview").on('click', offlineActivitySelected);
-        //}else{
-
-        template = kendo.template($("#activityTemplate").html());
-        $("#activities-listview").append(template({Title: Title, CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,Message: Message}));
-        kendo.bind($('#activityTemplate'), activitiesDataSource);
-        //}
-        }
-        }else{
-        $("#activities-listview").html("You are Currently Offline and data not available in local storage");
-        }
-        };
-        */         
-       
-        var CreatedAtFormatted = function(value) {
-            return app.helper.formatDate(value);
-        };
-
-        /*     
-        var offlineQueryDBSuccess = function(){
-        console.log("Query Success");
-        };
-        */
+      
             
         var activitySelected = function (e) {
             console.log(e.data.uid);
@@ -565,216 +336,8 @@ app.Activities = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
             app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date);
         };
-        
-        var groupSelected = function (e) {
-            console.log("karan Bisht" + e);
-            app.MenuPage = false;	
-            app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
-        };
-         
-        var offlineActivitySelected = function (i) {
-            console.log(i);
-            app.MenuPage = false;	
-            console.log("click");
-            //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
-        };
-        
-        var notificationSelected = function (e) {
-            app.MenuPage = false;	
-            //alert(e.data.uid);
-            app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
-        };
-
-        // Navigate to app home
-        var navigateHome = function () {
-            app.MenuPage = false;
-            app.mobileApp.navigate('#welcome');
-        };
-        
-        var inAppBrowser = function() {
-            app.MenuPage = false;
-            window.open('http://www.sakshay.in', '_blank');
-        };
-                        
-        var makeCall = function() {
-            app.MenuPage = false;
-            document.location.href = 'tel:+91-971-781-8898';
-        };
-       
-        var about = function() {
-            app.MenuPage = false;
-            //document.location.href="#view-all-notification";
-            //document.location.href="views/MessageChatLayout.html";
-            document.location.href = "#infoDiv";
-        };
-        
-        var replyUser = function() {
-            app.MenuPage = false;	
-            app.mobileApp.navigate('views/userReplyView.html');                         
-        };
-        
-        var manageGroup = function() {
-            app.MenuPage = false;	
-            //app.mobileApp.pane.loader.show();
-            app.mobileApp.navigate('views/groupListPage.html');           
-        };
-        
-        var setting = function() {
-            app.MenuPage = false;
-            document.location.href = "#settingDiv";
-        };       
-        
-        var sendNotification = function() {
-            app.MenuPage = false;
-            //document.location.href="#sendNotificationDiv";
-            app.mobileApp.navigate('views/sendNotification.html');           
-        };
-        
-        var refreshButton = function() {
-        };
-        
-        var info = function() {
-        };
+      
                
-        var onAdminComboChange = function() {
-            var selectData = $("#groupSelectAdmin").data("kendoComboBox");    
-            var groupSelected = selectData.value();
-            //var query = new Everlive.Query().where().equal('Group',groupSelected);
-            //notificationModel();
-        
-            if (groupSelected==='All') {
-                app.Activities.activities.filter({
-							                	
-                                                 });
-            }else {		
-                app.Activities.activities.filter({
-                                                     field: 'Group',
-                                                     operator: 'eq',
-                                                     value: groupSelected
-                                                 });
-            }
-
-            kendo.bind($('#activityTemplate'), activitiesDataSource);                              
-        };
-        
-        var onComboChange = function() {
-            //$("#activities-listview").empty();
-            //var activities;
-            var selectData = $("#groupSelect").data("kendoComboBox");    
-            var groupSelected = selectData.value();
-            //var query = new Everlive.Query().where().equal('Group',groupSelected);
-            //notificationModel();
-        
-            if (groupSelected==='All') {
-                app.Activities.activities.filter({
-							                	
-                                 
-                                                 });
-            }else {		
-                app.Activities.activities.filter({
-                                                     field: 'Group',
-                                                     operator: 'eq',
-                                                     value: groupSelected
-                                                 });
-            }
-
-            kendo.bind($('#activityTemplate'), activitiesDataSource);
-            //var $notificationContainer = $('#activities-listview');
-            //$notificationContainer.empty();
-            // var notificationModel1 = (function () { 
-            /*   var notiCModel = {
-            id: 'Id',
-            fields: {
-            CreatedAt: {
-            field: 'CreatedAt',
-            defaultValue: new Date()
-            },
-            Message: {
-            field: 'Message',
-            defaultValue: ''
-            },
-            Title :{
-            field: 'Title',
-            defaultValue: ''  
-            }
-            },
-            CreatedAtFormatted: function () {
-            return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            };
-            if(groupSelected==='All'){
-            dataSource = new kendo.data.DataSource({
-            type: 'everlive',
-            schema: {
-            model: notiCModel
-            },
-            transport: {
-            // Required by Backend Services
-            typeName: 'GetNotification'
-            },
-            pageSize: '100',
-            page: 1,
-            serverPaging: true,
-            change: function (e) {
-            if (e.items && e.items.length > 0) {
-            $('#no-activities-span').hide();
-            } else {
-            $('#no-activities-span').show();
-            }
-            }    
-            });
-            }else{
-            dataSource = new kendo.data.DataSource({
-            type: 'everlive',
-            filter: { field: "Group", value:groupSelected },
-            schema: {
-            model: notiCModel
-            },
-            transport: {
-            typeName: 'GetNotification'
-            },
-            pageSize: '100',
-            page: 1,
-            serverPaging: true,
-            change: function (e) {
-            if (e.items && e.items.length > 0) {
-            $('#no-activities-span').hide();
-            } else {
-            $('#no-activities-span').show();
-            }
-            }    
-            });
-            }               
-            console.log(dataSource);
-            $("#activities-listview").kendoMobileListView({
-            style: "inset",    
-            dataSource: dataSource,
-            template: kendo.template($("#activityTemplate").html()),
-            endlessScroll: true,
-            scrollTreshold: 30,
-            click: function (e) {
-            }
-            });
-            $("#activities-listview").data("kendoMobileListView").dataSource.fetch();
-            $("#activities-listview").data("kendoMobileListView").refresh();
-            */   
-            //	}());             
-            /*                $("#activities-listview").kendoMobileListView({
-            dataSource: dataSource,
-            template: kendo.template($("#activityTemplate").html()),
-            //template: $("#activityTemplate").html(),
-            endlessScroll: true,
-            scrollTreshold: 30
-            });
-            */                
-            // if ($("#activities-listview").data("kendoMobileListView") == undefined) {
-            /*}else {
-            console.log("hello2");
-            $("#activities-listview").data("kendoMobileListView").dataSource = dataSource;
-            $("#activities-listview").data("kendoMobileListView").refresh();
-            }*/
-        };
-        
         var goToAppFirstView =  function(){
 
             app.slide('right', 'green' ,'3' ,'#organisationNotiList');
@@ -786,24 +349,11 @@ app.Activities = (function () {
             //groupData:GroupsModel.groupData,
             //userData:UsersModel.userData,
             activitySelected: activitySelected,
-            groupSelected:groupSelected,
-            notificationSelected:notificationSelected,
-            CreatedAtFormatted:CreatedAtFormatted,          
-            inAppBrowser:inAppBrowser,          
-            manageGroup:manageGroup,
-            showLiveData:showLiveData,
-            makeCall:makeCall,
-            replyUser:replyUser,
-            sendNotification:sendNotification,
-            about:about,
-            setting:setting,
-            info:info,
             init:init,
             goToAppFirstView:goToAppFirstView,
             show:show,
             afterShow:afterShow,
             showMoreButtonPress:showMoreButtonPress,
-            refreshButton:refreshButton
         };
     }());
 

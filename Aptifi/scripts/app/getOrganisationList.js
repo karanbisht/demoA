@@ -248,7 +248,6 @@ app.OragnisationList = (function () {
             app.deleteQuery(tx, query);
         }   
                           
-        var profileInfoData;
         var profileAdminOrgData;
         var profileOrgData;
                 
@@ -1139,7 +1138,8 @@ app.OragnisationList = (function () {
                 if (totalLen > 14) {
                     lname = lname.substr(0, 1) + '..';
                 }
-                    
+                
+                          
                 $("#userEmailId").html(email); 
                 $("#userMobileNo").html(mobile);
                 $("#userlname").html(lname);
@@ -1158,9 +1158,12 @@ app.OragnisationList = (function () {
                     //alert(JSON.stringify(tempArray));
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                     console.log(pos);
+
+                     var orgName = app.urldecode(results.rows.item(x).org_name); 
+
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
+                        document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 
                     }
                 }             
             }else {
@@ -1175,9 +1178,12 @@ app.OragnisationList = (function () {
                 for (var x = 0; x < count;x++) {
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                     console.log(pos);
+
+                    var orgName = app.urldecode(results.rows.item(x).org_name); 
+
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<ul><li>' + results.rows.item(x).org_name + '</li></ul>' 
+                        document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 
                     }
                 }             
             }else {
