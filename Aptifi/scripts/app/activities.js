@@ -333,8 +333,8 @@ app.Activities = (function () {
                 $("#showMoreButton").hide();                    
 
                 groupDataShow.push({
-                                       title: ' No Notification ',
-                                       message: 'No Notification from this Organization',
+                                       title: ' No Message ',
+                                       message: 'No Message from this Organization',
                                        date:'0',  
                                        comment_allow : 'Y',
                                        org_id:'0', 

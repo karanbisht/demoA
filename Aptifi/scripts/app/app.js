@@ -196,8 +196,15 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {
+
         //alert("error--"+err.message);
+        
+
+        console.log("Error processing SQL: " + JSON.stringify(err));
+
         console.log("Error processing SQL: " + err.message);
+
+        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
         app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
     };
     
@@ -335,6 +342,9 @@ var app = (function (win) {
             //tabstrip.clear();adminEventCalendarDetail
             //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventList');     
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminAddNews') {
+            app.mobileApp.navigate('#adminOrgNewsList');
+            $("#adminAddNews").data("kendoMobileModalView").close();
         }else {
             //navigator.app.backHistory();
             app.mobileApp.navigate("#:back");    
@@ -670,6 +680,11 @@ var app = (function (win) {
             commentAllowDB = messageSplitVal[6];
             notificationMsg = messageSplitVal[7];
             
+
+            messageDB = app.urlEncode(messageDB);
+            titleDB = app.urlEncode(titleDB);
+            notificationMsg = app.urlEncode(notificationMsg);
+            
             //send_DateDB= getPresentDateTime();
             send_DateDB = getPresntTimeStamp();   
 
@@ -768,6 +783,11 @@ var app = (function (win) {
                     attachedDB = messageSplitVal[5];
                     commentAllowDB = messageSplitVal[6];
                     notificationMsg = messageSplitVal[7];
+                
+                            messageDB = app.urlEncode(messageDB);
+                            titleDB = app.urlEncode(titleDB);
+                            notificationMsg = app.urlEncode(notificationMsg);
+
 
                     console.log('---data-------');
                     //send_DateDB= getPresentDateTime();           
@@ -860,7 +880,7 @@ var app = (function (win) {
         
     function insertOrgNotiData(tx) {
         console.log('DATA VALUE1');
-          
+                            
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
@@ -938,10 +958,11 @@ var app = (function (win) {
         console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
         //alert('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
 
-        var messageDBVal = app.urlEncode(messageDB); 
-        var titleDBVal = app.urlEncode(titleDB);
-           console.log('go to page');     
-        app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
+        //var messageDBVal = app.urlEncode(messageDB); 
+        //var titleDBVal = app.urlEncode(titleDB);
+         
+        console.log('go to page');     
+        app.mobileApp.navigate('views/activityView.html?message=' + messageDB + '&title=' + titleDB + '&o//rg_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
     }
     
     function updatebagCount(tx) {

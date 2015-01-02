@@ -21,11 +21,7 @@ app.groupDetail = (function () {
             app.mobileApp.pane.loader.hide();       
             
             var adminOrgInfo = [];
-            //organisationID = e.view.params.organisationID;
-            //account_Id = e.view.params.account_Id;
-            //orgName= e.view.params.orgName;
-            //orgDesc= e.view.params.orgDesc;
-
+            
             localStorage.setItem("open", 0);                  
             $("#dynamicLi").slideUp("slow");
 
@@ -37,12 +33,6 @@ app.groupDetail = (function () {
             orgDesc = localStorage.getItem("orgDescAdmin");
             var db = app.getDb();
             db.transaction(updateProfileTab, app.errorCB, app.successCB);
-
-            //localStorage.setItem("orgNameAdmin",e.data.orgName);
-            //localStorage.setItem("orgDescAdmin",e.data.orgDesc);
-
-            // $("#adminOrgHeader").html(orgName);
-            
                
             var OrgDisplayName;
             if (orgName.length > 20) {
@@ -244,19 +234,22 @@ app.groupDetail = (function () {
                     joinOrgID.push(adminOrgProfileData[i].organisationID);      
 
                     var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
+                    var orgNameEncode = app.urlEncode(adminOrgProfileData[i].org_name);
+                    var orgDescEncode = app.urlEncode(adminOrgProfileData[i].org_desc);
+               
                     //alert("data-:"+first_login);
                     
                     if (first_login===0) {
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
                                     + adminOrgProfileData[i].organisationID
                                     + '","'
-                                    + adminOrgProfileData[i].org_name
+                                    + orgNameEncode
                                     + '","'
                                     + adminOrgProfileData[i].role
                                     + '","'
                                     + adminOrgProfileData[i].org_logo
                                     + '","'
-                                    + adminOrgProfileData[i].org_desc
+                                    + orgDescEncode 
                                     + '","'
                                     + adminIncomMsgData[i].total    
                                     + '")';              
@@ -267,13 +260,13 @@ app.groupDetail = (function () {
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
                                     + adminOrgProfileData[i].organisationID
                                     + '","'
-                                    + adminOrgProfileData[i].org_name
+                                    + orgNameEncode
                                     + '","'
                                     + adminOrgProfileData[i].role
                                     + '","'
                                     + adminOrgProfileData[i].org_logo
                                     + '","'
-                                    + adminOrgProfileData[i].org_desc
+                                    + orgDescEncode
                                     + '","'
                                     + adminIncomMsgData[i].total    
                                     + '","'
@@ -284,7 +277,7 @@ app.groupDetail = (function () {
                 }else {        
                     //alert("update");
                     // alert(adminOrgProfileData[i].org_name);               
-                    var queryUpdate = "UPDATE ADMIN_ORG SET org_name='" + adminOrgProfileData[i].org_name + "',orgDesc='" + adminOrgProfileData[i].org_desc + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
+                    var queryUpdate = "UPDATE ADMIN_ORG SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
                     app.updateQuery(tx, queryUpdate);                                        
                 }                      
             }            

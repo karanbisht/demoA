@@ -17,9 +17,7 @@ app.sendNotification = (function () {
     var sendNotificationViewModel = (function () {
         var orgId = localStorage.getItem("UserOrgID"); 
         console.log(orgId);
-         
-        var account_Id;
-         
+                  
         var pictureSource;   // picture source
         var destinationType; // sets the format of returned value
    
@@ -160,7 +158,6 @@ app.sendNotification = (function () {
         };
                                        
         var show = function(e) {
-            sendNotificationOrg();
             
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
@@ -205,7 +202,8 @@ app.sendNotification = (function () {
             
             $("#removeAttachment").hide(); 
             $("#largeImage").hide();
-             
+           
+            
             dataToSend = '';
            
             pictureSource = navigator.camera.PictureSourceType;
@@ -319,7 +317,10 @@ app.sendNotification = (function () {
                 } 
             }            
             
-            //var account_Id = localStorage.getItem("ACCOUNT_ID");          
+
+            sendNotificationOrg();
+
+            
         };    
                               
         var onChangeNotiGroup = function() {
@@ -613,7 +614,7 @@ app.sendNotification = (function () {
                                                                                            largeImage.src = '';
                                                                                            $("#progressSendNotification").hide();
                                                                                            //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
-                                                                                           app.mobileApp.navigate('#view-all-activities-admin'); 
+                                                                                           app.mobileApp.navigate('#view-all-activities-GroupDetail'); 
                                                                                        }               
                                                                                    });  
            
@@ -636,7 +637,7 @@ app.sendNotification = (function () {
                                     largeImage.src = '';
                                     $("#progressSendNotification").hide();
 
-                                    app.mobileApp.navigate('#view-all-activities-admin'); 
+                                    app.mobileApp.navigate('#view-all-activities-GroupDetail'); 
 
                                     //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
                                    
@@ -659,7 +660,7 @@ app.sendNotification = (function () {
                                     //largeImage.src ='';
                                     $("#progressSendNotification").hide();
 
-                                    app.mobileApp.navigate('#view-all-activities-admin'); 
+                                    app.mobileApp.navigate('#view-all-activities-GroupDetail'); 
 
                                     //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
                                    
@@ -693,7 +694,7 @@ app.sendNotification = (function () {
             largeImage.src = '';
             $("#progressSendNotification").hide();
 
-            app.mobileApp.navigate('#view-all-activities-admin');
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         }
          
@@ -739,7 +740,7 @@ app.sendNotification = (function () {
                             console.log(groupValue);
 
                             console.log(groupValue[0].Msg);
-                                     
+                            
                             if (groupValue[0].Msg==='No Group list') {
                                 $("#selectGroupDiv").hide();
                                 $("#selectGroupFooter").hide();
@@ -756,7 +757,6 @@ app.sendNotification = (function () {
                                     localStorage.setItem("loginStatusCheck", 1);                                
                             }else {
                                 var orgLength = groupValue[0].groupData.length;
-
                                 for (var j = 0;j < orgLength;j++) {
                                     groupDataShow.push({
                                                            group_desc: groupValue[0].groupData[j].group_desc,
@@ -767,6 +767,9 @@ app.sendNotification = (function () {
 
                                                        });
                                 }
+                                
+                                console.log(groupDataShow);
+                                
                                 $("#selectOrgDiv").hide();
                                 $("#selectGroupDiv").show();
                                 $("#selectGroupFooter").show();
@@ -782,15 +785,8 @@ app.sendNotification = (function () {
                                                                          error: function (e) {
                                                                              //apps.hideLoading();
                                                                              console.log(e);
-                                                                             //navigator.notification.alert("Please check your internet connection.",
-                                                                             //function () { }, "Notification", 'OK');
-
-                                                                             
                                                                              
                                                                              $("#selectOrgLoader").hide();
-
-
-                                                                             
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
                                                                      var showNotiTypes = [
@@ -810,14 +806,12 @@ app.sendNotification = (function () {
                                                                          sort: { field: 'add', dir: 'desc' }    	     
                                                                      });
                           
+
             $("#group-Name-listview").kendoListView({
                                                         template: kendo.template($("#groupNameTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
-                                                        //pullToRefresh: true
                                                     });
              
-            //$("#selectGroupDiv").hide();
-
             app.mobileApp.pane.loader.hide();
              
             var UserModel = {
@@ -1036,6 +1030,7 @@ app.sendNotification = (function () {
         };
                   
         var escapeGroupClick = function() {                 
+            
             $(".km-scroll-container").css("-webkit-transform", "");
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
@@ -1043,16 +1038,20 @@ app.sendNotification = (function () {
             $("#selectCustomerToSend").hide();
             $("#selectCustomerFooter").hide();
              
-            //alert(noGroup +"||"+ noCustomer);
-             
             if (noGroup===1 && noCustomer===1) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('No Customer and Group To Send Notification');   
+                    window.plugins.toast.showShortBottom('No Group and Customer to Send Notification');   
                 }else {
-                    app.showAlert("No Customer and Group To Send Notification", "Notification");  
+                    app.showAlert("No Group and Customer to Send Notification", "Notification");  
                 }
-
-                app.mobileApp.navigate('#view-all-activities-admin'); 
+                app.mobileApp.navigate('#view-all-activities-GroupDetail');
+            }else if (noGroup===0 && noCustomer===1) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('No Customer to Send Notification');   
+                }else {
+                    app.showAlert("No Customer to Send Notification", "Notification");  
+                }
+                app.mobileApp.navigate('#view-all-activities-GroupDetail');    
             }else {
                 //$("#selectTypeDiv").show();
                 $("#sendNotificationDivMsg").show();

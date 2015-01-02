@@ -42,7 +42,7 @@
   "iOSStatusBarStyle": "Default",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "2.0.1",
+  "BundleVersion": "2.0.3",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
@@ -65,9 +65,5 @@
   "WP8Capabilities": [],
   "WP8Requirements": [],
   "Framework": "Cordova",
-  "CordovaPluginVariables": {
-    "com.telerik.mobiletesting": {
-      "IOS_APP_URL": ""
-    }
-  }
+  "projectVersion": "1"
 }

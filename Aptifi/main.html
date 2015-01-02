@@ -45,28 +45,11 @@
                 <div data-role="navbar">
                     <span data-role="view-title"></span>
 
-                    <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="button" data-click="app.OragnisationList.logout"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
-                    <!--<a class="nav-button nav-button-back hide-text" data-align="left" data-role="button" data-click="app.OragnisationList.logout">Back</a>-->
-
-                    <!--<a class="topMenu" data-role="button" data-rel="drawer" href="#left-drawer" style="background:transparent; border:none;" data-align="left"></a>
-                    -->
-
                     <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
 
-                    <!--<a id="moreOption" class="nav-button nav-button-add hide-text popup" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>
-                    <a id="goToAdmin" data-align="right" data-role="button" data-click="app.callOrganisationLogin">Admin</a> -->
-
-                    <!--<a id="more" class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">More</a>-->
-
                 </div>
-
-                <!--<div id="upperMainTab" data-role="tabstrip" style="border-top:2px solid #2D384C">
-                <a data-icon="history" href="#organisationNotiList">Notification</a>
-                <a data-icon="globe" href="#organisationDiv">Organization</a>
-                <a data-icon="contacts" href="#profileDiv">Profile</a>            
-                </div>-->
             </div>
         </div>
 
@@ -186,15 +169,11 @@
         </div>-->
 
         <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>
-
         <!--data-after-show="app.OragnisationList.afterShow"-->
 
-        <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Notification List" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show">
-            <!--data-append-on-refresh="true"-->
-
+        <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show"> 
             <div class="loader" id="progress2" style="display:none;margin-top:48%">
                 <div class="ball"></div>
-                <!--<div class="loading1">Loading...</div>-->
             </div>
 
             <div id="organisationListView">
@@ -203,41 +182,7 @@
                     <b>You have no Notification for you.</b>
                 </p>
             </div>
-            <!--<a id="callUsView" data-icon="contacts" data-role="button" data-bind="click: makeCall">Call Us</a>
-            <a id="websiteView" data-icon="favorites" data-role="button" data-bind="click: inAppBrowser">Website</a>
-            <a id="aboutUsView" data-icon="info" data-role="button" data-bind="click: about">About Us</a>
-            <a id="settingView" data-icon="settings" data-role="button" data-bind="click: setting" >Setting</a>-->
 
-            <!--<div data-role="popover" id="moreFeature" data-use-native-scrolling="true" >
-            <div data-role="view" id="popUpView" data-title="view1">
-            <li class="popMoreButton"><a  data-bind="click: makeCall"></a>Call Us</li>
-            <li class="popMoreButton"><a   data-bind="click: inAppBrowser">Website</a></li>
-            <li class="popMoreButton"><a data-bind="click: about">About Us</a></li>
-            <li class="popMoreButton"><a data-bind="click: setting">Setting</a></li>
-            </div>
-            </div>-->
-
-            <!--data-popup='{ "height": "230" }'-->
-
-            <div data-role="popover"  class="popupBox refreshPop" id="moreFeature">
-                <div data-role="view" class="activities-view" data-model="app.OragnisationList">
-                    <ul data-role="listview" style="padding-left:10px;padding-right:10px;">
-
-                        <li id="goToAdmin" style="margin-top:10px;" data-bind="click:callOrganisationLogin">Admin Section</li>
-                        <!--<li data-bind="click: makeCall">Call Us</li>
-                        <li data-bind="click: inAppBrowser">Website</li>-->
-                        <li data-bind="click: about">About Us</li>
-                        <!--<li data-bind="click: refreshApp">Refresh</li>-->
-                        <!--<li data-bind="click: appinfo">App Info </li>-->
-                        <li data-bind="click: setting">Setting </li>
-
-                        <li data-bind="click: appVersion">Version </li>
-
-                        <li data-bind="click: logout">Logout</li>
-
-                    </ul>
-                </div>
-            </div>
         </div>
 
         <div data-role="view" id="infoDiv" class="activities-view" data-model="app.Activities">
@@ -534,7 +479,7 @@
             <tr>
                 <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showGroupNotification }">
                     <div id="show-admin-noti-icon"></div>
-                    Organization Notification
+                    Organization Messages
                 </td>
                 <td style="width:25px;"></td>
                 <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showGroupMembers }">
@@ -616,7 +561,7 @@
 
         <!--data-before-Show="app.adminOragnisationList.beforeShow"-->
 
-        <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization List" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
+        <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
                 
                 <!--<div id="uploadBatchWindow">
                     <div style="padding: 4px; margin-bottom: 10px;">
@@ -725,23 +670,6 @@
 
                     <div id="group-Name-listview" class="k-listview" style="border:none"> </div>
 
-                    <!--<div>
-                    <span data-role="button" style="background-color:#33539E;width:100%" data-bind="click:escapeGroupClick">
-                    <a data-role="button" style="background-color:#33539E ;width:100%;text-align:center;">Skip</a>
-                    </span>       
-                    </div>-->
-
-                    <!--
-                    <li>                   
-                    <span id="login" data-role="touch" data-bind="events: { tap: skipToCustomerType }" style="padding:10px;float:left;">
-                    <a data-role="button" style="background-color:#303645">Skip</a>   
-                    </span>
-                
-                    <span id="login" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="padding:10px;float:right;">
-                    <a data-role="button" style="background-color:#7FBF4D">Next</a>   
-                    </span>
-                    </li>
-                    -->
                 </div>
 
                 <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->

@@ -2223,6 +2223,17 @@ float:right;
     margin: 4px 10px 4px 10px ;
 }
 
+#adminOrgUpd-icon
+{
+    background: url("images/manageOrg/org-update-icon.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    height: 40px;
+    background-position: 0px 4px;  
+    margin: 4px 10px 4px 10px ;
+}
+
+
 #adminOrgGroup-icon
 {
     background: url("images/manageOrg/org-group-icon.png");
@@ -2268,9 +2279,10 @@ float:right;
 {
     width: 100%;
     min-height: 80px;
+    max-height:250px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
-    overflow: hidden;
+    overflow: hidden;    
     border-radius: 3px;
     border-color: #E5E5E5;
     padding-right: 5px;
