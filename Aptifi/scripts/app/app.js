@@ -679,12 +679,7 @@ var app = (function (win) {
             attachedDB = messageSplitVal[5];
             commentAllowDB = messageSplitVal[6];
             notificationMsg = messageSplitVal[7];
-            
-
-            messageDB = app.urlEncode(messageDB);
-            titleDB = app.urlEncode(titleDB);
-            notificationMsg = app.urlEncode(notificationMsg);
-            
+                        
             //send_DateDB= getPresentDateTime();
             send_DateDB = getPresntTimeStamp();   
 
@@ -784,11 +779,6 @@ var app = (function (win) {
                     commentAllowDB = messageSplitVal[6];
                     notificationMsg = messageSplitVal[7];
                 
-                            messageDB = app.urlEncode(messageDB);
-                            titleDB = app.urlEncode(titleDB);
-                            notificationMsg = app.urlEncode(notificationMsg);
-
-
                     console.log('---data-------');
                     //send_DateDB= getPresentDateTime();           
                     send_DateDB = getPresntTimeStamp();          
@@ -880,6 +870,12 @@ var app = (function (win) {
         
     function insertOrgNotiData(tx) {
         console.log('DATA VALUE1');
+        
+
+        messageDB = app.urlEncode(messageDB);
+        titleDB = app.urlEncode(titleDB);
+        notificationMsg = app.urlEncode(notificationMsg);
+
                             
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
@@ -915,7 +911,11 @@ var app = (function (win) {
     
     function insertOrgNotiDataBagINC(tx) {
         console.log('DATA VALUE1');
-          
+
+        messageDB = app.urlEncode(messageDB);
+        titleDB = app.urlEncode(titleDB);
+        notificationMsg = app.urlEncode(notificationMsg);
+
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , bagCount=bagCount+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
@@ -933,7 +933,7 @@ var app = (function (win) {
                     + '","'
                     + attachedDB
                     + '","'
-                    + notificationMsg
+                    + messageDB
                     + '","'
                     + titleDB
                     + '","'
@@ -958,11 +958,11 @@ var app = (function (win) {
         console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
         //alert('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
 
-        //var messageDBVal = app.urlEncode(messageDB); 
-        //var titleDBVal = app.urlEncode(titleDB);
+        var messageDBVal = app.urlEncode(messageDB); 
+        var titleDBVal = app.urlEncode(titleDB);
          
         console.log('go to page');     
-        app.mobileApp.navigate('views/activityView.html?message=' + messageDB + '&title=' + titleDB + '&o//rg_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
+        app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
     }
     
     function updatebagCount(tx) {

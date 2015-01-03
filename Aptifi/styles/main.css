@@ -1429,6 +1429,11 @@ background: #fff none;
     border: none;    
 }
 
+#eventSwitchUI > li 
+{
+    border: none;    
+}
+
 input.largerCheckbox
 {
     /*	-webkit-appearance: none; 

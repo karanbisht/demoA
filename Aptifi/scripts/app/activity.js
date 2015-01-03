@@ -7,7 +7,7 @@ var app = app || {};
 app.Activity = (function () {
     'use strict'
     
-    var $commentsContainer, listScroller;    
+    var $commentsContainer;    
     var org_id;
     var notiId;
     var account_Id;
@@ -27,13 +27,10 @@ app.Activity = (function () {
         // $activityPicture;
         
         var init = function () {
-            if (app.checkConnection()) {  
-                getuserName();
-            }             
+
         };
                 
         var data;          
-        var len = null;
         var userFirstName;
         var myScroll;
 
@@ -150,7 +147,6 @@ app.Activity = (function () {
             attached = e.view.params.attached;
             type = e.view.params.type;
             date = e.view.params.date;
-            
             message = app.proURIDecoder(message);
             title = app.proURIDecoder(title);
             
@@ -225,17 +221,13 @@ app.Activity = (function () {
         }
         
         var imagePathNotExist = function() {
-            //alert('2');
             $("#progressChat").show();
-            //alert(attached);
             var attachedImg = attached;
             
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
-            
-            //alert(attachedImg);
             
             img.attr('src', attachedImg);
             img.appendTo('#notiImage'); 

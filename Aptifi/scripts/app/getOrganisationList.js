@@ -4,14 +4,8 @@ app.OragnisationList = (function () {
     'use strict'
     //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
-    var activitiesDataSource;   
     var account_Id;
-    var userType;   
-    var userTypeAtShow = [];
-    var newUserType;   
-    var num1 = 0, num2 = 0, num3 = 0;
     var groupDataShow = [];   
-    var UserProfileInformation;
     var UserOrgInformation;
     var JoinedOrganisationYN = 1;
     
@@ -55,6 +49,7 @@ app.OragnisationList = (function () {
         var getDataCountDB = [];
         var org_id_DB;
         var lastMessageShow;
+        var org_Logi_Image
         
         function getDataSuccess(tx, results) {                        
             console.log('before Show');
@@ -112,6 +107,16 @@ app.OragnisationList = (function () {
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
+                    
+                    org_Logi_Image = results.rows.item(i).imageSource;
+    
+                    /*if (org_Logi_Image!== null && org_Logi_Image!=='' && org_Logi_Image!=="0") {
+                      var imgPathData = app.getfbValue();                    
+                      var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';                                
+                      console.log('Image Saving Process');                    
+                      window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
+                    }*/
+                    
 
                     //alert('hello');
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
@@ -143,11 +148,41 @@ app.OragnisationList = (function () {
                                        count : 0
                                    });      
             }
-        };       
+        };   
+        
+     
+        var imagePathExist = function() {
+     
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_'+ org_id_DB +'.jpg';
+
+            console.log(fp);
+
+        }
+        
+        var imagePathNotExist = function() {
+        
+            var attachedImg = org_Logi_Image;            
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_'+ org_id_DB + '.jpg';
+            console.log(fp);
+            
+            var fileTransfer = new FileTransfer();    
+            fileTransfer.download(attachedImg, fp, 
+                                  function(entry) {    
+                                      console.log('downloading completed');
+                                  },
+    
+                                  function(error) {
+                                    console.log('error in downloading');
+                                  }
+                );                
+        }
+        
+        
         
         function getAdminDataSuccess(tx, results) {                        		
             var count = results.rows.length;                    
-  
             if (count !== 0) {                                
                 $("#moreOption").hide();
                 $("#goToAdmin").show();
@@ -158,9 +193,7 @@ app.OragnisationList = (function () {
         };
 
         var showUpdateLocalDB = function(e) {       
-
-            account_Id = localStorage.getItem("ACCOUNT_ID");
-            
+            account_Id = localStorage.getItem("ACCOUNT_ID");            
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
@@ -407,11 +440,7 @@ app.OragnisationList = (function () {
         }  
         
         var loginSuccessCB = function() {
-            //alert('Admin');
-            //var db = app.getDb();
-            //db.transaction(insertAdminOrgInfo, app.errorCB, loginSuccessCB);   
-            //var db = app.getDb();
-            //db.transaction(getLastNotification, app.errorCB, showFullData);                            
+
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            transport: {
                     read: {
@@ -422,8 +451,6 @@ app.OragnisationList = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        var datacheck = 0;
-                        var allData = 0;
                        
                         //console.log(data);
                         //return [data];
@@ -1300,8 +1327,25 @@ app.OragnisationList = (function () {
             document.location.href = "#settingDiv";
         };       
         
-        var settingShow = function(){
-            app.showAppVersion();
+        var settingShow = function(){                        
+              var switchInstance = $("#event-switch").data("kendoMobileSwitch");
+              console.log(switchInstance.check());
+            
+            var checkVal=localStorage.getItem("eventSwitch");
+                   
+            if(checkVal===1 || checkVal==='1'){
+                 switchInstance.check(true);
+            }
+        }
+        
+        var onChangeEventSwitch = function(e){
+            console.log(e.checked);//true of fals            
+            if(e.checked===true){
+                syncCalendar();
+                localStorage.setItem("eventSwitch", 1);
+            }else{
+                localStorage.setItem("eventSwitch", 0);
+           }
         }
         
         var appVersion = function() {
@@ -1741,6 +1785,7 @@ app.OragnisationList = (function () {
             orgShow:orgShow,
             info:info,
             init:init,
+            onChangeEventSwitch:onChangeEventSwitch,
             gobackOrgMainPage:gobackOrgMainPage,
             syncCalendar:syncCalendar,
             show:show,

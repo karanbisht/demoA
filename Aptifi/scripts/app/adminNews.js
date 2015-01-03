@@ -1021,9 +1021,7 @@ app.adminNews = (function () {
             newsDataToSend = ''; 
         }
         
-        
-        
-            var getTakePhotoEdit = function() {
+        var getTakePhotoEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
                                             targetWidth: 300,
@@ -1035,7 +1033,7 @@ app.adminNews = (function () {
         };
         
         
-           var getPhotoValEdit = function() {
+        var getPhotoValEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
                                             targetWidth: 300,

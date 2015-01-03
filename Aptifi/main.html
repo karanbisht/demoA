@@ -301,43 +301,6 @@
             .value { color: #bbb; }
         </style>
 
-        <div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.settingShow">
-            <div data-role="header" style="border-bottom:2px solid #F0F0F0">
-                <div data-role="navbar">
-                    Setting
-                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage"></a>
-                </div>
-            </div>
-
-            <div data-role="content" id="contentDiv">
-
-                <div style="position:absolute;right:0;margin:20% auto 10px auto;max-width:600;width:94%;" id="settingOptionDiv">
-                    <div style="background-color:rgb(127,191,77);margin:25% auto 10px auto;padding:10px;border-radius:30px;max-width:600;width:94%" data-role="button" data-click="app.OragnisationList.syncCalendar">
-                        <span style="color:rgb(255,255,255);">Synchronization Events with Device Calender</span>
-                    </div>
-
-                    <div style="background-color:rgb(127,191,77);margin:20px auto;padding:10px;border-radius:30px;max-width:600;width:94%" data-role="button" data-click="app.OragnisationList.appVersion">
-                        <span style="color:rgb(255,255,255);">App Version</span>
-                    </div>
-                </div>
-                
-                 <div class="loader" id="savingDeviceCalenderLoader" style="display:none;margin-top:48%">
-                    <div class="ball"></div>
-                 </div>
-
-                <div id="appVersionDiv" class="popUpDivToShow">
-
-                    <img src="styles/images/random/app-icon.png" style="width:100px;height:100px;align:center"/><br/><br/>
-                    <span style="margin-top:20px;color:rgb(127,191,77);">Current App Version : <span id="appVersion" style="color:rgb(127,191,77);"></span></span>
-
-                    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: closeVersionPopUp }">
-                        Ok
-                    </li>
-                </div>
-
-            </div>
-
-        </div>
 
         <script type="text/x-kendo-template" id="organisationTemplate">
 
