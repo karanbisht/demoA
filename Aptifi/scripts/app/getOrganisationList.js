@@ -2,7 +2,6 @@ var app = app || {};
 
 app.OragnisationList = (function () {
     'use strict'
-    //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
     var account_Id;
     var groupDataShow = [];   
@@ -1356,6 +1355,10 @@ app.OragnisationList = (function () {
             $("#appVersion").html(value);
         }
         
+        var showAboutUs = function(){
+            
+        }
+        
         var closeVersionPopUp = function() {
             $("#settingOptionDiv").show();   
             $("#appVersionDiv").hide();    
@@ -1785,6 +1788,7 @@ app.OragnisationList = (function () {
             orgShow:orgShow,
             info:info,
             init:init,
+            showAboutUs:showAboutUs,
             onChangeEventSwitch:onChangeEventSwitch,
             gobackOrgMainPage:gobackOrgMainPage,
             syncCalendar:syncCalendar,

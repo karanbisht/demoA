@@ -484,16 +484,6 @@ var app = (function (win) {
         } else {
             localStorage.setItem("DEVICE_TYPE", "AN");
 
-            //register for GCM
-            //alert('Android');
-            
-            /*pushNotification.register(
-            successHandler,
-            errorHandler,
-            {
-            "senderID":"790452394475",
-            "ecb":"pushCallbacks.onNotificationGCM"
-            });*/
             
             pushNotification.register(
                 function(id) {
