@@ -1017,8 +1017,7 @@ app.adminEventCalender = (function () {
         }
         
         var eventListShow = function() {
-
-
+            
             $("#adminEventListLoader").show();
             $("#eventCalendarAllList").hide();
 

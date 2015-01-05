@@ -13,10 +13,10 @@
             <form>
                 <ul data-role="listview" data-style="inset">
                     <li class="username">
-                        <input type="text" id="regFirstName" placeholder="First Name" />
+                        <input type="text" id="regFirstName" placeholder="First Name" onfocusout="app.toTitleCase(this ,'regFirstName');" />
                     </li>
                     <li class="password">
-                        <input type="text" id="regLastName" placeholder="Last Name" />
+                        <input type="text" id="regLastName" placeholder="Last Name" onfocusout="app.toTitleCase(this , 'regLastName');" />
                     </li>
                     <li class="password">
                         <input type="email" id="regEmail" placeholder="Email" />

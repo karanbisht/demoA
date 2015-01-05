@@ -111,7 +111,7 @@ var app = (function (win) {
     };
                 
     var createDB = function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER , Admin_login_status INTEGER)');//1 for currently log in 0 or null for currently log out        
+        tx.executeSql('CREATE TABLE IF NOT EXISTS PROFILE_INFO(account_id INTEGER, id INTEGER , email TEXT,first_name TEXT,last_name TEXT, mobile INTEGER, add_date TEXT , mod_date TEXT , login_status INTEGER , Admin_login_status INTEGER , profile_image TEXT)');//1 for currently log in 0 or null for currently log out        
       
         tx.executeSql('CREATE TABLE IF NOT EXISTS JOINED_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , joinedDate TEXT , orgDesc TEXT)');
 
@@ -1327,6 +1327,22 @@ var app = (function (win) {
 		return '';
 	}
     }
+    
+    
+   function toTitleCase(name , idVal) {
+	var smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|vs?\.?|via)$/i;
+	var answer = name.value.replace(/([^\W_]+[^\s-]*) */g, function(match, p1, index, title) {
+		if (index > 0 && index + p1.length !== title.length && p1.search(smallWords) > -1 && title.charAt(index - 2) !== ":" && title.charAt(index - 1).search(/[^\s-]/) < 0) {
+			return match.toLowerCase();
+		}
+
+		if (p1.substr(1).search(/[A-Z]|\../) > -1) {
+			return match;
+		}
+		return match.charAt(0).toUpperCase() + match.substr(1);
+	});
+	document.getElementById(idVal).value = answer;
+   }
 
     return {
         showAlert: showAlert,
@@ -1340,6 +1356,7 @@ var app = (function (win) {
         convertTimeSpan:convertTimeSpan,
         timeConverter:timeConverter,
         ScaleImage:ScaleImage,
+        toTitleCase:toTitleCase,
         checkIfFileExists:checkIfFileExists,
         sendNotification:sendNotification,
         errorCB:errorCB,

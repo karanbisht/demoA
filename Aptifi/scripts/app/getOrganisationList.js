@@ -1129,7 +1129,7 @@ app.OragnisationList = (function () {
         };
             
         function getProfileInfoDB(tx) {
-            var query = 'SELECT first_name , last_name , email , mobile FROM PROFILE_INFO';
+            var query = 'SELECT first_name , last_name , email , mobile , profile_image FROM PROFILE_INFO';
             app.selectQuery(tx, query, profileDataSuccess);
              
             var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
@@ -1144,6 +1144,7 @@ app.OragnisationList = (function () {
         var email;
         var mobile;
         var lnameVal;
+        var profileImage;
         
         function profileDataSuccess(tx, results) {
             var count = results.rows.length;
@@ -1155,7 +1156,16 @@ app.OragnisationList = (function () {
 
                 email = results.rows.item(0).email;
                 mobile = results.rows.item(0).mobile;
-                    
+                profileImage= results.rows.item(0).profile_image; 
+
+                var largeImage = document.getElementById('profilePhoto');                
+                //alert(profileImage);
+                if(profileImage!==null  && profileImage!=='' && profileImage!=='null'){
+                    largeImage.src = profileImage;
+                }else{
+                    largeImage.src ="styles/images/avatar1.png"; 
+                }
+                
                 var fnameLen = fname.length;
                 var lnameLen = lname.length;
 
@@ -1760,11 +1770,63 @@ app.OragnisationList = (function () {
             }               
         }
 
+        
+        var takeProfilePhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            saveToPhotoAlbum:true
+                                        });
+        };
+        
+        
+           var selectProfilePhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                        });
+        };
+
+        var profileImagePath;
+        
+        function onProfilePhotoURISuccess(imageURI) {
+            var largeImage = document.getElementById('profilePhoto');
+            largeImage.src = imageURI;
+            profileImagePath = imageURI;
+               
+            var db = app.getDb();
+            db.transaction(updateProfilePic, app.errorCB, app.successCB);   
+        }
+        
+        function updateProfilePic(tx){       
+            var query = "UPDATE PROFILE_INFO SET profile_image='" + profileImagePath +"'";
+            app.updateQuery(tx, query);
+        }
+        
+         
+        function onFail(message) {
+            console.log('Failed because: ' + message);
+            $("#removeEventAttachment").hide(); 
+            $("#attachedImgEvent").hide();
+        }
+        
+        
+        
+        
+
         return {
             //activities: activitiesModel.activities,
             //groupData:GroupsModel.groupData,
             //userData:UsersModel.userData,
             organisationSelected: organisationSelected,
+            takeProfilePhoto:takeProfilePhoto,
+            selectProfilePhoto:selectProfilePhoto,            
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
             settingShow:settingShow,
