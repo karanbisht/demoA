@@ -8,18 +8,13 @@
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.CAMERA",
     "android.permission.INTERNET",
-    "android.permission.MANAGE_ACCOUNTS",
     "android.permission.READ_PHONE_STATE",
-    "android.permission.READ_SMS",
-    "android.permission.RECEIVE_SMS",
-    "android.permission.VIBRATE",
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
     "org.apache.cordova.camera",
     "org.apache.cordova.media-capture",
     "org.apache.cordova.console",
-    "org.apache.cordova.contacts",
     "org.apache.cordova.device",
     "org.apache.cordova.device-orientation",
     "org.apache.cordova.file",
@@ -33,8 +28,7 @@
     "org.apache.cordova.splashscreen",
     "com.phonegap.plugins.sqlite",
     "org.apache.cordova.statusbar",
-    "com.telerik.plugin.eqatecanalytics",
-    "org.apache.cordova.vibration"
+    "com.telerik.plugin.eqatecanalytics"
   ],
   "DeviceOrientations": [
     "Portrait"

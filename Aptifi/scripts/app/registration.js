@@ -3,7 +3,7 @@ var app = app || {};
 
 app.registration = (function () {
     'use strict'
-    var userRegNumber;
+
     // Activities view model
     var registrationViewModel = (function () {
         var $regFirstName;
@@ -49,11 +49,6 @@ app.registration = (function () {
             
         };
         
-        /* var clearSelectOrganisation = function(){
-        $("#selectOrgData").data("kendoComboBox").value("");
-        $("#selectGroupData").data("kendoComboBox").value("");
-            
-        } */
 
         var registerR = function() {
             app.userPosition = false;   
@@ -197,15 +192,6 @@ app.registration = (function () {
             }
         };
         
-        /*   
-        var goToIndex = function(){
-        
-        backToRegPage=false;    
-        
-        app.mobileApp.navigate('index.html');
-        
-        };
-        `		*/
        
         var clickforValificationCodeR = function() {
             $("#regenerateDivR").hide();
@@ -524,39 +510,7 @@ app.registration = (function () {
                                                                               });         
             
                 organisationALLListDataSource.fetch(function() {
-                    /*var loginDataView = organisationALLListDataSource.data();
-                    var datacheck=0;
-                    var allData=0;
-                    $.each(loginDataView, function(i, groupValue) {
-                    allData++;
-                    console.log(groupValue);                                     
-                    if(groupValue.status[0].Msg ==='No notification'){     
-                    datacheck++;
-                    }else if(groupValue.status[0].Msg==='Success'){
-                    var orgNotificationData = groupValue.status[0].notificationList;
-                    console.log('hiiiiiiiiiiiiiiiiiii');
-                    console.log(groupValue);
-                    console.log(orgNotificationData);
-                    saveOrgNotification(orgNotificationData);                                                                                     
-                    }
-                    if(allData===datacheck){
-                    goToHomePage();
-                    }
-                    });
-                    /*var orgNotificationData; 
-                    $.each(data, function(i, groupValue) {
-                    console.log(groupValue);
-                    $.each(groupValue, function(i, orgVal) {
-                    console.log();
-                    if(orgVal.Msg ==='No notification'){     
-                    }else if(orgVal.Msg==='Success'){
-                    console.log(orgVal.notificationList.length);  
-                    orgNotificationData = orgVal.notificationList;
-                    saveOrgNotification(orgNotificationData);                                                                                     
-                    }
-                    });    
-                    });
-                    */
+
                 });
             }
         }
@@ -646,13 +600,10 @@ app.registration = (function () {
             clickforValificationCodeR:clickforValificationCodeR,
             backToIndex:backToIndex,
             clickforRegenerateCodeR:clickforRegenerateCodeR,
-            //clearSelectOrganisation:clearSelectOrganisation,
             cancelButtonRCR:cancelButtonRCR,
             genRandR:genRandR,
             doneVerificationR:doneVerificationR,
             checkEnterCode:checkEnterCode,
-            // selectedOrg:selectedOrg,
-            //selectedGroup:selectedGroup,
             registerR: registerR
         };
     }());

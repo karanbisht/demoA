@@ -963,7 +963,7 @@ app.adminNews = (function () {
         
         
         
-            var getTakePhoto = function() {
+        var getTakePhoto = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
                                             targetWidth: 300,
@@ -975,7 +975,7 @@ app.adminNews = (function () {
         };
         
         
-           var getPhotoVal = function() {
+        var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
                                             targetWidth: 300,
@@ -985,8 +985,50 @@ app.adminNews = (function () {
                                         });
         };
         
+ //PHOTOLIBRARY
         
-           function onPhotoURISuccessData(imageURI) {
+        var getVideoVal = function(){            
+            //navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});                      
+              navigator.camera.getPicture(onVideoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            mediaType: navigator.camera.MediaType.VIDEO
+              });
+        }
+        
+        // Called when capture operation is finished
+        //
+
+        function captureSuccess(mediaFiles) {
+                console.log(mediaFiles);
+                console.log(mediaFiles[fullPath]);
+                console.log("path : "+mediaFiles.fullPath+", name : "+mediaFiles.name+", type : "+mediaFiles.type+", size : "+mediaFiles.size);
+
+                //var i, path,len;
+                //for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                //    path = mediaFiles[i].fullPath;
+                //}       
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+        }
+
+        // Called if something bad happens.
+        function captureError(error) {
+            var msg = 'An error occurred during capture: ' + error.code;
+            navigator.notification.alert(msg, null, 'Uh oh!');
+        }
+                
+        function onPhotoURISuccessData(imageURI) {            
+            
+            var videoAttached = document.getElementById('attachedVidNews');
+            videoAttached.src = '';
+            
+            $("#removeNewsAttachment").hide(); 
+            $("#attachedVidNews").hide();
+            
+            //console.log(imageURI);            
             // Uncomment to view the image file URI
             // console.log(imageURI);
             // Get image handle
@@ -1006,6 +1048,36 @@ app.adminNews = (function () {
             console.log(imageURI);
             //newsDataToSend = imageURI;
         }
+        
+        function onVideoURISuccessData(videoURI) {            
+ 
+            var largeImage = document.getElementById('attachedImgNews');
+            largeImage.src = ''; 
+            $("#removeNewsAttachment").hide(); 
+            $("#attachedImgNews").hide();
+            
+            //console.log(imageURI);            
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            var largeImage = document.getElementById('attachedVidNews');
+
+
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = videoURI;
+            newsDataToSend = videoURI;              
+            $("#removeNewsAttachment").show(); 
+            $("#attachedVidNews").show();
+
+            //alert(imageURI);
+            console.log(videoURI);
+            //newsDataToSend = imageURI;
+        }
          
         function onFail(message) {
             console.log('Failed because: ' + message);
@@ -1016,8 +1088,13 @@ app.adminNews = (function () {
         var removeImage = function() {
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
+            var videoAttached = document.getElementById('attachedVidNews');
+            videoAttached.src = '';
+            
             $("#removeNewsAttachment").hide(); 
             $("#attachedImgNews").hide();
+            $("#attachedVidNews").hide();
+            
             newsDataToSend = ''; 
         }
         
@@ -1090,6 +1167,7 @@ app.adminNews = (function () {
             getPhotoValEdit:getPhotoValEdit,
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoVal:getPhotoVal,
+            getVideoVal:getVideoVal,
             removeImage:removeImage,
             removeImageEdit:removeImageEdit,
             addNewEvent:addNewEvent,

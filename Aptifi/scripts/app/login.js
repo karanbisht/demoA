@@ -8,27 +8,20 @@ app.Login = (function () {
 
     var loginViewModel = (function () {
         //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
-        var $loginUsername;
         var username;
         var varifiCode;
         var userType;
         var userType = [];
         var UserProfileInformation;
-        var UserOrgInformation;
         var account_Id;
         var db;
         var regClickButton;
-        var userOrgName = [];
-        var userGropuName = [];
-        var userGropuName = [];
         var JoinedOrganisationYN = 1;
         
         //var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
             app.userPosition = true;                       
-            $loginUsername = $('#loginUsername');
-            //$loginPassword = $('#loginPassword');            
         };
 
         var show = function () {
@@ -40,22 +33,7 @@ app.Login = (function () {
             app.userPosition = true;
             $('#loginUsername').val('');           
             $("#selectionDiv").show();
-            
-            //$('#loginPassword').val('');                        
-            //console.log('TESTINGGGGGG');
-            //console.log(window);
-            //console.log(window.plugins);
-            
-            //window.plugins.toast.showShortBottom('Hello TESTING PLUGIN');
-            
-            //if(window.navigator.simulator === true){
-            //window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
-            //var message = 'karan bisht';
-            //window.plugins.toast.showShortTop(message);
-            //}
-            //app.showNativeAlert();
-            //app.showNativeAlert();
-            
+                        
             $("#validationRow").hide();  
             $("#regenerateDiv").hide();  
 
@@ -78,7 +56,6 @@ app.Login = (function () {
         };
        
         // Authenticate to use Backend Services as a particular user
-        var countCheck = 0;
 
         var login = function () {		 
             var deviceName = app.devicePlatform();
@@ -159,8 +136,6 @@ app.Login = (function () {
                         var loginDataView = dataSourceLogin.data();
                         console.log('----------fetch Data------------');			
                         console.log(loginDataView);
-                        var orgDataId = [];
-                        var userAllGroupId = [];
 						   
                         $.each(loginDataView, function(i, loginData) {
                             console.log('-------Msg Data --------');			
@@ -187,40 +162,7 @@ app.Login = (function () {
                                 document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
                                 clickforRegenerateCode();   
                             }else if (loginData.status[0].Msg==='Success') {
-                                clickforRegenerateCode();   
-
-                                //console.log('reg');
-                                //   account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                                //console.log('karan'+account_Id);
-                                // console.log(loginData.status[0].JoinedOrg.role.length);
-                          
-                                //console.log(loginData);
-                                //console.log(loginData.status[0].JoinedOrg.role.length);
-                          
-                                /*if(loginData.status[0].JoinedOrg.length!==0){
-                                var roleLength = loginData.status[0].JoinedOrg.role.length;
-                                for(var i=0;i<roleLength;i++){
-                                userType.push(loginData.status[0].JoinedOrg.role[i]); 
-                                }
-                                // console.log(userType);
-                                UserOrgInformation = loginData.status[0].JoinedOrg;
-                                }else{
-                                JoinedOrganisationYN = 0;
-                                }
-                                UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                                */
-                                //console.log('checking for User Date');
-                         
-                                //console.log("1");
-                                //console.log(UserOrgInformation);
-                                //                        console.log("2");
-                                //console.log(UserProfileInformation);
-                                //console.log("karan bisht");
-                          
-                                //db = app.getDb();
-                                //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
-                                //  saveProfileInfo(UserProfileInformation);
-                           
+                                clickforRegenerateCode();                              
                                 if (loginData.status[0].JoinedOrg.length!==0) {
                                     //saveOrgInfo(UserOrgInformation);              
                                 }
@@ -384,46 +326,7 @@ app.Login = (function () {
                                                                               });         
             
                 organisationALLListDataSource.read();
-                /*organisationALLListDataSource.fetch(function() {
-                alert(i);
-                var loginDataView = organisationALLListDataSource.data();
-                console.log('checkkkkkkkkkkkkkkkkkkkkkkkk');
-                console.log(loginDataView);
-                var datacheck=0;
-                var allData=0;
-                $.each(loginDataView, function(y, groupValue) {
-                allData++;
-                console.log(groupValue);                                     
-                if(groupValue.status[0].Msg ==='No notification'){
-                alert(y);
-                datacheck++;
-                }else if(groupValue.status[0].Msg==='Success'){
-                alert(y);
-                var orgNotificationData = groupValue.status[0].notificationList;
-                console.log(groupValue);
-                console.log(orgNotificationData);
-                saveOrgNotification(orgNotificationData);                                                                                      
-                }                                                
-                });
-                if(allData===datacheck){
-                alert('equel');
-                //goToHomePage();
-                }
-                /*var orgNotificationData; 
-                $.each(data, function(i, groupValue) {
-                console.log(groupValue);
-                $.each(groupValue, function(i, orgVal) {
-                console.log();
-                if(orgVal.Msg ==='No notification'){     
-                }else if(orgVal.Msg==='Success'){
-                console.log(orgVal.notificationList.length);  
-                orgNotificationData = orgVal.notificationList;
-                saveOrgNotification(orgNotificationData);                                                                                     
-                }
-                });    
-                });
-                */
-                //});
+            
             }
         };
                         
@@ -508,87 +411,6 @@ app.Login = (function () {
             app.updateQuery(tx, query);
         }
           
-        /*       var UserInfoData;        
-        var saveLoginInfo = function(data){
-        UserInfoData=data;
-        console.log(UserInfoData);
-        var db = app.getDb();
-        db.transaction(saveLoginInfoValue, app.onError, app.onSuccess);
-        };
-        
-        var saveLoginInfoValue = function(tx){
-        var query = "DELETE FROM LoginInfo";
-        app.deleteQuery(tx, query);
-        console.log(UserInfoData);                
-        var queryNotification = 'INSERT INTO LoginInfo (UserId,UserName,Email,MobileNo,Password,Group) VALUES ("'+ UserInfoData.result.Id+'","'+UserInfoData.result.DisplayName+'","'+ UserInfoData.result.Email +'","'+ UserInfoData.result.MobileNo +'","'+ UserInfoData.result.Password +'","'+ UserInfoData.result.Group +'")';
-        app.insertQuery(tx,queryNotification); 
-        };
-        
-        var forgetPassInit = function(){
-        app.userPosition=false;
-        $("#forgetEmail").val('');
-        };
-        
-        var forgetPass= function(){
-        app.userPosition=false;
-        app.mobileApp.navigate('views/forgetPasswordView.html');       
-        };
-        
-        var sendForgetMail = function(){
-        var forgetEmail = $("#forgetEmail").val();    
-        if (forgetEmail === "Email" || forgetEmail === "") {
-        app.showAlert("Please enter your Email.", "Validation Error");
-        } else if (!app.validateEmail(forgetEmail)) {
-        app.showAlert("Please enter a valid Email.", "Validation Error");
-        }else{
-               
-        var jsonData = {"email":forgetEmail};   
-        var dataSourceRegistration = new kendo.data.DataSource({
-        transport: {
-        read: {
-        url: "http://54.85.208.215/webservice/user/forgot_password",
-        type:"POST",
-        dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-        data: jsonData
-        }
-        },
-        schema: {
-        data: function(data)
-        {	console.log(data);
-        return [data];
-        }
-        },
-        error: function (e) {
-        //apps.hideLoading();
-        console.log(e);
-        navigator.notification.alert("Please check your internet connection.",
-        function () { }, "Notification", 'OK');
-        } 
-        });  
-	            
-        dataSourceRegistration.fetch(function() {
-        var registrationDataView = dataSourceRegistration.data();
-        $.each(registrationDataView, function(i, regData) {
-        console.log(regData.status[0].Msg);
-                               
-        if(regData.status[0].Msg==='An email has been sent to reset your password.'){              
-        app.showAlert("An email has been sent to reset your password.","Notification"); 
-        window.location.href = "index.html";
-        //app.mobileApp.navigate('views/activitiesView.html?LoginType=Admin');
-        }else{
-        app.showAlert(regData.status[0].Msg ,'Notification'); 
-        }                               
-        });
-        });
-        }
-        };
-        
-        // function used for registration
-        
-        /*var registration = function() {
-        app.userPosition=false;
-        app.mobileApp.navigate('views/registrationView.html');           
-        };*/        
         
         var goToIndex = function() {
             app.mobileApp.navigate('index.html');
@@ -699,8 +521,6 @@ app.Login = (function () {
 	            
             dataSourceValidation.fetch(function() {
                 var registrationDataView = dataSourceValidation.data();
-                //console.log(registrationDataView);
-                //app.showAlert("The Verification Code will be sent to this number." , "Notification");
                 $("#validationRow").show();
                 $("#selectionDiv").hide();
 
@@ -795,30 +615,13 @@ app.Login = (function () {
                                 }   
                           
                                 UserProfileInformation = loginData.status[0].ProfileInfo[0];
-                                //if(loginData.status[0].JoinedOrg.length!==0){
-                                //UserOrgInformation = loginData.status[0].JoinedOrg;
-                                //saveOrgInfo(UserOrgInformation);
-                                //}    
-                                //console.log(UserOrgInformation);
-                                //console.log(UserProfileInformation);
-                                //console.log("karan bisht");
-                                //db = app.getDb();
-                                //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                                 saveProfileInfo(UserProfileInformation);
                             }else {
                                 //app.mobileApp.pane.loader.hide();
                                 $("#progressRandomCode").hide();
                                 app.showAlert(loginData.status[0].Msg, "Notification");
                             }      
-                            /*else if(loginData.status[0].Msg==='Create profile'){
-                            app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;
-                            var accountId=loginData.status[0].AccountID;
-                            app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
-                            }else if(loginData.status[0].Msg==='Authentication Required'){
-                            app.mobileApp.pane.loader.hide();
-                            clickforRegenerateCode();   
-                            }*/
+          
                         });
                     });
                 }else {
@@ -836,10 +639,7 @@ app.Login = (function () {
             login: login,
             checkEnter:checkEnter,
             goToLoginPage:goToLoginPage,
-            //forgetPass: forgetPass,
-            //sendForgetMail:sendForgetMail,
             goToIndex:goToIndex,
-            //forgetPassInit:forgetPassInit,
             backToIndex:backToIndex,
             clickforValificationCode:clickforValificationCode,
             cancelButtonRC:cancelButtonRC,
