@@ -196,16 +196,14 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {
-
         //alert("error--"+err.message);
         
-
         console.log("Error processing SQL: " + JSON.stringify(err));
 
         console.log("Error processing SQL: " + err.message);
 
         app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
-        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
+        //app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
     };
     
     // Transaction success callback
@@ -342,6 +340,16 @@ var app = (function (win) {
             //tabstrip.clear();adminEventCalendarDetail
             //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventList');     
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminEventList') {
+            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+            //tabstrip.clear();adminEventCalendarDetail
+            //tabstrip.switchTo("#organisationNotiList");        
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');  
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminOrgNewsList') {
+            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
+            //tabstrip.clear();adminEventCalendarDetail
+            //tabstrip.switchTo("#organisationNotiList");        
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');                      
         }else if (app.mobileApp.view()['element']['0']['id']==='adminAddNews') {
             app.mobileApp.navigate('#adminOrgNewsList');
             $("#adminAddNews").data("kendoMobileModalView").close();

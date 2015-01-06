@@ -889,14 +889,12 @@ app.sendNotification = (function () {
 
                 },
                                                                  error: function (e) {
-                                                                     console.log(e);
-                    
+                                                                     console.log(e);                    
                                                                      if (!app.checkSimulator()) {
                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                      }else {
                                                                          app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                     } 
-                                                                     
+                                                                     }                                                                      
                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Customer for Send Notification in Admin Panel.');
                          
                                                                      var showNotiTypes = [
@@ -910,18 +908,11 @@ app.sendNotification = (function () {
                                                                      $("#customer-Name-listview").kendoMobileListView({
                                                                                                                         template: kendo.template($("#errorTemplate").html()),
                                                                                                                         dataSource: dataSource  
-                                                                                                                    });
-                
-                                                                     //navigator.notification.alert("Please check your internet connection.",
-                                                                     //function () { }, "Notification", 'OK');                    
+                                                                                                                    });               
                                                                  }	        
                                                              });         
-                     
-            /*MemberDataSource.fetch(function() {
-                
-            });*/
-	                     
-            $("#customer-Name-listview").kendoListView({
+                     	                     
+                $("#customer-Name-listview").kendoListView({
                                                            dataSource: MemberDataSource,
                                                            template: kendo.template($("#customerNameTemplate").html()),
                                                            schema: {
@@ -957,8 +948,7 @@ app.sendNotification = (function () {
             
             customer = String(customer);        
             console.log(customer);
-            
-            
+                        
          if(customer.length!==0 && customer.length!=='0'){
 
             $("#selectCustomerToSend").hide();

@@ -172,7 +172,7 @@
 
         </div>
 
-        <div data-role="view" id="infoDiv" class="activities-view" data-model="app.Activities">
+        <div data-role="view" id="infoDiv" class="activities-view" data-model="app.OragnisationList">
             <div data-role="header" style="border-bottom:2px solid #F0F0F0">
                 <div data-role="navbar">
                     Sakshay
@@ -190,8 +190,8 @@
 
             <div data-role="footer">
                 <div id="appInfoTabStrip" data-role="tabstrip" data-selected-index="2">
-                    <a id="" data-icon="phone" data-role="button" data-bind="click: makeCall" >Call Us</a>
-                    <a id="" data-icon="mostviewed" data-role="button" data-bind="click: inAppBrowser" >Website</a>
+                    <a id="" data-icon="phone" data-role="button" data-bind="click: makeCall">Call Us</a>
+                    <a id="" data-icon="mostviewed" data-role="button" data-bind="click: inAppBrowser">Website</a>
                 </div>
             </div>
 
@@ -255,6 +255,9 @@
                     </li>
                     <li>
                         <a href="#" data-role="button" data-bind="click: selectProfilePhoto">Album</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: resetProfilePhoto">Reset</a>
                     </li>
                 </ul>
             </div>
@@ -434,10 +437,10 @@
                     <a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a>
                 </li>
                 <li >
-                    <a id="side-setting-icon" onclick="app.slide('left', 'red', 1, '#settingDiv')" data-transition="none"></a>
+                    <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
                 </li>
                 <li >
-                    <a id="side-about-icon"  onclick="app.slide('left', 'red', 1, '#infoDiv')" data-transition="none"></a>
+                    <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
                 </li>
                 <li id="goToAdmin" >
                     <a id="side-admin-icon"  onclick="app.flip('right', 'green', '#views/organisationLogin.html')"></a>

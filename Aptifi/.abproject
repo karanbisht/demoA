@@ -34,9 +34,9 @@
     "Portrait"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "true",
+  "AndroidHardwareAcceleration": "false",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "2.0.3",
+  "BundleVersion": "2.0.5",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",

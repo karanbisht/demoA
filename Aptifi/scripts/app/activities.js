@@ -16,7 +16,10 @@ app.Activities = (function () {
     var noDatainDB=0;
     
     var activitiesViewModel = (function () {
+    
         var init = function() {
+        
+            
         }   
         
         var show = function(e) {             
@@ -96,7 +99,6 @@ app.Activities = (function () {
                                      
                                 $.each(groupValue, function(i, orgVal) {
                                     console.log();
-
                                     if (orgVal.Msg ==='No notification') {     
                                         var db = app.getDb();
                                         db.transaction(getDataOrgNoti, app.errorCB, app.successCB);         
@@ -105,8 +107,7 @@ app.Activities = (function () {
                                         orgNotificationData = orgVal.notificationList;
                                         if(noDatainDB===1){
                                                groupDataShow=[]; 
-                                        }
-                                        
+                                        }                                        
                                         saveOrgNotification(orgNotificationData);                                                                                     
                                     }
                                 });    
@@ -118,7 +119,7 @@ app.Activities = (function () {
                     },
                                                                                      error: function (e) {
                                                                                          console.log(e);
-                    
+
                                                                                          if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                                          }else {
