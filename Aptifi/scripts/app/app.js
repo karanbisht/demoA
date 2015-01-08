@@ -163,7 +163,7 @@ var app = (function (win) {
     };
     
     var loginStatusQuerySuccess = function() {        
-        console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);        
+        //console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);        
         if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
             //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
             localStorage.setItem("loginStatusCheck", 1);
@@ -200,7 +200,7 @@ var app = (function (win) {
         
         console.log("Error processing SQL: " + JSON.stringify(err));
 
-        console.log("Error processing SQL: " + err.message);
+        //console.log("Error processing SQL: " + err.message);
 
         app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
         //app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
@@ -396,7 +396,7 @@ var app = (function (win) {
     }
 
     function updateLoginStatusError(err) {
-        console.log(err);
+        //console.log(err);
     }
     
     function updateAdminLoginStatus(tx) {
@@ -419,7 +419,7 @@ var app = (function (win) {
     }
 
     function updateAdminLoginStatusError(err) {
-        console.log(err);
+        //console.log(err);
     }
 
     var navigateHome = function () {
@@ -454,10 +454,10 @@ var app = (function (win) {
         fixViewResize();
         
         //console.log('apppppppppppp');
-        console.log(window.plugins);
+        //console.log(window.plugins);
         
         var pushNotification = window.plugins.pushNotification;
-        console.log(pushNotification);
+        //console.log(pushNotification);
         //alert(device.platform);
            
         /*var deviceName = app.devicePlatform();
@@ -557,10 +557,10 @@ var app = (function (win) {
     
     var fileSystemSuccess = function(fileSystem) {
         var directoryEntry = fileSystem.root;
-        console.log(directoryEntry);
+        //console.log(directoryEntry);
         directoryEntry.getDirectory("Aptifi", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         var rootdir = fileSystem.root;
-        console.log(rootdir);
+        //console.log(rootdir);
         fp = rootdir.fullPath;
         getfbValue();
     }
@@ -661,7 +661,7 @@ var app = (function (win) {
     //var onNotificationAPN = function(e) {
         
     var onNotificationAPN = function(event) {
-        console.log(JSON.stringify(event));           
+        //console.log(JSON.stringify(event));           
         if (event.id) {                   
             //var receivedMesage = JSON.stringify(event.id, null, 4);
             //console.log(receivedMesage);
@@ -688,8 +688,8 @@ var app = (function (win) {
                     commentAllowDB = 0;
                 }
                         
-                console.log("RECEIVED VALUE------------------------");
-                console.log(messageDB + "||" + orgIdDB + "||" + notiIdDB + "||" + typeDB + "||" + titleDB + "||" + attachedDB + "||" + commentAllowDB + "||" + notificationMsg + "||" + send_DateDB);
+                //console.log("RECEIVED VALUE------------------------");
+                //console.log(messageDB + "||" + orgIdDB + "||" + notiIdDB + "||" + typeDB + "||" + titleDB + "||" + attachedDB + "||" + commentAllowDB + "||" + notificationMsg + "||" + send_DateDB);
             
                 navigator.notification.confirm(titleDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
@@ -753,20 +753,20 @@ var app = (function (win) {
                     break;
                 case 'message': 
                     //alert(e);                      
-                    console.log('----------------------');
-                    console.log(JSON.stringify(e));
-                    console.log(JSON.stringify(e.event));
-                    console.log(e.foreground);
+                    //console.log('----------------------');
+                    //console.log(JSON.stringify(e));
+                    //console.log(JSON.stringify(e.event));
+                    //console.log(e.foreground);
 
                     //alert(e.title);            
             
                     account_IdDB = localStorage.getItem("ACCOUNT_ID");             
-                    console.log(account_IdDB);            
+                    //console.log(account_IdDB);            
 
-                    console.log(JSON.stringify(e.payload.default));           
+                    //console.log(JSON.stringify(e.payload.default));           
             
                     var messageSplitVal = e.payload.default.split('#####');
-                    console.log(messageSplitVal);
+                    //console.log(messageSplitVal);
                     
                     messageDB = messageSplitVal[0];
                     orgIdDB = messageSplitVal[1];
@@ -777,12 +777,12 @@ var app = (function (win) {
                     commentAllowDB = messageSplitVal[6];
                     notificationMsg = messageSplitVal[7];
                 
-                    console.log('---data-------');
+                    //console.log('---data-------');
                     //send_DateDB= getPresentDateTime();           
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
             
-                        console.log(typeDB);
+                        //console.log(typeDB);
                 
                     if (typeDB!=='Add Customer') {
                         
@@ -790,26 +790,26 @@ var app = (function (win) {
                             attachedDB = '';
                         }
 
-                        console.log(e.foreground);
+                        //console.log(e.foreground);
                         
                         if (e.foreground) {
-                            console.log('1');
+                            //console.log('1');
                             if (typeDB!=='Reply') {
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
                             }
                         }else {
-                            console.log('2');
+                            //console.log('2');
 
                             if (typeDB!=='Reply') {
 
-                                console.log('3');
+                                //console.log('3');
 
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                             }else {
 
-                                console.log('4');
+                                //console.log('4');
 
                                 typeDB = "Reply";
                                 var temp;
@@ -867,7 +867,7 @@ var app = (function (win) {
     };  
         
     function insertOrgNotiData(tx) {
-        console.log('DATA VALUE1');
+        //console.log('DATA VALUE1');
         
 
         messageDB = app.urlEncode(messageDB);
@@ -878,12 +878,12 @@ var app = (function (win) {
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        console.log('DATA VALUE2');
+        //console.log('DATA VALUE2');
 
         var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
         app.deleteQuery(tx, queryDelete);         
 
-        console.log('DATA VALUE3');
+        //console.log('DATA VALUE3');
           
         //alert(send_DateDB);
 
@@ -908,7 +908,7 @@ var app = (function (win) {
     }
     
     function insertOrgNotiDataBagINC(tx) {
-        console.log('DATA VALUE1');
+        //console.log('DATA VALUE1');
 
         messageDB = app.urlEncode(messageDB);
         titleDB = app.urlEncode(titleDB);
@@ -917,12 +917,12 @@ var app = (function (win) {
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , bagCount=bagCount+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        console.log('DATA VALUE2');
+        //console.log('DATA VALUE2');
 
         var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
         app.deleteQuery(tx, queryDelete);   
 
-        console.log('DATA VALUE3');
+        //console.log('DATA VALUE3');
           
         //alert(send_DateDB);
 
@@ -947,19 +947,19 @@ var app = (function (win) {
     }
     
     function goToAppPage() {        
-        console.log('DATA VALUE4');
+        //console.log('DATA VALUE4');
 
         var db = app.getDb();
         db.transaction(updatebagCount, app.errorCB, app.successCB);
           
         //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
-        console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
+        //console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
         //alert('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
 
         var messageDBVal = app.urlEncode(messageDB); 
         var titleDBVal = app.urlEncode(titleDB);
          
-        console.log('go to page');     
+        //console.log('go to page');     
         app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
     }
     
@@ -1014,7 +1014,7 @@ var app = (function (win) {
 
     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
     
-    console.log(loginStatusCheck);
+    //console.log(loginStatusCheck);
     
     //alert(loginStatusCheck);
     
@@ -1038,7 +1038,7 @@ var app = (function (win) {
     var callOrganisationLogin = function() {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
         app.MenuPage = false;	
-        console.log(account_Id);
+        //console.log(account_Id);
         app.mobileApp.navigate('views/organisationLogin.html?account_Id=' + account_Id);
         //app.mobileApp.navigate('#organisationNotiList');
     };
@@ -1047,7 +1047,7 @@ var app = (function (win) {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
         var userType = localStorage.getItem("USERTYPE");
         app.MenuPage = false;	
-        console.log(account_Id);
+        //console.log(account_Id);
         //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
         //app.mobileApp.navigate('#organisationNotiList');
          app.slide('right', 'green' ,'3' ,'#organisationNotiList');
@@ -1233,7 +1233,7 @@ var app = (function (win) {
     
     var formatTime = function(timeString){        
         var split = timeString .split(':');
-        console.log(split[0] + " || " + split[1]);
+        //console.log(split[0] + " || " + split[1]);
    
         var dayNight = split[0] < 12 ? 'am' : 'pm'; // Set AM/PM
 

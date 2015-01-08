@@ -13,7 +13,7 @@ app.OragnisationList = (function () {
         };
                       
         var show = function() {
-            $("#progress2").show();
+            //$("#progress2").show();
             //$('#organisation-listview').data('kendoMobileListView').refresh();            
             $(".km-scroll-container").css("-webkit-transform", "");
                           
@@ -1632,6 +1632,19 @@ app.OragnisationList = (function () {
                     console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
+                        $("#savingDeviceCalenderLoader").hide();
+
+                        if (!app.checkSimulator()) {
+                        
+                            window.plugins.toast.showLongBottom('No Event list to sync');  
+                            
+                        }else {
+                        
+                            app.showAlert('No Event list to sync' , 'Notification');  
+                            
+                        }               
+
+
                     }else if (loginData.status[0].Msg==='Success') {
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;

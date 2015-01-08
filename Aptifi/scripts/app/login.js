@@ -26,7 +26,7 @@ app.Login = (function () {
 
         var show = function () {
             //app.mobileApp.pane.showLoading();              
-            console.log("Login Page");
+            //console.log("Login Page");
                         
             //app.showNativeAlert();            
             app.userPosition = true;
@@ -93,7 +93,7 @@ app.Login = (function () {
                 
                     localStorage.setItem("username", username); 
                    
-                    console.log('--------static server URL-----' + app.serverUrl());
+                    //console.log('--------static server URL-----' + app.serverUrl());
                    
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
                     var dataSourceLogin = new kendo.data.DataSource({

@@ -103,12 +103,7 @@ app.Activity = (function () {
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
             groupDataShow = [];            
-
             $('#newComment').val(' ');
-
-            //console.log('TESTINGGGGGG');
-            //console.log(window);
-            //console.log(window.plugins);
  
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
@@ -127,16 +122,12 @@ app.Activity = (function () {
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
-                content = $(this).val();
-    
+                content = $(this).val();    
                 content = content.replace(/\n/g, '<br>');
                 hiddenDiv.html(content + '<br class="lbr">');
     
                 $(this).css('height', hiddenDiv.height());
             });
-
-            
-            
             
             message = e.view.params.message;
             title = e.view.params.title;
@@ -152,7 +143,7 @@ app.Activity = (function () {
             
             //alert('dataValue');
             
-            console.log(org_id + '||' + notiId + '||' + account_Id + '||' + comment_allow + '||' + attached);
+            //console.log(org_id + '||' + notiId + '||' + account_Id + '||' + comment_allow + '||' + attached);
             //alert(attached);
             
             //var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;            
@@ -163,33 +154,31 @@ app.Activity = (function () {
             }
 
             if (attached!== null && attached!=='' && attached!=="0") {
-                loaded(); 
+                //loaded(); 
                 //$('#notiImage').css({"height":"200px"});
                 $('#notiImage').css({"max-height":"200px"});
                 //$('#notiImage').css({"width":'auto'});
                 $('#notiImage').css({"margin-top":"10px"}); 
                 var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';                
-                
-                //alert(fp);                
+                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
+                alert(fp);                                
                 console.log('Image Saving Process');    
                 //console.log(attachedImg);    
-                window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
+                window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }
                         
             if (comment_allow===1 || comment_allow==='1') {
                 $("#commentPanel").show();                
                 $("#newComment").val('');
                 $("#newComment").attr("placeholder","Reply");
-
-            }else {
-                
+            }else {                
                 $("#commentPanel").css("z-index", "-1");
                 $("#commentPanel").css("opacity", .4);	
                 document.getElementById('commentPanel').style.pointerEvents = 'none';
                 $("#newComment").val('');
                 $("#newComment").attr("placeholder", "Reply not allow.");
             }
+            
             console.log(org_id + "||" + notiId + "||" + account_Id);            
             $("#personName").html(title);
             $("#activityText").html(message);
@@ -212,7 +201,7 @@ app.Activity = (function () {
         };
         
         var imagePathExist = function() {
-            //alert('1');
+            alert('1');
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
@@ -221,24 +210,31 @@ app.Activity = (function () {
         }
         
         var imagePathNotExist = function() {
+            alert('2');
             $("#progressChat").show();
-            var attachedImg = attached;
+            var attachedImg = attached;            
+            alert(attached);            
+            console.log(attached);
             
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
-            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
-            
+            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))       
             img.attr('src', attachedImg);
             img.appendTo('#notiImage'); 
  	
-            var fileTransfer = new FileTransfer();    
+            var fileTransfer = new FileTransfer();  
+            
+            alert(attachedImg+"||"+fp);
+            
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
+                                      alert('1');
                                       $("#progressChat").hide();
                                   },
     
                                   function(error) {
+                                      alert('2');
                                       $("#progressChat").hide();
                                   }
                 );                

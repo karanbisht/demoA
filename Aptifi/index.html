@@ -347,8 +347,8 @@
 
         <script type="text/x-kendo-template" id="organisationTemplate">
 
-            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">
-                    
+           #if(organisationID!==0 && organisationID!=='0'){# 
+            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">                    
                 #if (org_logo===null || org_logo==='null') {#   
                     <div class="org-img-show"></div>
                 #}else {#
@@ -371,6 +371,18 @@
                     <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
                 </div>
             </div>
+                
+          #}else{#     
+            <div class="cf">                    
+                <div class="org-img-show"></div>                     
+                <div class="orgList-content">
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;">${orgName}</h2>             
+                    <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
+                </div>
+            </div>
+          #}#
+
+                
         </script>
 
         <!-- Activities ListView Template -->
@@ -879,7 +891,7 @@
                     <a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a>
                 </li>
                 <li>
-                    <a id="side-admin-user-icon"  onclick="app.flip('left', 'green', '#organisationNotiList')"  data-transition="none" ></a>
+                    <a id="side-admin-user-icon"  onclick="Logout()"  data-transition="none" ></a>
                 </li>
             </ul>
         </div>
@@ -990,6 +1002,67 @@
                 $("#countToShow").html(showData);            
             }            
           }
+            
+            
+            function Logout(){
+                
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else { 
+                    var dataSourceLogin = new kendo.data.DataSource({
+                                                                        transport: {
+                            read: {
+                                                                                    url: app.serverUrl() + "organisation/orgAdminLogout",
+                                                                                    type:"POST",
+                                                                                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                }
+                        },
+                                                                        schema: {
+                            data: function(data) {
+                                console.log(data);
+                                return [data];
+                            }
+                        },
+                                                                        error: function (e) {
+                                                                            
+                                                                            console.log(JSON.stringify(e));
+                                                                         
+                                                                            document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+
+                                                                            if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                            }else {
+                                                                                app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                            }
+                                                                            //navigator.notification.alert("Please check your internet connection.",
+                                                                            //function () { }, "Notification", 'OK');
+                                                                        }               
+                                                                    });  
+	            
+                    dataSourceLogin.fetch(function() {
+                        var loginDataView = dataSourceLogin.data();
+                        console.log(loginDataView);
+               
+                        $.each(loginDataView, function(i, loginData) {
+                            console.log(loginData.status[0].Msg);
+
+                            if (loginData.status[0].Msg==='You have been successfully logged out.') {
+                                console.log('reg');
+                                app.flip('left', 'green', '#organisationNotiList')
+                            }else {
+                                //app.mobileApp.pane.loader.hide();
+                                //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                app.showAlert(loginData.status[0].Msg, "Notification");
+                            }
+
+                        });
+                    });
+                }
+            }
                
         </script>
 

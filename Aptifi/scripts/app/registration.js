@@ -79,11 +79,11 @@ app.registration = (function () {
                 if (comingFrom==='reg') {
                     console.log("1"); 
                     jsonDataRegister = {"username":username,"fname":fname,"lname":lname,"email":email}  
-                    goToUrl = "http://54.85.208.215/webservice/customer/register"  
+                    goToUrl = app.serverUrl() + "customer/register"  
                 }else {
                     console.log("2");  
                     jsonDataRegister = {"account_id":username,"first_name":fname,"last_name":lname,"email":email} 
-                    goToUrl = "http://54.85.208.215/webservice/customer/createProfile"
+                    goToUrl = app.serverUrl() + "customer/createProfile"
                 }
        
                 var dataSourceRegister = new kendo.data.DataSource({
@@ -107,10 +107,16 @@ app.registration = (function () {
                                                                            $("#progressRegister").hide();
 
                                                                            console.log(e);
-                                                                           app.mobileApp.pane.loader.hide();
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                            if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                            }else {
+                                                                                app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                            }
+
+                                                                                                                                                     
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Error in Res.');
+
+                                                                           
                                                                        }               
                                                                    });  
 	            

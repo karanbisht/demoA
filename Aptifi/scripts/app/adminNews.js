@@ -56,7 +56,7 @@ app.adminNews = (function () {
                 },
                                                                 error: function (e) {
                                                                     console.log(e);             
-                                                                    
+                                                                     console.log(JSON.stringify(e));
                                                                                  $("#adminNewsListLoader").hide();
                                                                                  $("#orgAllNewsList").show();
 
@@ -77,10 +77,9 @@ app.adminNews = (function () {
                                                                                                      });
                     
                                                                      $("#orgAllNewsList").kendoMobileListView({
-                                                                                                                        template: kendo.template($("#errorTemplate").html()),
-                                                                                                                        dataSource: dataSource  
-                                                                                                                    });
-                
+                                                                               template: kendo.template($("#errorTemplate").html()),
+                                                                                dataSource: dataSource  
+                                                                    });
                                                                 }               
                                                             });  
 	            
@@ -625,6 +624,7 @@ app.adminNews = (function () {
              
                 event_Date = year + "-" + month + "-" + day;
                 //event_Date=event_Date.toString();
+
                 var actionval = "Add";
             
                 //console.log(event_description);
@@ -660,16 +660,25 @@ app.adminNews = (function () {
                             
 
                        console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
-
+                            
+                        var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
+                            console.log(filename);
+                            alert(filename);      
+                        var path =  newsDataToSend;
+                            console.log(path);
+                            alert(path);
                         var params = new Object();
                         params.org_id = organisationID;  //you can send additional info with the file
                         params.txtNewsDesc = event_description;
                         params.txtNewsDate = event_Date;
                         params.txtNewsTime = eventTimeSend;
-                        params.upload_type = upload_type;    
+                        params.upload_type = upload_type;
+                            
+
+                        var ft = new FileTransfer();
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";
-                        options.fileName = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
+                        options.fileName = filename;
               
                         console.log("-------------------------------------------");
                         console.log(options.fileName);
@@ -679,8 +688,9 @@ app.adminNews = (function () {
                         options.headers = {
                             Connection: "close"
                         }
+       
+                   
                         options.chunkedMode = false;
-                        var ft = new FileTransfer();
 
                         console.log(tasks);
                  
@@ -766,6 +776,7 @@ app.adminNews = (function () {
                 
         function fail(error) {
             console.log(error);
+            console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);

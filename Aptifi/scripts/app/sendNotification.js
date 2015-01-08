@@ -504,6 +504,17 @@ app.sendNotification = (function () {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
                         }
+
+                        
+                        
+                        var filename = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
+                            console.log(filename);
+                            alert(filename);      
+                        var path =  dataToSend;
+                            console.log(path);
+                            alert(path);
+
+                        
                         var params = new Object();
                         params.cmbGroup = cmbGroup;  //you can send additional info with the file
                         params.cmbCust = cmbCust;

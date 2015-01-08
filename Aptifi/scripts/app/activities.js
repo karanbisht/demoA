@@ -1,8 +1,6 @@
 var app = app || {};
 
-app.Activities = (function () {
-  
- 
+app.Activities = (function () { 
     var organisationID;  
     var account_Id;  
     var bagCount;
@@ -30,8 +28,8 @@ app.Activities = (function () {
             groupDataShow = [];
             $("#showMoreButton").hide();
 
-            $("#progressNotification").show();
-            $("#activities-listview").hide();  
+            //$("#progressNotification").show();
+            //$("#activities-listview").hide();  
             $(".km-scroll-container").css("-webkit-transform", "");  
             groupDataShow = [];
             //$('#activities-listview').data('kendoMobileListView').refresh();
@@ -337,8 +335,7 @@ app.Activities = (function () {
             
         var showLiveData = function() {
             var organisationALLListDataSource = new kendo.data.DataSource({
-                                                                              data: groupDataShow
-                                                                          });
+                                                                              data: groupDataShow                                                                          });
              
                         $("#activities-listview").kendoMobileListView({
                                                               template: kendo.template($("#activityTemplate").html()),    		

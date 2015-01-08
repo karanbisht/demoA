@@ -691,7 +691,8 @@ app.adminEventCalender = (function () {
                     params.txtEventDesc = event_description;
                     params.txtEventDate = event_Date;                            
                     params.eventStartTime = eventTimeSend;
-                    params.action = actionval;    
+                    params.action = actionval;
+                    params.upload_type = "image";  
                                                
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
