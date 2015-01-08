@@ -449,7 +449,7 @@ var app = (function (win) {
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
+        window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
         
         fixViewResize();
         
@@ -556,13 +556,17 @@ var app = (function (win) {
     document.addEventListener('orientationchange', fixViewResize);
     
     var fileSystemSuccess = function(fileSystem) {
-        var directoryEntry = fileSystem.root;
+        //alert(fileSystem.name);
+        //var directoryEntry = fileSystem.root;
         //console.log(directoryEntry);
-        directoryEntry.getDirectory("Aptifi", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         var rootdir = fileSystem.root;
         //console.log(rootdir);
-        fp = rootdir.fullPath;
+        fp = rootdir.toURL();        
+        //alert(fp);
+        //alert(fileSystem.root.fullPath);        
+        directoryEntry.getDirectory("Aptifi", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         getfbValue();
+
     }
     
     var getfbValue = function() {
@@ -579,6 +583,7 @@ var app = (function (win) {
     }
     
     function fileSystemFail(evt) {
+        alert(evt.target.error.code);
         console.log(evt.target.error.code);
     }
 

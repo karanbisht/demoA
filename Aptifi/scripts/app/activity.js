@@ -160,7 +160,7 @@ app.Activity = (function () {
                 //$('#notiImage').css({"width":'auto'});
                 $('#notiImage').css({"margin-top":"10px"}); 
                 var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
+                var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
                 alert(fp);                                
                 console.log('Image Saving Process');    
                 //console.log(attachedImg);    
@@ -203,7 +203,7 @@ app.Activity = (function () {
         var imagePathExist = function() {
             alert('1');
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
+            var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
@@ -217,7 +217,7 @@ app.Activity = (function () {
             console.log(attached);
             
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
+            var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))       
             img.attr('src', attachedImg);
