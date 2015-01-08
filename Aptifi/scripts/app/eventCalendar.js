@@ -21,7 +21,7 @@ app.eventCalender = (function () {
 
             eventOrgId = localStorage.getItem("selectedOrgId");
 
-            document.getElementById("calendar").innerHTML = "";
+            //document.getElementById("calendar").innerHTML = "";
              
             $("#eventCalendarFirstAllList").show();
 
@@ -65,8 +65,8 @@ app.eventCalender = (function () {
                     if (loginData.status[0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
-                        $("#eventDetailDiv").hide();
-                        showEventInCalendar();
+                        //$("#eventDetailDiv").hide();
+                        //showEventInCalendar();
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
@@ -83,18 +83,23 @@ app.eventCalender = (function () {
                                  var eventTimeString = loginData.status[0].eventData[i].event_time;
                                  var eventDate = app.formatDate(eventDateString);
                                  var eventTime = app.formatTime(eventTimeString);
-                                  
+                                
+                                 var aboveDay = app.getDateDays(eventDateString);   
+                                 var belowData = app.getDateMonth(eventDateString);
+                                
                                 var values = eventDaya.split('-');
                                 var year = values[0]; // globle variable
                                 var month = values[1];
                                 var day = values[2];
                                   
+                                //alert(day+"||"+aboveDay+"||"+belowData);
+                                
                                 console.log('------------------date=---------------------');
                                 console.log(year + "||" + month + "||" + day);
                                   
-                                tasks[+new Date(year + "/" + month + "/" + day)] = "ob-done-date";
+                                //tasks[+new Date(year + "/" + month + "/" + day)] = "ob-done-date";
                                   
-                                console.log(tasks);
+                                //console.log(tasks);
                                   
                                 //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
@@ -102,12 +107,17 @@ app.eventCalender = (function () {
                                     day = day.replace(/^0+/, '');                                     
                                 }
                                 var saveData = month + "/" + day + "/" + year;
-                                                                    
-                                groupAllEvent.push({
+                                
+                                
+                                                  
+                               
+                                    groupAllEvent.push({
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
-                                                       event_show_date:eventDate,
+                                                       event_show_day:day,
+                                                       event_above_day:aboveDay,
+                                                       event_below_day:belowData,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
                                                        event_name: loginData.status[0].eventData[i].event_name, 
                                                        event_image : loginData.status[0].eventData[i].event_image,
@@ -116,7 +126,7 @@ app.eventCalender = (function () {
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
                             }
-                            showEventInCalendar();
+                            //showEventInCalendar();
                         } 
                     }                
                    
@@ -131,7 +141,7 @@ app.eventCalender = (function () {
             
             multipleEventArray = [];            
 
-            document.getElementById("calendar").innerHTML = "";
+            //document.getElementById("calendar").innerHTML = "";
             
             $("#calendar").kendoCalendar({
                                              value:new Date(),
@@ -292,7 +302,7 @@ app.eventCalender = (function () {
             
             if (allEventLength===0) {
                 groupAllEvent.push({
-                                       id:0 ,
+                                       id:0,
                                        add_date:'',
                                        event_date:'',
                                        event_desc: 'This Organization has no event.',                                                                                 										  
@@ -314,6 +324,8 @@ app.eventCalender = (function () {
                                                                 });
              
             $('#eventCalendarFirstAllList').data('kendoMobileListView').refresh();
+            
+              $("#CalProcess").hide();
         }
         
         var gobackOrgPage = function() {

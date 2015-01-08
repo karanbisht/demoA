@@ -161,7 +161,7 @@ app.Activity = (function () {
                 $('#notiImage').css({"margin-top":"10px"}); 
                 var imgPathData = app.getfbValue();                    
                 var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
-                alert(fp);                                
+                //alert(fp);                                
                 console.log('Image Saving Process');    
                 //console.log(attachedImg);    
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
@@ -201,7 +201,7 @@ app.Activity = (function () {
         };
         
         var imagePathExist = function() {
-            alert('1');
+            //alert('1');
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
@@ -210,10 +210,10 @@ app.Activity = (function () {
         }
         
         var imagePathNotExist = function() {
-            alert('2');
+            //alert('2');
             $("#progressChat").show();
             var attachedImg = attached;            
-            alert(attached);            
+            //alert(attached);            
             console.log(attached);
             
             var imgPathData = app.getfbValue();    
@@ -225,16 +225,16 @@ app.Activity = (function () {
  	
             var fileTransfer = new FileTransfer();  
             
-            alert(attachedImg+"||"+fp);
+            //alert(attachedImg+"||"+fp);
             
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
-                                      alert('1');
+                                      //alert('1');
                                       $("#progressChat").hide();
                                   },
     
                                   function(error) {
-                                      alert('2');
+                                      //alert('2');
                                       $("#progressChat").hide();
                                   }
                 );                

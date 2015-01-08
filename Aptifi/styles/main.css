@@ -605,9 +605,19 @@ input::-webkit-inner-spin-button
 #Aptifi .activities-view-info .km-content,
 #Aptifi .activities-view-info .km-listview
 {
-    /*background-color: #EDEFF4;*/
-    background-color: #888888;
+    background-color: #EBE7DC;
     overflow-y: hidden;
+}
+
+.activities-view-info .km-list > li
+{
+    background-color: #EBE7DC;
+
+} 
+
+#eventCalendarFirstAllList > li
+{
+    border:none;
 }
 
 #Aptifi .activities-view-notification .km-content
@@ -789,11 +799,45 @@ input::-webkit-inner-spin-button
     text-align: justify;
 }
 
+
+.calendarEvent-content
+{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    background-color:#EBE7DC;
+    border:none;
+}
+
+
 .calendarEvent-List
 {
     position: relative;
     font-size: .85rem;
     text-align: justify;
+    padding:10px;
+    background-color:#FBFBFB;
+    border-radius:6px 6px 0px 0px;
+    z-index:1;
+    border:1px solid #D7D4CB;
+}
+
+.calendarEventbelow-List
+{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    padding:10px;
+    background-color:#EBEBEA;
+    border-radius:0px 0px 6px 6px;   
+    z-index:1;
+    border:1px solid #D7D4CB;
+
+}
+
+.calanderTimeClass{
+   font-size: 1.2rem;
+    margin:5px 0px 5px 0px; 
 }
 
 .calendarEvent-Click
@@ -810,7 +854,6 @@ input::-webkit-inner-spin-button
     color:rgb(122,184,77);
     font-size: 1.5em;
     font-weight:bold;
-
 }
 
 #Aptifi .orgList-content
@@ -1340,6 +1383,32 @@ background: #fff none;
     font-weight: 600; 
 }
 
+
+.calDayClass
+{
+    display: block;
+    margin:0 ;
+    color: #3E3B36;
+    font-size: 1.2rem; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    font-weight: 500; 
+}
+
+
+.calMonthClass
+{
+    display: block;
+    margin: 0 ;
+    color: #B3ADA1;
+    font-size: .7rem; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    font-weight: 400; 
+}
+
 .orgContentMsg
 {
     color: #939393;
@@ -1365,6 +1434,16 @@ background: #fff none;
 {
     width: 60%;
     float: left;
+}
+
+
+.CalenderdateValue
+{
+    margin-top:-3px;
+    width: 50px;
+    float: left;
+    font-size: 2.5rem; 
+
 }
 
 .divBagVal

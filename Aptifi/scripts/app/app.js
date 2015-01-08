@@ -1118,6 +1118,19 @@ var app = (function (win) {
         //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
     }
     
+    
+     var getDateDays = function (dateString) {
+        var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+        var today = new Date(dateString);
+        return kendo.toString(days[today.getDay()]);
+    }
+    
+    var getDateMonth = function (dateString) {
+        var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var today = new Date(dateString);
+        return kendo.toString(month[today.getMonth()]+ ' ' + today.getFullYear());
+    }
+    
     var currentDataFormate = function() {
         var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
         var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1406,17 +1419,8 @@ var app = (function (win) {
         htmlDecode:htmlDecode,
         slide:slide,
         flip:flip,
-    
-        //registerInEverlive:registerInEverlive,
-        //disablePushNotifications:disablePushNotifications,
-        //updateRegistration:updateRegistration,
-        //enablePushNotifications:enablePushNotifications,
-        //_onDeviceRegistrationUpdated:_onDeviceRegistrationUpdated,
-        //_onDeviceIsNotInitialized:_onDeviceIsNotInitialized,
-        //_onDeviceIsNotRegistered:_onDeviceIsNotRegistered,
-        //onAndroidPushReceived:onAndroidPushReceived,
-        //onIosPushReceived:onIosPushReceived,
-        //_onDeviceIsRegistered:_onDeviceIsRegistered,
+        getDateMonth:getDateMonth,
+        getDateDays:getDateDays,
         getYear: getYear
     };
 }(window));
