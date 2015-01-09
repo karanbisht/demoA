@@ -70,6 +70,8 @@ app.eventCalender = (function () {
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
+                             
+                        var preDateVal = 0 ;
 
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;
@@ -108,7 +110,6 @@ app.eventCalender = (function () {
                                 }
                                 var saveData = month + "/" + day + "/" + year;
                                 
-                                
                                                   
                                
                                     groupAllEvent.push({
@@ -116,6 +117,7 @@ app.eventCalender = (function () {
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date: saveData,
                                                        event_show_day:day,
+                                                       preDateVal:preDateVal,
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
@@ -125,6 +127,8 @@ app.eventCalender = (function () {
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
+                             
+                                preDateVal=saveData;
                             }
                             //showEventInCalendar();
                         } 
@@ -244,19 +248,17 @@ app.eventCalender = (function () {
         }
     
         var detailShow = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
+                        
+            $(".km-scroll-container").css("-webkit-transform", "");            
             $("#detailEventData").html("Event On " + multipleEventArray[0].event_date);
-            console.log(multipleEventArray);                
+            //console.log(multipleEventArray);                
             var organisationListDataSource = new kendo.data.DataSource({
-                                                                           data: multipleEventArray
-                                                                       });           
-                
+                    data: multipleEventArray
+            });                           
             $("#eventCalendarList").kendoMobileListView({
-                                                            template: kendo.template($("#calendarTemplate").html()),    		
-                                                            dataSource: organisationListDataSource
-                                                        });
-                
+                         template: kendo.template($("#calendarTemplate").html()),    		
+                         dataSource: organisationListDataSource
+            });                
             $('#eventCalendarList').data('kendoMobileListView').refresh();
         }
         
@@ -296,10 +298,8 @@ app.eventCalender = (function () {
         }
         
         var eventListFirstShow = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
-            var allEventLength = groupAllEvent.length;
-            
+            $(".km-scroll-container").css("-webkit-transform", "");           
+            var allEventLength = groupAllEvent.length;            
             if (allEventLength===0) {
                 groupAllEvent.push({
                                        id:0,
@@ -315,12 +315,12 @@ app.eventCalender = (function () {
             }
  
             var organisationListDataSourceFirst = new kendo.data.DataSource({
-                                                                                data: groupAllEvent
-                                                                            });           
+                                                                               data: groupAllEvent
+                                                                           });           
                 
             $("#eventCalendarFirstAllList").kendoMobileListView({
-                                                                    template: kendo.template($("#calendarEventListTemplate").html()),  		
-                                                                    dataSource: organisationListDataSourceFirst
+                                                                 template: kendo.template($("#calendarEventListTemplate").html()),  		
+                                                                 dataSource: organisationListDataSourceFirst
                                                                 });
              
             $('#eventCalendarFirstAllList').data('kendoMobileListView').refresh();
@@ -328,7 +328,28 @@ app.eventCalender = (function () {
               $("#CalProcess").hide();
         }
         
-        var gobackOrgPage = function() {
+        var eventSelected = function(e){
+            console.log(e);           
+            
+                               multipleEventArray.push({
+                                                id: e.data.id,
+                                                add_date: e.data.add_date,
+                                                event_date: e.data.event_date,
+                                                event_desc: e.data.event_desc,
+                                                event_show_day:e.data.event_show_day,
+                                                event_name: e.data.event_name,
+                                                event_above_day:e.data.event_above_day,
+                                                event_below_day:e.data.event_below_day,
+                                                event_image:e.data.event_image,
+                                                event_time: e.data.event_time,                                                                                  										  
+                                                mod_date: e.data.mod_date,                                     
+                                                org_id: e.data.org_id
+                                            });
+            
+            app.mobileApp.navigate('#eventCalendarDetail');            
+        }
+        
+        var gobackOrgPage = function(){
             app.mobileApp.navigate('views/userOrgManage.html');            
         }
         
@@ -336,6 +357,7 @@ app.eventCalender = (function () {
             init: init,
             show: show,
             eventListShow:eventListShow,
+            eventSelected:eventSelected,
             eventListFirstShow:eventListFirstShow,
             gobackOrgPage:gobackOrgPage,
             gobackToCalendar:gobackToCalendar,

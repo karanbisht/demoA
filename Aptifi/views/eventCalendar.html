@@ -2,7 +2,7 @@
 <div data-role="view" id="eventCalendar" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.eventCalender" data-show ="app.eventCalender.show">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
-                 <span>Event Calendar</span>
+                 <span>Events</span>
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.eventCalender.gobackOrgPage"></a>
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
               </div>                                          
@@ -21,7 +21,7 @@
          <div id="calendar"></div>        
     </div>-->
 
-    <ul id="eventCalendarFirstAllList" data-style="inset" data-role="listview"  data-bind="source: activities"></ul>
+    <span id="eventCalendarFirstAllList" data-style="inset" data-role="listview"  data-bind="source: activities"></span>
         
     <!--<div id="eventDetailDiv" class="calendarEvent-Click" data-role="touch" data-bind="events: { tap: eventMoreDetailClick }">
     
@@ -43,48 +43,47 @@
 
 
 
-<div data-role="view" id="eventCalendarDetail" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.detailShow">
-
+<div data-role="view" id="eventCalendarDetail" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.eventCalender" data-show ="app.eventCalender.detailShow">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
-                  All Event List
+                  Event
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>    
                  <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
               </div>                                          
     </div>
-
-    <ul id="eventCalendarList" data-style="inset" data-role="listview" data-template="calendarTemplate"   data-bind="source: activities"></ul>
-       
+    <span id="eventCalendarList" data-style="inset" data-role="listview" data-template="calendarTemplate"   data-bind="source: activities"></span>       
 </div>
 
-
 		<script type="text/x-kendo-template" id="calendarTemplate">
-            <!--data-bind="events: { tap: activitySelected }"-->
-            
-            <div class="cf" data-role="touch" >                        
-       		<div class="calendarEvent-List" >
-             
-       		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div>
-                                                    
-       		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;" >${event_desc}</span>            			            
-            
-                    #if (event_image!=='' && event_image!=='0') {#
-                        <br/>
-                        <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
-                         <br/>
-                    #}#            
+            <!--data-bind="events: { tap: activitySelected }"-->            
+            <div data-role="touch" >                        
+       		<div>                       
+                  #if (event_image!=='' && event_image!=='0'){# 
+                    <img id="eventBannwe" style="max-height:150px;width:100%" src=${event_image}>
+                  #}else{#
+                    <img id="eventBannwe" style="max-height:150px;width:100%" src="styles/images/event_banner.jpg">
+                  #}#
+       		     <div id="activityTemplateTitle" class="notiNameList" >${event_name}</div>                                             
+       		     <span  id="activityTemplateMessage"  class="orgContentMsg" >${event_desc}</span>            
                     <br/>
-                    <span id="activityTemplateDate"  style="margin-top:5px;padding-right:2px;color:rgb(122,184,77)">Event Start Time: <span style="color:rgb(147,147,147);"> ${event_time}</span></span>       	
+                    <br/>
 
+                    <div class="calendarDetail-List" >  
+                         <div class="eventDetail-img-show"></div>                    
+            		     <a id="activityTemplateMessage"  class="eventDetailTime">${event_above_day},${event_show_day} ${event_below_day} at ${event_time}</a>
+                    </div>
+                    <div class="calendarDetail-List" >  
+                         <div class="eventDetail-img-show-loc"></div>                    
+            		     <a id="activityTemplateMessage"  class="eventDetailTime">New Delhi</a>
+                    </div>
        		</div>
-		    </div>   
-            
+		    </div>               
 		</script>
 
 
 
 
-<div data-role="view" id="CustomerEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.eventListShow">
+<!--<div data-role="view" id="CustomerEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.eventListShow">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span>All Event</span>
@@ -93,44 +92,55 @@
               </div>                                          
     </div>   
     <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>    
-</div>
+</div>-->
+
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">
-            <!--data-bind="events: { tap: activitySelected }"-->
-            #if(id!=='0' && id!==0){#
-            
-             <div class="cf" data-role="touch" >                        
-            
+     
+             #if(id!=='0' && id!==0){# 
+             <div class="cf" data-role="touch"  data-bind="events: { tap: eventSelected }">                            
               <div class="calendarEvent-content">
-                <div>
+               
+               #if(event_date!==preDateVal){#                  
+                 <div>
                     <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>
                   <span>
                     <span id="activityTemplateDate" class="calDayClass">${event_above_day}</span>
                     <span id="activityTemplateDate" class="calMonthClass">${event_below_day}</span>
                   </span>
-                </div>
+                 </div>
                 <br/>
-       		<div class="calendarEvent-List" >           
-       		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div> 
-       		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;text-align:justify;" >${event_desc}</span>            			                        
+       		#}#
+                   
+                <div class="calendarEvent-List" >                 
+                 #if (event_image!=='' && event_image!=='0'){# 
+                      <div class="user-avatar-event">
+                         <img src=${event_image} />      
+                      </div>
+                 #}else {#
+                         <div class="event-img-show"></div>                    
+                 #}# 
+                   
+                   #if (event_desc.length > 80) {#
+                        #event_desc_val = event_desc.substr(0, 80) + '..';#
+                   #}else {#
+                        #event_desc_val = event_desc;#  
+                   #}#
                 
-                     #if (event_image!=='' && event_image!=='0') {#
-                        <br/>
-                        <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
-                         <br/>
-                    #}#       
-       		</div>
+       		     <div id="activityTemplateTitle" class="eventNameList" >${event_name}</div> 
+       		     <a id="activityTemplateMessage"  class="eventContentMsg">${event_desc_val}</a>            			                                                                  
+       		 </div>                
                <div class="calendarEventbelow-List" >           
        	         <span id="activityTemplateDate" class="calanderTimeClass">${event_time}</span>       	            
-       		</div> 
-              </div>  
+       		</div>
+              </div>                  
  		    </div>   
            #}else{#
-             <div class="cf" data-role="touch" >                        
-       		<div class="calendarEvent-List" >       
+              <div class="cf" data-role="touch" >                        
+        		<div class="calendarEvent-List" style="border-radius:6px;">       
        		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div> 
        		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;text-align:justify;" >${event_desc}</span>            			                 
-       		</div>
-		    </div>
+        		</div>
+	  	    </div>
            #}#
 		</script>
 
