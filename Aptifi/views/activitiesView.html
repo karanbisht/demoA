@@ -1,7 +1,7 @@
 <!--data-layout="innerPages"-->
 <!--data-use-native-scrolling="true"-->
 
-<div data-role="view" id="view-all-activities" data-id="innerActivity" class="activities-view" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
+<div data-role="view" id="view-all-activities" data-id="innerActivity" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
     <div data-role="header">
         <div data-role="navbar">
             <span id="navBarHeader">Notification</span>
@@ -21,7 +21,7 @@
         <!--<div class="loading1">Loading...</div>-->
     </div>
 
-    <ul id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></ul>
+    <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></span>
 
     <div id="showMoreButton" style="color:#3598DB;margin:10px;width:93%;" data-role="button" data-click="app.Activities.showMoreButtonPress">SHOW MORE</div>
 
@@ -36,7 +36,7 @@
 <script type="text/x-kendo-template" id="activityTemplate">            
 
     #if (org_id!=='0') {#
-    <div class="cf" data-role="touch" data-bind="events: { tap: activitySelected }">
+    <div class="cf">
         <!--<div class="user-avatar">    
         <img src="styles/images/notification1.png" />
         </div>-->
@@ -46,7 +46,7 @@
             </div>
         #}#-->
 
-        <div class="notiList-content">
+        <div class="notiList-content-new">
             <div class="dateDisplay">
                 <span id="activityTemplateDate" class="dateValue">${date}</span>
                 <hr class="dateLine"/>
@@ -71,6 +71,11 @@
                 <br/>
                 <img src= ${attachedImg} style="max-height:200px;margin-top:10px;" /> 
             #}#            
+        
+        </div>
+        <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">    
+                  <div class="notiCommentIcon"></div>
+                  <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
         </div>
     </div>
     #}else {#

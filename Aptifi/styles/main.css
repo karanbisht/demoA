@@ -613,7 +613,20 @@ input::-webkit-inner-spin-button
 {
     background-color: #EBE7DC;
 
-} 
+}
+
+#Aptifi .activities-view-noti .km-content,
+#Aptifi .activities-view-noti .km-listview
+{
+    background-color: #D3D6DB;
+    overflow-y: hidden;
+}
+
+.activities-view-noti .km-list > li
+{
+    background-color: #D3D6DB;
+
+}  
 
 #eventCalendarFirstAllList > li
 {
@@ -622,6 +635,21 @@ input::-webkit-inner-spin-button
     margin-bottom:5px;
 }
 
+#eventCalendarFirstAllList > li:first-child
+{
+  margin-top:-5px;
+}
+
+#eventCalendarAllList > li
+{
+    border: none;
+    box-shadow:none;
+}
+
+#eventCalendarAllList > li:first-child
+{
+    margin-top:-5px;
+}
 
 #Aptifi .activities-view-notification .km-content
 {
@@ -837,6 +865,30 @@ input::-webkit-inner-spin-button
     text-align: justify;
 }
 
+.notiList-content-new{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    background-color:#FFFFFF;
+    border-radius:6px 6px 0px 0px;
+    padding:10px;
+    overflow:hidden;
+    z-index:1;
+    border-top:1px solid #C0C1C7;
+    border-right:1px solid #C0C1C7;
+    border-left:1px solid #C0C1C7;
+}
+
+.notiListbelow-List{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    padding:10px;
+    background-color:#F3F3F3;
+    border-radius:0px 0px 6px 6px;   
+    z-index:1;
+    border:1px solid #C0C1C7;  
+}
 
 .calendarEvent-content
 {
@@ -857,7 +909,9 @@ input::-webkit-inner-spin-button
     background-color:#FBFBFB;
     border-radius:6px 6px 0px 0px;
     z-index:1;
-    border:1px solid #D7D4CB;
+    border-top:1px solid #D7D4CB;
+    border-right:1px solid #D7D4CB;
+    border-left:1px solid #D7D4CB;
     min-height:75px;
 }
 
@@ -891,6 +945,14 @@ input::-webkit-inner-spin-button
 .calanderTimeClass{
     font-size: .7rem;
     margin:5px 0px 5px 0px; 
+}
+
+.notiListComment{
+    padding-left:10px;
+    font-size: 1.2rem;
+    margin:5px 0px 5px 0px;     
+    font-weight:700;
+    color:#5D5D5D;
 }
 
 .calendarEvent-Click
@@ -1554,17 +1616,26 @@ background: #fff none;
 #activities-listview > li
 {
     border: none;
+    box-shadow:none;
     /*min-width:40px;
     display: inline-block;*/
+}
+
+#activities-listview > li:first-child
+{
+  margin-top:-5px;
 }
 
 #eventCalendarList > li 
 {
     border: none;    
     box-shadow:none;
-
 }
 
+#eventCalendarList > li:first-child 
+{
+ margin-top:-5px;
+}
 #admin-sub-noti-listview> li
 {
     border: none;
@@ -2629,13 +2700,27 @@ overflow: hidden;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 
-    background-image: url('images/eventImg.jpg');
+    background-image: url('images/eventImg.png');
     
     border-radius: 6px;
     overflow: hidden;
     display: inline-block;
     text-align: center;
     vertical-align: middle; 
+}
+
+.notiCommentIcon{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/comment_img.png');    
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;     
 }
 
 

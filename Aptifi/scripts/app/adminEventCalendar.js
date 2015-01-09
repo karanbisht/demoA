@@ -1055,7 +1055,9 @@ app.adminEventCalender = (function () {
                           
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;
-                              
+                                                     var preDateVal = 0 ;
+
+                            
                             console.log(eventListLength);
                               
                             for (var i = 0 ; i < eventListLength ;i++) {         
@@ -1063,6 +1065,10 @@ app.adminEventCalender = (function () {
                                 var eventTimeString = loginData.status[0].eventData[i].event_time;
                                 var eventDate = app.formatDate(eventDateString);
                                 var eventTime = app.formatTime(eventTimeString);
+                          
+                                 var aboveDay = app.getDateDays(eventDateString);   
+                                 var belowData = app.getDateMonth(eventDateString);
+
                                 
                                 var eventDaya = loginData.status[0].eventData[i].event_date
                                 var values = eventDaya.split('-');
@@ -1079,7 +1085,10 @@ app.adminEventCalender = (function () {
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
                                                        event_date:saveData,
-                                                       event_show_date:eventDate,
+                                                       event_show_day:day,
+                                                       preDateVal:preDateVal,
+                                                       event_above_day:aboveDay,
+                                                       event_below_day:belowData,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,
                                                        event_image : loginData.status[0].eventData[i].event_image,
                                                        event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
@@ -1087,7 +1096,9 @@ app.adminEventCalender = (function () {
                                                        mod_date: loginData.status[0].eventData[i].mod_date,
                                                        page:1,
                                                        org_id: loginData.status[0].eventData[i].org_id
-                                                   });
+                                                   });        
+                                preDateVal=saveData;
+        
                             }
                         } 
                     }
