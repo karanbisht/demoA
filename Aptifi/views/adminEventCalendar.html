@@ -13,13 +13,13 @@
         </div>
 
     
-    <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></span>
+    <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarAdminEventListTemplate"   data-bind="source: activities"></span>
     
 </div>
 
 
 
-		<script type="text/x-kendo-template" id="calendarEventListTemplate">
+		<script type="text/x-kendo-template" id="calendarAdminEventListTemplate">
             <!--data-bind="events: { tap: activitySelected }"-->
           #if(id!== 0 && id!== '0'){#  
             <div class="cf" data-role="touch" data-bind="events: { tap: editEvent }">                        

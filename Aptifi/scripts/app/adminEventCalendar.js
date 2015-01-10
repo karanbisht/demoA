@@ -1119,7 +1119,7 @@ app.adminEventCalender = (function () {
                                                                        });           
                 
             $("#eventCalendarAllList").kendoMobileListView({
-                                                               template: kendo.template($("#calendarEventListTemplate").html()),    		
+                                                               template: kendo.template($("#calendarAdminEventListTemplate").html()),    		
                                                                dataSource: organisationListDataSource
                                                            });
                 
