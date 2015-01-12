@@ -819,6 +819,12 @@
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
                     </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getVideoValNoti">Video</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
+                    </li>
                 </ul>
             </div>
 
@@ -851,15 +857,21 @@
 
                     <a style="background:transparent; border:none;;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#inboxActions" ></a>
 
-                    <img id="largeImage" src="" alt="" align="right"  style="height:30px; width:30px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="largeImage" src="" alt="" align="right"  style="height:30px; width:50px;margin-left:10px;float:left;border:none;display:none" />
 
-                    <a id="removeAttachment" style="background:transparent; border:none;display:none;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
+                    <!--<a id="removeAttachment" style="background:transparent; border:none;display:none;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>-->
 
                     <!--<span id="removeAttachment" data-role="button" data-bind="click: removeImage" style="margin:0px;height:30px; width:30px;background-color: transparent;border:none;display:none;">  
                     <img src="styles/images/removeAttachment.png" alt="Smiley face" height="30" width="30">
                     </span>-->
+                              
+                    <div style="width:50px,height:30px;">                        
+                        <video id="attachedVidNoti" width="50" height="30" controls style="display:none">
+                             <source src="" type="">
+                        </video>
+                    </div>      
 
-                    <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage" />
+                    <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage"/>
 
                     <input id="scheduleButton" type="button" value="Schedule" style="width:24%;height:30px;background-color:#4583ED;border:none;color:#ffffff;margin-right:5px;float:right;" data-role="button" data-bind="click: scheduleNotification"/>
 
@@ -896,8 +908,7 @@
             </ul>
         </div>
         
-        <script>
-            
+        <script>           
             function clickSelectOrg(){
              var checkOpen = localStorage.getItem("open");
              if(checkOpen==='0' || checkOpen==='5'){
@@ -1084,12 +1095,10 @@
                     <span class="firstName">#:group_name#</span>
                 </label>
             </li>
-
             <!--<div class="deleteGroupShow" data="${pid}">
             <input type="checkbox" class="largerCheckbox" value="${pid}" />
             <span class="checkbox">#:group_name#</span>
             </div>-->
-        
         </script>
 
         <!--<li class="deleteGroupShow">

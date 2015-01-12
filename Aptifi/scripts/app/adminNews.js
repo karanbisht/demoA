@@ -34,6 +34,8 @@ app.adminNews = (function () {
             
             $("#removeNewsAttachment").hide(); 
             $("#attachedImgNews").hide();
+            $("#attachedVidNews").hide();
+            
             newsDataToSend = '';
             upload_type='';
             
@@ -85,6 +87,8 @@ app.adminNews = (function () {
 	            
             dataSourceLogin.fetch(function() {
                 var loginDataView = dataSourceLogin.data();               
+                console.log(loginDataView);
+                
                 var orgDataId = [];
                 var userAllGroupId = [];
 						   
@@ -141,6 +145,7 @@ app.adminNews = (function () {
                                                        id: loginData.status[0].newsData[i].id,
                                                        add_date: loginData.status[0].newsData[i].add_date,
                                                        news_date: newsDate,
+                                                       upload_type:loginData.status[0].newsData[i].upload_type,
                                                        news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
                                                        news_name: loginData.status[0].newsData[i].org_name,
                                                        news_image : loginData.status[0].newsData[i].news_image,
@@ -507,7 +512,6 @@ app.adminNews = (function () {
             
 
             if(newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!==''){
-
             var largeImage = document.getElementById('attachedImgEditNews');
             largeImage.style.display = 'block';
             largeImage.src = newsImageEdit;
@@ -633,18 +637,21 @@ app.adminNews = (function () {
 
                 console.log(newsDataToSend);
 
+                var vidFmAndroid=0;
                 if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
                          if ((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="image")) {
-                                alert('1');
+                                //alert('1');
                               photo_split = newsDataToSend.split("%3A");
                               console.log(photo_split);
                               newsDataToSend = "content://media/external/images/media/" + photo_split[1];
-                            }/*else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
-                                alert('2');
+                              vidFmAndroid=1;
+                            }else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
+                                //alert('2');
                               photo_split = newsDataToSend.split("%3A");
                               console.log(photo_split);
                               newsDataToSend = "content://media/external/video/media/" + photo_split[1];
-                            }*/
+                              vidFmAndroid=1;  
+                            }
                         
                         var mimeTypeVal;
 
@@ -655,25 +662,31 @@ app.adminNews = (function () {
                         }    
 
                         console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
-                        alert(newsDataToSend);
+                        //alert(newsDataToSend);
                             
                         var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);                            
 
-                    if(upload_type==="image"){
-                             if(filename.indexOf('.') === -1)
+                        if(upload_type==="image" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
                              {
                                   filename =filename+'.jpg';
+                             }                
+                        }else if(upload_type==="video" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.mp4';
                              }
-                            
-                    }
+                        }
                     
                     console.log(filename);
-                    alert(filename);
+                    //alert(filename);
                             
                         var path =  newsDataToSend;
                             console.log(path);
-                            alert(path);
+                            //alert(path);
                             
+                      //alert(upload_type);
+                    
                         var params = new Object();
                         params.org_id = organisationID;  //you can send additional info with the file
                         params.txtNewsDesc = event_description;
@@ -685,26 +698,25 @@ app.adminNews = (function () {
                         var ft = new FileTransfer();
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";
-                        options.fileName = filename;
-              
+                        options.fileName = filename;              
                         console.log("-------------------------------------------");
                         console.log(options.fileName);
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
-                        options.chunkedMode = false;
-       
+                        options.chunkedMode = true;
                         options.headers = {
                             Connection: "close"
-                        };
+                        }
 
+       
                         console.log(tasks);
                  
                         console.log("------check-----------");
 
-                        ft.upload(newsDataToSend, "http://54.85.208.215/webservice/news/add", win, fail, options , true);
-                    
-                    }else {
+                        ft.upload(newsDataToSend, "http://54.85.208.215/webservice/news/add", win, fail, options , true);                    
+
+                }else {
                 
                     console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
 
@@ -760,6 +772,8 @@ app.adminNews = (function () {
         
         
         function win(r) {
+
+            console.log('win');
             console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);

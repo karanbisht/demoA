@@ -14,8 +14,7 @@
                       <div class="ball"></div>
         </div>
         
-        <ul id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate"   data-bind="source: activities"></ul>
-          
+        <ul id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate"   data-bind="source: activities"></ul>          
     </div>
 
 
@@ -32,10 +31,16 @@
                 <br/>
                 <br/>            
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
-                #if (news_image!=='' && news_image!=='0') {#
+                #if (news_image!=='' && news_image!=='0' && upload_type==="image") {#
                     <br/>
                     <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
-                #}#    
+               
+                #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
+                     <br/>
+                        <video  width="300" height="300" controls>
+                             <source src=${news_image} >
+                        </video>
+                   #}#
   		    </div>               
 		    </div>   
          #}else{#
@@ -95,12 +100,12 @@
             <div id="newsAttachment" style="margin-top:10px;height:70px; width:100%;">
                 <div style="display:inline;">                   
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
-                    <img id="attachedImgNews" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
+                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:80px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
 
-                    <a id="removeNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
+                    <!--<a id="removeNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>-->
 
-                    <div style="width:180px,height:80px;margin-left:110px;margin-top:-30px;position:absolute;">                        
-                        <video id="attachedVidNews" width="150" height="80" controls style="display:none">
+                    <div style="width:180px,height:80px;">                        
+                        <video id="attachedVidNews" width="200" height="80" controls style="display:none">
                              <source src="" type="">
                         </video>
                     </div>                    
@@ -117,6 +122,9 @@
                     </li>
                     <li>
                         <a href="#" data-role="button" data-bind="click: getVideoVal">Video</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
                     </li>
                 </ul>
             </div>           

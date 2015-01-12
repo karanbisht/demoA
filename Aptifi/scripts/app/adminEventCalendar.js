@@ -5,6 +5,7 @@ app.adminEventCalender = (function () {
         var organisationID;
         var account_Id;
         var eventDataToSend;
+        var upload_type;
         var groupAllEvent = [];
         var tasks = [];
         
@@ -16,11 +17,14 @@ app.adminEventCalender = (function () {
             /*hiddenDiv = $(document.createElement('div')),
             hiddenDiv.removeClass('hiddendiv common');
             $('body').remove(hiddenDiv);*/
-            $("#adminCalProcess").show();
-                                                  
+            $("#adminCalProcess").show();                                                  
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
+            $("#attachedVidEvent").hide();
+            
             eventDataToSend = '';
+            upload_type='';
+
             
             /*$("#addEventDesc").kendoEditor({
             tools: [
@@ -678,13 +682,60 @@ app.adminEventCalender = (function () {
                 event_Date = year + "-" + month + "-" + day;
                 //event_Date=event_Date.toString();
                 var actionval = "Add";
+                var vidFmAndroid=0;
                 
+                alert(upload_type);
+                
+
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
                     //alert("1");
-                    if (eventDataToSend.substring(0, 21)==="content://com.android") {
+                    if ((eventDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="image")) {
                         photo_split = eventDataToSend.split("%3A");
                         eventDataToSend = "content://media/external/images/media/" + photo_split[1];
-                    }
+                        vidFmAndroid=1;  
+
+                    }else if((eventDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
+                                //alert('2');
+                              photo_split = eventDataToSend.split("%3A");
+                              console.log(photo_split);
+                              eventDataToSend = "content://media/external/video/media/" + photo_split[1];
+                              vidFmAndroid=1;  
+                            }
+                    
+                    
+
+                    var mimeTypeVal;
+
+                        if(upload_type==="image"){
+                           mimeTypeVal="image/jpeg"
+                        }else{
+                            mimeTypeVal="video/mpeg"
+                        }
+                    
+
+                    var filename = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);                            
+
+                    
+                        if(upload_type==="image" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.jpg';
+                             }                
+                        }else if(upload_type==="video" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.mp4';
+                             }
+                        }
+
+                    
+                    alert(filename);
+
+                    
+                            var path =  eventDataToSend;
+                            console.log(path);
+
+                    
                     var params = new Object();
                     params.org_id = organisationID;  //you can send additional info with the file
                     params.txtEventName = event_name;
@@ -692,21 +743,21 @@ app.adminEventCalender = (function () {
                     params.txtEventDate = event_Date;                            
                     params.eventStartTime = eventTimeSend;
                     params.action = actionval;
-                    params.upload_type = "image";  
+                    params.upload_type = upload_type;
                                                
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
-                    options.fileName = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);
+                    options.fileName = filename;
               
                     console.log("-------------------------------------------");
                     console.log(options.fileName);
-              
-                    options.mimeType = "image/jpeg";
+
+                    options.mimeType = mimeTypeVal;
                     options.params = params;
                     options.headers = {
                         Connection: "close"
                     }
-                    options.chunkedMode = false;
+                    options.chunkedMode = true;
                     var ft = new FileTransfer();
 
                     console.log(tasks);
@@ -780,10 +831,8 @@ app.adminEventCalender = (function () {
             }
               
             var largeImage = document.getElementById('attachedImgEvent');
-            largeImage.src = '';
-            
+            largeImage.src = '';            
             $("#removeEventAttachment").hide();
-
             app.mobileApp.navigate("#adminEventCalendar");
         }
          
@@ -803,7 +852,6 @@ app.adminEventCalender = (function () {
         var saveEditEventData = function() {
             var event_name = $("#editEventName").val();     
             var event_description = $("#editEventDesc").val();
-
             var event_Date = $("#editdatePicker").val();
             var event_Time = $("#editdateTimePicker").val();
             
@@ -1140,14 +1188,63 @@ app.adminEventCalender = (function () {
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
         };
         
+        
+        var getVideoVal = function(){            
+              navigator.camera.getPicture(onVideoURISuccessData, onFail, { 
+                                            quality: 50,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            mediaType: navigator.camera.MediaType.VIDEO
+              });
+        }
+
+        
+        
+        function onVideoURISuccessData(videoURI) {             
+            var largeImage = document.getElementById('attachedImgEvent');
+            largeImage.src = ''; 
+            
+            $("#removeEventAttachment").hide(); 
+            $("#attachedImgEvent").hide();            
+            //console.log(imageURI);            
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            
+            var videoAttached = document.getElementById('attachedVidEvent');
+            // Unhide image elements
+            //
+            videoAttached.style.display = 'block';
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            
+            videoAttached.src = videoURI;
+            eventDataToSend = videoURI;    
+            upload_type= "video";
+            
+            $("#removeEventAttachment").show(); 
+            $("#attachedVidEvent").show();
+
+            //alert(imageURI);
+            console.log(videoURI);
+            //newsDataToSend = imageURI;
+        }
+        
         function onPhotoURISuccessData(imageURI) {
+            
+            var videoAttached = document.getElementById('attachedVidEvent');
+            videoAttached.src = '';
+            
+            $("#removeEventAttachment").hide(); 
+            $("#attachedVidEvent").hide();
+            
+
+            
             // Uncomment to view the image file URI
             // console.log(imageURI);
             // Get image handle
@@ -1160,6 +1257,8 @@ app.adminEventCalender = (function () {
             largeImage.src = imageURI;
                
             eventDataToSend = imageURI;              
+            upload_type="image";
+
             $("#removeEventAttachment").show(); 
             $("#attachedImgEvent").show();
 
@@ -1174,12 +1273,15 @@ app.adminEventCalender = (function () {
             $("#attachedImgEvent").hide();
         }
          
-        var removeImage = function() {
+        var removeImage = function() {             
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
+            var videoAttached = document.getElementById('attachedVidEvent');
+            videoAttached.src = '';            
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
-            eventDataToSend = ''; 
+            $("#attachedVidEvent").hide();            
+            newsDataToSend = '';             
         }
         
         var goToEventListPage = function() {
@@ -1206,6 +1308,7 @@ app.adminEventCalender = (function () {
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
         };
+        
         
         function onPhotoURISuccessDataEdit(imageURI) {
             // Uncomment to view the image file URI
@@ -1248,6 +1351,7 @@ app.adminEventCalender = (function () {
             show: show,
             getTakePhoto:getTakePhoto,
             getPhotoVal:getPhotoVal,
+            getVideoVal:getVideoVal,
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoValEdit:getPhotoValEdit,
             removeImage:removeImage,

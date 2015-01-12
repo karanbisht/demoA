@@ -477,7 +477,7 @@ app.Login = (function () {
             
             //var mobile=$regMobile.val();
             varifiCode = genRand(0, 9);
-            //alert(varifiCode);
+            alert(varifiCode);
             varifiCode = varifiCode.toString();
               
             var varifiCodeMsg = "verification code-: " + varifiCode;

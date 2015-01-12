@@ -11,6 +11,7 @@ app.sendNotification = (function () {
     var scheduleTime;
     var sending_option = 'now';
     var tasks;
+    var upload_type;
     var scheduleDiv = 0;
 
     var groupChecked = [];
@@ -202,8 +203,9 @@ app.sendNotification = (function () {
             
             $("#removeAttachment").hide(); 
             $("#largeImage").hide();
-           
-            
+            $("#attachedVidNoti").hide();
+
+            upload_type='';
             dataToSend = '';
            
             pictureSource = navigator.camera.PictureSourceType;
@@ -333,8 +335,6 @@ app.sendNotification = (function () {
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: destinationType.FILE_URI,
                                             sourceType: pictureSource.SAVEDPHOTOALBUM
                                         });
@@ -350,6 +350,19 @@ app.sendNotification = (function () {
                                             saveToPhotoAlbum:true
                                         });
         };
+        
+        var getVideoValNoti = function(){            
+            //navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});                      
+              navigator.camera.getPicture(onVideoURISuccessDataNoti, onFail, { 
+                                            quality: 50,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            mediaType: navigator.camera.MediaType.VIDEO
+              });
+        }
+
+        
+        
 
         var sendNotificationMessage = function () {    
             //alert(dataToSend);undefined
@@ -498,23 +511,50 @@ app.sendNotification = (function () {
                     $("#progressSendNotification").show();
                     //var url = "http://54.85.208.215/webservice/notification/sendNotification";
               
-                    if (dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='') { 
+                    var vidFmAndroid=0;
+                    if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='') &&(upload_type==="image")) { 
                         //alert("1");
                         if (dataToSend.substring(0, 21)==="content://com.android") {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
-                        }
+                             vidFmAndroid=1;
+                        }else if((dataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
+                                //alert('2');
+                              photo_split = dataToSend.split("%3A");
+                              console.log(photo_split);
+                              dataToSend = "content://media/external/video/media/" + photo_split[1];
+                              vidFmAndroid=1;  
+                            }
 
-                        
-                        
+                        var mimeTypeVal;
+
+                        if(upload_type==="image"){
+                           mimeTypeVal="image/jpeg"
+                        }else{
+                            mimeTypeVal="video/mpeg"
+                        }    
+                                                
                         var filename = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
                             console.log(filename);
-                            alert(filename);      
+                            //alert(filename);      
                         var path =  dataToSend;
                             console.log(path);
-                            alert(path);
-
+                            //alert(path);
                         
+                            //alert(upload_type);
+                        
+                        if(upload_type==="image" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.jpg';
+                             }                
+                        }else if(upload_type==="video" && vidFmAndroid===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.mp4';
+                             }
+                        }
+                                            
                         var params = new Object();
                         params.cmbGroup = cmbGroup;  //you can send additional info with the file
                         params.cmbCust = cmbCust;
@@ -525,6 +565,7 @@ app.sendNotification = (function () {
                         params.comment_allow = cmmt_allow;
                         params.sending_option = sending_option;
                         params.send_date = tasks;
+                        params.upload_type = upload_type;
                    
                         var options = new FileUploadOptions();
                         options.fileKey = "attached";
@@ -533,14 +574,14 @@ app.sendNotification = (function () {
                         console.log("-------------------------------------------");
                         console.log(options.fileName);
               
-                        options.mimeType = "image/jpeg";
+                        options.mimeType = mimeTypeVal;
                         options.params = params;
                         options.headers = {
                             Connection: "close"
                         }
-                        options.chunkedMode = false;
+                        options.chunkedMode = true;
+                        
                         var ft = new FileTransfer();
-
                         console.log(tasks);
                   
                         /* 
@@ -1132,9 +1173,8 @@ app.sendNotification = (function () {
             // console.log(imageURI);
             // Get image handle
             var largeImage = document.getElementById('largeImage');
-            // Unhide image elements
-            //
             largeImage.style.display = 'block';
+            
             // Show the captured photo
             // The inline CSS rules are used to resize the image
             //
@@ -1142,10 +1182,40 @@ app.sendNotification = (function () {
             dataToSend = imageURI;              
             $("#removeAttachment").show(); 
             $("#largeImage").show();
+            upload_type="image";
+
 
             //alert(imageURI);
             console.log(imageURI);
             //dataToSend = imageURI;
+        }
+        
+        function onVideoURISuccessDataNoti(videoURI) {             
+            var largeImage = document.getElementById('largeImage');
+            largeImage.src = ''; 
+            $("#removeAttachment").hide(); 
+            $("#largeImage").hide();            
+            //console.log(imageURI);            
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+            // Get image handle
+            
+            var videoAttached = document.getElementById('attachedVidNoti');
+            videoAttached.style.display = 'block';
+            
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            
+            videoAttached.src = videoURI;
+            dataToSend = videoURI;    
+            upload_type= "video";
+            
+            $("#removeAttachment").show(); 
+            $("#attachedVidNoti").show();
+
+            //alert(imageURI);
+            console.log(videoURI);
+            //newsDataToSend = imageURI;
         }
          
         function onFail(message) {
@@ -1157,8 +1227,14 @@ app.sendNotification = (function () {
         var removeImage = function() {
             var largeImage = document.getElementById('largeImage');
             largeImage.src = '';
+            
+            var largeImage1 = document.getElementById('attachedVidNoti');
+            largeImage1.src = '';
+            
             $("#removeAttachment").hide(); 
+            $("#attachedVidNoti").hide();
             $("#largeImage").hide();
+            
             dataToSend = ''; 
         }
 
@@ -1211,6 +1287,7 @@ app.sendNotification = (function () {
             onChangeNotiGroup:onChangeNotiGroup,
             //getPhoto:getPhoto,
             getPhotoVal:getPhotoVal,
+            getVideoValNoti:getVideoValNoti,
             getTakePhoto:getTakePhoto,
             removeImage:removeImage,
             sendNotificationMessage:sendNotificationMessage

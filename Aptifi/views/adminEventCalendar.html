@@ -246,9 +246,15 @@
                     
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
 
-                    <img id="attachedImgEvent" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEvent" src="" alt="" align="right"  style="height:80px;width:100px;margin-left:10px;float:left;border:none;display:none" />
 
-                    <a id="removeEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>
+                    <!--<a id="removeEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>-->
+                    
+                    <div style="width:200px,height:80px;">                        
+                        <video id="attachedVidEvent" width="200" height="80" controls style="display:none">
+                             <source src="" type="">
+                        </video>
+                    </div>
 
                 </div>
                 
@@ -259,6 +265,12 @@
                     </li>
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getVideoVal">Video</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
                     </li>
                 </ul>
             </div>
