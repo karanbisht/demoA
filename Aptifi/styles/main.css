@@ -949,7 +949,7 @@ input::-webkit-inner-spin-button
 
 .notiListComment{
     padding-left:10px;
-    font-size: 1.2rem;
+    font-size: .9rem;
     margin:5px 0px 5px 0px;     
     font-weight:700;
     color:#5D5D5D;

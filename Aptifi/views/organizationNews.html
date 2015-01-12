@@ -12,7 +12,7 @@
             </div>
 
             <ul id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></ul>
-</div>
+</div>0
 
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
 
@@ -30,12 +30,16 @@
                 <br/>
             
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			            
-
             
-                 #if (news_image!=='' && news_image!==0) {#
+                  #if (news_image!=='' && news_image!==0) {#
                     <br/>
-                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
-                #}#            
+                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" />                   
+                  #}else if (news_image!=='' && news_image!=='0'){#          
+                     <br/>
+                        <video  width="300" height="300" controls>
+                             <source src=${news_image} >
+                        </video>
+                   #}#            
 
                 #}else{#            
             
