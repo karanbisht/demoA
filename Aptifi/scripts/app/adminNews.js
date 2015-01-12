@@ -630,13 +630,11 @@ app.adminNews = (function () {
                 //console.log(event_description);
                 //console.log(event_Date);
                 //console.log(event_Time);
-            
-
 
                 console.log(newsDataToSend);
 
-                        if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
-                            if ((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="image")) {
+                if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
+                         if ((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="image")) {
                                 alert('1');
                               photo_split = newsDataToSend.split("%3A");
                               console.log(photo_split);
@@ -655,20 +653,22 @@ app.adminNews = (function () {
                         }else{
                             mimeTypeVal="video/mpeg"
                         }    
-                            
 
-
-                            console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
-                            alert(newsDataToSend);
+                        console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
+                        alert(newsDataToSend);
                             
                         var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);                            
+
+                    if(upload_type==="image"){
                              if(filename.indexOf('.') === -1)
                              {
-                                  filename =filename+'.jpg'
+                                  filename =filename+'.jpg';
                              }
                             
-                            console.log(filename);
-                            alert(filename);
+                    }
+                    
+                    console.log(filename);
+                    alert(filename);
                             
                         var path =  newsDataToSend;
                             console.log(path);
@@ -1022,7 +1022,7 @@ app.adminNews = (function () {
                                         });
         };
         
- //PHOTOLIBRARY
+             //PHOTOLIBRARY
         
         var getVideoVal = function(){            
             //navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});                      
