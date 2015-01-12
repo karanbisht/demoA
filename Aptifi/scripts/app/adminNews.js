@@ -651,7 +651,6 @@ app.adminNews = (function () {
                         
                         var mimeTypeVal;
 
-
                         if(upload_type==="image"){
                            mimeTypeVal="image/jpeg"
                         }else{
@@ -659,14 +658,18 @@ app.adminNews = (function () {
                         }    
                             
 
-                       console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
+
+                            console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
+                            alert(newsDataToSend);
                             
                         var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
                             console.log(filename);
-                            alert(filename);      
+                            alert(filename);
+                            
                         var path =  newsDataToSend;
                             console.log(path);
                             alert(path);
+                            
                         var params = new Object();
                         params.org_id = organisationID;  //you can send additional info with the file
                         params.txtNewsDesc = event_description;
@@ -685,9 +688,6 @@ app.adminNews = (function () {
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
-                        options.headers = {
-                            Connection: "close"
-                        }
        
                    
                         options.chunkedMode = false;
@@ -696,7 +696,7 @@ app.adminNews = (function () {
                  
                         console.log("------check-----------");
 
-                        ft.upload(newsDataToSend, 'http://54.85.208.215/webservice/news/add', win, fail, options , true);
+                        ft.upload(newsDataToSend, "http://54.85.208.215/webservice/news/add", win, fail, options , true);
                     
                     }else {
                 
