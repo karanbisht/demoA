@@ -641,13 +641,12 @@ app.adminNews = (function () {
                               photo_split = newsDataToSend.split("%3A");
                               console.log(photo_split);
                               newsDataToSend = "content://media/external/images/media/" + photo_split[1];
-                            }else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
+                            }/*else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
                                 alert('2');
                               photo_split = newsDataToSend.split("%3A");
                               console.log(photo_split);
                               newsDataToSend = "content://media/external/video/media/" + photo_split[1];
-
-                            }
+                            }*/
                         
                         var mimeTypeVal;
 
@@ -662,7 +661,12 @@ app.adminNews = (function () {
                             console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
                             alert(newsDataToSend);
                             
-                        var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);
+                        var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);                            
+                             if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.jpg'
+                             }
+                            
                             console.log(filename);
                             alert(filename);
                             
@@ -688,9 +692,11 @@ app.adminNews = (function () {
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
-       
-                   
                         options.chunkedMode = false;
+       
+                        options.headers = {
+                            Connection: "close"
+                        };
 
                         console.log(tasks);
                  
@@ -1011,8 +1017,6 @@ app.adminNews = (function () {
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
@@ -1084,29 +1088,28 @@ app.adminNews = (function () {
             //newsDataToSend = imageURI;
         }
         
-        function onVideoURISuccessData(videoURI) {            
- 
+        function onVideoURISuccessData(videoURI) {             
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = ''; 
             $("#removeNewsAttachment").hide(); 
-            $("#attachedImgNews").hide();
-            
+            $("#attachedImgNews").hide();            
             //console.log(imageURI);            
             // Uncomment to view the image file URI
             // console.log(imageURI);
             // Get image handle
+            
             var videoAttached = document.getElementById('attachedVidNews');
-
 
             // Unhide image elements
             //
             videoAttached.style.display = 'block';
             // Show the captured photo
             // The inline CSS rules are used to resize the image
-            //
+            
             videoAttached.src = videoURI;
             newsDataToSend = videoURI;    
             upload_type= "video";
+            
             $("#removeNewsAttachment").show(); 
             $("#attachedVidNews").show();
 
