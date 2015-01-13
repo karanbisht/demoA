@@ -777,6 +777,7 @@ app.adminNews = (function () {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
                                                                            console.log(JSON.stringify(e));
+                                                                            $("#sendNewsLoader").hide();
                                                                            if (!app.checkSimulator()) {
                                                                                window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                            }else {
@@ -790,15 +791,17 @@ app.adminNews = (function () {
                     $.each(loginDataView, function(i, addGroupData) {
                         console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News added successfully') {  
-                            $(".km-scroll-container").css("-webkit-transform", "");
-                        
+                            $(".km-scroll-container").css("-webkit-transform", "");                           
                             $("#addNewsDesc").val('');                                     
                             app.showAlert("News Added Successfully", "Notification");
+                            
+                             $("#sendNewsLoader").hide();
 
                             app.mobileApp.navigate("#adminOrgNewsList");
 
                         }else {
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
+                             $("#sendNewsLoader").hide();
                         }
                     });
                 });
@@ -973,6 +976,7 @@ app.adminNews = (function () {
                                                                            console.log(e);
                                                                            console.log(JSON.stringify(e));
                                                                            
+                                                                               $("#sendEditNewsLoader").hide();
                                                                            if (!app.checkSimulator()) {
                                                                                window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                            }else {
@@ -989,7 +993,9 @@ app.adminNews = (function () {
                         if (addGroupData.status[0].Msg==='News updated successfully') {         
                             app.mobileApp.navigate("#adminOrgNewsList");
                             app.showAlert("News Updated Successfully", "Notification");
+                            $("#sendEditNewsLoader").hide();
                         }else {
+                            $("#sendEditNewsLoader").hide();
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                         }
                     });

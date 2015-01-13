@@ -287,7 +287,6 @@ app.adminEventCalender = (function () {
             
             if (new Date(date) >= new Date(currentDate) && (checkGotevent===0)) {
                 app.mobileApp.navigate('#adminAddEventCalendar');
-
                 app.analyticsService.viewModel.trackFeature("User navigate to Add New Calendar in Admin");            
             }else if (new Date(date) < new Date(currentDate) && (checkGotevent===0)) {                   
 
@@ -308,6 +307,34 @@ app.adminEventCalender = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
 
             app.mobileApp.navigate('#adminEventCalendarDetail');           
+        }
+        
+        var eventDetailShow = function(e){
+             
+            console.log(e.data);
+            //alert(e.data.event_name);
+            eventPid = e.data.id;
+                                multipleEventArray.push({
+                                                id: e.data.id,
+                                                add_date: e.data.add_date,
+                                                event_date: e.data.event_date,
+                                                event_show_day : e.data.event_show_day,
+                                                event_below_day : e.data.event_below_day,
+                                                event_desc: e.data.event_desc,
+                                                event_image : e.data.event_image,
+                                                event_name: e.data.event_name,
+                                                upload_type: e.data.upload_type,
+                                                event_time: e.data.event_time,                                                                                  										  
+                                                mod_date: e.data.mod_date,
+                                                page:2,
+                                                org_id: e.data.org_id
+                                            });
+            
+  
+
+            app.mobileApp.navigate('#adminEventCalendarDetail');           
+            app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
+
         }
         
         var detailShow = function() {
@@ -476,7 +503,10 @@ app.adminEventCalender = (function () {
             console.log(e.data.uid);
             console.log(e.data);
 
-            var eventPid = e.data.id;
+            //var eventPid = e.data.id;
+            
+            organisationID = localStorage.getItem("orgSelectAdmin");
+
             
             console.log('orgID=' + organisationID + "pid=" + eventPid)
 
@@ -820,6 +850,9 @@ app.adminEventCalender = (function () {
                                                                                //apps.hideLoading();
                                                                                console.log(e);
                                                                                console.log(JSON.stringify(e));
+                                                                                
+                                                                               $("#sendEventLoader").hide();
+                                                                               
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                                }else {
@@ -836,7 +869,10 @@ app.adminEventCalender = (function () {
                             if (addGroupData.status[0].Msg==='Event added successfully') {         
                                 app.mobileApp.navigate("#adminEventCalendar");
                                 app.showAlert("Event Added Successfully", "Notification");
+                                
+                                $("#sendEventLoader").hide();
                             }else {
+                                $("#sendEventLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                             }
                         });
@@ -1012,6 +1048,9 @@ app.adminEventCalender = (function () {
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
                                                                                console.log(e);
+
+                                                                               $("#sendEditEventLoader").hide();
+
                                                                                navigator.notification.alert("Please check your internet connection.",
                                                                                                             function () {
                                                                                                             }, "Notification", 'OK');
@@ -1030,12 +1069,15 @@ app.adminEventCalender = (function () {
                                     app.mobileApp.navigate("#adminEventCalendar");
                                 }
                             
+                                $("#sendEditEventLoader").hide();
+
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom('Event updated successfully');   
                                 }else {
                                     app.showAlert("Event updated successfully", "Notification"); 
                                 }
                             }else {
+                                $("#sendEditEventLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                             }
                         });
@@ -1089,6 +1131,11 @@ app.adminEventCalender = (function () {
         var upcommingEventList = function() {
             //app.mobileApp.navigate('#adminEventList');
             app.slide('left', 'green' , '3' , '#adminEventList');    
+        }
+        
+        var goToAddEventPage = function(){
+             
+            app.mobileApp.navigate('#adminEventCalendarDetail');
         }
         
         var eventListShow = function() {
@@ -1366,8 +1413,6 @@ app.adminEventCalender = (function () {
         var getTakePhotoEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
                                             saveToPhotoAlbum:true
@@ -1456,16 +1501,25 @@ app.adminEventCalender = (function () {
             upload_type_edit="";
         }
         
+        var addEventByAdmin = function(){
+            
+         
+            app.mobileApp.navigate('#adminAddEventCalendar');
+
+        }
+        
         return {
             init: init,
             show: show,
             getTakePhoto:getTakePhoto,
             getPhotoVal:getPhotoVal,
             getVideoVal:getVideoVal,
+            addEventByAdmin:addEventByAdmin,
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoValEdit:getPhotoValEdit,
             getVideoValEdit:getVideoValEdit,
             removeImage:removeImage,
+            goToAddEventPage:goToAddEventPage,
             removeImageEdit:removeImageEdit,
             editEvent:editEvent,
             goToEventListPage:goToEventListPage,
@@ -1478,6 +1532,7 @@ app.adminEventCalender = (function () {
             eventMoreDetailClick:eventMoreDetailClick,
             addNewEventFunction:addNewEventFunction,
             addEventshow:addEventshow,
+            eventDetailShow:eventDetailShow,
             goToCalendarPageDetail:goToCalendarPageDetail,
             saveEditEventData:saveEditEventData,
             upcommingEventList:upcommingEventList,

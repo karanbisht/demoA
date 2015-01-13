@@ -879,6 +879,22 @@ input::-webkit-inner-spin-button
     border-left:1px solid #C0C1C7;
 }
 
+
+.newsList-content-new{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    background-color:#FFFFFF;
+    border-radius:6px;
+    padding:10px;
+    overflow:hidden;
+    z-index:1;
+    border-top:1px solid #C0C1C7;
+    border-right:1px solid #C0C1C7;
+    border-left:1px solid #C0C1C7;
+}
+
+
 .notiListbelow-List{
     position: relative;
     font-size: .85rem;
@@ -1658,20 +1674,41 @@ background: #fff none;
     border: none;
 }
 
+
 #orgAllNewsList > li
 {
-    border: none;    
+    border: none;
+    box-shadow:none;
+    /*min-width:40px;
+    display: inline-block;*/
 }
+
+#orgAllNewsList > li:first-child
+{
+  margin-top:-5px;
+}
+
+
 
 #userReply-notification-listview > li
 {
     border: none;
 }
 
-#orgNewsList > li 
+
+#orgNewsList > li
 {
-    border: none;    
+    border: none;
+    box-shadow:none;
+    /*min-width:40px;
+    display: inline-block;*/
 }
+
+#orgNewsList > li:first-child
+{
+  margin-top:-5px;
+}
+
 
 #eventSwitchUI > li 
 {
@@ -2735,6 +2772,21 @@ overflow: hidden;
     background-position: center center; 
     background-repeat: no-repeat; 
     background-image: url('images/comment_img.png');    
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;     
+}
+
+
+.notiNewsEditIcon{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/edit.png');    
     overflow: hidden;
     display: inline-block;
     text-align: center;
