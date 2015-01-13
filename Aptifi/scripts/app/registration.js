@@ -213,7 +213,7 @@ app.registration = (function () {
             //alert(varifiCode);
             varifiCode = varifiCode.toString();
                
-            var varifiCodeMsg = "verification code-: " + varifiCode;
+            var varifiCodeMsg = "Your Zaffio verification code-: " + varifiCode;
         
             console.log("-----Verification code Registration--" + varifiCode);
             

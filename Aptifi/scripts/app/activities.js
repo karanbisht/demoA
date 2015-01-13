@@ -84,7 +84,8 @@ app.Activities = (function () {
                         read: {
                                                                                                  url: app.serverUrl() + "notification/getCustomerNotification/" + organisationID + "/" + account_Id + "/" + lastNotificationPID,
                                                                                                  type:"POST",
-                                                                                                 dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                  dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                  //async: false
                                                                                              }
                     },
                                                                                      schema: {
@@ -165,7 +166,7 @@ app.Activities = (function () {
                 var notiTitleEncode = app.urlEncode(orgNotiDataVal[i].title);
                 var notiMessageEncode = app.urlEncode(orgNotiDataVal[i].message);
 
-                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type) VALUES ("'
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,upload_type) VALUES ("'
                             + orgNotiDataVal[i].org_id
                             + '","'
                             + orgNotiDataVal[i].pid
@@ -181,10 +182,11 @@ app.Activities = (function () {
                             + orgNotiDataVal[i].send_date
                             + '","'
                             + orgNotiDataVal[i].type
+                            + '","'
+                            + orgNotiDataVal[i].upload_type
                             + '")';              
                 app.insertQuery(tx, query);
             }   
-
             updateJoinOrgTable(orgData, orgLastMsg, dataLength);
         }
                          
@@ -284,6 +286,7 @@ app.Activities = (function () {
                                            pid :results.rows.item(i).pid ,
                                            comment_allow:results.rows.item(i).comment_allow ,
                                            bagCount : 'C',
+                                           upload_type:results.rows.item(i).upload_type,
                                            attached :results.rows.item(i).attached,
                                            previousDate:previousDate,
                                            attachedImg :results.rows.item(i).attached
@@ -359,7 +362,8 @@ app.Activities = (function () {
             var comment_allow = e.data.comment_allow;//: "1"
             var attached = e.data.attached;
             var type = e.data.type;
-        
+            var upload_type = e.data.upload_type;
+            
             app.MenuPage = false;	
     
             //alert(message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow+'&attached='+attached);
@@ -369,7 +373,7 @@ app.Activities = (function () {
             
             //alert(messageVal);
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
-            app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date);
+            app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date + '&upload_type=' + e.data.upload_type);
         };
       
                

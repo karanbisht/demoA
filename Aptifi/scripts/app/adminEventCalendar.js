@@ -131,7 +131,8 @@ app.adminEventCalender = (function () {
                                                        event_show_date:eventDate,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,
                                                        event_image : loginData.status[0].eventData[i].event_image,
-                                                       event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
+                                                       event_name: loginData.status[0].eventData[i].event_name,
+                                                       upload_type:loginData.status[0].eventData[i].upload_type,
                                                        event_time: eventTime,
                                                        page:2,
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
@@ -267,7 +268,8 @@ app.adminEventCalender = (function () {
                                                 event_desc: groupAllEvent[i].event_desc,
                                                 event_show_date:groupAllEvent[i].event_show_date,
                                                 event_image : groupAllEvent[i].event_image,
-                                                event_name: groupAllEvent[i].event_name,                                                                                  										  
+                                                event_name: groupAllEvent[i].event_name,
+                                                upload_type: groupAllEvent[i].upload_type,
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
                                                 mod_date: groupAllEvent[i].mod_date,
                                                 page:2,
@@ -344,6 +346,8 @@ app.adminEventCalender = (function () {
             $("#adddateTimePickerEvent").parent().css('width', "160px");
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
+            
+            $("#sendEventLoader").hide();
             
             /*$("#admincalendar").kendoCalendar({
             //value:new Date(),
@@ -449,6 +453,7 @@ app.adminEventCalender = (function () {
         var eventImageEdit;
         var eventPid;
         var pageToGo;
+        var eventUploadType;
         
         var editEvent = function(e) {
             console.log(e.data.uid);
@@ -458,6 +463,7 @@ app.adminEventCalender = (function () {
             eventDateEdit = e.data.event_date;
             eventTimeEdit = e.data.event_time;
             eventImageEdit = e.data.event_image;
+            eventUploadType = e.data.upload_type;
             eventPid = e.data.id;
             pageToGo = e.data.page;
 
@@ -516,6 +522,8 @@ app.adminEventCalender = (function () {
                 });
             });
         }
+
+        var upload_type_edit;
         
         var editEventshow = function() {
             //alert(eventDataToSend);
@@ -549,6 +557,8 @@ app.adminEventCalender = (function () {
     
                 $(this).css('height', hiddenDiv.height());
             });
+
+            $("#sendEditEventLoader").hide();
             
             $("#editEventName").val(eventNameEdit);            
             $("#editEventDesc").html(eventDescEdit);
@@ -563,15 +573,36 @@ app.adminEventCalender = (function () {
             
             console.log(eventImageEdit);
             
-            if (eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!=='') {
+            if (eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!=='' && eventUploadType==="image") {
                 var largeImage = document.getElementById('attachedImgEditEvent');
                 largeImage.style.display = 'block';
                 largeImage.src = eventImageEdit;
-                //$("#removeEditEventAttachment").show(); 
+                upload_type_edit="image";
+                
+                var largeImageVid = document.getElementById('attachedEditVidEvent');
+                largeImageVid.style.display = 'none';
+                largeImageVid.src = '';
+
+            }else if (eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!=='' && eventUploadType==="video") {
+                var largeImageVid = document.getElementById('attachedEditVidEvent');
+                largeImageVid.style.display = 'block';
+                largeImageVid.src = eventImageEdit;
+                upload_type_edit="video";
+                
+                var largeImage = document.getElementById('attachedImgEditEvent');
+                largeImage.style.display = 'none';
+                largeImage.src = '';
+
             }else {
                 var largeImage = document.getElementById('attachedImgEditEvent');
                 largeImage.style.display = 'none';
                 largeImage.src = '';
+                
+                var largeImageVid = document.getElementById('attachedEditVidEvent');
+                largeImageVid.style.display = 'none';
+                largeImageVid.src = '';
+                upload_type_edit=" ";
+
                 //$("#removeEditEventAttachment").hide();    
             }
             
@@ -652,6 +683,9 @@ app.adminEventCalender = (function () {
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
                 app.showAlert("Please enter Event Description.", "Validation Error");
             }else {    
+                
+                $("#sendEventLoader").show();
+                
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
                 var day = values[1];            
@@ -684,7 +718,7 @@ app.adminEventCalender = (function () {
                 var actionval = "Add";
                 var vidFmAndroid=0;
                 
-                alert(upload_type);
+                //alert(upload_type);
                 
 
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
@@ -700,12 +734,9 @@ app.adminEventCalender = (function () {
                               console.log(photo_split);
                               eventDataToSend = "content://media/external/video/media/" + photo_split[1];
                               vidFmAndroid=1;  
-                            }
-                    
-                    
-
+                    }
+                                        
                     var mimeTypeVal;
-
                         if(upload_type==="image"){
                            mimeTypeVal="image/jpeg"
                         }else{
@@ -714,7 +745,6 @@ app.adminEventCalender = (function () {
                     
 
                     var filename = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);                            
-
                     
                         if(upload_type==="image" && vidFmAndroid===1){
                                  if(filename.indexOf('.') === -1)
@@ -728,12 +758,8 @@ app.adminEventCalender = (function () {
                              }
                         }
 
-                    
-                    alert(filename);
-
-                    
-                            var path =  eventDataToSend;
-                            console.log(path);
+                       var path =  eventDataToSend;
+                       console.log(path);
 
                     
                     var params = new Object();
@@ -833,6 +859,9 @@ app.adminEventCalender = (function () {
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';            
             $("#removeEventAttachment").hide();
+
+            $("#sendEventLoader").hide();
+
             app.mobileApp.navigate("#adminEventCalendar");
         }
          
@@ -847,6 +876,10 @@ app.adminEventCalender = (function () {
             }else {
                 app.showAlert("Network problem . Please try again later", "Notification");  
             }
+            
+            $("#sendEventLoader").hide();
+            $("#sendEditEventLoader").show();
+
         }
 
         var saveEditEventData = function() {
@@ -860,6 +893,8 @@ app.adminEventCalender = (function () {
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
                 app.showAlert("Please enter Event Description.", "Validation Error");
             }else {    
+                
+                $("#sendEditEventLoader").show();
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
                 var day = values[1];            
@@ -877,14 +912,49 @@ app.adminEventCalender = (function () {
                 console.log(event_description);
                 console.log(event_Date);
                 console.log(event_Time);
+                                               
+                var vidFmAndroidEdit=0;
                 
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
                     //alert(eventDataToSend);
                     console.log("image sending function");
-                    if (eventDataToSend.substring(0, 21)==="content://com.android") {
+                    if ((eventDataToSend.substring(0, 21)==="content://com.android") && (upload_type_edit==="image")) {
                         photo_split = eventDataToSend.split("%3A");
                         eventDataToSend = "content://media/external/images/media/" + photo_split[1];
+                        vidFmAndroidEdit=1;  
+                    }else if((eventDataToSend.substring(0, 21)==="content://com.android")&&(upload_type_edit==="video")){
+                              photo_split = eventDataToSend.split("%3A");
+                              eventDataToSend = "content://media/external/video/media/" + photo_split[1];
+                              vidFmAndroidEdit=1;  
                     }
+                                        
+
+                    var mimeTypeVal;
+
+                        if(upload_type_edit==="image"){
+                           mimeTypeVal="image/jpeg"
+                        }else{
+                            mimeTypeVal="video/mpeg"
+                        }
+                    
+
+                    var filename = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);                            
+
+                    
+                        if(upload_type_edit==="image" && vidFmAndroidEdit===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.jpg';
+                             }                
+                        }else if(upload_type_edit==="video" && vidFmAndroidEdit===1){
+                                 if(filename.indexOf('.') === -1)
+                             {
+                                  filename =filename+'.mp4';
+                             }
+                        }
+                   
+                        var path =  eventDataToSend;
+                        console.log(path);
                     
                     console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
 
@@ -896,22 +966,23 @@ app.adminEventCalender = (function () {
                     params.eventStartTime = event_Time;
                     params.pid = eventPid;    
                     params.action = actionval;    
-                                               
+                    params.upload_type = upload_type_edit;
+                           
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
-                    options.fileName = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);
+                    options.fileName = filename;
               
                     console.log("-------------------------------------------");
                     console.log(options.fileName);
               
-                    options.mimeType = "image/jpeg";
+                    options.mimeType = mimeTypeVal;
                     options.params = params;
                     options.headers = {
                         Connection: "close"
                     }
-                    options.chunkedMode = false;
+                    options.chunkedMode = true;
+                    
                     var ft = new FileTransfer();
-
                     console.log(tasks);
                  
                     console.log("----------------------------------------------check-----------");
@@ -978,6 +1049,9 @@ app.adminEventCalender = (function () {
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
           
+
+            $("#sendEditEventLoader").hide();
+
             if (!app.checkSimulator()) {
                 window.plugins.toast.showShortBottom('Event updated successfully');   
             }else {
@@ -1138,6 +1212,7 @@ app.adminEventCalender = (function () {
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,
+                                                       upload_type: loginData.status[0].eventData[i].upload_type,
                                                        event_image : loginData.status[0].eventData[i].event_image,
                                                        event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
                                                        event_time: eventTime,                                                                                  										  
@@ -1302,15 +1377,27 @@ app.adminEventCalender = (function () {
         var getPhotoValEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
         };
         
+        var getVideoValEdit = function(){        
+             navigator.camera.getPicture(onVideoURISuccessDataEdit, onFail, { 
+                                            quality: 50,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            mediaType: navigator.camera.MediaType.VIDEO
+              });
+        }
         
         function onPhotoURISuccessDataEdit(imageURI) {
+            
+            var largeImageVid = document.getElementById('attachedEditVidEvent');
+            largeImageVid.src = ''; 
+            $("#attachedEditVidEvent").hide();            
+
+            
             // Uncomment to view the image file URI
             // console.log(imageURI);
             // Get image handle
@@ -1322,7 +1409,7 @@ app.adminEventCalender = (function () {
             // The inline CSS rules are used to resize the image
             //
             largeImage.src = imageURI;
-               
+            upload_type_edit= "image";   
             eventDataToSend = imageURI;              
             //$("#removeEditEventAttachment").show(); 
             $("#attachedImgEditEvent").show();
@@ -1330,6 +1417,23 @@ app.adminEventCalender = (function () {
             //alert(imageURI);
             console.log(imageURI);
             //eventDataToSend = imageURI;
+        }
+        
+        function onVideoURISuccessDataEdit(videoURI) {
+            
+            var largeImage = document.getElementById('attachedImgEditEvent');
+            largeImage.src = ''; 
+            $("#attachedImgEditEvent").hide();            
+
+            var videoAttachedEdit = document.getElementById('attachedEditVidEvent');
+            videoAttachedEdit.style.display = 'block';
+            videoAttachedEdit.src = videoURI;
+            
+            eventDataToSend = videoURI;    
+            upload_type_edit= "video";
+            
+            $("#attachedEditVidEvent").show();
+
         }
          
         function onFailEdit(message) {
@@ -1343,7 +1447,13 @@ app.adminEventCalender = (function () {
             largeImage.src = '';
             $("#removeEditEventAttachment").hide(); 
             $("#attachedImgEditEvent").hide();
+            
+            var largeImageVid = document.getElementById('attachedEditVidEvent');
+            largeImageVid.src = '';
+            $("#attachedEditVidEvent").hide();
+            
             eventDataToSend = ''; 
+            upload_type_edit="";
         }
         
         return {
@@ -1354,6 +1464,7 @@ app.adminEventCalender = (function () {
             getVideoVal:getVideoVal,
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoValEdit:getPhotoValEdit,
+            getVideoValEdit:getVideoValEdit,
             removeImage:removeImage,
             removeImageEdit:removeImageEdit,
             editEvent:editEvent,

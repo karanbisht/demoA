@@ -75,7 +75,7 @@ app.eventCalender = (function () {
 
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;
-                              
+                              console.log(loginData.status[0].eventData);    
                             for (var i = 0 ; i < eventListLength ;i++) {
                                 var eventDaya = loginData.status[0].eventData[i].event_date;
                                 console.log("-------karan---------------");
@@ -109,9 +109,7 @@ app.eventCalender = (function () {
                                     day = day.replace(/^0+/, '');                                     
                                 }
                                 var saveData = month + "/" + day + "/" + year;
-                                
-                                                  
-                               
+                                                               
                                     groupAllEvent.push({
                                                        id: loginData.status[0].eventData[i].id,
                                                        add_date: loginData.status[0].eventData[i].add_date,
@@ -120,10 +118,11 @@ app.eventCalender = (function () {
                                                        preDateVal:preDateVal,
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
+                                                       upload_type:loginData.status[0].eventData[i].upload_type,
                                                        event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
                                                        event_name: loginData.status[0].eventData[i].event_name, 
                                                        event_image : loginData.status[0].eventData[i].event_image,
-                                                       event_time: eventTime,                                                                                 										  
+                                                       event_time: eventTime,                                                                              										  
                                                        mod_date: loginData.status[0].eventData[i].mod_date,                                     
                                                        org_id: loginData.status[0].eventData[i].org_id
                                                    });
@@ -214,6 +213,7 @@ app.eventCalender = (function () {
                                                 event_name: groupAllEvent[i].event_name,
                                                 event_show_date:groupAllEvent[i].event_show_date,
                                                 event_image:groupAllEvent[i].event_image,
+                                                upload_type:groupAllEvent[i].upload_type,
                                                 event_time: groupAllEvent[i].event_time,                                                                                  										  
                                                 mod_date: groupAllEvent[i].mod_date,                                     
                                                 org_id: groupAllEvent[i].org_id
@@ -338,6 +338,7 @@ app.eventCalender = (function () {
                                                 event_desc: e.data.event_desc,
                                                 event_show_day:e.data.event_show_day,
                                                 event_name: e.data.event_name,
+                                                upload_type:e.data.upload_type,
                                                 event_above_day:e.data.event_above_day,
                                                 event_below_day:e.data.event_below_day,
                                                 event_image:e.data.event_image,

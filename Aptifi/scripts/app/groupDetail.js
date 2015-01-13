@@ -55,6 +55,7 @@ app.groupDetail = (function () {
                     read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
                                                                                        type:"POST",
+                                                                                       //async: false,
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
                 },
@@ -91,9 +92,8 @@ app.groupDetail = (function () {
                         return [data];
                     }                                                            
                 },
-                                                                           error: function (e) {
-                                                                               console.log(e);
-
+                                                                           error: function (e) {                                                                               console.log(e);
+                                                                               console.log(JSON.stringify(e));
                                                                                $("#progressAdmin").hide();             
 
                                                                                //beforeShow();
@@ -373,6 +373,7 @@ app.groupDetail = (function () {
                     read: {
                                                                              url: app.serverUrl() + "customer/getOrgCustomer/" + organisationID,
                                                                              type:"POST",
+                                                                             //async: false,
                                                                              dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
                                                                          }
@@ -532,7 +533,8 @@ app.groupDetail = (function () {
                                                                                url: app.serverUrl() + "group/saveGroup/" + selectedGroupId,
                                                                                type:"POST",
                                                                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                               data: jsonDataSaveGroup
+                        async: false,                                                       
+                        data: jsonDataSaveGroup
                                                                            }
                 },
                                                                    schema: {
@@ -700,6 +702,7 @@ app.groupDetail = (function () {
                                                                                        url: app.serverUrl() + "customer/removeCustomer",
                                                                                        type:"POST",
                                                                                        dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                       //async: false,                                                           
                                                                                        data: jsonDataDeleteMember
                                                                                    }
                     },
@@ -793,6 +796,7 @@ app.groupDetail = (function () {
                     read: {
                                                                                    url: app.serverUrl() + "customer/customerDetail/" + memberSelectedOrgID + "/" + memberSelectedCustID,
                                                                                    type:"POST",
+                                                                                   //async: false,
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                                }
                 },
@@ -1020,6 +1024,7 @@ app.groupDetail = (function () {
                                                                                            url: app.serverUrl() + "customer/saveAlternate",
                                                                                            type:"POST",
                                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                           //async: false,                                                       
                                                                                            data: jsonDataRegister
                                                                                        }
                             },
@@ -1074,7 +1079,8 @@ app.groupDetail = (function () {
                                                                                    url: app.serverUrl() + "customer/edit",
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   data: jsonDataRegister
+                                                                                    //async: false,                                                      
+                                                                                    data: jsonDataRegister
                                                                                }
                     },
                                                                        schema: {

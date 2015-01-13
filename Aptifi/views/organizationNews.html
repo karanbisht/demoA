@@ -19,32 +19,26 @@
             <div class="cf" data-role="touch" >         
              <div class="notiList-content">
                  #if(id!==0){#
-
                     <div class="dateDisplay">
                         <span id="activityTemplateDate" class="dateValue">${news_date} ${news_time}</span>
                         <hr class="dateLine"/>
                         <span></span>
-                    </div>
-           
+                    </div>           
                 <br/>
                 <br/>
             
-                <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			            
-            
-                  #if (news_image!=='' && news_image!==0) {#
+                <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			                        
+                  #if (news_image!=='' && news_image!==0 && upload_type==="image") {#
                     <br/>
                     <img src= ${news_image} style="max-height:200px;margin-top:10px;" />                   
-                  #}else if (news_image!=='' && news_image!=='0'){#          
+                  #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
                         <video  width="300" height="300" controls>
                              <source src=${news_image} >
                         </video>
                    #}#            
-
-                #}else{#            
-            
-                            <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			            
-
+                #}else{#                        
+                        <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			            
                 #}#
             </div>   
           </div> 

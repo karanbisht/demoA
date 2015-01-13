@@ -11,6 +11,7 @@ app.orgGroupListView = (function () {
         var adminNotificationShow = function(e) {
             organisationID = e.view.params.organisationID;
             account_Id = e.view.params.account_Id;
+            
 
             $(".km-scroll-container").css("-webkit-transform", "");
 

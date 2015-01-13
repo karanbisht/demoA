@@ -56,14 +56,19 @@
 
 		<script type="text/x-kendo-template" id="calendarTemplate">
             <!--data-bind="events: { tap: activitySelected }"-->            
-            <div data-role="touch" >                        
-       		<div>                       
-                  #if (event_image!=='' && event_image!=='0'){# 
-                    <img id="eventBannwe" style="max-height:150px;width:100%" src=${event_image}>
+            <div data-role="touch" >
+       		<div>       
+                  #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
+                        <img id="eventBannwe" style="max-height:150px;width:100%" src=${event_image}>
+                  #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
+                        <video  width="300" height="300" controls>
+                             <source src=${event_image} >
+                        </video>
                   #}else{#
                     <img id="eventBannwe" style="max-height:150px;width:100%" src="styles/images/event_banner.jpg">
                   #}#
-       		     <div id="activityTemplateTitle" class="eventNameList" style="margin-left:-5px;">${event_name}</div>                                             
+
+                    <div id="activityTemplateTitle" class="eventNameList" style="margin-left:-5px;">${event_name}</div>                                             
        		     <span  id="activityTemplateMessage"  class="orgContentMsg" >${event_desc}</span>            
                     <br/>
                     <br/>
@@ -112,14 +117,16 @@
        		#}#
                    
                 <div class="calendarEvent-List" >                 
-                 #if (event_image!=='' && event_image!=='0'){# 
+                 #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
                       <div class="user-avatar-event">
                          <img src=${event_image} />      
-                      </div>
+                      </div>                                      
+                 #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
+                         <div class="event-vid-show"></div>                    
                  #}else {#
                          <div class="event-img-show"></div>                    
                  #}# 
-                   
+                                                         
                    #if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#
                    #}else {#

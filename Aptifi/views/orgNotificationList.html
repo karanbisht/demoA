@@ -61,11 +61,15 @@
        		     <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			            
           
          
-                    #if(attached!=='' && attached!=="0"){#
+                    #if(attached!=='' && attached!=="0" && upload_type==="other"){#
                       <br/>   
                       <img src= ${attachedImg} style="max-height:200px;margin-top:10px;" /> 
-
-                    #}#            
+                    #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
+                        <br/>
+                        <video  width="300" height="300" controls>
+                             <source src=${attachedImg} >
+                        </video>
+                    #}#             
   
        		 </div>
 		    </div>

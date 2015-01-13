@@ -480,7 +480,7 @@ app.Login = (function () {
             //alert(varifiCode);
             varifiCode = varifiCode.toString();
               
-            var varifiCodeMsg = "verification code-: " + varifiCode;
+            var varifiCodeMsg = "Your Zaffio verification code-: " + varifiCode;
           
             console.log("-----Verification code Login--" + varifiCode);
 
@@ -538,12 +538,13 @@ app.Login = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             
             var validationCodeId = $("#validationCodeId").val();
+            
             if (validationCodeId==='Verification Code' || validationCodeId==='') {            
                 app.showAlert("Please Enter Verification Code", "Notification");
             }else {
                 $("#progressRandomCode").show();
                 if (varifiCode===validationCodeId) {
-                    //app.mobileApp.navigate('views/getOrganisationList.html');  
+
                     var deviceName = app.devicePlatform();
                     var device_type;
                     if (deviceName==='Android') {

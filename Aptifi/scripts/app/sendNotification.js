@@ -509,12 +509,12 @@ app.sendNotification = (function () {
                     app.showAlert('Please select Notification Message', 'Validation Error');           
                 }else { 
                     $("#progressSendNotification").show();
-                    //var url = "http://54.85.208.215/webservice/notification/sendNotification";
-              
-                    var vidFmAndroid=0;
-                    if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='') &&(upload_type==="image")) { 
+                    //var url = "http://54.85.208.215/webservice/notification/sendNotification";              
+                    var vidFmAndroid=0;                    
+                    //alert(upload_type);
+                    if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
                         //alert("1");
-                        if (dataToSend.substring(0, 21)==="content://com.android") {
+                        if ((dataToSend.substring(0, 21)==="content://com.android") &&(upload_type==="other")) {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
                              vidFmAndroid=1;
@@ -569,7 +569,7 @@ app.sendNotification = (function () {
                    
                         var options = new FileUploadOptions();
                         options.fileKey = "attached";
-                        options.fileName = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
+                        options.fileName = filename;
               
                         console.log("-------------------------------------------");
                         console.log(options.fileName);
@@ -620,17 +620,17 @@ app.sendNotification = (function () {
                         //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                         ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options , true);
                     }else {
-                        console.log(tasks);
-                 
-                        var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}
-                            
+                       console.log(tasks);                 
+                        var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
                         var dataSourceSendNotification = new kendo.data.DataSource({
                                                                                        transport: {
                                 read: {
                                                                                                    url: app.serverUrl() + "notification/sendNotification",
                                                                                                    type:"POST",
                                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                                   async: false,                                                               
                                                                                                    data: notificationData
+                                    
                                                                                                }
                             },
                                                                                        schema: {
@@ -781,7 +781,8 @@ app.sendNotification = (function () {
                     read: {
                                                                                      url: app.serverUrl() + "group/index/" + org,
                                                                                      type:"POST",
-                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+                                                                                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+                                                                                    async: false
                                                                                  }
                 },
                                                                          schema: {               
@@ -898,7 +899,8 @@ app.sendNotification = (function () {
                     read: {
                                                                              url: app.serverUrl() + "customer/getOrgCustomer/" + org,
                                                                              type:"POST",
-                                                                             dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+                                                                             async: false,
                                                                          }
                 },
                                                                  schema: {
@@ -1182,7 +1184,7 @@ app.sendNotification = (function () {
             dataToSend = imageURI;              
             $("#removeAttachment").show(); 
             $("#largeImage").show();
-            upload_type="image";
+            upload_type="other";
 
 
             //alert(imageURI);

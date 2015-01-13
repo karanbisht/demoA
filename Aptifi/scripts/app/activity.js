@@ -21,6 +21,7 @@ app.Activity = (function () {
     var orgLogoToShow;
     var type;
     var date;
+    var upload_type;
     
     var activityViewModel = (function () {
         var activityUid, activity;
@@ -129,6 +130,10 @@ app.Activity = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
+              var notiImageShow = document.getElementById('notiDetailVid');
+              notiImageShow.style.display = 'none';
+              notiImageShow.src = '';
+            
             message = e.view.params.message;
             title = e.view.params.title;
             org_id = e.view.params.org_id;
@@ -140,6 +145,8 @@ app.Activity = (function () {
             date = e.view.params.date;
             message = app.proURIDecoder(message);
             title = app.proURIDecoder(title);
+            upload_type = e.view.params.upload_type;
+ 
             
             //alert('dataValue');
             
@@ -153,7 +160,7 @@ app.Activity = (function () {
                 $('#titleContainer').hide();
             }
 
-            if (attached!== null && attached!=='' && attached!=="0") {
+            if (attached!== null && attached!=='' && attached!=="0" && upload_type==="other") {
                 //loaded(); 
                 //$('#notiImage').css({"height":"200px"});
                 $('#notiImage').css({"max-height":"200px"});
@@ -165,6 +172,10 @@ app.Activity = (function () {
                 console.log('Image Saving Process');    
                 //console.log(attachedImg);    
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
+            }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
+                var notiImageShow = document.getElementById('notiDetailVid');
+                notiImageShow.style.display = 'block';
+                notiImageShow.src = attached; 
             }
                         
             if (comment_allow===1 || comment_allow==='1') {
@@ -288,6 +299,7 @@ app.Activity = (function () {
                                                                            url: app.serverUrl() + "notification/getNotificationComment/" + org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID,
                                                                            type:"POST",
                                                                            dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                           //async: false 
                                                                        }
                 },
                                                                schema: {
@@ -567,6 +579,7 @@ app.Activity = (function () {
                                                                                           url: app.serverUrl() + "notification/userReply",
                                                                                           type:"POST",
                                                                                           dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                          //async: false,
                                                                                           data: jsonDatacomment
                                                                                       }
                         },

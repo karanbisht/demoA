@@ -34,7 +34,8 @@ app.orgNews = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    console.log(e);
+                                                                    console.log(JSON.stringify(e));
                                                                     if (!app.checkSimulator()) {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
@@ -103,6 +104,7 @@ app.orgNews = (function () {
                                                        id: loginData.status[0].newsData[i].id,
                                                        add_date: loginData.status[0].newsData[i].add_date,
                                                        news_date: newsDate,
+                                                       upload_type:loginData.status[0].newsData[i].upload_type,
                                                        news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
                                                        news_name: loginData.status[0].newsData[i].org_name, 
                                                        news_image : loginData.status[0].newsData[i].news_image,

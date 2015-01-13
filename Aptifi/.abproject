@@ -1,7 +1,7 @@
 {
   "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "AppIdentifier": "com.sakshay.aptifi",
+  "AppIdentifier": "com.message.zaffio",
   "ProjectName": "Aptifi",
   "IsRunnable": "true",
   "AndroidPermissions": [
@@ -35,7 +35,7 @@
   "iOSStatusBarStyle": "Default",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "2.0.5",
+  "BundleVersion": "1.0.0",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
@@ -43,10 +43,10 @@
   ],
   "iOSBackgroundMode": [],
   "AndroidVersionCode": "1",
-  "DisplayName": "Aptifi App",
+  "DisplayName": "Zaffio",
   "Author": "karan",
-  "Description": "Aptifi App",
-  "WP8TileTitle": "Aptifi App",
+  "Description": "Zaffio",
+  "WP8TileTitle": "Zaffio",
   "WP8ProductID": "{003f5d01-c32e-4f2f-8a44-f2e7b1f00008}",
   "WP8PublisherID": "{b6e0580a-d18c-47b9-b482-6e009726ed8c}",
   "WP8Publisher": "karan",

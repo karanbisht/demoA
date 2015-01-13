@@ -101,7 +101,7 @@
 #Aptifi.km-flat #welcome .km-content
 {
     background: #2A3144; 
-    background: url("images/background.png") no-repeat center center fixed #000; 
+    background: url("images/background.jpg") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -2701,6 +2701,24 @@ overflow: hidden;
     background-position: center center; 
     background-repeat: no-repeat; 
     background-image: url('images/eventImg.png');
+    
+    border-radius: 6px;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+
+#Aptifi .event-vid-show
+{
+    float: left;
+    width: 55px;
+    height: 55px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/videoPlayIcon.png');
     
     border-radius: 6px;
     overflow: hidden;

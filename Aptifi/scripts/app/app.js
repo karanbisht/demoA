@@ -119,9 +119,9 @@ var app = (function (win) {
   
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , orgDesc TEXT)');
         
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER)');  
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER , upload_type TEXT)');  
         
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , group_id INTEGER , customer_id INTEGER)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , group_id INTEGER , customer_id INTEGER , upload_type TEXT)');
         
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_GROUP(org_id INTEGER, groupID INTEGER, org_name TEXT, group_name TEXT , group_desc TEXT , addDate TEXT )');
   
@@ -661,7 +661,9 @@ var app = (function (win) {
     var commentAllowDB;
     var send_DateDB;
     var notificationMsg;
-    var sendDateInside;    
+    var sendDateInside; 
+    var uploadTypeNoti;
+    
     //the function is a callback when a notification from APN is received
     //var onNotificationAPN = function(e) {
         
@@ -682,6 +684,8 @@ var app = (function (win) {
             attachedDB = messageSplitVal[5];
             commentAllowDB = messageSplitVal[6];
             notificationMsg = messageSplitVal[7];
+            uploadTypeNoti = messageSplitVal[8];
+
                         
             //send_DateDB= getPresentDateTime();
             send_DateDB = getPresntTimeStamp();   
@@ -759,10 +763,9 @@ var app = (function (win) {
                 case 'message': 
                     //alert(e);                      
                     //console.log('----------------------');
-                    //console.log(JSON.stringify(e));
+                    //alert(JSON.stringify(e));
                     //console.log(JSON.stringify(e.event));
                     //console.log(e.foreground);
-
                     //alert(e.title);            
             
                     account_IdDB = localStorage.getItem("ACCOUNT_ID");             
@@ -771,6 +774,9 @@ var app = (function (win) {
                     //console.log(JSON.stringify(e.payload.default));           
             
                     var messageSplitVal = e.payload.default.split('#####');
+                    
+                    //alert(messageSplitVal);
+                
                     //console.log(messageSplitVal);
                     
                     messageDB = messageSplitVal[0];
@@ -779,10 +785,11 @@ var app = (function (win) {
                     typeDB = messageSplitVal[3];
                     titleDB = messageSplitVal[4];
                     attachedDB = messageSplitVal[5];
-                    commentAllowDB = messageSplitVal[6];
+                    commentAllowDB = messageSplitVal[6];   
                     notificationMsg = messageSplitVal[7];
-                
-                    //console.log('---data-------');
+                    uploadTypeNoti = messageSplitVal[8];
+                    
+                     //console.log('---data-------');
                     //send_DateDB= getPresentDateTime();           
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
@@ -807,15 +814,11 @@ var app = (function (win) {
                             //console.log('2');
 
                             if (typeDB!=='Reply') {
-
                                 //console.log('3');
-
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                             }else {
-
                                 //console.log('4');
-
                                 typeDB = "Reply";
                                 var temp;
                                 temp = messageDB;
@@ -892,7 +895,7 @@ var app = (function (win) {
           
         //alert(send_DateDB);
 
-        var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid) VALUES ("'
+        var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
                     + orgIdDB
                     + '","'
                     + attachedDB
@@ -908,6 +911,8 @@ var app = (function (win) {
                     + send_DateDB
                     + '","'
                     + notiIdDB
+                    + '","'
+                    + uploadTypeNoti
                     + '")';              
         app.insertQuery(tx, query);               
     }
@@ -931,7 +936,7 @@ var app = (function (win) {
           
         //alert(send_DateDB);
 
-        var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid) VALUES ("'
+        var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
                     + orgIdDB
                     + '","'
                     + attachedDB
@@ -947,6 +952,8 @@ var app = (function (win) {
                     + send_DateDB
                     + '","'
                     + notiIdDB
+                    + '","'
+                    + uploadTypeNoti
                     + '")';              
         app.insertQuery(tx, query);               
     }
@@ -965,7 +972,7 @@ var app = (function (win) {
         var titleDBVal = app.urlEncode(titleDB);
          
         //console.log('go to page');     
-        app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside);
+        app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside+ '&upload_type=' + uploadTypeNoti);
     }
     
     function updatebagCount(tx) {
@@ -1213,7 +1220,7 @@ var app = (function (win) {
         var seconds = "0" + date.getSeconds();
         // will display time in 10:30:23 format
         var formattedTime = hours + ':' + minutes.substr(minutes.length - 2) + ':' + seconds.substr(seconds.length - 2);                 
-        alert(formattedTime);
+        //alert(formattedTime);
     }
     
     function timeConverter(UNIX_timestamp) {

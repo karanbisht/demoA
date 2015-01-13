@@ -57,21 +57,25 @@
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
             #}#
+        
             <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
             
             #if (message.length > 200) {#
                 #messageVal = message.substr(0, 200) + '..';#
             #}else {#
                 #messageVal = message;#  
-            #}#
-            
-            <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			            
-            
-            #if (attached!=='' && attached!=='0') {#
+            #}#            
+            <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
+            #if (attached!=='' && attached!=='0' && upload_type==="other") {#
                 <br/>
-                     <div style="overflow:hidden;">
-                <img src= ${attachedImg} style="max-height:200px;margin-top:10px;overflow:hidden;" /> 
+                    <div style="overflow:hidden;">
+                        <img src= ${attachedImg} style="max-height:200px;margin-top:10px;overflow:hidden;" /> 
                     </div>
+            #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
+                     <br/>
+                        <video  width="300" height="300" controls>
+                             <source src=${attachedImg} >
+                        </video>
             #}#            
         
         </div>

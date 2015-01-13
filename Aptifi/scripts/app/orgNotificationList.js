@@ -7,14 +7,22 @@ app.orgListView = (function () {
     
     var orgDetailViewModel = (function () {
         var init = function () {
+
         };
 
         var adminNotificationShow = function(e) {
             $("#progressAdminNoti").show();
             $("#admin-noti-listview").hide();
 
-            organisationID = e.view.params.organisationID;
-            account_Id = e.view.params.account_Id;
+            //organisationID = e.view.params.organisationID;
+            //account_Id = e.view.params.account_Id;
+                           
+            organisationID = localStorage.getItem("orgSelectAdmin");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+
+            
+            //alert(organisationID +"||"+ account_Id);
+
 
             var organisationALLListDataSource = new kendo.data.DataSource({                
                                                                               transport: {
@@ -82,7 +90,7 @@ app.orgListView = (function () {
             var dataLength = orgNotiDataVal.length;         
           
             for (var i = 0;i < dataLength;i++) {   
-                var query = 'INSERT INTO ADMIN_ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,group_id,customer_id) VALUES ("'
+                var query = 'INSERT INTO ADMIN_ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,group_id,customer_id,upload_type) VALUES ("'
                             + orgNotiDataVal[i].org_id
                             + '","'
                             + orgNotiDataVal[i].pid
@@ -102,6 +110,8 @@ app.orgListView = (function () {
                             + orgNotiDataVal[i].group_id
                             + '","'
                             + orgNotiDataVal[i].customer_id
+                            + '","'
+                            + orgNotiDataVal[i].upload_type
                             + '")';              
                 app.insertQuery(tx, query);
             }
@@ -154,6 +164,7 @@ app.orgListView = (function () {
                                            comment_allow:results.rows.item(i).comment_allow ,
                                            bagCount : 'C',
                                            attached :results.rows.item(i).attached,
+                                           upload_type:results.rows.item(i).upload_type,
                                            previousDate:previousDate, 
                                            attachedImg :results.rows.item(i).attached
                                        });

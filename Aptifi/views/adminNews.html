@@ -31,16 +31,16 @@
                 <br/>
                 <br/>            
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
-                #if (news_image!=='' && news_image!=='0' && upload_type==="image") {#
+
+               #if (news_image!=='' && news_image!=='0' && upload_type==="image") {#
                     <br/>
-                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" /> 
-               
-                #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
+                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" />                
+               #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
-                        <video  width="300" height="300" controls>
-                             <source src=${news_image} >
-                        </video>
-                   #}#
+                     <video  width="300" height="300" controls>
+                          <source src=${news_image} >
+                     </video>
+                #}#
   		    </div>               
 		    </div>   
          #}else{#
@@ -56,7 +56,6 @@
 
 
 <div data-role="view" id="adminAddNews" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminNews" data-show ="app.adminNews.addEventshow">
-
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">   
                  <span> Add News </span>
@@ -65,7 +64,11 @@
               </div>                                          
     </div>
     
+    <div class="loader" id="sendNewsLoader" style="display:none;margin-top:50%">
+          <div class="ball"></div>
+    </div>
     
+        
     <div data-role="content">
     	<div id="enterNotification" class="textWithTextArea" >             
             
@@ -100,12 +103,12 @@
             <div id="newsAttachment" style="margin-top:10px;height:70px; width:100%;">
                 <div style="display:inline;">                   
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
-                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:80px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
+                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
 
                     <!--<a id="removeNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>-->
 
-                    <div style="width:180px,height:80px;">                        
-                        <video id="attachedVidNews" width="200" height="80" controls style="display:none">
+                    <div style="width:180px,height:50px;">                        
+                        <video id="attachedVidNews" width="180" height="50" controls style="display:none">
                              <source src="" type="">
                         </video>
                     </div>                    
@@ -153,6 +156,11 @@
               </div>                                          
     </div>
        
+    
+        <div class="loader" id="sendEditNewsLoader" style="display:none;margin-top:50%">
+          <div class="ball"></div>
+        </div>
+
         <div data-role="content">
           <div id="enterNotification" class="textWithTextArea">
            <span id="activityTemplateDate"  class="defineTitleText" >News :</span> 
@@ -190,8 +198,14 @@
           <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;height:100px; width:100%;">                    
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" ></a>
-                    <img id="attachedImgEditNews" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
                     <!--<a id="removeEditNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImageEdit"></a>-->
+                    
+                    <div style="width:180px,height:50px;">                        
+                        <video id="attachedVidNewsEdit" width="180" height="50" controls style="display:none">
+                             <source src="" type="">
+                        </video>
+                    </div>
                 </div>
                 
                 <ul data-role="actionsheet" id="newsEditImgSelect">
@@ -202,6 +216,13 @@
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoValEdit">Album</a>
                     </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getVideoValEdit">Video</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImageEdit">Remove</a>
+                    </li>
+
                 </ul>
           </div>   
             

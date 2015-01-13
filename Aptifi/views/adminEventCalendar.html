@@ -38,10 +38,12 @@
        		#}#
                    
                 <div class="calendarEvent-List" >                 
-                 #if (event_image!=='' && event_image!=='0'){# 
-                      <div class="user-avatar-event">
+                 #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
+                      <div class="user-avatar-event"  >
                          <img src=${event_image} />      
                       </div>
+                 #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
+                         <div class="event-vid-show"></div>
                  #}else {#
                          <div class="event-img-show"></div>                    
                  #}# 
@@ -135,28 +137,19 @@
        
 </div>
 
-
-
 		<script type="text/x-kendo-template" id="calendarTemplate">
-            <!--data-bind="events: { tap: activitySelected }"-->
-            
-            <div class="cf" data-role="touch" >         
-               
-       		<div class="calendarEvent-List" >
-             
+            <!--data-bind="events: { tap: activitySelected }"-->            
+            <div class="cf" data-role="touch" >                        
+       		<div class="calendarEvent-List" >             
        		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div>
-
        		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;margin-top:10px;text-align:justify;" >${event_desc}</span>            			            
-
                     #if (event_image!=='' && event_image!=='0') {#
                         <br/>
                             <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
                         <br/>
                     #}#                                       
                         <br/>
-
                     <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date:<span style="color:rgb(147,147,147);"> ${event_show_date} </span></span>       	            
-
                     <span id="activityTemplateDate"  style="float:right;color:rgb(122,184,77);margin-top:5px;">Time:<span style="color:rgb(147,147,147);">${event_time}</span></span>       	            
             
             
@@ -191,6 +184,9 @@
     </div>
     
     
+    <div class="loader" id="sendEventLoader" style="display:none;margin-top:50%">
+          <div class="ball"></div>
+    </div>
     	   
     <div data-role="content">
 
@@ -246,12 +242,12 @@
                     
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
 
-                    <img id="attachedImgEvent" src="" alt="" align="right"  style="height:80px;width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
 
                     <!--<a id="removeEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImage"></a>-->
                     
-                    <div style="width:200px,height:80px;">                        
-                        <video id="attachedVidEvent" width="200" height="80" controls style="display:none">
+                    <div style="width:180px,height:50px;">                        
+                        <video id="attachedVidEvent" width="180" height="50" controls style="display:none">
                              <source src="" type="">
                         </video>
                     </div>
@@ -296,6 +292,9 @@
               </div>                                          
     </div>
     
+    <div class="loader" id="sendEditEventLoader" style="display:none;margin-top:50%">
+          <div class="ball"></div>
+    </div>
     
    <div data-role="content">
     	<div id="enterNotification" class="textWithTextArea" >             
@@ -317,7 +316,7 @@
             -->
                         
            <span id="activityTemplateDate"  class="defineTitleText">Event Detail :</span>
-                       <br/>
+            <br/>
             <br/>
 
            <textarea  id="editEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
@@ -347,9 +346,16 @@
                 <div style="display:inline;">
                     
                     <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" ></a>
-                    <img id="attachedImgEditEvent" src="" alt="" align="right"  style="max-height:50px; max-width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    
+                    <img id="attachedImgEditEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
 
                     <!--<a id="removeEditEventAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImageEdit"></a>-->
+                    
+                    <div style="width:180px,height:50px;">                        
+                        <video id="attachedEditVidEvent" width="180" height="50" controls style="display:none">
+                             <source src="" type="">
+                        </video>
+                    </div>
 
                 </div>
                 
@@ -360,6 +366,12 @@
                     </li>
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoValEdit">Album</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getVideoValEdit">Video</a>
+                    </li>
+                     <li>
+                        <a href="#" data-role="button" data-bind="click: removeImageEdit">Remove</a>
                     </li>
                 </ul>
             </div>

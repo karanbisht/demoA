@@ -131,6 +131,7 @@ app.userNotiComment = (function () {
                                                                           error: function (e) {
                                                                               //apps.hideLoading();
                                                                               console.log(e);
+                                                                              console.log(JSON.stringify(e));
                                                                               navigator.notification.alert("Please check your internet connection.",
                                                                                                            function () {
                                                                                                            }, "Notification", 'OK');
@@ -318,6 +319,7 @@ app.userNotiComment = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        console.log(e);
+                                                                        console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
