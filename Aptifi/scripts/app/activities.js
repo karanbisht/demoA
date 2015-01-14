@@ -90,19 +90,19 @@ app.Activities = (function () {
                     },
                                                                                      schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                
                             var orgNotificationData; 
                             $.each(data, function(i, groupValue) {
-                                console.log(groupValue);
+                                //console.log(groupValue);
                                      
                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log();
+                                    //console.log();
                                     if (orgVal.Msg ==='No notification') {     
                                         var db = app.getDb();
                                         db.transaction(getDataOrgNoti, app.errorCB, app.successCB);         
                                     }else if (orgVal.Msg==='Success') {
-                                        console.log(orgVal.notificationList.length);  
+                                        //console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
                                         if(noDatainDB===1){
                                                groupDataShow=[]; 
@@ -112,12 +112,12 @@ app.Activities = (function () {
                                 });    
                             });
                        
-                            console.log(groupDataShow);
+                            //console.log(groupDataShow);
                             return groupDataShow;
                         }                       
                     },
                                                                                      error: function (e) {
-                                                                                         console.log(e);
+                                                                                         //console.log(e);
 
                                                                                          if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -294,7 +294,7 @@ app.Activities = (function () {
                     previousDate = notiDate;                    
                     lastNotificationPID = results.rows.item(i).pid;
                 }    
-                console.log(lastNotificationPID);
+                //console.log(lastNotificationPID);
             }else {
                 lastNotificationPID = 0;
                 $("#showMoreButton").hide();                    
@@ -352,12 +352,12 @@ app.Activities = (function () {
       
             
         var activitySelected = function (e) {
-            console.log(e.data.uid);
-            console.log(e.data);
+            //console.log(e.data.uid);
+            //console.log(e.data);
             var message = e.data.message;
             var title = e.data.title;
             var org_id = e.data.org_id;
-            console.log(org_id);
+            //console.log(org_id);
             var notiId = e.data.pid;
             var comment_allow = e.data.comment_allow;//: "1"
             var attached = e.data.attached;
@@ -379,7 +379,8 @@ app.Activities = (function () {
                
         var goToAppFirstView =  function(){
 
-            app.slide('right', 'green' ,'3' ,'#organisationNotiList');
+             app.mobileApp.navigate('#organisationNotiList');
+             //app.slide('right', 'green' ,'3' ,'#organisationNotiList');
 
         }
 

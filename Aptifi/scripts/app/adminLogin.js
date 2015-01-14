@@ -4,6 +4,8 @@
 
 var app = app || {};
 
+
+
 app.adminLogin = (function () {
     'use strict';
 
@@ -498,8 +500,9 @@ app.adminLogin = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
             //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
-            
-            app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+             app.mobileApp.navigate('#view-all-activities-GroupDetail');
+
+             //app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
 
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         };

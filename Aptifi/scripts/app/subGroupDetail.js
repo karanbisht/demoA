@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.subGroupDetail = (function () {
     var GroupName;
     var selectedGroupId;
@@ -45,11 +46,11 @@ app.subGroupDetail = (function () {
         var showSubGroupMembers = function() {
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();
-            //app.mobileApp.navigate('#subGroupMemberShow');
+            app.mobileApp.navigate('#subGroupMemberShow');
 
             app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
+            //app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
 
             console.log(organisationID);
             console.log(groupID);
@@ -147,6 +148,7 @@ app.subGroupDetail = (function () {
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
                                                                      console.log(e);
+                                                                     console.log(JSON.stringify(e));
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
                     
@@ -261,6 +263,7 @@ app.subGroupDetail = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        console.log(e);
+                                                                       console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -370,6 +373,7 @@ app.subGroupDetail = (function () {
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
                                                                      console.log(e);
+                                                                     console.log(JSON.stringify(e));
                                                                      navigator.notification.alert("Please check your internet connection.",
                                                                                                   function () {
                                                                                                   }, "Notification", 'OK');
@@ -415,6 +419,7 @@ app.subGroupDetail = (function () {
                                                                     error: function (e) {
                                                                         //apps.hideLoading();
                                                                         console.log(e);
+                                                                        console.log(JSON.stringify(e));
                                                                         navigator.notification.alert("Please check your internet connection.",
                                                                                                      function () {
                                                                                                      }, "Notification", 'OK');
@@ -445,9 +450,9 @@ app.subGroupDetail = (function () {
         
         var removeMemberFromGroup = function() {           
             app.MenuPage = false;
-                                                    app.slide('left', 'green' ,'3' ,'#removeMemberFromSubGroup');
+                                                    //app.slide('left', 'green' ,'3' ,'#removeMemberFromSubGroup');
 
-            //app.mobileApp.navigate('#removeMemberFromSubGroup');            
+            app.mobileApp.navigate('#removeMemberFromSubGroup');            
             
         };
                  
@@ -486,6 +491,7 @@ app.subGroupDetail = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
+                                                                           console.log(JSON.stringify(e));
                                                                            navigator.notification.alert("Please check your internet connection.",
                                                                                                         function () {
                                                                                                         }, "Notification", 'OK');
@@ -574,14 +580,14 @@ app.subGroupDetail = (function () {
         };
         
         var backToPrePage = function() {
-            //app.mobileApp.navigate('views/subGroupDetailView.html');
-                                                    app.slide('right', 'green' ,'3' ,'#views/subGroupDetailView.html');
+            app.mobileApp.navigate('views/subGroupDetailView.html');
+                    //app.slide('right', 'green' ,'3' ,'#views/subGroupDetailView.html');
 
         }
 
         var goToPrePageOrg = function() {
-            //app.mobileApp.navigate('views/groupListPage.html');
-                                        app.slide('right', 'green' ,'3' ,'#views/groupListPage.html');
+            app.mobileApp.navigate('views/groupListPage.html');
+                                        //app.slide('right', 'green' ,'3' ,'#views/groupListPage.html');
 
         }
 	           

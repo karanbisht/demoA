@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.orgNews = (function () {
     var orgNewsModel = (function () {
         var eventOrgId;
@@ -142,8 +143,8 @@ app.orgNews = (function () {
         }
         
         var gobackOrgPage = function() {
-            //app.mobileApp.navigate('views/userOrgManage.html'); 
-                            app.slide('right', 'green' ,'3' ,'#views/userOrgManage.html');
+            app.mobileApp.navigate('views/userOrgManage.html'); 
+                            //app.slide('right', 'green' ,'3' ,'#views/userOrgManage.html');
  
         }
         

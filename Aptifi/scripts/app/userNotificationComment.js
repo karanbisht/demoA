@@ -385,7 +385,7 @@ app.userNotiComment = (function () {
                 },
                                                                       error: function (e) {
                                                                           //apps.hideLoading();
-
+                                                                            console.log(JSON.stringify(e));
                                                                           app.mobileApp.pane.loader.hide();
                                                                           
                                                                           console.log(e);

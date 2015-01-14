@@ -1,3 +1,5 @@
+
+
 var app = (function (win) {
     'use strict';
     var db;
@@ -551,7 +553,9 @@ var app = (function (win) {
     }*/
        
     // Handle "deviceready" event
-    document.addEventListener('deviceready', onDeviceReady, false);
+    document.addEventListener('deviceready',onDeviceReady, false);
+    
+    
     // Handle "orientationchange" event
     document.addEventListener('orientationchange', fixViewResize);
     
@@ -1376,6 +1380,72 @@ var app = (function (win) {
 	});
 	document.getElementById(idVal).value = answer;
    }
+    
+    
+
+    
+       function LogoutFromAdmin(){
+                
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else { 
+                    var dataSourceLogin = new kendo.data.DataSource({
+                                                                        transport: {
+                            read: {
+                                                                                    url: app.serverUrl() + "organisation/orgAdminLogout",
+                                                                                    type:"POST",
+                                                                                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                }
+                        },
+                                                                        schema: {
+                            data: function(data) {
+                                console.log(data);
+                                return [data];
+                            }
+                        },
+                                                                        error: function (e) {
+                                                                            
+                                                                            //console.log(JSON.stringify(e));
+                                                                         
+                                                                            //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                            
+                                                                            /*if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                            }else {
+                                                                                app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                            }*/
+                                                                            
+                                                                            //navigator.notification.alert("Please check your internet connection.",
+                                                                            //function () { }, "Notification", 'OK');
+                                                                        }               
+                                                                    });  
+	            
+                    dataSourceLogin.fetch(function() {
+                        var loginDataView = dataSourceLogin.data();
+                        console.log(loginDataView);
+               
+                        $.each(loginDataView, function(i, loginData) {
+                            console.log(loginData.status[0].Msg);
+
+                            if (loginData.status[0].Msg==='You have been successfully logged out.') {
+                                console.log('reg');
+                                app.mobileApp.navigate('#organisationNotiList');                                
+                                //app.flip('left', 'green', '#organisationNotiList')                                
+                            }else {
+                                //app.mobileApp.pane.loader.hide();
+                                //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                app.showAlert(loginData.status[0].Msg, "Notification");
+                            }
+
+                        });
+                    });
+                }
+       }
+    
 
     return {
         showAlert: showAlert,
@@ -1413,6 +1483,7 @@ var app = (function (win) {
         insertQuery:insertQuery,
         showConfirm: showConfirm,
         urldecode:urldecode,
+        LogoutFromAdmin:LogoutFromAdmin,
         urlEncode:urlEncode,
         isKeySet: isKeySet,
         mobileApp: mobileApp,

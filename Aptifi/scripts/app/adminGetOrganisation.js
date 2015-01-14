@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.adminOragnisationList = (function () {
     'use strict'
     //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
@@ -197,6 +198,7 @@ app.adminOragnisationList = (function () {
                 },
                                                                            error: function (e) {
                                                                                console.log(e);
+                                                                               console.log(JSON.stringify(e));
 
                                                                                $("#progressAdmin").hide();             
 
@@ -423,7 +425,8 @@ app.adminOragnisationList = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Organization Detail View in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
+            app.mobileApp.navigate('views/groupDetailView.html');
+            //app.slide('left', 'green' ,'3' ,'#views/groupDetailView.html');    
 
         };
         

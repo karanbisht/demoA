@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.addCustomerByAdmin = (function () {
     'use strict'
 
@@ -89,7 +90,7 @@ app.addCustomerByAdmin = (function () {
                 if(count===countMobile){
                     //alert('inside');
                     
-                                    console.log(mobileArray);
+                                    //console.log(mobileArray);
 
 
                                     var jsonDataRegister;
@@ -107,14 +108,14 @@ app.addCustomerByAdmin = (function () {
                     },
                                                                        schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
-                                                                           console.log(JSON.stringify(e));           
+                                                                          // console.log(e);
+                                                                           //console.log(JSON.stringify(e));           
 
                                                                            app.mobileApp.pane.loader.hide();
                                                                            navigator.notification.alert("Please check your internet connection.",
@@ -125,9 +126,9 @@ app.addCustomerByAdmin = (function () {
              
                 dataSourceRegister.fetch(function() {
                     var loginDataView = dataSourceRegister.data();
-                    console.log(loginDataView);       
+                    //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
-                        console.log(loginData.status[0].Msg);
+                        //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
                             app.showAlert("Member Added Successfully", "Notification");
@@ -151,8 +152,8 @@ app.addCustomerByAdmin = (function () {
                     mobileArray.push(mobile);
                 }
                 
-                console.log(mobileArray);
-                console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
+                //console.log(mobileArray);
+                //console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 var jsonDataRegister;
                           
                 jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID} 
@@ -168,15 +169,15 @@ app.addCustomerByAdmin = (function () {
                     },
                                                                        schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
+                                                                           //console.log(e);
 
-                                                                           console.log(JSON.stringify(e));           
+                                                                           //console.log(JSON.stringify(e));           
 
                                                                            
                                                                            app.mobileApp.pane.loader.hide();
@@ -188,9 +189,9 @@ app.addCustomerByAdmin = (function () {
              
                 dataSourceRegister.fetch(function() {
                     var loginDataView = dataSourceRegister.data();
-                    console.log(loginDataView);       
+                    //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
-                        console.log(loginData.status[0].Msg);
+                        //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
                             app.showAlert("Member Added Successfully", "Notification");
@@ -209,7 +210,7 @@ app.addCustomerByAdmin = (function () {
         };
         
         function refreshOrgMember() {  
-            console.log('go to member');
+            //console.log('go to member');
             app.groupDetail.showGroupMembers();
         };
         

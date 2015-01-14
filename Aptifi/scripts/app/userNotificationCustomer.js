@@ -90,10 +90,12 @@ app.replyedCustomer = (function () {
                             $.each(groupValue, function(i, orgVal) {
                                 console.log(orgVal);
                                      
-                                if(orgVal.Msg==="You don't have access"){
+                                if(orgVal.Msg==="You don't have access"){                                    
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.mobileApp.navigate('views/organisationLogin.html');   
-                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                    app.LogoutFromAdmin(); 
+                                    
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
                                       
                                 }else if (orgVal.Msg ==='No list found') {   
                                     groupDataShow.push({
@@ -144,6 +146,8 @@ app.replyedCustomer = (function () {
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
                                                                      //console.log(e);
+                                                                     console.log(JSON.stringify(e));
+                                                                     
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
                                                                      $("#loaderReplyCustomer").hide();

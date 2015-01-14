@@ -60,6 +60,8 @@ app.orgListView = (function () {
                                                                                   e.preventDefault();
                                                                                   //apps.hideLoading();
                                                                                   console.log(e);
+                                                                                  console.log(JSON.stringify(e));
+                                                                                  
                                                                                   //$("#progress1").hide();  
 
                                                                                   if (!app.checkSimulator()) {

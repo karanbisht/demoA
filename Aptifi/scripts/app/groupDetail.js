@@ -11,12 +11,14 @@ app.groupDetail = (function () {
     
     var organisationID;
     var account_Id;
-       
+    
     var groupDetailViewModel = (function () {
         var init = function () {
         };
            
         var show = function (e) {
+            
+            e.preventDefault();
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();       
             
@@ -55,12 +57,13 @@ app.groupDetail = (function () {
                     read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
                                                                                        type:"POST",
-                                                                                       //async: false,
+                                                                                       cache: false,
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
                 },
                                                                            schema: {                                
                     data: function(data) {	
+                        console.log(JSON.stringify(data));
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
                             console.log(groupValue);   
@@ -70,9 +73,10 @@ app.groupDetail = (function () {
                                                      
                             }else if(groupValue[0].Msg==="You don't have access"){
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    
-                                    app.mobileApp.navigate('views/organisationLogin.html');   
-                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                    app.LogoutFromAdmin();    
+                                
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
                                 
                             }else if (groupValue[0].Msg==='Success') {
                                 console.log(groupValue[0].orgData.length);
@@ -318,15 +322,12 @@ app.groupDetail = (function () {
            
         var showGroupNotification = function() {
             app.MenuPage = false;
-
             app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
-
             app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID + '&account_Id=' + account_Id);
             //app.mobileApp.navigate('#groupNotificationShow');
         };   
 
-        var groupDataShow = [];
-        
+        var groupDataShow = [];        
         var showGroupMembers = function() {            
             app.MenuPage = false;
 
@@ -335,105 +336,38 @@ app.groupDetail = (function () {
             app.mobileApp.navigate('views/orgMemberPage.html');                              
         };
         
-        var orgMemberShow = function() {
-            var organisationID = localStorage.getItem("orgSelectAdmin");
-         
-            $("#progressAdminOrgMem").show();         
-         
-            var UserModel = {
-                id: 'Id',
-                fields: {
-                    mobile: {
-                            field: 'mobile',
-                            defaultValue: ''
-                        },
-                    first_name: {
-                            field: 'first_name',
-                            defaultValue: ''
-                        },
-                    email: {
-                            field: 'email',
-                            defaultValue:''
-                        },
-                    last_name: {
-                            field: 'last_name',
-                            defaultValue:''
-                        },
-                    customerID: {
-                            field: 'customerID',
-                            defaultValue:''
-                        }
-
-                }
-            };
+        var orgMemberShow = function(e) {
+            e.preventDefault();
             
+            var organisationID = localStorage.getItem("orgSelectAdmin");         
+            $("#progressAdminOrgMem").show();         
+                        
             app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
                                                                              url: app.serverUrl() + "customer/getOrgCustomer/" + organisationID,
                                                                              type:"POST",
-                                                                             //async: false,
+                                                                             cache: false,
                                                                              dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
                                                                          }
                 },
                                                                  schema: {
-                    model: UserModel,
                 
                 
                     data: function(data) {
-                        console.log(data);
-                       
-                        groupDataShow = [];
-                        $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
-                                     
-                            $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
-
-                                if (orgVal.Msg ==='No Customer in this organisation') {     
-                                    groupDataShow.push({
-                                                           mobile: '',
-                                                           first_name: '',
-                                                           email:'No Customer in this Organization',  
-                                                           last_name : '',
-                                                           customerID:'0',
-                                                           account_id:'0',
-                                                           orgID:'0'
-                                                       });     
-                                    $("#adminRemoveMember").hide();
-                                }else if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.allCustomer.length);  
-                                    for (var i = 0;i < orgVal.allCustomer.length;i++) {
-                                        groupDataShow.push({
-                                                               mobile: orgVal.allCustomer[i].uacc_username,
-                                                               first_name: orgVal.allCustomer[i].user_fname,
-                                                               email:orgVal.allCustomer[i].user_email,  
-                                                               last_name : orgVal.allCustomer[i].user_lname,
-                                                               customerID:orgVal.allCustomer[i].custID,
-                                                               account_id:orgVal.allCustomer[i].account_id,
-                                                               orgID:orgVal.allCustomer[i].orgID
-                                                           });
-                                    }     
-                                }else if(orgVal.Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    
-                                    app.mobileApp.navigate('views/organisationLogin.html');   
-                                    localStorage.setItem("loginStatusCheck", 1);                                
-                                }
- 
-                            });
-                        });
-                       
-                        console.log(JSON.stringify(groupDataShow));
-                        return groupDataShow;
+                       console.log(data);
+                                             
+                        return [data];
                     }
 
                 },
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
-                                                                     console.log(e);
+                                                                   
+                                                                     console.log(JSON.stringify(e));
+                                                                     
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
                                                                      
@@ -463,24 +397,70 @@ app.groupDetail = (function () {
 	        
                                                              });         
             
-            //MemberDataSource.fetch(function() {
-                
-            //});
+            MemberDataSource.fetch(function() {
             
-            app.mobileApp.pane.loader.hide();
+                var data = this.data();
+                
+                        
+                        groupDataShow = [];
+                                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
+                                    groupDataShow.push({
+                                                           mobile: '',
+                                                           first_name: '',
+                                                           email:'No Customer in this Organization',  
+                                                           last_name : '',
+                                                           customerID:'0',
+                                                           account_id:'0',
+                                                           orgID:'0'
+                                                       });     
+                                    $("#adminRemoveMember").hide();
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                             
+                                    for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
+                                        groupDataShow.push({
+                                                               mobile: data[0]['status'][0].allCustomer[i].uacc_username,
+                                                               first_name: data[0]['status'][0].allCustomer[i].user_fname,
+                                                               email:data[0]['status'][0].allCustomer[i].user_email,  
+                                                               last_name : data[0]['status'][0].allCustomer[i].user_lname,
+                                                               customerID:data[0]['status'][0].allCustomer[i].custID,
+                                                               account_id:data[0]['status'][0].allCustomer[i].account_id,
+                                                               orgID:data[0]['status'][0].allCustomer[i].orgID
+                                                           });
+                                    }     
+                                }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
+                                    app.LogoutFromAdmin(); 
+                                    
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                                }
+                       
+                
+                showMemberDataFunc(groupDataShow);
 
-            console.log(MemberDataSource);
+            });
+                       
+            
 
+            
+          
+        }
+        
+        function showMemberDataFunc(data){
+            
+            
             $("#groupMember-listview").kendoMobileListView({
-                                                               dataSource: MemberDataSource,
+                                                               dataSource: data,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
-            app.mobileApp.pane.loader.hide();
+                    $("#progressAdminOrgMem").hide();
             
-            setTimeout(function() {
-                $("#progressAdminOrgMem").hide();
-            }, 300);
+
+              $('#groupMember-listview').data('kendoMobileListView').refresh(); 
+          
         }
+        
+        
         
         var showGroupToDelete = function() {
             console.log("---------------------GROUP DATA----------------");
@@ -489,6 +469,8 @@ app.groupDetail = (function () {
                                                      template: kendo.template($("#Member-Delete-template").html()),    		
                                                      dataSource: groupDataShow
                                                  });
+        
+        
         }
         
         var addNemMember = function() {
@@ -507,7 +489,9 @@ app.groupDetail = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Group List in Admin");            
 
-            app.slide('left', 'green' , '3' , '#views/groupListPage.html');
+            //app.slide('left', 'green' , '3' , '#views/groupListPage.html');
+            
+                app.mobileApp.navigate("views/groupListPage.html");
         };
         
         var sendNotification = function() {
@@ -532,8 +516,9 @@ app.groupDetail = (function () {
                     read: {
                                                                                url: app.serverUrl() + "group/saveGroup/" + selectedGroupId,
                                                                                type:"POST",
+                        
                                                                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                        async: false,                                                       
+                        cache: false,                                                       
                         data: jsonDataSaveGroup
                                                                            }
                 },
@@ -546,6 +531,7 @@ app.groupDetail = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        console.log(e);
+                                                                       console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -583,12 +569,13 @@ app.groupDetail = (function () {
         
         var backToOrgDetail = function() {
             // app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
-            app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');    
+            //app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');    
+            app.mobileApp.navigate("#view-all-activities-GroupDetail");
         }
         
         var backToOrgAdminList = function() {       
-            //app.mobileApp.navigate('#view-all-activities-admin');  
-            app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');
+            app.mobileApp.navigate('#view-all-activities-admin');  
+            //app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');
         }   
         
         /*var addMemberToGroupFunc = function(){
@@ -702,7 +689,7 @@ app.groupDetail = (function () {
                                                                                        url: app.serverUrl() + "customer/removeCustomer",
                                                                                        type:"POST",
                                                                                        dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                       //async: false,                                                           
+                                                                                       cache: false,                                                           
                                                                                        data: jsonDataDeleteMember
                                                                                    }
                     },
@@ -715,6 +702,8 @@ app.groupDetail = (function () {
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
                                                                                console.log(e);
+                                                                               console.log(JSON.stringify(e));
+                                                                               
                                                                                navigator.notification.alert("Please check your internet connection.",
                                                                                                             function () {
                                                                                                             }, "Notification", 'OK');
@@ -771,14 +760,16 @@ app.groupDetail = (function () {
             console.log('member click'); 
             console.log(e.data);
             memberSelectedOrgID = e.data.orgID;
-            memberSelectedCustID = e.data.customerID;        
+            memberSelectedCustID = e.data.customerID;   
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
             app.mobileApp.navigate('#editMemberInAdmin');       
         };
 
         var alernateMobileVal;
         
-        var editMemberShow = function() {
+        var editMemberShow = function(e) {
+            e.preventDefault();
+            
             $(".km-scroll-container").css("-webkit-transform", "");  
 
             $("#adminEditCustomer").show();            
@@ -809,6 +800,8 @@ app.groupDetail = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            console.log(e);
+                                                                           console.log(JSON.stringify(e));
+                                                                           
                                                                            $("#adminEditCustomer").hide();            
                                                                            $("#editOrgMemberContent").show();
                                                                            navigator.notification.alert("Please check your internet connection.",
@@ -866,6 +859,7 @@ app.groupDetail = (function () {
         }
         
         var userMessageTab = function(e) {
+            e.preventDefault();
             var tempArray = [];
             app.MenuPage = false;	
             var activity;
@@ -920,22 +914,23 @@ app.groupDetail = (function () {
         var showOrgEvent = function() {
             app.MenuPage = false;
             console.log(organisationID);
-            //app.mobileApp.navigate('views/adminEventCalendar.html');                
-            app.slide('left', 'green' , '3' , '#views/adminEventCalendar.html');
+            app.mobileApp.navigate('views/adminEventCalendar.html');                
+            //app.slide('left', 'green' , '3' , '#views/adminEventCalendar.html');
         }
         
         var showOrgNews = function() {
             app.MenuPage = false;
             console.log(organisationID);
-            //app.mobileApp.navigate('views/adminNews.html');
-            app.slide('left', 'green' , '3' , '#views/adminNews.html');
+            app.mobileApp.navigate('views/adminNews.html');
+            //app.slide('left', 'green' , '3' , '#views/adminNews.html');
         }
         
         var countMobile;
         var mobileArray = [];
         
         var addMoreMobileNoPage = function() {
-            app.slide('left', 'green' , '3' , '#addAlternateNumber');
+            //app.slide('left', 'green' , '3' , '#addAlternateNumber');
+            app.mobileApp.navigate('#addAlternateNumber');
         }
         
         var addMoreMobileNoFunc = function() {
@@ -1024,7 +1019,7 @@ app.groupDetail = (function () {
                                                                                            url: app.serverUrl() + "customer/saveAlternate",
                                                                                            type:"POST",
                                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                           //async: false,                                                       
+                                                                                           cache: false,                                                       
                                                                                            data: jsonDataRegister
                                                                                        }
                             },
@@ -1079,7 +1074,7 @@ app.groupDetail = (function () {
                                                                                    url: app.serverUrl() + "customer/edit",
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                    //async: false,                                                      
+                                                                                   cache: false,                                                      
                                                                                     data: jsonDataRegister
                                                                                }
                     },

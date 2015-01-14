@@ -45,8 +45,9 @@
 
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
 
-            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;">
-                <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
+            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:transparent;">
+
+                <form id="login-form" data-bind="events: { keyup: checkEnter }" class="" style="background:transparent;">
 
                     <ul data-role="listview" data-style="inset">
                         <li class="username" style="padding:10px;border-radius:3px;background-color:#303645;color:#ffffff" >
@@ -428,9 +429,10 @@
                 </div>
             #}#
         </script>
+        
+<!--,'#infoDiv'-->
 
-
-        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Zaffio" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','#infoDiv','views/organisationLogin.html']">
+        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Zaffio" data-views="['organisationNotiList','organisationDiv','profileDiv','settingDiv','views/organisationLogin.html']">
 
             <header data-role="header">
                 <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
@@ -451,9 +453,9 @@
                 <li >
                     <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
                 </li>
-                <li >
+                <!--<li >
                     <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
-                </li>
+                </li>-->
                 <li id="goToAdmin" >
                     <a id="side-admin-icon"  onclick="app.flip('right', 'green', '#views/organisationLogin.html')"></a>
                 </li>
@@ -968,7 +970,9 @@
                     $("#setOrgName").html(org_name);
                     
                     $( "#dynamicLi" ).slideUp("slow");
-                    app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');     
+                    //app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+                    app.mobileApp.navigate('#view-all-activities-GroupDetail');
+                    
                     getListCount();
                     
                 }   
@@ -1040,7 +1044,7 @@
                         },
                                                                         error: function (e) {
                                                                             
-                                                                            console.log(JSON.stringify(e));
+                                                                            //console.log(JSON.stringify(e));
                                                                          
                                                                             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
@@ -1063,7 +1067,8 @@
 
                             if (loginData.status[0].Msg==='You have been successfully logged out.') {
                                 console.log('reg');
-                                app.flip('left', 'green', '#organisationNotiList')
+                                app.mobileApp.navigate('#organisationNotiList');
+                                //app.flip('left', 'green', '#organisationNotiList')
                             }else {
                                 //app.mobileApp.pane.loader.hide();
                                 //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
@@ -1157,8 +1162,7 @@
                 <div class="activity-content">
 
                     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:0px;color:rgb(107,111,116);" >${orgName}</h2>
-                    
-                
+                                    
                     #if (showCount!==0 && showCount!=="null" && showCount!==null) {#                 
                         <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${showCount}</div>
                     #}# 
@@ -1173,6 +1177,7 @@
             </div>
         </script>
 
+        
         <script type="text/x-kendo-template" id="errorTemplate">    		
             <div class="cf" style="margin-top:30%;border:none">
 

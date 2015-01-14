@@ -101,7 +101,7 @@
 #Aptifi.km-flat #welcome .km-content
 {
     background: #2A3144; 
-    background: url("images/background.jpg") no-repeat center center fixed #000; 
+    background: url("images/background.png") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -114,7 +114,7 @@
 #Aptifi.km-flat #OrgLogin .km-content
 {
     background-color: #2A3144; 
-    background: url("images/bg.png") no-repeat center center fixed #000; 
+    background: url("images/bg1.png") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -122,6 +122,8 @@
     color: #2A3144;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+
 
 #Aptifi.km-flat #regenerateDiv,
 #Aptifi.km-flat #regenerateDiv .km-navbar,

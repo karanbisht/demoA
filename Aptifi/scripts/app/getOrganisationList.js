@@ -1,3 +1,5 @@
+
+
 var app = app || {};
 
 app.OragnisationList = (function () {
@@ -48,23 +50,23 @@ app.OragnisationList = (function () {
         var org_Logi_Image
         
         function getDataSuccess(tx, results) {                        
-            console.log('before Show');
-            console.log(results.rows);
+            //console.log('before Show');
+            //console.log(results.rows);
             $('#organisation-listview').data('kendoMobileListView').refresh(); 
             getDataOrgDB = [];
             getDataCountDB = [];
             groupDataShow = [];
             
             var count = results.rows.length;                    
-            console.log("DBCount" + count);
+            //console.log("DBCount" + count);
 			
             if (count !== 0) {                
                 var tempArray = [];
 
                 for (var i = 0 ; i < count ; i++) {                       
-                    console.log('functionRun' + i);					
+                    //console.log('functionRun' + i);					
                     org_id_DB = results.rows.item(i).org_id;                  
-                    console.log(org_id_DB);
+                    //console.log(org_id_DB);
                     
                     //var db = app.getDb();
                     //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
@@ -115,7 +117,7 @@ app.OragnisationList = (function () {
 
                     //alert('hello');
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
-                    console.log(pos);
+                    //console.log(pos);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(i).org_id);                                     
                         //alert(tempArray);
@@ -149,14 +151,14 @@ app.OragnisationList = (function () {
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';
 
-            console.log(fp);
+            //console.log(fp);
         }
         
         var imagePathNotExist = function() {
             var attachedImg = org_Logi_Image;            
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';
-            console.log(fp);
+            //console.log(fp);
             
             var fileTransfer = new FileTransfer();    
             fileTransfer.download(attachedImg, fp, 
@@ -197,7 +199,7 @@ app.OragnisationList = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);
+                                                                    //console.log(e);
                                                                     $("#progress2").hide();
                                                                     app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Organization List API.');
                                                                 }               
@@ -207,7 +209,7 @@ app.OragnisationList = (function () {
                 var loginDataView = dataSourceLogin.data();
 						   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='Not a customer to any organisation') {
                         JoinedOrganisationYN = 0;
@@ -320,15 +322,15 @@ app.OragnisationList = (function () {
         var userOrgIdArray = [];  
         
         function insertOrgInfo(tx) {
-            console.log(profileOrgData);
-            console.log(profileAdminOrgData);
+            //console.log(profileOrgData);
+            //console.log(profileAdminOrgData);
 
             var dataLength = profileOrgData.length;
             userLiveOrgIdArray = [];            
 
             for (var i = 0;i < dataLength;i++) {                             
                 userLiveOrgIdArray.push(parseInt(profileOrgData[i].organisationID));           
-                console.log(profileOrgData[i]); 
+                //console.log(profileOrgData[i]); 
                 profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);
            
                 var LastNotificationMsg;
@@ -441,7 +443,7 @@ app.OragnisationList = (function () {
                         //return [data];
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
                                 $("#goToAdmin").hide();
@@ -454,7 +456,7 @@ app.OragnisationList = (function () {
                                 $("#moreOption").hide();
                                 $("#goToAdmin").show();
   
-                                console.log(groupValue[0].orgData.length);  
+                                //console.log(groupValue[0].orgData.length);  
                                 var adminOrgInformation = groupValue[0].orgData;
                                 var adminIncomMsg = groupValue[0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
@@ -464,7 +466,7 @@ app.OragnisationList = (function () {
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               console.log(e);
+                                                                               //console.log(e);
 
                                                                                app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Manage Organization List API.');
                                                                                showLiveDataUpdated();  
@@ -498,22 +500,22 @@ app.OragnisationList = (function () {
 
         function insertAdminOrgInfo(tx) {          
             //alert("insert Admin");
-            console.log(adminOrgProfileData);
+            //console.log(adminOrgProfileData);
           
             //var query = "DELETE FROM JOINED_ORG_ADMIN";
             //app.deleteQuery(tx, query); 
 
             var dataLength = adminOrgProfileData.length;
-            console.log(dataLength);
+            //console.log(dataLength);
 
             //alert(dataLength);
-            console.log("------------------DATA---------------------");
-            console.log(joinOrgAdminID);
+            //console.log("------------------DATA---------------------");
+            //console.log(joinOrgAdminID);
 
             for (var i = 0;i < dataLength;i++) {       
                 userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
-                console.log(adminOrgProfileData[i].organisationID);
+                //console.log(adminOrgProfileData[i].organisationID);
                 adminOrgProfileData[i].organisationID = parseInt(adminOrgProfileData[i].organisationID);
 
                 var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgAdminID);           
@@ -689,7 +691,8 @@ app.OragnisationList = (function () {
 
             //app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&bagCount=' + bagCount + '&orgName=' + e.data.orgName);
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification List");            
-            app.slide('left', 'green' , '3' , '#views/activitiesView.html');    
+            //app.slide('left', 'green' , '3' , '#views/activitiesView.html');
+             app.mobileApp.navigate('views/activitiesView.html');
         };
        
         var groupSelected = function (e) {
@@ -732,8 +735,8 @@ app.OragnisationList = (function () {
         var sendNotification = function() {
             app.MenuPage = false;
             //document.location.href="#sendNotificationDiv";
-            //app.mobileApp.navigate('views/sendNotification.html');
-            app.slide('left', 'green' , '3' , '#views/sendNotification.html');
+            app.mobileApp.navigate('views/sendNotification.html');
+            //app.slide('left', 'green' , '3' , '#views/sendNotification.html');
         };
         
         var refreshButton = function() {
@@ -930,7 +933,10 @@ app.OragnisationList = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Manage Organization List"); 
 
-            app.slide('left', 'green' , '3' , '#views/userOrgManage.html');    
+            //app.slide('left', 'green' , '3' , '#views/userOrgManage.html');   
+
+            app.mobileApp.navigate('views/userOrgManage.html');
+
         };    
            
         var orgManageID;
@@ -1006,8 +1012,8 @@ app.OragnisationList = (function () {
         }    
         
         var gobackOrgMainPage = function() {
-            //app.mobileApp.navigate('#organisationNotiList');
-            app.slide('right', 'green' , '3' , '#organisationNotiList');    
+            app.mobileApp.navigate('#organisationNotiList');
+            //app.slide('right', 'green' , '3' , '#organisationNotiList');    
         }
         
         var orgDescMainPage = function() {
@@ -1043,7 +1049,7 @@ app.OragnisationList = (function () {
                 },
                                                                    schema: {                                
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                
                         if (data.status[0].Msg==='Sucess') {                                                      
                             var db = app.getDb();
@@ -1055,7 +1061,7 @@ app.OragnisationList = (function () {
                     }                       
                 },
                                                                    error: function (e) {
-                                                                       console.log(e);
+                                                                       //console.log(e);
                                                                        app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from unsubscribe Organiazation .');      
                                                                    }
 	        
@@ -1078,7 +1084,7 @@ app.OragnisationList = (function () {
         }
 
         function delOrgError(err) {
-            console.log(err);
+            //console.log(err);
         }
            
         var userProfileInt = function () {       
@@ -1135,7 +1141,7 @@ app.OragnisationList = (function () {
                 profileImage = results.rows.item(0).profile_image; 
 
                 var largeImage = document.getElementById('profilePhoto');                
-                console.log(JSON.stringify(profileImage));
+                //console.log(JSON.stringify(profileImage));
                 if (profileImage!==null && profileImage!=='' && profileImage!=='null') {
                     largeImage.src = profileImage;
                 }else {
@@ -1168,7 +1174,7 @@ app.OragnisationList = (function () {
                 for (var x = 0; x < count;x++) {
                     //alert(JSON.stringify(tempArray));
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
-                    console.log(pos);
+                    //console.log(pos);
 
                     var orgName = app.urldecode(results.rows.item(x).org_name); 
 
@@ -1188,7 +1194,7 @@ app.OragnisationList = (function () {
             if (count !== 0) {                                        
                 for (var x = 0; x < count;x++) {
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
-                    console.log(pos);
+                    //console.log(pos);
 
                     var orgName = app.urldecode(results.rows.item(x).org_name); 
 
@@ -1230,7 +1236,7 @@ app.OragnisationList = (function () {
         var callOrganisationLogin = function() {
             app.MenuPage = false;	
             //window.location.href = "views/organisationLogin.html"; 
-            console.log(account_Id);
+            //console.log(account_Id);
 
             app.analyticsService.viewModel.trackFeature("User navigate to Admin Login Page");            
 
@@ -1285,7 +1291,7 @@ app.OragnisationList = (function () {
         }
 
         function updateLoginStatusError(err) {
-            console.log(err);
+            //console.log(err);
         }
             
         var inAppBrowser = function() {
@@ -1310,7 +1316,7 @@ app.OragnisationList = (function () {
         
         var settingShow = function() {                        
             var switchInstance = $("#event-switch").data("kendoMobileSwitch");
-            console.log(switchInstance.check());
+            //console.log(switchInstance.check());
             
             var checkVal = localStorage.getItem("eventSwitch");
                    
@@ -1320,7 +1326,7 @@ app.OragnisationList = (function () {
         }
         
         var onChangeEventSwitch = function(e) {
-            console.log(e.checked);//true of fals            
+            //console.log(e.checked);//true of fals            
             if (e.checked===true) {
                 syncCalendar();
                 localStorage.setItem("eventSwitch", 1);
@@ -1359,7 +1365,7 @@ app.OragnisationList = (function () {
             newLName = lname;
             var email = $("#editEmail").val();
             newEmail = email;
-            console.log(account_Id + "||" + fname + "||" + lname + "||" + email);
+            //console.log(account_Id + "||" + fname + "||" + lname + "||" + email);
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", "Validation Error");
@@ -1386,13 +1392,13 @@ app.OragnisationList = (function () {
                     },
                                                                        schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
+                                                                           //console.log(e);
                                                                            //app.mobileApp.pane.loader.hide();
                                                                            
                                                                            app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Edit Profile API.');
@@ -1407,9 +1413,9 @@ app.OragnisationList = (function () {
              
                 dataSourceRegister.fetch(function() {
                     var loginDataView = dataSourceRegister.data();
-                    console.log(loginDataView);       
+                    //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
-                        console.log(loginData.status[0].Msg);
+                        //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Profile Updated') {
                             if (!app.checkSimulator()) {
@@ -1500,7 +1506,7 @@ app.OragnisationList = (function () {
                 tempArrayEvent = [];
                 for (var x = 0; x < count;x++) {
                     var pos = $.inArray(results.rows.item(x).org_id, tempArrayEvent);
-                    console.log(pos);
+                    //console.log(pos);
                     if (pos === -1) {
                         tempArrayEvent.push(results.rows.item(x).org_id);								                    
                     }
@@ -1509,8 +1515,8 @@ app.OragnisationList = (function () {
                 tempArrayEvent = [];                    
             } 
   
-            console.log('---------Array Value1------------');
-            console.log(tempArrayEvent);
+            //console.log('---------Array Value1------------');
+            //console.log(tempArrayEvent);
         }
         
         function orgAdminDataEventSuccess(tx, results) {    
@@ -1524,13 +1530,13 @@ app.OragnisationList = (function () {
                     }
                 }             
             }   
-            console.log('---------Array Value2------------');
-            console.log(tempArrayEvent);
+            //console.log('---------Array Value2------------');
+           // console.log(tempArrayEvent);
         }
         
         function orgEventDelete(tx, results) {             
             var count = results.rows.length;      	
-            console.log("localDBStorage---" + count);
+            //console.log("localDBStorage---" + count);
             if (count !== 0) {                                        
                 for (var x = 0; x < count;x++) {
                     var title = results.rows.item(x).title ;
@@ -1539,7 +1545,7 @@ app.OragnisationList = (function () {
                     var eventDaya = results.rows.item(x).startDate ;
                     var eventTime = results.rows.item(x).startTime ;
                                   
-                    console.log(eventTime);
+                    //console.log(eventTime);
                     var values = eventDaya.split('-');
                     var year = values[0]; // globle variable
                     var month = values[1];
@@ -1561,7 +1567,7 @@ app.OragnisationList = (function () {
 
                     //console.log(start+"||"+end+"||"+title+"||"+location+"||"+notes);
                         
-                    console.log("--------------------delete-----------------");
+                    //console.log("--------------------delete-----------------");
                         
                     window.plugins.calendar.deleteEvent(title, location, notes, start, end, success, error);
                 }             
@@ -1572,13 +1578,13 @@ app.OragnisationList = (function () {
             var deviceName = app.devicePlatform();
             var deviceVersion = device.version;
             
-            console.log(deviceName + "||" + deviceVersion);
+            //console.log(deviceName + "||" + deviceVersion);
             
             var calendarName = "Aptifi";
             var cal = window.plugins.calendar;
             
             var orgListLength = tempArrayEvent.length;
-            console.log(orgListLength);
+            //console.log(orgListLength);
             
             if (deviceName==='iOS') {
                 cal.deleteCalendar(calendarName, success, error);    
@@ -1589,7 +1595,7 @@ app.OragnisationList = (function () {
             }            
         
             var jsonDataLogin = {"org_id":tempArrayEvent}         
-            console.log(tempArrayEvent);
+            //console.log(tempArrayEvent);
         
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
@@ -1607,7 +1613,7 @@ app.OragnisationList = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);              
+                                                                    //console.log(e);              
                                                                     $("#savingDeviceCalenderLoader").hide();
 
                                                                     app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Event List API.');
@@ -1624,12 +1630,12 @@ app.OragnisationList = (function () {
 	            
             dataSourceLogin.fetch(function() {
                 var loginDataView = dataSourceLogin.data();               
-                console.log(loginDataView);
+                //console.log(loginDataView);
                 var orgDataId = [];
                 var userAllGroupId = [];
                 var orgEventData;			   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                   // console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
                         $("#savingDeviceCalenderLoader").hide();
@@ -1653,7 +1659,7 @@ app.OragnisationList = (function () {
                                 var eventDaya = loginData.status[0].eventData[i].event_date;
                                 var eventTime = loginData.status[0].eventData[i].event_time;
                                   
-                                console.log(eventTime);
+                                //console.log(eventTime);
                                 var values = eventDaya.split('-');
                                 var year = values[0]; // globle variable
                                 var month = values[1];
@@ -1692,12 +1698,12 @@ app.OragnisationList = (function () {
                                 var location = 'India';
                                 var notes = loginData.status[0].eventData[i].event_desc;
 
-                                console.log(start + "||" + end + "||" + title + "||" + location + "||" + notes);
+                                //console.log(start + "||" + end + "||" + title + "||" + location + "||" + notes);
                                   
                                 if (deviceName==='Android') {
                                     cal.createEvent(title, location, notes, start, end, success, error);
                                 }else if (deviceName==='iOS') {
-                                    console.log("-----------------insert--------------------");
+                                    //console.log("-----------------insert--------------------");
                                     cal.createEvent(title, location, notes, start, end, success, error);
                                     //cal.createEventInNamedCalendar(title,location,notes,start,end,calendarName,success,error);            
                                 }
@@ -1809,7 +1815,7 @@ app.OragnisationList = (function () {
         }
         
         function onFail(message) {
-            console.log('Failed because: ' + message);
+            //console.log('Failed because: ' + message);
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
         }

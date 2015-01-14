@@ -642,6 +642,7 @@ app.sendNotification = (function () {
                                                                                        error: function (e) {
                                                                                            //apps.hideLoading();
                                                                                            console.log(e);
+                                                                                           console.log(JSON.stringify(e));
                
                                                                                            //alert(JSON.stringify(e));
                
@@ -806,8 +807,9 @@ app.sendNotification = (function () {
                                 
                             }else if(groupValue[0].Msg==="You don't have access"){
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.mobileApp.navigate('views/organisationLogin.html');   
-                                    localStorage.setItem("loginStatusCheck", 1);                                
+                                    app.LogoutFromAdmin();     
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
                             }else {
                                 var orgLength = groupValue[0].groupData.length;
                                 for (var j = 0;j < orgLength;j++) {
@@ -838,7 +840,7 @@ app.sendNotification = (function () {
                                                                          error: function (e) {
                                                                              //apps.hideLoading();
                                                                              console.log(e);
-                                                                             
+                                                                             console.log(JSON.stringify(e));
                                                                              $("#selectOrgLoader").hide();
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
@@ -932,7 +934,8 @@ app.sendNotification = (function () {
                                     }     
                                 }else if(orgVal.Msg==="You don't have access"){
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.mobileApp.navigate('views/organisationLogin.html');                                     
+                                     app.LogoutFromAdmin(); 
+                                    //app.mobileApp.navigate('views/organisationLogin.html');                                     
                                 } 
                             });
                         });
@@ -943,7 +946,8 @@ app.sendNotification = (function () {
 
                 },
                                                                  error: function (e) {
-                                                                     console.log(e);                    
+                                                                     console.log(e);
+                                                                     console.log(JSON.stringify(e));
                                                                      if (!app.checkSimulator()) {
                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                      }else {

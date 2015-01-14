@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.adminNews = (function () {
     var adminNewsEventModel = (function () {
         var organisationID;
@@ -47,7 +48,7 @@ app.adminNews = (function () {
                                                                             url: app.serverUrl() + "news/index",
                                                                             type:"POST",
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                        async: false,                                                    
+                        //async: false,                                                    
                         data: jsonDataLogin
                                                                         }
                 },
@@ -775,7 +776,6 @@ app.adminNews = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
                                                                            console.log(JSON.stringify(e));
                                                                             $("#sendNewsLoader").hide();
                                                                            if (!app.checkSimulator()) {
@@ -1024,52 +1024,52 @@ app.adminNews = (function () {
         }
         
         var goToManageOrgPage = function() {
-            //app.mobileApp.navigate('views/groupDetailView.html');
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');
            //app.slide('rigth', 'green' ,'3' ,'#views/groupDetailView.html');
-            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+            //app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
         }
         
         var goToAddNewsPage = function() {
-            //app.mobileApp.navigate('#adminAddNews');
+            app.mobileApp.navigate('#adminAddNews');
 
             app.analyticsService.viewModel.trackFeature("User navigate to Add News in Admin");            
 
-            app.slide('rigth', 'green' ,'3' ,'#adminAddNews');
+            //app.slide('rigth', 'green' ,'3' ,'#adminAddNews');
 
         }
         
         var goToNewsListPage = function() {
-            //app.mobileApp.navigate('#adminOrgNewsList');
+            app.mobileApp.navigate('#adminOrgNewsList');
 
             app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
 
-            app.slide('rigth', 'green' ,'3' ,'#adminOrgNewsList');
+            //app.slide('rigth', 'green' ,'3' ,'#adminOrgNewsList');
 
         }
         
         var orgAllNewsList = function() {
-            //app.mobileApp.navigate('#adminOrgNewsList');
+            app.mobileApp.navigate('#adminOrgNewsList');
              
               $("#adddatePickerNews").removeAttr('disabled');
               $("#adddateTimePickerNews").removeAttr('disabled');
 
             app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
+            //app.slide('left', 'green' ,'3' ,'#adminOrgNewsList');
 
         }
         
         var addNewEvent = function() {
-            //app.mobileApp.navigate('#adminAddEventCalendar');
+            app.mobileApp.navigate('#adminAddEventCalendar');
 
             app.analyticsService.viewModel.trackFeature("User navigate to Add Event in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
+            //app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
         }
         
         var upcommingEventList = function() {
-            //app.mobileApp.navigate('#adminEventList');
-                                                            app.slide('left', 'green' ,'3' ,'#adminEventList');    
+            app.mobileApp.navigate('#adminEventList');
+                                                            //app.slide('left', 'green' ,'3' ,'#adminEventList');    
 
         }
         

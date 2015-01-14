@@ -1,6 +1,7 @@
 /**
  * Login view model
  */
+
 var app = app || {};
 
 app.Login = (function () {
@@ -112,8 +113,9 @@ app.Login = (function () {
                         },
                                                                         error: function (e) {
                                                                             //apps.hideLoading();
-                                                                            console.log("------error------");
-                                                                            console.log(e);
+                                                                            //console.log("------error------");
+                                                                            //console.log(e);
+                                                                            console.log(JSON.stringify(e));
                                                                             //app.mobileApp.pane.loader.hide();
              
                                                                             if (!app.checkSimulator()) {
@@ -422,6 +424,9 @@ app.Login = (function () {
         };
         
         var clickforRegenerateCode = function() {
+            
+             $("#progress").hide();
+            
             $(".km-scroll-container").css("-webkit-transform", "");
   
             $("#regenerateDiv").show();
@@ -489,7 +494,7 @@ app.Login = (function () {
                     read: {
                                                                                  //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
                      
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=APTIFI"
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=ZAFFIO"
                                                                              }
                 },
                                                                      schema: {
@@ -576,8 +581,7 @@ app.Login = (function () {
                                                                             //apps.hideLoading();
                                                                             //console.log(e);
                                                                             $("#progressRandomCode").hide();
-                                                                            //app.mobileApp.pane.loader.hide();
-               
+                                                                            //app.mobileApp.pane.loader.hide();               
 
                                                                             app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from LOGIN API after Authentication .');
 
@@ -653,3 +657,12 @@ app.Login = (function () {
 
     return loginViewModel;
 }());
+
+
+$(document).ready(function(){
+    $(document).ajaxError(function(e, jqxhr, settings, exception) {  
+  if (jqxhr.readyState == 0 || jqxhr.status == 0) {  
+    return; //Skip this error  
+  }  
+}); 
+});

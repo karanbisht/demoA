@@ -4,6 +4,8 @@
 
 var app = app || {};
 
+
+
 app.Activity = (function () {
     'use strict'
     
@@ -169,7 +171,7 @@ app.Activity = (function () {
                 var imgPathData = app.getfbValue();                    
                 var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
                 //alert(fp);                                
-                console.log('Image Saving Process');    
+                //console.log('Image Saving Process');    
                 //console.log(attachedImg);    
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
@@ -190,7 +192,7 @@ app.Activity = (function () {
                 $("#newComment").attr("placeholder", "Reply not allow.");
             }
             
-            console.log(org_id + "||" + notiId + "||" + account_Id);            
+            //console.log(org_id + "||" + notiId + "||" + account_Id);            
             $("#personName").html(title);
             $("#activityText").html(message);
             $("#notiDate").html(date);
@@ -225,7 +227,7 @@ app.Activity = (function () {
             $("#progressChat").show();
             var attachedImg = attached;            
             //alert(attached);            
-            console.log(attached);
+            //console.log(attached);
             
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
@@ -274,7 +276,7 @@ app.Activity = (function () {
                         }
                 },
                 CreatedAtFormatted: function () {
-                    console.log(this.get('add_date'));
+                   // console.log(this.get('add_date'));
                     return app.helper.formatDate(this.get('add_date'));
                 },
                 User: function () {
@@ -289,7 +291,7 @@ app.Activity = (function () {
                 }
             };
             
-            console.log(org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID);
+            //console.log(org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID);
             
             app.mobileApp.pane.loader.hide();
  
@@ -306,24 +308,24 @@ app.Activity = (function () {
                     model: commentModel,
                                 
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             var returnMsg = groupValue[0].Msg;
                             var orgNotiCommentData;
-                            console.log(returnMsg);
+                            //console.log(returnMsg);
                             if (returnMsg==='Success') {
                                 var commentLength = groupValue[0].AllComment.length;
                               
                                 orgNotiCommentData = groupValue[0].AllComment;
-                                console.log(commentLength);
+                                //console.log(commentLength);
                                
                                 for (var j = 0;j < commentLength;j++) {
                                     var dateString = groupValue[0].AllComment[j].add_date;
                                     var split = dateString .split(' ');
-                                    console.log(split[0] + " || " + split[1]);
+                                    //console.log(split[0] + " || " + split[1]);
                                     var commentDate = app.formatDate(split[0]);
                                     var commentTime = app.formatTime(split[1]);
 
@@ -342,7 +344,7 @@ app.Activity = (function () {
                             } 
                         });
                        
-                        console.log(groupDataShow);
+                        //console.log(groupDataShow);
                         //alert(JSON.stringify(groupDataShow));
                         return groupDataShow;
                     }                       
@@ -350,7 +352,7 @@ app.Activity = (function () {
                                                                error: function (e) {
                                                                    $("#progressChat").hide();
 
-                                                                   console.log(e);
+                                                                   //console.log(e);
                                                                    /*navigator.notification.alert("Please check your internet connection.",
                                                                    function () { }, "Notification", 'OK');
                                                                    */
@@ -466,7 +468,7 @@ app.Activity = (function () {
                 for (var i = 0 ; i < count ; i++) {    
                     var dateString = results.rows.item(i).add_date;
                     var split = dateString .split(' ');
-                    console.log(split[0] + " || " + split[1]);
+                   // console.log(split[0] + " || " + split[1]);
                     var commentDate = app.formatDate(split[0]);
                     
                     var commentTime = app.formatTime(split[1]);
@@ -484,7 +486,7 @@ app.Activity = (function () {
                     
                     lastNotiCommentID = results.rows.item(i).id;
                 }    
-                console.log(lastNotiCommentID);
+                //console.log(lastNotiCommentID);
             }else {
                 lastNotiCommentID = 0;
             }                       
@@ -497,13 +499,13 @@ app.Activity = (function () {
         
         var offlineReplyQuerySuccess = function(tx, results) {
             var count = results.rows.length;
-            console.log("karan bisht" + count);
+          //  console.log("karan bisht" + count);
             if (count !== 0) {
                 for (var i = 0; i < count; i++) {
                     var ReplyText = results.rows.item(i).ReplyText;
                     var CreatedAt = results.rows.item(i).CreatedAt;
                     var UserNameofflineValue = results.rows.item(i).UserNameField;
-                    console.log(UserNameofflineValue); 
+                   // console.log(UserNameofflineValue); 
                     //var NotificationId = results.rows.item(i).NotificationId; 
                     //var UserId = results.rows.item(i).UserId;
                     
@@ -526,7 +528,7 @@ app.Activity = (function () {
         };
  
         var offlineReplyDBSuccess = function() {
-            console.log("Query Success");
+           // console.log("Query Success");
         };
         
         var removeActivity = function () {
@@ -549,7 +551,7 @@ app.Activity = (function () {
         };
         
         var saveComment = function () {    
-            console.log('click save');
+        //    console.log('click save');
             // Validating of the required fields
             //if (validator.validate()) {
                 
@@ -569,7 +571,7 @@ app.Activity = (function () {
                 //var customer_id = localStorage.getItem("UserID");
              
                 if (comment!=='' && comment!=='Reply') {
-                    console.log("SHOWING DATA" + notiId + "||" + account_Id + "||" + org_id);
+                   // console.log("SHOWING DATA" + notiId + "||" + account_Id + "||" + org_id);
                 
                     var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
                    
@@ -585,12 +587,12 @@ app.Activity = (function () {
                         },
                                                                               schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                               error: function (e) {
-                                                                                  console.log(e);
+                                                                               //   console.log(e);
                                                                                   navigator.notification.alert("Please check your internet connection.",
                                                                                                                function () {
                                                                                                                }, "Notification", 'OK');
@@ -606,9 +608,9 @@ app.Activity = (function () {
 	            
                     saveCommentDataSource.fetch(function() {
                         var commentDataView = saveCommentDataSource.data();
-                        console.log(commentDataView);
+                       // console.log(commentDataView);
                         $.each(commentDataView, function(i, commentData) {           
-                            console.log(commentData.status[0].Msg);
+                         //   console.log(commentData.status[0].Msg);
                             refreshComment(); 
                             if (commentData.status[0].Msg === 'Reply sent successfully') {
                                 lastNotiCommentID = lastNotiCommentID + 1;
@@ -643,7 +645,7 @@ app.Activity = (function () {
         };
 
         function refreshComment() {
-            console.log('refButton');
+           // console.log('refButton');
             //console.log('save button click');
             //app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
             //var certificateList = $('#comments-listview').data('kendoMobileListView');

@@ -1,5 +1,6 @@
 var app = app || {};
 
+
 app.GroupList = (function () {
     var groupListDataSource;   
     var orgId = localStorage.getItem("UserOrgID");
@@ -108,12 +109,12 @@ app.GroupList = (function () {
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
                                 }else if(orgVal.Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
+                                     app.LogoutFromAdmin(); 
                                     
-                                    app.mobileApp.navigate('views/organisationLogin.html');   
-                                    localStorage.setItem("loginStatusCheck", 1);                                
-                                
-                              
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                                                             
                                 }else if (orgVal.Msg==='Success') {
                                      $("#tabDeleteGroup").show();
                                     console.log("--------------------------Success");
@@ -135,6 +136,7 @@ app.GroupList = (function () {
                                                                                 e.preventDefault();
                                                                                 //apps.hideLoading();
                                                                                 console.log(e);
+                                                                                console.log(JSON.stringify(e));
                    
                                                                                 //$("#progress1").hide();  
 
@@ -258,8 +260,9 @@ app.GroupList = (function () {
 
         var backToOrgDetail = function() {
             groupDataShow = [];         
-            //app.mobileApp.navigate('views/groupDetailView.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                 
-            app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');                 
+            //app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+            
         }
     
         var groupSelected = function (e) {
@@ -280,21 +283,23 @@ app.GroupList = (function () {
                 
         var addGroup = function() {
             app.MenuPage = false;	
-            //app.mobileApp.navigate('views/addGroup.html');  
+            
+            app.mobileApp.navigate('views/addGroup.html');  
 
             app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
 
-            app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
+            //app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
  
         };
         
         var deleteGroup = function() {
             app.MenuPage = false;	
-            //app.mobileApp.navigate('views/deleteGroup.html');
+            
+            app.mobileApp.navigate('views/deleteGroup.html');
 
             app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
 
-             app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
+            //app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
  
         };
     
