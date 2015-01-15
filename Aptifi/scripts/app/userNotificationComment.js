@@ -35,7 +35,7 @@ app.userNotiComment = (function () {
         
         var replyButton = function() {
             if (app.checkConnection()) {
-                console.log(activity);
+                //console.log(activity);
                 var notificationId = activity.notification_id;             
                 app.mobileApp.navigate('views/addCommentView.html?notificationId=' + notificationId);                         
             } else {
@@ -124,14 +124,14 @@ app.userNotiComment = (function () {
                 },
                                                                           schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }                   
                 },
                                                                           error: function (e) {
                                                                               //apps.hideLoading();
-                                                                              console.log(e);
-                                                                              console.log(JSON.stringify(e));
+                                                                              //console.log(e);
+                                                                              //console.log(JSON.stringify(e));
                                                                               navigator.notification.alert("Please check your internet connection.",
                                                                                                            function () {
                                                                                                            }, "Notification", 'OK');
@@ -141,11 +141,11 @@ app.userNotiComment = (function () {
             
             userCommentedNotification.fetch(function() {
                 var notificationData = userCommentedNotification.data();
-                console.log('notificationnnnnnnnn');
-                console.log(notificationData);
+                //console.log('notificationnnnnnnnn');
+                //console.log(notificationData);
 
                 $.each(notificationData, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                      
                     if (loginData.status[0].Msg==='Success') {
                         attached = loginData.status[0].notificationList[0].attached;
@@ -162,7 +162,7 @@ app.userNotiComment = (function () {
                     $("#notiDateadmin").html(date);
                     app.mobileApp.pane.loader.hide();
                      
-                    console.log(attached + "||" + comment_allow + "||" + message + "||" + pid + "||" + title);
+                    //console.log(attached + "||" + comment_allow + "||" + message + "||" + pid + "||" + title);
                 });
             });
         };
@@ -184,7 +184,7 @@ app.userNotiComment = (function () {
                 var imgPathData = app.getfbValue();    
                 var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';    
             
-                console.log(attachedImg);
+                //console.log(attachedImg);
                 window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
             }
             
@@ -252,11 +252,11 @@ app.userNotiComment = (function () {
                         }
                 },
                 CreatedAtFormatted: function () {
-                    console.log(this.get('add_date'));
+                    //console.log(this.get('add_date'));
                     return app.helper.formatDate(this.get('add_date'));
                 },
                 User: function () {
-                    console.log(this.get('user_id'));                
+                    //console.log(this.get('user_id'));                
                     if (this.get('user_type')==="Customer") {
                         return userName;                    
                     }else {
@@ -277,21 +277,21 @@ app.userNotiComment = (function () {
                     model: userCommentModel,
                                 
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             var returnMsg = groupValue[0].Msg;
-                            console.log(returnMsg);
+                            //console.log(returnMsg);
                             if (returnMsg==='Success') {
                                 var commentLength = groupValue[0].AllComment.length;                                    
-                                console.log(commentLength);                            
+                                //console.log(commentLength);                            
                                 for (var j = 0;j < commentLength;j++) {
                                     var dateString = groupValue[0].AllComment[j].add_date;
                                     var split = dateString .split(' ');
-                                    console.log(split[0] + " || " + split[1]);
+                                    //console.log(split[0] + " || " + split[1]);
                                      var commentDate = app.formatDate(split[0]);
                                      var commentTime = app.formatTime(split[1]);
                                          
@@ -318,8 +318,8 @@ app.userNotiComment = (function () {
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(e);
-                                                                        console.log(JSON.stringify(e));
+                                                                       //console.log(e);
+                                                                        //console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -346,7 +346,7 @@ app.userNotiComment = (function () {
         
         var saveAdminComment = function () {    
 
-            console.log('click save');
+            //console.log('click save');
 
             app.mobileApp.pane.loader.hide();
 
@@ -364,7 +364,7 @@ app.userNotiComment = (function () {
 
             if (comment!=='' && comment!=='Reply') {
  
-            console.log("SHOWING DATA" + org_id + "||" + notiId + "||" + comment + "||" + customerID);
+            //console.log("SHOWING DATA" + org_id + "||" + notiId + "||" + comment + "||" + customerID);
                 
             var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
                    
@@ -379,16 +379,16 @@ app.userNotiComment = (function () {
                 },
                                                                       schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                       error: function (e) {
                                                                           //apps.hideLoading();
-                                                                            console.log(JSON.stringify(e));
+                                                                            //console.log(JSON.stringify(e));
                                                                           app.mobileApp.pane.loader.hide();
                                                                           
-                                                                          console.log(e);
+                                                                          //console.log(e);
                                                                            if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                                          }else {
@@ -402,11 +402,11 @@ app.userNotiComment = (function () {
 	            
             saveCommentDataSource.fetch(function() {
                 var commentDataView = saveCommentDataSource.data();
-                console.log(commentDataView);
+                //console.log(commentDataView);
                 $.each(commentDataView, function(i, commentData) {           
                                 app.mobileApp.pane.loader.hide();
 
-                    console.log(commentData.status[0].Msg);
+                    //console.log(commentData.status[0].Msg);
                     if (commentData.status[0].Msg === 'Reply sent successfully') {
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Reply sent successfully');   

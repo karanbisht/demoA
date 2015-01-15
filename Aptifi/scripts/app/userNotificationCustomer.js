@@ -79,16 +79,16 @@ app.replyedCustomer = (function () {
                     model: UserModel,
                                 
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                        
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
 
                             //alert(JSON.stringify(groupValue));           
  
                             $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
+                                //console.log(orgVal);
                                      
                                 if(orgVal.Msg==="You don't have access"){                                    
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
@@ -111,12 +111,12 @@ app.replyedCustomer = (function () {
     	                               
                                                        });                                      
                                 }else if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.customerList.length);  
+                                    //console.log(orgVal.customerList.length);  
                                         
                                     for (var i = 0;i < orgVal.customerList.length;i++) {
                                          var dateString = orgVal.customerList[i].add_date;
                                          var split = dateString .split(' ');
-                                         console.log(split[0] + " || " + split[1]);
+                                         //console.log(split[0] + " || " + split[1]);
                                          var commentDate = app.formatDate(split[0]);
                                          var commentTime = app.formatTime(split[1]);
                                          var date_show= commentDate +' '+commentTime;
@@ -137,7 +137,7 @@ app.replyedCustomer = (function () {
                             });
                         });
                        
-                        console.log(groupDataShow);
+                        //console.log(groupDataShow);
                         //alert(groupDataShow);
                         return groupDataShow;
                     }
@@ -146,7 +146,7 @@ app.replyedCustomer = (function () {
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
                                                                      //console.log(e);
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(JSON.stringify(e));
                                                                      
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
@@ -203,9 +203,9 @@ app.replyedCustomer = (function () {
         }
                      
         var customerSelected = function(e) {
-            console.log(e);
-            console.log(e.data.user_fname);
-            console.log(e.data.customerID);
+            //console.log(e);
+            //console.log(e.data.user_fname);
+            //console.log(e.data.customerID);
             app.MenuPage = false;
 
             app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            

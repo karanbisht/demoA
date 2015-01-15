@@ -71,8 +71,8 @@ app.userReplyList = (function () {
         }               
             
         var showLiveData = function() {
-            console.log('Hello');
-            console.log(groupDataShow);
+            //console.log('Hello');
+            //console.log(groupDataShow);
                 
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
@@ -107,7 +107,7 @@ app.userReplyList = (function () {
 
             account_Id = localStorage.getItem("ACCOUNT_ID");
 
-            console.log(account_Id);
+            //console.log(account_Id);
             /* var organisationNotificationModel = {
             id: 'Id',
             fields: {
@@ -183,9 +183,9 @@ app.userReplyList = (function () {
         };
         
         var clickOnUserName = function(e) {
-            console.log('karanbisht');
-            console.log(e.data);
-            console.log(e.data.count);
+            //console.log('karanbisht');
+            //console.log(e.data);
+            //console.log(e.data.count);
             //app.mobileApp.navigate('views/userNotificationComment.html?uid=' + e.dataItem.notification_id+'&custId='+custId+'&message='+e.dataItem.message+'&title='+e.dataItem.title);                 
             //app.mobileApp.navigate('views/userReplyNotification.html?organisationID='+e.data.organisationID+'&orgName='+e.data.orgName); 
 

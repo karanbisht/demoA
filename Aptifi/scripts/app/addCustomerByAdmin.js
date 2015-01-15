@@ -72,9 +72,7 @@ app.addCustomerByAdmin = (function () {
                 mobileArray=[];
                 mobileArray.push(mobile);
                 var count=0;
-               
-                //alert(countMobile);
-               
+                               
                 for(var i=1;i<=countMobile;i++){
                     var newMobile = $("#regMobile"+i).val(); 
                     if(newMobile === "Mobile Number" || newMobile === ""){
@@ -131,7 +129,12 @@ app.addCustomerByAdmin = (function () {
                         //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
-                            app.showAlert("Member Added Successfully", "Notification");
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom('Member Added Successfully');   
+                            }else {
+                                app.showAlert("Member Added Successfully", "Notification"); 
+                            }
+                                                        
                             refreshOrgMember();
                             $regFirstName.val('');
                             $regLastName.val('');
@@ -148,11 +151,14 @@ app.addCustomerByAdmin = (function () {
                 } 
             }else{    
                 
+                mobileArray=[];
+                
                 if(addMoreMobile===0){
                     mobileArray.push(mobile);
                 }
                 
-                //console.log(mobileArray);
+                
+                console.log(mobileArray);
                 //console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 var jsonDataRegister;
                           
@@ -194,7 +200,13 @@ app.addCustomerByAdmin = (function () {
                         //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
-                            app.showAlert("Member Added Successfully", "Notification");
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom('Member Added Successfully');   
+                            }else {
+                                app.showAlert("Member Added Successfully", "Notification"); 
+                            }
+                            
+                            
                             refreshOrgMember();
                             $regFirstName.val('');
                             $regLastName.val('');
@@ -216,7 +228,7 @@ app.addCustomerByAdmin = (function () {
         
         var addMoreMobileNo = function(){    
             addMoreMobile++;
-            $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" class="k-textbox" id="regMobile'+addMoreMobile+'" placeholder="Mobile Number" /></li>');
+            $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" id="regMobile'+addMoreMobile+'" placeholder="Mobile Number" /></li>');
         }
         
         

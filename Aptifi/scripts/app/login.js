@@ -71,7 +71,7 @@ app.Login = (function () {
             //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';
             var device_id = localStorage.getItem("deviceTokenID");          
             //alert(device_id);
-            console.log(device_id);            
+            //console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
             
@@ -114,7 +114,7 @@ app.Login = (function () {
                                                                         error: function (e) {
                                                                             //apps.hideLoading();
                                                                             //console.log("------error------");
-                                                                            //console.log(e);
+                                                                            console.log(e);
                                                                             console.log(JSON.stringify(e));
                                                                             //app.mobileApp.pane.loader.hide();
              
@@ -136,13 +136,13 @@ app.Login = (function () {
 	            
                     dataSourceLogin.fetch(function() {
                         var loginDataView = dataSourceLogin.data();
-                        console.log('----------fetch Data------------');			
-                        console.log(loginDataView);
+                        //console.log('----------fetch Data------------');			
+                        //console.log(loginDataView);
 						   
                         $.each(loginDataView, function(i, loginData) {
-                            console.log('-------Msg Data --------');			
+                            //console.log('-------Msg Data --------');			
 
-                            console.log(loginData.status[0].Msg);
+                            //console.log(loginData.status[0].Msg);
                                
                             if (loginData.status[0].Msg==='User not registered') {
                                 //console.log('reg');
@@ -274,8 +274,8 @@ app.Login = (function () {
         }  
 
         function loginSuccessCB() {
-            console.log('DataBase Saved');
-            console.log(userOrgIdArray);
+            //console.log('DataBase Saved');
+            //console.log(userOrgIdArray);
             //console.log(userRoleArray);
             
             for (var i = 0;i < userOrgIdArray.length;i++) {
@@ -323,7 +323,7 @@ app.Login = (function () {
                                                                                   error: function (e) {
                                                                                       e.preventDefault();
                                                                                       //apps.hideLoading();
-                                                                                      console.log(e);                        
+                                                                                      //console.log(e);                        
                                                                                   }	        
                                                                               });         
             
@@ -335,7 +335,7 @@ app.Login = (function () {
         var orgNotiDataVal;         
         function saveOrgNotification(data) {
             orgNotiDataVal = data; 
-            console.log(orgNotiDataVal);
+            //console.log(orgNotiDataVal);
 
             setTimeout(function() {
                 var db = app.getDb();
@@ -482,12 +482,12 @@ app.Login = (function () {
             
             //var mobile=$regMobile.val();
             varifiCode = genRand(0, 9);
-            //alert(varifiCode);
+            console.log(varifiCode);
             varifiCode = varifiCode.toString();
               
             var varifiCodeMsg = "Your Zaffio verification code-: " + varifiCode;
           
-            console.log("-----Verification code Login--" + varifiCode);
+            //console.log("-----Verification code Login--" + varifiCode);
 
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
@@ -506,8 +506,8 @@ app.Login = (function () {
                 },
                                                                      error: function (e) {
                                                                          //apps.hideLoading();
-                                                                         console.log('--------Error in Verification Code Sent-----------------');               
-                                                                         console.log(e);
+                                                                         //console.log('--------Error in Verification Code Sent-----------------');               
+                                                                         //console.log(e);
               
                                                                                                                                                      
                                                                          app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS.');
@@ -579,7 +579,7 @@ app.Login = (function () {
                         },
                                                                         error: function (e) {
                                                                             //apps.hideLoading();
-                                                                            //console.log(e);
+                                                                            console.log(e);
                                                                             $("#progressRandomCode").hide();
                                                                             //app.mobileApp.pane.loader.hide();               
 

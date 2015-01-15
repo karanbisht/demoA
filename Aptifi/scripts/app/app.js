@@ -1065,8 +1065,9 @@ var app = (function (win) {
         app.MenuPage = false;	
         //console.log(account_Id);
         //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-        //app.mobileApp.navigate('#organisationNotiList');
-         app.slide('right', 'green' ,'3' ,'#organisationNotiList');
+        
+         app.mobileApp.navigate('#organisationNotiList');
+         //app.slide('right', 'green' ,'3' ,'#organisationNotiList');
     };
     
     var callAdminOrganisationList = function() {
@@ -1074,8 +1075,8 @@ var app = (function (win) {
         app.userPosition = false;
         //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
         //app.mobileApp.navigate('#view-all-activities-admin'); 
-        //app.mobileApp.navigate('#view-all-activities-GroupDetail');
-         app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
+         app.mobileApp.navigate('#view-all-activities-GroupDetail');
+         //app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
     }; 
     
     var getPresentDateTime = function() {

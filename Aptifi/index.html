@@ -1,15 +1,4 @@
-<!--<!doctype html>
-<html>
-  <head>
-   <title>tittle</title>
-   <script>
-     window.location='./main.html';
-   </script>
-  <body>
-  </body>
-</html>-->
-      
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
     <head>
         <title></title>
@@ -44,21 +33,19 @@
         <!--WELCOME VIEW -->
 
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
-
             <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:transparent;">
 
                 <form id="login-form" data-bind="events: { keyup: checkEnter }" class="" style="background:transparent;">
-
-                    <ul data-role="listview" data-style="inset">
-                        <li class="username" style="padding:10px;border-radius:3px;background-color:#303645;color:#ffffff" >
-                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;margin-left:25px;">
+                    <ul data-role="listview" data-style="inset" style="height:53px;">
+                        <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
+                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.6rem;margin-left:25px;height:53px;">
                         </li>
                     </ul>
 
                     <ol class="group-wrp" style="margin-top:20px;">
                         <li>
                             <span id="login" data-role="touch" data-bind="events: { tap: login }">
-                                <a data-role="button" class="btn btn-login" >Next</a>
+                                <a data-role="button" class="btn btn-login" style="font-size: 1.6rem;">Next</a>
                             </span>
                         </li>
                     </ol>
@@ -200,7 +187,7 @@
 
         <div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
             <div>
-                <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities" style="padding:10px;"></ul>
+                <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities"></ul>
                 <p id="no-notification-span" hidden="hidden" class="no-items-msg">
                     <b>You have no Notification yet.</b>
                 </p>
@@ -215,6 +202,7 @@
                         <a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#profilePicUpload" >
                         <img id="profilePhoto" src="" height="100" width="100" style="border-radius:6px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/></a>
                     </div>
+                    
                     <li style="margin-top:-20px;">
                         <ul>
                             <li style="text-align:center;">                                
@@ -359,7 +347,7 @@
                 #}#  
                         
                 <div class="orgList-content">
-                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;">${orgName}</h2>
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:0px;">${orgName}</h2>
                     #if (countData!==0) {#
                         <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
                     #}# 
@@ -391,20 +379,16 @@
             #if (org_id!==0 && org_id!=='0') {#
             <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
 
-              #if (imgData===null || imgData==='null') {#            
-                                  
+              #if (imgData===null || imgData==='null') {#                                              
                     <div class="org-img-show"></div>
-
-                #}else {#
-                    #console.log(imgData)#
-                    #console.log(imageSourceOrg)#
+                #}else {#                  
                     <div class="user-avatar">
                         <img src=${imageSourceOrg} />
                         <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->
                     </div>
                 #}#    
-                <div class="activity-content">
-                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                <div class="orgList-content">
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:0px;" >${org_name}</h2>
                     #if (role==='O') {#
                         <div style="text-align:center;float:right;">
                             <img src="styles/images/admin.png" style="width=35px;height:25px;" />
@@ -416,7 +400,7 @@
                     #}else {#
                         #orgDescVal = orgDesc;#  
                     #}#
-                    <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>
+                    <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
                 </div>
             </div>
             #}else {#
@@ -424,7 +408,7 @@
                        <div class="org-img-show"></div>
                  <div class="activity-content">
                         <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
-                        <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>
+                        <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>
                     </div>
                 </div>
             #}#
@@ -457,7 +441,7 @@
                     <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
                 </li>-->
                 <li id="goToAdmin" >
-                    <a id="side-admin-icon"  onclick="app.flip('right', 'green', '#views/organisationLogin.html')"></a>
+                    <a id="side-admin-icon"  href="views/organisationLogin.html"></a>
                 </li>
             </ul>
         </div>

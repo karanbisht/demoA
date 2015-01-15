@@ -135,7 +135,7 @@ app.OragnisationList = (function () {
                 }    
             }else {
                 groupDataShow.push({
-                                       orgName: 'Welcome to Aptifi',
+                                       orgName: 'No Messages',
                                        orgDesc: 'Not a customer of any organization',
                                        organisationID:'0',
                                        imageSource:'',
@@ -215,7 +215,7 @@ app.OragnisationList = (function () {
                         JoinedOrganisationYN = 0;
                         groupDataShow = [];                               
                         groupDataShow.push({
-                                               orgName: 'Welcome to Aptifi',
+                                               orgName: 'No Organization',
                                                orgDesc: 'Not a customer of any organization',
                                                organisationID:'0',
                                                imageSource:'',
@@ -244,7 +244,7 @@ app.OragnisationList = (function () {
                             $("#moreOption").show();
                               
                             groupDataShow.push({
-                                                   orgName: 'Welcome to Aptifi',
+                                                   orgName: 'No Organization',
                                                    orgDesc: 'Not a customer of any organization',
                                                    organisationID:'0',
                                                    imageSource:'',
@@ -717,8 +717,8 @@ app.OragnisationList = (function () {
         // Navigate to app home
         var navigateHome = function () {
             app.MenuPage = false;
-            //app.mobileApp.navigate('#welcome');
-            app.slide('right', 'green' , '3' , '#welcome');    
+            app.mobileApp.navigate('#welcome');
+            //app.slide('right', 'green' , '3' , '#welcome');    
         };
         
         var replyUser = function() {
@@ -1153,7 +1153,7 @@ app.OragnisationList = (function () {
 
                 var totalLen = fnameLen + lnameLen ;
                                 
-                if (totalLen > 14) {
+                if (totalLen > 30) {
                     lname = lname.substr(0, 1) + '..';
                 }
                           

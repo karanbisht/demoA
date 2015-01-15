@@ -1,10 +1,7 @@
 /**
  * Activity view model
  */
-
 var app = app || {};
-
-
 
 app.Activity = (function () {
     'use strict'

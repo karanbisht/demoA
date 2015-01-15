@@ -343,7 +343,7 @@ app.adminEventCalender = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             
             $("#detailEventData").html("Event On " + dateShow);
-            console.log(multipleEventArray);                
+            //console.log(multipleEventArray);                
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: multipleEventArray
                                                                        });           
@@ -362,7 +362,7 @@ app.adminEventCalender = (function () {
 
             $("#addEventName").val('');
             $("#addEventDesc").val('');
-            console.log(date2);
+            //console.log(date2);
             
             $("#adddatePickerEvent").removeAttr('disabled');
             $("#adddateTimePickerEvent").removeAttr('disabled');
@@ -404,7 +404,7 @@ app.adminEventCalender = (function () {
             ];
             
             $("#adddatePickerEvent").kendoDatePicker({
-                                                         value: date2,
+                                                         value: new Date(),
                                                          dates: disabledDaysBefore,    
                                                          month:{
                     content:'# if (data.date < data.dates) { #' + 
@@ -429,7 +429,7 @@ app.adminEventCalender = (function () {
                  
                                                          change: function() {
                                                              var value = this.value();
-                                                             console.log(value); 
+                                                             //console.log(value); 
                                                              /*if(new Date(value) < new Date(currentDate)){                   
                                                              if(!app.checkSimulator()){
                                                              window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
@@ -484,8 +484,8 @@ app.adminEventCalender = (function () {
         var eventUploadType;
         
         var editEvent = function(e) {
-            console.log(e.data.uid);
-            console.log(e.data);
+            //console.log(e.data.uid);
+            //console.log(e.data);
             eventNameEdit = e.data.event_name;
             eventDescEdit = e.data.event_desc;
             eventDateEdit = e.data.event_date;
@@ -501,15 +501,15 @@ app.adminEventCalender = (function () {
         }
         
         var deleteEvent = function(e) {
-            console.log(e.data.uid);
-            console.log(e.data);
+            //console.log(e.data.uid);
+            //console.log(e.data);
 
             //var eventPid = e.data.id;
             
             organisationID = localStorage.getItem("orgSelectAdmin");
 
             
-            console.log('orgID=' + organisationID + "pid=" + eventPid)
+            //console.log('orgID=' + organisationID + "pid=" + eventPid)
 
             var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
             
@@ -524,13 +524,13 @@ app.adminEventCalender = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(JSON.stringify(e));
+                                                                       //console.log(JSON.stringify(e));
                                                                        if (!app.checkSimulator()) {
                                                                            window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                        }else {
@@ -543,10 +543,17 @@ app.adminEventCalender = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Deleted Successfully') {         
-                        app.mobileApp.navigate("#adminEventCalendar");
-                        app.showAlert("Event Deleted Successfully", "Notification");
+                        app.mobileApp.navigate("#adminEventList");
+                        //app.showAlert("Event Deleted Successfully", "Notification");
+                        
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Event Deleted Successfully');   
+                        }else {
+                            app.showAlert("Event Deleted Successfully", "Notification");  
+                        }
+                        
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
@@ -560,7 +567,7 @@ app.adminEventCalender = (function () {
   
             $(".km-scroll-container").css("-webkit-transform", "");
 
-            console.log(eventNameEdit);            
+            //console.log(eventNameEdit);            
 
             $('#editEventDesc').css('height', '80px');
 
@@ -823,12 +830,12 @@ app.adminEventCalender = (function () {
                     //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                     ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/Add', win, fail, options , true);
                 }else {
-                    console.log(event_name);
-                    console.log(event_description);
-                    console.log(event_Date);
-                    console.log(event_Time);
+                    //console.log(event_name);
+                    //console.log(event_description);
+                    //console.log(event_Date);
+                    //console.log(event_Time);
             
-                    console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
+                    //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
 
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval}
             
@@ -843,14 +850,14 @@ app.adminEventCalender = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(e);
+                                                                               //console.log(JSON.stringify(e));
                                                                                 
                                                                                $("#sendEventLoader").hide();
                                                                                
@@ -866,10 +873,17 @@ app.adminEventCalender = (function () {
                     dataSourceaddGroup.fetch(function() {
                         var loginDataView = dataSourceaddGroup.data();
                         $.each(loginDataView, function(i, addGroupData) {
-                            console.log(addGroupData.status[0].Msg);           
+                            //console.log(addGroupData.status[0].Msg);           
                             if (addGroupData.status[0].Msg==='Event added successfully') {         
                                 app.mobileApp.navigate("#adminEventList");
-                                app.showAlert("Event Added Successfully", "Notification");
+                                
+                             if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom('Event Added Successfully');  
+                             }else {
+                                    app.showAlert('Event Added Successfully", "Notification');  
+                             }    
+                                
+                                
                                 
                                 $("#sendEventLoader").hide();
                             }else {
@@ -994,9 +1008,9 @@ app.adminEventCalender = (function () {
                         }
                    
                         var path =  eventDataToSend;
-                        console.log(path);
+                        //console.log(path);
                     
-                    console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
+                    //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
 
                     var params = new Object();
                     params.org_id = organisationID;  //you can send additional info with the file
@@ -1012,8 +1026,8 @@ app.adminEventCalender = (function () {
                     options.fileKey = "event_image";
                     options.fileName = filename;
               
-                    console.log("-------------------------------------------");
-                    console.log(options.fileName);
+                    //console.log("-------------------------------------------");
+                    //console.log(options.fileName);
               
                     options.mimeType = mimeTypeVal;
                     options.params = params;
@@ -1023,14 +1037,14 @@ app.adminEventCalender = (function () {
                     options.chunkedMode = true;
                     
                     var ft = new FileTransfer();
-                    console.log(tasks);
+                    //console.log(tasks);
                  
-                    console.log("----------------------------------------------check-----------");
+                    //console.log("----------------------------------------------check-----------");
                     //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                     ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/edit', winEdit, fail, options , true);
                 }else {
                     //alert(eventDataToSend);
-                    console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
+                    //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
                         
                     var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval}
             
@@ -1045,13 +1059,13 @@ app.adminEventCalender = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(e);
+                                                                               //console.log(e);
 
                                                                                $("#sendEditEventLoader").hide();
 

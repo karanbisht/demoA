@@ -537,7 +537,8 @@ input::-webkit-inner-spin-button
 #Aptifi .welcome-scrn .group-wrp .btn-signup span
 {
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 1.8rem;
+    
 }
 
 #Aptifi .welcome-scrn .group-wrp .btn-signup
@@ -847,10 +848,10 @@ input::-webkit-inner-spin-button
 #Aptifi .activity-content
 {
     position: relative;
-    padding-left: 5em;
+    padding-top:5px;
+    padding-left: 6em;
     font-size: .85rem;
-    text-align: justify;
-    
+    text-align: justify;    
 }
 
 .displayContentAboutUS
@@ -1093,7 +1094,7 @@ white-space: nowrap;
 
 #Aptifi .activity-content .comment-content .user-share-txt
 {
-    font-size: .75rem;
+    font-size: 1.1rem;
 }
 
 #Aptifi .activity-view .person-name,
@@ -1370,7 +1371,7 @@ background: #fff none;
     #login-form .username:before
     {
         background-image: url(images/phone-icon@2x.png);
-        background-size: 12px 13px;
+        background-size: 11px 15px;
     }
 
     #login-form .password:before
@@ -1466,7 +1467,7 @@ background: #fff none;
 
 .commentContent .user-share-txt
 {
-    font-size: .75rem;
+    font-size: 1.1rem;
 }
 
 .orgNameList
@@ -1510,7 +1511,7 @@ background: #fff none;
     display: block;
     margin: .5em 0 .5em;
     color: #57A70C;
-    font-size: 1rem; 
+    font-size: 1.2rem; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
@@ -1572,7 +1573,7 @@ background: #fff none;
 .orgContentMsg
 {
     color: #939393;
-    font-size: .75rem; 
+    font-size: 1.2rem; 
 }
 
 .eventContentMsg
@@ -1599,8 +1600,9 @@ background: #fff none;
 
 .dateValue
 {
-    width: 60%;
+    width: 90%;
     float: left;
+    font-size:.8rem;
 }
 
 
@@ -1671,10 +1673,10 @@ background: #fff none;
     border: none;
 }
 
-#admin-noti-listview > li
+/*#admin-noti-listview > li
 {
     border: none;
-}
+}*/
 
 
 #orgAllNewsList > li
@@ -2227,6 +2229,7 @@ float:right;
     color: #52554F;
     border-radius: 3px;
     text-align: center;
+    font-size:1.3rem;
 }
 
 
@@ -2617,6 +2620,7 @@ float:right;
     border-radius: 3px;
     list-style-type: none;
     color:#ffffff;
+    font-size: 1.6rem;
 }
 
 .popUpDivToShow
@@ -2785,6 +2789,7 @@ overflow: hidden;
     float: left;
     width: 20px;
     height: 20px;
+    margin-top:-5px;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 

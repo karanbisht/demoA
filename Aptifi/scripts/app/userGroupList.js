@@ -36,7 +36,7 @@ app.userGroupList = (function () {
                                                             schema: {
                 model: GroupListModel,                
                 data: function(data) {
-                    console.log(data);
+                    //console.log(data);
                     var groupDataShow = [];
                     $.each(data, function(i, groupValue) {
                         var orgLength = groupValue[0].grpData.length;
@@ -50,15 +50,15 @@ app.userGroupList = (function () {
                         }
                     });
                        
-                    console.log(groupDataShow);
+                    //console.log(groupDataShow);
                     return groupDataShow;                       
                 }
 
             },
                                                             error: function (e) {
                                                                 //apps.hideLoading();
-                                                                console.log(e);
-                                                                console.log(JSON.stringify(e));
+                                                                //console.log(e);
+                                                                //console.log(JSON.stringify(e));
                                                                 navigator.notification.alert("Please check your internet connection.",
                                                                                              function () {
                                                                                              }, "Notification", 'OK');
@@ -82,7 +82,7 @@ app.userGroupList = (function () {
         };  
                 
         var groupSelected = function (e) {
-            console.log("karan Bisht" + e);
+            //console.log("karan Bisht" + e);
             app.MenuPage = false;	
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
@@ -126,14 +126,14 @@ app.userGroupList = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(e);
-                                                                       console.log(JSON.stringify(e));
+                                                                       //console.log(e);
+                                                                       //console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -144,7 +144,7 @@ app.userGroupList = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Success') {
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Group Added Successfully');   

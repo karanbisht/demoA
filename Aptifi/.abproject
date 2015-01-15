@@ -33,16 +33,16 @@
     "Portrait"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "true",
+  "AndroidHardwareAcceleration": "false",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "1.0.0",
+  "BundleVersion": "1.0.1",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "1",
+  "AndroidVersionCode": "2",
   "DisplayName": "Zaffio",
   "Author": "karan",
   "Description": "Zaffio",

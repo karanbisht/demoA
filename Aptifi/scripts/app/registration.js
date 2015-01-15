@@ -207,6 +207,7 @@ app.registration = (function () {
             $("#selectionDivR").css("opacity", .1);	
             $("#validationRowR").css("z-index", "999");
             document.getElementById('selectionDivR').style.pointerEvents = 'none';
+            document.getElementById('selectionDivR').style.pointerEvents = 'none';
             
             //var mobile=$regMobile.val();
             varifiCode = genRandR(0, 9);
@@ -221,7 +222,7 @@ app.registration = (function () {
                                                                      transport: {
                     read: {
                                                                                  //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=APTIFI"
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=ZAFFIO"
                                                                              }
                 },
                                                                      schema: {

@@ -355,7 +355,12 @@ app.GroupList = (function () {
                         app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);
                         $("#newGroup").val('');     
                         $("#newGroupDesc").val('');
-                        app.showAlert("Group Added Successfully", "Notification");
+                         if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom('Group Added Successfully');   
+                        }else {
+                            app.showAlert("Group Added Successfully", "Notification");  
+                        }
+                        //app.showAlert("Group Added Successfully", "Notification");
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }

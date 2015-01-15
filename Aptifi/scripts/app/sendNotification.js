@@ -17,7 +17,7 @@ app.sendNotification = (function () {
     var groupChecked = [];
     var sendNotificationViewModel = (function () {
         var orgId = localStorage.getItem("UserOrgID"); 
-        console.log(orgId);
+        //console.log(orgId);
                   
         var pictureSource;   // picture source
         var destinationType; // sets the format of returned value
@@ -59,7 +59,7 @@ app.sendNotification = (function () {
             dataValueField: "value",
             dataSource: [
             { text: "Promotion", value: "P" },
-            { text: "Invitaion", value: "V" },
+            { text: "Invitation", value: "V" },
             { text: "Information", value: "I" },
             { text: "Reminder", value: "R" },
             { text: "Alert", value: "A" }
@@ -139,20 +139,20 @@ app.sendNotification = (function () {
          
         var showLiveData = function() {
             //console.log('Hello');
-            console.log(groupDataShowOffline);
+            //console.log(groupDataShowOffline);
                 
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShowOffline
                                                                        });                           
              
-            console.log(organisationListDataSource);
+            //console.log(organisationListDataSource);
              
             $("#organisation-Name-listview").kendoMobileListView({
                                                                      template: kendo.template($("#orgNameTemplate").html()),    		
                                                                      dataSource: organisationListDataSource
                                                                  });
                 
-            console.log('showwwwwwwwwww');
+            //console.log('showwwwwwwwwww');
             $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
             //app.mobileApp.pane.loader.hide();
             $("#selectOrgDiv").show();
@@ -269,7 +269,7 @@ app.sendNotification = (function () {
                  
                                                          change: function() {
                                                              var value = this.value();
-                                                             console.log(value); 
+                                                             //console.log(value); 
 
                                                              scheduleDate = value;
                                                              /*if(new Date(value) < new Date(currentDate)){                   
@@ -293,7 +293,7 @@ app.sendNotification = (function () {
                 
                                                          change: function() {
                                                              var value = this.value();
-                                                             console.log(value); //value is the selected date in the timepicker
+                                                             //console.log(value); //value is the selected date in the timepicker
 
                                                              scheduleTime = value;
                                                          }                
@@ -328,7 +328,7 @@ app.sendNotification = (function () {
         var onChangeNotiGroup = function() {
             var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
             var groupSelectedNoti = selectDataNoti.value();
-            console.log(groupSelectedNoti);
+            //console.log(groupSelectedNoti);
             return groupSelectedNoti;
         };
          
@@ -366,7 +366,7 @@ app.sendNotification = (function () {
 
         var sendNotificationMessage = function () {    
             //alert(dataToSend);undefined
-            console.log(dataToSend);
+            //console.log(dataToSend);
              
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -406,21 +406,21 @@ app.sendNotification = (function () {
                     cmmt_allow = 0;
                 }
              
-                console.log(cmmt_allow);
+                //console.log(cmmt_allow);
                 var notificationValue = $("#notificationDesc").val();
                 var titleValue = $("#notificationTitleValue").val();
                 //alert(titleValue +"||"+notificationValue);            
              
-                console.log(notificationValue + "||" + titleValue + "||" + type + "||" + cmmt_allow + "||" + cmbGroup + "||" + cmbCust + "||" + org_id);
+                //console.log(notificationValue + "||" + titleValue + "||" + type + "||" + cmmt_allow + "||" + cmbGroup + "||" + cmbCust + "||" + org_id);
                    
                 //alert(cmbGroup);
                 //alert(cmbCust);
 
-                console.log(scheduleDate + "||" + scheduleTime + "||" + sending_option);
+                //console.log(scheduleDate + "||" + scheduleTime + "||" + sending_option);
                
                 if (scheduleDiv===1) {
                     sending_option = 'later';    
-                    console.log('later div open');
+                    //console.log('later div open');
                     var schedule_Date = $("#scheduleDatePicker").val();
                
                     var values = schedule_Date.split('/');
@@ -429,8 +429,8 @@ app.sendNotification = (function () {
                     var day = values[1];
                     var year = values[2];
                                   
-                    console.log('------------------date=---------------------');
-                    console.log(year + "||" + month + "||" + day);
+                    //console.log('------------------date=---------------------');
+                    //console.log(year + "||" + month + "||" + day);
                
                     var schedule_Time = $("#scheduleTimePicker").val();
                
@@ -448,7 +448,7 @@ app.sendNotification = (function () {
                         }
                     }
             
-                    console.log(Hour + "||" + minute + "||" + AmPm);
+                    //console.log(Hour + "||" + minute + "||" + AmPm);
             
                     schedule_Time = Hour + ":" + minute + ":00";
                
@@ -456,9 +456,9 @@ app.sendNotification = (function () {
                                                  
                     tasks = +new Date(year + "/" + month + "/" + day + " " + Hour + ":" + minute + ":" + second);
                                   
-                    console.log(tasks);
+                    //console.log(tasks);
  
-                    console.log(schedule_Date + "||" + schedule_Time);
+                    //console.log(schedule_Date + "||" + schedule_Time);
                                   
                     /*console.log('------------------date=---------------------');
                     console.log(year+"||"+month+"||"+day);
@@ -475,11 +475,11 @@ app.sendNotification = (function () {
                     var saveData = month+"/"+day+"/"+year;
                     */
 
-                    console.log('1');
+                    //console.log('1');
                     var sendNotificationTime = new Date(schedule_Date + " " + schedule_Time);     
                    
                     //var unixtime = Date.parse(schedule_Date+" "+schedule_Time).getTime()/1000
-                    console.log(sendNotificationTime);
+                   //console.log(sendNotificationTime);
                 }else {
                     tasks = '';  
                     sending_option = 'now';    
@@ -521,7 +521,7 @@ app.sendNotification = (function () {
                         }else if((dataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
                                 //alert('2');
                               photo_split = dataToSend.split("%3A");
-                              console.log(photo_split);
+                              //console.log(photo_split);
                               dataToSend = "content://media/external/video/media/" + photo_split[1];
                               vidFmAndroid=1;  
                             }
@@ -535,10 +535,10 @@ app.sendNotification = (function () {
                         }    
                                                 
                         var filename = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
-                            console.log(filename);
+                            //console.log(filename);
                             //alert(filename);      
                         var path =  dataToSend;
-                            console.log(path);
+                            //console.log(path);
                             //alert(path);
                         
                             //alert(upload_type);
@@ -571,8 +571,8 @@ app.sendNotification = (function () {
                         options.fileKey = "attached";
                         options.fileName = filename;
               
-                        console.log("-------------------------------------------");
-                        console.log(options.fileName);
+                        //console.log("-------------------------------------------");
+                        //console.log(options.fileName);
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
@@ -582,7 +582,7 @@ app.sendNotification = (function () {
                         options.chunkedMode = true;
                         
                         var ft = new FileTransfer();
-                        console.log(tasks);
+                        //console.log(tasks);
                   
                         /* 
                         var deviceName = app.devicePlatform();             
@@ -616,11 +616,11 @@ app.sendNotification = (function () {
                         }); 
                         */ 
                  
-                        console.log("----------------------------------------------check-----------");
+                        //console.log("----------------------------------------------check-----------");
                         //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                         ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options , true);
                     }else {
-                       console.log(tasks);                 
+                       //console.log(tasks);                 
                         var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
                         var dataSourceSendNotification = new kendo.data.DataSource({
                                                                                        transport: {
@@ -635,14 +635,14 @@ app.sendNotification = (function () {
                             },
                                                                                        schema: {
                                 data: function(data) {   
-                                    console.log(data);
+                                    //console.log(data);
                                     return [data];
                                 }
                             },
                                                                                        error: function (e) {
                                                                                            //apps.hideLoading();
-                                                                                           console.log(e);
-                                                                                           console.log(JSON.stringify(e));
+                                                                                           //console.log(e);
+                                                                                           //console.log(JSON.stringify(e));
                
                                                                                            //alert(JSON.stringify(e));
                
@@ -674,13 +674,13 @@ app.sendNotification = (function () {
                         dataSourceSendNotification.fetch(function() {                   
                             var sendNotificationDataView = dataSourceSendNotification.data();
                             $.each(sendNotificationDataView, function(i, notification) {
-                                console.log(notification.status[0].Msg);
+                                //console.log(notification.status[0].Msg);
                                
                                 if (notification.status[0].Msg==='Notification Sent') {
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showShortBottom('Notification Send Successfully');   
+                                        window.plugins.toast.showShortBottom('Notification Sent Successfully');   
                                     }else {
-                                        app.showAlert("Notification Send Successfully", "Notification"); 
+                                        app.showAlert("Notification Sent Successfully", "Notification"); 
                                     }
   
                                     $("#notificationTitleValue").val('');            
@@ -730,14 +730,14 @@ app.sendNotification = (function () {
         };
          
         function win(r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
+            //console.log("Code = " + r.responseCode);
+            //console.log("Response = " + r.response);
+            //console.log("Sent = " + r.bytesSent);
           
             if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Notification Send Successfully');   
+                window.plugins.toast.showShortBottom('Notification Sent Successfully');   
             }else {
-                app.showAlert("Notification Send Successfully", "Notification"); 
+                app.showAlert("Notification Sent Successfully", "Notification"); 
             }
               
             $("#notificationTitleValue").val('');            
@@ -752,10 +752,10 @@ app.sendNotification = (function () {
         }
          
         function fail(error) {
-            console.log(error);
-            console.log("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            //console.log(error);
+            //console.log("An error has occurred: Code = " + error.code);
+            //console.log("upload error source " + error.source);
+            //console.log("upload error target " + error.target);
 
             $("#progressSendNotification").hide();
  
@@ -788,12 +788,12 @@ app.sendNotification = (function () {
                 },
                                                                          schema: {               
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
 
-                            console.log(groupValue[0].Msg);
+                            //console.log(groupValue[0].Msg);
                             
                             if (groupValue[0].Msg==='No Group list') {
                                 $("#selectGroupDiv").hide();
@@ -823,7 +823,7 @@ app.sendNotification = (function () {
                                                        });
                                 }
                                 
-                                console.log(groupDataShow);
+                                //console.log(groupDataShow);
                                 
                                 $("#selectOrgDiv").hide();
                                 $("#selectGroupDiv").show();
@@ -833,14 +833,14 @@ app.sendNotification = (function () {
                             }
                         });
                        
-                        console.log(groupDataShow);
+                        //console.log(groupDataShow);
                         return groupDataShow;                       
                     }
                 },
                                                                          error: function (e) {
                                                                              //apps.hideLoading();
-                                                                             console.log(e);
-                                                                             console.log(JSON.stringify(e));
+                                                                             //console.log(e);
+                                                                             //console.log(JSON.stringify(e));
                                                                              $("#selectOrgLoader").hide();
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
@@ -908,19 +908,19 @@ app.sendNotification = (function () {
                                                                  schema: {
                     model: UserModel,
                     data: function(data) {
-                        console.log(data);                      
+                        //console.log(data);                      
                         var groupDataShowCustomer = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
+                                //console.log(orgVal);
 
                                 if (orgVal.Msg ==='No Customer in this organisation') {     
                                     noCustomer = 1;
                                     escapeGroupClick();
                                 }else if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.allCustomer.length);  
+                                    //console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < orgVal.allCustomer.length;i++) {
                                         groupDataShowCustomer.push({
                                                                        mobile: orgVal.allCustomer[i].uacc_username,
@@ -933,21 +933,21 @@ app.sendNotification = (function () {
                                                                    });
                                     }     
                                 }else if(orgVal.Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                      app.LogoutFromAdmin(); 
                                     //app.mobileApp.navigate('views/organisationLogin.html');                                     
                                 } 
                             });
                         });
                        
-                        console.log(groupDataShowCustomer);
+                        //console.log(groupDataShowCustomer);
                         return groupDataShowCustomer;
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     console.log(e);
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(e);
+                                                                     //console.log(JSON.stringify(e));
                                                                      if (!app.checkSimulator()) {
                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                      }else {
@@ -1005,7 +1005,7 @@ app.sendNotification = (function () {
             });
             
             customer = String(customer);        
-            console.log(customer);
+            //console.log(customer);
                         
          if(customer.length!==0 && customer.length!=='0'){
 
@@ -1041,7 +1041,7 @@ app.sendNotification = (function () {
             });
             
             group = String(group);        
-            console.log(group);      
+            //console.log(group);      
               
          if(group.length!==0 && group.length!=='0'){
                          
@@ -1065,7 +1065,7 @@ app.sendNotification = (function () {
          
         var sendNotificationGroup = function(e) {
             $(".km-scroll-container").css("-webkit-transform", "");
-            console.log(e.data.pid);
+            //console.log(e.data.pid);
             var group = e.data.pid;
             localStorage.setItem("SELECTED_GROUP", group);
             $("#selectGroupDiv").hide();
@@ -1159,7 +1159,7 @@ app.sendNotification = (function () {
             });
             
             groupChecked = String(groupChecked);        
-            console.log(groupChecked);
+            //console.log(groupChecked);
         };
          
         /*var getPhoto =function() {
@@ -1192,7 +1192,7 @@ app.sendNotification = (function () {
 
 
             //alert(imageURI);
-            console.log(imageURI);
+            //console.log(imageURI);
             //dataToSend = imageURI;
         }
         

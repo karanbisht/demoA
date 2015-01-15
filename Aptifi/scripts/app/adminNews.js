@@ -477,7 +477,12 @@ app.adminNews = (function () {
                     console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Deleted Successfully') {         
                         app.mobileApp.navigate("#adminOrgNewsList");
-                        app.showAlert("News Deleted Successfully", "Notification");
+                        
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showLongBottom('News Deleted Successfully');  
+                        }else {
+                            app.showAlert('News Deleted Successfully', "Notification");  
+                        }
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
@@ -792,9 +797,13 @@ app.adminNews = (function () {
                         console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News added successfully') {  
                             $(".km-scroll-container").css("-webkit-transform", "");                           
-                            $("#addNewsDesc").val('');                                     
-                            app.showAlert("News Added Successfully", "Notification");
-                            
+                            $("#addNewsDesc").val('');                   
+                            if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom('News Added Successfully');  
+                             }else {
+                                    app.showAlert('News Added Successfully", "Notification');  
+                             }
+                                                        
                              $("#sendNewsLoader").hide();
 
                             app.mobileApp.navigate("#adminOrgNewsList");
@@ -837,8 +846,8 @@ app.adminNews = (function () {
                 
         function fail(error) {
             
-            console.log(error);
-            console.log(JSON.stringify(error));
+            //console.log(error);
+            //console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);
@@ -876,18 +885,20 @@ app.adminNews = (function () {
             
                 event_Date = year + "-" + month + "-" + day;
             
-                console.log(event_description);
-                console.log(event_Date);
-                console.log(event_Time);
+                //console.log(event_description);
+                //console.log(event_Date);
+                //console.log(event_Time);
                 
                 var vidFmAndroidEdit=0;
                 
                 
                  if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
+                     
                         if ((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type_Edit==="image")){
                             photo_split = newsDataToSend.split("%3A");
                             newsDataToSend = "content://media/external/images/media/" + photo_split[1];
                             vidFmAndroidEdit=1;
+                            
                         }else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type_Edit==="video")){
                             photo_split = eventDataToSend.split("%3A");
                             eventDataToSend = "content://media/external/video/media/" + photo_split[1];
@@ -917,8 +928,6 @@ app.adminNews = (function () {
                         }
                    
                         var path =  newsDataToSend;
-
-                     
                      
                         var params = new Object();
                         params.org_id = organisationID;  //you can send additional info with the file

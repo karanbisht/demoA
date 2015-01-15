@@ -67,7 +67,7 @@
               
          #}else{#            
               <div class="cf">                        
-       		<div class="calendarEvent-List" >             
+       		<div class="calendarEvent-List" style="border-radius:6px;">             
        		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
          		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
        		</div>
@@ -252,7 +252,7 @@
             <div id="eventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;">
                     
-                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
+                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" ></a>
 
                     <img id="attachedImgEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
 
@@ -266,7 +266,7 @@
 
                 </div>
                 
-                <ul data-role="actionsheet" id="newsImgSelect">
+                <ul data-role="actionsheet" id="eventImgSelect">
                     <li class="km-actionsheet-title"></li>
                     <li>
                         <a href="#" data-role="button" data-bind="click: getTakePhoto">Take Photo</a>

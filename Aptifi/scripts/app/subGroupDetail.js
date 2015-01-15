@@ -52,8 +52,8 @@ app.subGroupDetail = (function () {
 
             //app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
 
-            console.log(organisationID);
-            console.log(groupID);
+            //console.log(organisationID);
+            //console.log(groupID);
                    
             app.mobileApp.pane.loader.hide();
             
@@ -97,14 +97,14 @@ app.subGroupDetail = (function () {
                     model: UserModel,
                                 
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                        
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
+                                //console.log(orgVal);
 
                                 if (orgVal.Msg ==='No member in group') {
                                     app.mobileApp.pane.loader.hide();
@@ -123,7 +123,7 @@ app.subGroupDetail = (function () {
                                     app.mobileApp.pane.loader.hide();
                                         
                                     $("#deleteGroupMemberBtn").show();  
-                                    console.log(orgVal.customerInfo.length);  
+                                    //console.log(orgVal.customerInfo.length);  
                                     for (var i = 0;i < orgVal.customerInfo.length;i++) {
                                         groupDataShow.push({
                                                                first_name: orgVal.customerInfo[i].first_name,
@@ -140,15 +140,15 @@ app.subGroupDetail = (function () {
                             });
                         });
                        
-                        console.log(groupDataShow);
+                        //console.log(groupDataShow);
                         return groupDataShow;
                     }
 
                 },
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
-                                                                     console.log(e);
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(e);
+                                                                     //console.log(JSON.stringify(e));
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
                     
@@ -241,7 +241,7 @@ app.subGroupDetail = (function () {
             //var org_id=1; 
             var group_name = $("#editGroupName").val();     
             var group_description = $("#editGroupDesc").val();
-            console.log(organisationID + "||" + group_name + "||" + group_description + "||" + groupID + "||" + group_status);
+            //console.log(organisationID + "||" + group_name + "||" + group_description + "||" + groupID + "||" + group_status);
             
             var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description,"pid":groupID , "group_status":group_status}
                        
@@ -256,14 +256,14 @@ app.subGroupDetail = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(e);
-                                                                       console.log(JSON.stringify(e));
+                                                                       //console.log(e);
+                                                                       //console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -273,7 +273,7 @@ app.subGroupDetail = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Group updated successfully') {  
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Group Updated Successfully');   
@@ -313,16 +313,16 @@ app.subGroupDetail = (function () {
                 },
                                                                  schema: {                              
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                        
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
+                                //console.log(orgVal);
 
                                 if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.allCustomer.length);  
+                                    //console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < orgVal.allCustomer.length;i++) {
                                         groupDataAllShow.push({
                                                                   mobile: orgVal.allCustomer[i].uacc_username,
@@ -345,8 +345,8 @@ app.subGroupDetail = (function () {
                         var allData = groupDataAllShow.length;
                         var groupData = groupMemberData.length;            
                        
-                        console.log(allData);
-                        console.log(groupData);
+                        //console.log(allData);
+                        //console.log(groupData);
                        
                         for (var x = 0;x < allData ; x++) {                     
                             var numCheck = 0;
@@ -372,8 +372,8 @@ app.subGroupDetail = (function () {
                 },
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
-                                                                     console.log(e);
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(e);
+                                                                     //console.log(JSON.stringify(e));
                                                                      navigator.notification.alert("Please check your internet connection.",
                                                                                                   function () {
                                                                                                   }, "Notification", 'OK');
@@ -400,7 +400,7 @@ app.subGroupDetail = (function () {
             
             var jsonDataAddMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
             
-            console.log(customer + "||" + groupID + "||" + organisationID);      
+            //console.log(customer + "||" + groupID + "||" + organisationID);      
             var dataSourceAddMember = new kendo.data.DataSource({
                                                                     transport: {
                     read: {
@@ -412,14 +412,14 @@ app.subGroupDetail = (function () {
                 },
                                                                     schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                     error: function (e) {
                                                                         //apps.hideLoading();
-                                                                        console.log(e);
-                                                                        console.log(JSON.stringify(e));
+                                                                        //console.log(e);
+                                                                        //console.log(JSON.stringify(e));
                                                                         navigator.notification.alert("Please check your internet connection.",
                                                                                                      function () {
                                                                                                      }, "Notification", 'OK');
@@ -430,7 +430,7 @@ app.subGroupDetail = (function () {
             dataSourceAddMember.fetch(function() {
                 var loginDataView = dataSourceAddMember.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Customer Added to group successfully') {  
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Member Added Successfully');   
@@ -466,12 +466,12 @@ app.subGroupDetail = (function () {
 			
             var customer = String(customer);        
             
-            console.log(customer);            
-            console.log(organisationID);
+            //console.log(customer);            
+            //console.log(organisationID);
        
             var jsonDataDeleteMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
             
-            console.log("customer_id" + customer + "||" + groupID + "||" + organisationID);
+            //console.log("customer_id" + customer + "||" + groupID + "||" + organisationID);
             
             var dataSourceDeleteMember = new kendo.data.DataSource({
                                                                        transport: {
@@ -484,14 +484,14 @@ app.subGroupDetail = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(e);
+                                                                           //console.log(JSON.stringify(e));
                                                                            navigator.notification.alert("Please check your internet connection.",
                                                                                                         function () {
                                                                                                         }, "Notification", 'OK');
@@ -502,7 +502,7 @@ app.subGroupDetail = (function () {
             dataSourceDeleteMember.fetch(function() {
                 var loginDataView = dataSourceDeleteMember.data();
                 $.each(loginDataView, function(i, deleteGroupData) {
-                    console.log(deleteGroupData.status[0].Msg);           
+                    //console.log(deleteGroupData.status[0].Msg);           
                     if (deleteGroupData.status[0].Msg==='User removed successfully') { 
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Member Deleted Successfully');   
@@ -522,7 +522,7 @@ app.subGroupDetail = (function () {
         
         var showOrgGroupView = function() {
             app.MenuPage = false;
-            console.log(organisationID);
+            //console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);                
             //app.mobileApp.navigate('#orgGroupShow');                        
         };
@@ -536,10 +536,10 @@ app.subGroupDetail = (function () {
                     
             notificationId=[],notificationMessage=[],notificationTitle=[];
 
-            console.log(e.data.uid);
+            //console.log(e.data.uid);
             activity = app.groupDetail.userData.getByUid(e.data.uid);
-            console.log(activity);
-            console.log(activity.Id);
+            //console.log(activity);
+            //console.log(activity.Id);
    	  	  
             app.mobileApp.navigate('views/adminMessageReply.html');
             app.Activities.userData.filter({
@@ -550,18 +550,18 @@ app.subGroupDetail = (function () {
                  
             app.Activities.userData.fetch(function() {
                 var view = app.Activities.userData.view();
-                console.log(view);
+                //console.log(view);
                 dataLength = view.length;
 		                                  
                 for (var i = 0;i < dataLength;i++) {
                     var pos = $.inArray(view[i].NotificationId, tempArray);
-                    console.log(pos);
+                    //console.log(pos);
                     if (pos === -1) {
                         tempArray.push(view[i].NotificationId);
                     } 
-                    console.log("hello" + tempArray);
+                    //console.log("hello" + tempArray);
                     uniqueLength = tempArray.length;
-                    console.log(uniqueLength);   
+                    //console.log(uniqueLength);   
                 }                 
             });
                     

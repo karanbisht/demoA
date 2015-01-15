@@ -154,7 +154,7 @@ app.orgsubGroupListView = (function () {
                     
                     lastNotificationPID = results.rows.item(i).pid;
                 }    
-                console.log(lastNotificationPID);
+                //console.log(lastNotificationPID);
             }else {
                 lastNotificationPID = 0;
 
