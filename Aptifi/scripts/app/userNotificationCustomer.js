@@ -159,7 +159,7 @@ app.replyedCustomer = (function () {
                                                                      } 
                      
                                                                      var showNotiTypes = [
-                                                                         { message: "Your request has not been processed due to a connection error . Please try again"}
+                                                                         { message: "Please Check Your Internet Connection"}
                                                                      ];
                         
                                                                      var dataSource = new kendo.data.DataSource({

@@ -59,14 +59,13 @@ app.orgGroupListView = (function () {
                                                                               schema: {
                     model: organisationAllNotificationModel,                                
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
                                      
                             $.each(groupValue, function(i, orgVal) {
-                                console.log();
 
                                 if (orgVal.Msg ==='No notification') {     
                                     groupDataShow.push({
@@ -77,7 +76,7 @@ app.orgGroupListView = (function () {
                                                            pid:0        
                                                        });                   
                                 }else if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.notificationList.length);  
+                                    //console.log(orgVal.notificationList.length);  
                                     for (var i = 0;i < orgVal.notificationList.length;i++) {
                                         groupDataShow.push({
                                                                message: orgVal.notificationList[i].message,
@@ -105,7 +104,7 @@ app.orgGroupListView = (function () {
                             */
                         });
                        
-                        console.log(groupDataShow);
+                        //console.log(groupDataShow);
                         return groupDataShow;
                     }                       
                 },

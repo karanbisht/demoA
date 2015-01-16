@@ -68,9 +68,8 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';
+            //var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';
             var device_id = localStorage.getItem("deviceTokenID");          
-            //alert(device_id);
             //console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
@@ -558,7 +557,7 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    //var device_id='APA91bFI1Sc51QY1KbY1gnLoZG6jbQB813z-7jwUrlbud6ySufC22wFyBZs79e3LTdz8XcrrtHX3qAC8faQts17Q-CUTb7mAF8niiwN1QKIrcDdpD3B21NrEYJO2jrdKzJ4zXREQoq2-v5qMs52hCBQ9MHsq18OES_SgZGIp-E8K-q5xFk3MWac';                    
+                    //var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';                    
                     var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);
                     
@@ -606,10 +605,10 @@ app.Login = (function () {
                             if (loginData.status[0].Msg==='Success') {
                                 account_Id = loginData.status[0].ProfileInfo[0].account_id;
                                 //console.log('karan'+account_Id);
-                                console.log(loginData);
+                                //console.log(loginData);
                                                    
                                 if (loginData.status[0].JoinedOrg.length!==0) { 
-                                    console.log(loginData.status[0].JoinedOrg.role.length);
+                                    //console.log(loginData.status[0].JoinedOrg.role.length);
                                     var roleLength = loginData.status[0].JoinedOrg.role.length;                          
                                     for (var i = 0;i < roleLength;i++) {
                                         userType.push(loginData.status[0].JoinedOrg.role[i]); 

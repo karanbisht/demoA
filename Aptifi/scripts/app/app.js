@@ -11,7 +11,7 @@ var app = (function (win) {
     var mobileApp;
     
     var serverUrl = function() {
-        return 'http://54.85.208.215/webservice/';
+        return 'https://app.Zaff.io/webservice/';
     }
 
     var showAppVersion = function() {
@@ -198,13 +198,13 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {
-        //alert("error--"+err.message);
+       //alert("error--"+err.message);
         
-        console.log("Error processing SQL: " + JSON.stringify(err));
+       console.log("Error processing SQL: " + JSON.stringify(err));
 
-        //console.log("Error processing SQL: " + err.message);
+       //console.log("Error processing SQL: " + err.message);
 
-        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
+       app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
         //app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
     };
     
@@ -758,7 +758,7 @@ var app = (function (win) {
                     if (e.regid.length > 0) {
                         //your GCM push server needs to know the regID before it can push to this device
                         //you can store the regID for later use here
-                        console.log('###token received');
+                        //console.log('###token received');
                         console.log("TokenID Received" + e.regid);
                         localStorage.setItem("deviceTokenID", e.regid);
                         //sendTokenToServer(e.regid);
@@ -1427,13 +1427,13 @@ var app = (function (win) {
 	            
                     dataSourceLogin.fetch(function() {
                         var loginDataView = dataSourceLogin.data();
-                        console.log(loginDataView);
+                        //console.log(loginDataView);
                
                         $.each(loginDataView, function(i, loginData) {
-                            console.log(loginData.status[0].Msg);
+                            //console.log(loginData.status[0].Msg);
 
                             if (loginData.status[0].Msg==='You have been successfully logged out.') {
-                                console.log('reg');
+                                //console.log('reg');
                                 app.mobileApp.navigate('#organisationNotiList');                                
                                 //app.flip('left', 'green', '#organisationNotiList')                                
                             }else {

@@ -35,7 +35,7 @@ app.orgNews = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);
+                                                                    //console.log(e);
                                                                     console.log(JSON.stringify(e));
                                                                     if (!app.checkSimulator()) {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -51,7 +51,7 @@ app.orgNews = (function () {
                 var userAllGroupId = [];
 						   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No News list') {
                         groupAllEvent = [];
@@ -70,23 +70,18 @@ app.orgNews = (function () {
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
 
-                        console.log(loginData.status[0].newsData);
+                        //console.log(loginData.status[0].newsData);
                         
                         if (loginData.status[0].newsData.length!==0) {
                             var eventListLength = loginData.status[0].newsData.length;
                               
                             for (var i = 0 ; i < eventListLength ;i++) {
                                 /*var newsDate = loginData.status[0].newsData[i].news_date;
-                                console.log("-------karan---------------");
-                                console.log(newsDate);
                                   
                                 var values = newsDate.split('-');
                                 var year = values[0]; // globle variable
                                 var month = values[1];
                                 var day = values[2];
-                                  
-                                console.log('------------------date=---------------------');
-                                console.log(year + "||" + month + "||" + day);
                                   
                                 //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
                                  
@@ -124,7 +119,6 @@ app.orgNews = (function () {
         }
     
         var showInListView = function() {
-            console.log(groupAllEvent);
                         $("#newsLoader").hide();
 
 

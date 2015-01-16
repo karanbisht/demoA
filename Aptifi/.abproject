@@ -33,19 +33,19 @@
     "Portrait"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "false",
+  "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "1.0.1",
+  "BundleVersion": "1.0.3",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "2",
+  "AndroidVersionCode": "4",
   "DisplayName": "Zaffio",
   "Author": "karan",
-  "Description": "Zaffio",
+  "Description": "Zaffio Mobile Application",
   "WP8TileTitle": "Zaffio",
   "WP8ProductID": "{003f5d01-c32e-4f2f-8a44-f2e7b1f00008}",
   "WP8PublisherID": "{b6e0580a-d18c-47b9-b482-6e009726ed8c}",

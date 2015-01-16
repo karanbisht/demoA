@@ -538,8 +538,6 @@ app.subGroupDetail = (function () {
 
             //console.log(e.data.uid);
             activity = app.groupDetail.userData.getByUid(e.data.uid);
-            //console.log(activity);
-            //console.log(activity.Id);
    	  	  
             app.mobileApp.navigate('views/adminMessageReply.html');
             app.Activities.userData.filter({
@@ -550,7 +548,6 @@ app.subGroupDetail = (function () {
                  
             app.Activities.userData.fetch(function() {
                 var view = app.Activities.userData.view();
-                //console.log(view);
                 dataLength = view.length;
 		                                  
                 for (var i = 0;i < dataLength;i++) {

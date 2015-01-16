@@ -513,13 +513,11 @@ app.sendNotification = (function () {
                     var vidFmAndroid=0;                    
                     //alert(upload_type);
                     if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
-                        //alert("1");
                         if ((dataToSend.substring(0, 21)==="content://com.android") &&(upload_type==="other")) {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
                              vidFmAndroid=1;
                         }else if((dataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
-                                //alert('2');
                               photo_split = dataToSend.split("%3A");
                               //console.log(photo_split);
                               dataToSend = "content://media/external/video/media/" + photo_split[1];
@@ -571,8 +569,7 @@ app.sendNotification = (function () {
                         options.fileKey = "attached";
                         options.fileName = filename;
               
-                        //console.log("-------------------------------------------");
-                        //console.log(options.fileName);
+                   
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
@@ -581,44 +578,9 @@ app.sendNotification = (function () {
                         }
                         options.chunkedMode = true;
                         
+ 
                         var ft = new FileTransfer();
-                        //console.log(tasks);
-                  
-                        /* 
-                        var deviceName = app.devicePlatform();             
-                        if(deviceName==='Android'){
-                        console.log("upload file from Android");
-                        window.resolveLocalFileSystemURL(dataToSend, function(fileEntry) {
-                        fileEntry.file(function(fileObj) {
-                        var fileName;
-                        fileName = fileObj.fullPath;
-                        console.log("-------------------------------------------");
-                        console.log(fileName);
-                        options.fileName = fileName.substr(fileName.lastIndexOf('/') + 1);
-                        ft.upload(fileName,encodeURI("http://54.85.208.215/webservice/notification/sendNotification"), win, fail, options, true);
-                        });
-                        });
-                        } else {
-                        console.log("upload file from other device");
-                        ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options, true);
-                        }
-                        */
-                   
-                        /*window.resolveLocalFileSystemURI(dataToSend
-                        , function(entry){
-
-                        console.log("****************HERE YOU WILL GET THE NAME AND OTHER PROPERTIES***********************");
-                        console.log("IMAGE NAME-"+entry.name);
-                        console.log("PATH NAME"+entry.fullPath);
-
-                        }, function(e){
-
-                        }); 
-                        */ 
-                 
-                        //console.log("----------------------------------------------check-----------");
-                        //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
-                        ft.upload(dataToSend, 'http://54.85.208.215/webservice/notification/sendNotification', win, fail, options , true);
+                        ft.upload(dataToSend, app.serverUrl() + "notification/sendNotification", win, fail, options , true);
                     }else {
                        //console.log(tasks);                 
                         var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
@@ -643,11 +605,6 @@ app.sendNotification = (function () {
                                                                                            //apps.hideLoading();
                                                                                            //console.log(e);
                                                                                            //console.log(JSON.stringify(e));
-               
-                                                                                           //alert(JSON.stringify(e));
-               
-                                                                                           //navigator.notification.alert("Please check your internet connection.",
-                                                                                           //function () { }, "Notification", 'OK');
                
                                                                                            if (!app.checkSimulator()) {
                                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
@@ -745,6 +702,11 @@ app.sendNotification = (function () {
             document.getElementById('comment_allow').checked = false;
             var largeImage = document.getElementById('largeImage');
             largeImage.src = '';
+            
+            var largeVid = document.getElementById('attachedVidNoti');
+            largeVid.src = '';
+            
+            
             $("#progressSendNotification").hide();
 
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
@@ -1220,7 +1182,7 @@ app.sendNotification = (function () {
             $("#attachedVidNoti").show();
 
             //alert(imageURI);
-            console.log(videoURI);
+            //console.log(videoURI);
             //newsDataToSend = imageURI;
         }
          

@@ -61,9 +61,9 @@ app.Activity = (function () {
         
         var befShow = function() {    
             if (app.checkConnection()) {
-                console.log("online");
+                //console.log("online");
             } else {
-                console.log("offline");
+                //console.log("offline");
                 //var db = app.getDb();
                 //db.transaction(offlineQueryReplyDB, app.onError, offlineQueryReplyDBSuccess);
             }
@@ -71,7 +71,7 @@ app.Activity = (function () {
       
         var replyButton = function() {
             if (app.checkConnection()) {
-                console.log(activity);
+                //console.log(activity);
                 var notificationId = activity.notification_id;             
                 app.mobileApp.navigate('views/addCommentView.html?notificationId=' + notificationId);            
             } else {
@@ -466,8 +466,8 @@ app.Activity = (function () {
                     var dateString = results.rows.item(i).add_date;
                     var split = dateString .split(' ');
                    // console.log(split[0] + " || " + split[1]);
-                    var commentDate = app.formatDate(split[0]);
                     
+                    var commentDate = app.formatDate(split[0]);                    
                     var commentTime = app.formatTime(split[1]);
 
                     //alert(commentTime);
@@ -567,6 +567,7 @@ app.Activity = (function () {
                 //var org_id = localStorage.getItem("UserOrgID");
                 //var customer_id = localStorage.getItem("UserID");
              
+ 
                 if (comment!=='' && comment!=='Reply') {
                    // console.log("SHOWING DATA" + notiId + "||" + account_Id + "||" + org_id);
                 
@@ -608,7 +609,7 @@ app.Activity = (function () {
                        // console.log(commentDataView);
                         $.each(commentDataView, function(i, commentData) {           
                          //   console.log(commentData.status[0].Msg);
-                            refreshComment(); 
+                            //refreshComment(); 
                             if (commentData.status[0].Msg === 'Reply sent successfully') {
                                 lastNotiCommentID = lastNotiCommentID + 1;
                                             $('#newComment').css('height', '30px');
@@ -616,9 +617,12 @@ app.Activity = (function () {
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom('Reply sent successfully');   
                                 }else {
-                                    app.showAlert("Reply sent successfully", "Notification");  
-                                    
+                                    app.showAlert("Reply sent successfully", "Notification");                                      
                                 }
+ 
+                                var commentDate = app.formatDate(new Date());
+ 
+                                $("#comments-listview").append('<li><div class="user-comment-List" id="userCommentContainer"><div class="user-comment-content"><a>'+comment+'</a><br/><span class="user-time-span">'+commentDate+' just now </span></div></div></li>');                                
                                  
                                 $("#newComment").val('');
                             }else {

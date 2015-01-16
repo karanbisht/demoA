@@ -195,6 +195,7 @@ app.OragnisationList = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	//console.log(data);
+                        console.log(data);
                         return [data];
                     }
                 },
@@ -974,7 +975,7 @@ app.OragnisationList = (function () {
             $("#manageOrgDesc").css("z-index", "999");
             
             if (orgDesc==='') {
-                orgDesc = "Description Not Available";
+                orgDesc = " ";//"Description Not Available";
             }
             
             //alert(orgDesc+"||"+joinDate);
@@ -1638,6 +1639,7 @@ app.OragnisationList = (function () {
                    // console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
+                        
                         $("#savingDeviceCalenderLoader").hide();
 
                         if (!app.checkSimulator()) {

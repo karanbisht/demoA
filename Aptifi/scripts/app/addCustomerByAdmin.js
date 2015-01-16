@@ -112,13 +112,18 @@ app.addCustomerByAdmin = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                          // console.log(e);
-                                                                           //console.log(JSON.stringify(e));           
-
-                                                                           app.mobileApp.pane.loader.hide();
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                           
+                                                                            console.log(e);                                                                           
+                                                                            console.log(JSON.stringify(e));           
+                                                                            alert(JSON.stringify(e));
+                                                                            app.mobileApp.pane.loader.hide();
+                                                                            
+                                                                            if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');   
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            }
+           
                                                                        }               
                                                                    });  
              
@@ -158,7 +163,7 @@ app.addCustomerByAdmin = (function () {
                 }
                 
                 
-                console.log(mobileArray);
+                //console.log(mobileArray);
                 //console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 var jsonDataRegister;
                           
@@ -183,7 +188,7 @@ app.addCustomerByAdmin = (function () {
                                                                            //apps.hideLoading();
                                                                            //console.log(e);
 
-                                                                           //console.log(JSON.stringify(e));           
+                                                                           console.log(JSON.stringify(e));           
 
                                                                            
                                                                            app.mobileApp.pane.loader.hide();

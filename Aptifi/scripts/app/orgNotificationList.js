@@ -35,17 +35,15 @@ app.orgListView = (function () {
                  
                                                                               schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                        
                         var orgNotificationData; 
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
 
                             $.each(groupValue, function(i, orgVal) {
                                 if (orgVal.Msg ==='No notification') {     
                                     showMoreDbData();
                                 }else if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.notificationList.length);  
                                     orgNotificationData = orgVal.notificationList;
                                     saveOrgNotification(orgNotificationData);                                                                                                                                                                      
                                 }
@@ -59,7 +57,6 @@ app.orgListView = (function () {
                                                                               error: function (e) {
                                                                                   e.preventDefault();
                                                                                   //apps.hideLoading();
-                                                                                  console.log(e);
                                                                                   console.log(JSON.stringify(e));
                                                                                   
                                                                                   //$("#progress1").hide();  
@@ -80,7 +77,6 @@ app.orgListView = (function () {
        
         function saveOrgNotification(data) {
             orgNotiDataVal = data; 
-            console.log(orgNotiDataVal);            
             var db = app.getDb();
             db.transaction(insertOrgNotiData, app.errorCB, showMoreDbData);
         };
@@ -144,18 +140,6 @@ app.orgListView = (function () {
                     var dateString = results.rows.item(i).send_date;
                     var notiDate = app.timeConverter(dateString);
 
-                    /*var split = dateString .split(' ');
-                    console.log(split[0]+" || "+split[1]);
-                    var notiDate= app.formatDate(split[0]);
-                    console.log(notiDate);
-                    
-                    var splitTime =split[1].split(':');
-                    console.log(splitTime);
-                    var timeVal = splitTime[0]+':'+splitTime[1];
-                    console.log(timeVal);
-
-                    var notiTime=app.timeConvert(timeVal);
-                    console.log(notiTime);*/
  
                     groupDataShow.push({
                                            message: results.rows.item(i).message,
@@ -174,7 +158,7 @@ app.orgListView = (function () {
                     previousDate = notiDate;  
                     lastNotificationPID = results.rows.item(i).pid;
                 }    
-                console.log(lastNotificationPID);
+                //console.log(lastNotificationPID);
             }else {
                 lastNotificationPID = 0;
                 groupDataShow.push({

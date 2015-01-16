@@ -141,11 +141,8 @@ app.userNotiComment = (function () {
             
             userCommentedNotification.fetch(function() {
                 var notificationData = userCommentedNotification.data();
-                //console.log('notificationnnnnnnnn');
-                //console.log(notificationData);
-
+                
                 $.each(notificationData, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
                      
                     if (loginData.status[0].Msg==='Success') {
                         attached = loginData.status[0].notificationList[0].attached;
@@ -413,8 +410,12 @@ app.userNotiComment = (function () {
                         }else {
                             app.showAlert("Reply sent successfully", "Notification");  
                         }
+                        
+                        var commentDate = app.formatDate(new Date());
 
-                        refreshComment();
+                        $("#userComments-listview").append('<li><div class="Org-admin-comment-List"><div class="Org-admin-comment-content"><a>'+comment+'</a><br/><span class="user-time-span">'+commentDate+' just now </span></div></div></li>');
+                        
+                        //refreshComment();
                         $("#newAdminComment").val('');
                     }else {
                         app.showAlert(commentData.status[0].Msg , 'Notification'); 

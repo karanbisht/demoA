@@ -69,7 +69,7 @@ app.GroupList = (function () {
             orgName = localStorage.getItem("orgNameAdmin");
             orgDesc = localStorage.getItem("orgDescAdmin");
                   
-            console.log('Organisation ID' + organisationID);
+            //console.log('Organisation ID' + organisationID);
                   
             $('#newGroup').val('');
             groupDataShow = [];      
@@ -85,18 +85,16 @@ app.GroupList = (function () {
                  
                                                                             schema: {
                     data: function(data) {
-                        console.log("---------------------------");
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                        
                         var orgNotificationData; 
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);
+                            //console.log(groupValue);
     
                             $.each(groupValue, function(i, orgVal) {
-                                console.log();
                    	            
                                 if (orgVal.Msg ==='No Group list') {
-                                    console.log("--------------------------No Group");
+        
                                     groupDataShow.push({
                                                            orgName: '',
                                                            groupID:0,
@@ -117,12 +115,10 @@ app.GroupList = (function () {
                                                              
                                 }else if (orgVal.Msg==='Success') {
                                      $("#tabDeleteGroup").show();
-                                    console.log("--------------------------Success");
 
-                                    console.log(orgVal.groupData.length);
-                                    console.log('karan Bisht');
+                                    //console.log(orgVal.groupData.length);
                                     orgNotificationData = orgVal.groupData;                                                                               
-                                    console.log(orgNotificationData);                                       
+                                    //console.log(orgNotificationData);                                       
                                     saveOrgGroupNotification(orgNotificationData);                                                                                                                                                                      
                                 }
                             });    
@@ -135,7 +131,7 @@ app.GroupList = (function () {
                                                                             error: function (e) {
                                                                                 e.preventDefault();
                                                                                 //apps.hideLoading();
-                                                                                console.log(e);
+                                                                                //console.log(e);
                                                                                 console.log(JSON.stringify(e));
                    
                                                                                 //$("#progress1").hide();  
@@ -156,7 +152,6 @@ app.GroupList = (function () {
         function saveOrgGroupNotification(data) {                      
             orgNotiGroupDataVal = data;
             //alert('dataaaaaaaaa');
-            console.log(orgNotiGroupDataVal);            
             var db = app.getDb();
             db.transaction(insertOrgGroupNotiData, app.errorCB, getGroupDataDB);
         };
@@ -209,7 +204,7 @@ app.GroupList = (function () {
             if (count !== 0) {                
                 for (var i = 0 ; i < count ; i++) {
                     var pos = $.inArray(results.rows.item(i).groupID, tempArray);
-                    console.log(pos);
+                    //console.log(pos);
                     //alert(results.rows.item(i).addDate);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(i).groupID); 
@@ -266,9 +261,9 @@ app.GroupList = (function () {
         }
     
         var groupSelected = function (e) {
-            console.log(e.data);
-            console.log(e.data.groupID);
-            console.log(e.data.orgID);//groupName//groupDesc
+            //console.log(e.data);
+            //console.log(e.data.groupID);
+            //console.log(e.data.orgID);//groupName//groupDesc
             app.MenuPage = false;	
              
             localStorage.setItem("groupIdAdmin", e.data.groupID);
@@ -313,9 +308,9 @@ app.GroupList = (function () {
             var group_name = $("#newGroup").val();     
             var group_description = $("#newGroupDesc").val();
             
-            console.log(group_name);
-            console.log(group_description);
-            console.log(organisationID);
+            //console.log(group_name);
+            //console.log(group_description);
+            //console.log(organisationID);
 
             //var group_status = 'A';
             //var org_id=1; 
@@ -350,7 +345,7 @@ app.GroupList = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Group added successfully') {         
                         app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);
                         $("#newGroup").val('');     
@@ -381,7 +376,6 @@ app.GroupList = (function () {
             
         if(groupID.length!==0 && groupID.length!=='0'){
 
-            console.log(groupID + "||" + organisationID);
             
             var jsonDataDelete = {"group_id":groupID ,"orgID":organisationID}
             
@@ -412,7 +406,7 @@ app.GroupList = (function () {
             dataSourceDeleteMember.fetch(function() {
                 var loginDataView = dataSourceDeleteMember.data();
                 $.each(loginDataView, function(i, deleteGroupData) {
-                    console.log(deleteGroupData.status[0].Msg);           
+                    //console.log(deleteGroupData.status[0].Msg);           
                     if (deleteGroupData.status[0].Msg==='Deleted Successfully') {      
                         app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);
 
@@ -448,9 +442,8 @@ app.GroupList = (function () {
         };
           
         var showGroup = function() {
-            console.log("---------------------GROUP DATA----------------");
 
-            console.log(groupDataShow);
+            //console.log(groupDataShow);
              
             $("#deleteGroupData").kendoListView({
                                                     template: kendo.template($("#Group-Delete-template").html()),    		

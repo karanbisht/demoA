@@ -54,12 +54,12 @@ app.adminNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                     console.log(e);             
+                                                                     //console.log(e);             
                                                                      console.log(JSON.stringify(e));
                                                                                  $("#adminNewsListLoader").hide();
                                                                                  $("#orgAllNewsList").show();
@@ -89,13 +89,13 @@ app.adminNews = (function () {
 	            
             dataSourceLogin.fetch(function() {
                 var loginDataView = dataSourceLogin.data();               
-                console.log(loginDataView);
+                //console.log(loginDataView);
                 
                 var orgDataId = [];
                 var userAllGroupId = [];
 						   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No News list') {
                         groupAllEvent = [];                          
@@ -117,7 +117,7 @@ app.adminNews = (function () {
                         if (loginData.status[0].newsData.length!==0) {
                             var eventListLength = loginData.status[0].newsData.length;
                             
-                            console.log(loginData.status[0].newsData);
+                            //console.log(loginData.status[0].newsData);
                             
                             for (var i = 0 ; i < eventListLength ;i++) {
                                 /*var newsDate = loginData.status[0].newsData[i].news_date;
@@ -168,7 +168,7 @@ app.adminNews = (function () {
         }
         
         function showEventInCalendar() {                         
-            console.log(tasks);            
+            //console.log(tasks);            
             multipleEventArray = [];
 
             //class="#= data.dates[+data.date] #"
@@ -198,7 +198,7 @@ app.adminNews = (function () {
         var date2;
 
         function selectedDataByUser() {
-            console.log("Change :: " + kendo.toString(this.value(), 'd'));
+            //console.log("Change :: " + kendo.toString(this.value(), 'd'));
             var date = kendo.toString(this.value(), 'd'); 
             
             date2 = kendo.toString(this.value(), 'd'); 
@@ -207,8 +207,6 @@ app.adminNews = (function () {
  
             multipleEventArray = [];
             document.getElementById("eventTitle").innerHTML = "";
-
-            console.log(groupAllEvent);
              
             var checkGotevent = 0;
             
@@ -229,8 +227,6 @@ app.adminNews = (function () {
                 }
                 
                 var dateToCom = monthShow + '/' + dayShow + '/' + yearShow;
-
-                console.log(dateToCom);
                 
                 //date=date.trim();//replace(/^"(.*)"$/, '$1');
                 //dateToCom=dateToCom.trim();//.replace(/^"(.*)"$/, '$1');
@@ -244,7 +240,6 @@ app.adminNews = (function () {
                 //alert(date+"||"+dateToCom);
                 
                 if (date===dateToCom) {
-                    console.log('inside');
                     
                     $("#eventDetailDiv").show();
                     $("#eventDate").html(date);
@@ -374,7 +369,7 @@ app.adminNews = (function () {
                  
                                                         change: function() {
                                                             var value = this.value();
-                                                            console.log(value); 
+                                                            //console.log(value); 
                                                             /*if(new Date(value) < new Date(currentDate)){                   
                                                             if(!app.checkSimulator()){
                                                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
@@ -396,7 +391,7 @@ app.adminNews = (function () {
                 
                                                             change: function() {
                                                                 var value = this.value();
-                                                                console.log(value); //value is the selected date in the timepicker
+                                                                //console.log(value); //value is the selected date in the timepicker
                                                             }                
                                                         });
 
@@ -417,8 +412,8 @@ app.adminNews = (function () {
         var newsPid;
         
         var editNews = function(e) {
-            console.log(e.data.uid);
-            console.log(e.data);
+            //console.log(e.data.uid);
+            //console.log(e.data);
             
             newsDescEdit = e.data.news_desc;
             newsDateEdit = e.data.news_date;
@@ -434,12 +429,12 @@ app.adminNews = (function () {
         }
         
         var deleteNews = function(e) {
-            console.log(e.data.uid);
-            console.log(e.data);
+            //console.log(e.data.uid);
+            //console.log(e.data);
 
             organisationID = localStorage.getItem("orgSelectAdmin");
             
-            console.log('orgID=' + organisationID + "pid=" + newsPid)
+            //console.log('orgID=' + organisationID + "pid=" + newsPid)
 
             var jsonDataSaveGroup = {"orgID":organisationID,"pid":newsPid}
             
@@ -474,7 +469,7 @@ app.adminNews = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Deleted Successfully') {         
                         app.mobileApp.navigate("#adminOrgNewsList");
                         
@@ -615,7 +610,7 @@ app.adminNews = (function () {
                 
                                                              change: function() {
                                                                  var value = this.value();
-                                                                 console.log(value); //value is the selected date in the timepicker
+                                                                 //console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
 
@@ -660,7 +655,7 @@ app.adminNews = (function () {
                     }
                 }
             
-                console.log(Hour + "||" + minute + "||" + AmPm);
+                //console.log(Hour + "||" + minute + "||" + AmPm);
             
                 var eventTimeSend = Hour + ":" + minute + ":00";
                 //eventTimeSend=eventTimeSend.toString();
@@ -670,11 +665,6 @@ app.adminNews = (function () {
 
                 var actionval = "Add";
             
-                //console.log(event_description);
-                //console.log(event_Date);
-                //console.log(event_Time);
-
-                console.log(newsDataToSend);
 
                 //alert(upload_type);
                 
@@ -683,13 +673,13 @@ app.adminNews = (function () {
                          if ((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="image")) {
                                 //alert('1');
                               photo_split = newsDataToSend.split("%3A");
-                              console.log(photo_split);
+                              //console.log(photo_split);
                               newsDataToSend = "content://media/external/images/media/" + photo_split[1];
                               vidFmAndroid=1;
                             }else if((newsDataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
                                 //alert('2');
                               photo_split = newsDataToSend.split("%3A");
-                              console.log(photo_split);
+                              //console.log(photo_split);
                               newsDataToSend = "content://media/external/video/media/" + photo_split[1];
                               vidFmAndroid=1;  
                             }
@@ -702,7 +692,7 @@ app.adminNews = (function () {
                             mimeTypeVal="video/mpeg"
                         }    
 
-                        console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
+                        //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
                         //alert(newsDataToSend);
                             
                         var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);                            
@@ -719,11 +709,11 @@ app.adminNews = (function () {
                              }
                         }
                     
-                    console.log(filename);
+                    //console.log(filename);
                     //alert(filename);
                             
                         var path =  newsDataToSend;
-                            console.log(path);
+                            //console.log(path);
                             //alert(path);
                             
                       //alert(upload_type);
@@ -740,8 +730,7 @@ app.adminNews = (function () {
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";
                         options.fileName = filename;              
-                        console.log("-------------------------------------------");
-                        console.log(options.fileName);
+                        //console.log(options.fileName);
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
@@ -751,15 +740,14 @@ app.adminNews = (function () {
                         }
 
        
-                        console.log(tasks);
-                 
-                        console.log("------check-----------");
+                        //console.log(tasks);
+                                  
 
-                        ft.upload(newsDataToSend, "http://54.85.208.215/webservice/news/add", win, fail, options , true);                    
+                        ft.upload(newsDataToSend, app.serverUrl() + "news/add", win, fail, options , true);                    
 
                 }else {
                 
-                    console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
+                    //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
 
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend}
                 
@@ -794,7 +782,7 @@ app.adminNews = (function () {
                 dataSourceaddGroup.fetch(function() {
                     var loginDataView = dataSourceaddGroup.data();
                     $.each(loginDataView, function(i, addGroupData) {
-                        console.log(addGroupData.status[0].Msg);           
+                        //console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News added successfully') {  
                             $(".km-scroll-container").css("-webkit-transform", "");                           
                             $("#addNewsDesc").val('');                   
@@ -821,12 +809,13 @@ app.adminNews = (function () {
         
         function win(r) {
 
-            console.log('win');
-            console.log("Code = " + r.responseCode);
+            //console.log('win');
+            //console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
+            //console.log("Sent = " + r.bytesSent);
 
             $("#sendNewsLoader").hide();
+            
 
             if (!app.checkSimulator()) {
                 window.plugins.toast.showShortBottom('News Added Successfully');   
@@ -837,6 +826,9 @@ app.adminNews = (function () {
             
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
+            
+            var largevid = document.getElementById('attachedVidNews');
+            largevid.src = '';
             
             $("#attachedImgNews").hide();
             $("#removeNewsAttachment").hide();
@@ -850,7 +842,7 @@ app.adminNews = (function () {
             //console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
+            //console.log("upload error target " + error.target);
 
 
             $("#sendNewsLoader").hide();
@@ -884,10 +876,6 @@ app.adminNews = (function () {
                 }
             
                 event_Date = year + "-" + month + "-" + day;
-            
-                //console.log(event_description);
-                //console.log(event_Date);
-                //console.log(event_Time);
                 
                 var vidFmAndroidEdit=0;
                 
@@ -941,8 +929,7 @@ app.adminNews = (function () {
                         options.fileKey = "news_image";
                         options.fileName = filename;
               
-                        console.log("-------------------------------------------");
-                        console.log(options.fileName);
+                        //console.log(options.fileName);
               
                         options.mimeType = mimeTypeVal;
                         options.params = params;
@@ -952,15 +939,12 @@ app.adminNews = (function () {
                         options.chunkedMode = true;
                         var ft = new FileTransfer();
 
-                        console.log(tasks);
-                 
-                        console.log("----------------------------------------------check-----------");
                         //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
-                        ft.upload(newsDataToSend, 'http://54.85.208.215/webservice/news/edit', winEdit, fail, options , true);
+                        ft.upload(newsDataToSend, app.serverUrl() + "news/edit", winEdit, fail, options , true);
                     
                     }else {
                         
-                console.log(organisationID + "||" + event_description + "||" + event_Date + "||" + event_Time + "||" + newsPid);
+                //console.log(organisationID + "||" + event_description + "||" + event_Date + "||" + event_Time + "||" + newsPid);
                                     
                 var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid}
             
@@ -982,7 +966,7 @@ app.adminNews = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
+                                                                           //console.log(e);
                                                                            console.log(JSON.stringify(e));
                                                                            
                                                                                $("#sendEditNewsLoader").hide();
@@ -998,7 +982,7 @@ app.adminNews = (function () {
                 dataSourceaddGroup.fetch(function() {
                     var loginDataView = dataSourceaddGroup.data();
                     $.each(loginDataView, function(i, addGroupData) {
-                        console.log(addGroupData.status[0].Msg);           
+                        //console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News updated successfully') {         
                             app.mobileApp.navigate("#adminOrgNewsList");
                             app.showAlert("News Updated Successfully", "Notification");
@@ -1015,9 +999,9 @@ app.adminNews = (function () {
         
         
         function winEdit(r) {
-            console.log("Code = " + r.responseCode);
+            //console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
+            //console.log("Sent = " + r.bytesSent);
           
 
             $("#sendEditNewsLoader").hide();

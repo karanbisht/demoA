@@ -50,7 +50,7 @@ app.adminLogin = (function () {
             }else { 
                 usernameMob = $("#loginMob").val();
                 password = $("#loginPassword").val();
-                console.log(usernameMob + "||" + password);
+                //console.log(usernameMob + "||" + password);
                 if (usernameMob === "Mobile Number" || usernameMob === "") {
                     app.showAlert("Please enter your Mobile No.", "Validation Error");
                 } else if (!validateMobile(usernameMob)) {
@@ -63,7 +63,7 @@ app.adminLogin = (function () {
                     document.getElementById('OrgLogin').style.pointerEvents = 'none';
              						
                     password = app.urlEncode(password);
-                    console.log(password);
+                    //console.log(password);
                     var jsonDataLogin = {"username":usernameMob ,"password":password}       
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
@@ -76,7 +76,7 @@ app.adminLogin = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
@@ -100,15 +100,15 @@ app.adminLogin = (function () {
 	            
                     dataSourceLogin.fetch(function() {
                         var loginDataView = dataSourceLogin.data();
-                        console.log(loginDataView);
+                        //console.log(loginDataView);
                
                         $.each(loginDataView, function(i, loginData) {
-                            console.log(loginData.status[0].Msg);
-                            console.log("karan" + account_Id);      
+                            //console.log(loginData.status[0].Msg);
+                            //console.log("karan" + account_Id);      
 
                             if (loginData.status[0].Msg==='You have been successfully logged in.') {
-                                console.log('reg');
-                                console.log(loginDataView);
+                                //console.log('reg');
+                                //console.log(loginDataView);
                                 getAdminOrgData();
                             }else {
                                 //app.mobileApp.pane.loader.hide();
@@ -165,7 +165,7 @@ app.adminLogin = (function () {
                         //return [data];
                        
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             //allData++;
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {    
                                 if (!app.checkSimulator()) {
@@ -180,7 +180,7 @@ app.adminLogin = (function () {
                                 $("#progress1").hide();  
                             }else if (groupValue[0].Msg==='Success') {
                                 
-                                console.log(groupValue[0].orgData.length);  
+                                //console.log(groupValue[0].orgData.length);  
                                 var adminOrgInformation = groupValue[0].orgData;           
                               
                               localStorage.setItem("orgSelectAdmin",groupValue[0].orgData[0].organisationID);                  
@@ -213,7 +213,7 @@ app.adminLogin = (function () {
 
                                                                                document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
     
-                                                                               console.log(e);
+                                                                               //console.log(e);
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                                }else {
@@ -250,10 +250,10 @@ app.adminLogin = (function () {
         function insertAdminOrgInfo(tx) {
             var query = "DELETE FROM ADMIN_ORG";
             app.deleteQuery(tx, query);
-            console.log(adminOrgProfileData);
+            //console.log(adminOrgProfileData);
 
             var dataLength = adminOrgProfileData.length;
-            console.log(dataLength);
+            //console.log(dataLength);
 
             for (var i = 0;i < dataLength;i++) {       
                 userOrgIdArray.push(adminOrgProfileData[i].organisationID);
@@ -275,7 +275,7 @@ app.adminLogin = (function () {
       
         var loginSuccessCB = function() {
             console.log('DataBase Saved');
-            console.log(userOrgIdArray);          
+            //console.log(userOrgIdArray);          
             //console.log(userRoleArray);
             
             for (var i = 0;i < userOrgIdArray.length;i++) {
@@ -294,19 +294,19 @@ app.adminLogin = (function () {
                         data: function(data) {	
                             var datacheck = 0;
                             var allData = 0;
-                            console.log(data);
+                            //console.log(data);
                        
                             var orgNotificationData; 
                             $.each(data, function(i, groupValue) {
-                                console.log(groupValue);
+                                //console.log(groupValue);
                                 allData++;   
                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log();
+                                    //console.log();
 
                                     if (orgVal.Msg ==='No notification') {     
                                         datacheck++;                                                                                           
                                     }else if (orgVal.Msg==='Success') {
-                                        console.log(orgVal.notificationList.length);  
+                                        //console.log(orgVal.notificationList.length);  
                                         orgNotificationData = orgVal.notificationList;
                                         saveOrgNotification(orgNotificationData);                                                                                                                                                                      
                                     }
@@ -344,7 +344,7 @@ app.adminLogin = (function () {
        
         function saveOrgNotification(data) {
             orgNotiDataVal = data; 
-            console.log(orgNotiDataVal);            
+            //console.log(orgNotiDataVal);            
             var db = app.getDb();
             db.transaction(insertOrgNotiData, app.errorCB, goToHomePage);
         };
@@ -386,10 +386,9 @@ app.adminLogin = (function () {
         }
         
         var goToHomePage = function() {
-            console.log('sssssssss');
-            console.log(userOrgIdArray);
+                    //console.log(userOrgIdArray);
             for (var i = 0;i < userOrgIdArray.length;i++) {
-                console.log(userOrgIdArray[i]);
+                //console.log(userOrgIdArray[i]);
                 //console.log(userAccountID);
                 var organisationGroupDataSource = new kendo.data.DataSource({                
                                                                                 transport: {
@@ -404,22 +403,20 @@ app.adminLogin = (function () {
                         data: function(data) {	
                             var datacheck = 0;
                             var allData = 0;
-                            console.log(data);
                        
                             var orgNotificationData; 
                             $.each(data, function(i, groupValue) {
-                                console.log(groupValue);
+                                //console.log(groupValue);
                                 allData++;   
                                 $.each(groupValue, function(i, orgVal) {
-                                    console.log();
+                                    
                                     if (orgVal.Msg ==='No Group list') {     
                                         //alert('no');
                                         datacheck++;                                                                                           
                                     }else if (orgVal.Msg==='Success') {
-                                        console.log(orgVal.groupData.length);
-                                        console.log('karan Bisht');
+                                     
                                         orgNotificationData = orgVal.groupData;                                                                               
-                                        console.log(orgNotificationData);                                       
+                                                                            
                                         saveOrgGroupNotification(orgNotificationData);                                                                                                                                                                      
                                     }
                                 });    
@@ -436,7 +433,6 @@ app.adminLogin = (function () {
                                                                                 error: function (e) {
                                                                                     e.preventDefault();
                                                                                     //apps.hideLoading();
-                                                                                    console.log(e);
                    
                                                                                     $("#progress1").hide();
 
@@ -457,7 +453,7 @@ app.adminLogin = (function () {
         function saveOrgGroupNotification(data) {           
             orgNotiGroupDataVal = data;
             //alert('dataaaaaaaaa');
-            console.log(orgNotiGroupDataVal);            
+            //console.log(orgNotiGroupDataVal);            
             var db = app.getDb();
             db.transaction(insertOrgGroupNotiData, app.errorCB, goToAdminDashboard);
         };

@@ -85,8 +85,7 @@ app.adminOragnisationList = (function () {
         }               
             
         var showLiveData = function() {
-            //console.log('Hello');
-            console.log(groupDataShow);
+
             $("#progressAdmin").hide();
                 
             //alert('LiveShow');
@@ -171,12 +170,11 @@ app.adminOragnisationList = (function () {
                         var datacheck = 0;
                         var allData = 0;
                        
-                        //console.log(data);
                         //return [data];
                        
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {     
                                 //beforeShow();
                                 if (!app.checkSimulator()) {
@@ -187,7 +185,7 @@ app.adminOragnisationList = (function () {
                                 app.mobileApp.navigate('#organisationNotiList');
                                 
                             }else if (groupValue[0].Msg==='Success') {
-                                console.log(groupValue[0].orgData.length);  
+                                //console.log(groupValue[0].orgData.length);  
                                 var adminOrgInformation = groupValue[0].orgData;
                                 var adminIncomMsg = groupValue[0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
@@ -197,7 +195,7 @@ app.adminOragnisationList = (function () {
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               console.log(e);
+                                                                               //console.log(e);
                                                                                console.log(JSON.stringify(e));
 
                                                                                $("#progressAdmin").hide();             
@@ -269,19 +267,19 @@ app.adminOragnisationList = (function () {
             //var query = "DELETE FROM ADMIN_ORG";
             //app.deleteQuery(tx, query);
 
-            console.log(adminOrgProfileData);
+            //console.log(adminOrgProfileData);
 
             var dataLength = adminOrgProfileData.length;
-            console.log(dataLength);
+            //console.log(dataLength);
 
             //alert(dataLength);
-            console.log("------------------DATA---------------------");
-            console.log(joinOrgID);
+          
+            //console.log(joinOrgID);
           
             for (var i = 0;i < dataLength;i++) {       
                 userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
-                console.log(adminOrgProfileData[i].organisationID);
+                //console.log(adminOrgProfileData[i].organisationID);
                 adminOrgProfileData[i].organisationID = parseInt(adminOrgProfileData[i].organisationID);
 
                 var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgID);           
@@ -431,15 +429,15 @@ app.adminOragnisationList = (function () {
         };
         
         var groupSelected = function (e) {
-            console.log("karan Bisht" + e);
+            //console.log("karan Bisht" + e);
             app.MenuPage = false;	
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
          
         var offlineActivitySelected = function (i) {
-            console.log(i);
+            //console.log(i);
             app.MenuPage = false;	
-            console.log("click");
+            //console.log("click");
             //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
         
@@ -495,7 +493,7 @@ app.adminOragnisationList = (function () {
             
             var orgDataSource = [];   
             var userOrgName = localStorage.getItem("userOrgName"); 
-            console.log(userOrgName);
+            //console.log(userOrgName);
           
             //studentAnswerArray[i] = answerString.toString().split(',');
             
@@ -574,100 +572,6 @@ app.adminOragnisationList = (function () {
             }
 
             kendo.bind($('#activityTemplate'), activitiesDataSource);
-            //var $notificationContainer = $('#activities-listview');
-            //$notificationContainer.empty();
-            // var notificationModel1 = (function () { 
-            /*   var notiCModel = {
-            id: 'Id',
-            fields: {
-            CreatedAt: {
-            field: 'CreatedAt',
-            defaultValue: new Date()
-            },
-            Message: {
-            field: 'Message',
-            defaultValue: ''
-            },
-            Title :{
-            field: 'Title',
-            defaultValue: ''  
-            }
-            },
-            CreatedAtFormatted: function () {
-            return app.helper.formatDate(this.get('CreatedAt'));
-            }
-            };
-            if(groupSelected==='All'){
-            dataSource = new kendo.data.DataSource({
-            type: 'everlive',
-            schema: {
-            model: notiCModel
-            },
-            transport: {
-            // Required by Backend Services
-            typeName: 'GetNotification'
-            },
-            pageSize: '100',
-            page: 1,
-            serverPaging: true,
-            change: function (e) {
-            if (e.items && e.items.length > 0) {
-            $('#no-activities-span').hide();
-            } else {
-            $('#no-activities-span').show();
-            }
-            }    
-            });
-            }else{
-            dataSource = new kendo.data.DataSource({
-            type: 'everlive',
-            filter: { field: "Group", value:groupSelected },
-            schema: {
-            model: notiCModel
-            },
-            transport: {
-            typeName: 'GetNotification'
-            },
-            pageSize: '100',
-            page: 1,
-            serverPaging: true,
-            change: function (e) {
-            if (e.items && e.items.length > 0) {
-            $('#no-activities-span').hide();
-            } else {
-            $('#no-activities-span').show();
-            }
-            }    
-            });
-            }               
-            console.log(dataSource);
-            $("#activities-listview").kendoMobileListView({
-            style: "inset",    
-            dataSource: dataSource,
-            template: kendo.template($("#activityTemplate").html()),
-            endlessScroll: true,
-            scrollTreshold: 30,
-            click: function (e) {
-            }
-            });
-            $("#activities-listview").data("kendoMobileListView").dataSource.fetch();
-            $("#activities-listview").data("kendoMobileListView").refresh();
-            */   
-            //	}());             
-            /*                $("#activities-listview").kendoMobileListView({
-            dataSource: dataSource,
-            template: kendo.template($("#activityTemplate").html()),
-            //template: $("#activityTemplate").html(),
-            endlessScroll: true,
-            scrollTreshold: 30
-            });
-            */                
-            // if ($("#activities-listview").data("kendoMobileListView") == undefined) {
-            /*}else {
-            console.log("hello2");
-            $("#activities-listview").data("kendoMobileListView").dataSource = dataSource;
-            $("#activities-listview").data("kendoMobileListView").refresh();
-            }*/
         };
            
         var initNotifi = function () {       
@@ -677,7 +581,7 @@ app.adminOragnisationList = (function () {
         var showNotifi = function() {
             app.MenuPage = false; 
             
-            console.log(userlName + "||" + userfName + "||" + userMobile + "||" + userEmail + "||" + userOrgName + "||" + userGropuName);
+            //console.log(userlName + "||" + userfName + "||" + userMobile + "||" + userEmail + "||" + userOrgName + "||" + userGropuName);
             $("#orgData").val('');
             $("#groupData").val('');
             
@@ -751,13 +655,9 @@ app.adminOragnisationList = (function () {
         }
 
         return {
-            //activities: activitiesModel.activities,
-            //groupData:GroupsModel.groupData,
-            //userData:UsersModel.userData,
             organisationSelected: organisationSelected,
             groupSelected:groupSelected,
             notificationSelected:notificationSelected,
-            //CreatedAtFormatted:CreatedAtFormatted,          
             inAppBrowser:inAppBrowser,          
             manageGroup:manageGroup,
             makeCall:makeCall,

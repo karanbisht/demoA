@@ -66,7 +66,7 @@ app.groupDetail = (function () {
                         console.log(JSON.stringify(data));
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {                                   
                                 adminOrgInfo = [];
                                 localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
@@ -79,7 +79,7 @@ app.groupDetail = (function () {
                                     //localStorage.setItem("loginStatusCheck", 1);                                
                                 
                             }else if (groupValue[0].Msg==='Success') {
-                                console.log(groupValue[0].orgData.length);
+                                //console.log(groupValue[0].orgData.length);
                                 var adminOrgInformation = groupValue[0].orgData;                                
                                 var adminIncomMsg = groupValue[0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
@@ -213,19 +213,19 @@ app.groupDetail = (function () {
             //var query = "DELETE FROM ADMIN_ORG";
             //app.deleteQuery(tx, query);
 
-            console.log(adminOrgProfileData);
+            //console.log(adminOrgProfileData);
 
             var dataLength = adminOrgProfileData.length;
-            console.log(dataLength);
+            //console.log(dataLength);
 
             //alert(dataLength);
-            console.log("------------------DATA---------------------");
-            console.log(joinOrgID);
+            //console.log("------------------DATA---------------------");
+            //console.log(joinOrgID);
           
             for (var i = 0;i < dataLength;i++) {       
                 userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
-                console.log(adminOrgProfileData[i].organisationID);
+                //console.log(adminOrgProfileData[i].organisationID);
                 adminOrgProfileData[i].organisationID = parseInt(adminOrgProfileData[i].organisationID);
 
                 var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgID);           
@@ -357,8 +357,7 @@ app.groupDetail = (function () {
                 
                 
                     data: function(data) {
-                       console.log(data);
-                                             
+                       console.log(data);                                             
                         return [data];
                     }
 
@@ -463,7 +462,7 @@ app.groupDetail = (function () {
         
         
         var showGroupToDelete = function() {
-            console.log("---------------------GROUP DATA----------------");
+            //console.log("---------------------GROUP DATA----------------");
             
             $("#deleteMemberData").kendoListView({
                                                      template: kendo.template($("#Member-Delete-template").html()),    		
@@ -500,7 +499,7 @@ app.groupDetail = (function () {
         };
         
         var saveUpdatedGroupVal = function() {
-            console.log(selectedGroupId);
+            //console.log(selectedGroupId);
             var group_status = 'A';
             var org_id = localStorage.getItem("orgSelectAdmin"); 
             var group_name = $("#editOrgName").val();     
@@ -509,7 +508,7 @@ app.groupDetail = (function () {
             //alert(org_id);
             
             var jsonDataSaveGroup = {"org_id":org_id ,"group_name":group_name,"group_description":group_description, "group_status":group_status}
-            console.log(selectedGroupId);
+            //console.log(selectedGroupId);
             
             var dataSourceaddGroup = new kendo.data.DataSource({
                                                                    transport: {
@@ -530,7 +529,7 @@ app.groupDetail = (function () {
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(e);
+                                                                       //console.log(e);
                                                                        console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
@@ -541,7 +540,7 @@ app.groupDetail = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Success') {    
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Group Updated Successfully');   
@@ -675,10 +674,10 @@ app.groupDetail = (function () {
                 customer[i] = $(this).val();
             });
             
-            console.log('Delete Button');
+            //console.log('Delete Button');
             customer = String(customer);        
-            console.log(customer);            
-            console.log(organisationID);
+            //console.log(customer);            
+            //console.log(organisationID);
             
             if (customer.length!==0 && customer.length!=='0') {
                 var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
@@ -701,7 +700,7 @@ app.groupDetail = (function () {
                     },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(e);
+                                                                               //console.log(e);
                                                                                console.log(JSON.stringify(e));
                                                                                
                                                                                navigator.notification.alert("Please check your internet connection.",
@@ -714,9 +713,9 @@ app.groupDetail = (function () {
                 dataSourceDeleteMember.fetch(function() {
                     var loginDataView = dataSourceDeleteMember.data();
                     $.each(loginDataView, function(i, deleteGroupData) {
-                        console.log('karan bisht');
-                        console.log(deleteGroupData.status[0].Msg);
-                        console.log(deleteGroupData.status[0].Code);
+                    
+                        //console.log(deleteGroupData.status[0].Msg);
+                        //console.log(deleteGroupData.status[0].Code);
                       
                         if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
                             if (!app.checkSimulator()) {
@@ -744,12 +743,12 @@ app.groupDetail = (function () {
         
         var showOrgGroupView = function() {
             app.MenuPage = false;
-            console.log(organisationID);
+            //console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
         };
  
         function refreshOrgMember() {  
-            console.log('go to member');
+            //console.log('go to member');
             app.groupDetail.showGroupMembers();
         };
 		        
@@ -757,8 +756,8 @@ app.groupDetail = (function () {
         var memberSelectedCustID;
          
         var clickOnOrgMember = function(e) {
-            console.log('member click'); 
-            console.log(e.data);
+          
+            //console.log(e.data);
             memberSelectedOrgID = e.data.orgID;
             memberSelectedCustID = e.data.customerID;   
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
@@ -799,7 +798,6 @@ app.groupDetail = (function () {
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
                                                                            console.log(JSON.stringify(e));
                                                                            
                                                                            $("#adminEditCustomer").hide();            
@@ -812,12 +810,11 @@ app.groupDetail = (function () {
 	            
             dataSourceMemberDetail.fetch(function() {
                 var loginDataView = dataSourceMemberDetail.data();                                    
-                console.log("----- DATA RESULT---------");
 
-                console.log(loginDataView);
+                //console.log(loginDataView);
                 $.each(loginDataView, function(i, addGroupData) {
-                    console.log("----- DATA RESULT---------");
-                    console.log(addGroupData.status[0].Msg);           
+                    //console.log("----- DATA RESULT---------");
+                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Success') {
                         var cust_Mobile_no = addGroupData.status[0].customerDetail[0].uacc_username;
                         var cust_email = addGroupData.status[0].customerDetail[0].user_email;
@@ -868,10 +865,7 @@ app.groupDetail = (function () {
                     
             notificationId=[],notificationMessage=[],notificationTitle=[];
 
-            console.log(e.data.uid);
             activity = app.groupDetail.userData.getByUid(e.data.uid);
-            console.log(activity);
-            console.log(activity.Id);
    	  	  
             app.mobileApp.navigate('views/adminMessageReply.html');
             app.Activities.userData.filter({
@@ -882,18 +876,14 @@ app.groupDetail = (function () {
                  
             app.Activities.userData.fetch(function() {
                 var view = app.Activities.userData.view();
-                console.log(view);
                 dataLength = view.length;
 		                                  
                 for (var i = 0;i < dataLength;i++) {
                     var pos = $.inArray(view[i].NotificationId, tempArray);
-                    console.log(pos);
                     if (pos === -1) {
                         tempArray.push(view[i].NotificationId);
                     } 
-                    console.log("hello" + tempArray);
                     uniqueLength = tempArray.length;
-                    console.log(uniqueLength);   
                 }                 
             });
                     
@@ -913,14 +903,12 @@ app.groupDetail = (function () {
         
         var showOrgEvent = function() {
             app.MenuPage = false;
-            console.log(organisationID);
             app.mobileApp.navigate('views/adminEventCalendar.html');                
             //app.slide('left', 'green' , '3' , '#views/adminEventCalendar.html');
         }
         
         var showOrgNews = function() {
             app.MenuPage = false;
-            console.log(organisationID);
             app.mobileApp.navigate('views/adminNews.html');
             //app.slide('left', 'green' , '3' , '#views/adminNews.html');
         }
@@ -1011,7 +999,7 @@ app.groupDetail = (function () {
                         
                         jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname} 
        
-                        console.log(jsonDataRegister);
+                        //console.log(jsonDataRegister);
                         
                         var dataSourceRegister = new kendo.data.DataSource({
                                                                                transport: {
@@ -1031,7 +1019,6 @@ app.groupDetail = (function () {
                             },
                                                                                error: function (e) {
                                                                                    //apps.hideLoading();
-                                                                                   console.log(e);
                                                                                    console.log(JSON.stringify(e));           
 
                                                                                    app.mobileApp.pane.loader.hide();
@@ -1043,9 +1030,9 @@ app.groupDetail = (function () {
              
                         dataSourceRegister.fetch(function() {
                             var loginDataView = dataSourceRegister.data();
-                            console.log(loginDataView);       
+                            //console.log(loginDataView);       
                             $.each(loginDataView, function(i, loginData) {
-                                console.log(loginData.status[0].Msg);                               
+                                //console.log(loginData.status[0].Msg);                               
                                 if (loginData.status[0].Msg==='Success') {
                                     app.showAlert("Customer detatil updated successfully", "Notification");
                                     app.mobileApp.navigate('#groupMemberShow');
@@ -1062,8 +1049,6 @@ app.groupDetail = (function () {
                 mobileArray = [];                    
                 mobileArray.push(mobile);
                 
-                console.log(mobileArray);
-                console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 //var jsonDataRegister;
 
                 jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID} 
@@ -1086,7 +1071,7 @@ app.groupDetail = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(e);
+                                                                           //console.log(e);
 
                                                                            console.log(JSON.stringify(e));           
                                                                            
@@ -1099,9 +1084,9 @@ app.groupDetail = (function () {
              
                 dataSourceRegister.fetch(function() {
                     var loginDataView = dataSourceRegister.data();
-                    console.log(loginDataView);       
+                    //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
-                        console.log(loginData.status[0].Msg);
+                        //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer detatil updated successfully') {
                             app.showAlert("Customer detatil updated successfully", "Notification");

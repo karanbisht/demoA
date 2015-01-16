@@ -61,7 +61,7 @@ app.eventCalender = (function () {
                 var userAllGroupId = [];
 						   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
                         tasks = [];
@@ -76,11 +76,9 @@ app.eventCalender = (function () {
 
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;
-                              console.log(loginData.status[0].eventData);    
+                              //console.log(loginData.status[0].eventData);    
                             for (var i = 0 ; i < eventListLength ;i++) {
                                 var eventDaya = loginData.status[0].eventData[i].event_date;
-                                console.log("-------karan---------------");
-                                console.log(eventDaya);
                                 
                                  var eventDateString = loginData.status[0].eventData[i].event_date;
                                  var eventTimeString = loginData.status[0].eventData[i].event_time;
@@ -97,8 +95,8 @@ app.eventCalender = (function () {
                                   
                                 //alert(day+"||"+aboveDay+"||"+belowData);
                                 
-                                console.log('------------------date=---------------------');
-                                console.log(year + "||" + month + "||" + day);
+                                //console.log('------------------date=---------------------');
+                                //console.log(year + "||" + month + "||" + day);
                                   
                                 //tasks[+new Date(year + "/" + month + "/" + day)] = "ob-done-date";
                                   
@@ -141,7 +139,7 @@ app.eventCalender = (function () {
         }
         
         function showEventInCalendar() {
-            console.log(tasks);
+            //console.log(tasks);
             
             multipleEventArray = [];            
 
@@ -185,7 +183,7 @@ app.eventCalender = (function () {
             multipleEventArray = [];
             document.getElementById("eventTitle").innerHTML = "";
 
-            console.log(groupAllEvent);
+            //console.log(groupAllEvent);
             
             var dateExist = 0;
             
@@ -330,7 +328,7 @@ app.eventCalender = (function () {
         }
         
         var eventSelected = function(e){
-            console.log(e);           
+            //console.log(e);           
             
                                multipleEventArray.push({
                                                 id: e.data.id,

@@ -63,12 +63,12 @@ app.adminEventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    //console.log(e);               
 
                                                                     $("#adminCalProcess").hide();
 
@@ -87,7 +87,7 @@ app.adminEventCalender = (function () {
                 var userAllGroupId = [];
 						   
                 $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                    //console.log(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
                         tasks = [];
@@ -102,7 +102,7 @@ app.adminEventCalender = (function () {
                         if (loginData.status[0].eventData.length!==0) {
                             var eventListLength = loginData.status[0].eventData.length;
                               
-                            console.log(eventListLength);
+                            //console.log(eventListLength);
                               
                             for (var i = 0 ; i < eventListLength ;i++) {         
                                 var eventDateString = loginData.status[0].eventData[i].event_date;
@@ -150,7 +150,7 @@ app.adminEventCalender = (function () {
         }
         
         function showEventInCalendar() {                         
-            console.log(tasks);            
+            //console.log(tasks);            
             multipleEventArray = [];
 
             //class="#= data.dates[+data.date] #"
@@ -184,7 +184,7 @@ app.adminEventCalender = (function () {
         var date2;
 
         function selectedDataByUser() {
-            console.log("Change :: " + kendo.toString(this.value(), 'd'));
+            //console.log("Change :: " + kendo.toString(this.value(), 'd'));
             var date = kendo.toString(this.value(), 'd'); 
             
             date2 = kendo.toString(this.value(), 'd'); 
@@ -214,7 +214,7 @@ app.adminEventCalender = (function () {
 
             $("#eventDate").html(date2);
 
-            console.log(groupAllEvent);
+            //console.log(groupAllEvent);
              
             var checkGotevent = 0;
             
@@ -237,31 +237,14 @@ app.adminEventCalender = (function () {
                 
                 var dateToCom = monthShow + '/' + dayShow + '/' + yearShow;
 
-                //console.log(dateToCom);
-                
-                //date=date.trim();//replace(/^"(.*)"$/, '$1');
-                //dateToCom=dateToCom.trim();//.replace(/^"(.*)"$/, '$1');
-                
-                //date=date.replace(/"/g, "");
-                //dateToCom = dateToCom.replace(/"/g, "");
-
-                //console.log(JSON.stringify(date));
-                //console.log(JSON.stringify(dateToCom));
-
-                //alert(date+"||"+dateToCom);
-
                 var currentDate = app.getPresentDate();
-
-                console.log(date + '------------------date------------------' + dateToCom);
                 
                 if (date===dateToCom) {                    
-                    //console.log('inside');
                     
                     //$("#eventDate").html(date);                    
                     //document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(147,147,147);">' + groupAllEvent[i].event_name + ' at ' + groupAllEvent[i].event_time + '</li></ul>' 
                     
-                    console.log(groupAllEvent[i]);
-                    
+                    //console.log(groupAllEvent[i]);                    
                     multipleEventArray.push({
                                                 id: groupAllEvent[i].id,
                                                 add_date: groupAllEvent[i].add_date,
@@ -312,7 +295,7 @@ app.adminEventCalender = (function () {
         
         var eventDetailShow = function(e){
              
-            console.log(e.data);
+            //console.log(e.data);
             //alert(e.data.event_name);
             eventPid = e.data.id;
                                 multipleEventArray.push({
@@ -451,7 +434,7 @@ app.adminEventCalender = (function () {
                 
                                                              change: function() {
                                                                  var value = this.value();
-                                                                 console.log(value); //value is the selected date in the timepicker
+                                                                 //console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
 
@@ -746,7 +729,6 @@ app.adminEventCalender = (function () {
                     }
                 }
             
-                //console.log(Hour + "||" + minute + "||" + AmPm);
             
                 var eventTimeSend = Hour + ":" + minute + ":00";
                 //eventTimeSend=eventTimeSend.toString();
@@ -756,7 +738,6 @@ app.adminEventCalender = (function () {
                 var actionval = "Add";
                 var vidFmAndroid=0;
                 
-                //alert(upload_type);
                 
 
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
@@ -813,7 +794,6 @@ app.adminEventCalender = (function () {
                     options.fileKey = "event_image";
                     options.fileName = filename;
               
-                   //console.log("-------------------------------------------");
                     //console.log(options.fileName);
 
                     options.mimeType = mimeTypeVal;
@@ -824,16 +804,9 @@ app.adminEventCalender = (function () {
                     options.chunkedMode = true;
                     var ft = new FileTransfer();
 
-                    //console.log(tasks);
                  
-                    //console.log("----------------------------------------------check-----------");
-                    //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
-                    ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/Add', win, fail, options , true);
+                    ft.upload(eventDataToSend, app.serverUrl() + 'event/Add', win, fail, options , true);
                 }else {
-                    //console.log(event_name);
-                    //console.log(event_description);
-                    //console.log(event_Date);
-                    //console.log(event_Time);
             
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
 
@@ -856,7 +829,6 @@ app.adminEventCalender = (function () {
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               //console.log(e);
                                                                                //console.log(JSON.stringify(e));
                                                                                 
                                                                                $("#sendEventLoader").hide();
@@ -909,6 +881,10 @@ app.adminEventCalender = (function () {
               
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';            
+            
+            var largevid = document.getElementById('attachedVidEvent');
+            largevid.src = '';
+            
             $("#removeEventAttachment").hide();
 
             $("#sendEventLoader").hide();
@@ -1041,7 +1017,7 @@ app.adminEventCalender = (function () {
                  
                     //console.log("----------------------------------------------check-----------");
                     //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
-                    ft.upload(eventDataToSend, 'http://54.85.208.215/webservice/event/edit', winEdit, fail, options , true);
+                    ft.upload(eventDataToSend, app.serverUrl() + 'event/edit', winEdit, fail, options , true);
                 }else {
                     //alert(eventDataToSend);
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);

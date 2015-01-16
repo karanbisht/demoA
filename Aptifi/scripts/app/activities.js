@@ -90,8 +90,8 @@ app.Activities = (function () {
                     },
                                                                                      schema: {
                         data: function(data) {
-                            //console.log(data);
-               
+                            console.log(data);
+                                           
                             var orgNotificationData; 
                             $.each(data, function(i, groupValue) {
                                 //console.log(groupValue);
@@ -102,7 +102,7 @@ app.Activities = (function () {
                                         var db = app.getDb();
                                         db.transaction(getDataOrgNoti, app.errorCB, app.successCB);         
                                     }else if (orgVal.Msg==='Success') {
-                                        //console.log(orgVal.notificationList.length);  
+                                        //console.log(orgVal.notificationList);  
                                         orgNotificationData = orgVal.notificationList;
                                         if(noDatainDB===1){
                                                groupDataShow=[]; 
@@ -113,16 +113,18 @@ app.Activities = (function () {
                             });
                        
                             //console.log(groupDataShow);
-                            return groupDataShow;
+                            return groupDataShow;                            
+                            //return [data];
                         }                       
                     },
-                                                                                     error: function (e) {
+                                           
+                                                                                error: function (e) {
                                                                                          //console.log(e);
-
+                                                                                         
                                                                                          if (!app.checkSimulator()) {
-                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');
                                                                                          }else {
-                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');
                                                                                          }
                                                                                          
                                                                                          app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Organization Notification List.');
@@ -132,7 +134,24 @@ app.Activities = (function () {
                                                                                      }	        
                                                                                  });        
                                 
-                organisationALLNewListDataSource.fetch();
+ 
+            organisationALLNewListDataSource.fetch();
+            
+            /*organisationALLNewListDataSource.fetch(function() {           
+                var data = this.data();                                        
+                var orgNotificationData;                
+                                if (data[0]['status'][0].Msg ==='No notification') {     
+                                        var db = app.getDb();
+                                        db.transaction(getDataOrgNoti, app.errorCB, app.successCB);    
+                                }else if (data[0]['status'][0].Msg==='Success') {  
+                                        console.log(data[0]['status'][0]['notificationList']);
+                                        orgNotificationData = data[0]['status'][0]['notificationList'];
+                                        if(noDatainDB===1){
+                                               groupDataShow=[]; 
+                                        }                                        
+                                        saveOrgNotification(orgNotificationData);                                                                                     
+                                }                                      
+            });*/
             
             /*}else {
                 var db = app.getDb();
