@@ -48,7 +48,7 @@ app.adminNews = (function () {
                                                                             url: app.serverUrl() + "news/index",
                                                                             type:"POST",
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                        //async: false,                                                    
+         
                         data: jsonDataLogin
                                                                         }
                 },
@@ -444,7 +444,7 @@ app.adminNews = (function () {
                                                                                url: app.serverUrl() + "news/delete/",
                                                                                type:"POST",
                                                                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                               //async: false,                                                       
+                                                                                                                               
                                                                                data: jsonDataSaveGroup
                                                                            }
                 },
@@ -738,7 +738,6 @@ app.adminNews = (function () {
                         options.headers = {
                             Connection: "close"
                         }
-
        
                         //console.log(tasks);
                                   
@@ -757,7 +756,7 @@ app.adminNews = (function () {
                                                                                    url: app.serverUrl() + "news/add",
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   //async: false,
+                                                                                  
                                                                                    data: jsonDataSaveGroup
                                                                                }
                     },
@@ -839,7 +838,7 @@ app.adminNews = (function () {
         function fail(error) {
             
             //console.log(error);
-            //console.log(JSON.stringify(error));
+            console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             //console.log("upload error target " + error.target);
@@ -1280,6 +1279,7 @@ app.adminNews = (function () {
               upload_type_Edit="image";   
             //alert(imageURI);
             console.log(imageURI);
+            //newsDataToSend = imageURI;
             //newsDataToSend = imageURI;
         }
          

@@ -1030,7 +1030,13 @@ app.groupDetail = (function () {
                             $.each(loginDataView, function(i, loginData) {
                                 //console.log(loginData.status[0].Msg);                               
                                 if (loginData.status[0].Msg==='Success') {
-                                    app.showAlert("Customer detatil updated successfully", "Notification");
+                                    
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                                                                                }else {
+                                                                                    app.showAlert("Customer detatil updated successfully", "Notification");  
+                                                                                }
+                                    
                                     app.mobileApp.navigate('#groupMemberShow');
                                     //app.mobileApp.navigate('#groupMemberShow');
                                 }else {
@@ -1085,7 +1091,13 @@ app.groupDetail = (function () {
                         //console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Customer detatil updated successfully') {
-                            app.showAlert("Customer detatil updated successfully", "Notification");
+                            
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                                                                                }else {
+                                                                                    app.showAlert("Customer detatil updated successfully", "Notification");  
+                                                                                }
+                            
                             app.mobileApp.navigate('#groupMemberShow');
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
