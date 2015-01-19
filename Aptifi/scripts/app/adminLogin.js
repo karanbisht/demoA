@@ -4,8 +4,6 @@
 
 var app = app || {};
 
-
-
 app.adminLogin = (function () {
     'use strict';
 
@@ -20,7 +18,7 @@ app.adminLogin = (function () {
             app.MenuPage = false;	            
         };
 
-        var show = function (e) {
+        var show = function (e) {            
             //account_Id = e.view.params.account_Id;
             account_Id = localStorage.getItem("ACCOUNT_ID");
 
@@ -502,13 +500,122 @@ app.adminLogin = (function () {
 
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         };
+        
+        var forgetPass = function(){
+            app.mobileApp.navigate('views/forgetPasswordView.html');
+        }
+        
+        var forgetPassShow = function(){
+            
+
+           $("#forgetMobile").val('');            
+
+
+            var userMobileNo = localStorage.getItem("username");
+
+                varifiCode = genRand(0, 9);
+                console.log(varifiCode);
+                varifiCode = varifiCode.toString();
+              
+                var varifiCodeMsg = "Your Zaffio forget Password code -: " + varifiCode;
+          
+                //console.log("-----Verification code Login--" + varifiCode);
+
+
+                var dataSourceForgetPassword = new kendo.data.DataSource({
+                                                    transport: {
+                                                                read: {
+                                                                                 //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"                   
+                                                                                  url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + userMobileNo + "&msg=" + varifiCodeMsg + "&rout=transactional&from=ZAFFIO"
+                                                                             }
+                                                                       },
+                                                                     schema: {
+                            
+                                                                data: function(data) {                                                                                                                                                             
+                                                                    return [data];
+                                                                }                                                                
+                                                             },
+                                                                     error: function (e) {
+                                                                                                                                                                  
+                                                                        app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS at forget Password.');
+
+                                                                         if (!app.checkSimulator()) {
+                                                                             window.plugins.toast.showLongBottom('Forget Password Code not sent . Please click on Regenerate Code');  
+                                                                         }else {
+                                                                             app.showAlert('Forget Password Code not sent . Please click on Regenerate Code' , 'Forget Password');  
+                                                                         }
+                                                                     } 
+                                                                 });  
+	            
+            /*dataSourceForgetPassword.fetch(function() {
+                var forgetPasswordDataView = dataSourceForgetPassword.data();
+                alert('enterval');
+            });*/                   
+        }
+        
+                
+        var changerPassword = function(){
+           
+            var code =  $("#forgetMobile").val();            
+            //alert(code+"||"+varifiCode);
+            
+            if (code === "Code" || code === "") {
+                app.showAlert("Please enter your Code to change password.", "");
+            } else if (varifiCode!==code){
+                app.showAlert("Please enter correct Code to change password.", "Validation Error");    
+            }else{
+                app.mobileApp.navigate('#genrateNewPass');                            
+            }            
+        }
+        
+        
+        var genRand = function() {      	
+            return Math.floor(Math.random() * 89999 + 10000);		   
+            return Math.floor(Math.random() * 89999 + 10000);		   
+        };
+        
+        var newPassShow = function(){
+
+            $("#newMobile").val('');
+            $("#renewMobile").val('');
+
+        }
+        
+        var saveChangerPassword = function(){
+
+            var newPass =  $("#newMobile").val();
+            var reNewPass =  $("#renewMobile").val();
+            
+            
+            if (newPass === "New Password" || newPass === "") {
+                app.showAlert("Please enter new password.", "");
+            }else if (reNewPass === "Confirm password" || reNewPass === "") {
+                app.showAlert("Please enter confirm password.", "");
+            } else if (newPass!==reNewPass){
+                app.showAlert("Your new password and confirm password do not match.", "Validation Error");    
+            }else{
+                                            
+            }            
+  
+        }
+        
+        var goBackOrgLogin = function(){
+            app.mobileApp.navigate('views/organisationLogin.html');                                        
+        }
  
-        // Authenticate using Facebook credentials
+
         return {
             init: init,
             show: show,
+            forgetPassShow:forgetPassShow,
             getYear: app.getYear,
             login: login,
+            goBackOrgLogin:goBackOrgLogin,
+            genRand:genRand,
+            newPassShow:newPassShow,
+            saveChangerPassword:saveChangerPassword,
+            forgetPass:forgetPass,
+            changerPassword:changerPassword,
             checkEnter:checkEnter
         };
     }());

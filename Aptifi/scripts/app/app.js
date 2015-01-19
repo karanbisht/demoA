@@ -1414,11 +1414,11 @@ var app = (function (win) {
                                                                          
                                                                             //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                                                             
-                                                                            /*if (!app.checkSimulator()) {
+                                                                            if (!app.checkSimulator()) {
                                                                                 window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                             }else {
                                                                                 app.showAlert("Network problem . Please try again later", "Notification");  
-                                                                            }*/
+                                                                            }
                                                                             
                                                                             //navigator.notification.alert("Please check your internet connection.",
                                                                             //function () { }, "Notification", 'OK');
@@ -1434,7 +1434,8 @@ var app = (function (win) {
 
                             if (loginData.status[0].Msg==='You have been successfully logged out.') {
                                 //console.log('reg');
-                                app.mobileApp.navigate('#organisationNotiList');                                
+                                //app.mobileApp.navigate('#organisationNotiList');                                
+                                app.mobileApp.navigate('views/organisationLogin.html');                                
                                 //app.flip('left', 'green', '#organisationNotiList')                                
                             }else {
                                 //app.mobileApp.pane.loader.hide();

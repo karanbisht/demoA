@@ -504,9 +504,6 @@ app.Login = (function () {
                     }
                 },
                                                                      error: function (e) {
-                                                                         //apps.hideLoading();
-                                                                         //console.log('--------Error in Verification Code Sent-----------------');               
-                                                                         //console.log(e);
               
                                                                                                                                                      
                                                                          app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS.');

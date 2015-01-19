@@ -395,12 +395,7 @@
                         </div>
                     #}#
                         
-                    #if (orgDesc.length > 60) {#
-                        #orgDescVal = orgDesc.substr(0, 60) + '..';#
-                    #}else {#
-                        #orgDescVal = orgDesc;#  
-                    #}#
-                    <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
+                    
                 </div>
             </div>
             #}else {#
@@ -783,7 +778,7 @@
                           <br/>
              
 
-                    <a style="background:transparent;color:rgb(127,191,77);border:none;" data-role="button" data-bind="click:goBackToGroupCustomer">Click here to change selected Group or customer</a>
+                    <a style="background:transparent;color:rgb(127,191,77);border:none;text-align:center" data-role="button" data-bind="click:goBackToGroupCustomer">Click here to change selected Group or customer</a>
 
                     
 
@@ -919,9 +914,7 @@
               }else{
                 localStorage.setItem("open", 0);                  
                 $( "#dynamicLi" ).slideUp("slow");
-
-              }  
-                                
+              }                                  
             }
 
                             
@@ -996,7 +989,8 @@
     
                 
                 var showData = countData - bagCountData;
-                //alert(showData);
+                
+                //alert(countData+"-"+bagCountData);
                 
                 $("#countToShow").html(showData);            
             }            

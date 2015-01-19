@@ -16,90 +16,14 @@ app.sendNotification = (function () {
 
     var groupChecked = [];
     var sendNotificationViewModel = (function () {
-        var orgId = localStorage.getItem("UserOrgID"); 
+        //var orgId = localStorage.getItem("UserOrgID"); 
         //console.log(orgId);
                   
         var pictureSource;   // picture source
         var destinationType; // sets the format of returned value
    
         var init = function () {				                 
-            app.MenuPage = false;
-            app.userPosition = false;
-            //validator = $('#enterNotification').kendoValidator().data('kendoValidator');                                 
-
-            /*var showNotiTypes = [
-                { text: "Promotion", value: "P" },
-                { text: "Invitaion", value: "V" },
-                { text: "Information", value: "I" },
-               { text: "Reminder", value: "R" },
-                { text: "Alert", value: "A" }      
-            ];
-            
-            var dataSource = new kendo.data.DataSource({
-                                                           data: showNotiTypes
-                                                       });
-            
-            $("#type-Name-listview").kendoMobileListView({
-                                                             template: kendo.template($("#typeNameTemplate").html()),    		
-                                                             dataSource: dataSource,
-                                                             click : function(e) {
-                                                                 console.log(e.dataItem.value);
-                                                                 notificationTypeSelected = e.dataItem.value;
-                                                                 $("#selectTypeDiv").hide();
-                                                                 $("#sendNotificationDivMsg").show();
-                                                                 $("#sendNotiDiv").show();
-                                                                 app.mobileApp.pane.loader.hide();     
-                                                             }
-                                                         });
-            */
-
-
-            $("#notificationType").kendoComboBox({
-            dataTextField: "text",
-            dataValueField: "value",
-            dataSource: [
-            { text: "Promotion", value: "P" },
-            { text: "Invitation", value: "V" },
-            { text: "Information", value: "I" },
-            { text: "Reminder", value: "R" },
-            { text: "Alert", value: "A" }
-            ],
-            filter: "contains",
-            placeholder: "Select Type",
-            suggest: true
-            //index: 0
-            });
-                        
-            
-            var input = $("#notificationType").data("kendoComboBox").input;
-            input.attr("readonly", "readonly");
-            
-            /*$('#notificationType').attr('readonly','readonly');
-            
-            var combobox = $("#notificationType").data("kendoComboBox"); 
-            combobox.input.focus(function() {
-                combobox.input.blur();
-            });*/
-
-            /*$("#type-Name-listview").kendoMobileListView({
-            template: kendo.template($("#typeNameTemplate").html()),    		
-            dataSource: dataSource,
-            pullToRefresh: true
-            });
-            */
-            //$("#groupSelectNotification").kendoComboBox();
-            /*$("#groupforNotification").kendoComboBox({
-            });
-            var comboboxGroup = $("#groupforNotification").data("kendoComboBox"); 
-            comboboxGroup.input.focus(function() {
-            //$( "#orgforNotification" ).blur();
-            comboboxGroup.input.blur();
-            });
-            var combobox = $("#notificationType").data("kendoComboBox"); 
-            combobox.input.focus(function() {
-            //$( "#orgforNotification" ).blur();
-            combobox.input.blur();
-            });*/                             
+   
         };
          
         var beforeShow = function() {
@@ -154,24 +78,43 @@ app.sendNotification = (function () {
                 
             //console.log('showwwwwwwwwww');
             $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
-            //app.mobileApp.pane.loader.hide();
             $("#selectOrgDiv").show();
         };
                                        
         var show = function(e) {
             
+            app.MenuPage = false;
+            app.userPosition = false;
+            
+   
+            $("#notificationType").kendoComboBox({
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource: [
+            { text: "Promotion", value: "P" },
+            { text: "Invitation", value: "V" },
+            { text: "Information", value: "I" },
+            { text: "Reminder", value: "R" },
+            { text: "Alert", value: "A" }
+            ],
+            filter: "contains",
+            placeholder: "Select Type",
+            suggest: true
+            });
+                        
+            
+            var input = $("#notificationType").data("kendoComboBox").input;
+            input.attr("readonly", "readonly");
+            
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
             
 
-            $("#notificationType").data("kendoComboBox").value("");
 
             $("#scheduleDatePicker").parent().css('width',"160px");
             $("#scheduleTimePicker").parent().css('width',"160px");
             $("#scheduleDatePicker").removeClass( "k-input" );
             $("#scheduleTimePicker").removeClass( "k-input" );
-
-            //$('#notificationType').attr('disabled','disabled');
 
 
             var txt = $('#notificationDesc'),
@@ -199,8 +142,7 @@ app.sendNotification = (function () {
             scheduleTime = '';
             sending_option = 'now';
             
-            $("#progressSendNotification").hide();
-            
+            $("#progressSendNotification").hide();            
             $("#removeAttachment").hide(); 
             $("#largeImage").hide();
             $("#attachedVidNoti").hide();
@@ -208,16 +150,8 @@ app.sendNotification = (function () {
             upload_type='';
             dataToSend = '';
            
-            pictureSource = navigator.camera.PictureSourceType;
-            destinationType = navigator.camera.DestinationType;
            
             closeSchedule();
-            
-            //$notificationDesc.val('');
-            // validator.hideMessages();
-            
-            //var scroller = e.view.scroller;
-            //scroller.reset();
             
 
             localStorage.setItem("SELECTED_GROUP", '');
@@ -269,59 +203,24 @@ app.sendNotification = (function () {
                  
                                                          change: function() {
                                                              var value = this.value();
-                                                             //console.log(value); 
-
                                                              scheduleDate = value;
-                                                             /*if(new Date(value) < new Date(currentDate)){                   
-                                                             if(!app.checkSimulator()){
-                                                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
-                                                             }else{
-                                                             app.showAlert('You Cannot Add Event on Back Date',"Event");  
-                                                             }                                
-                                                             }*/    
                                                          }
                                                      }).data("kendoDatePicker");
-                         
+
+            
             $("#scheduleTimePicker").kendoTimePicker({
                                                          value:"10:00 AM",
                                                          interval: 15,
                                                          format: "h:mm tt",
                                                          timeFormat: "HH:mm", 
-                                                         /*open: function(e) {
-                                                         e.preventDefault(); //prevent popup opening
-                                                         },*/
                 
                                                          change: function() {
                                                              var value = this.value();
-                                                             //console.log(value); //value is the selected date in the timepicker
-
                                                              scheduleTime = value;
                                                          }                
-                                                     });
-            
-            setTimeout(function() {
-                $("#scheduleDatePicker").bind("focus", function() {
-                    $("#scheduleDatePicker").blur();                    
-                });
-            }, 100); 
-            
-            setTimeout(function() {            
-                $("#scheduleTimePicker").bind("focus", function() {
-                    $("#scheduleTimePicker").blur();
-                }); 
-            }, 100); 
-            
-            if (!app.checkConnection()) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }            
-            
+                                                     });            
 
             sendNotificationOrg();
-
             
         };    
                               
@@ -343,8 +242,6 @@ app.sendNotification = (function () {
         var getTakePhoto = function() {
             navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
                                             quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
                                             destinationType: destinationType.FILE_URI,
                                             sourceType: pictureSource.CAMERA,
                                             saveToPhotoAlbum:true
@@ -365,8 +262,6 @@ app.sendNotification = (function () {
         
 
         var sendNotificationMessage = function () {    
-            //alert(dataToSend);undefined
-            //console.log(dataToSend);
              
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -589,8 +484,7 @@ app.sendNotification = (function () {
                                 read: {
                                                                                                    url: app.serverUrl() + "notification/sendNotification",
                                                                                                    type:"POST",
-                                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                                   async: false,                                                               
+                                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                                                                                  
                                                                                                    data: notificationData
                                     
                                                                                                }
@@ -744,8 +638,7 @@ app.sendNotification = (function () {
                     read: {
                                                                                      url: app.serverUrl() + "group/index/" + org,
                                                                                      type:"POST",
-                                                                                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
-                                                                                    async: false
+                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
                                                                                  }
                 },
                                                                          schema: {               
@@ -863,8 +756,8 @@ app.sendNotification = (function () {
                     read: {
                                                                              url: app.serverUrl() + "customer/getOrgCustomer/" + org,
                                                                              type:"POST",
-                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
-                                                                             async: false,
+                                                                             dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
+                                                                             
                                                                          }
                 },
                                                                  schema: {

@@ -79,7 +79,7 @@ app.groupDetail = (function () {
                                     //localStorage.setItem("loginStatusCheck", 1);                                
                                 
                             }else if (groupValue[0].Msg==='Success') {
-                                //console.log(groupValue[0].orgData.length);
+                                console.log(groupValue[0]);
                                 var adminOrgInformation = groupValue[0].orgData;                                
                                 var adminIncomMsg = groupValue[0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
@@ -240,9 +240,7 @@ app.groupDetail = (function () {
                     var first_login = localStorage.getItem("ADMIN_FIRST_LOGIN");
                     var orgNameEncode = app.urlEncode(adminOrgProfileData[i].org_name);
                     var orgDescEncode = app.urlEncode(adminOrgProfileData[i].org_desc);
-               
-                    //alert("data-:"+first_login);
-                    
+                                   
                     if (first_login===0) {
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count) VALUES ("'
                                     + adminOrgProfileData[i].organisationID
@@ -260,7 +258,7 @@ app.groupDetail = (function () {
                         app.insertQuery(tx, query);
                     }else {               
                         localStorage.setItem("ADMIN_FIRST_LOGIN", 0); 
-               
+                                    
                         var query = 'INSERT INTO ADMIN_ORG(org_id , org_name , role , imageSource ,orgDesc , count ,bagCount) VALUES ("'
                                     + adminOrgProfileData[i].organisationID
                                     + '","'
@@ -280,7 +278,7 @@ app.groupDetail = (function () {
                     }    
                 }else {        
                     //alert("update");
-                    // alert(adminOrgProfileData[i].org_name);               
+           
                     var queryUpdate = "UPDATE ADMIN_ORG SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
                     app.updateQuery(tx, queryUpdate);                                        
                 }                      
@@ -974,9 +972,7 @@ app.groupDetail = (function () {
                     //mobileArray.push(mobile);
                     mobileArray.push(alterEditMob);    
                     var count = 0;
-               
-                    //alert(countMobile);
-               
+                             
                     for (var i = 1;i <= addMoreEditMobile;i++) {
                         var newMobile = $("#editMobileMoreNo" + i).val(); 
                         if (newMobile === "Mobile Number" || newMobile === "") {
