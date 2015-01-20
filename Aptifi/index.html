@@ -598,7 +598,7 @@
         </div>-->
         
         
-<div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-title="Customer" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show" data-after-show="app.replyedCustomer.afterShow">
+<div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-title="Message" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show" data-after-show="app.replyedCustomer.afterShow">
     
     <div class="loader" id="loaderReplyCustomer" style="display:none;margin-top:50%">
         <div class="ball"></div>
@@ -646,37 +646,25 @@
 </script>
         
         
-        
 
-        <!--class="activities-view-notification"-->
-        <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
-        <!--data-pull-to-refresh="true"  data-before-Show="app.sendNotification.beforeShow"-->
-
-        <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Notification" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
+        <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
 
           <div data-role="content">
-                <!--<div id="selectOrgDiv" style="margin:10px 10px 10px 10px;border:none;">
-                    <p style="color:#343434;">Select Organization to send Notification</p>
-                    <ul id="organisation-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="orgNameTemplate" data-bind="source: activities" ></ul>
-                </div>-->
 
                 
                 <div class="loader" id="selectOrgLoader" style="display:none;margin-top:50%;">
                     <div class="ball"></div>
                 </div>
 
-                <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
 
                 <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;">
 
                     <p style="color:#343434;">Select Group to send Notification to particular group </p>
-                    <!--<ul id="group-Name-listview" data-style="inset" data-role="listview" data-template="groupNameTemplate" data-pull-to-refresh="true" data-bind="source: activities" ></ul>-->
 
                     <div id="group-Name-listview" class="k-listview" style="border:none"> </div>
 
                 </div>
 
-                <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888;-->
 
                 <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;">
 
@@ -684,35 +672,8 @@
 
                     <div id="customer-Name-listview" class="k-listview" style="border:none;"> </div>
 
-                    <!--<li>
-                    <span id="login" data-role="touch" data-bind="events: { tap: skipToSeletType }" style="padding:10px;float:left;">
-                    <a data-role="button" style="background-color:#303645">Skip</a>   
-                    </span>
-                
-                    <span id="login" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="padding:10px;float:right;">
-                    <a data-role="button" style="background-color:#7FBF4D">Next</a>   
-                    </span>
-                
-                    </li>-->
-
                 </div>
 
-                <!--border: 2px solid #575B5F;box-shadow: 10px 10px 5px #888888; -->
-
-                <!--<div id="selectTypeDiv" style="display:none;margin:10px 10px 10px 10px;border:none;">
-                    <p style="color:#343434;">Select Notification Type</p>
-                    <ul id="type-Name-listview" style="border:none;padding-left:5px;" data-role="listview" data-template="typeNameTemplate" data-bind="source: activities" ></ul>
-                </div>-->
-
-                <!-- <div style="margin-left:10px">
-                <p style="color:#1B205E">Select Organisation to send Notification</p>
-                <span style="margin-left:12px;"><input id="orgforNotification" placeholder="Select Organisation" /></span>
-                </div>-->
-
-                <!--<div style="margin-left:10px">
-                <p style="color:#1B205E">Select Group to send Notification to particular group</p>
-                <span style="margin-left:12px;"><input id="groupforNotification" placeholder="Select Group"/></span>
-                </div>-->
 
 
                 <div class="loader" id="progressSendNotification" style="display:none;margin-top:50%">
@@ -721,18 +682,11 @@
 
                 <div id="sendNotificationDivMsg" style="display:none;overflow:hidden;margin:10px;">
 
-                    <!--<ul data-role="listview" data-style="inset" style="margin-top:25px;background-color:#ffffff;border-radius:6px;">
-                    <li class="username" style="background-color: #f5f7f8;border:none;"><input type="text" id="notificationTitleValue" placeholder="Notification Title" autofocus/></li>
-                    </ul>-->
-
                     <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Notification Title :</span>
                     <br/>
                     <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Notification Title" autofocus />
                     <br/>
 
-                    <!--<div class="textareaClass" style="background-color:#ffffff;margin-right:15px;margin-left:15px;border-radius:6px;">
-                    <textarea style="border-radius:6px;border:none;" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>        
-                    </div>-->
 
                     <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Notification Detail :</span>
 
@@ -741,7 +695,6 @@
 
                     <textarea  id="notificationDesc" placeholder="Write Notification Message to Send ?" class="common"></textarea>
 
-                    <!--<textarea rows="12" class="defineTextArea" id="notificationDesc" placeholder="Write Notification Message to Send ?"></textarea>-->
 
                     <br/>
                   <br/>
@@ -876,7 +829,7 @@
 
             <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
                 <li>
-                        <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()"><span id="setOrgName">Organization</span><br/><span style="color:#AEB5D3;font-size:14px;text-align: center;">Select Organization</span></a>
+                    <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()"><span id="setOrgName">Organization</span><br/><span style="color:#AEB5D3;font-size:14px;text-align: center;">Select Organization</span></a>
                 </li>
                 <li>
                     <a id="side-admin-manageOrg-icon" href="#view-all-activities-GroupDetail" data-transition="none"></a>
@@ -967,13 +920,13 @@
     
                 function getDataOrg(tx) {
                        var org_id_db = localStorage.getItem("orgSelectAdmin"); 
-                       //alert(org_id_db);
                        var query = "SELECT * FROM ADMIN_ORG where org_id="+org_id_db;
                        app.selectQuery(tx, query, getDataSuccess);
                 };
             
             
-          function getDataSuccess(tx, results) {                                    
+          function getDataSuccess(tx, results) {                                   
+                            
              var count = results.rows.length;
             if (count !== 0) { 
                     var bagCountData = results.rows.item(0).bagCount;                  
@@ -1071,11 +1024,6 @@
         </script>
 
         <script type="text/x-kendo-template" id="groupNameTemplate"> 
-            <!--<div class="cf" >				            
-            <div class="activity-content"style="padding-top:10px;">
-            <h2 id="activityTemplateTitle" class="orgNameList">${group_name}</h2>
-            </div>
-            </div>-->
 
             <li class="deleteGroupShow">
                 <label>
@@ -1083,15 +1031,8 @@
                     <span class="firstName">#:group_name#</span>
                 </label>
             </li>
-            <!--<div class="deleteGroupShow" data="${pid}">
-            <input type="checkbox" class="largerCheckbox" value="${pid}" />
-            <span class="checkbox">#:group_name#</span>
-            </div>-->
         </script>
 
-        <!--<li class="deleteGroupShow">
-        <label ><input type="checkbox" name="chkValue" value="${groupID}" /> ${groupName} </label>
-        </li>-->
 
         <script type="text/x-kendo-template" id="customerNameTemplate">            
             <li class="deleteGroupShow">
@@ -1139,7 +1080,6 @@
                 #}else {#
                     <div class="user-avatar">
                         <img src=${imageSource} />
-                        <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->
                     </div>
                 #}#    
                 <div class="activity-content">
@@ -1171,9 +1111,6 @@
                 <div class="error-content">
                     <h5 style="color:rgb();text-align:center" >${message}</h5>
 
-                    <!--<p style="border-radius:12px;margin-top:0px;background-color:rgb(27,43,89);color:white;padding:2px;left: 50%;margin-left:-30px;position:absolute" >
-                        Try Again
-                    </p>-->
 
                 </div>
             </div>
@@ -1181,40 +1118,25 @@
         </script>
 
         
-        <!--<script src="kendo/js/kendo.mobile.min.js"></script>-->
-        <!--<script src="scripts/lib/everlive.all.min.js"></script>-->
-        <!--<script src="scripts/app/identity-provider.js"></script>-->
 
         <script src="scripts/app/app.js" type="text/javascript"></script>
         <script src="Plugins/PushPlugin-master/www/PushNotification.js"></script>
 
-        <!--<script src="scripts/app/adminReplyMessage.js" type="text/javascript"></script>-->
-
-        <!--<script src="scripts/app/notification.js" type="text/javascript"></script>
-        <script src="scripts/app/notificationView.js" type="text/javascript"></script>
-        <script src="scripts/app/myProfile.js" type="text/javascript"></script>
-        <script src="scripts/app/settings.js" type="text/javascript"></script>-->
 
         <script src="scripts/app/analytics.js"></script>
 
-        <!--<script src="scripts/app/users.js" type="text/javascript"></script>-->
 
         <script src="scripts/app/login.js" type="text/javascript"></script>
         <script src="scripts/app/registration.js" type="text/javascript"></script>
-        <!--<script src="scripts/app/signup.js" type="text/javascript"></script>-->
 
         <script src="scripts/app/groupDetail.js" type="text/javascript"></script>
         <script src="scripts/app/groupListView.js" type="text/javascript"></script>
-
-        <!--<script src="scripts/app/add-activity.js" type="text/javascript"></script>
-        <script src="scripts/app/add-comment.js" type="text/javascript"></script>-->
 
         <script src="scripts/app/activity.js" type="text/javascript"></script>
         <script src="scripts/app/activities.js" type="text/javascript"></script>
         <script src="scripts/app/adminEventCalendar.js" type="text/javascript"></script>
         <script src="scripts/app/sendNotification.js" type="text/javascript"></script>
         <script src="scripts/app/userReplyList.js" type="text/javascript"></script>
-        <!--<script src="scripts/app/userReplyNotification.js" type="text/javascript"></script>-->
         <script src="scripts/app/userNotificationComment.js" type="text/javascript"></script>
         <script src="scripts/app/getOrganisationList.js" type="text/javascript"></script>
         <script src="scripts/app/adminLogin.js" type="text/javascript"></script>

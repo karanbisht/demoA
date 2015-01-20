@@ -341,11 +341,17 @@ app.userNotiComment = (function () {
             $("#status-container-adminComment").show();
         }
         
+        
+        var lastClickTime = 0;
         var saveAdminComment = function () {    
 
-            //console.log('click save');
-
-            app.mobileApp.pane.loader.hide();
+           var current = new Date().getTime();
+           var delta = current - lastClickTime;
+	       lastClickTime = current;
+         
+            if (delta < 500) {
+                
+            } else {
 
             
             if (!app.checkConnection()) {
@@ -435,7 +441,7 @@ app.userNotiComment = (function () {
             }  
 
           }        
-      
+         }
         };
         
         var removeActivity = function () {

@@ -151,7 +151,9 @@ app.subGroupDetail = (function () {
                                                                      //console.log(JSON.stringify(e));
                                                                      //navigator.notification.alert("Please check your internet connection.",
                                                                      //function () { }, "Notification", 'OK');
-                    
+                                                                                                                                          
+                                                                     app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching subGroup Organization Member.');
+                                                                                                                                                              
                                                                      var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];
@@ -313,16 +315,16 @@ app.subGroupDetail = (function () {
                 },
                                                                  schema: {                              
                     data: function(data) {
-                        //console.log(data);
+                        console.log(data);
                        
                         $.each(data, function(i, groupValue) {
                             //console.log(groupValue);
                                      
                             $.each(groupValue, function(i, orgVal) {
-                                //console.log(orgVal);
+                                console.log(orgVal);
 
                                 if (orgVal.Msg==='Success') {
-                                    //console.log(orgVal.allCustomer.length);  
+                                    console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < orgVal.allCustomer.length;i++) {
                                         groupDataAllShow.push({
                                                                   mobile: orgVal.allCustomer[i].uacc_username,
@@ -337,22 +339,23 @@ app.subGroupDetail = (function () {
                                 }else if(orgVal.Msg==='No Customer in this organisation'){
                                      app.showAlert("No Member to Add in Group", "Notification");
                                      app.mobileApp.navigate('#subGroupMemberShow');
-
                                 }    
                             });
                         });
 		                                                           
                         var allData = groupDataAllShow.length;
                         var groupData = groupMemberData.length;            
+                        
                        
-                        //console.log(allData);
+                        //console.log(allData);                       
                         //console.log(groupData);
                        
+                        var checkRem=0;
                         for (var x = 0;x < allData ; x++) {                     
                             var numCheck = 0;
                             for (var y = 0;y < groupData ;y++) {
                                 if (groupDataAllShow[x].customerID=== groupMemberData[y].customerID) {                                
-                                    numCheck = 1;
+                                    numCheck = 1;                                    
                                 }
                             }
                             if (numCheck!==1) {
@@ -364,9 +367,16 @@ app.subGroupDetail = (function () {
                                                       customerID:groupDataAllShow[x].customerID,
                                                       account_id:groupDataAllShow[x].account_id,
                                                       orgID:groupDataAllShow[x].orgID
-                                                  });								                             
+                                                  });								                
+                                checkRem++;
                             }
                         }
+                        
+                        if(checkRem===0){
+                              app.showAlert("No Member to Add in Group", "Notification");
+                              app.mobileApp.navigate('#subGroupMemberShow');  
+                        }
+                        
                         return remDataValue;
                     }
                 },

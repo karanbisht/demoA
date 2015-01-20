@@ -1,7 +1,4 @@
-<!--data-transition="zoom"-->
-
     <div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-noti"  data-model="app.adminNews" data-show ="app.adminNews.show" >
-
         <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span> All News </span>
@@ -18,8 +15,7 @@
     </div>
 
 
-		<script type="text/x-kendo-template" id="newsListTemplate" >            
-            
+		<script type="text/x-kendo-template" id="newsListTemplate" >                        
            #if(id!==0){#
             <div class="cf">              
               <div class="notiList-content-new">            
@@ -30,8 +26,9 @@
                     </div>                                            
                 <br/>
                 <br/>            
-                <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
-
+               
+               <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
+               
                #if (news_image!=='' && news_image!=='0' && upload_type==="image") {#
                     <br/>
                     <img src= ${news_image} style="max-height:200px;margin-top:10px;" />                
@@ -42,10 +39,10 @@
                      </video>
                 #}#
   		    </div>
-              <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: editNews }">    
-              <div class="notiNewsEditIcon"></div>
-              <a id="activityTemplateMessage" class="notiListComment">Edit</a>            			            
-              </div>
+                  <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: editNews }">    
+                      <div class="notiNewsEditIcon"></div>
+                      <a id="activityTemplateMessage" class="notiListComment">Edit</a>            			            
+                  </div>
 
 		    </div>   
          #}else{#
@@ -236,7 +233,7 @@
             
         </div>    
     
-        <div data-role="footer">
+        <div data-role="footer" class="footer">
        	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
                 <a id="" data-icon="trash" data-role="button" data-bind="click: deleteNews" > Delete News</a>
             </div>

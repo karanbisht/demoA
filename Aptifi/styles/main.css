@@ -252,16 +252,7 @@ input::-webkit-inner-spin-button
     font-size: 1rem;
 }
 
-.replyTextArea
-{
-    /*position: static;*/
-    width: 100%;
-    min-height: 30px;
-    font-size: 1rem;     
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    overflow: hidden;
-    max-height:250px;
-}
+
 
 #Aptifi.km-flat select
 {
@@ -2569,6 +2560,7 @@ float:right;
 
 .common
 {
+   
     width: 100%;
     min-height: 80px;
     max-height:250px;
@@ -2577,8 +2569,7 @@ float:right;
     overflow: hidden;    
     border-radius: 3px;
     border-color: #E5E5E5;
-    padding-right: 5px;
-    padding-left: 5px;
+    padding:5px 5px 0px 5px;
 }
 
 .defineTextArea
@@ -2643,6 +2634,18 @@ float:right;
     overflow: hidden;
 }
 
+
+.replyTextArea
+{
+    /*position: static;*/
+    width: 100%;
+    min-height: 30px;
+    font-size: 1rem;     
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    max-height:250px;
+}
+
 .txtstuff
 {
     resize: none; /* remove this if you want the user to be able to resize it in modern browsers */
@@ -2657,16 +2660,6 @@ float:right;
     word-wrap: break-word;
     overflow-wrap: break-word; /* future version of deprecated 'word-wrap' */
 }
-
-/* the styles for 'commmon' are applied to both the textarea and the hidden clone */
-/* these must be the same for both */
-/*.common {
-width: 500px;
-min-height: 50px;
-font-family: Arial, sans-serif;
-font-size: 13px;
-overflow: hidden;
-}*/
 
 .lbr
 {

@@ -600,6 +600,8 @@ app.adminEventCalender = (function () {
                 largeImage.src = eventImageEdit;
                 upload_type_edit="image";
                 
+                eventDataToSend = eventImageEdit ;
+                
                 var largeImageVid = document.getElementById('attachedEditVidEvent');
                 largeImageVid.style.display = 'none';
                 largeImageVid.src = '';
@@ -609,6 +611,8 @@ app.adminEventCalender = (function () {
                 largeImageVid.style.display = 'block';
                 largeImageVid.src = eventImageEdit;
                 upload_type_edit="video";
+                
+                eventDataToSend = eventImageEdit ;
                 
                 var largeImage = document.getElementById('attachedImgEditEvent');
                 largeImage.style.display = 'none';
@@ -944,7 +948,7 @@ app.adminEventCalender = (function () {
                           
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
                     //alert(eventDataToSend);
-                    console.log("image sending function");
+                    //console.log("image sending function");
     
                     if ((eventDataToSend.substring(0, 21)==="content://com.android") && (upload_type_edit==="image")) {
                         
@@ -1299,6 +1303,7 @@ app.adminEventCalender = (function () {
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true,
                                             saveToPhotoAlbum:true
                                         });
         };
@@ -1309,7 +1314,8 @@ app.adminEventCalender = (function () {
                                             targetWidth: 300,
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
                                         });
         };
         
@@ -1417,6 +1423,7 @@ app.adminEventCalender = (function () {
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true,
                                             saveToPhotoAlbum:true
                                         });
         };
@@ -1427,7 +1434,8 @@ app.adminEventCalender = (function () {
                                             targetWidth: 300,
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
                                         });
         };
         

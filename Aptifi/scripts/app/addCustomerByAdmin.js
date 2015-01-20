@@ -38,12 +38,24 @@ app.addCustomerByAdmin = (function () {
             countMobile=0;
             firstTime=0;
             mobileArray=[];
-
             $("#addMemberUl").empty();
-
         };
         
+        
+        
+        var lastClickTime = 0;
         var registerR = function() {
+            
+
+            var current = new Date().getTime();
+            	var delta = current - lastClickTime;
+	            lastClickTime = current;
+            	if (delta < 500) {
+		// This happens because of a bug, so we ignore it.
+		// http://code.google.com/p/android/issues/detail?id=38808
+	  } else {
+
+          
             app.userPosition = false;     
             backToRegPage = true;   
             var fname = $regFirstName.val();
@@ -113,11 +125,14 @@ app.addCustomerByAdmin = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            
-                                                                            console.log(e);                                                                           
+                                                                            //console.log(e);                                                                           
                                                                             console.log(JSON.stringify(e));           
-                                                                            alert(JSON.stringify(e));
+                                                                            //alert(JSON.stringify(e));
                                                                             app.mobileApp.pane.loader.hide();
                                                                             
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));
+             
                                                                             if (!app.checkSimulator()) {
                                                                             window.plugins.toast.showShortBottom('Please check your internet connection.');   
                                                                             }else {
@@ -190,6 +205,10 @@ app.addCustomerByAdmin = (function () {
 
                                                                            console.log(JSON.stringify(e));           
 
+             
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));
+             
                                                                            
                                                                            app.mobileApp.pane.loader.hide();
                                                                            navigator.notification.alert("Please check your internet connection.",
@@ -224,6 +243,7 @@ app.addCustomerByAdmin = (function () {
                     });
                 });
             }
+          }
         };
         
         function refreshOrgMember() {  

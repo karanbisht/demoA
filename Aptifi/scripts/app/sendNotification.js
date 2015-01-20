@@ -233,17 +233,19 @@ app.sendNotification = (function () {
          
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
-                                            quality: 50,
-                                            destinationType: destinationType.FILE_URI,
-                                            sourceType: pictureSource.SAVEDPHOTOALBUM
+                                            quality: 50,                                            
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true,
                                         });
         };
                   
         var getTakePhoto = function() {
             navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
-                                            quality: 50,
-                                            destinationType: destinationType.FILE_URI,
-                                            sourceType: pictureSource.CAMERA,
+                                            quality: 50,                                            
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true,
                                             saveToPhotoAlbum:true
                                         });
         };
@@ -258,11 +260,8 @@ app.sendNotification = (function () {
               });
         }
 
-        
-        
-
-        var sendNotificationMessage = function () {    
-             
+                
+        var sendNotificationMessage = function () {                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  

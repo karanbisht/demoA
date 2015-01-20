@@ -17,6 +17,8 @@ app.replyedCustomer = (function () {
             app.MenuPage = false;
             //message = e.view.params.message;
             //title = e.view.params.title;
+            
+            //$("#countToShow").html('9'); 
          
             app.mobileApp.pane.loader.hide();
             app.mobileApp.pane.loader.hide();
@@ -99,7 +101,7 @@ app.replyedCustomer = (function () {
                                       
                                 }else if (orgVal.Msg ==='No list found') {   
                                     groupDataShow.push({
-                                                           user_fname: 'No Customer found',
+                                                           user_fname: 'No Message found',
                                                            user_lname: '',
                                                            customerID:0,  
                                                            user_type : '',
@@ -188,10 +190,9 @@ app.replyedCustomer = (function () {
 
             app.mobileApp.pane.loader.hide();
 
-           //setTimeout(function(){
                 $("#loaderReplyCustomer").hide();
                 $("#reply-customer-listview").show();
-           //},100);
+
             var db = app.getDb();
             db.transaction(updateBagCount, app.errorCB, app.successCB);   
         };
@@ -199,7 +200,37 @@ app.replyedCustomer = (function () {
         var updateBagCount = function(tx) {
             var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='" + userCount + "' where org_id=" + org_id;
             app.updateQuery(tx, queryUpdate);                         
-        }
+            
+            var query = "SELECT * FROM ADMIN_ORG where org_id="+org_id;
+            app.selectQuery(tx, query, getDataSuccessCust);
+        }                
+        
+        function getDataSuccessCust(tx, results) {                                                               
+            var count = results.rows.length;
+            if (count !== 0) { 
+                    var bagCountData = results.rows.item(0).bagCount;                  
+                    var countData = results.rows.item(0).count;
+                   
+                    if (countData===null || countData==="null") {
+                        countData = 0; 
+                    }
+                   
+                    if (bagCountData===null || bagCountData==="null") {
+                        bagCountData = 0;
+                    }
+                   
+                //alert(countData);
+                //alert(bagCountData);
+    
+                localStorage.setItem("incommingMsgCount",countData);                  
+                    
+                var showData = countData - bagCountData;
+                                
+                $("#countToShow").html(showData);            
+            }            
+          }
+    
+        
                      
         var customerSelected = function(e) {
             //console.log(e);

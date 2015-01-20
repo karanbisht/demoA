@@ -16,11 +16,10 @@ app.adminNews = (function () {
 
         }
     
-        var show = function() {
+        var show = function() {            
             
             $("#adminNewsListLoader").show();
             $("#orgAllNewsList").hide();
-
             
             $(".km-scroll-container").css("-webkit-transform", "");
 
@@ -29,16 +28,14 @@ app.adminNews = (function () {
 
             
             organisationID = localStorage.getItem("orgSelectAdmin");
-            //alert(organisationID);
-            //account_Id = localStorage.getItem("ACCOUNT_ID");
-
             
-            $("#removeNewsAttachment").hide(); 
+            //$("#removeNewsAttachment").hide(); 
             $("#attachedImgNews").hide();
             $("#attachedVidNews").hide();
             
             newsDataToSend = '';
             upload_type='';
+            
             
             var jsonDataLogin = {"org_id":organisationID}
 
@@ -300,6 +297,9 @@ app.adminNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
           
            
+            var footer = $(".footer");
+            footer.css({ "top": footer.position().top, "bottom": "auto"});
+            
             $("#adddatePickerNews").removeAttr('disabled');           
             $("#adddateTimePickerNews").removeAttr('disabled');
 
@@ -347,7 +347,7 @@ app.adminNews = (function () {
                                                         value: new Date(),
                                                         dates: disabledDaysBefore,    
                                                         month:{
-                    content:'# if (data.date < data.dates) { #' + 
+                    content:'# if (data.date > data.dates) { #' + 
                             '<div class="disabledDay">' +
                             '#= data.value #' +
                             '</div>' +
@@ -488,6 +488,7 @@ app.adminNews = (function () {
         var editNewsshow = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
                         
+            
             $('#editNewsDesc').css('height', '80px');
 
             var txt = $('#editNewsDesc'),
@@ -518,7 +519,8 @@ app.adminNews = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
-            $("#editNewsDesc").html(app.htmlDecode(newsDescEdit));             
+            $("#editNewsDesc").html(app.htmlDecode(newsDescEdit));    
+            
 
             if(newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!=='' && newsUploadType==="image"){
                 var largeImage = document.getElementById('attachedImgEditNews');
@@ -530,6 +532,7 @@ app.adminNews = (function () {
                 largeVid.style.display = 'none';
                 largeVid.src = '';
 
+                newsDataToSend = newsImageEdit ; 
                         
             }else if (newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!=='' && newsUploadType==="video"){
                 var largeImageVid = document.getElementById('attachedVidNewsEdit');
@@ -540,7 +543,9 @@ app.adminNews = (function () {
                     var largeImage = document.getElementById('attachedImgEditNews');        
                     largeImage.style.display = 'none';
                     largeImage.src = '';
-                                
+                    
+                    newsDataToSend = newsImageEdit ; 
+
             }else{            
             var largeImage = document.getElementById('attachedImgEditNews');        
             largeImage.style.display = 'none';
@@ -566,7 +571,7 @@ app.adminNews = (function () {
                                                          value: newsDateEdit,
                                                          dates: disabledDaysBefore,    
                                                          month:{
-                    content:'# if (data.date < data.dates) { #' + 
+                    content:'# if (data.date > data.dates) { #' + 
                             '<div class="disabledDay">' +
                             '#= data.value #' +
                             '</div>' +
@@ -1109,7 +1114,8 @@ app.adminNews = (function () {
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            saveToPhotoAlbum:true
+                                            saveToPhotoAlbum:true,
+                                            correctOrientation: true
                                         });
         };
         
@@ -1120,7 +1126,8 @@ app.adminNews = (function () {
                                             targetWidth: 300,
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
                                         });
         };
         
@@ -1234,6 +1241,7 @@ app.adminNews = (function () {
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true,
                                             saveToPhotoAlbum:true
                                         });
         };
@@ -1245,7 +1253,8 @@ app.adminNews = (function () {
                                             targetWidth: 300,
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
                                         });
         };
         

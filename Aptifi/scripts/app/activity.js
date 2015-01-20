@@ -546,16 +546,20 @@ app.Activity = (function () {
                 }
                 );
         };
+
+        
+        var lastClickTime = 0;
         
         var saveComment = function () {    
-        //    console.log('click save');
-            // Validating of the required fields
-            //if (validator.validate()) {
-                
-            // Adding new comment to Comments model
-            //var comments = app.Comments.comments;
-            //var comment = comments.add();            
-            
+           
+            	var current = new Date().getTime();
+            	var delta = current - lastClickTime;
+	            lastClickTime = current;
+            	if (delta < 500) {
+		// This happens because of a bug, so we ignore it.
+		// http://code.google.com/p/android/issues/detail?id=38808
+	  } else {
+  
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -643,6 +647,7 @@ app.Activity = (function () {
                     }
                 }        
             }  
+          }
         };
 
         function refreshComment() {

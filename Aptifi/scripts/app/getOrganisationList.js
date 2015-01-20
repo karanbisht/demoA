@@ -975,9 +975,8 @@ app.OragnisationList = (function () {
             $("#manageOrgDesc").css("z-index", "999");
             
             if (orgDesc==='') {
-                orgDesc = " ";//"Description Not Available";
-            }
-            
+                orgDesc = " ";
+            }            
             //alert(orgDesc+"||"+joinDate);
             if (role==='C') {
                 $("#manageOrgFooter").show();
@@ -1773,6 +1772,7 @@ app.OragnisationList = (function () {
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true,
                                             saveToPhotoAlbum:true
                                         });
         };

@@ -6,19 +6,9 @@ app.adminOragnisationList = (function () {
     //var el = new Everlive('wKkFz2wbqFe4Gj0s');   
  
     var activitiesDataSource;   
-    var validator;
+ 
     var account_Id;
     
-    var loginType, groupId, userId;
-  
-    var userlName;
-    var userfName;
-    var userMobile;
-    var userEmail;
-    var userOrgName;
-    var userGropuName;   
-    var tabstrip1;
-
     var organisationViewModel = (function () {
         var beforeShow = function() {
             var db = app.getDb();
@@ -51,8 +41,7 @@ app.adminOragnisationList = (function () {
             var count = results.rows.length;                    		            
             if (count !== 0) {                
                 for (var i = 0 ; i < count ; i++) {                
-                    totalCount = results.rows.item(i).count + totalCount;
-                        
+                    totalCount = results.rows.item(i).count + totalCount;                        
                     bagCount1 = results.rows.item(i).bagCount;                        
                     if (bagCount1===null || bagCount1==="null") {
                         bagCount1 = 0;
@@ -74,8 +63,8 @@ app.adminOragnisationList = (function () {
             }else {
                 totalCount = 0;
                 groupDataShow.push({
-                                       orgName: 'Welcome to Aptifi',
-                                       orgDesc: 'You are not a customer of any organization',
+                                       orgName: 'Welcome to Zaffio',
+                                       orgDesc: 'You are not a Member of any organization',
                                        organisationID:'0',
                                        org_logo:null,
                                        imageSource:null,
@@ -117,28 +106,8 @@ app.adminOragnisationList = (function () {
         };
 
         var show = function(e) {
-            //alert('show');
-            
-            /*$("#uploadBatchWindow")
-                .kendoWindow({
-                    actions: ["Maximize", "Close"],
-                    // minHeight: 175, // Being set because of IE gayness
-                    minWidth: 300,
-                    modal: true,
-                    resizable: true,
-                    title: "Choose File to Upload",
-                    visible: false
-            })
-                    .data("kendoWindow")
-                    .center().open();
-            
-            */
             localStorage.setItem("loginStatusCheck", 2);
  
-            /*var tabStrip = $("#upperTabAdmin").data("kendoMobileTabStrip");
-            tabStrip.switchTo("#view-all-activities-admin");
-
-            tabstrip1 = e.view.header.find(".km-tabstrip").data("kendoMobileTabStrip");*/
  
             groupDataShow = [];
             joinOrgID = []; 
@@ -151,11 +120,7 @@ app.adminOragnisationList = (function () {
             $("#progressAdmin").show();             
             app.MenuPage = false;
             app.userPosition = false;
-            //app.mobileApp.pane.loader.hide();
-                                     
-            //account_Id = e.view.params.account_Id;
             account_Id = localStorage.getItem("ACCOUNT_ID");
-            //alert(account_Id);
 
             var organisationListDataSource = new kendo.data.DataSource({
                                                              transport: {
