@@ -984,7 +984,11 @@ app.adminNews = (function () {
                         //console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News updated successfully') {         
                             app.mobileApp.navigate("#adminOrgNewsList");
-                            app.showAlert("News Updated Successfully", "Notification");
+                             if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom('News Updated Successfully');  
+                             }else {
+                                    app.showAlert('News Updated Successfully", "Notification');  
+                             }
                             $("#sendEditNewsLoader").hide();
                         }else {
                             $("#sendEditNewsLoader").hide();
@@ -1101,6 +1105,8 @@ app.adminNews = (function () {
         var getTakePhoto = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
                                             saveToPhotoAlbum:true
@@ -1111,6 +1117,8 @@ app.adminNews = (function () {
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
@@ -1155,29 +1163,21 @@ app.adminNews = (function () {
             
             var videoAttached = document.getElementById('attachedVidNews');
             videoAttached.src = '';    
-                    $("#attachedVidNews").hide();
+            $("#attachedVidNews").hide();
             
-            //console.log(imageURI);            
-            // Uncomment to view the image file URI
-            // console.log(imageURI);
-            // Get image handle
+            
             var largeImage = document.getElementById('attachedImgNews');
-            // Unhide image elements
-            //
+            
             largeImage.style.display = 'block';
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
+            
             largeImage.src = imageURI;
             newsDataToSend = imageURI;
             upload_type="image";
             
-            //$("#removeNewsAttachment").show(); 
+            
             $("#attachedImgNews").show();
 
-            //alert(imageURI);
             console.log(imageURI);
-            //newsDataToSend = imageURI;
         }
         
         function onVideoURISuccessData(videoURI) {             
@@ -1230,6 +1230,8 @@ app.adminNews = (function () {
         var getTakePhotoEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
                                             saveToPhotoAlbum:true
@@ -1240,6 +1242,8 @@ app.adminNews = (function () {
         var getPhotoValEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
@@ -1265,22 +1269,13 @@ app.adminNews = (function () {
       
                
             var largeImage = document.getElementById('attachedImgEditNews');
-            // Unhide image elements
-            //
             largeImage.style.display = 'block';
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
             largeImage.src = imageURI;
             newsDataToSend = imageURI;              
-            //$("#removeEditNewsAttachment").show(); 
             $("#attachedImgEditNews").show();
 
-              upload_type_Edit="image";   
-            //alert(imageURI);
+            upload_type_Edit="image";   
             console.log(imageURI);
-            //newsDataToSend = imageURI;
-            //newsDataToSend = imageURI;
         }
          
         

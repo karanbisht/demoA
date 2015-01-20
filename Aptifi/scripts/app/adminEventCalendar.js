@@ -1306,6 +1306,8 @@ app.adminEventCalender = (function () {
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
@@ -1315,6 +1317,8 @@ app.adminEventCalender = (function () {
         var getVideoVal = function(){            
               navigator.camera.getPicture(onVideoURISuccessData, onFail, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
                                             mediaType: navigator.camera.MediaType.VIDEO
@@ -1409,6 +1413,8 @@ app.adminEventCalender = (function () {
         var getTakePhotoEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
                                             saveToPhotoAlbum:true
@@ -1418,6 +1424,8 @@ app.adminEventCalender = (function () {
         var getPhotoValEdit = function() {
             navigator.camera.getPicture(onPhotoURISuccessDataEdit, onFailEdit, { 
                                             quality: 50,
+                                            targetWidth: 300,
+                                            targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });

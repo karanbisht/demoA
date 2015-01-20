@@ -26,7 +26,7 @@ app.replyedCustomer = (function () {
           
             org_id = localStorage.getItem("orgSelectAdmin");
             userCount= localStorage.getItem("incommingMsgCount"); 
-            
+                        
             //userCount = e.view.params.count;
           
             //notiId = e.view.params.notiId;
@@ -188,16 +188,15 @@ app.replyedCustomer = (function () {
 
             app.mobileApp.pane.loader.hide();
 
-           setTimeout(function(){
+           //setTimeout(function(){
                 $("#loaderReplyCustomer").hide();
                 $("#reply-customer-listview").show();
-           },100);
+           //},100);
             var db = app.getDb();
             db.transaction(updateBagCount, app.errorCB, app.successCB);   
         };
        
         var updateBagCount = function(tx) {
-            //alert('update');
             var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='" + userCount + "' where org_id=" + org_id;
             app.updateQuery(tx, queryUpdate);                         
         }

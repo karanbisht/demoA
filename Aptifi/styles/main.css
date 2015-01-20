@@ -93,7 +93,7 @@
     color: #fff;
     /*font-family: "Open Sans", sans-serif;*/
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
 }
 
 #Aptifi.km-flat #welcome,
@@ -414,7 +414,7 @@ input::-webkit-inner-spin-button
 
 /* App Footer */
 
-#Aptifi .welcome-scrn .km-footer
+/*#Aptifi .welcome-scrn .km-footer
 {
     background-color: transparent;
     color: #fff;
@@ -424,7 +424,7 @@ input::-webkit-inner-spin-button
 #Aptifi .welcome-scrn .km-footer p
 {
     font-size: .75rem;
-}
+}*/
 
 /* Welcome screen */
 
@@ -609,7 +609,7 @@ input::-webkit-inner-spin-button
 #Aptifi .activities-view-info .km-listview
 {
     background-color: #EBE7DC;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
 }
 
 .activities-view-info .km-list > li
@@ -622,7 +622,8 @@ input::-webkit-inner-spin-button
 #Aptifi .activities-view-noti .km-listview
 {
     background-color: #D3D6DB;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
+    
 }
 
 .activities-view-noti .km-list > li
@@ -705,7 +706,7 @@ input::-webkit-inner-spin-button
 #Aptifi .activities-view .km-listview
 {
     background-color: #fff;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
 }
 
 #Aptifi .activities-view .km-list > li,
@@ -2830,6 +2831,7 @@ overflow: hidden;
     text-align: center;
     vertical-align: middle; 
 }
+
 
 
 /*.km-android input

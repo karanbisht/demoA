@@ -20,7 +20,7 @@
                                  android:hardwareAccelerated="$AndroidHardwareAcceleration$">
                 <activity android:label="Zaffio" 
                     android:name=".TelerikCallbackActivity"
-                    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|navigation"
+                    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
                     android:launchMode="standard"
                     android:theme="@android:style/Theme.Black.NoTitleBar" >
                         <intent-filter>
