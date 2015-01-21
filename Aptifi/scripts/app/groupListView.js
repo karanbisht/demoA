@@ -53,16 +53,8 @@ app.GroupList = (function () {
             $("#group-listview").hide();
                   
             $(".km-scroll-container").css("-webkit-transform", "");
-            var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
-            tabStrip.clear();
- 
-            
-            
-            
-            //organisationID = e.view.params.organisationId;  
-            //account_Id = e.view.params.account_Id;
-            //orgName= e.view.params.orgName;
-            //orgDesc= e.view.params.orgDesc;
+            //var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
+            //tabStrip.clear();
   
             organisationID = localStorage.getItem("orgSelectAdmin");
             account_Id = localStorage.getItem("ACCOUNT_ID");
@@ -85,15 +77,33 @@ app.GroupList = (function () {
                  
                                                                             schema: {
                     data: function(data) {
-                        //console.log(JSON.stringify(data));
-                       
-                        var orgNotificationData; 
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-    
-                            $.each(groupValue, function(i, orgVal) {
-                   	            
-                                if (orgVal.Msg ==='No Group list') {
+                        console.log(data);                                                                          
+                        return [data]; 
+                    }                                                            
+                },
+                 
+                                                                            error: function (e) {
+                                                                                $("#admin-groupList-loader").hide();
+                                                                                console.log(JSON.stringify(e));
+                   
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                }else {
+                                                                                    app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                }
+                                                                                getGroupDataDB();
+                                                                            }	        
+                                                                        });         
+   
+            
+            organisationGroupDataSource.fetch(function(){
+                
+                  
+                  var orgNotificationData;
+                  
+                       var data = this.data();
+                
+                                if (data[0]['status'][0].Msg ==='No Group list') {
         
                                     groupDataShow.push({
                                                            orgName: '',
@@ -106,47 +116,21 @@ app.GroupList = (function () {
                     
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
-                                }else if(orgVal.Msg==="You don't have access"){
+                                }else if(data[0]['status'][0].Msg==="You don't have access"){
                                      app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
                                      app.LogoutFromAdmin(); 
-                                    
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                                                             
-                                }else if (orgVal.Msg==='Success') {
+                                                                                           
+                                }else if (data[0]['status'][0].Msg==='Success') {
                                      $("#tabDeleteGroup").show();
 
                                     //console.log(orgVal.groupData.length);
-                                    orgNotificationData = orgVal.groupData;                                                                               
+                                    orgNotificationData = data[0]['status'][0].groupData;                                                                               
                                     //console.log(orgNotificationData);                                       
                                     saveOrgGroupNotification(orgNotificationData);                                                                                                                                                                      
                                 }
                             });    
-                        });       
-                                                     
-                        return [data]; 
-                    }                                                            
-                },
-                 
-                                                                            error: function (e) {
-                                                                                e.preventDefault();
-                                                                                //apps.hideLoading();
-                                                                                //console.log(e);
-                                                                                console.log(JSON.stringify(e));
-                   
-                                                                                //$("#progress1").hide();  
-
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-                                                                                }else {
-                                                                                    app.showAlert("Network problem . Please try again later", "Notification");  
-                                                                                }
-                                                                                getGroupDataDB();
-                                                                            }	        
-                                                                        });         
-
-            organisationGroupDataSource.read();
-        };  
+                            
+               };  
     
         var orgNotiGroupDataVal;         
         function saveOrgGroupNotification(data) {                      

@@ -14,10 +14,6 @@ app.adminEventCalender = (function () {
         }
     
         var show = function() {
-            //$('#addEventDesc').removeClass('txtstuff');
-            /*hiddenDiv = $(document.createElement('div')),
-            hiddenDiv.removeClass('hiddendiv common');
-            $('body').remove(hiddenDiv);*/
             $("#adminCalProcess").show();                                                  
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
@@ -26,26 +22,15 @@ app.adminEventCalender = (function () {
             eventDataToSend = '';
             upload_type='';
 
-            
-            /*$("#addEventDesc").kendoEditor({
-            tools: [
-
-            ]
-            });*/
-             
-            /*$("#editor").kendoEditor();*/
-             
+                         
 
             $(".km-scroll-container").css("-webkit-transform", "");
 
             tasks = [];
             multipleEventArray = [];
 
-            //organisationId = e.view.params.organisationId;
-            //account_Id =e.view.params.account_Id;
 
             organisationID = localStorage.getItem("orgSelectAdmin");
-            //alert(organisationID);
             account_Id = localStorage.getItem("ACCOUNT_ID");
              
             document.getElementById("admincalendar").innerHTML = "";
@@ -63,12 +48,11 @@ app.adminEventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
+                        console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    //console.log(e);               
 
                                                                     $("#adminCalProcess").hide();
 
@@ -83,8 +67,6 @@ app.adminEventCalender = (function () {
 	            
             dataSourceLogin.fetch(function() {
                 var loginDataView = dataSourceLogin.data();               
-                var orgDataId = [];
-                var userAllGroupId = [];
 						   
                 $.each(loginDataView, function(i, loginData) {
                     //console.log(loginData.status[0].Msg);
@@ -1196,14 +1178,14 @@ app.adminEventCalender = (function () {
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
+                
+                var data = this.data(); 
                 var loginDataView = dataSourceLogin.data();               
-                var orgDataId = [];
-                var userAllGroupId = [];
 						   
-                $.each(loginDataView, function(i, loginData) {
-                    console.log(loginData.status[0].Msg);
+                //$.each(loginDataView, function(i, loginData) {
+                    //console.log(loginData.status[0].Msg);
                                
-                    if (loginData.status[0].Msg==='No Event list') {
+                    if (data[0]['status'][0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
                         
@@ -1218,20 +1200,20 @@ app.adminEventCalender = (function () {
                                                mod_date: '',                                     
                                                org_id: ''
                                            });
-                    }else if (loginData.status[0].Msg==='Success') {
+                    }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
                           
-                        if (loginData.status[0].eventData.length!==0) {
-                            var eventListLength = loginData.status[0].eventData.length;
+                        if (data[0].status[0].eventData.length!==0) {
+                            var eventListLength = data[0].status[0].eventData.length;
                                                      var preDateVal = 0 ;
 
                             
                             console.log(eventListLength);
                               
                             for (var i = 0 ; i < eventListLength ;i++) {         
-                                var eventDateString = loginData.status[0].eventData[i].event_date;
-                                var eventTimeString = loginData.status[0].eventData[i].event_time;
+                                var eventDateString = data[0].status[0].eventData[i].event_date;
+                                var eventTimeString = data[0].status[0].eventData[i].event_time;
                                 var eventDate = app.formatDate(eventDateString);
                                 var eventTime = app.formatTime(eventTimeString);
                           
@@ -1239,7 +1221,7 @@ app.adminEventCalender = (function () {
                                  var belowData = app.getDateMonth(eventDateString);
 
                                 
-                                var eventDaya = loginData.status[0].eventData[i].event_date
+                                var eventDaya = data[0].status[0].eventData[i].event_date
                                 var values = eventDaya.split('-');
                                 var year = values[0]; // globle variable
                                 var month = values[1];
@@ -1251,21 +1233,21 @@ app.adminEventCalender = (function () {
                                 var saveData = month + "/" + day + "/" + year;
 
                                 groupAllEvent.push({
-                                                       id: loginData.status[0].eventData[i].id,
-                                                       add_date: loginData.status[0].eventData[i].add_date,
+                                                       id: data[0].status[0].eventData[i].id,
+                                                       add_date: data[0].status[0].eventData[i].add_date,
                                                        event_date:saveData,
                                                        event_show_day:day,
                                                        preDateVal:preDateVal,
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
-                                                       event_desc: loginData.status[0].eventData[i].event_desc,
-                                                       upload_type: loginData.status[0].eventData[i].upload_type,
-                                                       event_image : loginData.status[0].eventData[i].event_image,
-                                                       event_name: loginData.status[0].eventData[i].event_name,                                                                                  										  
+                                                       event_desc: data[0].status[0].eventData[i].event_desc,
+                                                       upload_type: data[0].status[0].eventData[i].upload_type,
+                                                       event_image : data[0].status[0].eventData[i].event_image,
+                                                       event_name: data[0].status[0].eventData[i].event_name,                                                                                  										  
                                                        event_time: eventTime,                                                                                  										  
-                                                       mod_date: loginData.status[0].eventData[i].mod_date,
+                                                       mod_date: data[0].status[0].eventData[i].mod_date,
                                                        page:1,
-                                                       org_id: loginData.status[0].eventData[i].org_id
+                                                       org_id: data[0].status[0].eventData[i].org_id
                                                    });        
                                 preDateVal=saveData;
         
@@ -1275,7 +1257,7 @@ app.adminEventCalender = (function () {
                     
                     showInListView();
                 });
-            }); 
+            //}); 
         }
         
         var showInListView = function() {

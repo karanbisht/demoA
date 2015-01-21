@@ -19,11 +19,7 @@ app.subGroupDetail = (function () {
         var show = function (e) {
             app.MenuPage = false;
             app.mobileApp.pane.loader.hide();            
-            //groupID = e.view.params.groupID;
-            //organisationID = e.view.params.orgID;
-            //GroupName= e.view.params.groupName;
-            //selectedGroupDesc= e.view.params.groupDesc;
-            
+           
             organisationID = localStorage.getItem("orgSelectAdmin");
             account_Id = localStorage.getItem("ACCOUNT_ID");
             groupID = localStorage.getItem("groupIdAdmin");
@@ -50,43 +46,14 @@ app.subGroupDetail = (function () {
 
             app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
 
-            //app.slide('left', 'green' ,'3' ,'#subGroupMemberShow');
-
-            //console.log(organisationID);
-            //console.log(groupID);
+         
                    
             app.mobileApp.pane.loader.hide();
             
-            var UserModel = {
-                id: 'Id',
-                fields: {
-                    mobile: {
-                            field: 'mobile',
-                            defaultValue: ''
-                        },
-                    first_name: {
-                            field: 'first_name',
-                            defaultValue: ''
-                        },
-                    email: {
-                            field: 'email',
-                            defaultValue:''
-                        },
-                    last_name: {
-                            field: 'last_name',
-                            defaultValue:''
-                        },
-                    customerID: {
-                            field: 'customerID',
-                            defaultValue:''
-                        }
-
-                }
-            };
             
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
-                    read: {
+                                                                read: {
                                                                              url: app.serverUrl() + "group/getCustomerByGroupID/" + groupID + "/" + organisationID,
                                                                              type:"POST",
                                                                              dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
@@ -94,63 +61,16 @@ app.subGroupDetail = (function () {
                                                                          }
                 },
                                                                  schema: {
-                    model: UserModel,
+                   
                                 
                     data: function(data) {
-                        //console.log(data);
-                       
-                        var groupDataShow = [];
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-                                     
-                            $.each(groupValue, function(i, orgVal) {
-                                //console.log(orgVal);
-
-                                if (orgVal.Msg ==='No member in group') {
-                                    app.mobileApp.pane.loader.hide();
-                                        
-                                    groupDataShow.push({
-                                                           mobile: '',
-                                                           first_name: '',
-                                                           email:'No member in this group',  
-                                                           last_name : '',
-                                                           customerID:'0',
-                                                           orgID:0
-                                                       }); 
-                                        
-                                    $("#deleteGroupMemberBtn").hide();  
-                                }else if (orgVal.Msg==='Success') {
-                                    app.mobileApp.pane.loader.hide();
-                                        
-                                    $("#deleteGroupMemberBtn").show();  
-                                    //console.log(orgVal.customerInfo.length);  
-                                    for (var i = 0;i < orgVal.customerInfo.length;i++) {
-                                        groupDataShow.push({
-                                                               first_name: orgVal.customerInfo[i].first_name,
-                                                               email:orgVal.customerInfo[i].email,  
-                                                               last_name : orgVal.customerInfo[i].last_name,
-                                                               customerID:orgVal.customerInfo[i].customerID,
-                                                               mobile:orgVal.customerInfo[i].mobile,
-                                                               orgID:orgVal.customerInfo[i].orgID
-                                                           });
-                                    }     
-                                        
-                                    groupMemberData = groupDataShow ;
-                                } 
-                            });
-                        });
-                       
-                        //console.log(groupDataShow);
-                        return groupDataShow;
+                        console.log(data);                       
+                       return [data];
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     //apps.hideLoading();
-                                                                     //console.log(e);
                                                                      //console.log(JSON.stringify(e));
-                                                                     //navigator.notification.alert("Please check your internet connection.",
-                                                                     //function () { }, "Notification", 'OK');
                                                                                                                                           
                                                                      app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching subGroup Organization Member.');
                                                                                                                                                               
@@ -170,19 +90,70 @@ app.subGroupDetail = (function () {
 	        
                                                              });         
             
-            /*MemberDataSource.fetch(function() {
+            MemberDataSource.fetch(function() {
+               
+                var data = this.data();
                 
-            });*/
+                var groupDataShow = [];
+                
+
+                                if (data[0]['status'][0].Msg ==='No member in group') {
+                                    app.mobileApp.pane.loader.hide();
+                                        
+                                    groupDataShow.push({
+                                                           mobile: '',
+                                                           first_name: '',
+                                                           email:'No member in this group',  
+                                                           last_name : '',
+                                                           customerID:'0',
+                                                           orgID:0
+                                                       }); 
+                                        
+                                    $("#deleteGroupMemberBtn").hide();  
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                                    app.mobileApp.pane.loader.hide();
+                                        
+                                    $("#deleteGroupMemberBtn").show();  
+                                    //console.log(orgVal.customerInfo.length);  
+                                    for (var i = 0;i < data[0].status[0].customerInfo.length;i++) {
+                                        groupDataShow.push({
+                                                               first_name: data[0].status[0].customerInfo[i].first_name,
+                                                               email:data[0].status[0].customerInfo[i].email,  
+                                                               last_name : data[0].status[0].customerInfo[i].last_name,
+                                                               customerID:data[0].status[0].customerInfo[i].customerID,
+                                                               mobile:data[0].status[0].customerInfo[i].mobile,
+                                                               orgID:data[0].status[0].customerInfo[i].orgID
+                                                           });
+                                    }     
+                                       
+                                    groupMemberData = groupDataShow ;
+                                } 
+                
+                showDataInTemplate();
+
+            });
     
-            app.mobileApp.pane.loader.hide();
-            
-            $("#subGroupMember-listview").kendoMobileListView({
-                                                                  dataSource: MemberDataSource,
-                                                                  template: kendo.template($("#subGroupMemberTemplate").html())
-                                                              });
-            
-            app.mobileApp.pane.loader.hide();
         };
+        
+        var showDataInTemplate = function(){
+                        
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+            var subGroupDataListDataSource = new kendo.data.DataSource({
+                                                                           data: groupMemberData
+                                                                       });           
+                
+            $("#subGroupMember-listview").kendoMobileListView({
+                                                      template: kendo.template($("#subGroupMemberTemplate").html()),    		
+                                                      dataSource: subGroupDataListDataSource
+                                                  });
+                
+            $('#subGroupMember-listview').data('kendoMobileListView').refresh();
+            
+                  app.mobileApp.pane.loader.hide();
+
+        }
+        
 
         var showUpdateSubGroupView = function() {
             app.MenuPage = false;

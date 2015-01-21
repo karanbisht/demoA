@@ -18,11 +18,8 @@ app.eventCalender = (function () {
              
             $("#CalProcess").show();                         
             $("#eventDetailDiv").hide();
-            //eventOrgId = e.view.params.orgManageID;
 
             eventOrgId = localStorage.getItem("selectedOrgId");
-
-            //document.getElementById("calendar").innerHTML = "";
              
             $("#eventCalendarFirstAllList").show();
 
@@ -56,32 +53,32 @@ app.eventCalender = (function () {
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                var loginDataView = dataSourceLogin.data();               
-                var orgDataId = [];
-                var userAllGroupId = [];
-						   
-                $.each(loginDataView, function(i, loginData) {
+                //var loginDataView = dataSourceLogin.data();               
+                var data = this.data();
+                
+          						   
+                //$.each(loginDataView, function(i, loginData) {
                     //console.log(loginData.status[0].Msg);
                                
-                    if (loginData.status[0].Msg==='No Event list') {
+                    if (data[0]['status'][0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
                         //$("#eventDetailDiv").hide();
                         //showEventInCalendar();
-                    }else if (loginData.status[0].Msg==='Success') {
+                    }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
                              
-                        var preDateVal = 0 ;
+                        var preDateVal = 0 ;00
 
-                        if (loginData.status[0].eventData.length!==0) {
-                            var eventListLength = loginData.status[0].eventData.length;
+                        if (data[0].status[0].eventData.length!==0) {
+                            var eventListLength = data[0].status[0].eventData.length;
                               //console.log(loginData.status[0].eventData);    
                             for (var i = 0 ; i < eventListLength ;i++) {
-                                var eventDaya = loginData.status[0].eventData[i].event_date;
+                                var eventDaya = data[0].status[0].eventData[i].event_date;
                                 
-                                 var eventDateString = loginData.status[0].eventData[i].event_date;
-                                 var eventTimeString = loginData.status[0].eventData[i].event_time;
+                                 var eventDateString = data[0].status[0].eventData[i].event_date;
+                                 var eventTimeString = data[0].status[0].eventData[i].event_time;
                                  var eventDate = app.formatDate(eventDateString);
                                  var eventTime = app.formatTime(eventTimeString);
                                 
@@ -110,20 +107,20 @@ app.eventCalender = (function () {
                                 var saveData = month + "/" + day + "/" + year;
                                                                
                                     groupAllEvent.push({
-                                                       id: loginData.status[0].eventData[i].id,
-                                                       add_date: loginData.status[0].eventData[i].add_date,
+                                                       id: data[0].status[0].eventData[i].id,
+                                                       add_date: data[0].status[0].eventData[i].add_date,
                                                        event_date: saveData,
                                                        event_show_day:day,
                                                        preDateVal:preDateVal,
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
-                                                       upload_type:loginData.status[0].eventData[i].upload_type,
-                                                       event_desc: loginData.status[0].eventData[i].event_desc,                                                                                 										  
-                                                       event_name: loginData.status[0].eventData[i].event_name, 
-                                                       event_image : loginData.status[0].eventData[i].event_image,
+                                                       upload_type:data[0].status[0].eventData[i].upload_type,
+                                                       event_desc: data[0].status[0].eventData[i].event_desc,                                                                                 										  
+                                                       event_name: data[0].status[0].eventData[i].event_name, 
+                                                       event_image : data[0].status[0].eventData[i].event_image,
                                                        event_time: eventTime,                                                                              										  
-                                                       mod_date: loginData.status[0].eventData[i].mod_date,                                     
-                                                       org_id: loginData.status[0].eventData[i].org_id
+                                                       mod_date: data[0].status[0].eventData[i].mod_date,                                     
+                                                       org_id: data[0].status[0].eventData[i].org_id
                                                    });
                              
                                 preDateVal=saveData;
@@ -134,7 +131,7 @@ app.eventCalender = (function () {
                    
                     eventListFirstShow();
                 });
-            }); 
+            //}); 
             //tasks[+new Date(2014, 8 - 1, 5)] = "ob-not-done-date";*/
         }
         

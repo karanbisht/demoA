@@ -13,15 +13,9 @@ app.orgListView = (function () {
         var adminNotificationShow = function(e) {
             $("#progressAdminNoti").show();
             $("#admin-noti-listview").hide();
-
-            //organisationID = e.view.params.organisationID;
-            //account_Id = e.view.params.account_Id;
                            
             organisationID = localStorage.getItem("orgSelectAdmin");
             account_Id = localStorage.getItem("ACCOUNT_ID");
-
-            
-            //alert(organisationID +"||"+ account_Id);
 
 
             var organisationALLListDataSource = new kendo.data.DataSource({                
@@ -35,30 +29,13 @@ app.orgListView = (function () {
                  
                                                                               schema: {
                     data: function(data) {	
-                        //console.log(data);
-                       
-                        var orgNotificationData; 
-                        $.each(data, function(i, groupValue) {
-
-                            $.each(groupValue, function(i, orgVal) {
-                                if (orgVal.Msg ==='No notification') {     
-                                    showMoreDbData();
-                                }else if (orgVal.Msg==='Success') {
-                                    orgNotificationData = orgVal.notificationList;
-                                    saveOrgNotification(orgNotificationData);                                                                                                                                                                      
-                                }
-                            });    
-                        });       
-                       
+                        console.log(data);                                            
                         return [data]; 
                     }                                                            
                 },
                  
                                                                               error: function (e) {
-                                                                                  e.preventDefault();
-                                                                                  //apps.hideLoading();
-                                                                                  console.log(JSON.stringify(e));
-                                                                                  
+                                                                                  console.log(JSON.stringify(e));                                                                                  
                                                                                   $("#progressAdminNoti").hide();  
 
                                                                                   if (!app.checkSimulator()) {
@@ -70,7 +47,26 @@ app.orgListView = (function () {
                                                                               }	        
                                                                           });         
             
-            organisationALLListDataSource.read();
+          
+          
+            organisationALLListDataSource.fetch(function() {
+                            
+                var data = this.data();                
+                var orgNotificationData; 
+                       
+
+                           
+                                if (data[0]['status'][0].Msg ==='No notification') {     
+                                    showMoreDbData();
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                                    orgNotificationData = data[0]['status'][0].notificationList;
+                                    saveOrgNotification(orgNotificationData);                                                                                                                                                                      
+                                }
+                              
+
+            
+            });
+
         };
         
         var orgNotiDataVal;         

@@ -19,7 +19,7 @@ app.adminLogin = (function () {
         };
 
         var show = function (e) {            
-            //account_Id = e.view.params.account_Id;
+
             account_Id = localStorage.getItem("ACCOUNT_ID");
 
             app.userPosition = false;
@@ -56,12 +56,10 @@ app.adminLogin = (function () {
                 } else if (password === "Password" || password === "") {
                     app.showAlert("Please enter your Password.", "Validation Error");
                 }else {           
-                    //app.mobileApp.pane.loader.show();  	
                     $("#progress1").show();
                     document.getElementById('OrgLogin').style.pointerEvents = 'none';
              						
                     password = app.urlEncode(password);
-                    //console.log(password);
                     var jsonDataLogin = {"username":usernameMob ,"password":password}       
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
@@ -74,14 +72,12 @@ app.adminLogin = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                //console.log(data);
+                                console.log(data);
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            //apps.hideLoading();
                                                                             console.log(JSON.stringify(e));
-                                                                            //app.mobileApp.pane.loader.hide();
                                                                             $("#progress1").hide();
 
                                                                             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
@@ -90,52 +86,23 @@ app.adminLogin = (function () {
                                                                                 window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                             }else {
                                                                                 app.showAlert("Network problem . Please try again later", "Notification");  
-                                                                            }
-                                                                            //navigator.notification.alert("Please check your internet connection.",
-                                                                            //function () { }, "Notification", 'OK');
+                                                                            }                                                                         
                                                                         }               
                                                                     });  
 	            
                     dataSourceLogin.fetch(function() {
-                        var loginDataView = dataSourceLogin.data();
-                        //console.log(loginDataView);
+                            //var loginDataView = dataSourceLogin.data();
                
-                        $.each(loginDataView, function(i, loginData) {
-                            //console.log(loginData.status[0].Msg);
-                            //console.log("karan" + account_Id);      
-
-                            if (loginData.status[0].Msg==='You have been successfully logged in.') {
-                                //console.log('reg');
-                                //console.log(loginDataView);
+                        var data = this.data();
+                        
+                            if (data[0]['status'][0].Msg==='You have been successfully logged in.') {
                                 getAdminOrgData();
                             }else {
-                                //app.mobileApp.pane.loader.hide();
                                 $("#progress1").hide();
-
                                 document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                 app.showAlert(loginData.status[0].Msg, "Notification");
                             }
-                            /*
-                            else if(loginData.status[0].Msg==='Create profile'){
-                            app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;
-                            var accountId=loginData.status[0].AccountID;
-                            app.mobileApp.navigate('views/registrationView.html?mobile='+accountId+'&type=pro');       
-                            }else if(loginData.status[0].Msg==='Authentication Required'){
-                            app.mobileApp.pane.loader.hide();
-                            clickforRegenerateCode();   
-                            }else if(loginData.status[0].Msg==='Success'){
-                            console.log('reg');
-                            var account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                            console.log('karan'+account_Id);
-                            var userType=loginData.status[0].JoinedOrg.role[0];
-                            app.mobileApp.pane.loader.hide();
-                            app.userPosition=false;				  
-                            app.mobileApp.navigate('views/getOrganisationList.html?mobile='+username+'&userType='+userType);
-                            } 
-                            */
                         });
-                    });
                 }
             }
         };

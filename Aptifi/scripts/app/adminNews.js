@@ -8,8 +8,6 @@ app.adminNews = (function () {
         var tasks = [];
         var newsDataToSend;
         var upload_type;
-        var pictureSource;   // picture source
-        var destinationTypeNews; // sets the format of returned value
 
 
         var init = function() {
@@ -22,9 +20,6 @@ app.adminNews = (function () {
             $("#orgAllNewsList").hide();
             
             $(".km-scroll-container").css("-webkit-transform", "");
-
-            pictureSource = navigator.camera.PictureSourceType;
-            destinationTypeNews = navigator.camera.DestinationType;
 
             
             organisationID = localStorage.getItem("orgSelectAdmin");
@@ -51,7 +46,7 @@ app.adminNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
+                        console.log(data);
                         return [data];
                     }
                 },
@@ -85,16 +80,15 @@ app.adminNews = (function () {
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                var loginDataView = dataSourceLogin.data();               
+                
+                //var loginDataView = dataSourceLogin.data();               
                 //console.log(loginDataView);
                 
-                var orgDataId = [];
-                var userAllGroupId = [];
-						   
-                $.each(loginDataView, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
+               
+						var data = this.data();   
+                
                                
-                    if (loginData.status[0].Msg==='No News list') {
+                    if (data[0]['status'][0].Msg==='No News list') {
                         groupAllEvent = [];                          
                         groupAllEvent.push({
                                                id: 0,
@@ -108,51 +102,34 @@ app.adminNews = (function () {
                                                org_id: ''
                                            });
                         
-                    }else if (loginData.status[0].Msg==='Success') {
+                    }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
 
-                        if (loginData.status[0].newsData.length!==0) {
-                            var eventListLength = loginData.status[0].newsData.length;
+                        if (data[0].status[0].newsData.length!==0) {
+                            var eventListLength = data[0].status[0].newsData.length;
                             
                             //console.log(loginData.status[0].newsData);
                             
                             for (var i = 0 ; i < eventListLength ;i++) {
-                                /*var newsDate = loginData.status[0].newsData[i].news_date;
-                                console.log("-------karan---------------");
-                                console.log(newsDate);
-                                  
-                                var values = newsDate.split('-');
-                                var year = values[0]; // globle variable
-                                var month = values[1];
-                                var day = values[2];
-                                  
-                                console.log('------------------date=---------------------');
-                                console.log(year + "||" + month + "||" + day);
-                                  
-                                //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
-                                 
-                                if (day < 10) {
-                                    day = day.replace(/^0+/, '');                                     
-                                }
-                                var saveData = month + "/" + day + "/" + year;*/
+                               
                                 
-                                    var newsDateString = loginData.status[0].newsData[i].news_date;
-                                    var newsTimeString = loginData.status[0].newsData[i].news_time;
+                                    var newsDateString = data[0].status[0].newsData[i].news_date;
+                                    var newsTimeString = data[0].status[0].newsData[i].news_time;
                                     var newsDate = app.formatDate(newsDateString);
                                     var newsTime = app.formatTime(newsTimeString);
 
                                  
                                 groupAllEvent.push({
-                                                       id: loginData.status[0].newsData[i].id,
-                                                       add_date: loginData.status[0].newsData[i].add_date,
+                                                       id: data[0].status[0].newsData[i].id,
+                                                       add_date: data[0].status[0].newsData[i].add_date,
                                                        news_date: newsDate,
-                                                       upload_type:loginData.status[0].newsData[i].upload_type,
-                                                       news_desc: loginData.status[0].newsData[i].news_desc,                                                                                 										  
-                                                       news_name: loginData.status[0].newsData[i].org_name,
-                                                       news_image : loginData.status[0].newsData[i].news_image,
+                                                       upload_type:data[0].status[0].newsData[i].upload_type,
+                                                       news_desc: data[0].status[0].newsData[i].news_desc,                                                                                 										  
+                                                       news_name: data[0].status[0].newsData[i].org_name,
+                                                       news_image : data[0].status[0].newsData[i].news_image,
                                                        news_time: newsTime,                                                                                  										  
-                                                       mod_date: loginData.status[0].newsData[i].mod_date,                                     
-                                                       org_id: loginData.status[0].newsData[i].org_id
+                                                       mod_date: data[0].status[0].newsData[i].mod_date,                                     
+                                                       org_id: data[0].status[0].newsData[i].org_id
                                                    });
                             }
                         } 
@@ -160,7 +137,6 @@ app.adminNews = (function () {
 
                     showInListView();
                 });
-            }); 
             //tasks[+new Date(2014, 8 - 1, 5)] = "ob-not-done-date";*/
         }
         

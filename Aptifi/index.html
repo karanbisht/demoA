@@ -38,12 +38,12 @@
         <!--WELCOME VIEW -->
 
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
-            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:#ffffff;">
-
-                <div class="loader" id="progress" style="display:none;">
+            
+            <div class="loader" id="progress" style="display:none;">
                 <div class="ball"></div>
-                </div>
-
+            </div>
+            
+            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:#ffffff;">
                 
                 <form id="login-form" data-bind="events: { keyup: checkEnter }" class="" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
@@ -89,10 +89,14 @@
 
             <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#ffffff;display:none;margin:20% auto 10px auto; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:380px;width:94%;max-width:600px;overflow:hidden;">
 
+                    <div class="loader" id="progressRandomCode" style="display:none;">
+                        <div class="ball"></div>                   
+                    </div>
+                
                 <div style="background-color:#ffffff;color:#313C50;text-align:center;padding:10px;">
                     Verification
                 </div>
-
+                
                 <form id="verification-form" data-bind="events: { keyup: checkEnterCode }" class="">
 
                     <div style="text-align:center;color:#313C50;padding-top:10px;">
@@ -108,10 +112,6 @@
 
                     </div>
 
-                    <div class="loader" id="progressRandomCode" style="display:none;">
-                        <div class="ball"></div>
-                        <!--<div class="loading1">Loading...</div>-->
-                    </div>
 
                     <ol class="reg-group-wrp" style="margin-bottom:25px;">
                         <li style="width:100%">
@@ -133,22 +133,9 @@
 
             </div>
 
-            <!--<ol class="group-wrp" style="margin-top:20px;">
-            <li class="reg-Button">
-            <span id="registration" data-role="touch" data-bind="events: {tap: registration}">
-            <a data-role="button" class="btn register">Join</a>
-            </span>
-            </li>
-            </ol>-->
-
-            <!--<div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>-->
         </div>
 
-        <!--<div data-role="view" id="welcome1" data-layout="default" class="welcome-scrn form-view" data-model="app.Login">
-                    
-                    
-        </div>-->
-
+      
         <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>
         <!--data-after-show="app.OragnisationList.afterShow"-->
 

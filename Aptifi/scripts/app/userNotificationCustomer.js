@@ -3,24 +3,22 @@ var app = app || {};
 app.replyedCustomer = (function () {
     var replyedCustomerView = (function () {
         var message;
-        var title;
+      
         var org_id;
         var userCount;
-        var notiId;
-        var comment_allow;
-        var attachedimg;
+      
+      
         
+        
+
+        var groupDataShow = [];
+
         var init = function () {
         };
         
         var show = function(e) {
             app.MenuPage = false;
-            //message = e.view.params.message;
-            //title = e.view.params.title;
-            
-            //$("#countToShow").html('9'); 
          
-            app.mobileApp.pane.loader.hide();
             app.mobileApp.pane.loader.hide();
 
             $("#loaderReplyCustomer").show();
@@ -29,48 +27,12 @@ app.replyedCustomer = (function () {
             org_id = localStorage.getItem("orgSelectAdmin");
             userCount= localStorage.getItem("incommingMsgCount"); 
                         
-            //userCount = e.view.params.count;
-          
-            //notiId = e.view.params.notiId;
-            //comment_allow = e.view.params.comment_allow;
-            //attachedimg = e.view.params.attached;
-          
-            //console.log(attachedimg);
                     
             $(".km-scroll-container").css("-webkit-transform", "");
           
-            var UserModel = {
-                id: 'Id',
-                fields: {
-                    user_fname: {
-                            field: 'user_fname',
-                            defaultValue: ''
-                        },
-                    user_lname: {
-                            field: 'user_lname',
-                            defaultValue: ''
-                        }/*,
-                    email: {
-                    field: 'email',
-                    defaultValue:''
-                    },
-                    last_name: {
-                    field: 'last_name',
-                    defaultValue:''
-                    },
-                    customerID: {
-                    field: 'customerID',
-                    defaultValue:''
-                    }*/
-
-                }
-            };
-
-            app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
-                                                                             //url: "http://54.85.208.215/webservice/notification/getReplycustomerList/"+org_id+"/"+notiId,
                                                                              url: app.serverUrl() + "notification/replyListbyOrg/" + org_id,
                                                                              type:"POST",
                                                                              dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
@@ -78,80 +40,15 @@ app.replyedCustomer = (function () {
                                                                          }
                 },
                                                                  schema: {
-                    model: UserModel,
                                 
                     data: function(data) {
-                        //console.log(data);
-                       
-                        var groupDataShow = [];
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-
-                            //alert(JSON.stringify(groupValue));           
- 
-                            $.each(groupValue, function(i, orgVal) {
-                                //console.log(orgVal);
-                                     
-                                if(orgVal.Msg==="You don't have access"){                                    
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                    
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                                      
-                                }else if (orgVal.Msg ==='No list found') {   
-                                    groupDataShow.push({
-                                                           user_fname: 'No Message found',
-                                                           user_lname: '',
-                                                           customerID:0,  
-                                                           user_type : '',
-                                                           //orgID:0,
-                                                           comment:'',
-                                                           notification_id:'',
-                                                           add_date:'',
-                                                           user_id:0
-    	                               
-                                                       });                                      
-                                }else if (orgVal.Msg==='Success') {
-                                    //console.log(orgVal.customerList.length);  
-                                        
-                                    for (var i = 0;i < orgVal.customerList.length;i++) {
-                                         var dateString = orgVal.customerList[i].add_date;
-                                         var split = dateString .split(' ');
-                                         //console.log(split[0] + " || " + split[1]);
-                                         var commentDate = app.formatDate(split[0]);
-                                         var commentTime = app.formatTime(split[1]);
-                                         var date_show= commentDate +' '+commentTime;
- 
-                                        groupDataShow.push({
-                                                               user_fname: orgVal.customerList[i].user_fname,
-                                                               user_lname : orgVal.customerList[i].user_lname,
-                                                               customerID:orgVal.customerList[i].customerID,
-                                                               user_type:orgVal.customerList[i].user_type,
-                                                               //orgID:orgVal.customerList[i].orgID,
-                                                               comment:orgVal.customerList[i].comment,
-                                                               notification_id:orgVal.customerList[i].notification_id,
-                                                               add_date:date_show,
-                                                               user_id:orgVal.customerList[i].user_id
-                                                           });
-                                    }     
-                                } 
-                            });
-                        });
-                       
-                        //console.log(groupDataShow);
-                        //alert(groupDataShow);
-                        return groupDataShow;
+                        console.log(data);
+                        return [data];
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     //apps.hideLoading();
-                                                                     //console.log(e);
                                                                      //console.log(JSON.stringify(e));
-                                                                     
-                                                                     //navigator.notification.alert("Please check your internet connection.",
-                                                                     //function () { }, "Notification", 'OK');
                                                                      $("#loaderReplyCustomer").hide();
                                                                      $("#reply-customer-listview").show();
                                                                      if (!app.checkSimulator()) {
@@ -175,18 +72,78 @@ app.replyedCustomer = (function () {
                                                                  }
                                                              });         
             
-            //MemberDataSource.fetch(function() {
-                
-            //});
+            MemberDataSource.fetch(function() {
+            
+                var data = this.data();
+                                
+                if(data[0]['status'][0].Msg==="You don't have access"){                                    
+            
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                    
+                                                               
+                                      
+                                }else if (data[0]['status'][0].Msg ==='No list found') {   
+                                    groupDataShow.push({
+                                                           user_fname: 'No Message found',
+                                                           user_lname: '',
+                                                           customerID:0,  
+                                                           user_type : '',
+                                                           //orgID:0,
+                                                           comment:'',
+                                                           notification_id:'',
+                                                           add_date:'',
+                                                           user_id:0
+    	                               
+                                                       });                                      
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                                    //console.log(orgVal.customerList.length);  
+                                        
+                                    for (var i = 0;i < data[0].status[0].customerList.length;i++) {
+                                         var dateString = data[0].status[0].customerList[i].add_date;
+                                         var split = dateString .split(' ');
+                                         //console.log(split[0] + " || " + split[1]);
+                                         var commentDate = app.formatDate(split[0]);
+                                         var commentTime = app.formatTime(split[1]);
+                                         var date_show= commentDate +' '+commentTime;
+ 
+                                        groupDataShow.push({
+                                                               user_fname: data[0].status[0].customerList[i].user_fname,
+                                                               user_lname : data[0].status[0].customerList[i].user_lname,
+                                                               customerID:data[0].status[0].customerList[i].customerID,
+                                                               user_type:data[0].status[0].customerList[i].user_type,
+                                                               //orgID:orgVal.customerList[i].orgID,
+                                                               comment:data[0].status[0].customerList[i].comment,
+                                                               notification_id:data[0].status[0].customerList[i].notification_id,
+                                                               add_date:date_show,
+                                                               user_id:data[0].status[0].customerList[i].user_id
+                                                           });
+                                    }  
+                                     showMemberDataInTemp();
+                                } 
+ 
+            });
+            
+           
+            
+        };
+        
+        var showMemberDataInTemp = function(){
+
             app.mobileApp.pane.loader.hide();
     	    
+               $(".km-scroll-container").css("-webkit-transform", "");
+             
+            var memberListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });           
+            
             $("#reply-customer-listview").kendoMobileListView({
-                                                                  dataSource: MemberDataSource,
-                                                                  template: kendo.template($("#replyCustomerTemplate").html()),
-                                                                  schema: {
-                    model:  UserModel
-                }		
+                                                                  dataSource: memberListDataSource,
+                                                                  template: kendo.template($("#replyCustomerTemplate").html())
+                                                                
                                                               });
+             $('#reply-customer-listview"').data('kendoMobileListView').refresh();
 
             app.mobileApp.pane.loader.hide();
 
@@ -195,7 +152,8 @@ app.replyedCustomer = (function () {
 
             var db = app.getDb();
             db.transaction(updateBagCount, app.errorCB, app.successCB);   
-        };
+
+        }
        
         var updateBagCount = function(tx) {
             var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='" + userCount + "' where org_id=" + org_id;

@@ -1,8 +1,6 @@
 var app = app || {};
 
 app.sendNotification = (function () {
-    var validator;
-    var notificationTypeSelected;
     var dataToSend ;
     var noGroup = 0;
     var noCustomer = 0;
@@ -19,8 +17,6 @@ app.sendNotification = (function () {
         //var orgId = localStorage.getItem("UserOrgID"); 
         //console.log(orgId);
                   
-        var pictureSource;   // picture source
-        var destinationType; // sets the format of returned value
    
         var init = function () {				                 
    
