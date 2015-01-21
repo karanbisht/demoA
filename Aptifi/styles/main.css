@@ -777,8 +777,8 @@ input::-webkit-inner-spin-button
 #Aptifi .user-avatar-event
 {
     float: left;
-    width: 55px;
-    height:55px;
+    width: 90px;
+    height:90px;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 
@@ -792,8 +792,8 @@ input::-webkit-inner-spin-button
     border-radius: 6px;
     overflow: hidden;
     display: inline-block;
-    width: 55px;
-    height: 55px;
+    width: 90px;
+    height: 90px;
     background-position: center center; 
 
     
@@ -923,7 +923,7 @@ input::-webkit-inner-spin-button
     border-top:1px solid #D7D4CB;
     border-right:1px solid #D7D4CB;
     border-left:1px solid #D7D4CB;
-    min-height:75px;
+    min-height:110px;
 }
 
 
@@ -1011,9 +1011,9 @@ input::-webkit-inner-spin-button
 .deleteGroupShow
 {
     display: block;
-    margin: 5px 5px;
+    margin: 5px 5px 5px 5px;
     color: #676767;
-    font-size: 1.1rem;
+    font-size: 2rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1082,6 +1082,7 @@ white-space: nowrap;
 #Aptifi .user-share-txt
 {
     color: #34495e;
+    font-size: 1.1rem;
 }
 
 #Aptifi .activity-content .comment-content .user-share-txt
@@ -1116,6 +1117,8 @@ white-space: nowrap;
     color: #6c7884;
     bottom:-5px;
     float:left;
+
+    
     /*text-transform: uppercase;*/
     font-size: .5rem;
 }
@@ -1537,12 +1540,23 @@ background: #fff none;
     font-weight: 500;     
 }
 
+
+.CalenderdateValue
+{
+    margin-top:-7px;
+    width: 50px;
+    float: left;
+    font-size: 2.5rem; 
+
+}
+
+
 .calDayClass
 {
     display: block;
-    margin:0px;
+    margin-top:0px;
     color: #3E3B36;
-    font-size: 1rem; 
+    font-size: .7rem; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
@@ -1597,15 +1611,6 @@ background: #fff none;
     font-size:.8rem;
 }
 
-
-.CalenderdateValue
-{
-    margin-top:-3px;
-    width: 50px;
-    float: left;
-    font-size: 2.5rem; 
-
-}
 
 .divBagVal
 {
@@ -1720,7 +1725,7 @@ input.largerCheckbox
     height:30px;
     border: 2px solid #000000;
     */
-    zoom: 250%;
+    zoom: 150%;
 }
 
 .error-content
@@ -1767,17 +1772,15 @@ input.largerCheckbox
 .loader
 {
     background-color: transparent;
-    width: 100px;
+    width: 100%;
+    height:100%;
     z-index: 999;
     font-size: 18px;
     border-radius: 4px;
-    margin: auto auto;
-    vertical-align: middle;
     text-align: center;
     position: absolute;
     left: 0px;
-    right: 0px;
-    padding: 10px 20px;
+    right: 0px; 
 }
 
 /*
@@ -1975,6 +1978,7 @@ opacity:0.5;
 
 .ball
 {
+    margin: 50% auto;
     background-color: rgba(242, 242, 242, 0.8);
     border: 5px solid rgba(127, 191, 77, 0.8);
     opacity: .7;
@@ -2732,8 +2736,8 @@ float:right;
 #Aptifi .event-img-show
 {
     float: left;
-    width: 55px;
-    height: 55px;
+    width: 90px;
+    height: 90px;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 
@@ -2750,8 +2754,8 @@ float:right;
 #Aptifi .event-vid-show
 {
     float: left;
-    width: 55px;
-    height: 55px;
+    width: 90px;
+    height: 90px;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 

@@ -1,12 +1,13 @@
+
 <div data-role="view" id="OrgLogin" data-layout="mobile-tabstrip" data-title="Zaffio" class="welcome-scrn form-view" data-model="app.adminLogin" data-init="app.adminLogin.init" data-show="app.adminLogin.show" >
+
+    <div class="loader" id="progress1" style="display:none;">
+        <div class="ball"></div>
+    </div>
 
     <div style="margin-top:30%;margin-left:15px;margin-bottom:15%;">
         <span style="color:#82879A;font-size:35px;font-weight:normal;">Organization</span><br/><br/><span style="color:#FBFFFF;font-size:25px;margin-top:30px;font-weight:normal;">Login</span>
-    </div>
-    
-    <div class="loader" id="progress1" style="display:none;margin-top:10px;">
-        <div class="ball"></div>
-    </div>
+    </div>    
 
     <form id="login-form" data-bind="events: { keyup: checkEnter }" class="">
         <ul data-role="listview" data-style="inset">
@@ -30,8 +31,5 @@
             </li>
         </ol>  
     
-    </form>
-    
-    <!--<div data-role="footer"><p>&copy; <span data-bind="text: getYear"></span> Sakshay Web Technologies.</p></div>-->
-    
+    </form>        
 </div>

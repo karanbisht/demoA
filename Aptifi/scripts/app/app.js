@@ -441,36 +441,22 @@ var app = (function (win) {
     skin: 'flat'
     });*/
     var onDeviceReady = function() {
-                
-        // Handle "backbutton" event
-        //console.log(navigator);
-
-        //showAppVersion();
-
+        //[data-role=footer]        
         document.addEventListener('backbutton', onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         
+        document.addEventListener("showkeyboard", function(){ $(".footer").hide();}, false);
+        document.addEventListener("hidekeyboard", function(){ $(".footer").show();}, false);        
+        
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
         
-        fixViewResize();
+        //fixViewResize();
         
-        //console.log('apppppppppppp');
+        
         //console.log(window.plugins);
         
-        var pushNotification = window.plugins.pushNotification;
-        //console.log(pushNotification);
-        //alert(device.platform);
-           
-        /*var deviceName = app.devicePlatform();
-        var device_type;
-             
-        alert(deviceName);
-        if(deviceName==='Android'){
-        device_type ='AN';
-        }else if(deviceName==='iOS'){
-        device_type='AP';
-        }*/
+        var pushNotification = window.plugins.pushNotification;   
         
          if(navigator.geolocation)
         {
@@ -497,8 +483,6 @@ var app = (function (win) {
             
             pushNotification.register(
                 function(id) {
-                    //alert("###Successfully sent request for registering with GCM.");
-                    //set GCM notification callback
                     addCallback('onNotificationGCM', onNotificationGCM);
                 },
  
@@ -553,8 +537,7 @@ var app = (function (win) {
     }*/
        
     // Handle "deviceready" event
-    document.addEventListener('deviceready',onDeviceReady, false);
-    
+    document.addEventListener('deviceready',onDeviceReady, false);    
     
     // Handle "orientationchange" event
     document.addEventListener('orientationchange', fixViewResize);

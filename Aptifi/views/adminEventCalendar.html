@@ -8,7 +8,7 @@
               </div>                                          
     </div>
     
-        <div class="loader" id="adminEventListLoader" style="display:none;margin-top:50%">
+        <div class="loader" id="adminEventListLoader" style="display:none;">
                       <div class="ball"></div>
         </div>
 
@@ -26,7 +26,7 @@
 
              <div class="calendarEvent-content">            
             
-                           #if(event_date!==preDateVal){#                  
+                #if(event_date!==preDateVal){#                  
                  <div>
                     <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>
                   <span>
@@ -91,9 +91,8 @@
     </div>
 
 
-    <div class="loader" id="adminCalProcess" style="display:none;margin-top:50%">
+    <div class="loader" id="adminCalProcess" style="display:none;">
                       <div class="ball"></div>
-                      <!--<div class="loading1">Loading...</div>-->
     </div>
 
     <br/>    
@@ -165,17 +164,6 @@
                     <span id="activityTemplateDate"  style="float:right;color:rgb(122,184,77);margin-top:5px;">Time:<span style="color:rgb(147,147,147);">${event_time}</span></span>       	            
             
             
-                    <!--data-click="app.adminEventCalender.editEvent"-->
-                    <!--data-click="app.adminEventCalender.deleteEvent"-->
-
-                    <!--<br/>
-                    <br/>-->
-
-                   <!--<div style="margin-top:10px;color:rgb(122,184,77);">
-                   <div style="float:left;" data-role="touch" data-bind="events: { tap: editEvent }"><u>Edit Event</u></div>                            
-                   <div style="float:right;" data-role="touch"  data-bind="events: { tap: deleteEvent }"><u>Delete Event</u></div> </div>
-                    <br/>
-                    <br/>-->
        		</div>
                 <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: editEvent }">    
                               <div class="notiNewsEditIcon"></div>
@@ -199,7 +187,7 @@
     </div>
     
     
-    <div class="loader" id="sendEventLoader" style="display:none;margin-top:50%">
+    <div class="loader" id="sendEventLoader" style="display:none;">
           <div class="ball"></div>
     </div>
     	   
@@ -211,14 +199,7 @@
             <br/>
                 <input type="text"  id="addEventName" class="defineTextBox"  placeholder="Enter New Event Name" />
             <br/>
-  
-             <!---class="user-share"-->
             
-           <!--<div class="textareaClass" >
-	             <textarea id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>    
-           </div>
-           <br/>-->
-           
             
            <span id="activityTemplateDate"  class="defineTitleText" style="margin-bottom:10px;">Event Detail :</span> 
 
@@ -226,10 +207,6 @@
             <br/>
 
            <textarea  id="addEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
-            
-           <!--<span id="activityTemplateDate"  class="defineTitleText" >Event Detail :</span> 
-	       <textarea rows="8" class="defineTextArea" id="addEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>               
-           <br/>-->
 
             <br/>
             <br/>
@@ -304,7 +281,7 @@
               </div>                                          
     </div>
     
-    <div class="loader" id="sendEditEventLoader" style="display:none;margin-top:50%">
+    <div class="loader" id="sendEditEventLoader" style="display:none;">
           <div class="ball"></div>
     </div>
     

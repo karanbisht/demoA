@@ -367,7 +367,7 @@ app.userNotiComment = (function () {
 
             if (comment!=='' && comment!=='Reply') {
  
-            //console.log("SHOWING DATA" + org_id + "||" + notiId + "||" + comment + "||" + customerID);
+             $("#adminCommentPage").show();
                 
             var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
                    
@@ -382,16 +382,13 @@ app.userNotiComment = (function () {
                 },
                                                                       schema: {
                     data: function(data) {
-                        //console.log(data);
                         return [data];
                     }
                 },
                                                                       error: function (e) {
-                                                                          //apps.hideLoading();
-                                                                            //console.log(JSON.stringify(e));
+                                                                          $("#adminCommentPage").hide();
                                                                           app.mobileApp.pane.loader.hide();
                                                                           
-                                                                          //console.log(e);
                                                                            if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                                          }else {
@@ -411,6 +408,8 @@ app.userNotiComment = (function () {
 
                     //console.log(commentData.status[0].Msg);
                     if (commentData.status[0].Msg === 'Reply sent successfully') {
+                        $("#adminCommentPage").hide();
+                        
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Reply sent successfully');   
                         }else {
@@ -424,6 +423,7 @@ app.userNotiComment = (function () {
                         //refreshComment();
                         $("#newAdminComment").val('');
                     }else {
+                        $("#adminCommentPage").hide();
                         app.showAlert(commentData.status[0].Msg , 'Notification'); 
                     }
                     

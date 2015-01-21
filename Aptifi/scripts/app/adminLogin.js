@@ -485,7 +485,9 @@ app.adminLogin = (function () {
 
         var goToAdminDashboard = function() {            
             //app.mobileApp.pane.loader.hide();
+            
             $("#progress1").hide();
+            
             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
             app.userPosition = false;
             //app.mobileApp.navigate('#view-all-activities-admin'); 
@@ -494,7 +496,8 @@ app.adminLogin = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
             //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
-             app.mobileApp.navigate('#view-all-activities-GroupDetail');
+            
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');
 
              //app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
 

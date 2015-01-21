@@ -1,10 +1,9 @@
 <div data-role="view" id="groupNotificationShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.orgGroupListView" data-show="app.orgGroupListView.adminNotificationShow">
     <div data-role="header">
         <div data-role="navbar">
-            Org. Message
+            Messages
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>            
         </div>
     </div>
 
@@ -19,10 +18,6 @@
 <script type="text/x-kendo-template" id="adminNotiTemplate" >
     <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">
 
-        <!--<div class="user-avatar">    
-        <img src="styles/images/notification1.png" />
-        </div>-->
-
         <div class="activity-content" style="background-color:rgb(253,255,133);padding:10px;border-radius:6px;" >
             <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px; color:rgb(107,111,116);" >${title}</h2>
             #if (pid!=='0') {#
@@ -31,5 +26,5 @@
             <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->
             <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${message}</a>
         </div>
-    </div>
+    </div>    
 </script>

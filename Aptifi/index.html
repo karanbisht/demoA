@@ -40,6 +40,11 @@
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">
             <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:#ffffff;">
 
+                <div class="loader" id="progress" style="display:none;">
+                <div class="ball"></div>
+                </div>
+
+                
                 <form id="login-form" data-bind="events: { keyup: checkEnter }" class="" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
                         <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
@@ -58,10 +63,6 @@
                 </form>
             </div>
 
-            <div class="loader" id="progress" style="display:none;margin-top:75%;">
-                <div class="ball"></div>
-                <!--<div class="loading">Loading...</div>-->
-            </div>
 
             <div  data-role="view" id="regenerateDiv" class="activities-view" style=" position:absolute;right:0;background-color:#ffffff;display:none;margin:20% auto 10px auto; border-radius:6px; padding:10px 10px 10px 10px;border: 2px solid #575B5F;height:300px;width:94%;max-width:600px;overflow:hidden;">
 
@@ -152,7 +153,7 @@
         <!--data-after-show="app.OragnisationList.afterShow"-->
 
         <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show"> 
-            <div class="loader" id="progress2" style="display:none;margin-top:48%">
+            <div class="loader" id="progress2" style="display:none;">
                 <div class="ball"></div>
             </div>
 
@@ -306,6 +307,12 @@
             </div>
 
             <div data-role="content" id="contentDiv">
+
+
+                <div class="loader" id="savingDeviceCalenderLoader" style="display:none;">
+                    <div class="ball"></div>
+                 </div>
+
                 
                 <ul data-style="inset" data-role="listview" id="eventSwitchUI">                    
                     <li style="color:rgb(127,191,77);">Sync Events with Calender <input id="event-switch" data-role="switch" data-change="app.OragnisationList.onChangeEventSwitch"/></li>          
@@ -321,9 +328,6 @@
                     </div>-->
                 </div>
                 
-                 <div class="loader" id="savingDeviceCalenderLoader" style="display:none;margin-top:48%">
-                    <div class="ball"></div>
-                 </div>
 
                 <div id="appVersionDiv" class="popUpDivToShow">
 
@@ -576,7 +580,7 @@
                 </div>-->
             
             <div>
-                <div class="loader" id="progressAdmin" style="display:none;margin-top:48%">
+                <div class="loader" id="progressAdmin" style="display:none;">
                     <div class="ball"></div>
                     <!--<div class="loading1">Loading...</div>-->
                 </div>
@@ -600,7 +604,7 @@
         
 <div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-title="Message" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show" data-after-show="app.replyedCustomer.afterShow">
     
-    <div class="loader" id="loaderReplyCustomer" style="display:none;margin-top:50%">
+    <div class="loader" id="loaderReplyCustomer" style="display:none;">
         <div class="ball"></div>
         <!--<div class="loading1">Loading...</div>-->
     </div>
@@ -652,7 +656,12 @@
           <div data-role="content">
 
                 
-                <div class="loader" id="selectOrgLoader" style="display:none;margin-top:50%;">
+                <div class="loader" id="selectOrgLoader" style="display:none;">
+                    <div class="ball"></div>
+                </div>
+
+
+              <div class="loader" id="progressSendNotification" style="display:none;">
                     <div class="ball"></div>
                 </div>
 
@@ -674,11 +683,6 @@
 
                 </div>
 
-
-
-                <div class="loader" id="progressSendNotification" style="display:none;margin-top:50%">
-                    <div class="ball"></div>
-                </div>
 
                 <div id="sendNotificationDivMsg" style="display:none;overflow:hidden;margin:10px;">
 
@@ -1027,7 +1031,7 @@
 
             <li class="deleteGroupShow">
                 <label>
-                    <input type="checkbox" value="${pid}" />
+                    <input type="checkbox" class="largerCheckbox" value="${pid}" />
                     <span class="firstName">#:group_name#</span>
                 </label>
             </li>
@@ -1037,7 +1041,7 @@
         <script type="text/x-kendo-template" id="customerNameTemplate">            
             <li class="deleteGroupShow">
                 <span>
-                    <label><input type="checkbox" value="${customerID}" /> <span class="firstName">#:first_name#</span> <span class="lastName">#:last_name#</span></label>
+                    <label><input type="checkbox" class="largerCheckbox" value="${customerID}" /> <span class="firstName">#:first_name#</span> <span class="lastName">#:last_name#</span></label>
                 </span>
             </li>
         </script>

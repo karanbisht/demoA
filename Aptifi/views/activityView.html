@@ -8,11 +8,12 @@
         </div>
     </div>
 
-    <!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
+
+    <div class="loader" id="progressChat" style="display:none;">
+            <div class="ball"></div>
+    </div>
+
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">
-        <!--<div class="user-avatar">
-        <img id="orgLogoImg" />
-        </div>-->
         <div>
             <div class="notiList-content">
                 <div class="dateDisplay">
@@ -21,25 +22,16 @@
                     <span></span>
                 </div>
                 <br/>
-                <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
                 <li id="titleContainer">
-                    <!--<img src="styles/images/arrow.png" style="margin-left:-19px;"/>-->
                     <h2 id="personName" class="notiNameList" style="margin-left:0px;"></h2>
                     <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
-                    <!--<img id="notiImg" data-bind="attr: { src:attachedImg, alt: imageAlt }" />-->
                 </li>
-                <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
             </div>
             <br/>
             <div id="notiImage" style="max-height:200px;margin-top:10px;"></div>
                  <video id="notiDetailVid" width="300" height="300" controls style="display:none">
                         <source src="">
                  </video>
-        </div>
-
-        <div class="loader" id="progressChat" style="display:none;margin-top:50%">
-            <div class="ball"></div>
-            <!--<div class="loading1">Loading...</div>-->
         </div>
 
         <div id="commentListContainer" >

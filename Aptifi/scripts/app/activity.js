@@ -559,6 +559,7 @@ app.Activity = (function () {
 		// This happens because of a bug, so we ignore it.
 		// http://code.google.com/p/android/issues/detail?id=38808
 	  } else {
+          
   
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -567,14 +568,17 @@ app.Activity = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
             }else {  
+                
                 var comment = $("#newComment").val();
                 //var org_id = localStorage.getItem("UserOrgID");
                 //var customer_id = localStorage.getItem("UserID");
              
  
                 if (comment!=='' && comment!=='Reply') {
-                   // console.log("SHOWING DATA" + notiId + "||" + account_Id + "||" + org_id);
                 
+
+                    $("#progressChat").show();
+
                     var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
                    
                     var saveCommentDataSource = new kendo.data.DataSource({
@@ -600,6 +604,8 @@ app.Activity = (function () {
                                                                                                                }, "Notification", 'OK');
                                                                                   app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Reply API .');
                
+                                                                                              $("#progressChat").hide();
+
                                                                                   if (!app.checkSimulator()) {
                                                                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                                   }else {
@@ -615,6 +621,7 @@ app.Activity = (function () {
                          //   console.log(commentData.status[0].Msg);
                             //refreshComment(); 
                             if (commentData.status[0].Msg === 'Reply sent successfully') {
+                                $("#progressChat").hide();
                                 lastNotiCommentID = lastNotiCommentID + 1;
                                             $('#newComment').css('height', '30px');
 
@@ -630,6 +637,7 @@ app.Activity = (function () {
                                  
                                 $("#newComment").val('');
                             }else {
+                                $("#progressChat").hide();
                                 //app.showAlert(commentData.status[0].Msg ,'Notification'); 
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom(commentData.status[0].Msg);   

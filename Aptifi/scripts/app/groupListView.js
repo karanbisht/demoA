@@ -308,13 +308,13 @@ app.GroupList = (function () {
             var group_name = $("#newGroup").val();     
             var group_description = $("#newGroupDesc").val();
             
-            //console.log(group_name);
-            //console.log(group_description);
-            //console.log(organisationID);
-
-            //var group_status = 'A';
-            //var org_id=1; 
             
+            if (group_name === "Enter New Group Name" || group_name === "") {
+                app.showAlert("Please enter Group Name.", "Validation Error");
+            }else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
+                app.showAlert("Please enter Group Description.", "Validation Error");
+            }else{
+            $("#addGroupLoader").show();
             var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description}
             
             var dataSourceaddGroup = new kendo.data.DataSource({
@@ -333,11 +333,14 @@ app.GroupList = (function () {
                     }
                 },
                                                                    error: function (e) {
-                                                                       //apps.hideLoading();
+                                                                      $("#addGroupLoader").hide();
                                                                        console.log(e);
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                      
+                                                                       if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                       }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                       }
                                                                    }               
           
                                                                });  
@@ -347,6 +350,7 @@ app.GroupList = (function () {
                 $.each(loginDataView, function(i, addGroupData) {
                     //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Group added successfully') {         
+                         $("#addGroupLoader").hide();
                         app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);
                         $("#newGroup").val('');     
                         $("#newGroupDesc").val('');
@@ -357,10 +361,12 @@ app.GroupList = (function () {
                         }
                         //app.showAlert("Group Added Successfully", "Notification");
                     }else {
+                         $("#addGroupLoader").hide();
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
             });
+          }      
         };
                 
         var deleteGroupFunc = function() {
@@ -376,6 +382,7 @@ app.GroupList = (function () {
             
         if(groupID.length!==0 && groupID.length!=='0'){
 
+           $("#deleteGroupLoader").show();
             
             var jsonDataDelete = {"group_id":groupID ,"orgID":organisationID}
             
@@ -395,11 +402,14 @@ app.GroupList = (function () {
                     }
                 },
                                                                        error: function (e) {
-                                                                           //apps.hideLoading();
+                                                                           $("#deleteGroupLoader").hide();
                                                                            console.log(e);
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                           
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            }
                                                                        }                         
                                                                    });  
 	            
@@ -408,6 +418,7 @@ app.GroupList = (function () {
                 $.each(loginDataView, function(i, deleteGroupData) {
                     //console.log(deleteGroupData.status[0].Msg);           
                     if (deleteGroupData.status[0].Msg==='Deleted Successfully') {      
+                        $("#deleteGroupLoader").hide();
                         app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);
 
                         if (!app.checkSimulator()) {
@@ -417,6 +428,7 @@ app.GroupList = (function () {
                         }
                         //app.showAlert("Group Deleted Successfully","Notification");
                     }else {
+                        $("#deleteGroupLoader").hide();
                         app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                     }
                 });

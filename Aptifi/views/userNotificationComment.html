@@ -4,15 +4,12 @@
             Message
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>            <!--<a id="replyButton" class="nav-button nav-button-post" data-align="right" data-role="button" data-click="app.Activity.replyButton">Reply</a>-->
         </div>
     </div>
 
-    <!--data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"-->
 
-    <div class="loader" id="adminCommentPage" style="display:block;margin-top:48%">
+    <div class="loader" id="adminCommentPage" style="display:block;">
         <div class="ball"></div>
-        <!--<div class="loading1">Loading...</div>-->
     </div>
 
     <div id="status-container-adminComment" class="user-status-wrp cf" data-role="listview" data-style="inset">
@@ -25,13 +22,11 @@
                     <span></span>
                 </div>
                 <br/>
-                <!--<span id="activityDate" class="time-span" data-bind="text: CreatedAtFormatted"></span>-->
                 <li id="titleContainer">
 
                     <h2 id="personNameTitle" class="notiNameList" style="margin-left:0px;"></h2>
                     <span id="activityTextMessage" class="user-share-txt"></span>
                 </li>
-                <!--<img id="picture" class="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>-->
             </div>
             <br/>
             <div id="notiAdminImage" style="max-height:200px;margin-top:10px;"></div>
@@ -50,7 +45,6 @@
             <div style="float:left;width:86%;border-radius:6px;bacground-color:#ffffff">
                 <textarea class="replyTextArea" id="newAdminComment" placeholder="Reply" style="padding:7px 5px 1px 5px;margin-left:5px;border-radius:6px;border:none;"></textarea>
             </div>
-            <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveAdminComment"/>-->
             <a style="background:transparent;width:11%;border:none;float:right;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveAdminComment"></a>
         </div>
     </div>

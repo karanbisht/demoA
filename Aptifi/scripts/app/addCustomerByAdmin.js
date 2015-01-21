@@ -48,12 +48,11 @@ app.addCustomerByAdmin = (function () {
             
 
             var current = new Date().getTime();
-            	var delta = current - lastClickTime;
-	            lastClickTime = current;
-            	if (delta < 500) {
-		// This happens because of a bug, so we ignore it.
-		// http://code.google.com/p/android/issues/detail?id=38808
-	  } else {
+            var delta = current - lastClickTime;
+	        lastClickTime = current;
+           if (delta < 500) {
+		
+	       } else {
 
           
             app.userPosition = false;     
@@ -80,7 +79,8 @@ app.addCustomerByAdmin = (function () {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
                 app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
-            }else if(countMobile!==0){  
+            }else if(countMobile!==0){
+                $("#saveMemberLoader").show();
                 mobileArray=[];
                 mobileArray.push(mobile);
                 var count=0;
@@ -124,17 +124,17 @@ app.addCustomerByAdmin = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           
+                                                                           $("#saveMemberLoader").hide();
                                                                             //console.log(e);                                                                           
                                                                             console.log(JSON.stringify(e));           
                                                                             //alert(JSON.stringify(e));
-                                                                            app.mobileApp.pane.loader.hide();
+                                                                            //app.mobileApp.pane.loader.hide();
                                                                             
                                                                            app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
                                                                            app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));
              
                                                                             if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');   
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
                                                                             }else {
                                                                             app.showAlert("Please check your internet connection.", "Notification"); 
                                                                             }
@@ -154,6 +154,8 @@ app.addCustomerByAdmin = (function () {
                             }else {
                                 app.showAlert("Member Added Successfully", "Notification"); 
                             }
+                            
+                            $("#saveMemberLoader").hide();
                                                         
                             refreshOrgMember();
                             $regFirstName.val('');
@@ -162,6 +164,7 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else {
+                            $("#saveMemberLoader").hide();
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
                         }
                     });
@@ -170,7 +173,8 @@ app.addCustomerByAdmin = (function () {
 
                 } 
             }else{    
-                
+
+                $("#saveMemberLoader").show();
                 mobileArray=[];
                 
                 if(addMoreMobile===0){
@@ -200,20 +204,20 @@ app.addCustomerByAdmin = (function () {
                         }
                     },
                                                                        error: function (e) {
-                                                                           //apps.hideLoading();
+                                                                           $("#saveMemberLoader").hide();
                                                                            //console.log(e);
-
                                                                            console.log(JSON.stringify(e));           
-
              
                                                                            app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));
-             
+                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));             
                                                                            
-                                                                           app.mobileApp.pane.loader.hide();
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                           //app.mobileApp.pane.loader.hide();
+                                                                         
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification");
+                                                                            }
                                                                        }               
                                                                    });  
              
@@ -230,6 +234,8 @@ app.addCustomerByAdmin = (function () {
                                 app.showAlert("Member Added Successfully", "Notification"); 
                             }
                             
+                            $("#saveMemberLoader").hide();
+                            
                             
                             refreshOrgMember();
                             $regFirstName.val('');
@@ -238,7 +244,8 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else {
-                            app.showAlert(loginData.status[0].Msg , 'Notification'); 
+                            app.showAlert(loginData.status[0].Msg , 'Notification');
+                            $("#saveMemberLoader").hide();
                         }
                     });
                 });

@@ -59,7 +59,7 @@ app.orgListView = (function () {
                                                                                   //apps.hideLoading();
                                                                                   console.log(JSON.stringify(e));
                                                                                   
-                                                                                  //$("#progress1").hide();  
+                                                                                  $("#progressAdminNoti").hide();  
 
                                                                                   if (!app.checkSimulator()) {
                                                                                       window.plugins.toast.showShortBottom('Network problem . Please try again later');   

@@ -243,8 +243,15 @@ app.subGroupDetail = (function () {
             //var org_id=1; 
             var group_name = $("#editGroupName").val();     
             var group_description = $("#editGroupDesc").val();
-            //console.log(organisationID + "||" + group_name + "||" + group_description + "||" + groupID + "||" + group_status);
+                         
+            if (group_name === "Enter New Group Name" || group_name === "") {
+                app.showAlert("Please enter Group Name.", "Validation Error");
+            }else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
+                app.showAlert("Please enter Group Description.", "Validation Error");
+            }else{
             
+            
+            $("#updateSGLoader").show();
             var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description,"pid":groupID , "group_status":group_status}
                        
             var dataSourceaddGroup = new kendo.data.DataSource({
@@ -263,12 +270,14 @@ app.subGroupDetail = (function () {
                     }
                 },
                                                                    error: function (e) {
-                                                                       //apps.hideLoading();
+                                                                       $("#updateSGLoader").hide();
                                                                        //console.log(e);
                                                                        //console.log(JSON.stringify(e));
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                       if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            }
                                                                    }               
                                                                });  
 	            
@@ -277,6 +286,7 @@ app.subGroupDetail = (function () {
                 $.each(loginDataView, function(i, addGroupData) {
                     //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Group updated successfully') {  
+                     $("#updateSGLoader").hide();
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Group Updated Successfully');   
                         }else {
@@ -286,10 +296,12 @@ app.subGroupDetail = (function () {
                         app.mobileApp.navigate('views/groupListPage.html');  
                         //app.showAlert("Group Updated Successfully","Notification");
                     }else {
+                        $("#updateSGLoader").hide();
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
             });
+          }      
         };
         
         var addMemberToGroup = function() {
@@ -406,8 +418,15 @@ app.subGroupDetail = (function () {
                 //console.log(val[i]);
             });
             
-            var customer = String(customer);        
             
+         customer = String(customer);        
+            //console.log(customer);            
+                        
+         if (customer.length!==0 && customer.length!=='0') {
+            
+            //var customer = String(customer);        
+            
+            $("#addSGMemberLoader").show();
             var jsonDataAddMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID}
             
             //console.log(customer + "||" + groupID + "||" + organisationID);      
@@ -427,12 +446,14 @@ app.subGroupDetail = (function () {
                     }
                 },
                                                                     error: function (e) {
-                                                                        //apps.hideLoading();
+                                                                        $("#addSGMemberLoader").hide();
                                                                         //console.log(e);
                                                                         //console.log(JSON.stringify(e));
-                                                                        navigator.notification.alert("Please check your internet connection.",
-                                                                                                     function () {
-                                                                                                     }, "Notification", 'OK');
+                                                                        if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                        }
                                                                     }               
           
                                                                 });  
@@ -441,7 +462,8 @@ app.subGroupDetail = (function () {
                 var loginDataView = dataSourceAddMember.data();
                 $.each(loginDataView, function(i, addGroupData) {
                     //console.log(addGroupData.status[0].Msg);           
-                    if (addGroupData.status[0].Msg==='Customer Added to group successfully') {  
+                    if (addGroupData.status[0].Msg==='Customer Added to group successfully') { 
+                        $("#addSGMemberLoader").hide();
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Member Added Successfully');   
                         }else {
@@ -452,10 +474,20 @@ app.subGroupDetail = (function () {
                         //app.mobileApp.navigate('#groupMemberShow');
                         showSubGroupMembers();
                     }else {
+                        $("#addSGMemberLoader").hide();
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
-            });        
+            });
+            
+          }else {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('Please Select Member To Add.');   
+                }else {
+                    app.showAlert("Please Select Member To Add.", "Notification");  
+                }
+          }      
+    
         };
         
         var removeMemberFromGroup = function() {           
@@ -474,7 +506,14 @@ app.subGroupDetail = (function () {
                 customer[i] = $(this).val();
             });
 			
-            var customer = String(customer);        
+            
+           customer = String(customer);        
+            //console.log(customer);            
+                         
+          if (customer.length!==0 && customer.length!=='0') {
+             
+            $("#deleteSGMemberLoader").hide();  
+            //var customer = String(customer);        
             
             //console.log(customer);            
             //console.log(organisationID);
@@ -499,12 +538,14 @@ app.subGroupDetail = (function () {
                     }
                 },
                                                                        error: function (e) {
-                                                                           //apps.hideLoading();
+                                                                           $("#deleteSGMemberLoader").hide();
                                                                            //console.log(e);
                                                                            //console.log(JSON.stringify(e));
-                                                                           navigator.notification.alert("Please check your internet connection.",
-                                                                                                        function () {
-                                                                                                        }, "Notification", 'OK');
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                        }
                                                                        }               
           
                                                                    });  
@@ -514,20 +555,28 @@ app.subGroupDetail = (function () {
                 $.each(loginDataView, function(i, deleteGroupData) {
                     //console.log(deleteGroupData.status[0].Msg);           
                     if (deleteGroupData.status[0].Msg==='User removed successfully') { 
+                        $("#deleteSGMemberLoader").hide();
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showShortBottom('Member Deleted Successfully');   
                         }else {
                             app.showAlert("Member Deleted Successfully", "Notification");  
                         }
-                                   
-                        //app.showAlert("Member Deleted Successfully","Notification");
-                        //app.mobileApp.navigate('#groupMemberShow');
                         showSubGroupMembers();
                     }else {
+                        $("#deleteSGMemberLoader").hide();
                         app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
             });    
+            
+          }else {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('Please Select Member To Delete.');   
+                }else {
+                    app.showAlert("Please Select Member To Delete.", "Notification");  
+                }
+          }      
+
         };
         
         var showOrgGroupView = function() {
