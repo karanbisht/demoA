@@ -100,7 +100,7 @@ app.adminLogin = (function () {
                             }else {
                                 $("#progress1").hide();
                                 document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-                                app.showAlert(loginData.status[0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, "Notification");
                             }
                         });
                 }
@@ -158,10 +158,12 @@ app.adminLogin = (function () {
                                                        org_name:groupValue[0].orgData[i].org_name
                                                    });
                               }                           
-                             localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
+                           
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);                                
                                 
+                                callUrlForPermission();
                                 
-                                goToAdminDashboard();
+                                //goToAdminDashboard();
                                 
                                 //saveAdminOrgInfo(adminOrgInformation); 
                             }
@@ -188,6 +190,7 @@ app.adminLogin = (function () {
                                                                        });
                         
             organisationListDataSource.fetch(function() {
+
                 /*
                 var loginAdminDataView = organisationListDataSource.data();
                 $.each(loginAdminDataView, function(i, groupValue) {
@@ -202,6 +205,59 @@ app.adminLogin = (function () {
                 */
             });
         };
+        
+        
+             function callUrlForPermission (){
+            
+                var orgId = localStorage.getItem("orgSelectAdmin");
+                var account_Id = localStorage.getItem("ACCOUNT_ID");
+
+                
+                var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.serverUrl() + "customer/changeOrg/"+orgId+"/"+account_Id,
+                                                                            type:"POST",
+                                                                            dataType: "json"// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                           
+                                   
+                    }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {
+                                                                    console.log(JSON.stringify(e));
+                                                                    if (!app.checkSimulator()) {
+                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                    }else {
+                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                    }               
+                                                                }               
+                                                            });  
+	            
+                dataSourceLogin.fetch(function() {
+             	
+                    var data = this.data();
+                                         
+                    if (data[0]['status'][0].Msg==='Success') {
+                
+                        goToAdminDashboard();
+                        
+                    }else if (data[0]['status'][0].Msg==='Fail') {
+                        
+                        
+                    } 
+
+                });
+
+            }
+        
+        
+        
         
         var adminOrgProfileData;        
         function saveAdminOrgInfo(data1) {
@@ -424,10 +480,7 @@ app.adminLogin = (function () {
         };
                         
         function insertOrgGroupNotiData(tx) {
-            //var query = "DELETE FROM ADMIN_ORG_GROUP";
-            //app.deleteQuery(tx, query);
             var dataLength = orgNotiGroupDataVal.length;         
-            //alert(dataLength);
             var orgGroupData;
           
             for (var i = 0;i < dataLength;i++) {   

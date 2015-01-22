@@ -104,8 +104,8 @@ app.orgNews = (function () {
         }
     
         var showInListView = function() {
-                        $("#newsLoader").hide();
-
+                        
+            $("#newsLoader").hide();
 
             $(".km-scroll-container").css("-webkit-transform", "");
            

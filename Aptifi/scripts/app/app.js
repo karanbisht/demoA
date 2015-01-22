@@ -11,7 +11,9 @@ var app = (function (win) {
     var mobileApp;
     
     var serverUrl = function() {
-        return 'https://app.Zaff.io/webservice/';
+        //return 'https://app.Zaff.io/webservice/';
+        
+        return 'http://54.86.57.141/webservice/';
     }
 
     var showAppVersion = function() {
@@ -1409,15 +1411,14 @@ var app = (function (win) {
                                                                     });  
 	            
                     dataSourceLogin.fetch(function() {
-                        var loginDataView = dataSourceLogin.data();
+                        
+                        var data = this.data();
+                        
+                        //var loginDataView = dataSourceLogin.data();
                         //console.log(loginDataView);
                
-                        $.each(loginDataView, function(i, loginData) {
-                            //console.log(loginData.status[0].Msg);
-
-                            if (loginData.status[0].Msg==='You have been successfully logged out.') {
-                                //console.log('reg');
-                                //app.mobileApp.navigate('#organisationNotiList');                                
+                
+                            if (data[0]['status'][0].Msg==='You have been successfully logged out.') {                                
                                 app.mobileApp.navigate('views/organisationLogin.html');                                
                                 //app.flip('left', 'green', '#organisationNotiList')                                
                             }else {
@@ -1427,7 +1428,6 @@ var app = (function (win) {
                             }
 
                         });
-                    });
                 }
        }
     

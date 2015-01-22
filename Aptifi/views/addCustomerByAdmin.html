@@ -12,6 +12,13 @@
     <div class="loader" id="saveMemberLoader" style="display:none;">
         <div class="ball"></div>
     </div>
+    
+
+    <div style="padding:10px;">
+               <span>Select Group</span>                
+               <select id="multiSelectGroupName" data-placeholder="Select Group to Add Member" multiple="multiple" size=50 style='height: 100%;margin-top:10px;paddiing:5px;'></select>
+    </div>
+
 
     <div>
         <form>
@@ -30,8 +37,11 @@
                 </li>
             </ul>
             <ul id="addMemberUl" data-role="listview" data-style="inset"></ul>
-
             <a style="padding-left:10px;color:#5992CB" data-role="touch" data-bind="events: { tap: addMoreMobileNo }" >Add more</a>
+                        
+            
+            <!--<p style="color:#343434;font-size:1.2rem;">Select Group to Add Member </p>
+            <div id="groupInAddCustomer" class="k-listview" style="border:none"> </div>-->            
         </form>
     </div>
     
@@ -39,3 +49,14 @@
         Save
     </li>
 </div> 
+
+        <!--<script type="text/x-kendo-template" id="groupNameTemplate"> 
+            <li class="deleteGroupShow">
+                <label>
+                    <input type="checkbox" class="largerCheckbox" value="${pid}" />
+                    <span class="firstName">#:group_name#</span>
+                </label>
+            </li>
+        </script>-->
+
+

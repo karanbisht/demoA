@@ -117,8 +117,14 @@ app.GroupList = (function () {
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
-                                     app.LogoutFromAdmin(); 
+                                     //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
+                                     //app.LogoutFromAdmin(); 
+                                    
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
                                                                                            
                                 }else if (data[0]['status'][0].Msg==='Success') {
                                      $("#tabDeleteGroup").show();

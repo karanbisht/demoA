@@ -65,14 +65,11 @@ app.sendNotification = (function () {
                                                                            data: groupDataShowOffline
                                                                        });                           
              
-            //console.log(organisationListDataSource);
-             
             $("#organisation-Name-listview").kendoMobileListView({
                                                                      template: kendo.template($("#orgNameTemplate").html()),    		
                                                                      dataSource: organisationListDataSource
-                                                                 });
-                
-            //console.log('showwwwwwwwwww');
+                                                                 });                
+          
             $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
             $("#selectOrgDiv").show();
         };
@@ -81,8 +78,7 @@ app.sendNotification = (function () {
             
             app.MenuPage = false;
             app.userPosition = false;
-            
-   
+              
             $("#notificationType").kendoComboBox({
             dataTextField: "text",
             dataValueField: "value",
@@ -105,8 +101,6 @@ app.sendNotification = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
             
-
-
             $("#scheduleDatePicker").parent().css('width',"160px");
             $("#scheduleTimePicker").parent().css('width',"160px");
             $("#scheduleDatePicker").removeClass( "k-input" );
@@ -162,7 +156,6 @@ app.sendNotification = (function () {
             
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
-            //$("#selectTypeDiv").hide();
             $("#sendNotificationDivMsg").hide();
             $("#sendNotiDiv").hide();
             $("#selectCustomerToSend").hide();
@@ -299,14 +292,6 @@ app.sendNotification = (function () {
                 //console.log(cmmt_allow);
                 var notificationValue = $("#notificationDesc").val();
                 var titleValue = $("#notificationTitleValue").val();
-                //alert(titleValue +"||"+notificationValue);            
-             
-                //console.log(notificationValue + "||" + titleValue + "||" + type + "||" + cmmt_allow + "||" + cmbGroup + "||" + cmbCust + "||" + org_id);
-                   
-                //alert(cmbGroup);
-                //alert(cmbCust);
-
-                //console.log(scheduleDate + "||" + scheduleTime + "||" + sending_option);
                
                 if (scheduleDiv===1) {
                     sending_option = 'later';    
@@ -318,9 +303,6 @@ app.sendNotification = (function () {
                     var month = values[0]; // globle variable
                     var day = values[1];
                     var year = values[2];
-                                  
-                    //console.log('------------------date=---------------------');
-                    //console.log(year + "||" + month + "||" + day);
                
                     var schedule_Time = $("#scheduleTimePicker").val();
                
@@ -346,30 +328,8 @@ app.sendNotification = (function () {
                                                  
                     tasks = +new Date(year + "/" + month + "/" + day + " " + Hour + ":" + minute + ":" + second);
                                   
-                    //console.log(tasks);
- 
-                    //console.log(schedule_Date + "||" + schedule_Time);
-                                  
-                    /*console.log('------------------date=---------------------');
-                    console.log(year+"||"+month+"||"+day);
-                                  
-                    tasks[+new Date(year+"/"+month+"/"+day)] = "ob-done-date";
-                                  
-                    console.log(tasks);
-                                  
-                    //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
-                                 
-                    if(day<10){
-                    day = day.replace(/^0+/, '');                                     
-                    }
-                    var saveData = month+"/"+day+"/"+year;
-                    */
-
-                    //console.log('1');
                     var sendNotificationTime = new Date(schedule_Date + " " + schedule_Time);     
-                   
-                    //var unixtime = Date.parse(schedule_Date+" "+schedule_Time).getTime()/1000
-                   //console.log(sendNotificationTime);
+
                 }else {
                     tasks = '';  
                     sending_option = 'now';    
@@ -423,13 +383,9 @@ app.sendNotification = (function () {
                         }    
                                                 
                         var filename = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
-                            //console.log(filename);
-                            //alert(filename);      
+
                         var path =  dataToSend;
-                            //console.log(path);
-                            //alert(path);
                         
-                            //alert(upload_type);
                         
                         if(upload_type==="image" && vidFmAndroid===1){
                                  if(filename.indexOf('.') === -1)
@@ -491,8 +447,6 @@ app.sendNotification = (function () {
                                 }
                             },
                                                                                        error: function (e) {
-                                                                                           //apps.hideLoading();
-                                                                                           //console.log(e);
                                                                                            //console.log(JSON.stringify(e));
                
                                                                                            if (!app.checkSimulator()) {
@@ -617,6 +571,8 @@ app.sendNotification = (function () {
             }
         }
          
+        var groupDataShow;
+        
         var sendNotificationOrg = function(e) {
             
             $("#selectOrgLoader").show();
@@ -638,53 +594,8 @@ app.sendNotification = (function () {
                 },
                                                                          schema: {               
                     data: function(data) {
-                        //console.log(data);
-                        var groupDataShow = [];
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-
-                            //console.log(groupValue[0].Msg);
-                            
-                            if (groupValue[0].Msg==='No Group list') {
-                                $("#selectGroupDiv").hide();
-                                $("#selectGroupFooter").hide();
-
-                                $("#selectOrgDiv").hide();
-                                noGroup = 1;        
-                                         
-                                localStorage.setItem("SELECTED_GROUP", 0); 
-                                escapeGroupGoCustClick();
-                                
-                            }else if(groupValue[0].Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin();     
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                            }else {
-                                var orgLength = groupValue[0].groupData.length;
-                                for (var j = 0;j < orgLength;j++) {
-                                    groupDataShow.push({
-                                                           group_desc: groupValue[0].groupData[j].group_desc,
-                                                           group_name: groupValue[0].groupData[j].group_name,
-                                                           group_status:groupValue[0].groupData[j].group_status,
-                                                           org_id:groupValue[0].groupData[j].org_id,
-                                                           pid:groupValue[0].groupData[j].pid
-
-                                                       });
-                                }
-                                
-                                //console.log(groupDataShow);
-                                
-                                $("#selectOrgDiv").hide();
-                                $("#selectGroupDiv").show();
-                                $("#selectGroupFooter").show();
-                                $("#selectOrgLoader").hide();
-
-                            }
-                        });
-                       
-                        //console.log(groupDataShow);
-                        return groupDataShow;                       
+                        console.log(data);
+                        return [data];                       
                     }
                 },
                                                                          error: function (e) {
@@ -712,40 +623,90 @@ app.sendNotification = (function () {
                                                                      });
                           
 
-            $("#group-Name-listview").kendoListView({
+            
+            comboGroupListDataSource.fetch(function(){                                                       
+                groupDataShow = [];
+                 var data = this.data();                
+                                            
+                            if (data[0]['status'][0].Msg==='No Group list') {
+                                $("#selectGroupDiv").hide();
+                                $("#selectGroupFooter").hide();
+
+                                $("#selectOrgDiv").hide();
+                                noGroup = 1;        
+                                         
+                                localStorage.setItem("SELECTED_GROUP", 0); 
+                                escapeGroupGoCustClick();
+                                
+                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin();
+             
+                                   if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+
+                                
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                            }else {
+                                var orgLength = data[0].status[0].groupData.length;
+                                for (var j = 0;j < orgLength;j++) {
+                                    groupDataShow.push({
+                                                           group_desc: data[0].status[0].groupData[j].group_desc,
+                                                           group_name: data[0].status[0].groupData[j].group_name,
+                                                           group_status:data[0].status[0].groupData[j].group_status,
+                                                           org_id:data[0].status[0].groupData[j].org_id,
+                                                           pid:data[0].status[0].groupData[j].pid
+                                                       });
+                                }
+                                
+                                //console.log(groupDataShow);
+                                
+                                $("#selectOrgDiv").hide();
+                                $("#selectGroupDiv").show();
+                                $("#selectGroupFooter").show();
+                                $("#selectOrgLoader").hide();
+
+                            }  
+                
+                showDataInTemplate();
+
+            });
+            
+            
+             
+                        
+        };
+        
+        
+        var showDataInTemplate = function(){
+            
+             $(".km-scroll-container").css("-webkit-transform", "");
+           
+            var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });      
+            
+                        $("#group-Name-listview").kendoListView({
                                                         template: kendo.template($("#groupNameTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
                                                     });
              
             app.mobileApp.pane.loader.hide();
-             
-            var UserModel = {
-                id: 'Id',
-                fields: {
-                    mobile: {
-                            field: 'mobile',
-                            defaultValue: ''
-                        },
-                    first_name: {
-                            field: 'first_name',
-                            defaultValue: ''
-                        },
-                    email: {
-                            field: 'email',
-                            defaultValue:''
-                        },
-                    last_name: {
-                            field: 'last_name',
-                            defaultValue:''
-                        },
-                    customerID: {
-                            field: 'customerID',
-                            defaultValue:''
-                        }
 
-                }
-            };
-             
+            getCustomerForOrg();
+        }
+
+        var groupDataShowCustomer=[];        
+        
+        var getCustomerForOrg = function(){
+
+
+            var org = localStorage.getItem("orgSelectAdmin");
+
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
@@ -756,44 +717,10 @@ app.sendNotification = (function () {
                                                                          }
                 },
                                                                  schema: {
-                    model: UserModel,
                     data: function(data) {
-                        //console.log(data);                      
-                        var groupDataShowCustomer = [];
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-                                     
-                            $.each(groupValue, function(i, orgVal) {
-                                //console.log(orgVal);
-
-                                if (orgVal.Msg ==='No Customer in this organisation') {     
-                                    noCustomer = 1;
-                                    escapeGroupClick();
-                                }else if (orgVal.Msg==='Success') {
-                                    //console.log(orgVal.allCustomer.length);  
-                                    for (var i = 0;i < orgVal.allCustomer.length;i++) {
-                                        groupDataShowCustomer.push({
-                                                                       mobile: orgVal.allCustomer[i].uacc_username,
-                                                                       first_name: orgVal.allCustomer[i].user_fname,
-                                                                       email:orgVal.allCustomer[i].user_email,  
-                                                                       last_name : orgVal.allCustomer[i].user_lname,
-                                                                       customerID:orgVal.allCustomer[i].custID,
-                                                                       account_id:orgVal.allCustomer[i].account_id,
-                                                                       orgID:orgVal.allCustomer[i].orgID
-                                                                   });
-                                    }     
-                                }else if(orgVal.Msg==="You don't have access"){
-                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                     app.LogoutFromAdmin(); 
-                                    //app.mobileApp.navigate('views/organisationLogin.html');                                     
-                                } 
-                            });
-                        });
-                       
-                        //console.log(groupDataShowCustomer);
-                        return groupDataShowCustomer;
+                        console.log(data);                                         
+                        return [data];
                     }
-
                 },
                                                                  error: function (e) {
                                                                      //console.log(e);
@@ -819,15 +746,59 @@ app.sendNotification = (function () {
                                                                                                                     });               
                                                                  }	        
                                                              });         
+            
+            
+            MemberDataSource.fetch(function(){
+
+                groupDataShowCustomer = [];
+                var data = this.data();
+                
+                     
+                                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
+                                    noCustomer = 1;
+                                    escapeGroupClick();
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                                    //console.log(orgVal.allCustomer.length);  
+                                    for (var i = 0;i < data[0].status[0].allCustomer.length;i++) {
+                                        groupDataShowCustomer.push({
+                                                                       mobile: data[0].status[0].allCustomer[i].uacc_username,
+                                                                       first_name: data[0].status[0].allCustomer[i].user_fname,
+                                                                       email:data[0].status[0].allCustomer[i].user_email,  
+                                                                       last_name : data[0].status[0].allCustomer[i].user_lname,
+                                                                       customerID:data[0].status[0].allCustomer[i].custID,
+                                                                       account_id:data[0].status[0].allCustomer[i].account_id,
+                                                                       orgID:data[0].status[0].allCustomer[i].orgID
+                                                                   });
+                                    }     
+                                }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                     app.LogoutFromAdmin(); 
+                                    //app.mobileApp.navigate('views/organisationLogin.html');                                     
+                                } 
+                     
+                showCustomerInTemplate();
+            });
                      	                     
-                $("#customer-Name-listview").kendoListView({
+   
+        }
+        
+        
+        var showCustomerInTemplate = function(){
+            
+            
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+            var MemberDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShowCustomer
+                                                                       });           
+
+                         $("#customer-Name-listview").kendoListView({
                                                            dataSource: MemberDataSource,
-                                                           template: kendo.template($("#customerNameTemplate").html()),
-                                                           schema: {
-                    model:  UserModel
-                }			
+                                                           template: kendo.template($("#customerNameTemplate").html())
                                                        });
-        };
+   
+        }
          
         var skipToSeletType = function() {
             $("#selectCustomerToSend").hide();
@@ -1062,7 +1033,7 @@ app.sendNotification = (function () {
             // Show the captured photo
             // The inline CSS rules are used to resize the image
             
-            videoAttached.src = videoURI;
+            videoAttached.src = 'styles/images/videoPlayIcon.png';
             dataToSend = videoURI;    
             upload_type= "video";
             

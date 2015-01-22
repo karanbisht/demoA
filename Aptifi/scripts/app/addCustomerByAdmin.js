@@ -27,6 +27,7 @@ app.addCustomerByAdmin = (function () {
         
         // Navigate to activityView When some activity is selected
 
+        
         var addNewRegistration = function (e) {
             app.userPosition = false;
             $regFirstName.val('');
@@ -38,10 +39,168 @@ app.addCustomerByAdmin = (function () {
             countMobile=0;
             firstTime=0;
             mobileArray=[];
-            $("#addMemberUl").empty();
+            
+            //$("#orgGroupCombo").kendoComboBox();            
+            
+            getGroupToShowInCombo();
+                      
         };
         
+        var groupDataShow;        
         
+        var getGroupToShowInCombo = function(e) {
+            
+            var org = localStorage.getItem("orgSelectAdmin");
+             
+            var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                         transport: {
+                    read: {
+                                                                                     url: app.serverUrl() + "group/adminGroup/" + org +"/A",
+                                                                                     type:"POST",
+                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
+                                                                                 }
+                },
+                                                                         schema: {               
+                    data: function(data) {
+                        console.log(data);
+                        return [data];                       
+                    }
+                },
+                                                              error: function (e) {
+                                                                            console.log(JSON.stringify(e));
+                                                                             $("#selectOrgLoader").hide();
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#group-Name-listview").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
+                                                                         },       
+                                                                         sort: { field: 'add', dir: 'desc' }    	     
+                                                                     });
+                          
+
+            
+            comboGroupListDataSource.fetch(function(){                                                       
+                groupDataShow = [];
+                 var data = this.data();                
+                                            
+                            if (data[0]['status'][0].Msg==='No Group list') {
+                                         
+                                
+                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin();             
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+                                
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                            }else {
+                                var orgLength = data[0].status[0].groupData.length;
+                                for (var j = 0;j < orgLength;j++) {
+                                    groupDataShow.push({
+                                                           //group_desc: data[0].status[0].groupData[j].group_desc,
+                                                           group_name: data[0].status[0].groupData[j].group_name,
+                                                           //group_status:data[0].status[0].groupData[j].group_status,
+                                                           //org_id:data[0].status[0].groupData[j].org_id,
+                                                           pid:data[0].status[0].groupData[j].pid
+                                                       });
+                                }                                
+                            }  
+                
+                showGroupDataInTemplate();
+
+            });
+                                  
+        };
+
+
+        var showGroupDataInTemplate = function(){
+
+            console.log(groupDataShow);
+            
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+               var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });              
+           
+            
+            $("#groupInAddCustomer").kendoListView({
+                                                        template: kendo.template($("#groupNameTemplate").html()),    		
+                                                        dataSource: comboGroupListDataSource
+            });
+            
+            
+               $("#multiSelectGroupName").kendoMultiSelect({
+                     dataTextField: "group_name",
+                     dataValueField: "pid",
+                     select:onSelectGroupData,
+                     dataSource: comboGroupListDataSource
+               });
+           
+            
+               /*$("#multiSelectGroupName").kendoMultiSelect({
+                        data: groupDataShow
+                   });
+           
+            
+                $("#multiSelectGroupName").kendoListView({
+                                                        template: kendo.template($("#groupNameTemplate").html()),    		
+                                                        dataSource: comboGroupListDataSource
+               });*/
+           
+           /*
+            $("#multiSelectGroupName").kendoMultiSelect({
+                        dataTextField: "ContactName",
+                        dataValueField: "CustomerID",
+                        headerTemplate: '<div class="dropdown-header">' +
+                                '<span class="k-widget k-header">Photo</span>' +
+                                '<span class="k-widget k-header">Contact info</span>' +
+                            '</div>',
+                        itemTemplate: '<span class="k-state-default"></span>' +
+                                  '<span class="k-state-default"><h3>#: data.ContactName #</h3><p>#: data.CompanyName #</p></span>',
+                        tagTemplate:  '<img class="tag-image" src=\"../content/web/Customers/${data.CustomerID}.jpg\" alt=\"${data.CustomerID}\" />' +
+                                      '#: data.ContactName #',
+                        dataSource: comboGroupListDataSource,
+                        
+                        height: 300
+                    });
+
+                    var customers = $("#multiSelectGroupName").data("kendoMultiSelect");
+                    customers.wrapper.attr("id", "customers-wrapper");
+
+            */                                               
+        }
+        
+        function onchangeGroupData(e){
+          console.log(e);   
+        }
+        
+
+        function onSelectGroupData(e) {            
+            /*var item = e.item;
+            console.log(item);
+            var text = item.text();
+            console.log(text);
+            var value = item.val();
+            console.log(value);
+            var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
+            console.log(multiSelect);*/
+       };       
         
         var lastClickTime = 0;
         var registerR = function() {
@@ -66,7 +225,29 @@ app.addCustomerByAdmin = (function () {
             }else{
               firstTime++;  
             }
+               
+            var group = [];		    
+            /*$(':checkbox:checked').each(function(i) {
+                group[i] = $(this).val();
+            });            
+            group = String(group);*/        
             
+            //console.log(group);
+               
+
+            var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
+            //console.log(multiSelect.length);
+            
+            for(var i=0;i<multiSelect.length;i++){
+               //console.log(multiSelect[i].pid);
+               group.push(multiSelect[i].pid); 
+            }
+               
+            group = String(group);               
+            console.log(group);
+               
+   
+               
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", "Validation Error");
             }else if (lname === "Last Name" || lname === "") {
@@ -78,7 +259,9 @@ app.addCustomerByAdmin = (function () {
             } else if (mobile === "Mobile Number" || mobile === "") {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
+                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");
+            }else if(group.length===0 || group.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
             }else if(countMobile!==0){
                 $("#saveMemberLoader").show();
                 mobileArray=[];
@@ -99,13 +282,9 @@ app.addCustomerByAdmin = (function () {
 
                 if(count===countMobile){
                     //alert('inside');
-                    
-                                    //console.log(mobileArray);
-
-
-                                    var jsonDataRegister;
+                    var jsonDataRegister;
                           
-                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID} 
+                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group} 
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {
@@ -186,7 +365,7 @@ app.addCustomerByAdmin = (function () {
                 //console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
                 var jsonDataRegister;
                           
-                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID} 
+                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group} 
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {

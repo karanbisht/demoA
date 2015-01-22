@@ -1333,7 +1333,7 @@ app.adminEventCalender = (function () {
             // Show the captured photo
             // The inline CSS rules are used to resize the image
             
-            videoAttached.src = videoURI;
+            videoAttached.src = 'styles/images/videoPlayIcon.png';
             eventDataToSend = videoURI;    
             upload_type= "video";
             
@@ -1468,7 +1468,7 @@ app.adminEventCalender = (function () {
 
             var videoAttachedEdit = document.getElementById('attachedEditVidEvent');
             videoAttachedEdit.style.display = 'block';
-            videoAttachedEdit.src = videoURI;
+            videoAttachedEdit.src = 'styles/images/videoPlayIcon.png';
             
             eventDataToSend = videoURI;    
             upload_type_edit= "video";

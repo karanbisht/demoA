@@ -68,8 +68,8 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';
-            //var device_id = localStorage.getItem("deviceTokenID");          
+            //var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';
+            var device_id = localStorage.getItem("deviceTokenID");          
             //console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
@@ -554,8 +554,8 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';                    
-                    //var device_id = localStorage.getItem("deviceTokenID");                          
+                    //var device_id='APA91bEeQcGQvIG5eaFNCnKTFzw1IKQd5UuRX4Spz5SX_jpneLuQNBjQ9lx68foBek1BtwOGUh1081KEFnSoZFWiiEJVVrIocjY3_NbJB4oE5OBfkP4oa5RjG3J--LIq0DOcFdQ5GfC_Kro541NLXTvpdq4CyLhkhA';                    
+                    var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}       

@@ -655,7 +655,7 @@
 
                 <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;">
 
-                    <p style="color:#343434;">Select Group to send Notification to particular group </p>
+                    <p style="color:#343434;font-size:1.2rem;">Select Group to send Notification to particular group </p>
 
                     <div id="group-Name-listview" class="k-listview" style="border:none"> </div>
 
@@ -664,7 +664,7 @@
 
                 <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;">
 
-                    <p style="color:#343434;">Select Customer to send Notification</p>
+                    <p style="color:#343434;font-size:1.2rem;">Select Customer to send Notification</p>
 
                     <div id="customer-Name-listview" class="k-listview" style="border:none;"> </div>
 
@@ -796,10 +796,11 @@
                     </span>-->
                               
                                             
-                        <video id="attachedVidNoti" width="50" height="30" controls style="display:none;position:absolute;margin-left:45px;margin-top:-12px;">
+                        <!--<video id="attachedVidNoti" width="50" height="30" controls style="display:none;position:absolute;margin-left:45px;margin-top:-12px;">
                              <source src="" type="">
-                        </video>
-                          
+                        </video>-->
+                      
+                    <img id="attachedVidNoti" src="" alt="" align="right"  style="height:30px; width:50px;margin-left:10px;float:left;border:none;display:none" />
 
                     <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage"/>
 
@@ -807,7 +808,6 @@
 
                 </div>
             </div>
-
         </div>
 
         <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:140px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-title="Zaffio" data-views="['view-all-activities-GroupDetail','subGroupMemberReplyShow','sendNotificationDiv','#organisationNotiList']">
@@ -855,7 +855,7 @@
                 for(i=0;i<objectLength;i++){
                     var orgId = adminOrgDataval[i].organisationID;
                     var org_name = adminOrgDataval[i].org_name;
-                    $("#dynamicLi").append('<li style="border-bottom: 1px solid #f5f7f8;"><a id="ID" style="padding:15px 10px 15px 10px;" data-transition="none" data-role="button" onclick="selectOrgFmDrawer('+i+')">'+org_name+'</a></li>');
+                    $("#dynamicLi").append('<li style="border-bottom: 1px solid #f5f7f8;"><a id="ID" style="padding:15px 10px 15px 10px;" data-transition="none" data-role="button" onclick="callUrlForPermission('+i+')">'+org_name+'</a></li>');
                 }
                  
                 $("#dynamicLi").hide().slideDown({duration: 500});
@@ -865,10 +865,61 @@
                 $( "#dynamicLi" ).slideUp("slow");
               }                                  
             }
+            
+            function callUrlForPermission (value){
+            
+               var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                    
+                //console.log(arrayval);       
+        
+                var orgId = arrayval[value].id;
+                var account_Id = localStorage.getItem("ACCOUNT_ID");
 
+                
+                var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.serverUrl() + "customer/changeOrg/"+orgId+"/"+account_Id,
+                                                                            type:"POST",
+                                                                            dataType: "json"// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                           
+                                   
+                    }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {
+                                                                    console.log(JSON.stringify(e));
+                                                                    if (!app.checkSimulator()) {
+                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                    }else {
+                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                    }               
+                                                                }               
+                                                            });  
+	            
+            dataSourceLogin.fetch(function() {
+             	
+                var data = this.data();
+                                         
+                    if (data[0]['status'][0].Msg==='Success') {
+                
+                        selectOrgFmDrawer(value);
+                        
+                    }else if (data[0]['status'][0].Msg==='Fail') {
+                        
+                        
+                    } 
+
+                });
+
+            }
                             
                 function selectOrgFmDrawer(data){
-                    var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);
+                    var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                    
                     console.log(arrayval);       
         
                     var orgId = arrayval[data].id;

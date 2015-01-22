@@ -70,9 +70,17 @@ app.groupDetail = (function () {
                                 localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
                                                      
                             }else if(groupValue[0].Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin();    
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin();    
+
                                 
+                                
+                                if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+
                                     //app.mobileApp.navigate('views/organisationLogin.html');   
                                     //localStorage.setItem("loginStatusCheck", 1);                                
                                 
@@ -421,8 +429,16 @@ app.groupDetail = (function () {
                                                            });
                                     }     
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
-                                    app.LogoutFromAdmin(); 
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
+                                    //app.LogoutFromAdmin();
+                                    
+
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+
                                     
                                     //app.mobileApp.navigate('views/organisationLogin.html');   
                                     //localStorage.setItem("loginStatusCheck", 1);                                

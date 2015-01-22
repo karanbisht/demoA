@@ -18,7 +18,7 @@ app.replyedCustomer = (function () {
         
         var show = function(e) {
             app.MenuPage = false;
-         
+            groupDataShow=[];
             app.mobileApp.pane.loader.hide();
 
             $("#loaderReplyCustomer").show();
@@ -78,10 +78,15 @@ app.replyedCustomer = (function () {
                                 
                 if(data[0]['status'][0].Msg==="You don't have access"){                                    
             
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin(); 
                                     
-                                                               
+                                                                        if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+                           
                                       
                                 }else if (data[0]['status'][0].Msg ==='No list found') {   
                                     groupDataShow.push({
@@ -119,31 +124,25 @@ app.replyedCustomer = (function () {
                                                                user_id:data[0].status[0].customerList[i].user_id
                                                            });
                                     }  
-                                     showMemberDataInTemp();
                                 } 
- 
+                
+                showMemberDataInTemp(); 
             });
-            
-           
-            
         };
         
         var showMemberDataInTemp = function(){
-
-            app.mobileApp.pane.loader.hide();
-    	    
-               $(".km-scroll-container").css("-webkit-transform", "");
-             
+            app.mobileApp.pane.loader.hide();    	    
+            $(".km-scroll-container").css("-webkit-transform", "");             
             var memberListDataSource = new kendo.data.DataSource({
-                                                                           data: groupDataShow
-                                                                       });           
+                     data: groupDataShow
+            });           
             
             $("#reply-customer-listview").kendoMobileListView({
-                                                                  dataSource: memberListDataSource,
-                                                                  template: kendo.template($("#replyCustomerTemplate").html())
-                                                                
+                                    dataSource: memberListDataSource,
+                                    template: kendo.template($("#replyCustomerTemplate").html())       
                                                               });
-             $('#reply-customer-listview"').data('kendoMobileListView').refresh();
+            
+            $("#reply-customer-listview").data('kendoMobileListView').refresh();
 
             app.mobileApp.pane.loader.hide();
 

@@ -2830,6 +2830,14 @@ float:right;
 }
 
 
+.docsUpload {position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.4); text-align:center;}
+.uploadBar {margin:3% 5% 4%; text-align:left;}
+.clear{ clear:both}
+.cancelUpld {/* Safari 4-5, Chrome 1-9 */ background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#cbcbcb), to(#e7e7e7)); /* Safari 5.1, Chrome 10+ */ background: -webkit-linear-gradient(top, #e7e7e7, #cbcbcb); /* Firefox 3.6+ */ background: -moz-linear-gradient(top, #e7e7e7, #cbcbcb); /* IE 10 */ background: -ms-linear-gradient(top, #e7e7e7, #cbcbcb); /* Opera 11.10+ */ background: -o-linear-gradient(top, #e7e7e7, #cbcbcb); border:1px solid #808080;color:#000; font-size:1em; -moz-box-shadow: inset 0px 0px 1px #7a9e0e;-webkit-box-shadow: inset 0px -1px 1px #7a9e0e;box-shadow: inset 0px 0px 1px #7a9e0e; border-radius:3px; padding:0.72em 2em; border:1px solid #808080; z-index:1000; margin:0; display:inline-block;}
+#tabstrip-download-file.modal-mess-Popup, #tabstrip-upload-file.modal-mess-Popup { padding: 0;width: 98%;margin: 0 0 0 1.3%;height:20%;}
+
+
+
 
 /*.km-android input
 {
