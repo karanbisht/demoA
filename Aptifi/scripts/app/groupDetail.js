@@ -415,6 +415,10 @@ app.groupDetail = (function () {
                                                            orgID:'0'
                                                        });     
                                     $("#adminRemoveMember").hide();
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
                                 }else if (data[0]['status'][0].Msg==='Success') {
                              
                                     for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
@@ -557,6 +561,11 @@ app.groupDetail = (function () {
 
                         //app.showAlert("Group Updated Successfully","Notification");
                         app.mobileApp.navigate('views/groupListPage.html');
+                    }else if(addGroupData.status[0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
@@ -732,10 +741,8 @@ app.groupDetail = (function () {
                                 window.plugins.toast.showShortBottom('Member Deleted Successfully');   
                             }else {
                                 app.showAlert("Member Deleted Successfully", "Notification");  
-                            }
-                               
-                            $("#deleteMemberLoader").hide();
-                            
+                            }                               
+                            $("#deleteMemberLoader").hide();                            
                             //app.showAlert("Member Deleted Successfully","Notification");
                             app.mobileApp.navigate('#groupMemberShow');
                             refreshOrgMember();
@@ -778,18 +785,24 @@ app.groupDetail = (function () {
         };
 
         var alernateMobileVal;
-        
+
+        var adminAllGroupArray=[];
+        var customerGroupArray=[];
+        var EditGroupArrayMember=[];
+
         var editMemberShow = function(e) {
             e.preventDefault();
             
             $(".km-scroll-container").css("-webkit-transform", "");  
-
             $("#adminEditCustomer").show();            
             $("#editOrgMemberContent").hide();
             
             alernateMobileVal = 0;
             countMobile = 0;
             alternateNumInfo = [];
+            adminAllGroupArray=[];
+            customerGroupArray=[];
+            EditGroupArrayMember=[];
             mobileArray = [];
             $("#showAlternateList").show();
             $("#alternateMobileList").empty();
@@ -858,15 +871,118 @@ app.groupDetail = (function () {
                         }else {
                             $("#showAlternateList").hide();
                         }  
+                        
+                        if(addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined){
+                            adminAllGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].AdminGroup.length;i++) {
+
+                                adminAllGroupArray.push({
+                                                          group_name: addGroupData.status[0].AdminGroup[i].group_name,
+                                                          pid: addGroupData.status[0].AdminGroup[i].pid
+                                                      });
+
+                            }
+                        }
+                        
+                        if(addGroupData.status[0].customerGroup.length!==0 && addGroupData.status[0].customerGroup.length!==undefined){
+                            customerGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].customerGroup.length;i++) {
+
+                                customerGroupArray.push({
+                                                          pid: addGroupData.status[0].customerGroup[i].groupID
+                                                      });
+
+                            }
+                        }
+                        
+                        
+                        var allGroupLength = adminAllGroupArray.length;
+                        var allCustomerLength = customerGroupArray.length;                        
+                        for (var i = 0;i < allGroupLength;i++) {       
+             
+                            adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);
+                            //console.log(adminAllGroupArray[i].pid);
+                            //console.log(customerGroupArray);
+                            //alert(adminAllGroupArray[i].pid);
+                            
+                          for(var j=0;j<allCustomerLength;j++){
+                            //alert(customerGroupArray[j].pid);
+                            //var pos = $.inArray(parseInt(adminAllGroupArray[i].pid), customerGroupArray[j].pid);           
+		                    //console.log(pos); 
+                            //console.log("---------------------------------");
+                            //alert(JSON.stringify(joinOrgID));
+                            //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
+         
+                            if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
+                                //alert(i);
+                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:'checked'
+                                                      });
+                            }else {
+                                //alert(i);
+                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                
+                                EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:''
+                                                      });        
+                            }  
+                          }
+                        }
+                                                
+                    }else if(addGroupData.status[0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
-
+                    //console.log('------------------');
+                    console.log(EditGroupArrayMember);
+                    
+                               
+                                /*var comboEditGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: EditGroupArrayMember
+                                                                       }); */                        
+            
+                                $("#groupInEditMember").kendoListView({
+                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+                                                        dataSource: EditGroupArrayMember
+                                });
+ 
+                    
                     $("#adminEditCustomer").hide();            
                     $("#editOrgMemberContent").show();
                 });
             });
+            
+             //showGroupDataToEditInTemplate();   
         }
+        
+        
+        
+        
+        /*function showGroupDataToEditInTemplate(){
+           
+            console.log(EditGroupArrayMember);            
+            
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+            var comboEditGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: EditGroupArrayMember
+                                                                       });                         
+            
+            $("#groupInEditMember").kendoListView({
+                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+                                                        dataSource: comboEditGroupListDataSource
+            });
+        }*/
+
         
         var userMessageTab = function(e) {
             e.preventDefault();
@@ -957,6 +1073,14 @@ app.groupDetail = (function () {
             var mobile = $("#staticMobile").val();
             var alterEditMob = $("#editMobileAlterPage").val();
             
+            
+            var groupEdit = [];		    
+            $(':checkbox:checked').each(function(i) {
+                groupEdit[i] = $(this).val();
+            });            
+            groupEdit = String(groupEdit);             
+            console.log(groupEdit);
+            
             var organisationID=localStorage.getItem("orgSelectAdmin");
             
             if (fname === "First Name" || fname === "") {
@@ -971,6 +1095,8 @@ app.groupDetail = (function () {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
                 app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
+            }else if(groupEdit.length===0 || groupEdit.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
             }else if (countMobile!==0) {  
                 if (alterEditMob=== "Mobile Number" || alterEditMob === "") {
                     app.showAlert("Please enter your Mobile Number.", "Validation Error");
@@ -1004,7 +1130,7 @@ app.groupDetail = (function () {
                         //alert(localStorage.getItem("orgSelectAdmin"));
                         //alert(organisationID);
                         
-                        jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname} 
+                        jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname,"cmbGroup":groupEdit} 
        
                         //console.log(jsonDataRegister);
                         
@@ -1068,7 +1194,7 @@ app.groupDetail = (function () {
                 
                 //var jsonDataRegister;
 
-                jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID} 
+                jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID,"cmbGroup":groupEdit} 
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {

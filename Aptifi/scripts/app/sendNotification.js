@@ -518,6 +518,10 @@ app.sendNotification = (function () {
                                     //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
                                    
                                     app.callAdminOrganisationList();
+                                }else if(notification.status[0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
                                 }else {
                                     app.showAlert(notification.status[0].Msg , 'Notification'); 
                                     $("#progressSendNotification").hide();
@@ -587,7 +591,7 @@ app.sendNotification = (function () {
             var comboGroupListDataSource = new kendo.data.DataSource({
                                                                          transport: {
                     read: {
-                                                                                     url: app.serverUrl() + "group/index/" + org,
+                                                                                     url: app.serverUrl() + "group/adminGroup/" + org +"/A",
                                                                                      type:"POST",
                                                                                      dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
                                                                                  }
@@ -638,7 +642,10 @@ app.sendNotification = (function () {
                                 localStorage.setItem("SELECTED_GROUP", 0); 
                                 escapeGroupGoCustClick();
                                 
-                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                            }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin();                                 
+                                }else if(data[0]['status'][0].Msg==="You don't have access"){
                                     //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                     //app.LogoutFromAdmin();
              
@@ -757,6 +764,10 @@ app.sendNotification = (function () {
                                 if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
                                     noCustomer = 1;
                                     escapeGroupClick();
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
                                 }else if (data[0]['status'][0].Msg==='Success') {
                                     //console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < data[0].status[0].allCustomer.length;i++) {

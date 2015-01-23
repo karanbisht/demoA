@@ -42,19 +42,7 @@ app.addCustomerByAdmin = (function () {
             firstTime=0;
             mobileArray=[];
             groupDataShow=[];
-            
-             //document.getElementById("multiSelectGroupName").innerHTML = "";
-            //$("#orgGroupCombo").kendoComboBox();            
-            
-            //var multiselect = $("#multiSelectGroupName").data("kendoMultiSelect");
-
-            //multiselect.refresh();
-            
-            //$("#multiSelectGroupName").kendoMultiSelect();
-            
-           //ar multiSelect = $('#multiSelectGroupName').data("kendoMultiSelect");
-           //console.log(multiSelect);
-                                  
+                                              
             getGroupToShowInCombo();
                       
         };
@@ -109,7 +97,11 @@ app.addCustomerByAdmin = (function () {
                             if (data[0]['status'][0].Msg==='No Group list') {
                                          
                                 
-                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                            }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                        }else if(data[0]['status'][0].Msg==="You don't have access"){
                                     //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                     //app.LogoutFromAdmin();             
                                     if (!app.checkSimulator()) {
@@ -139,7 +131,6 @@ app.addCustomerByAdmin = (function () {
                                   
         };
 
-
         var showGroupDataInTemplate = function(){
 
           //alert('hello');
@@ -153,12 +144,12 @@ app.addCustomerByAdmin = (function () {
            
             
             $("#groupInAddCustomer").kendoListView({
-                                                        template: kendo.template($("#groupNameTemplate").html()),    		
+                                                        template: kendo.template($("#groupNameShowTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
             });
             
 
-               document.getElementById("multiSelectGroupName").innerHTML = "";
+              /* document.getElementById("multiSelectGroupName").innerHTML = "";
             
                $("#multiSelectGroupName").kendoMultiSelect({
                      dataTextField: "group_name",
@@ -167,7 +158,7 @@ app.addCustomerByAdmin = (function () {
                      height: 500,
                      headerTemplate: '<div><h4>Group</h4></div>',
                      dataSource: comboGroupListDataSource
-               });
+               });*/
             
             
             
@@ -180,7 +171,7 @@ app.addCustomerByAdmin = (function () {
            
             
                 $("#multiSelectGroupName").kendoListView({
-                                                        template: kendo.template($("#groupNameTemplate").html()),    		
+                                                        template: kendo.template($("#groupNameShowTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
                });*/
            
@@ -248,15 +239,15 @@ app.addCustomerByAdmin = (function () {
             }
                
             var group = [];		    
-            /*$(':checkbox:checked').each(function(i) {
+            $(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
             });            
-            group = String(group);*/        
+            group = String(group);       
             
             //console.log(group);
                
 
-            var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
+            /*var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
             //console.log(multiSelect.length);
             
             for(var i=0;i<multiSelect.length;i++){
@@ -266,7 +257,7 @@ app.addCustomerByAdmin = (function () {
                
             group = String(group);               
             console.log(group);
-               
+            */  
    
                
             if (fname === "First Name" || fname === "") {
@@ -363,6 +354,10 @@ app.addCustomerByAdmin = (function () {
                             $regEmail.val('');
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
+                        }else if(loginData.status[0].Msg==="Session Expired"){
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
+                                
                         }else {
                             $("#saveMemberLoader").hide();
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
@@ -443,6 +438,10 @@ app.addCustomerByAdmin = (function () {
                             $regEmail.val('');
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
+                        }else if(loginData.status[0].Msg==="Session Expired"){
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
+                                
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification');
                             $("#saveMemberLoader").hide();

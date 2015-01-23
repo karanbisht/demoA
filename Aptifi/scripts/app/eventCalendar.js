@@ -4,6 +4,7 @@ var app = app || {};
 app.eventCalender = (function () {
     var calendarEventModel = (function () {
         var eventOrgId;
+        var account_Id;
         var groupAllEvent = [];
         var tasks = [];
 
@@ -18,17 +19,19 @@ app.eventCalender = (function () {
              
             $("#CalProcess").show();                         
             $("#eventDetailDiv").hide();
+            
+            account_Id = localStorage.getItem("ACCOUNT_ID");
 
             eventOrgId = localStorage.getItem("selectedOrgId");
              
             $("#eventCalendarFirstAllList").show();
 
-            var jsonDataLogin = {"org_id":eventOrgId}
+            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id}
 
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
-                                                                            url: app.serverUrl() + "event/index",
+                                                                            url: app.serverUrl() + "event/customerEvent",
                                                                             type:"POST",
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                             data: jsonDataLogin

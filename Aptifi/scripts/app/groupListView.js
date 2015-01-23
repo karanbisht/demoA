@@ -116,6 +116,11 @@ app.GroupList = (function () {
                     
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
                                      //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
                                      //app.LogoutFromAdmin(); 
@@ -350,7 +355,12 @@ app.GroupList = (function () {
                             app.showAlert("Group Added Successfully", "Notification");  
                         }
                         //app.showAlert("Group Added Successfully", "Notification");
-                    }else {
+                    }else if(addGroupData.status[0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
+                                }else {
                          $("#addGroupLoader").hide();
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
@@ -417,7 +427,12 @@ app.GroupList = (function () {
                             app.showAlert("Group Deleted Successfully", "Notification");  
                         }
                         //app.showAlert("Group Deleted Successfully","Notification");
-                    }else {
+                    }else if(deleteGroupData.status[0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
+                                }else {
                         $("#deleteGroupLoader").hide();
                         app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                     }

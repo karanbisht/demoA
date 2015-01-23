@@ -110,6 +110,11 @@ app.subGroupDetail = (function () {
                                                        }); 
                                         
                                     $("#deleteGroupMemberBtn").hide();  
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
                                 }else if (data[0]['status'][0].Msg==='Success') {
                                     app.mobileApp.pane.loader.hide();
                                         
@@ -319,6 +324,11 @@ app.subGroupDetail = (function () {
                                                                   orgID:orgVal.allCustomer[i].orgID
                                                               });
                                     }        
+                                }else if(orgVal.Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                
                                 }else if(orgVal.Msg==='No Customer in this organisation'){
                                      app.showAlert("No Member to Add in Group", "Notification");
                                      app.mobileApp.navigate('#subGroupMemberShow');

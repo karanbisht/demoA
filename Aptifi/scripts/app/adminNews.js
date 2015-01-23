@@ -8,6 +8,7 @@ app.adminNews = (function () {
         var tasks = [];
         var newsDataToSend;
         var upload_type;
+        var groupDataShow=[];
 
 
         var init = function() {
@@ -111,10 +112,13 @@ app.adminNews = (function () {
                                                org_id: ''
                                            });
                         
+                    }else if(data[0]['status'][0].Msg==="Session Expired"){
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
+                                
                     }else if(data[0]['status'][0].Msg==="You don't have access"){                                    
             
-                        //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                        //app.LogoutFromAdmin(); 
+                        
                                     
                                                                         if (!app.checkSimulator()) {
                                              window.plugins.toast.showLongBottom("You don't have access");  
@@ -293,6 +297,8 @@ app.adminNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
           
            
+            groupDataShow=[];
+            
             var footer = $(".footer");
             footer.css({ "top": footer.position().top, "bottom": "auto"});
             
@@ -396,9 +402,114 @@ app.adminNews = (function () {
                  $('#adddateTimePickerNews').attr('disabled','disabled');
             
 
+            getGroupToShowInCombo();
+        }
+        
+        
+
+        var getGroupToShowInCombo = function(e) {
+            
+            var org = localStorage.getItem("orgSelectAdmin");
+             
+            var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                         transport: {
+                    read: {
+                                                                                     url: app.serverUrl() + "group/adminGroup/" + org +"/A",
+                                                                                     type:"POST",
+                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
+                                                                                 }
+                },
+                                                                         schema: {               
+                    data: function(data) {
+                        console.log(data);
+                        return [data];                       
+                    }
+                },
+                                                              error: function (e) {
+                                                                            console.log(JSON.stringify(e));
+                                                                             $("#selectOrgLoader").hide();
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#group-Name-listview").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
+                                                                         },       
+                                                                         sort: { field: 'add', dir: 'desc' }    	     
+                                                                     });
+                          
 
             
+            comboGroupListDataSource.fetch(function(){                                                       
+                groupDataShow = [];
+                 var data = this.data();                
+                                            
+                            if (data[0]['status'][0].Msg==='No Group list') {
+                                         
+                                
+                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin();             
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+                                
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                            }else if(data[0]['status'][0].Msg==="Session Expired"){
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
+                                
+                    }else {
+                                var orgLength = data[0].status[0].groupData.length;
+                                for (var j = 0;j < orgLength;j++) {
+                                    groupDataShow.push({
+                                                           //group_desc: data[0].status[0].groupData[j].group_desc,
+                                                           group_name: data[0].status[0].groupData[j].group_name,
+                                                           //group_status:data[0].status[0].groupData[j].group_status,
+                                                           //org_id:data[0].status[0].groupData[j].org_id,
+                                                           pid:data[0].status[0].groupData[j].pid
+                                                       });
+                                }                                
+                            }  
+                
+                showGroupDataInTemplate();
+
+            });
+                                  
+        };
+
+        
+         var showGroupDataInTemplate = function(){
+
+          //alert('hello');
+            console.log(groupDataShow);
+            
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+               var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });              
+           
+            
+            $("#groupInAddNews").kendoListView({
+                                                        template: kendo.template($("#groupNameShowTemplate").html()),    		
+                                                        dataSource: comboGroupListDataSource
+            });
+            
         }
+
         
         var newsDescEdit;
         var newsDateEdit;
@@ -481,11 +592,20 @@ app.adminNews = (function () {
             });
         }
         
+        
+        var adminAllGroupArray=[];
+        var customerGroupArray=[];
+        var EditGroupArrayMember=[];
+        
         var editNewsshow = function() {
+
+            EditGroupArrayMember=[];
+            adminAllGroupArray=[];
+            customerGroupArray=[];
+                                                
             $(".km-scroll-container").css("-webkit-transform", "");                                    
             $('#editNewsDesc').css('height', '80px');
             
-
             pb = $("#profileCompleteness").kendoProgressBar({
                 type: "chunk",
                 chunkCount: 100,
@@ -502,18 +622,16 @@ app.adminNews = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
+            
             $("#editdatePickerNews").removeAttr('disabled');
             $("#editdateTimePickerNews").removeAttr('disabled');
-
             $("#editdatePickerNews").parent().css('width',"160px");
             $("#editdateTimePickerNews").parent().css('width',"160px");
             $("#editdatePickerNews").removeClass( "k-input" );
             $("#editdateTimePickerNews").removeClass( "k-input" );        
-
-            $('body').append(hiddenDiv);
-            
+            $('body').append(hiddenDiv);            
             $("#sendEditNewsLoader").hide();
-
+            
             txt.on('keyup', function () {
                 content = $(this).val();
     
@@ -522,9 +640,78 @@ app.adminNews = (function () {
     
                 $(this).css('height', hiddenDiv.height());
             });
+
+                        
+
+            /*newsDescEdit = e.data.news_desc;
+            newsDateEdit = e.data.news_date;
+            newsTimeEdit = e.data.news_time;
+            newsImageEdit = e.data.news_image;
+            newsUploadType = e.data.upload_type;
+            newsPid = e.data.id;*/
+
+
+            var org_id = localStorage.getItem("orgSelectAdmin");
             
-            $("#editNewsDesc").html(app.htmlDecode(newsDescEdit));    
+            //alert(org_id+"||"+newsPid);
             
+             var dataSourceMemberDetail = new kendo.data.DataSource({
+                                                                       transport: {
+                    read: {
+                                                                                   url: app.serverUrl() + "news/newsdetail/" + org_id + "/" + newsPid,
+                                                                                   type:"POST",
+                                                                                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                               }
+                },
+                                                                       schema: {
+                    data: function(data) {
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                       error: function (e) {
+                                                                           //apps.hideLoading();
+                                                                           console.log(JSON.stringify(e));
+                                                                           
+                                                                           $("#adminEditCustomer").hide();            
+                                                                           $("#editOrgMemberContent").show();
+                                                                           
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            }
+                                                                                                                                                      
+                                                                       }               
+                                                                   });  
+	            
+            dataSourceMemberDetail.fetch(function() {
+                var loginDataView = dataSourceMemberDetail.data();                                    
+                $.each(loginDataView, function(i, addGroupData) {
+                    console.log(addGroupData);
+                    if (addGroupData.status[0].Msg==='Success') {
+                        EditGroupArrayMember=[];
+                        adminAllGroupArray=[];
+                        customerGroupArray=[];
+                        
+                         /*newsDescEdit = e.data.news_desc;
+            newsDateEdit = e.data.news_date;
+            newsTimeEdit = e.data.news_time;
+            newsImageEdit = e.data.news_image;
+            newsUploadType = e.data.upload_type;
+            newsPid = e.data.id;*/
+                        
+                        
+                         newsDescEdit = addGroupData.status[0].newsDetail[0].news_desc;
+                         newsDateEdit = addGroupData.status[0].newsDetail[0].news_date;
+                         newsTimeEdit = addGroupData.status[0].newsDetail[0].news_time;
+                         newsImageEdit = addGroupData.status[0].newsDetail[0].news_image;
+                         newsUploadType = addGroupData.status[0].newsDetail[0].upload_type;
+                         newsPid = addGroupData.status[0].newsDetail[0].id;
+                        
+
+                                   
+                        $("#editNewsDesc").html(app.htmlDecode(newsDescEdit));                
 
             if(newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!=='' && newsUploadType==="image"){
                 var largeImage = document.getElementById('attachedImgEditNews');
@@ -535,7 +722,6 @@ app.adminNews = (function () {
                 var largeVid = document.getElementById('attachedVidNewsEdit');        
                 largeVid.style.display = 'none';
                 largeVid.src = '';
-
                 newsDataToSend = newsImageEdit ; 
                         
             }else if (newsImageEdit!==undefined && newsImageEdit!=="undefined" && newsImageEdit!=='' && newsUploadType==="video"){
@@ -546,11 +732,11 @@ app.adminNews = (function () {
 
                     var largeImage = document.getElementById('attachedImgEditNews');        
                     largeImage.style.display = 'none';
-                    largeImage.src = '';
-                    
+                    largeImage.src = '';                    
                     newsDataToSend = newsImageEdit ; 
 
-            }else{            
+           }else{            
+                
             var largeImage = document.getElementById('attachedImgEditNews');        
             largeImage.style.display = 'none';
             largeImage.src = '';
@@ -562,7 +748,7 @@ app.adminNews = (function () {
              newsDataToSend='';
              upload_type_Edit = '';
                 
-                }
+           }
             
             var currentDate = app.getPresentDate();
             
@@ -608,7 +794,7 @@ app.adminNews = (function () {
                                                          }
                                                      }).data("kendoDatePicker");
                          
-            $("#editdateTimePickerNews").kendoTimePicker({
+                                                        $("#editdateTimePickerNews").kendoTimePicker({
                                                              value:newsTimeEdit,
                                                              interval: 15,
                                                              format: "h:mm tt",
@@ -622,11 +808,97 @@ app.adminNews = (function () {
                                                                  //console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
-
-                $('#editdatePickerNews').attr('disabled','disabled');
-                $('#editdateTimePickerNews').attr('disabled','disabled');
                         
+                                   
+                        //alert(addGroupData.status[0].AdminGroup.length);                        
+                        if(addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined){
+                            adminAllGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].AdminGroup.length;i++) {
+
+                                adminAllGroupArray.push({
+                                                          group_name: addGroupData.status[0].AdminGroup[i].group_name,
+                                                          pid: addGroupData.status[0].AdminGroup[i].pid
+                                                      });
+
+                            }
+                        }
+                        
+                        //alert(addGroupData.status[0].newsGroup.length);
+                        if(addGroupData.status[0].newsGroup.length!==0 && addGroupData.status[0].newsGroup.length!==undefined){
+                            customerGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].newsGroup.length;i++) {
+
+                                customerGroupArray.push({
+                                                          pid: addGroupData.status[0].newsGroup[i].group_id
+                                                      });
+
+                            }
+                        }
+                        
+                        
+                        var allGroupLength = adminAllGroupArray.length;
+                        var allCustomerLength = customerGroupArray.length;  
+
+                        EditGroupArrayMember=[];
+                        for (var i = 0;i < allGroupLength;i++) {                    
+                          adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);                            
+                          for(var j=0;j<allCustomerLength;j++){       
+                            if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {  
+                                
+                                
+                                    EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:'checked'
+                                                      });
+                                
+                            }else {                        
+
+                                EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:''
+                                                      });        
+                            }  
+                          }
+                        }
+                                                
+                    }else if(addGroupData.status[0].Msg==="Session Expired"){
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
+                                
+                    }else {
+                        app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
+                    }                               
+                    //console.log('------------------');
+                    console.log(EditGroupArrayMember);
+                    
+                                /*var comboEditGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: EditGroupArrayMember
+                                                                       }); */                        
+            
+                                $("#groupInEditNews").kendoListView({
+                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+                                                        dataSource: EditGroupArrayMember
+                                });
+ 
+                    
+                    //$("#adminEditCustomer").hide();            
+                    //$("#editOrgMemberContent").show();
+                });
+            });
+            
+             //showGroupDataToEditInTemplate();   
+        
+
+
+            //$('#editdatePickerNews').attr('disabled','disabled');            
+            //$('#editdateTimePickerNews').attr('disabled','disabled');
+            
+            
+                                    
         }
+                
         
         var addNewNewsFunction = function() {
             organisationID = localStorage.getItem("orgSelectAdmin");
@@ -636,9 +908,19 @@ app.adminNews = (function () {
             var event_Date = $("#adddatePickerNews").val();
             var event_Time = $("#adddateTimePickerNews").val();
             
+
+            var group = [];		    
+            $(':checkbox:checked').each(function(i) {
+                group[i] = $(this).val();
+            });            
+            group = String(group);       
+
+            
             if (event_description === "Please Enter News Here" || event_description === "") {
                 app.showAlert("Please enter News.", "Validation Error");
-            }else {
+            }else if(group.length===0 || group.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
+            }else{
                
                 
                 $("#sendNewsLoader").show();
@@ -732,8 +1014,8 @@ app.adminNews = (function () {
                         params.txtNewsDate = event_Date;
                         params.txtNewsTime = eventTimeSend;
                         params.upload_type = upload_type;
+                        params.cmbGroup = group;
                             
-
                         ft = new FileTransfer();
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";
@@ -765,8 +1047,10 @@ app.adminNews = (function () {
                 
                     //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
 
-                    var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend}
+                    var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend,"cmbGroup":group}
                 
+                    console.log(jsonDataSaveGroup);
+                    
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                        transport: {
                         read: {
@@ -780,6 +1064,7 @@ app.adminNews = (function () {
                                                                        schema: {
                         data: function(data) {
                             console.log(data);
+                            console.log(JSON.stringify(data))
                             return [data];
                         }
                     },
@@ -798,7 +1083,7 @@ app.adminNews = (function () {
                 dataSourceaddGroup.fetch(function() {
                     var loginDataView = dataSourceaddGroup.data();
                     $.each(loginDataView, function(i, addGroupData) {
-                        //console.log(addGroupData.status[0].Msg);           
+                        console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='News added successfully') {  
                             $(".km-scroll-container").css("-webkit-transform", "");                           
                             $("#addNewsDesc").val('');                   
@@ -884,12 +1169,25 @@ app.adminNews = (function () {
 
 
         var saveEditNewsData = function() {
+            
             var event_description = $("#editNewsDesc").val();
             var event_Date = $("#editdatePickerNews").val();
             var event_Time = $("#editdateTimePickerNews").val();
             
+            
+
+            var groupEdit = [];		    
+            $(':checkbox:checked').each(function(i) {
+                groupEdit[i] = $(this).val();
+            });            
+            groupEdit = String(groupEdit);             
+            console.log(groupEdit);
+
+            
             if (event_description === "Please Enter News Here" || event_description === "") {
                 app.showAlert("Please Enter News .", "Validation Error");
+            }else if(groupEdit.length===0 || groupEdit.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
             }else {                    
                 $("#sendEditNewsLoader").show();                
                 var values = event_Date.split('/');            
@@ -953,7 +1251,8 @@ app.adminNews = (function () {
                         params.txtNewsTime = event_Time;
                         params.pid = newsPid;    
                         params.upload_type = upload_type_Edit;
-                       
+                        params.cmbGroup = groupEdit;
+                     
                         var options = new FileUploadOptions();
                         options.fileKey = "news_image";
                         options.fileName = filename;
@@ -986,7 +1285,7 @@ app.adminNews = (function () {
                         
                 //console.log(organisationID + "||" + event_description + "||" + event_Date + "||" + event_Time + "||" + newsPid);
                                     
-                var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid}
+                var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid,"cmbGroup":groupEdit}
             
                 var dataSourceaddGroup = new kendo.data.DataSource({
                                                                        transport: {

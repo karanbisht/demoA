@@ -88,7 +88,11 @@ app.replyedCustomer = (function () {
                                     }
                            
                                       
-                                }else if (data[0]['status'][0].Msg ==='No list found') {   
+                        }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                        }else if (data[0]['status'][0].Msg ==='No list found') {   
                                     groupDataShow.push({
                                                            user_fname: 'No Message found',
                                                            user_lname: '',

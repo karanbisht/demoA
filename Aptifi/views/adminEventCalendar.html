@@ -200,28 +200,27 @@
             <br/>
             
             
-           <span id="activityTemplateDate"  class="defineTitleText" style="margin-bottom:10px;">Event Detail :</span> 
+            <span id="activityTemplateDate"  class="defineTitleText" style="margin-bottom:10px;">Event Detail :</span> 
 
             <br/>
             <br/>
 
-           <textarea  id="addEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
+            <textarea  id="addEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
+            <br/>            
+            <div class="selectGroupClass" style="margin-left:0px;">Add Event in Group : </div>
+            <div id="groupInAddEvent" style="margin-left:0px;" class="selectDivClass"> </div>            
 
-            <br/>
-            <br/>
             <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span>             
             
             <div style="margin-top:10px;" >
                 <input id="adddatePickerEvent" onkeydown="return false;" style="width:180px;"/>
-            </div>
-            
+            </div>            
             <br/>
             
-            <span id="activityTemplateDate"  class="defineTitleText">Event Time :</span> 
-            
-                <div style="margin-top:10px;" >
-                    <input id="adddateTimePickerEvent" onkeydown="return false;" style="width:180px;"/>
-                </div>
+            <span id="activityTemplateDate"  class="defineTitleText">Event Time :</span>             
+            <div style="margin-top:10px;" >
+                <input id="adddateTimePickerEvent" onkeydown="return false;" style="width:180px;"/>
+            </div>
         </div>
          
         
@@ -306,12 +305,14 @@
                         
            <span id="activityTemplateDate"  class="defineTitleText">Event Detail :</span>
             <br/>
-            <br/>
 
            <textarea  id="editEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
-
             <br/>
-            <br/>
+            
+                        
+            <div class="selectGroupClass" style="margin-left:0px;" >Event Added in Group :</div>
+            <div id="groupInEditEvent" class="selectDivClass"> </div>
+            
  
 	       <!--<textarea rows="9" class="defineTextArea" id="editEventDesc" placeholder="Write Event description here (Optional) ?"></textarea>               
            <br/>-->

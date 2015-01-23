@@ -1017,6 +1017,15 @@ input::-webkit-inner-spin-button
     border-bottom: 1px solid #f5f7f8;
 }
 
+.getGroupCombo
+{
+    display: block;
+    margin: 5px 5px 5px 5px;
+    color: #B6C5C6;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #f5f7f8;
+}
+
 .deleteGroupShow1
 {
     display: block;
@@ -2839,9 +2848,18 @@ float:right;
 
 
 
+.selectGroupClass{
+    color:#343434;
+    margin-top:10px;
+    margin-left:10px;
+    font-size:1rem;
+}
 
 
-
+.selectDivClass{
+    border:none;
+    margin-bottom:10px;
+}
 
 
 .dropdown-header {

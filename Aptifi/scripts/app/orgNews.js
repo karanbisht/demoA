@@ -4,6 +4,7 @@ var app = app || {};
 app.orgNews = (function () {
     var orgNewsModel = (function () {
         var eventOrgId;
+        var account_Id;
         var groupAllEvent = [];
 
         var init = function() {
@@ -16,13 +17,15 @@ app.orgNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");             
 
             eventOrgId = localStorage.getItem("selectedOrgId");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+
             
-            var jsonDataLogin = {"org_id":eventOrgId}
+            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id}
 
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
-                                                                            url: app.serverUrl() + "news/index",
+                                                                            url: app.serverUrl() + "news/customerNews",
                                                                             type:"POST",
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                             data: jsonDataLogin

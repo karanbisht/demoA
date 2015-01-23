@@ -9,6 +9,7 @@ app.adminEventCalender = (function () {
         var upload_type;
         var groupAllEvent = [];
         var tasks = [];
+        var groupDataShow = [];
         
         var init = function() {
         }
@@ -77,6 +78,13 @@ app.adminEventCalender = (function () {
 
 
                         showEventInCalendar();
+                    }else if(loginData.status[0].Msg==="You don't have access"){
+                                     
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
@@ -328,6 +336,7 @@ app.adminEventCalender = (function () {
             $("#addEventName").val('');
             $("#addEventDesc").val('');
             //console.log(date2);
+            groupDataShow = [];
             
             $("#adddatePickerEvent").removeAttr('disabled');
             $("#adddateTimePickerEvent").removeAttr('disabled');
@@ -342,25 +351,7 @@ app.adminEventCalender = (function () {
             
             $("#sendEventLoader").hide();
             
-            /*$("#admincalendar").kendoCalendar({
-            //value:new Date(),
-            dates:tasks,
-            month:{
-            content:'# if (typeof data.dates[+data.date] === "string") { #' +
-            '<div style="color:rgb(53,152,219);">' +
-            '#= data.value #' +
-            '</div>' +
-            '# } else { #' +
-            '#= data.value #' +
-            '# } #'
-            },
-            change: selectedDataByUser,              
-              
-            navigate:function () {
-            $(".ob-done-date", "#admincalendar").parent().addClass("ob-done-date-style k-state-hover");
-            $(".ob-not-done-date", "#admincalendar").parent().addClass("ob-not-done-date-style k-state-hover");
-            }
-            }).data("kendoCalendar");*/                         
+
             
             var currentDate = app.getPresentDate();
             
@@ -437,7 +428,112 @@ app.adminEventCalender = (function () {
             //$( "#orgforNotification" ).blur();
             addEventTimePicker.input.blur();
             });  */ 
+            
+            getGroupToShowInCombo();
         }
+        
+        
+        
+        var getGroupToShowInCombo = function(e) {
+            
+            var org = localStorage.getItem("orgSelectAdmin");
+             
+            var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                         transport: {
+                    read: {
+                                                                                     url: app.serverUrl() + "group/adminGroup/" + org +"/A",
+                                                                                     type:"POST",
+                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
+                                                                                 }
+                },
+                                                                         schema: {               
+                    data: function(data) {
+                        console.log(data);
+                        return [data];                       
+                    }
+                },
+                                                              error: function (e) {
+                                                                            console.log(JSON.stringify(e));
+                                                                             //$("#selectOrgLoader").hide();
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
+                         
+                                                                     var showNotiTypes = [
+                                                                         { message: "Please Check Your Internet Connection"}
+                                                                     ];
+                       
+                                                                     var dataSource = new kendo.data.DataSource({
+                                                                                                                    data: showNotiTypes
+                                                                                                     });
+                    
+                                                                     $("#group-Name-listview").kendoMobileListView({
+                                                                                                                        template: kendo.template($("#errorTemplate").html()),
+                                                                                                                        dataSource: dataSource  
+                                                                                                                    });
+                
+                                                                         },       
+                                                                         sort: { field: 'add', dir: 'desc' }    	     
+                                                                     });
+                          
+
+            
+            comboGroupListDataSource.fetch(function(){                                                       
+                groupDataShow = [];
+                 var data = this.data();                
+                                            
+                            if (data[0]['status'][0].Msg==='No Group list') {
+                                         
+                                
+                            }else if(data[0]['status'][0].Msg==="You don't have access"){
+                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    //app.LogoutFromAdmin();             
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+                                
+                                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                            }else {
+                                var orgLength = data[0].status[0].groupData.length;
+                                for (var j = 0;j < orgLength;j++) {
+                                    groupDataShow.push({
+                                                           //group_desc: data[0].status[0].groupData[j].group_desc,
+                                                           group_name: data[0].status[0].groupData[j].group_name,
+                                                           //group_status:data[0].status[0].groupData[j].group_status,
+                                                           //org_id:data[0].status[0].groupData[j].org_id,
+                                                           pid:data[0].status[0].groupData[j].pid
+                                                       });
+                                }                                
+                            }  
+                
+                showGroupDataInTemplate();
+
+            });
+                                  
+        };
+        
+        
+        
+         var showGroupDataInTemplate = function(){
+
+          //alert('hello');
+            console.log(groupDataShow);
+            
+            $(".km-scroll-container").css("-webkit-transform", "");
+           
+              var comboGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: groupDataShow
+                                                                       });              
+           
+            
+            $("#groupInAddEvent").kendoListView({
+                                                        template: kendo.template($("#groupNameShowTemplate").html()),    		
+                                                        dataSource: comboGroupListDataSource
+            });
+            
+        }
+
         
         var eventNameEdit;
         var eventDescEdit;
@@ -459,23 +555,19 @@ app.adminEventCalender = (function () {
             eventUploadType = e.data.upload_type;
             eventPid = e.data.id;
             pageToGo = e.data.page;
-
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
-
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
         
         var deleteEvent = function(e) {
             //console.log(e.data.uid);
             //console.log(e.data);
-
             //var eventPid = e.data.id;
             
             organisationID = localStorage.getItem("orgSelectAdmin");
 
             
             //console.log('orgID=' + organisationID + "pid=" + eventPid)
-
             var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
             
             var dataSourceaddGroup = new kendo.data.DataSource({
@@ -528,30 +620,25 @@ app.adminEventCalender = (function () {
 
         var upload_type_edit;
         
-        var editEventshow = function() {
-  
+        var editEventshow = function() {  
             $(".km-scroll-container").css("-webkit-transform", "");
-
             //console.log(eventNameEdit);            
-
             $('#editEventDesc').css('height', '80px');
-
             var txt = $('#editEventDesc'),
                 hiddenDiv = $(document.createElement('div')),
                 content = null;
-    
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
-            if (pageToGo===1) {
+            /*if (pageToGo===1) {
                 $("#backCalender").hide();
                 $("#backEventList").show();               
             }else {
                 $("#backEventList").hide();
                 $("#backCalender").show();
-            }
+            }*/
+            
             $('body').append(hiddenDiv);
-
             txt.on('keyup', function () {
                 content = $(this).val();
     
@@ -561,21 +648,81 @@ app.adminEventCalender = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
 
-            $("#sendEditEventLoader").hide();
-            
-            $("#editEventName").val(eventNameEdit);            
-            $("#editEventDesc").html(eventDescEdit);
-
+            $("#sendEditEventLoader").hide();                       
             $("#editdatePicker").removeAttr('disabled');
-            $("#editdateTimePicker").removeAttr('disabled');
-            
+            $("#editdateTimePicker").removeAttr('disabled');            
             $("#editdatePicker").parent().css('width', "160px");
             $("#editdateTimePicker").parent().css('width', "160px");
             $("#editdatePicker").removeClass("k-input");
             $("#editdateTimePicker").removeClass("k-input");            
             
-            //console.log(eventImageEdit);
+                                                
+             var org_id = localStorage.getItem("orgSelectAdmin");
             
+            //alert(org_id+"||"+newsPid);
+            
+             var dataSourceMemberDetail = new kendo.data.DataSource({
+                                                                       transport: {
+                    read: {
+                                                                                   url: app.serverUrl() + "event/eventdetail/" + org_id + "/" + eventPid,
+                                                                                   type:"POST",
+                                                                                   dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                               }
+                },
+                                                                       schema: {
+                    data: function(data) {
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                       error: function (e) {
+                                                                           //apps.hideLoading();
+                                                                           console.log(JSON.stringify(e));
+                                                                           
+                                                                           $("#adminEditCustomer").hide();            
+                                                                           $("#editOrgMemberContent").show();
+                                                                           
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            }else {
+                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            }
+                                                                                                                                                      
+                                                                       }               
+                                                                   });  
+	            
+            dataSourceMemberDetail.fetch(function() {
+                var loginDataView = dataSourceMemberDetail.data();                                    
+                $.each(loginDataView, function(i, addGroupData) {
+                    console.log(addGroupData);
+                    if (addGroupData.status[0].Msg==='Success') {
+                        EditGroupArrayMember=[];
+                        adminAllGroupArray=[];
+                        customerGroupArray=[];
+                        
+          /*eventNameEdit = e.data.event_name;
+            eventDescEdit = e.data.event_desc;
+            eventDateEdit = e.data.event_date;
+            eventTimeEdit = e.data.event_time;
+            eventImageEdit = e.data.event_image;
+            eventUploadType = e.data.upload_type;
+            eventPid = e.data.id;
+            */                        
+                        
+                         eventNameEdit = addGroupData.status[0].eventDetail[0].event_name;
+                         eventDescEdit = addGroupData.status[0].eventDetail[0].event_desc;
+                         eventDateEdit = addGroupData.status[0].eventDetail[0].event_date;
+                         eventTimeEdit = addGroupData.status[0].eventDetail[0].event_time;
+                         eventImageEdit = addGroupData.status[0].eventDetail[0].event_image; 
+                         eventUploadType = addGroupData.status[0].eventDetail[0].upload_type; 
+                         eventPid = addGroupData.status[0].eventDetail[0].id;
+                                                
+                        
+                        $("#editEventName").val(app.htmlDecode(eventNameEdit)); 
+                        $("#editEventDesc").html(app.htmlDecode(eventDescEdit));
+                        
+                                                                       
+                                    
             if (eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!=='' && eventUploadType==="image") {
                 var largeImage = document.getElementById('attachedImgEditEvent');
                 largeImage.style.display = 'block';
@@ -649,7 +796,7 @@ app.adminEventCalender = (function () {
                                                      }
                                                  });
                          
-            $("#editdateTimePicker").kendoTimePicker({
+                                    $("#editdateTimePicker").kendoTimePicker({
                                                          value: eventTimeEdit,
                                                          interval: 15,
                                                          format: "h:mm tt",
@@ -676,8 +823,109 @@ app.adminEventCalender = (function () {
             $('#editdateTimePicker').attr('disabled', 'disabled');
             /*$('#editdatePicker').attr("readonly","readonly");
             $('#editdateTimePicker').attr("readonly","readonly");*/
+
+                        
+                                                                                                
+                        if(addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined){
+                            adminAllGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].AdminGroup.length;i++) {
+
+                                adminAllGroupArray.push({
+                                                          group_name: addGroupData.status[0].AdminGroup[i].group_name,
+                                                          pid: addGroupData.status[0].AdminGroup[i].pid
+                                                      });
+
+                            }
+                        }
+                        
+                        if(addGroupData.status[0].eventGroup.length!==0 && addGroupData.status[0].eventGroup.length!==undefined){
+                            customerGroupArray=[];
+                            for (var i = 0 ; i < addGroupData.status[0].eventGroup.length;i++) {
+
+                                customerGroupArray.push({
+                                                          pid: addGroupData.status[0].eventGroup[i].group_id
+                                                      });
+
+                            }
+                        }
+                        
+                        
+                        console.log(adminAllGroupArray);
+                        console.log(customerGroupArray);
+                        
+                        
+                        var allGroupLength = adminAllGroupArray.length;
+                        var allCustomerLength = customerGroupArray.length;                        
+                        
+                        for (var i = 0;i < allGroupLength;i++) {       
+                            
+                            adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);
+                            //console.log(adminAllGroupArray[i].pid);
+                            //console.log(customerGroupArray);
+                            //alert(adminAllGroupArray[i].pid);
+                            
+                          for(var j=0;j<allCustomerLength;j++){
+                            //alert(customerGroupArray[j].pid);
+                            //var pos = $.inArray(parseInt(adminAllGroupArray[i].pid), customerGroupArray[j].pid);           
+		                    //console.log(pos); 
+                            //console.log("---------------------------------");
+                            //alert(JSON.stringify(joinOrgID));
+                            //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
+         
+                            if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
+                                //alert(i);
+                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:'checked'
+                                                      });
+                            }else {
+                                //alert(i);
+                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                
+                                EditGroupArrayMember.push({
+                                                          group_name: adminAllGroupArray[i].group_name,
+                                                          pid: adminAllGroupArray[i].pid,
+                                                          check:''
+                                                      });        
+                            }  
+                          }
+                        }
+                                                
+                    }else if(addGroupData.status[0].Msg==="You don't have access"){
+                                     
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+                    }else {
+                        app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
+                    }                               
+                    //console.log('------------------');
+                    console.log(EditGroupArrayMember);                  
+                                   
+                                /*var comboEditGroupListDataSource = new kendo.data.DataSource({
+                                                                           data: EditGroupArrayMember
+                                                                       }); */                        
+            
+                                $("#groupInEditEvent").kendoListView({
+                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+                                                        dataSource: EditGroupArrayMember
+                                });
+ 
+                    
+                    //$("#adminEditCustomer").hide();            
+                    //$("#editOrgMemberContent").show();
+                });
+            });
+            
+            //console.log(eventImageEdit);
+                        
         }
         
+                      
         var addNewEventFunction = function() {
             var event_name = $("#addEventName").val();     
             var event_description = $("#addEventDesc").val();
@@ -685,11 +933,20 @@ app.adminEventCalender = (function () {
             var event_Date = $("#adddatePickerEvent").val();
             var event_Time = $("#adddateTimePickerEvent").val();
             
+            var group = [];		    
+            $(':checkbox:checked').each(function(i) {
+                group[i] = $(this).val();
+            });            
+            group = String(group);
+            
+            
             if (event_name === "Enter New Event Name" || event_name === "") {
                 app.showAlert("Please enter Event Name.", "Validation Error");
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
                 app.showAlert("Please enter Event Description.", "Validation Error");
-            }else {    
+            }else if(group.length===0 || group.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
+            }else{
                 
                 $("#sendEventLoader").show();
                 
@@ -775,6 +1032,7 @@ app.adminEventCalender = (function () {
                     params.eventStartTime = eventTimeSend;
                     params.action = actionval;
                     params.upload_type = upload_type;
+                    params.cmbGroup = group;
                                                
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
@@ -796,7 +1054,7 @@ app.adminEventCalender = (function () {
             
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
 
-                    var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval}
+                    var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval,"cmbGroup":group}
             
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
@@ -901,10 +1159,20 @@ app.adminEventCalender = (function () {
             var event_Date = $("#editdatePicker").val();
             var event_Time = $("#editdateTimePicker").val();
             
+             var groupEdit = [];		    
+            $(':checkbox:checked').each(function(i) {
+                groupEdit[i] = $(this).val();
+            });            
+            groupEdit = String(groupEdit);             
+            console.log(groupEdit);
+            
+            
             if (event_name === "Enter New Event Name" || event_name === "") {
                 app.showAlert("Please enter Event Name.", "Validation Error");
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
                 app.showAlert("Please enter Event Description.", "Validation Error");
+            }else if(groupEdit.length===0 || groupEdit.length==='0'){
+                app.showAlert("Please select Group.", "Validation Error");    
             }else {    
                 
                 $("#sendEditEventLoader").show();
@@ -983,7 +1251,9 @@ app.adminEventCalender = (function () {
                     params.pid = eventPid;    
                     params.action = actionval;    
                     params.upload_type = upload_type_edit;
-                           
+                    params.cmbGroup = groupEdit;
+                    
+       
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
                     options.fileName = filename;
@@ -1008,7 +1278,7 @@ app.adminEventCalender = (function () {
                     //alert(eventDataToSend);
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
                         
-                    var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval}
+                    var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval,"cmbGroup":groupEdit}
             
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
@@ -1200,6 +1470,16 @@ app.adminEventCalender = (function () {
                                                mod_date: '',                                     
                                                org_id: ''
                                            });
+                    }else if(data[0]['status'][0].Msg==="You don't have access"){                                           
+                        //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        //app.LogoutFromAdmin(); 
+                                    
+                                    if (!app.checkSimulator()) {
+                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                             app.showAlert("You don't have access" , 'Offline');  
+                                    }
+    
                     }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];

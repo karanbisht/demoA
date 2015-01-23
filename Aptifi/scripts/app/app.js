@@ -10,8 +10,7 @@ var app = (function (win) {
     var mobileApp;
     
     var serverUrl = function() {
-        //return 'https://app.Zaff.io/webservice/';
-        
+        //return 'https://app.Zaff.io/webservice/';        
         return 'http://54.86.57.141/webservice/';
     }
 
@@ -393,7 +392,6 @@ var app = (function (win) {
 
     function updateLoginStatusSuccess() {
         localStorage.setItem("loginStatusCheck", 0);
-
         //app.mobileApp.navigate('#welcome');
         window.location.href = "index.html";
     }
@@ -526,6 +524,66 @@ var app = (function (win) {
         {
             app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
         }       
+        
+        
+
+        var device_id = localStorage.getItem("deviceTokenID");
+        var account_Id = localStorage.getItem("ACCOUNT_ID");
+        
+        //alert(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
+        console.log(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
+        
+         var dataSourceLogin = new kendo.data.DataSource({
+                    transport: {
+                    read: {
+                                                                            url: app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id,
+                                                                            type:"POST",
+                                                                            dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                        }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        console.log(data);
+                        console.log(JSON.stringify(data));
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {
+                                                                    //console.log(e);
+                                                                    console.log(JSON.stringify(e));
+                                                                    if (!app.checkSimulator()) {
+                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                    }else {
+                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                    }               
+                                                                }               
+                                                            });  
+	            
+                dataSourceLogin.fetch(function() {
+                //var loginDataView = dataSourceLogin.data();               
+             	                    
+                var data = this.data();     
+                    console.log(JSON.stringify(data));
+                //$.each(loginDataView, function(i, loginData) {
+                    //console.log(loginData.status[0].Msg);
+                               
+                    if (data[0]['status'][0].Msg==='Fail') {
+                        
+                        console.log('fail');                        
+
+                        if (!app.checkSimulator()) {
+                                  window.plugins.toast.showLongBottom("Your have Logged in with another device , Please re-login.");  
+                        }else {
+                                 app.showAlert("Your have Logged in with another device , Please re-login." , 'Notification');  
+                        }
+                        
+                        var db = app.getDb();
+                       db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);
+  
+                
+                    }
+                    
+               });
     };
     
     
@@ -1375,7 +1433,7 @@ var app = (function (win) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');
                 } 
             }else { 
                     var dataSourceLogin = new kendo.data.DataSource({
