@@ -16,6 +16,9 @@ app.addCustomerByAdmin = (function () {
         var countMobile;
         var mobileArray = [];
         var firstTime;
+
+        var groupDataShow=[];      
+
             
         var regInit = function () {
             app.userPosition = false;
@@ -26,7 +29,6 @@ app.addCustomerByAdmin = (function () {
         };
         
         // Navigate to activityView When some activity is selected
-
         
         var addNewRegistration = function (e) {
             app.userPosition = false;
@@ -39,14 +41,24 @@ app.addCustomerByAdmin = (function () {
             countMobile=0;
             firstTime=0;
             mobileArray=[];
+            groupDataShow=[];
             
+             //document.getElementById("multiSelectGroupName").innerHTML = "";
             //$("#orgGroupCombo").kendoComboBox();            
             
+            //var multiselect = $("#multiSelectGroupName").data("kendoMultiSelect");
+
+            //multiselect.refresh();
+            
+            //$("#multiSelectGroupName").kendoMultiSelect();
+            
+           //ar multiSelect = $('#multiSelectGroupName').data("kendoMultiSelect");
+           //console.log(multiSelect);
+                                  
             getGroupToShowInCombo();
                       
         };
         
-        var groupDataShow;        
         
         var getGroupToShowInCombo = function(e) {
             
@@ -130,6 +142,7 @@ app.addCustomerByAdmin = (function () {
 
         var showGroupDataInTemplate = function(){
 
+          //alert('hello');
             console.log(groupDataShow);
             
             $(".km-scroll-container").css("-webkit-transform", "");
@@ -144,14 +157,22 @@ app.addCustomerByAdmin = (function () {
                                                         dataSource: comboGroupListDataSource
             });
             
+
+               document.getElementById("multiSelectGroupName").innerHTML = "";
             
                $("#multiSelectGroupName").kendoMultiSelect({
                      dataTextField: "group_name",
                      dataValueField: "pid",
                      select:onSelectGroupData,
+                     height: 500,
+                     headerTemplate: '<div><h4>Group</h4></div>',
                      dataSource: comboGroupListDataSource
                });
+            
+            
+            
            
+         //#multiSelectGroupName").kendoMultiSelect().refresh();
             
                /*$("#multiSelectGroupName").kendoMultiSelect({
                         data: groupDataShow

@@ -1,5 +1,4 @@
 
-
 var app = (function (win) {
     'use strict';
     var db;

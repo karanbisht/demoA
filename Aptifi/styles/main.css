@@ -2839,6 +2839,100 @@ float:right;
 
 
 
+
+
+
+
+
+.dropdown-header {
+                    font-size: 1.2em;
+                }
+
+                .dropdown-header > span {
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    text-align: left;
+                    display: inline-block;
+                    border-style: solid;
+                    border-width: 0 0 1px 1px;
+                    padding: .3em .6em;
+                    width: 312px;
+                }
+
+                .dropdown-header > span:first-child {
+                    width: 82px;
+                    border-left-width: 0;
+                }
+
+                .demo-section {
+                    width: 450px;
+                }
+                .tag-image {
+                    width: auto;
+                    height: 18px;
+                    margin: 2px 5px 2px 0;
+                    vertical-align: top;
+                }
+
+                #multiSelectGroupName .k-item > span{
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    display: inline-block;
+                    border-style: solid;
+                    border-width: 0 0 1px 1px;
+                    vertical-align: top;
+                    min-height: 95px;
+                    width: 79%;
+                    padding: .6em 0 0 .6em;
+                }
+
+                #multiSelectGroupName .k-item > span:first-child{
+                    width: 77px;
+                    border-left-width: 0;
+                    padding: .6em 0 0 0;
+                }
+
+
+
+                #multiSelectGroupName h3 {
+                    font-size: 1.6em;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                #multiSelectGroupName p {
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                html.k-material .dropdown-header > span {
+                    border: 0;
+                }
+                html.k-material .dropdown-header > span {
+                    width: 354px;
+                }
+                html.k-material .dropdown-header > span:first-child {
+                    width: 90px;
+                }
+                html.k-material #customers-list .k-item > span{
+                    min-height: 80px;
+                    border-width: 0 0 1px 0;
+                }
+                html.k-material #customers-list img {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                }
+                html.k-material #customers-list h3 {
+                    font-size: 1.2em;
+                    line-height: 1em;
+                    margin-top: .5em;
+                }
+
+
+
 /*.km-android input
 {
     /*-webkit-user-modify: inherit;*/
