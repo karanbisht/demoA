@@ -531,7 +531,7 @@ var app = (function (win) {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
         
         //alert(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
-        console.log(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
+        //console.log(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
         
          var dataSourceLogin = new kendo.data.DataSource({
                     transport: {

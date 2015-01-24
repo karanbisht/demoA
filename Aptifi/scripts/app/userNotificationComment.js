@@ -12,7 +12,7 @@ app.userNotiComment = (function () {
     var attached;
     
     var userActivityViewModel = (function () {
-        var activityUid, activity, custId;
+        var activityUid, activity;
         // $activityPicture;
         var org_id;
         var notiId;  
@@ -78,7 +78,6 @@ app.userNotiComment = (function () {
 
             listScroller = e.view.scroller;
             listScroller.reset();
-        
             
             $('#newAdminComment').css('height', '30px');
 
@@ -99,9 +98,6 @@ app.userNotiComment = (function () {
     
                 $(this).css('height', hiddenDiv.height());
             });
-
-            
-            
             
             //message = e.view.params.message;
             //title = e.view.params.title;
@@ -143,7 +139,6 @@ app.userNotiComment = (function () {
                 var notificationData = userCommentedNotification.data();
                 
                 $.each(notificationData, function(i, loginData) {
-                     
                     if (loginData.status[0].Msg==='Success') {
                         attached = loginData.status[0].notificationList[0].attached;
                         comment_allow = loginData.status[0].notificationList[0].comment_allow;
@@ -158,8 +153,7 @@ app.userNotiComment = (function () {
                     $("#activityTextMessage").html(message);
                     $("#notiDateadmin").html(date);
                     app.mobileApp.pane.loader.hide();
-                     
-                    //console.log(attached + "||" + comment_allow + "||" + message + "||" + pid + "||" + title);
+                    //console.log(attached + "||" + comment_allow + "||" + message + "||" + s + "||" + title);
                 });
             });
         };
@@ -275,11 +269,9 @@ app.userNotiComment = (function () {
                                 
                     data: function(data) {
                         //console.log(data);
-               
                         var groupDataShow = [];
                         $.each(data, function(i, groupValue) {
                             //console.log(groupValue);
-                                     
                             var returnMsg = groupValue[0].Msg;
                             //console.log(returnMsg);
                             if (returnMsg==='Success') {
@@ -289,8 +281,8 @@ app.userNotiComment = (function () {
                                     var dateString = groupValue[0].AllComment[j].add_date;
                                     var split = dateString .split(' ');
                                     //console.log(split[0] + " || " + split[1]);
-                                     var commentDate = app.formatDate(split[0]);
-                                     var commentTime = app.formatTime(split[1]);
+                                    var commentDate = app.formatDate(split[0]);
+                                    var commentTime = app.formatTime(split[1]);
                                          
                                     groupDataShow.push({
                                                            comment: groupValue[0].AllComment[j].comment,
@@ -316,7 +308,7 @@ app.userNotiComment = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        //console.log(e);
-                                                                        //console.log(JSON.stringify(e));
+                                                                       //console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
                                                                                                     }, "Notification", 'OK');
@@ -341,107 +333,95 @@ app.userNotiComment = (function () {
             $("#status-container-adminComment").show();
         }
         
-        
         var lastClickTime = 0;
         var saveAdminComment = function () {    
-
-           var current = new Date().getTime();
-           var delta = current - lastClickTime;
-	       lastClickTime = current;
+            var current = new Date().getTime();
+            var delta = current - lastClickTime;
+            lastClickTime = current;
          
             if (delta < 500) {
-                
             } else {
-
-            
-            if (!app.checkConnection()) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }else {  
-            
-            var comment = $("#newAdminComment").val();
-              
-
-            if (comment!=='' && comment!=='Reply') {
- 
-             $("#adminCommentPage").show();
-                
-            var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
-                   
-            var saveCommentDataSource = new kendo.data.DataSource({
-                                                                      transport: {
-                    read: {
-                                                                                  url: app.serverUrl() + "notification/orgReply",
-                                                                                  type:"POST",
-                                                                                  dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                  data: jsonDatacomment
-                                                                              }
-                },
-                                                                      schema: {
-                    data: function(data) {
-                        return [data];
-                    }
-                },
-                                                                      error: function (e) {
-                                                                          $("#adminCommentPage").hide();
-                                                                          app.mobileApp.pane.loader.hide();
-                                                                          
-                                                                           if (!app.checkSimulator()) {
-                                                                                             window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                                         }else {
-                                                                                             app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                                         }
-                                                                                         
-                                                                                         app.analyticsService.viewModel.trackException(e,'Api Call , Unable to saving response for Admin Comment .');
-                    
-                                                                      }               
-                                                                  });  
-	            
-            saveCommentDataSource.fetch(function() {
-                var commentDataView = saveCommentDataSource.data();
-                //console.log(commentDataView);
-                $.each(commentDataView, function(i, commentData) {           
-                                app.mobileApp.pane.loader.hide();
-
-                    //console.log(commentData.status[0].Msg);
-                    if (commentData.status[0].Msg === 'Reply sent successfully') {
-                        $("#adminCommentPage").hide();
-                        
-                        if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Reply sent successfully');   
-                        }else {
-                            app.showAlert("Reply sent successfully", "Notification");  
-                        }
-                        
-                        var commentDate = app.formatDate(new Date());
-
-                        $("#userComments-listview").append('<li><div class="Org-admin-comment-List"><div class="Org-admin-comment-content"><a>'+comment+'</a><br/><span class="user-time-span">'+commentDate+' just now </span></div></div></li>');
-                        
-                        //refreshComment();
-                        $("#newAdminComment").val('');
-                    }else {
-                        $("#adminCommentPage").hide();
-                        app.showAlert(commentData.status[0].Msg , 'Notification'); 
-                    }
-                    
-                                app.mobileApp.pane.loader.hide();
-
-                });
-              });
-                 
-            }else {
+                if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showShortBottom("Please enter your Reply");   
+                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                     }else {
-                        app.showAlert("Please enter your Reply", "Notification");  
-                    }
-            }  
+                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    } 
+                }else {  
+                    var comment = $("#newAdminComment").val();
 
-          }        
-         }
+                    if (comment!=='' && comment!=='Reply') {
+                        $("#adminCommentPage").show();
+                
+                        var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
+                   
+                        var saveCommentDataSource = new kendo.data.DataSource({
+                                                                                  transport: {
+                                read: {
+                                                                                              url: app.serverUrl() + "notification/orgReply",
+                                                                                              type:"POST",
+                                                                                              dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                              data: jsonDatacomment
+                                                                                          }
+                            },
+                                                                                  schema: {
+                                data: function(data) {
+                                    return [data];
+                                }
+                            },
+                                                                                  error: function (e) {
+                                                                                      $("#adminCommentPage").hide();
+                                                                                      app.mobileApp.pane.loader.hide();
+                                                                          
+                                                                                      if (!app.checkSimulator()) {
+                                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                      }else {
+                                                                                          app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                      }
+                                                                                         
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to saving response for Admin Comment .');
+                                                                                  }               
+                                                                              });  
+	            
+                        saveCommentDataSource.fetch(function() {
+                            var commentDataView = saveCommentDataSource.data();
+                            //console.log(commentDataView);
+                            $.each(commentDataView, function(i, commentData) {           
+                                app.mobileApp.pane.loader.hide();
+
+                                //console.log(commentData.status[0].Msg);
+                                if (commentData.status[0].Msg === 'Reply sent successfully') {
+                                    $("#adminCommentPage").hide();
+                        
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom('Reply sent successfully');   
+                                    }else {
+                                        app.showAlert("Reply sent successfully", "Notification");  
+                                    }
+                        
+                                    var commentDate = app.formatDate(new Date());
+
+                                    $("#userComments-listview").append('<li><div class="Org-admin-comment-List"><div class="Org-admin-comment-content"><a>' + comment + '</a><br/><span class="user-time-span">' + commentDate + ' just now </span></div></div></li>');
+                        
+                                    //refreshComment();
+                                    $("#newAdminComment").val('');
+                                }else {
+                                    $("#adminCommentPage").hide();
+                                    app.showAlert(commentData.status[0].Msg , 'Notification'); 
+                                }
+                    
+                                app.mobileApp.pane.loader.hide();
+                            });
+                        });
+                    }else {
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showShortBottom("Please enter your Reply");   
+                        }else {
+                            app.showAlert("Please enter your Reply", "Notification");  
+                        }
+                    }  
+                }        
+            }
         };
         
         var removeActivity = function () {

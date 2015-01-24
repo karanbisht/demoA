@@ -16,10 +16,7 @@ app.sendNotification = (function () {
     var sendNotificationViewModel = (function () {
         //var orgId = localStorage.getItem("UserOrgID"); 
         //console.log(orgId);
-                  
-   
         var init = function () {				                 
-   
         };
          
         var beforeShow = function() {
@@ -60,7 +57,6 @@ app.sendNotification = (function () {
         var showLiveData = function() {
             //console.log('Hello');
             //console.log(groupDataShowOffline);
-                
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShowOffline
                                                                        });                           
@@ -75,25 +71,23 @@ app.sendNotification = (function () {
         };
                                        
         var show = function(e) {
-            
             app.MenuPage = false;
             app.userPosition = false;
               
             $("#notificationType").kendoComboBox({
-            dataTextField: "text",
-            dataValueField: "value",
-            dataSource: [
-            { text: "Promotion", value: "P" },
-            { text: "Invitation", value: "V" },
-            { text: "Information", value: "I" },
-            { text: "Reminder", value: "R" },
-            { text: "Alert", value: "A" }
-            ],
-            filter: "contains",
-            placeholder: "Select Type",
-            suggest: true
-            });
-                        
+                                                     dataTextField: "text",
+                                                     dataValueField: "value",
+                                                     dataSource: [
+                    { text: "Promotion", value: "P" },
+                    { text: "Invitation", value: "V" },
+                    { text: "Information", value: "I" },
+                    { text: "Reminder", value: "R" },
+                    { text: "Alert", value: "A" }
+                ],
+                                                     filter: "contains",
+                                                     placeholder: "Select Type",
+                                                     suggest: true
+                                                 });
             
             var input = $("#notificationType").data("kendoComboBox").input;
             input.attr("readonly", "readonly");
@@ -101,11 +95,10 @@ app.sendNotification = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '80px');
             
-            $("#scheduleDatePicker").parent().css('width',"160px");
-            $("#scheduleTimePicker").parent().css('width',"160px");
-            $("#scheduleDatePicker").removeClass( "k-input" );
-            $("#scheduleTimePicker").removeClass( "k-input" );
-
+            $("#scheduleDatePicker").parent().css('width', "160px");
+            $("#scheduleTimePicker").parent().css('width', "160px");
+            $("#scheduleDatePicker").removeClass("k-input");
+            $("#scheduleTimePicker").removeClass("k-input");
 
             var txt = $('#notificationDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -137,12 +130,10 @@ app.sendNotification = (function () {
             $("#largeImage").hide();
             $("#attachedVidNoti").hide();
 
-            upload_type='';
+            upload_type = '';
             dataToSend = '';
            
-           
             closeSchedule();
-            
 
             localStorage.setItem("SELECTED_GROUP", '');
             localStorage.setItem("SELECTED_CUSTOMER", '');
@@ -195,7 +186,6 @@ app.sendNotification = (function () {
                                                              scheduleDate = value;
                                                          }
                                                      }).data("kendoDatePicker");
-
             
             $("#scheduleTimePicker").kendoTimePicker({
                                                          value:"10:00 AM",
@@ -210,7 +200,6 @@ app.sendNotification = (function () {
                                                      });            
 
             sendNotificationOrg();
-            
         };    
                               
         var onChangeNotiGroup = function() {
@@ -239,16 +228,15 @@ app.sendNotification = (function () {
                                         });
         };
         
-        var getVideoValNoti = function(){            
+        var getVideoValNoti = function() {            
             //navigator.device.capture.captureVideo(captureSuccess, captureError, {limit: 1});                      
-              navigator.camera.getPicture(onVideoURISuccessDataNoti, onFail, { 
+            navigator.camera.getPicture(onVideoURISuccessDataNoti, onFail, { 
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
                                             mediaType: navigator.camera.MediaType.VIDEO
-              });
+                                        });
         }
-
                 
         var sendNotificationMessage = function () {                 
             if (!app.checkConnection()) {
@@ -277,7 +265,7 @@ app.sendNotification = (function () {
                 //alert(cmbGroup);
              
                 var selectedType = $("#notificationType").data("kendoComboBox");
-                var type=selectedType.value();
+                var type = selectedType.value();
              
                 //var type = notificationTypeSelected;
                 //alert(type);
@@ -329,7 +317,6 @@ app.sendNotification = (function () {
                     tasks = +new Date(year + "/" + month + "/" + day + " " + Hour + ":" + minute + ":" + second);
                                   
                     var sendNotificationTime = new Date(schedule_Date + " " + schedule_Time);     
-
                 }else {
                     tasks = '';  
                     sending_option = 'now';    
@@ -360,43 +347,40 @@ app.sendNotification = (function () {
                 }else { 
                     $("#progressSendNotification").show();
                     //var url = "http://54.85.208.215/webservice/notification/sendNotification";              
-                    var vidFmAndroid=0;                    
+                    var vidFmAndroid = 0;                    
                     //alert(upload_type);
                     if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
-                        if ((dataToSend.substring(0, 21)==="content://com.android") &&(upload_type==="other")) {
+                        if ((dataToSend.substring(0, 21)==="content://com.android") && (upload_type==="other")) {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
-                             vidFmAndroid=1;
-                        }else if((dataToSend.substring(0, 21)==="content://com.android")&&(upload_type==="video")){
-                              photo_split = dataToSend.split("%3A");
-                              //console.log(photo_split);
-                              dataToSend = "content://media/external/video/media/" + photo_split[1];
-                              vidFmAndroid=1;  
-                            }
+                            vidFmAndroid = 1;
+                        }else if ((dataToSend.substring(0, 21)==="content://com.android") && (upload_type==="video")) {
+                            photo_split = dataToSend.split("%3A");
+                            //console.log(photo_split);
+                            dataToSend = "content://media/external/video/media/" + photo_split[1];
+                            vidFmAndroid = 1;  
+                        }
 
                         var mimeTypeVal;
 
-                        if(upload_type==="image"){
-                           mimeTypeVal="image/jpeg"
-                        }else{
-                            mimeTypeVal="video/mpeg"
+                        if (upload_type==="image") {
+                            mimeTypeVal = "image/jpeg"
+                        }else {
+                            mimeTypeVal = "video/mpeg"
                         }    
                                                 
                         var filename = dataToSend.substr(dataToSend.lastIndexOf('/') + 1);
 
-                        var path =  dataToSend;
+                        var path = dataToSend;
                         
-                        
-                        if(upload_type==="image" && vidFmAndroid===1){
-                                 if(filename.indexOf('.') === -1)
-                             {
-                                  filename =filename+'.jpg';
-                             }                
-                        }else if(upload_type==="video" && vidFmAndroid===1){
-                                 if(filename.indexOf('.') === -1)
-                             {
-                                  filename =filename+'.mp4';
-                             }
+                        if (upload_type==="image" && vidFmAndroid===1) {
+                            if (filename.indexOf('.') === -1) {
+                                filename = filename + '.jpg';
+                            }                
+                        }else if (upload_type==="video" && vidFmAndroid===1) {
+                            if (filename.indexOf('.') === -1) {
+                                filename = filename + '.mp4';
+                            }
                         }
                                             
                         var params = new Object();
@@ -415,20 +399,17 @@ app.sendNotification = (function () {
                         options.fileKey = "attached";
                         options.fileName = filename;
               
-                   
-              
                         options.mimeType = mimeTypeVal;
                         options.params = params;
                         options.headers = {
                             Connection: "close"
                         }
                         options.chunkedMode = true;
-                        
  
                         var ft = new FileTransfer();
                         ft.upload(dataToSend, app.serverUrl() + "notification/sendNotification", win, fail, options , true);
                     }else {
-                       //console.log(tasks);                 
+                        //console.log(tasks);                 
                         var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
                         var dataSourceSendNotification = new kendo.data.DataSource({
                                                                                        transport: {
@@ -448,11 +429,10 @@ app.sendNotification = (function () {
                             },
                                                                                        error: function (e) {
                                                                                            //console.log(JSON.stringify(e));
-               
                                                                                            if (!app.checkSimulator()) {
                                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
                                                                                            }else {
-                                                                                               app.showAlert("Network problem . Please try again later","Notification");  
+                                                                                               app.showAlert("Network problem . Please try again later", "Notification");  
                                                                                            }
                    
                                                                                            if (!app.checkSimulator()) {
@@ -475,7 +455,6 @@ app.sendNotification = (function () {
                             var sendNotificationDataView = dataSourceSendNotification.data();
                             $.each(sendNotificationDataView, function(i, notification) {
                                 //console.log(notification.status[0].Msg);
-                               
                                 if (notification.status[0].Msg==='Notification Sent') {
                                     if (!app.checkSimulator()) {
                                         window.plugins.toast.showShortBottom('Notification Sent Successfully');   
@@ -518,10 +497,9 @@ app.sendNotification = (function () {
                                     //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
                                    
                                     app.callAdminOrganisationList();
-                                }else if(notification.status[0].Msg==="Session Expired"){
+                                }else if (notification.status[0].Msg==="Session Expired") {
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                     app.LogoutFromAdmin(); 
-                                
                                 }else {
                                     app.showAlert(notification.status[0].Msg , 'Notification'); 
                                     $("#progressSendNotification").hide();
@@ -537,7 +515,6 @@ app.sendNotification = (function () {
             //console.log("Code = " + r.responseCode);
             //console.log("Response = " + r.response);
             //console.log("Sent = " + r.bytesSent);
-          
             if (!app.checkSimulator()) {
                 window.plugins.toast.showShortBottom('Notification Sent Successfully');   
             }else {
@@ -553,7 +530,6 @@ app.sendNotification = (function () {
             var largeVid = document.getElementById('attachedVidNoti');
             largeVid.src = '';
             
-            
             $("#progressSendNotification").hide();
 
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
@@ -565,7 +541,6 @@ app.sendNotification = (function () {
             //console.log("An error has occurred: Code = " + error.code);
             //console.log("upload error source " + error.source);
             //console.log("upload error target " + error.target);
-
             $("#progressSendNotification").hide();
  
             if (!app.checkSimulator()) {
@@ -578,11 +553,9 @@ app.sendNotification = (function () {
         var groupDataShow;
         
         var sendNotificationOrg = function(e) {
-            
             $("#selectOrgLoader").show();
             //console.log(e.data.org_id);
             //var org = e.data.org_id;       
-
 
             var org = localStorage.getItem("orgSelectAdmin");
 
@@ -591,7 +564,7 @@ app.sendNotification = (function () {
             var comboGroupListDataSource = new kendo.data.DataSource({
                                                                          transport: {
                     read: {
-                                                                                     url: app.serverUrl() + "group/adminGroup/" + org +"/A",
+                                                                                     url: app.serverUrl() + "group/adminGroup/" + org + "/A",
                                                                                      type:"POST",
                                                                                      dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
                                                                                  }
@@ -609,95 +582,80 @@ app.sendNotification = (function () {
                                                                              $("#selectOrgLoader").hide();
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
-                                                                     var showNotiTypes = [
-                                                                         { message: "Please Check Your Internet Connection"}
-                                                                     ];
+                                                                             var showNotiTypes = [
+                                                                                 { message: "Please Check Your Internet Connection"}
+                                                                             ];
                        
-                                                                     var dataSource = new kendo.data.DataSource({
-                                                                                                                    data: showNotiTypes
-                                                                                                     });
+                                                                             var dataSource = new kendo.data.DataSource({
+                                                                                                                            data: showNotiTypes
+                                                                                                                        });
                     
-                                                                     $("#group-Name-listview").kendoMobileListView({
-                                                                                                                        template: kendo.template($("#errorTemplate").html()),
-                                                                                                                        dataSource: dataSource  
-                                                                                                                    });
-                
+                                                                             $("#group-Name-listview").kendoMobileListView({
+                                                                                                                               template: kendo.template($("#errorTemplate").html()),
+                                                                                                                               dataSource: dataSource  
+                                                                                                                           });
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
                                                                      });
-                          
-
             
-            comboGroupListDataSource.fetch(function(){                                                       
+            comboGroupListDataSource.fetch(function() {                                                       
                 groupDataShow = [];
-                 var data = this.data();                
+                var data = this.data();                
                                             
-                            if (data[0]['status'][0].Msg==='No Group list') {
-                                $("#selectGroupDiv").hide();
-                                $("#selectGroupFooter").hide();
+                if (data[0]['status'][0].Msg==='No Group list') {
+                    $("#selectGroupDiv").hide();
+                    $("#selectGroupFooter").hide();
 
-                                $("#selectOrgDiv").hide();
-                                noGroup = 1;        
+                    $("#selectOrgDiv").hide();
+                    noGroup = 1;        
                                          
-                                localStorage.setItem("SELECTED_GROUP", 0); 
-                                escapeGroupGoCustClick();
+                    localStorage.setItem("SELECTED_GROUP", 0); 
+                    escapeGroupGoCustClick();
+                }else if (data[0]['status'][0].Msg==="Session Expired") {
+                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.LogoutFromAdmin();                                 
+                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    //app.LogoutFromAdmin();
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("You don't have access");  
+                    }else {
+                        app.showAlert("You don't have access" , 'Offline');  
+                    }
+                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                    //localStorage.setItem("loginStatusCheck", 1);                                
+                }else {
+                    var orgLength = data[0].status[0].groupData.length;
+                    for (var j = 0;j < orgLength;j++) {
+                        groupDataShow.push({
+                                               group_desc: data[0].status[0].groupData[j].group_desc,
+                                               group_name: data[0].status[0].groupData[j].group_name,
+                                               group_status:data[0].status[0].groupData[j].group_status,
+                                               org_id:data[0].status[0].groupData[j].org_id,
+                                               pid:data[0].status[0].groupData[j].pid
+                                           });
+                    }
                                 
-                            }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin();                                 
-                                }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    //app.LogoutFromAdmin();
-             
-                                   if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom("You don't have access");  
-                                    }else {
-                                             app.showAlert("You don't have access" , 'Offline');  
-                                    }
-
+                    //console.log(groupDataShow);
                                 
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                            }else {
-                                var orgLength = data[0].status[0].groupData.length;
-                                for (var j = 0;j < orgLength;j++) {
-                                    groupDataShow.push({
-                                                           group_desc: data[0].status[0].groupData[j].group_desc,
-                                                           group_name: data[0].status[0].groupData[j].group_name,
-                                                           group_status:data[0].status[0].groupData[j].group_status,
-                                                           org_id:data[0].status[0].groupData[j].org_id,
-                                                           pid:data[0].status[0].groupData[j].pid
-                                                       });
-                                }
-                                
-                                //console.log(groupDataShow);
-                                
-                                $("#selectOrgDiv").hide();
-                                $("#selectGroupDiv").show();
-                                $("#selectGroupFooter").show();
-                                $("#selectOrgLoader").hide();
-
-                            }  
+                    $("#selectOrgDiv").hide();
+                    $("#selectGroupDiv").show();
+                    $("#selectGroupFooter").show();
+                    $("#selectOrgLoader").hide();
+                }  
                 
                 showDataInTemplate();
-
             });
-            
-            
-             
-                        
         };
         
-        
-        var showDataInTemplate = function(){
-            
-             $(".km-scroll-container").css("-webkit-transform", "");
+        var showDataInTemplate = function() {
+            $(".km-scroll-container").css("-webkit-transform", "");
            
             var comboGroupListDataSource = new kendo.data.DataSource({
-                                                                           data: groupDataShow
-                                                                       });      
+                                                                         data: groupDataShow
+                                                                     });      
             
-                        $("#group-Name-listview").kendoListView({
+            $("#group-Name-listview").kendoListView({
                                                         template: kendo.template($("#groupNameTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
                                                     });
@@ -707,11 +665,9 @@ app.sendNotification = (function () {
             getCustomerForOrg();
         }
 
-        var groupDataShowCustomer=[];        
+        var groupDataShowCustomer = [];        
         
-        var getCustomerForOrg = function(){
-
-
+        var getCustomerForOrg = function() {
             var org = localStorage.getItem("orgSelectAdmin");
 
             var MemberDataSource = new kendo.data.DataSource({
@@ -745,70 +701,59 @@ app.sendNotification = (function () {
                        
                                                                      var dataSource = new kendo.data.DataSource({
                                                                                                                     data: showNotiTypes
-                                                                                                     });
+                                                                                                                });
                     
                                                                      $("#customer-Name-listview").kendoMobileListView({
-                                                                                                                        template: kendo.template($("#errorTemplate").html()),
-                                                                                                                        dataSource: dataSource  
-                                                                                                                    });               
+                                                                                                                          template: kendo.template($("#errorTemplate").html()),
+                                                                                                                          dataSource: dataSource  
+                                                                                                                      });               
                                                                  }	        
                                                              });         
             
-            
-            MemberDataSource.fetch(function(){
-
+            MemberDataSource.fetch(function() {
                 groupDataShowCustomer = [];
                 var data = this.data();
-                
                      
-                                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
-                                    noCustomer = 1;
-                                    escapeGroupClick();
-                                }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                
-                                }else if (data[0]['status'][0].Msg==='Success') {
-                                    //console.log(orgVal.allCustomer.length);  
-                                    for (var i = 0;i < data[0].status[0].allCustomer.length;i++) {
-                                        groupDataShowCustomer.push({
-                                                                       mobile: data[0].status[0].allCustomer[i].uacc_username,
-                                                                       first_name: data[0].status[0].allCustomer[i].user_fname,
-                                                                       email:data[0].status[0].allCustomer[i].user_email,  
-                                                                       last_name : data[0].status[0].allCustomer[i].user_lname,
-                                                                       customerID:data[0].status[0].allCustomer[i].custID,
-                                                                       account_id:data[0].status[0].allCustomer[i].account_id,
-                                                                       orgID:data[0].status[0].allCustomer[i].orgID
-                                                                   });
-                                    }     
-                                }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                     app.LogoutFromAdmin(); 
-                                    //app.mobileApp.navigate('views/organisationLogin.html');                                     
-                                } 
+                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
+                    noCustomer = 1;
+                    escapeGroupClick();
+                }else if (data[0]['status'][0].Msg==="Session Expired") {
+                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.LogoutFromAdmin(); 
+                }else if (data[0]['status'][0].Msg==='Success') {
+                    //console.log(orgVal.allCustomer.length);  
+                    for (var i = 0;i < data[0].status[0].allCustomer.length;i++) {
+                        groupDataShowCustomer.push({
+                                                       mobile: data[0].status[0].allCustomer[i].uacc_username,
+                                                       first_name: data[0].status[0].allCustomer[i].user_fname,
+                                                       email:data[0].status[0].allCustomer[i].user_email,  
+                                                       last_name : data[0].status[0].allCustomer[i].user_lname,
+                                                       customerID:data[0].status[0].allCustomer[i].custID,
+                                                       account_id:data[0].status[0].allCustomer[i].account_id,
+                                                       orgID:data[0].status[0].allCustomer[i].orgID
+                                                   });
+                    }     
+                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.LogoutFromAdmin(); 
+                    //app.mobileApp.navigate('views/organisationLogin.html');                                     
+                } 
                      
                 showCustomerInTemplate();
             });
-                     	                     
-   
         }
         
-        
-        var showCustomerInTemplate = function(){
-            
-            
-
+        var showCustomerInTemplate = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
            
             var MemberDataSource = new kendo.data.DataSource({
-                                                                           data: groupDataShowCustomer
-                                                                       });           
+                                                                 data: groupDataShowCustomer
+                                                             });           
 
-                         $("#customer-Name-listview").kendoListView({
+            $("#customer-Name-listview").kendoListView({
                                                            dataSource: MemberDataSource,
                                                            template: kendo.template($("#customerNameTemplate").html())
                                                        });
-   
         }
          
         var skipToSeletType = function() {
@@ -817,19 +762,15 @@ app.sendNotification = (function () {
             escapeGroupClick();
         };
          
-        var goBackToGroup = function(){
-         
-                $("#selectGroupDiv").show();
-                $("#selectGroupFooter").show();
+        var goBackToGroup = function() {
+            $("#selectGroupDiv").show();
+            $("#selectGroupFooter").show();
 
-                $("#selectCustomerToSend").hide();
-                $("#selectCustomerFooter").hide();
-
+            $("#selectCustomerToSend").hide();
+            $("#selectCustomerFooter").hide();
         }
         
-        
         var NextToSeletType = function() {
-          
             var customer = [];
 		    
             $(':checkbox:checked').each(function(i) {
@@ -839,22 +780,19 @@ app.sendNotification = (function () {
             customer = String(customer);        
             //console.log(customer);
                         
-         if(customer.length!==0 && customer.length!=='0'){
-
-            $("#selectCustomerToSend").hide();
-            $("#selectCustomerFooter").hide();
+            if (customer.length!==0 && customer.length!=='0') {
+                $("#selectCustomerToSend").hide();
+                $("#selectCustomerFooter").hide();
           
-            localStorage.setItem("SELECTED_CUSTOMER", customer);  
-            escapeGroupClick();
-         }else{
-             
-                        if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Select Atleast One Customer.');   
-                        }else {
-                            app.showAlert("Select Atleast One Customer.", "Notification");  
-                        }
-             
-         }   
+                localStorage.setItem("SELECTED_CUSTOMER", customer);  
+                escapeGroupClick();
+            }else {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('Select Atleast One Customer.');   
+                }else {
+                    app.showAlert("Select Atleast One Customer.", "Notification");  
+                }
+            }   
         };
          
         var skipToCustomerType = function() {
@@ -865,8 +803,7 @@ app.sendNotification = (function () {
         };
          
         var NextToCustomerType = function() {
-
-                        var group = [];
+            var group = [];
 		    
             $(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
@@ -875,24 +812,20 @@ app.sendNotification = (function () {
             group = String(group);        
             //console.log(group);      
               
-         if(group.length!==0 && group.length!=='0'){
-                         
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
+            if (group.length!==0 && group.length!=='0') {
+                $("#selectGroupDiv").hide();
+                $("#selectGroupFooter").hide();
 
-            localStorage.setItem("SELECTED_GROUP", group); 
-            $("#selectCustomerToSend").show();                            
-            $("#selectCustomerFooter").show();    
-         
-         }else{
-             
-                       if (!app.checkSimulator()) {
-                              window.plugins.toast.showShortBottom('Select Atleast One Group.');   
-                        }else {
-                            app.showAlert("Select Atleast One Group.", "Notification");  
-                        }
-
-         }    
+                localStorage.setItem("SELECTED_GROUP", group); 
+                $("#selectCustomerToSend").show();                            
+                $("#selectCustomerFooter").show();    
+            }else {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom('Select Atleast One Group.');   
+                }else {
+                    app.showAlert("Select Atleast One Group.", "Notification");  
+                }
+            }    
         };
          
         var sendNotificationGroup = function(e) {
@@ -910,7 +843,6 @@ app.sendNotification = (function () {
         };
                   
         var escapeGroupClick = function() {                 
-            
             $(".km-scroll-container").css("-webkit-transform", "");
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
@@ -936,7 +868,6 @@ app.sendNotification = (function () {
                 //$("#selectTypeDiv").show();
                 $("#sendNotificationDivMsg").show();
                 $("#sendNotiDiv").show();   
-                
             }
              
             $(".km-scroll-container").css("-webkit-transform", "");
@@ -947,7 +878,7 @@ app.sendNotification = (function () {
         var escapeGroupGoCustClick = function() {                 
             $(".km-scroll-container").css("-webkit-transform", "");
             $("#customerBackButton").hide();
-            $("#customerNextButton").css("width","90%");
+            $("#customerNextButton").css("width", "90%");
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
 
@@ -958,27 +889,21 @@ app.sendNotification = (function () {
             app.mobileApp.pane.loader.hide();    
         };
         
-        goBackToGroupCustomer = function(){
+        goBackToGroupCustomer = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
             
-            if(noGroup===1){
-
+            if (noGroup===1) {
                 $("#selectGroupDiv").hide();
                 $("#selectGroupFooter").hide();
 
                 $("#selectCustomerToSend").show();
                 $("#selectCustomerFooter").show();
-
-                
-            }else{
-
+            }else {
                 $("#selectGroupDiv").show();
                 $("#selectGroupFooter").show();
 
                 $("#selectCustomerToSend").hide();
                 $("#selectCustomerFooter").hide();
-
-
             }
             
             $("#sendNotificationDivMsg").hide();
@@ -1020,9 +945,7 @@ app.sendNotification = (function () {
             dataToSend = imageURI;              
             $("#removeAttachment").show(); 
             $("#largeImage").show();
-            upload_type="other";
-
-
+            upload_type = "other";
             //alert(imageURI);
             //console.log(imageURI);
             //dataToSend = imageURI;
@@ -1046,11 +969,10 @@ app.sendNotification = (function () {
             
             videoAttached.src = 'styles/images/videoPlayIcon.png';
             dataToSend = videoURI;    
-            upload_type= "video";
+            upload_type = "video";
             
             $("#removeAttachment").show(); 
             $("#attachedVidNoti").show();
-
             //alert(imageURI);
             //console.log(videoURI);
             //newsDataToSend = imageURI;

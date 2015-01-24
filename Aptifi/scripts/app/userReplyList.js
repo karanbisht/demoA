@@ -8,7 +8,6 @@ app.userReplyList = (function () {
         var tabstrip1;
         
         var init = function () {
-            
         };
         
         var beforeShow = function() {
@@ -20,9 +19,9 @@ app.userReplyList = (function () {
             var query = "SELECT * FROM ADMIN_ORG";
             app.selectQuery(tx, query, getDataSuccess);
         };
-            
+        
         var groupDataShow = [];
-            
+        
         function getDataSuccess(tx, results) {                        
             groupDataShow = [];
             
@@ -72,7 +71,6 @@ app.userReplyList = (function () {
         }               
             
         var showLiveData = function() {
-                
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
                                                                        });           
@@ -109,11 +107,9 @@ app.userReplyList = (function () {
         
         var clickOnUserName = function(e) {
             //console.log(e.data);
-
             app.analyticsService.viewModel.trackFeature("User navigate to Reply To Customer in Admin");            
             
             app.mobileApp.navigate('views/userNotificationCustomer.html?org_id=' + e.data.organisationID + '&count=' + e.data.count); 
-            
         }
         
         return {

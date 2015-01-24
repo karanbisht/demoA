@@ -28,7 +28,6 @@ app.Login = (function () {
         var show = function () {
             //app.mobileApp.pane.showLoading();              
             //console.log("Login Page");
-                        
             //app.showNativeAlert();            
             app.userPosition = true;
             app.userPosition = true;
@@ -68,7 +67,7 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+            //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
             var device_id = localStorage.getItem("deviceTokenID");          
             //console.log(device_id);            
             username = $("#loginUsername").val();
@@ -125,7 +124,7 @@ app.Login = (function () {
              
                                                                             $("#progress").hide();
 
-                                                                            app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from Login API .');
+                                                                            app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from Login API .');
 
                                                                             document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
                                                                             //navigator.notification.alert("Please check your internet connection.",
@@ -140,9 +139,7 @@ app.Login = (function () {
 						   
                         $.each(loginDataView, function(i, loginData) {
                             //console.log('-------Msg Data --------');			
-
                             //console.log(loginData.status[0].Msg);
-                               
                             if (loginData.status[0].Msg==='User not registered') {
                                 //console.log('reg');
                                 //app.mobileApp.pane.loader.hide();
@@ -276,7 +273,6 @@ app.Login = (function () {
             //console.log('DataBase Saved');
             //console.log(userOrgIdArray);
             //console.log(userRoleArray);
-            
             for (var i = 0;i < userOrgIdArray.length;i++) {
                 // console.log(userOrgIdArray[i]);
                 // console.log(userAccountID);
@@ -327,7 +323,6 @@ app.Login = (function () {
                                                                               });         
             
                 organisationALLListDataSource.read();
-            
             }
         };
                         
@@ -411,7 +406,6 @@ app.Login = (function () {
             var query = "UPDATE JOINED_ORG SET count='" + GlobalDataCount + "',bagCount='" + GlobalDataCount + "', lastNoti='" + GlobalDataLastMsg + "' where org_id='" + GlobalDataOrgId + "' and role='C'";
             app.updateQuery(tx, query);
         }
-          
         
         var goToIndex = function() {
             app.mobileApp.navigate('index.html');
@@ -423,8 +417,7 @@ app.Login = (function () {
         };
         
         var clickforRegenerateCode = function() {
-            
-             $("#progress").hide();
+            $("#progress").hide();
             
             $(".km-scroll-container").css("-webkit-transform", "");
   
@@ -449,7 +442,6 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "1");
             $("#selectionDiv").css("opacity", 1);
             $("#regDoneButton").show();*/
-            
             $("#selectionDiv").show();
             $("#regenerateDiv").hide();
             $("#validationRow").hide();
@@ -457,8 +449,6 @@ app.Login = (function () {
             document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
             $("#selectionDiv").css("z-index", "999");
             $("#selectionDiv").css("opacity", 1);	
-
-
             //app.mobileApp.navigate('main.html');
             //window.location.href = "main.html"; 
         };
@@ -504,9 +494,7 @@ app.Login = (function () {
                     }
                 },
                                                                      error: function (e) {
-              
-                                                                                                                                                     
-                                                                         app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS.');
+                                                                         app.analyticsService.viewModel.trackException(e, 'SMS Gateway , Unable to sent verification SMS.');
 
                                                                          $("#progress").hide();
 
@@ -545,7 +533,6 @@ app.Login = (function () {
             }else {
                 $("#progressRandomCode").show();
                 if (varifiCode===validationCodeId) {
-
                     var deviceName = app.devicePlatform();
                     var device_type;
                     if (deviceName==='Android') {
@@ -554,7 +541,7 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';                    
+                    //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';                    
                     var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);
                     
@@ -579,7 +566,7 @@ app.Login = (function () {
                                                                             $("#progressRandomCode").hide();
                                                                             //app.mobileApp.pane.loader.hide();               
 
-                                                                            app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from LOGIN API after Authentication .');
+                                                                            app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from LOGIN API after Authentication .');
 
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
@@ -622,7 +609,6 @@ app.Login = (function () {
                                 $("#progressRandomCode").hide();
                                 app.showAlert(loginData.status[0].Msg, "Notification");
                             }      
-          
                         });
                     });
                 }else {
@@ -654,11 +640,10 @@ app.Login = (function () {
     return loginViewModel;
 }());
 
-
-$(document).ready(function(){
+$(document).ready(function() {
     $(document).ajaxError(function(e, jqxhr, settings, exception) {  
-  if (jqxhr.readyState == 0 || jqxhr.status == 0) {  
-    return; //Skip this error  
-  }  
+        if (jqxhr.readyState == 0 || jqxhr.status == 0) {  
+            return; //Skip this error  
+        }  
+    }); 
 }); 
-});

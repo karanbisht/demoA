@@ -32,8 +32,8 @@ app.orgsubGroupListView = (function () {
             if (count !== 0) {
                 groupDataShow = [];
                 for (var i = 0 ; i < count ; i++) {    
-                             var dateString = results.rows.item(i).send_date;
-                             var notiDate = app.timeConverter(dateString);
+                    var dateString = results.rows.item(i).send_date;
+                    var notiDate = app.timeConverter(dateString);
 
                     groupDataShow.push({
 

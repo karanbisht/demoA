@@ -32,23 +32,18 @@ app.registration = (function () {
 
         var addNewRegistration = function (e) {
             app.userPosition = false;
-                $regFirstName.val('');
-                $regLastName.val('');
-                $regEmail.val('');
+            $regFirstName.val('');
+            $regLastName.val('');
+            $regEmail.val('');
             
             username = e.view.params.mobile;
             comingFrom = e.view.params.type
-            
 
             document.getElementById('selectionDivR').style.pointerEvents = 'auto'; 
 
             $("#selectionDivR").css("z-index", "999");
             $("#selectionDivR").css("opacity", 1);	
-
-            
-            
         };
-        
 
         var registerR = function() {
             app.userPosition = false;   
@@ -69,7 +64,6 @@ app.registration = (function () {
             } else {   
                 //app.mobileApp.navigate('views/selectOrganisationView.html');                     
                 //console.log(fname + "||" + lname + "||" + email + "||" + username);
-                
                 $("#progressRegister").show();
                 var jsonDataRegister;
                 var goToUrl;
@@ -103,20 +97,16 @@ app.registration = (function () {
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-
                                                                            $("#progressRegister").hide();
 
                                                                            //console.log(e);
-                                                                            if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                            }else {
-                                                                                app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                            }
-
+                                                                           if (!app.checkSimulator()) {
+                                                                               window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                           }else {
+                                                                               app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                           }
                                                                                                                                                      
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Error in Res.');
-
-                                                                           
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Error in Res.');
                                                                        }               
                                                                    });  
 	            
@@ -126,7 +116,6 @@ app.registration = (function () {
                     var orgDataId = [];
                     var userAllGroupId = [];
                     $.each(loginDataView, function(i, loginData) {
-                               
                         if (loginData.status[0].Msg==='Registration Success' || loginData.status[0].Msg==='Profile Created') {
                             app.mobileApp.pane.loader.hide();
                             app.userPosition = false;
@@ -195,7 +184,6 @@ app.registration = (function () {
                 });             
             }
         };
-        
        
         var clickforValificationCodeR = function() {
             $("#regenerateDivR").hide();
@@ -272,8 +260,6 @@ app.registration = (function () {
             $("#selectionDivR").css("opacity", 1);
             $("#regDoneButtonR").show();*/
             //window.location.href = "index.html"; 
-            
-            
             app.mobileApp.navigate('#welcome');
             $("#selectionDiv").show();
             $("#regenerateDivR").hide();
@@ -283,7 +269,6 @@ app.registration = (function () {
             $("#selectionDiv").css("opacity", 1);	
 
             $('#validationCodeIdR').val('');
-
         };
         
         var backToIndex = function() {
@@ -341,9 +326,7 @@ app.registration = (function () {
        
                         $.each(loginDataView, function(i, loginData) {
                             //console.log(loginData.status[0].Msg);
-                               
                             if (loginData.status[0].Msg==='Success') {
-                               
                                 account_Id = loginData.status[0].ProfileInfo[0].account_id;
                                
                                 if (loginData.status[0].JoinedOrg.length!==0) {
@@ -436,7 +419,6 @@ app.registration = (function () {
             app.deleteQuery(tx, query);
 
             var dataLength = profileOrgData.org_id.length;
-       
 
             for (var i = 0;i < dataLength;i++) {    
                 if (profileOrgData.role[i]==='C') {
@@ -460,7 +442,6 @@ app.registration = (function () {
             //console.log('DataBase Saved');
             //console.log(userOrgIdArray);
             //console.log(userRoleArray);
-            
             for (var i = 0;i < userOrgIdArray.length;i++) {     
                 var organisationALLListDataSource = new kendo.data.DataSource({
                                                                                   transport: {
@@ -474,7 +455,6 @@ app.registration = (function () {
 
                         data: function(data) {	
                             //console.log(data);
-
                             var datacheck = 0;
                             var allData = 0;
                        
@@ -483,7 +463,6 @@ app.registration = (function () {
                                 //console.log(groupValue);        
                                 allData++;
                                 $.each(groupValue, function(m, orgVal) {
-                                    
                                     if (orgVal.Msg ==='No notification') {     
                                         datacheck++;                             
                                     }else if (orgVal.Msg==='Success') {
@@ -506,7 +485,6 @@ app.registration = (function () {
                                                                               });         
             
                 organisationALLListDataSource.fetch(function() {
-
                 });
             }
         }

@@ -17,8 +17,7 @@ app.groupDetail = (function () {
         };
            
         var show = function (e) {
-            
-           app.MenuPage = false;
+            app.MenuPage = false;
             app.mobileApp.pane.loader.hide();       
             
             var adminOrgInfo = [];
@@ -37,10 +36,9 @@ app.groupDetail = (function () {
                
             var OrgDisplayName;
             if (orgName.length > 20) {
-                    OrgDisplayName = orgName.substr(0, 20) + '..';
+                OrgDisplayName = orgName.substr(0, 20) + '..';
             }else {
-                    OrgDisplayName = orgName;
-                
+                OrgDisplayName = orgName;
             }
             
             var navbar = app.mobileApp.view()                
@@ -68,22 +66,16 @@ app.groupDetail = (function () {
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {                                   
                                 adminOrgInfo = [];
                                 localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
-                                                     
-                            }else if(groupValue[0].Msg==="You don't have access"){
-                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    //app.LogoutFromAdmin();    
-
-                                
-                                
+                            }else if (groupValue[0].Msg==="You don't have access") {
+                                //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                //app.LogoutFromAdmin();    
                                 if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom("You don't have access");  
-                                    }else {
-                                             app.showAlert("You don't have access" , 'Offline');  
-                                    }
-
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                                
+                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                }else {
+                                    app.showAlert("You don't have access" , 'Offline');  
+                                }
+                                //app.mobileApp.navigate('views/organisationLogin.html');   
+                                //localStorage.setItem("loginStatusCheck", 1);                                
                             }else if (groupValue[0].Msg==='Success') {
                                 console.log(groupValue[0]);
                                 var adminOrgInformation = groupValue[0].orgData;                                
@@ -102,7 +94,8 @@ app.groupDetail = (function () {
                         return [data];
                     }                                                            
                 },
-                                                                           error: function (e) {                                                                               console.log(e);
+                                                                           error: function (e) {
+                                                                               console.log(e);
                                                                                console.log(JSON.stringify(e));
                                                                                $("#progressAdmin").hide();             
 
@@ -129,7 +122,6 @@ app.groupDetail = (function () {
                 });
                 */
             });
-            
         };
         
         function getListCountDB() {
@@ -165,8 +157,8 @@ app.groupDetail = (function () {
                 var showData = countData - bagCountData;
                 //alert(showData);
 
-                if(showData < 0){
-                     showData=0;   
+                if (showData < 0) {
+                    showData = 0;   
                 }
                 
                 $("#countToShow").html(showData);            
@@ -284,7 +276,6 @@ app.groupDetail = (function () {
                     }    
                 }else {        
                     //alert("update");
-           
                     var queryUpdate = "UPDATE ADMIN_ORG SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
                     app.updateQuery(tx, queryUpdate);                                        
                 }                      
@@ -341,7 +332,6 @@ app.groupDetail = (function () {
         };
         
         var orgMemberShow = function(e) {
- 
             var organisationID = localStorage.getItem("orgSelectAdmin");         
             $("#progressAdminOrgMem").show();         
                         
@@ -359,14 +349,13 @@ app.groupDetail = (function () {
                 
                 
                     data: function(data) {
-                       console.log(data);                                             
+                        console.log(data);                                             
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
                                                                      //apps.hideLoading();
-                                                                   
                                                                      console.log(JSON.stringify(e));
                                                                      
                                                                      //navigator.notification.alert("Please check your internet connection.",
@@ -386,7 +375,7 @@ app.groupDetail = (function () {
                        
                                                                      var dataSource = new kendo.data.DataSource({
                                                                                                                     data: showNotiTypes
-                                                                                                     });
+                                                                                                                });
                     
                                                                      $("#groupMember-listview").kendoMobileListView({
                                                                                                                         template: kendo.template($("#errorTemplate").html()),
@@ -399,91 +388,67 @@ app.groupDetail = (function () {
                                                              });         
             
             MemberDataSource.fetch(function() {
-            
                 var data = this.data();
-                
                         
-                        groupDataShow = [];
-                                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
-                                    groupDataShow.push({
-                                                           mobile: '',
-                                                           first_name: '',
-                                                           email:'No Customer in this Organization',  
-                                                           last_name : '',
-                                                           customerID:'0',
-                                                           account_id:'0',
-                                                           orgID:'0'
-                                                       });     
-                                    $("#adminRemoveMember").hide();
-                                }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                
-                                }else if (data[0]['status'][0].Msg==='Success') {
-                             
-                                    for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
-                                        groupDataShow.push({
-                                                               mobile: data[0]['status'][0].allCustomer[i].uacc_username,
-                                                               first_name: data[0]['status'][0].allCustomer[i].user_fname,
-                                                               email:data[0]['status'][0].allCustomer[i].user_email,  
-                                                               last_name : data[0]['status'][0].allCustomer[i].user_lname,
-                                                               customerID:data[0]['status'][0].allCustomer[i].custID,
-                                                               account_id:data[0]['status'][0].allCustomer[i].account_id,
-                                                               orgID:data[0]['status'][0].allCustomer[i].orgID
-                                                           });
-                                    }     
-                                }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
-                                    //app.LogoutFromAdmin();
-                                    
-
-                                    if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom("You don't have access");  
-                                    }else {
-                                             app.showAlert("You don't have access" , 'Offline');  
-                                    }
-
-                                    
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
-                                }
-                       
+                groupDataShow = [];
+                if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
+                    groupDataShow.push({
+                                           mobile: '',
+                                           first_name: '',
+                                           email:'No Customer in this Organization',  
+                                           last_name : '',
+                                           customerID:'0',
+                                           account_id:'0',
+                                           orgID:'0'
+                                       });     
+                    $("#adminRemoveMember").hide();
+                }else if (data[0]['status'][0].Msg==="Session Expired") {
+                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.LogoutFromAdmin(); 
+                }else if (data[0]['status'][0].Msg==='Success') {
+                    for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
+                        groupDataShow.push({
+                                               mobile: data[0]['status'][0].allCustomer[i].uacc_username,
+                                               first_name: data[0]['status'][0].allCustomer[i].user_fname,
+                                               email:data[0]['status'][0].allCustomer[i].user_email,  
+                                               last_name : data[0]['status'][0].allCustomer[i].user_lname,
+                                               customerID:data[0]['status'][0].allCustomer[i].custID,
+                                               account_id:data[0]['status'][0].allCustomer[i].account_id,
+                                               orgID:data[0]['status'][0].allCustomer[i].orgID
+                                           });
+                    }     
+                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
+                    //app.LogoutFromAdmin();
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("You don't have access");  
+                    }else {
+                        app.showAlert("You don't have access" , 'Offline');  
+                    }
+                    //app.mobileApp.navigate('views/organisationLogin.html');   
+                    //localStorage.setItem("loginStatusCheck", 1);                                
+                }
                 
                 showMemberDataFunc(groupDataShow);
-
             });
-                       
-            
-
-            
-          
         }
         
-        function showMemberDataFunc(data){
-            
-            
+        function showMemberDataFunc(data) {
             $("#groupMember-listview").kendoMobileListView({
                                                                dataSource: data,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
-                    $("#progressAdminOrgMem").hide();
-            
+            $("#progressAdminOrgMem").hide();
 
-              $('#groupMember-listview').data('kendoMobileListView').refresh(); 
-          
+            $('#groupMember-listview').data('kendoMobileListView').refresh(); 
         }
-        
-        
         
         var showGroupToDelete = function() {
             //console.log("---------------------GROUP DATA----------------");
-            
             $("#deleteMemberData").kendoListView({
                                                      template: kendo.template($("#Member-Delete-template").html()),    		
                                                      dataSource: groupDataShow
                                                  });
-        
-        
         }
         
         var addNemMember = function() {
@@ -504,7 +469,7 @@ app.groupDetail = (function () {
 
             //app.slide('left', 'green' , '3' , '#views/groupListPage.html');
             
-                app.mobileApp.navigate("views/groupListPage.html");
+            app.mobileApp.navigate("views/groupListPage.html");
         };
         
         var sendNotification = function() {
@@ -540,7 +505,6 @@ app.groupDetail = (function () {
                     }
                 },
                                                                    error: function (e) {
-
                                                                        console.log(JSON.stringify(e));
                                                                        navigator.notification.alert("Please check your internet connection.",
                                                                                                     function () {
@@ -561,11 +525,9 @@ app.groupDetail = (function () {
 
                         //app.showAlert("Group Updated Successfully","Notification");
                         app.mobileApp.navigate('views/groupListPage.html');
-                    }else if(addGroupData.status[0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                
-                                
+                    }else if (addGroupData.status[0].Msg==="Session Expired") {
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
@@ -696,7 +658,6 @@ app.groupDetail = (function () {
             console.log(customer);            
                         
             if (customer.length!==0 && customer.length!=='0') {
-                
                 $("#deleteMemberLoader").show();
                 
                 var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
@@ -717,15 +678,15 @@ app.groupDetail = (function () {
                         }
                     },
                                                                            error: function (e) {
-                                                                              $("#deleteMemberLoader").hide();
+                                                                               $("#deleteMemberLoader").hide();
                                                                                //console.log(e);
                                                                                console.log(JSON.stringify(e));
                                                                                
-                                                                            if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showShortBottom('Please check your internet connection.');
-                                                                            }else {
-                                                                                app.showAlert("Please check your internet connection.", "Notification"); 
-                                                                            }
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                               }else {
+                                                                                   app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                               }
                                                                            }               
           
                                                                        });  
@@ -733,7 +694,6 @@ app.groupDetail = (function () {
                 dataSourceDeleteMember.fetch(function() {
                     var loginDataView = dataSourceDeleteMember.data();
                     $.each(loginDataView, function(i, deleteGroupData) {
-                    
                         console.log(deleteGroupData.status[0].Msg);
                       
                         if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
@@ -776,7 +736,6 @@ app.groupDetail = (function () {
         var memberSelectedCustID;
          
         var clickOnOrgMember = function(e) {
-          
             //console.log(e.data);
             memberSelectedOrgID = e.data.orgID;
             memberSelectedCustID = e.data.customerID;   
@@ -786,9 +745,9 @@ app.groupDetail = (function () {
 
         var alernateMobileVal;
 
-        var adminAllGroupArray=[];
-        var customerGroupArray=[];
-        var EditGroupArrayMember=[];
+        var adminAllGroupArray = [];
+        var customerGroupArray = [];
+        var EditGroupArrayMember = [];
 
         var editMemberShow = function(e) {
             e.preventDefault();
@@ -800,9 +759,9 @@ app.groupDetail = (function () {
             alernateMobileVal = 0;
             countMobile = 0;
             alternateNumInfo = [];
-            adminAllGroupArray=[];
-            customerGroupArray=[];
-            EditGroupArrayMember=[];
+            adminAllGroupArray = [];
+            customerGroupArray = [];
+            EditGroupArrayMember = [];
             mobileArray = [];
             $("#showAlternateList").show();
             $("#alternateMobileList").empty();
@@ -829,11 +788,10 @@ app.groupDetail = (function () {
                                                                            $("#editOrgMemberContent").show();
                                                                            
                                                                            if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
-                                                                            }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
-                                                                            }
-                                                                                                                                                      
+                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                           }else {
+                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                           }
                                                                        }               
                                                                    });  
 	            
@@ -872,117 +830,99 @@ app.groupDetail = (function () {
                             $("#showAlternateList").hide();
                         }  
                         
-                        if(addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined){
-                            adminAllGroupArray=[];
+                        if (addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined) {
+                            adminAllGroupArray = [];
                             for (var i = 0 ; i < addGroupData.status[0].AdminGroup.length;i++) {
-
                                 adminAllGroupArray.push({
-                                                          group_name: addGroupData.status[0].AdminGroup[i].group_name,
-                                                          pid: addGroupData.status[0].AdminGroup[i].pid
-                                                      });
-
+                                                            group_name: addGroupData.status[0].AdminGroup[i].group_name,
+                                                            pid: addGroupData.status[0].AdminGroup[i].pid
+                                                        });
                             }
                         }
                         
-                        if(addGroupData.status[0].customerGroup.length!==0 && addGroupData.status[0].customerGroup.length!==undefined){
-                            customerGroupArray=[];
+                        if (addGroupData.status[0].customerGroup.length!==0 && addGroupData.status[0].customerGroup.length!==undefined) {
+                            customerGroupArray = [];
                             for (var i = 0 ; i < addGroupData.status[0].customerGroup.length;i++) {
-
                                 customerGroupArray.push({
-                                                          pid: addGroupData.status[0].customerGroup[i].groupID
-                                                      });
-
+                                                            pid: addGroupData.status[0].customerGroup[i].groupID
+                                                        });
                             }
                         }
-                        
                         
                         var allGroupLength = adminAllGroupArray.length;
                         var allCustomerLength = customerGroupArray.length;                        
                         for (var i = 0;i < allGroupLength;i++) {       
-             
                             adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);
                             //console.log(adminAllGroupArray[i].pid);
                             //console.log(customerGroupArray);
                             //alert(adminAllGroupArray[i].pid);
                             
-                          for(var j=0;j<allCustomerLength;j++){
-                            //alert(customerGroupArray[j].pid);
-                            //var pos = $.inArray(parseInt(adminAllGroupArray[i].pid), customerGroupArray[j].pid);           
-		                    //console.log(pos); 
-                            //console.log("---------------------------------");
-                            //alert(JSON.stringify(joinOrgID));
-                            //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
-         
-                            if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
-                                //alert(i);
-                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
-                                EditGroupArrayMember.push({
-                                                          group_name: adminAllGroupArray[i].group_name,
-                                                          pid: adminAllGroupArray[i].pid,
-                                                          check:'checked'
-                                                      });
-                            }else {
-                                //alert(i);
-                                //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
-                                
-                                EditGroupArrayMember.push({
-                                                          group_name: adminAllGroupArray[i].group_name,
-                                                          pid: adminAllGroupArray[i].pid,
-                                                          check:''
-                                                      });        
-                            }  
-                          }
+                            for (var j = 0;j < allCustomerLength;j++) {
+                                //alert(customerGroupArray[j].pid);
+                                //var pos = $.inArray(parseInt(adminAllGroupArray[i].pid), customerGroupArray[j].pid);           
+                                //console.log(pos); 
+                                //console.log("---------------------------------");
+                                //alert(JSON.stringify(joinOrgID));
+                                //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
+                                if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
+                                    //alert(i);
+                                    //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                    EditGroupArrayMember.push({
+                                                                  group_name: adminAllGroupArray[i].group_name,
+                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  check:'checked'
+                                                              });
+                                }else {
+                                    //alert(i);
+                                    //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
+                                    EditGroupArrayMember.push({
+                                                                  group_name: adminAllGroupArray[i].group_name,
+                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  check:''
+                                                              });        
+                                }  
+                            }
                         }
-                                                
-                    }else if(addGroupData.status[0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                
-                                
+                    }else if (addGroupData.status[0].Msg==="Session Expired") {
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
                     //console.log('------------------');
                     console.log(EditGroupArrayMember);
-                    
                                
-                                /*var comboEditGroupListDataSource = new kendo.data.DataSource({
-                                                                           data: EditGroupArrayMember
-                                                                       }); */                        
+                    /*var comboEditGroupListDataSource = new kendo.data.DataSource({
+                    data: EditGroupArrayMember
+                    }); */                        
             
-                                $("#groupInEditMember").kendoListView({
-                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
-                                                        dataSource: EditGroupArrayMember
-                                });
- 
+                    $("#groupInEditMember").kendoListView({
+                                                              template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+                                                              dataSource: EditGroupArrayMember
+                                                          });
                     
                     $("#adminEditCustomer").hide();            
                     $("#editOrgMemberContent").show();
                 });
             });
-            
-             //showGroupDataToEditInTemplate();   
+            //showGroupDataToEditInTemplate();   
         }
-        
-        
-        
         
         /*function showGroupDataToEditInTemplate(){
            
-            console.log(EditGroupArrayMember);            
+        console.log(EditGroupArrayMember);            
             
-            $(".km-scroll-container").css("-webkit-transform", "");
+        $(".km-scroll-container").css("-webkit-transform", "");
            
-            var comboEditGroupListDataSource = new kendo.data.DataSource({
-                                                                           data: EditGroupArrayMember
-                                                                       });                         
+        var comboEditGroupListDataSource = new kendo.data.DataSource({
+        data: EditGroupArrayMember
+        });                         
             
-            $("#groupInEditMember").kendoListView({
-                                                        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
-                                                        dataSource: comboEditGroupListDataSource
-            });
+        $("#groupInEditMember").kendoListView({
+        template: kendo.template($("#groupNameEditShowTemplate").html()),    		
+        dataSource: comboEditGroupListDataSource
+        });
         }*/
-
         
         var userMessageTab = function(e) {
             e.preventDefault();
@@ -1066,13 +1006,11 @@ app.groupDetail = (function () {
         }
                       
         var editProfileFunc = function() {
-
             var fname = $("#editFirstName").val();
             var lname = $("#editLastName").val();
             var email = $("#editEmail").val();
             var mobile = $("#staticMobile").val();
             var alterEditMob = $("#editMobileAlterPage").val();
-            
             
             var groupEdit = [];		    
             $(':checkbox:checked').each(function(i) {
@@ -1081,7 +1019,7 @@ app.groupDetail = (function () {
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
-            var organisationID=localStorage.getItem("orgSelectAdmin");
+            var organisationID = localStorage.getItem("orgSelectAdmin");
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", "Validation Error");
@@ -1095,7 +1033,7 @@ app.groupDetail = (function () {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
                 app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
-            }else if(groupEdit.length===0 || groupEdit.length==='0'){
+            }else if (groupEdit.length===0 || groupEdit.length==='0') {
                 app.showAlert("Please select Group.", "Validation Error");    
             }else if (countMobile!==0) {  
                 if (alterEditMob=== "Mobile Number" || alterEditMob === "") {
@@ -1157,10 +1095,10 @@ app.groupDetail = (function () {
                                                                                    app.mobileApp.pane.loader.hide();
 
                                                                                    if (!app.checkSimulator()) {
-                                                                                        window.plugins.toast.showShortBottom('Please check your internet connection.');
-                                                                                    }else {
-                                                                                        app.showAlert("Please check your internet connection.", "Notification"); 
-                                                                                    }
+                                                                                       window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                                   }else {
+                                                                                       app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                                   }
                                                                                }               
                                                                            });  
              
@@ -1171,11 +1109,11 @@ app.groupDetail = (function () {
                                 //console.log(loginData.status[0].Msg);                               
                                 if (loginData.status[0].Msg==='Success') {
                                     $("#adminEditCustomer").hide();
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
-                                                                                }else {
-                                                                                    app.showAlert("Customer detatil updated successfully", "Notification");  
-                                                                                }
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                                    }else {
+                                        app.showAlert("Customer detatil updated successfully", "Notification");  
+                                    }
                                     
                                     app.mobileApp.navigate('#groupMemberShow');
                                     //app.mobileApp.navigate('#groupMemberShow');
@@ -1203,7 +1141,7 @@ app.groupDetail = (function () {
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                                    cache: false,                                                      
-                                                                                    data: jsonDataRegister
+                                                                                   data: jsonDataRegister
                                                                                }
                     },
                                                                        schema: {
@@ -1220,11 +1158,10 @@ app.groupDetail = (function () {
                                                                            app.mobileApp.pane.loader.hide();
                                                                          
                                                                            if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
-                                                                            }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
-                                                                            }
-                                                                           
+                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                           }else {
+                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                           }
                                                                        }               
                                                                    });  
              
@@ -1233,14 +1170,13 @@ app.groupDetail = (function () {
                     //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
                         //console.log(loginData.status[0].Msg);
-                               
                         if (loginData.status[0].Msg==='Customer detatil updated successfully') {
-                          $("#adminEditCustomer").hide();  
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
-                                                                                }else {
-                                                                                    app.showAlert("Customer detatil updated successfully", "Notification");  
-                                                                                }
+                            $("#adminEditCustomer").hide();  
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                            }else {
+                                app.showAlert("Customer detatil updated successfully", "Notification");  
+                            }
                             
                             app.mobileApp.navigate('#groupMemberShow');
                         }else {
