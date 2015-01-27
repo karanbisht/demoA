@@ -24,7 +24,7 @@
             <div class="cf" data-role="touch" data-bind="events: { tap: eventDetailShow }">                        
 
              <div class="calendarEvent-content">            
-            
+         
                 #if(event_date!==preDateVal){#                  
                  <div>
                     <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>
@@ -66,7 +66,7 @@
               
          #}else{#            
               <div class="cf">                        
-       		<div class="calendarEvent-List" style="border-radius:6px;">             
+       		<div class="no_calendarEvent-List">             
        		     <div id="activityTemplateTitle" class="HeadingClass">${event_name}</div>
          		   <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);" >${event_desc}</span>            			            
        		</div>

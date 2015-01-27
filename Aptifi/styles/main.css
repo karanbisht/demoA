@@ -927,6 +927,21 @@ input::-webkit-inner-spin-button
 }
 
 
+.no_calendarEvent-List
+{
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    padding:10px;
+    background-color:#FBFBFB;
+    border-radius:6px;
+    z-index:1;
+    border-top:1px solid #D7D4CB;
+    border-right:1px solid #D7D4CB;
+    border-left:1px solid #D7D4CB;
+    min-height:60px;
+}
+
 .calendarDetail-List{
     position: relative;
     font-size: .85rem;

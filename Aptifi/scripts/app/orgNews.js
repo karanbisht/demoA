@@ -72,7 +72,8 @@ app.orgNews = (function () {
                                            });
                     }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
-                        
+                      
+                    if (data[0]['status'][0].newsData!=='No News List') { 
                         if (data[0].status[0].newsData.length!==0) {
                             var eventListLength = data[0].status[0].newsData.length;
                               
@@ -97,7 +98,20 @@ app.orgNews = (function () {
                                                        org_id: data[0].status[0].newsData[i].org_id
                                                    });
                             }
-                        } 
+                        }
+                      }else{
+                                groupAllEvent.push({
+                                               id: 0,
+                                               add_date: 0,
+                                               news_date: 0,
+                                               news_desc: 'No News from this Organization',                                                                                 										  
+                                               news_name: 'No News',                                                                                  										  
+                                               news_time: '',
+                                               news_image:'',
+                                               mod_date: '',                                     
+                                               org_id: ''
+                                           });  
+                      }  
                     }
 
                     showInListView();

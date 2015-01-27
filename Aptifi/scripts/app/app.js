@@ -10,8 +10,8 @@ var app = (function (win) {
     var mobileApp;
     
     var serverUrl = function() {
-        //return 'https://app.Zaff.io/webservice/';        
-        return 'http://54.86.57.141/webservice/';
+        return 'https://app.Zaff.io/webservice/';        
+        //return 'http://54.86.57.141/webservice/';
     }
 
     var showAppVersion = function() {
@@ -551,11 +551,11 @@ var app = (function (win) {
                                                                 error: function (e) {
                                                                     //console.log(e);
                                                                     console.log(JSON.stringify(e));
-                                                                    if (!app.checkSimulator()) {
+                                                                    /*if (!app.checkSimulator()) {
                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                     }else {
                                                                         app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }               
+                                                                    }*/              
                                                                 }               
                                                             });  
 	            
@@ -577,9 +577,10 @@ var app = (function (win) {
                                  app.showAlert("Your have Logged in with another device , Please re-login." , 'Notification');  
                         }
                         
-                        var db = app.getDb();
-                       db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);
+                       //var db = app.getDb();
+                       //db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);
   
+                        updateLoginStatusSuccess();
                 
                     }
                     
