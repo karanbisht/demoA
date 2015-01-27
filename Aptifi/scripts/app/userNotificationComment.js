@@ -106,6 +106,8 @@ app.userNotiComment = (function () {
             //var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
             userName = e.view.params.userName;
+           //alert(userName);
+         
             //attached = e.view.params.attached;
             notiId = e.view.params.notification_id;
             date = e.view.params.date;
@@ -289,7 +291,8 @@ app.userNotiComment = (function () {
                                                            add_date: commentDate,
                                                            add_time: commentTime,
                                                            user_type: groupValue[0].AllComment[j].user_type,
-                                                           user_id: groupValue[0].AllComment[j].user_id
+                                                           user_id: groupValue[0].AllComment[j].user_id,
+                                                           userName:userName
                                                            //notification_id: groupValue[0].replyData[j].notification_id,
                                                            //send_date:groupValue[0].replyData[j].send_date,
                                                            //title:groupValue[0].replyData[j].title,

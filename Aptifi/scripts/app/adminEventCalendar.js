@@ -69,8 +69,10 @@ app.adminEventCalender = (function () {
                     if (loginData.status[0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
-
                         showEventInCalendar();
+                    }else if (loginData.status[0].Msg==='Session Expired') {
+                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.LogoutFromAdmin();                         
                     }else if (loginData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
                             window.plugins.toast.showLongBottom("You don't have access");  
@@ -468,7 +470,10 @@ app.adminEventCalender = (function () {
                     }
                     //app.mobileApp.navigate('views/organisationLogin.html');   
                     //localStorage.setItem("loginStatusCheck", 1);                                
-                }else {
+                }else if (data[0]['status'][0].Msg==='Session Expired') {
+                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.LogoutFromAdmin();                         
+                    }else {
                     var orgLength = data[0].status[0].groupData.length;
                     for (var j = 0;j < orgLength;j++) {
                         groupDataShow.push({
@@ -975,6 +980,8 @@ app.adminEventCalender = (function () {
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval,"cmbGroup":group}
             
+                    console.log(jsonDataSaveGroup);
+                    
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
                             read: {
@@ -986,19 +993,18 @@ app.adminEventCalender = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                //console.log(data);
+                                console.log(data);
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               //console.log(JSON.stringify(e));
+                                                                               console.log(JSON.stringify(e));
                                                                                $("#sendEventLoader").hide();
                                                                                
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                               }else {
-                                                                                   app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                               }else {                                                                                   app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                                                                                }
                                                                            }               
           
@@ -1368,7 +1374,10 @@ app.adminEventCalender = (function () {
                                            mod_date: '',                                     
                                            org_id: ''
                                        });
-                }else if (data[0]['status'][0].Msg==="You don't have access") {                                           
+                }else if (data[0]['status'][0].Msg==='Session Expired') {
+                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.LogoutFromAdmin();                         
+                    }else if (data[0]['status'][0].Msg==="You don't have access") {                                           
                     //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                     //app.LogoutFromAdmin(); 
                     if (!app.checkSimulator()) {

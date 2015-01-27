@@ -1028,7 +1028,7 @@ input::-webkit-inner-spin-button
     display: block;
     margin: 5px 5px 5px 5px;
     color: #676767;
-    font-size: 2rem;
+    font-size: 1.5rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1158,6 +1158,16 @@ white-space: nowrap;
     font-size: .5rem;
 }
 
+
+.admin-comment-username
+{
+    position: relative;
+    color: #57A70C;
+    top:-3px;
+    float:left;
+    /*text-transform: uppercase;*/
+    font-size: .8rem;
+}
 
 .user-comment-content
 {
