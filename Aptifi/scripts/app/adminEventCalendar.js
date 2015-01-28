@@ -1064,19 +1064,11 @@ app.adminEventCalender = (function () {
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
           
-            if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom('Event Added Successfully');  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }else{                
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Event Not Added Successfully');  
-                }else {
-                    app.showAlert('Event Not Added Successfully' , 'Notification');  
+                    app.showAlert('Event Added Successfully' , 'Notification');  
                 }
-            }
               
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';            
@@ -1096,12 +1088,21 @@ app.adminEventCalender = (function () {
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);
- 
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-            }else {
-                app.showAlert("Network problem . Please try again later", "Notification");  
+             
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Event Not Added/Updated Successfully');  
+                }else {
+                    app.showAlert('Event Not Added/Updated Successfully' , 'Notification');  
+                }
             }
+
             
             $("#sendEventLoader").hide();
             $("#sendEditEventLoader").show();
@@ -1239,7 +1240,9 @@ app.adminEventCalender = (function () {
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               //console.log(e);
+                                                                               console.log(e);
+                                                                               console.log(JSON.stringify(e));
+                                                                               
                                                                                $("#sendEditEventLoader").hide();
 
                                                                                navigator.notification.alert("Please check your internet connection.",
@@ -1294,19 +1297,11 @@ app.adminEventCalender = (function () {
 
             $("#sendEditEventLoader").hide();
 
-            if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom('Event Updated Successfully');  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }else{                
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Event Not Updated Successfully');  
-                }else {
-                    app.showAlert('Event Not Updated Successfully' , 'Notification');  
+                    app.showAlert('Event Updated Successfully' , 'Notification');  
                 }
-            }
          
             //if (pageToGo===1) {
             app.mobileApp.navigate("#adminEventList");

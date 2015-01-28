@@ -1050,7 +1050,8 @@ app.adminNews = (function () {
                 window.plugins.toast.showShortBottom('News Added Successfully');   
             }else {
                 app.showAlert("News Added Successfully", "Notification"); 
-            }              
+            }
+            
             $("#addNewsDesc").val('');             
             
             var largeImage = document.getElementById('attachedImgNews');
@@ -1087,9 +1088,9 @@ app.adminNews = (function () {
                 } 
             }else{                
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('News Not Added Successfully');  
+                    window.plugins.toast.showLongBottom('News Not Added/Updated Successfully');  
                 }else {
-                    app.showAlert('News Not Added Successfully' , 'Notification');  
+                    app.showAlert('News Not Added/Updated Successfully' , 'Notification');  
                 }
             }
 
@@ -1261,19 +1262,11 @@ app.adminNews = (function () {
           
             $("#sendEditNewsLoader").hide();
 
-            if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom('News Updated Successfully');  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }else{                
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('News Not Updated Successfully');  
-                }else {
-                    app.showAlert('News Not Updated Successfully' , 'Notification');  
+                    app.showAlert('News Updated Successfully' , 'Notification');  
                 }
-            }
                         
             app.mobileApp.navigate("#adminOrgNewsList");
         }

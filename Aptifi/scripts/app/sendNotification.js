@@ -512,20 +512,12 @@ app.sendNotification = (function () {
         };
          
         function win(r) {
-             
-            if (!app.checkConnection()) {
+
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom('Message Send Successfully');  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }else{                
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Message Not Send Successfully');  
-                }else {
-                    app.showAlert('Message Not Send Successfully' , 'Notification');  
+                    app.showAlert('Message Send Successfully' , 'Notification');  
                 }
-            }
               
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
@@ -549,11 +541,20 @@ app.sendNotification = (function () {
             //console.log("upload error target " + error.target);
             $("#progressSendNotification").hide();
  
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-            }else {
-                app.showAlert("Network problem . Please try again later", "Notification");  
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Message Not Send Successfully');  
+                }else {
+                    app.showAlert('Message Not Send Successfully' , 'Notification');  
+                }
             }
+
         }
          
         var groupDataShow;
