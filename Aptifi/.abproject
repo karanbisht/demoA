@@ -27,7 +27,8 @@
     "org.apache.cordova.splashscreen",
     "com.phonegap.plugins.sqlite",
     "org.apache.cordova.statusbar",
-    "com.telerik.plugin.eqatecanalytics"
+    "com.telerik.plugin.eqatecanalytics",
+    "com.telerik.feedback"
   ],
   "DeviceOrientations": [
     "Portrait"

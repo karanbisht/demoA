@@ -441,6 +441,8 @@ var app = (function (win) {
     });*/
     var onDeviceReady = function() {
         //[data-role=footer]        
+
+        feedback.initialize('8f965ba0-a6d8-11e4-962d-15be4c73b66b');
         document.addEventListener('backbutton', onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);

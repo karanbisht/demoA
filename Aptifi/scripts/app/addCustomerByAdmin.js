@@ -366,7 +366,7 @@ app.addCustomerByAdmin = (function () {
                                     app.showAlert("You don't have access" , 'Offline');  
                                 }
                                               
-                            app.mobileApp.navigate('#groupMemberShow');
+                            app.mobileApp.navigate('views/orgMemberPage.html');
   
                         }else {
                             $("#saveMemberLoader").hide();
