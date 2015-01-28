@@ -274,7 +274,7 @@ app.adminNews = (function () {
             $('#orgAllNewsList').data('kendoMobileListView').refresh();
         }
         
-        var addEventshow = function() {
+        var addNewsshow = function() {
             
             
             $(".km-scroll-container").css("-webkit-transform", "");
@@ -1061,7 +1061,10 @@ app.adminNews = (function () {
             
             $("#attachedImgNews").hide();
             $("#removeNewsAttachment").hide();
-            app.mobileApp.navigate("#adminAddNews");
+            //app.mobileApp.navigate("#adminAddNews");
+
+            app.mobileApp.navigate("#adminOrgNewsList");
+
         }
                 
         function fail(error) {
@@ -1076,11 +1079,20 @@ app.adminNews = (function () {
             $("#sendNewsLoader").hide();
             $("#sendEditNewsLoader").hide();
  
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-            }else {
-                app.showAlert("Network problem . Please try again later", "Notification");  
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('News Not Added Successfully');  
+                }else {
+                    app.showAlert('News Not Added Successfully' , 'Notification');  
+                }
             }
+
         }
 
         var saveEditNewsData = function() {
@@ -1249,10 +1261,18 @@ app.adminNews = (function () {
           
             $("#sendEditNewsLoader").hide();
 
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('News updated successfully');   
-            }else {
-                app.showAlert("News updated successfully", "Notification"); 
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('News Not Updated Successfully');  
+                }else {
+                    app.showAlert('News Not Updated Successfully' , 'Notification');  
+                }
             }
                         
             app.mobileApp.navigate("#adminOrgNewsList");
@@ -1553,7 +1573,7 @@ app.adminNews = (function () {
             goToManageOrgPage:goToManageOrgPage,
             eventMoreDetailClick:eventMoreDetailClick,
             addNewNewsFunction:addNewNewsFunction,
-            addEventshow:addEventshow,
+            addNewsshow:addNewsshow,
             orgAllNewsList:orgAllNewsList,
             transferFileAbort:transferFileAbort,
             saveEditNewsData:saveEditNewsData,

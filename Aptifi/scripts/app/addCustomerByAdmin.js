@@ -449,9 +449,19 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                        app.LogoutFromAdmin(); 
+                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.LogoutFromAdmin(); 
                                 
+                        }else if (loginData.status[0].Msg==="You don't have access") {
+                    
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                }else {
+                                    app.showAlert("You don't have access" , 'Offline');  
+                                }
+                                              
+                                app.mobileApp.navigate('views/orgMemberPage.html');
+  
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification');
                             $("#saveMemberLoader").hide();

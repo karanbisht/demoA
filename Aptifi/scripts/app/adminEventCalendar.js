@@ -326,6 +326,9 @@ app.adminEventCalender = (function () {
             //console.log(date2);
             groupDataShow = [];
             
+            $("#attachedImgEvent").hide();
+            $("#attachedVidEvent").hide();  
+            
             $("#adddatePickerEvent").removeAttr('disabled');
             $("#adddateTimePickerEvent").removeAttr('disabled');
 
@@ -1061,10 +1064,18 @@ app.adminEventCalender = (function () {
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
           
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Event Added Successfully');   
-            }else {
-                app.showAlert("Event Added Successfully", "Notification"); 
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Event Not Added Successfully');  
+                }else {
+                    app.showAlert('Event Not Added Successfully' , 'Notification');  
+                }
             }
               
             var largeImage = document.getElementById('attachedImgEvent');
@@ -1283,10 +1294,18 @@ app.adminEventCalender = (function () {
 
             $("#sendEditEventLoader").hide();
 
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Event updated successfully');   
-            }else {
-                app.showAlert("Event updated successfully", "Notification"); 
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Event Not Updated Successfully');  
+                }else {
+                    app.showAlert('Event Not Updated Successfully' , 'Notification');  
+                }
             }
          
             //if (pageToGo===1) {

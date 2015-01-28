@@ -512,13 +512,19 @@ app.sendNotification = (function () {
         };
          
         function win(r) {
-            //console.log("Code = " + r.responseCode);
-            //console.log("Response = " + r.response);
-            //console.log("Sent = " + r.bytesSent);
-            if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('Notification Sent Successfully');   
-            }else {
-                app.showAlert("Notification Sent Successfully", "Notification"); 
+             
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                }else {
+                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                } 
+            }else{                
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom('Message Not Send Successfully');  
+                }else {
+                    app.showAlert('Message Not Send Successfully' , 'Notification');  
+                }
             }
               
             $("#notificationTitleValue").val('');            
