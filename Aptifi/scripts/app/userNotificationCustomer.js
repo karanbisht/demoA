@@ -68,16 +68,14 @@ app.replyedCustomer = (function () {
                                                              });         
             
             MemberDataSource.fetch(function() {
-                var data = this.data();
-                                
-                if (data[0]['status'][0].Msg==="You don't have access") {                                    
-                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                    //app.LogoutFromAdmin(); 
+                var data = this.data();                                
+                if (data[0]['status'][0].Msg==="You don't have access") {                                                         
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
-                    }
+                    }                    
+                    app.mobileApp.navigate('#view-all-activities-GroupDetail');
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                     app.LogoutFromAdmin(); 

@@ -130,9 +130,13 @@ app.userNotiComment = (function () {
                                                                               //apps.hideLoading();
                                                                               //console.log(e);
                                                                               //console.log(JSON.stringify(e));
-                                                                              navigator.notification.alert("Please check your internet connection.",
-                                                                                                           function () {
-                                                                                                           }, "Notification", 'OK');
+                                                                               if (!app.checkSimulator()) {
+
+                                                                                   window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                              }else {
+                                                                              
+                                                                                  app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                              } 
                                                                           }
 	        
                                                                       });         

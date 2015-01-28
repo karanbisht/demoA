@@ -110,6 +110,8 @@ app.adminNews = (function () {
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
                     }
+                    
+                    goToManageOrgPage();
                 }else if (data[0]['status'][0].Msg==='Success') {
                     groupAllEvent = [];
 
@@ -427,16 +429,19 @@ app.adminNews = (function () {
                 var data = this.data();                
                                             
                 if (data[0]['status'][0].Msg==='No Group list') {
+                    groupDataShow=[];
+                                            groupDataShow.push({
+                                               group_name: 'No Group Found , To Add Event First Add Group',
+                                               pid:'0'
+                                           });
+
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
-                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                    //app.LogoutFromAdmin();             
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
                     }
-                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                    //localStorage.setItem("loginStatusCheck", 1);                                
+                    goToNewsListPage();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                     app.LogoutFromAdmin(); 
@@ -546,6 +551,13 @@ app.adminNews = (function () {
                         }else {
                             app.showAlert('News Deleted Successfully', "Notification");  
                         }
+                    }else if (addGroupData.status[0].Msg==="You don't have access") {                                           
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                }else {
+                                    app.showAlert("You don't have access" , 'Offline');  
+                                }                  
+                                goToNewsListPage();
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
@@ -832,6 +844,8 @@ app.adminNews = (function () {
             });            
             group = String(group);       
             
+            console.log(group);
+            
             if (event_description === "Please Enter News Here" || event_description === "") {
                 app.showAlert("Please enter News.", "Validation Error");
             }else if (group.length===0 || group.length==='0') {
@@ -996,18 +1010,23 @@ app.adminNews = (function () {
                                     window.plugins.toast.showLongBottom('News Added Successfully');  
                                 }else {
                                     app.showAlert('News Added Successfully", "Notification');  
-                                }
-                                                        
+                                }                                                        
                                 $("#sendNewsLoader").hide();
-
                                 app.mobileApp.navigate("#adminOrgNewsList");
+                            }else if (addGroupData.status[0].Msg==="You don't have access") {                                           
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                }else {
+                                    app.showAlert("You don't have access" , 'Offline');  
+                                }                  
+                                goToNewsListPage();
                             }else {
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                                 $("#sendNewsLoader").hide();
                             }
                         });
                     });
-                }   
+                }
             }      
         }
         
@@ -1271,7 +1290,6 @@ app.adminNews = (function () {
         
         var addNewEvent = function() {
             app.mobileApp.navigate('#adminAddEventCalendar');
-
             app.analyticsService.viewModel.trackFeature("User navigate to Add Event in Admin");            
             //app.slide('left', 'green' ,'3' ,'#adminAddEventCalendar');
         }
@@ -1504,6 +1522,7 @@ app.adminNews = (function () {
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';            
             $("#attachedImgEditNews").hide();
+            
             
             var largeVid = document.getElementById('attachedVidNewsEdit');
             largeVid.src = '';            

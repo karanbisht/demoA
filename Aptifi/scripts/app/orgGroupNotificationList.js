@@ -75,7 +75,16 @@ app.orgGroupListView = (function () {
                                                            commentAllow : 'Y',
                                                            pid:0        
                                                        });                   
-                                }else if (orgVal.Msg==='Success') {
+                                }else if(orgVal.Msg==="You don't have access") {                                                         
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showLongBottom("You don't have access");  
+                                    }else {
+                                        app.showAlert("You don't have access" , 'Offline');  
+                                    }                    
+
+                                    app.mobileApp.navigate("#view-all-activities-GroupDetail");
+
+                               }else if (orgVal.Msg==='Success') {
                                     //console.log(orgVal.notificationList.length);  
                                     for (var i = 0;i < orgVal.notificationList.length;i++) {
                                         groupDataShow.push({

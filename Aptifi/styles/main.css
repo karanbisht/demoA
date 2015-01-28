@@ -1028,7 +1028,7 @@ input::-webkit-inner-spin-button
     display: block;
     margin: 5px 5px 5px 5px;
     color: #676767;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1037,10 +1037,19 @@ input::-webkit-inner-spin-button
     display: block;
     margin: 5px 5px 5px 5px;
     color: #B6C5C6;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
+
+.emptyGetGroupCombo
+{
+    display: block;
+    margin: 5px 5px 5px 5px;
+    color: #B6C5C6;
+    font-size: 1rem;
+    border-bottom: 1px solid #f5f7f8;
+}
 .deleteGroupShow1
 {
     display: block;

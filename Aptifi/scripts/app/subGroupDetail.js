@@ -103,6 +103,7 @@ app.subGroupDetail = (function () {
                                        }); 
                                         
                     $("#deleteGroupMemberBtn").hide();  
+                    groupMemberData = groupDataShow ;
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                     app.LogoutFromAdmin(); 
@@ -123,7 +124,15 @@ app.subGroupDetail = (function () {
                     }     
                                        
                     groupMemberData = groupDataShow ;
-                } 
+                }else if (addGroupData.status[0].Msg==="You don't have access") {
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showLongBottom("You don't have access");  
+                        }else {
+                            app.showAlert("You don't have access" , 'Offline');  
+                        }
+                     
+                        backToPrePage();
+                    } 
                 
                 showDataInTemplate();
             });
@@ -247,14 +256,21 @@ app.subGroupDetail = (function () {
                                 window.plugins.toast.showShortBottom('Group Updated Successfully');   
                             }else {
                                 app.showAlert("Group Updated Successfully", "Notification");  
-                            }
-                                   
+                            }                                   
                             app.mobileApp.navigate('views/groupListPage.html');  
                             //app.showAlert("Group Updated Successfully","Notification");
-                        }else {
+                        }else if (addGroupData.status[0].Msg==="You don't have access") {
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showLongBottom("You don't have access");  
+                            }else {
+                                app.showAlert("You don't have access" , 'Offline');  
+                            }
+                     
+                             app.mobileApp.navigate('views/groupListPage.html');
+                    }else {
                             $("#updateSGLoader").hide();
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
-                        }
+                          }
                     });
                 });
             }      
@@ -426,6 +442,14 @@ app.subGroupDetail = (function () {
                             //app.showAlert("Member Added Successfully","Notification");
                             //app.mobileApp.navigate('#groupMemberShow');
                             showSubGroupMembers();
+                        }else if (addGroupData.status[0].Msg==="You don't have access") {
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showLongBottom("You don't have access");  
+                        }else {
+                            app.showAlert("You don't have access" , 'Offline');  
+                        }                     
+                        showSubGroupMembers();
+                       
                         }else {
                             $("#addSGMemberLoader").hide();
                             app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -510,7 +534,15 @@ app.subGroupDetail = (function () {
                                 app.showAlert("Member Deleted Successfully", "Notification");  
                             }
                             showSubGroupMembers();
+                        }else if (deleteGroupData.status[0].Msg==="You don't have access") {
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showLongBottom("You don't have access");  
                         }else {
+                            app.showAlert("You don't have access" , 'Offline');  
+                        }
+                     
+                        showSubGroupMembers();
+                    }else {
                             $("#deleteSGMemberLoader").hide();
                             app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                         }

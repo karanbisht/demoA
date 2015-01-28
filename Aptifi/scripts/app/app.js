@@ -560,30 +560,23 @@ var app = (function (win) {
                                                             });  
 	            
                 dataSourceLogin.fetch(function() {
-                //var loginDataView = dataSourceLogin.data();               
-             	                    
+                //var loginDataView = dataSourceLogin.data();                            	                    
                 var data = this.data();     
                     console.log(JSON.stringify(data));
                 //$.each(loginDataView, function(i, loginData) {
                     //console.log(loginData.status[0].Msg);
                                
-                    if (data[0]['status'][0].Msg==='Fail') {
-                        
+                    if (data[0]['status'][0].Msg==='Fail') {                        
                         console.log('fail');                        
-
                         if (!app.checkSimulator()) {
                                   window.plugins.toast.showLongBottom("Your have Logged in with another device , Please re-login.");  
                         }else {
                                  app.showAlert("Your have Logged in with another device , Please re-login." , 'Notification');  
-                        }
-                        
-                       //var db = app.getDb();
-                       //db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);
-  
-                        updateLoginStatusSuccess();
-                
-                    }
-                    
+                        }                        
+                        var db = app.getDb();
+                        db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
+                        updateLoginStatusSuccess();                 
+                    }                    
                });
     };
     

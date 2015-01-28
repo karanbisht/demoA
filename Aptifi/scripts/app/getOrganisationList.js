@@ -136,7 +136,7 @@ app.OragnisationList = (function () {
             }else {
                 groupDataShow.push({
                                        orgName: 'No Messages',
-                                       orgDesc: 'Not a customer of any organization',
+                                       orgDesc: 'Not a member of any Organization',
                                        organisationID:'0',
                                        imageSource:'',
                                        org_logo :null,  
@@ -217,7 +217,7 @@ app.OragnisationList = (function () {
                         groupDataShow = [];                               
                         groupDataShow.push({
                                                orgName: 'No Organization',
-                                               orgDesc: 'Not a customer of any organization',
+                                               orgDesc: 'Not a member of any Organization',
                                                organisationID:'0',
                                                imageSource:'',
                                                org_logo :null,  
@@ -246,7 +246,7 @@ app.OragnisationList = (function () {
                               
                             groupDataShow.push({
                                                    orgName: 'No Organization',
-                                                   orgDesc: 'Not a customer of any organization',
+                                                   orgDesc: 'Not a member of any Organization',
                                                    organisationID:'0',
                                                    imageSource:'',
                                                    org_logo :null,  
@@ -877,7 +877,7 @@ app.OragnisationList = (function () {
                                        role:'',
                                        imgData:null,   
                                        imageSourceOrg:'',   
-                                       orgDesc:'Not a customer of any organization',                      
+                                       orgDesc:'Not a member of any Organization',                      
                                        joinDate:'0'                   
                                    });
                 }

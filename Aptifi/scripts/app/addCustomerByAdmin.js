@@ -1,6 +1,4 @@
 var app = app || {};
-
-
 app.addCustomerByAdmin = (function () {
     'use strict'
 
@@ -96,22 +94,24 @@ app.addCustomerByAdmin = (function () {
                                             
                             if (data[0]['status'][0].Msg==='No Group list') {
                                          
-                                
+                                groupDataShow.push({
+                                                          
+                                                           group_name: 'No Group Available , To Add Member First Add Group',
+                                                           pid:'0'
+                                                       });
                             }else if(data[0]['status'][0].Msg==="Session Expired"){
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                         }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    //app.LogoutFromAdmin();             
+                                   
                                     if (!app.checkSimulator()) {
                                              window.plugins.toast.showLongBottom("You don't have access");  
                                     }else {
                                              app.showAlert("You don't have access" , 'Offline');  
                                     }
                                 
-                                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                                    //localStorage.setItem("loginStatusCheck", 1);                                
+                                  
                             }else {
                                 var orgLength = data[0].status[0].groupData.length;
                                 for (var j = 0;j < orgLength;j++) {
@@ -358,6 +358,16 @@ app.addCustomerByAdmin = (function () {
                         app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                         app.LogoutFromAdmin(); 
                                 
+                        }else if (loginData.status[0].Msg==="You don't have access") {
+                    
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                }else {
+                                    app.showAlert("You don't have access" , 'Offline');  
+                                }
+                                              
+                            app.mobileApp.navigate('#groupMemberShow');
+  
                         }else {
                             $("#saveMemberLoader").hide();
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 

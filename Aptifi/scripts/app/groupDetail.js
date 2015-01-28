@@ -418,15 +418,12 @@ app.groupDetail = (function () {
                                            });
                     }     
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
-                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                   
-                    //app.LogoutFromAdmin();
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
                     }
-                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                    //localStorage.setItem("loginStatusCheck", 1);                                
+                  backToOrgDetail();  
                 }
                 
                 showMemberDataFunc(groupDataShow);
@@ -706,6 +703,13 @@ app.groupDetail = (function () {
                             //app.showAlert("Member Deleted Successfully","Notification");
                             app.mobileApp.navigate('#groupMemberShow');
                             refreshOrgMember();
+                        }else if (deleteGroupData.status[0].Msg==="You don't have access") {                                                        
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showLongBottom("You don't have access");  
+                            }else {
+                                app.showAlert("You don't have access" , 'Offline');  
+                            }                    
+                            app.mobileApp.navigate('#groupMemberShow');
                         }else {
                             $("#deleteMemberLoader").hide();
                             app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 

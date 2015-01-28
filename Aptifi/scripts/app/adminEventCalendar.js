@@ -79,6 +79,7 @@ app.adminEventCalender = (function () {
                         }else {
                             app.showAlert("You don't have access" , 'Offline');  
                         }
+                        goToEventListPage();
                     }else if (loginData.status[0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
@@ -316,8 +317,7 @@ app.adminEventCalender = (function () {
         
         var addEventshow = function() {
             
-            $("#sendEventLoader").show();
-            
+            $("#sendEventLoader").show();            
             //$(".km-scroll-container").css("-webkit-transform", "");
             $(".km-native-scroller").scrollTop(0);
 
@@ -460,16 +460,19 @@ app.adminEventCalender = (function () {
                 var data = this.data();                
                                             
                 if (data[0]['status'][0].Msg==='No Group list') {
+                    groupDataShow=[];
+                                            groupDataShow.push({
+                                               group_name: 'No Group Found , To Add Event First Add Group',
+                                               pid:'0'
+                                           });
+
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
-                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                    //app.LogoutFromAdmin();             
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
                     }
-                    //app.mobileApp.navigate('views/organisationLogin.html');   
-                    //localStorage.setItem("loginStatusCheck", 1);                                
+                    goToEventListPage();
                 }else if (data[0]['status'][0].Msg==='Session Expired') {
                             app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                             app.LogoutFromAdmin();                         
@@ -580,7 +583,17 @@ app.adminEventCalender = (function () {
                         }else {
                             app.showAlert("Event Deleted Successfully", "Notification");  
                         }
+                    }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
+                    
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
+                        app.showAlert("You don't have access" , 'Offline');  
+                    }
+                    
+                    
+                        
+                }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
                 });
@@ -1024,6 +1037,15 @@ app.adminEventCalender = (function () {
                                 }    
                                 
                                 $("#sendEventLoader").hide();
+                            }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
+                    
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("You don't have access");  
+                    }else {
+                        app.showAlert("You don't have access" , 'Offline');  
+                    }
+                    
+                            goToEventListPage();
                             }else {
                                 $("#sendEventLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -1235,7 +1257,16 @@ app.adminEventCalender = (function () {
                                 }else {
                                     app.showAlert("Event updated successfully", "Notification"); 
                                 }
-                            }else {
+                            }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
+                    
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("You don't have access");  
+                    }else {
+                        app.showAlert("You don't have access" , 'Offline');  
+                    }
+                    
+                    goToCalendarPageDetail();
+                }else {
                                 $("#sendEditEventLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                             }
@@ -1305,6 +1336,8 @@ app.adminEventCalender = (function () {
             multipleEventArray = [];
 
             organisationID = localStorage.getItem("orgSelectAdmin");
+            
+            //alert(organisationID);
             account_Id = localStorage.getItem("ACCOUNT_ID");
              
             var jsonDataLogin = {"org_id":organisationID}
@@ -1325,7 +1358,10 @@ app.adminEventCalender = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    console.log(e); 
+                                                                                                                                                console.log(JSON.stringify(e));
+                                                                    console.log(JSON.stringify(e));
+                                                                    
                                                                     $("#adminEventListLoader").hide();
                                                                     $("#eventCalendarAllList").show();
 
@@ -1377,14 +1413,15 @@ app.adminEventCalender = (function () {
                 }else if (data[0]['status'][0].Msg==='Session Expired') {
                             app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                             app.LogoutFromAdmin();                         
-                    }else if (data[0]['status'][0].Msg==="You don't have access") {                                           
-                    //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                    //app.LogoutFromAdmin(); 
-                    if (!app.checkSimulator()) {
+                    
+                }else if (data[0]['status'][0].Msg==="You don't have access") {                                           
+                
+                    if(!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom("You don't have access");  
                     }else {
                         app.showAlert("You don't have access" , 'Offline');  
-                    }
+                    }                       
+                        goToManageOrgPage();
                 }else if (data[0]['status'][0].Msg==='Success') {
                     groupAllEvent = [];
                     tasks = [];

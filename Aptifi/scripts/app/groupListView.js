@@ -122,15 +122,15 @@ app.GroupList = (function () {
                                 
                                 
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
-                                     //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                                    
-                                     //app.LogoutFromAdmin(); 
                                     
                                     if (!app.checkSimulator()) {
                                              window.plugins.toast.showLongBottom("You don't have access");  
                                     }else {
                                              app.showAlert("You don't have access" , 'Offline');  
                                     }
-                                                                                           
+                                                             
+                                    backToOrgDetail();
+                                    
                                 }else if (data[0]['status'][0].Msg==='Success') {
                                      $("#tabDeleteGroup").show();
 
@@ -355,6 +355,14 @@ app.GroupList = (function () {
                             app.showAlert("Group Added Successfully", "Notification");  
                         }
                         //app.showAlert("Group Added Successfully", "Notification");
+                    }else if (addGroupData.status[0].Msg==="You don't have access") {
+                        if (!app.checkSimulator()) {
+                            window.plugins.toast.showLongBottom("You don't have access");  
+                        }else {
+                            app.showAlert("You don't have access" , 'Offline');  
+                        }
+                     
+                        goToGroupList();
                     }else if(addGroupData.status[0].Msg==="Session Expired"){
                                     app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                     app.LogoutFromAdmin(); 
@@ -427,12 +435,21 @@ app.GroupList = (function () {
                             app.showAlert("Group Deleted Successfully", "Notification");  
                         }
                         //app.showAlert("Group Deleted Successfully","Notification");
+                    }else if (deleteGroupData.status[0].Msg==="You don't have access") {
+                        if (!app.checkSimulator()) {
+                                window.plugins.toast.showLongBottom("You don't have access");  
+                        }else {
+                            app.showAlert("You don't have access" , 'Offline');  
+                        }
+                                             
+                        goToGroupList();
+  
                     }else if(deleteGroupData.status[0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                    app.LogoutFromAdmin(); 
-                                
-                                
-                                }else {
+  
+                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                        
+                        app.LogoutFromAdmin(); 
+                                                                
+                    }else {
                         $("#deleteGroupLoader").hide();
                         app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
                     }

@@ -1161,12 +1161,17 @@
         
         
         <script type="text/x-kendo-template" id="groupNameShowTemplate"> 
+
+            #if(pid !=='0'){#
             <li class="getGroupCombo">
                 <label>
                     <input type="checkbox" class="largerCheckbox" value="${pid} "/>
                     <span class="firstName">#:group_name#</span>
                 </label>
             </li>
+              #}else{#
+                 <li class="emptyGetGroupCombo">#:group_name#</li>                  
+              #}#
         </script>
         
         
