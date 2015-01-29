@@ -1,7 +1,7 @@
 <div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-noti"  data-model="app.adminNews" data-show ="app.adminNews.show" >
     <div data-role="header" style="border-bottom:2px solid #BABBBF">
         <div data-role="navbar">
-            <span> All News </span>
+            <span> News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToManageOrgPage"></a>
             <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>
         </div>
@@ -235,17 +235,38 @@
             </ul>
         </div>
         
-        <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditNewsData }">
+        <!--<li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditNewsData }">
             Save Change
         </li>
+        
+        <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: deleteNews }">
+            Delete News
+        </li>-->
+        
+        <div style="margin-bottom:10px;">
+             <ol class="showInSameLine">
+                    <li style="width:100%;margin-bottom:30px;">
+
+                        <span id="registration" data-role="touch" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:6px;" data-bind="events: { tap: deleteNews }"> Delete News </span>
+
+                        <span id="registration" data-role="touch" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:6px;" data-bind="events: { tap: saveEditNewsData }"> Save Change </span>
+
+                    </li>
+
+                 </ol>
+                             <br/>
+                 <br/>
+            <br/>
+
+        </div>
     
     </div>
 
-    <div data-role="footer" class="footer" id="delNewsFooter">
+    <!--<div data-role="footer" class="footer" id="delNewsFooter">
         <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
             <a id="" data-icon="trash" data-role="button" data-bind="click: deleteNews" > Delete News</a>
         </div>
-    </div>
+    </div>-->
 
 </div>
 

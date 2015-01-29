@@ -48,7 +48,7 @@ app.groupDetail = (function () {
             navbar.title(OrgDisplayName);
 
             $("#setOrgName").html(orgName);
-            
+        
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            transport: {
                     read: {
@@ -333,7 +333,9 @@ app.groupDetail = (function () {
         
         var orgMemberShow = function(e) {
             var organisationID = localStorage.getItem("orgSelectAdmin");         
-            $("#progressAdminOrgMem").show();         
+            $("#progressAdminOrgMem").show();   
+            
+                   
                         
             app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
@@ -355,19 +357,18 @@ app.groupDetail = (function () {
 
                 },
                                                                  error: function (e) {
-                                                                     //apps.hideLoading();
+
                                                                      console.log(JSON.stringify(e));
                                                                      
-                                                                     //navigator.notification.alert("Please check your internet connection.",
-                                                                     //function () { }, "Notification", 'OK');
-                                                                     
+                                                                     e.type='show Data Member List';
+                                                                                                                                          
                                                                      if (!app.checkSimulator()) {
                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
                                                                      }else {
                                                                          app.showAlert('Network unavailable . Please try again later' , 'Network Problem');  
                                                                      }
                                                                                          
-                                                                     app.analyticsService.viewModel.trackException(JSON.stringify(e), 'Api Call , Unable to get response from API fetching Organization Member in Admin Panel.');
+                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Member in Admin Panel'+JSON.stringify(e));
                          
                                                                      var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
@@ -395,7 +396,7 @@ app.groupDetail = (function () {
                     groupDataShow.push({
                                            mobile: '',
                                            first_name: '',
-                                           email:'No Customer in this Organization',  
+                                           email:'No Member in this Organization',  
                                            last_name : '',
                                            customerID:'0',
                                            account_id:'0',
@@ -534,10 +535,10 @@ app.groupDetail = (function () {
         
         var addMemberToGroup = function() {
             app.MenuPage = false;
-
+            
             app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");            
-
             //app.mobileApp.navigate('#addMemberToGroup');
+            
             app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
         };
         
@@ -645,8 +646,12 @@ app.groupDetail = (function () {
             //console.log(orgId);    
             var customer = [];
 		    
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 customer[i] = $(this).val();
+            });*/
+            
+             $('#deleteMemberData input:checked').each(function() {
+                customer.push($(this).val());
             });
             
             //console.log('Delete Button');

@@ -380,9 +380,14 @@ app.GroupList = (function () {
         var deleteGroupFunc = function() {
             //var orgId = localStorage.getItem("UserOrgID"); 
             //var data = $('input:checkbox:checked').val();
+            
             var groupID = [];
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 groupID[i] = $(this).val();
+            });*/
+            
+            $('#deleteGroupData input:checked').each(function() {
+                groupID.push($(this).val());
             });
             
             groupID = String(groupID);
@@ -415,9 +420,9 @@ app.GroupList = (function () {
                                                                            
                                                                            if (!app.checkSimulator()) {
                                                                             window.plugins.toast.showShortBottom('Please check your internet connection.');
-                                                                            }else {
+                                                                           }else {
                                                                             app.showAlert("Please check your internet connection.", "Notification"); 
-                                                                            }
+                                                                           }
                                                                        }                         
                                                                    });  
 	            

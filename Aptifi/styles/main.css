@@ -486,6 +486,17 @@ input::-webkit-inner-spin-button
     background-color: #ffffff;
 }
 
+
+
+.showInSameLine
+{
+    margin:10px;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+    background-color: #ffffff;
+}
+
 #Aptifi .welcome-scrn .group-wrp
 {
     margin: -1em 1em 0;

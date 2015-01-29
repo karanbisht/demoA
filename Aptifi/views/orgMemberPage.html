@@ -171,7 +171,14 @@
                                                                            console.log(e);
                                                                            //app.mobileApp.pane.loader.hide();
                                                                            
-                                                                           app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Edit Profile API.');
+                                                                           //var objectB = new Object();
+                                                                           
+                                                                           var objectA = {};
+                                                                           objectA.type='check';
+                                                                           
+                                                                           //app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Edit Profile API.');
+                                                                           
+                                                                           app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Edit Profile API.'+JSON.stringify(objectA));
 
                                                                            navigator.notification.alert("Please check your internet connection.",
                                                                                                         function () {
@@ -187,12 +194,16 @@
                         console.log(loginData.status[0].Msg);
                                
                         if (loginData.status[0].Msg==='Success') {
-
                             //alert("#editMobileLi"+li_Count);
                             $("#editMobileLi"+li_Count).empty();
                             $("#editMobileLi"+li_Count).css("border","none");
-                            app.showAlert("Alternate Number Remove Successfully.", "Notification");
+                            //app.showAlert("Alternate Number Removed Successfully.", "Notification");
                             
+                              if (!app.checkSimulator()) {
+                                     window.plugins.toast.showShortBottom('Alternate Number Removed Successfully.');
+                              }else {
+                                     app.showAlert("Alternate Number Removed Successfully.", "Notification"); 
+                              }                            
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
                         }

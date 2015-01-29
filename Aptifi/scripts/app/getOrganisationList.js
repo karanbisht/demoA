@@ -1575,6 +1575,7 @@ app.OragnisationList = (function () {
         }
         
         function getProfileEventDBSuccess(tx, results) {
+                        
             var deviceName = app.devicePlatform();
             var deviceVersion = device.version;
             
@@ -1595,12 +1596,12 @@ app.OragnisationList = (function () {
             }            
         
             var jsonDataLogin = {"org_id":tempArrayEvent}         
-            //console.log(tempArrayEvent);
-        
+            console.log(tempArrayEvent);
+            //alert(tempArrayEvent);
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
-                                                                            url: app.serverUrl() + "event/index",
+                                                                            url: app.serverUrl() + "event/customerEvent",
                                                                             type:"POST",
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                             data: jsonDataLogin
@@ -1635,7 +1636,8 @@ app.OragnisationList = (function () {
                 var userAllGroupId = [];
                 var orgEventData;			   
                 $.each(loginDataView, function(i, loginData) {
-                   // console.log(loginData.status[0].Msg);
+                   
+                    //alert(loginData.status[0].Msg);
                                
                     if (loginData.status[0].Msg==='No Event list') {
                         
@@ -1757,7 +1759,7 @@ app.OragnisationList = (function () {
         
         function showAlertToComplete() {
             $("#savingDeviceCalenderLoader").hide();
-
+                        
             if (!app.checkSimulator()) {
                 window.plugins.toast.showLongBottom('Successfully synchronization Event with Device Calender');           
             }else {

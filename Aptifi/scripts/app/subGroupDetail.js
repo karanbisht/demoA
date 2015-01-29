@@ -176,11 +176,9 @@ app.subGroupDetail = (function () {
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
-                content = $(this).val();
-    
+                content = $(this).val();    
                 content = content.replace(/\n/g, '<br>');
                 hiddenDiv.html(content + '<br class="lbr">');
-    
                 $(this).css('height', hiddenDiv.height());
             });
             
@@ -382,16 +380,20 @@ app.subGroupDetail = (function () {
         };
         
         var addMemberToGroupFunc = function() {
-            var successFlag = false;
             
             var customer = [];
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 customer[i] = $(this).val();
                 //console.log(val[i]);
+            });*/
+        
+            $('#addMemberData-listview input:checked').each(function() {
+                customer.push($(this).val());
             });
+
             
             customer = String(customer);        
-            //console.log(customer);            
+            console.log(customer);            
                         
             if (customer.length!==0 && customer.length!=='0') {
                 //var customer = String(customer);        
@@ -476,12 +478,18 @@ app.subGroupDetail = (function () {
             //var orgId = localStorage.getItem("UserOrgID"); 
             //console.log(orgId);    
             var customer = [];
-            $(':checkbox:checked').each(function(i) {
+
+           /* $('#deleteSubMemberData:checkbox:checked').each(function(i) {
                 customer[i] = $(this).val();
+            });*/
+            
+            $('#deleteSubMemberData input:checked').each(function() {
+                customer.push($(this).val());
             });
             
             customer = String(customer);        
-            //console.log(customer);            
+            
+            console.log(customer);            
                          
             if (customer.length!==0 && customer.length!=='0') {
                 $("#deleteSGMemberLoader").hide();  

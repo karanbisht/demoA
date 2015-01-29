@@ -65,7 +65,7 @@ app.addCustomerByAdmin = (function () {
                     }
                 },
                                                               error: function (e) {
-                                                                            console.log(JSON.stringify(e));
+                                                                       console.log(JSON.stringify(e));
                                                                              $("#selectOrgLoader").hide();
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
@@ -214,17 +214,7 @@ app.addCustomerByAdmin = (function () {
             console.log(multiSelect);*/
        };       
         
-        var lastClickTime = 0;
-        var registerR = function() {
-            
-
-            var current = new Date().getTime();
-            var delta = current - lastClickTime;
-	        lastClickTime = current;
-           if (delta < 500) {
-		
-	       } else {
-
+        var registerR = function() {            
           
             app.userPosition = false;     
             backToRegPage = true;   
@@ -239,9 +229,14 @@ app.addCustomerByAdmin = (function () {
             }
                
             var group = [];		    
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
-            });            
+            });*/     
+            
+            $('#groupInAddCustomer input:checked').each(function() {
+                group.push($(this).val());
+            });
+            
             group = String(group);       
             
             //console.log(group);
@@ -469,7 +464,6 @@ app.addCustomerByAdmin = (function () {
                     });
                 });
             }
-          }
         };
         
         function refreshOrgMember() {  

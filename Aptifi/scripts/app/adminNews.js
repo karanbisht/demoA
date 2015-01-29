@@ -281,8 +281,8 @@ app.adminNews = (function () {
            
             groupDataShow = [];
             
-            var footer = $(".footer");
-            footer.css({ "top": footer.position().top, "bottom": "auto"});
+            /*var footer = $(".footer");
+            footer.css({ "top": footer.position().top, "bottom": "auto"});*/
             
             $("#adddatePickerNews").removeAttr('disabled');           
             $("#adddateTimePickerNews").removeAttr('disabled');
@@ -851,7 +851,6 @@ app.adminNews = (function () {
             }else if (group.length===0 || group.length==='0') {
                 app.showAlert("Please select Group.", "Validation Error");    
             }else {
-                $("#sendNewsLoader").show();
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
                 var day = values[1];            
@@ -965,6 +964,9 @@ app.adminNews = (function () {
 
                     ft.upload(newsDataToSend, app.serverUrl() + "news/add", win, fail, options , true);                    
                 }else {
+
+                    $("#sendNewsLoader").show();
+
                     //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend,"cmbGroup":group}
                 
@@ -1113,7 +1115,6 @@ app.adminNews = (function () {
             }else if (groupEdit.length===0 || groupEdit.length==='0') {
                 app.showAlert("Please select Group.", "Validation Error");    
             }else {                    
-                $("#sendEditNewsLoader").show();                
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
                 var day = values[1];            
@@ -1198,6 +1199,8 @@ app.adminNews = (function () {
                     //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                     ft.upload(newsDataToSend, app.serverUrl() + "news/edit", winEdit, fail, options , true);
                 }else {
+                    $("#sendEditNewsLoader").show();                
+
                     //console.log(organisationID + "||" + event_description + "||" + event_Date + "||" + event_Time + "||" + newsPid);
                     var jsonDataSaveGroup = {"org_id":organisationID ,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":event_Time,"pid":newsPid,"cmbGroup":groupEdit}
             
@@ -1206,8 +1209,7 @@ app.adminNews = (function () {
                             read: {
                                                                                        url: app.serverUrl() + "news/edit",
                                                                                        type:"POST",
-                                                                                       dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                       //async: false,                                                       
+                                                                                       dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                      
                                                                                        data: jsonDataSaveGroup
                                                                                    }
                         },
@@ -1220,8 +1222,8 @@ app.adminNews = (function () {
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
                                                                                //console.log(e);
-                                                                               console.log(JSON.stringify(e));
-                                                                           
+                                                                               
+                                                                               console.log(JSON.stringify(e));                                                                           
                                                                                $("#sendEditNewsLoader").hide();
                                                                                if (!app.checkSimulator()) {
                                                                                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
@@ -1241,7 +1243,7 @@ app.adminNews = (function () {
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showLongBottom('News Updated Successfully');  
                                 }else {
-                                    app.showAlert('News Updated Successfully", "Notification');  
+                                    app.showAlert("News Updated Successfully", "Notification");  
                                 }
                                 $("#sendEditNewsLoader").hide();
                             }else {
