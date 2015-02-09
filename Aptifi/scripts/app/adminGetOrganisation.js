@@ -139,7 +139,7 @@ app.adminOragnisationList = (function () {
                        
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
-                            //console.log(groupValue);   
+                            console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {     
                                 //beforeShow();
                                 if (!app.checkSimulator()) {
@@ -161,15 +161,16 @@ app.adminOragnisationList = (function () {
                 },
                                                                            error: function (e) {
                                                                                //console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                                $("#progressAdmin").hide();             
 
                                                                                beforeShow();
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                }else {
-                                                                                   app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                }
                                                                            }	        
                                                                        });

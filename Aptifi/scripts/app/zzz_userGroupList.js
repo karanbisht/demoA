@@ -59,9 +59,14 @@ app.userGroupList = (function () {
                                                                 //apps.hideLoading();
                                                                 //console.log(e);
                                                                 //console.log(JSON.stringify(e));
-                                                                navigator.notification.alert("Please check your internet connection.",
-                                                                                             function () {
-                                                                                             }, "Notification", 'OK');
+                                                                
+                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                
+                                                                if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
                                                             },       
                                                             sort: { field: 'add', dir: 'desc' }    
                                                         });
@@ -134,9 +139,13 @@ app.userGroupList = (function () {
                                                                        //apps.hideLoading();
                                                                        //console.log(e);
                                                                        //console.log(JSON.stringify(e));
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                       
+                                                                       if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
                                                                    }               
           
                                                                });  

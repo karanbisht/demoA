@@ -11,26 +11,17 @@ app.Login = (function () {
         //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
         var username;
         var varifiCode;
-        var userType;
         var userType = [];
         var UserProfileInformation;
         var account_Id;
-        var db;
-        var regClickButton;
-        var JoinedOrganisationYN = 1;
         
         //var isAnalytics = analytics.isAnalytics();
                
         var init = function () {            
-            app.userPosition = true;                       
+
         };
 
         var show = function () {
-            //app.mobileApp.pane.showLoading();              
-            //console.log("Login Page");
-            //app.showNativeAlert();            
-            app.userPosition = true;
-            app.userPosition = true;
             $('#loginUsername').val('');           
             $("#selectionDiv").show();
                         
@@ -61,14 +52,15 @@ app.Login = (function () {
             var deviceName = app.devicePlatform();
             var device_type;
              
-            if (deviceName==='Android') {
+            if (deviceName==='Android'){
                 device_type = 'AN';
             }else if (deviceName==='iOS') {
                 device_type = 'AP';
             }
                          
-            //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            var device_id = localStorage.getItem("deviceTokenID");          
+            //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
+            var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+            //var device_id = localStorage.getItem("deviceTokenID");          
             //console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
@@ -80,20 +72,15 @@ app.Login = (function () {
             } else {         
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');
+                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
                     }else {
-                        app.showAlert('Network unavailable . Please try again later' , 'Offline'); 
+                        app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                     } 
                 }else {
                     $("#progress").show();
-                    document.getElementById('selectionDiv').style.pointerEvents = 'none';
-                    //app.mobileApp.pane.loader.hide();           
                     console.log(username + "||" + device_id + "||" + device_type);
-                
                     localStorage.setItem("username", username); 
-                   
                     //console.log('--------static server URL-----' + app.serverUrl());
-                   
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type}
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
@@ -105,74 +92,48 @@ app.Login = (function () {
                                                                                 }
                         },
                                                                         schema: {
-                            data: function(data) {	//console.log(data);
+                            data: function(data) {
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            //apps.hideLoading();
-                                                                            //console.log("------error------");
-                                                                            console.log(e);
-                                                                            console.log(JSON.stringify(e));
-                                                                            //app.mobileApp.pane.loader.hide();
-             
+                                                                            //console.log(e);
+                                                                            //console.log(JSON.stringify(e));
+                         
                                                                             if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                             }else {
-                                                                                app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                             } 
              
                                                                             $("#progress").hide();
 
-                                                                            app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from Login API .');
-
-                                                                            document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-                                                                            //navigator.notification.alert("Please check your internet connection.",
-                                                                            //function () { }, "Notification", 'OK');               
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                         }               
                                                                     });  
 	            
-                    dataSourceLogin.fetch(function() {
-                        var loginDataView = dataSourceLogin.data();
-                        //console.log('----------fetch Data------------');			
-                        //console.log(loginDataView);
-						   
-                        $.each(loginDataView, function(i, loginData) {
-                            //console.log('-------Msg Data --------');			
-                            //console.log(loginData.status[0].Msg);
-                            if (loginData.status[0].Msg==='User not registered') {
-                                //console.log('reg');
-                                //app.mobileApp.pane.loader.hide();
+                    dataSourceLogin.fetch(function() {                        
+                        var data = this.data();
+                            if (data[0]['status'][0].Msg==='User not registered') {
                                 $("#progress").hide();                                                    
-                                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-                                app.userPosition = false;
                                 app.mobileApp.navigate('views/registrationView.html?mobile=' + username + '&type=reg');  
-                            }else if (loginData.status[0].Msg==='Create profile') {
-                                //app.mobileApp.pane.loader.hide();
+                            }else if (data[0]['status'][0].Msg==='Create profile') {
                                 $("#progress").hide();
-                                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-                                app.userPosition = false;
-                                var accountId = loginData.status[0].AccountID;
+                                var accountId = data[0]['status'][0].AccountID;
                                 app.mobileApp.navigate('views/registrationView.html?mobile=' + accountId + '&type=pro');       
-                            }else if (loginData.status[0].Msg==='Authentication Required') {
-                                //app.mobileApp.pane.loader.hide();
+                            }else if (data[0]['status'][0].Msg==='Authentication Required') {
                                 $("#progress").hide();
-                                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
                                 clickforRegenerateCode();   
-                            }else if (loginData.status[0].Msg==='Success') {
+                            }else if (data[0]['status'][0].Msg==='Success') {
                                 clickforRegenerateCode();                              
-                                if (loginData.status[0].JoinedOrg.length!==0) {
+                                if (data[0]['status'][0].JoinedOrg.length!==0) {
                                     //saveOrgInfo(UserOrgInformation);              
                                 }
                             }else {
-                                //app.mobileApp.pane.loader.hide();
                                 $("#progress").hide();
-                                document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
-
-                                app.showAlert(loginData.status[0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, "Notification");
                             }                            
                         });
-                    });
                 }
             }
         };
@@ -186,14 +147,19 @@ app.Login = (function () {
         var profileOrgData;
         function saveProfileInfo(data) {
             profileInfoData = data; 
-            if (JoinedOrganisationYN===0) {
+
+            var db = app.getDb();
+            db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 
+
+            
+            /*if (JoinedOrganisationYN===0) {
                 var db = app.getDb();
                 db.transaction(insertProfileInfo, app.errorCB, goToHomePage); 
             }else {
                 var db = app.getDb();
                 //db.transaction(insertProfileInfo, app.errorCB, app.successCB); 
                 db.transaction(insertProfileInfo, app.errorCB, goToHomePage);  
-            }
+            }*/
         };
         
         function saveOrgInfo(data1) {
@@ -237,13 +203,7 @@ app.Login = (function () {
         function insertOrgInfo(tx) {
             var query = "DELETE FROM JOINED_ORG";
             app.deleteQuery(tx, query);
-
             var dataLength = profileOrgData.org_id.length;
-       
-            // console.log(profileOrgData.org_id[0]);
-            // console.log(profileOrgData.org_id[1]);
-
-            //alert(dataLength);
             for (var i = 0;i < dataLength;i++) {                  
                 if (profileOrgData.role[i]==='C') {
                     userOrgIdArray.push(profileOrgData.org_id[i]);
@@ -317,8 +277,7 @@ app.Login = (function () {
                  
                                                                                   error: function (e) {
                                                                                       e.preventDefault();
-                                                                                      //apps.hideLoading();
-                                                                                      //console.log(e);                        
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                       
                                                                                   }	        
                                                                               });         
             
@@ -381,7 +340,6 @@ app.Login = (function () {
             localStorage.setItem("ACCOUNT_ID", account_Id);
             localStorage.setItem("FIRST_LOGIN", 1); 
             localStorage.setItem("ADMIN_FIRST_LOGIN", 1); 
-            app.userPosition = false;	
 
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
             app.analyticsService.viewModel.userLoginStatus();
@@ -417,10 +375,8 @@ app.Login = (function () {
         };
         
         var clickforRegenerateCode = function() {
-            $("#progress").hide();
-            
-            $(".km-scroll-container").css("-webkit-transform", "");
-  
+            $("#progress").hide();            
+            $(".km-scroll-container").css("-webkit-transform", "");  
             $("#regenerateDiv").show();
             $("#selectionDiv").hide();
 
@@ -431,7 +387,6 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "-1");
             $("#selectionDiv").css("opacity", .1);	
             $("#regenerateDiv").css("z-index", "999");
-            document.getElementById('selectionDiv').style.pointerEvents = 'none';  
         };
         
         var cancelButtonRC = function() {
@@ -458,8 +413,7 @@ app.Login = (function () {
         };
         
         var clickforValificationCode = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
- 
+            $(".km-scroll-container").css("-webkit-transform", ""); 
             $("#regenerateDiv").hide();
             $("#validationRow").show();
             $("#selectionDiv").hide();
@@ -467,9 +421,7 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "-1");
             $("#selectionDiv").css("opacity", .1);	
             $("#validationRow").css("z-index", "999");
-            document.getElementById('selectionDiv').style.pointerEvents = 'none';
             
-            //var mobile=$regMobile.val();
             varifiCode = genRand(0, 9);
             console.log(varifiCode);
             varifiCode = varifiCode.toString();
@@ -489,31 +441,24 @@ app.Login = (function () {
                                                                      schema: {
                     data: function(data) {
                         console.log('--------Verification Code Sent-----------------');
-                        //console.log(data);
                         return [data];
                     }
                 },
                                                                      error: function (e) {
-                                                                         app.analyticsService.viewModel.trackException(e, 'SMS Gateway , Unable to sent verification SMS.');
-
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                          $("#progress").hide();
-
                                                                          if (!app.checkSimulator()) {
-                                                                             window.plugins.toast.showLongBottom('Verification Code not send . Please click on Regenerate Code');  
+                                                                             window.plugins.toast.showLongBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
-                                                                             app.showAlert('Verification Code not send . Please click on Regenerate Code' , 'Verification Code');  
+                                                                             app.showAlert(app.VERIFICATION_CODE_NOT_SEND , 'Verification Code');  
                                                                          }
-                                                                         //navigator.notification.alert("Please check your internet connection.",
-                                                                         //function () { }, "Notification", 'OK');
                                                                      } 
                                                                  });  
 	            
             dataSourceValidation.fetch(function() {
-                var registrationDataView = dataSourceValidation.data();
+                //var registrationDataView = dataSourceValidation.data();
                 $("#validationRow").show();
                 $("#selectionDiv").hide();
-
-                regClickButton = 1;
             });                  	
         };
    	        
@@ -541,11 +486,12 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';                    
-                    var device_id = localStorage.getItem("deviceTokenID");                          
+                    //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
+                    var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+                    //var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);
                     
-                    var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}       
+                    var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
                             read: {
@@ -556,63 +502,49 @@ app.Login = (function () {
                                                                                 }
                         },
                                                                         schema: {
-                            data: function(data) {	//console.log(data);
+                            data: function(data) {	
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            //apps.hideLoading();
                                                                             console.log(e);
                                                                             $("#progressRandomCode").hide();
-                                                                            //app.mobileApp.pane.loader.hide();               
-
-                                                                            app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from LOGIN API after Authentication .');
-
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                                 }else {
-                                                                                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                                 }                
                                                                             }
-                                                                            //navigator.notification.alert("Please check your internet connection.",
-                                                                            //function () { }, "Notification", 'OK');
                                                                         }               
                                                                     });  
 
                     dataSourceLogin.fetch(function() {
-                        var loginDataView = dataSourceLogin.data();
-                        //console.log(loginDataView);
-       
-                        $.each(loginDataView, function(i, loginData) {
-                            //console.log(loginData.status[0].Msg);
-                            if (loginData.status[0].Msg==='Success') {
-                                account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                                //console.log('karan'+account_Id);
-                                //console.log(loginData);
-                                                   
-                                if (loginData.status[0].JoinedOrg.length!==0) { 
+                        //var loginDataView = dataSourceLogin.data();
+                        var data = this.data();       
+                            if (data[0]['status'][0].Msg==='Success') {
+                                account_Id = data[0]['status'][0].ProfileInfo[0].account_id;                                                
+                                if (data[0]['status'][0].JoinedOrg.length!==0) { 
                                     //console.log(loginData.status[0].JoinedOrg.role.length);
-                                    var roleLength = loginData.status[0].JoinedOrg.role.length;                          
+                                    var roleLength = data[0]['status'][0].JoinedOrg.role.length;                          
                                     for (var i = 0;i < roleLength;i++) {
-                                        userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                                        userType.push(data[0]['status'][0].JoinedOrg.role[i]); 
                                     }
-                                    //console.log(userType);
                                 }else {
-                                    JoinedOrganisationYN = 0;
+                                    //JoinedOrganisationYN = 0;
                                 }   
                           
-                                UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                                UserProfileInformation = data[0]['status'][0].ProfileInfo[0];
                                 saveProfileInfo(UserProfileInformation);
                             }else {
                                 //app.mobileApp.pane.loader.hide();
                                 $("#progressRandomCode").hide();
-                                app.showAlert(loginData.status[0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, "Notification");
                             }      
-                        });
                     });
                 }else {
-                    app.showAlert("Please Enter Correct Verification Code", "Notification");
+                    app.showAlert(app.ENTER_CORRECT_V_CODE, "Notification");
                     $("#progressRandomCode").hide();
                 }
             }
@@ -639,11 +571,3 @@ app.Login = (function () {
 
     return loginViewModel;
 }());
-
-$(document).ready(function() {
-    $(document).ajaxError(function(e, jqxhr, settings, exception) {  
-        if (jqxhr.readyState == 0 || jqxhr.status == 0) {  
-            return; //Skip this error  
-        }  
-    }); 
-}); 

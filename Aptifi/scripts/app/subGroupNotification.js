@@ -45,7 +45,7 @@ app.orgsubGroupListView = (function () {
                                            comment_allow:results.rows.item(i).comment_allow ,
                                            bagCount : 'C',
                                            attached :results.rows.item(i).attached,
-                                           attachedImg :'http://54.85.208.215/assets/attachment/' + results.rows.item(i).attached
+                                           attachedImg :results.rows.item(i).attached
                                        });
                     
                     lastNotificationPID = results.rows.item(i).pid;
@@ -55,8 +55,8 @@ app.orgsubGroupListView = (function () {
                 lastNotificationPID = 0;
 
                 groupDataShow.push({
-                                       title: ' No Notification ',
-                                       message: 'No Notification for this Group',
+                                       title: ' No Message ',
+                                       message: 'No messages in this group',
                                        date:'0',  
                                        comment_allow : 'Y',
                                        org_id:'0', 

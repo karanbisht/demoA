@@ -2,7 +2,6 @@ var app = app || {};
 
 app.replyedCustomer = (function () {
     var replyedCustomerView = (function () {
-        var message;
       
         var org_id;
         var userCount;
@@ -13,7 +12,6 @@ app.replyedCustomer = (function () {
         };
         
         var show = function(e) {
-            app.MenuPage = false;
             groupDataShow = [];
             app.mobileApp.pane.loader.hide();
 
@@ -37,7 +35,7 @@ app.replyedCustomer = (function () {
                                                                  schema: {
                                 
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
 
@@ -46,10 +44,11 @@ app.replyedCustomer = (function () {
                                                                      //console.log(JSON.stringify(e));
                                                                      $("#loaderReplyCustomer").hide();
                                                                      $("#reply-customer-listview").show();
+                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                      if (!app.checkSimulator()) {
-                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                         window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                      }else {
-                                                                         app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                      } 
                      
                                                                      var showNotiTypes = [
@@ -71,13 +70,13 @@ app.replyedCustomer = (function () {
                 var data = this.data();                                
                 if (data[0]['status'][0].Msg==="You don't have access") {                                                         
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }                    
                     app.mobileApp.navigate('#view-all-activities-GroupDetail');
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg ==='No list found') {   
                     groupDataShow.push({

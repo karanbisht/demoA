@@ -1,6 +1,5 @@
-
-
 var app = app || {};
+
 
 app.OragnisationList = (function () {
     'use strict'
@@ -15,12 +14,8 @@ app.OragnisationList = (function () {
         };
                       
         var show = function() {
-            //$("#progress2").show();
-            //$('#organisation-listview').data('kendoMobileListView').refresh();            
+                      
             $(".km-scroll-container").css("-webkit-transform", "");
-                          
-            app.MenuPage = true;
-            app.userPosition = false;
 
             $("#moreOption").hide();
             $("#goToAdmin").hide();
@@ -50,8 +45,6 @@ app.OragnisationList = (function () {
         var org_Logi_Image
         
         function getDataSuccess(tx, results) {                        
-            //console.log('before Show');
-            //console.log(results.rows);
             $('#organisation-listview').data('kendoMobileListView').refresh(); 
             getDataOrgDB = [];
             getDataCountDB = [];
@@ -66,7 +59,6 @@ app.OragnisationList = (function () {
                 for (var i = 0 ; i < count ; i++) {                       
                     //console.log('functionRun' + i);					
                     org_id_DB = results.rows.item(i).org_id;                  
-                    //console.log(org_id_DB);
                     
                     //var db = app.getDb();
                     //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
@@ -84,7 +76,6 @@ app.OragnisationList = (function () {
                     getDataOrgDB.push(org_id_DB);
                     getDataCountDB.push(bagCount);
                     
-                    //alert(lastMessageShow);
                     var bagCountValue;
 
                     var lastNotifi;                    
@@ -94,8 +85,6 @@ app.OragnisationList = (function () {
                         lastNotifi = results.rows.item(i).lastNoti;
                     }
 
-                    //alert(countValue);
-                    //alert(bagCountValue);
                     countValue = countVal - bagCount;
                     if (countValue < 0) {
                         countValue = 0;
@@ -108,19 +97,9 @@ app.OragnisationList = (function () {
                     
                     org_Logi_Image = results.rows.item(i).imageSource;
     
-                    /*if (org_Logi_Image!== null && org_Logi_Image!=='' && org_Logi_Image!=="0") {
-                    var imgPathData = app.getfbValue();                    
-                    var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';                                
-                    console.log('Image Saving Process');                    
-                    window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
-                    }*/
-
-                    //alert('hello');
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
-                    //console.log(pos);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(i).org_id);                                     
-                        //alert(tempArray);
                         groupDataShow.push({
                                                orgName: orgNameDecode,
                                                orgDesc: lastNotifi,
@@ -194,25 +173,20 @@ app.OragnisationList = (function () {
                                                                         }
                 },
                                                                 schema: {
-                    data: function(data) {	//console.log(data);
-                        console.log(data);
+                    data: function(data) {	
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    //console.log(e);
                                                                     $("#progress2").hide();
-                                                                    app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Organization List API.');
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                 }               
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                var loginDataView = dataSourceLogin.data();
-						   
-                $.each(loginDataView, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
-                               
-                    if (loginData.status[0].Msg==='Not a customer to any organisation') {
+                var data = this.data();                                		                                  
+                    if (data[0]['status'][0].Msg==='Not a customer to any organisation') {
                         JoinedOrganisationYN = 0;
                         groupDataShow = [];                               
                         groupDataShow.push({
@@ -229,19 +203,16 @@ app.OragnisationList = (function () {
                         var db = app.getDb();
                         db.transaction(delOrgDataDB, app.errorCB, app.successCB);                                                    
                         loginSuccessCB();
-                    }else if (loginData.status[0].Msg==='Success') {
-                        if (loginData.status[0].orgData.length!==0) {
+                    }else if (data[0]['status'][0].Msg==='Success') {
+                        if (data[0]['status'][0].orgData.length!==0) {
                             //var roleLength = loginData.status[0].JoinedOrg.role.length;
-                            JoinedOrganisationYN = 1;
-                              
-                            UserOrgInformation = loginData.status[0].orgData;
-                            var userOrgLastNoti = loginData.status[0].last;
-                             
+                            JoinedOrganisationYN = 1;                              
+                            UserOrgInformation = data[0]['status'][0].orgData;
+                            var userOrgLastNoti = data[0]['status'][0].last;                             
                             saveOrgInfo(UserOrgInformation, userOrgLastNoti);
                         }else {
                             JoinedOrganisationYN = 0;
                             groupDataShow = []; 
-
                             $("#moreOption").show();
                               
                             groupDataShow.push({
@@ -261,7 +232,6 @@ app.OragnisationList = (function () {
                     }else {
                         $("#progress2").hide();
                     }                            
-                });
             }); 
         };
         
@@ -440,12 +410,29 @@ app.OragnisationList = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        //console.log(data);
-                        //return [data];
-                        $.each(data, function(i, groupValue) {
-                            //alert("IN");
-                            //console.log(groupValue);   
-                            if (groupValue[0].Msg ==='No Orgnisation to manage') {     
+                        console.log(data);                                             
+                        return [data];
+                    }                                                            
+                },
+                                                                           error: function (e) {
+                                                                               //console.log(e);
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                               
+                                                                               showLiveDataUpdated();  
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
+                                                                           }	        
+                                                                       });
+                        
+            organisationListDataSource.fetch(function() {                
+                
+                        var data = this.data();
+
+                
+                            if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
                                 $("#goToAdmin").hide();
 
@@ -453,34 +440,14 @@ app.OragnisationList = (function () {
                                 db.transaction(delAdminOrgDataDB, app.errorCB, app.successCB);                          
     
                                 showLiveDataUpdated();  
-                            }else if (groupValue[0].Msg==='Success') {
+                            }else if (data[0]['status'][0].Msg==='Success') {
                                 $("#moreOption").hide();
                                 $("#goToAdmin").show();
-  
-                                //console.log(groupValue[0].orgData.length);  
-                                var adminOrgInformation = groupValue[0].orgData;
-                                var adminIncomMsg = groupValue[0].last;
+                                var adminOrgInformation = data[0]['status'][0].orgData;
+                                var adminIncomMsg = data[0]['status'][0].last;
                                 saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
                             }
                         });
-                        return [data];
-                    }                                                            
-                },
-                                                                           error: function (e) {
-                                                                               //console.log(e);
-
-                                                                               app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Manage Organization List API.');
-                                                                               showLiveDataUpdated();  
-                                                                               if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-                                                                               }else {
-                                                                                   app.showAlert("Network problem . Please try again later", "Notification");  
-                                                                               }
-                                                                           }	        
-                                                                       });
-                        
-            organisationListDataSource.fetch(function() {                
-            });
         }  
         
         function delAdminOrgDataDB(tx) {
@@ -500,23 +467,15 @@ app.OragnisationList = (function () {
         };
 
         function insertAdminOrgInfo(tx) {          
-            //alert("insert Admin");
-            //console.log(adminOrgProfileData);
-          
             //var query = "DELETE FROM JOINED_ORG_ADMIN";
             //app.deleteQuery(tx, query); 
 
             var dataLength = adminOrgProfileData.length;
-            //console.log(dataLength);
 
-            //alert(dataLength);
-            //console.log("------------------DATA---------------------");
-            //console.log(joinOrgAdminID);
 
             for (var i = 0;i < dataLength;i++) {       
                 userOrgIdArray.push(parseInt(adminOrgProfileData[i].organisationID));
              
-                //console.log(adminOrgProfileData[i].organisationID);
                 adminOrgProfileData[i].organisationID = parseInt(adminOrgProfileData[i].organisationID);
 
                 var pos = $.inArray(parseInt(adminOrgProfileData[i].organisationID), joinOrgAdminID);           
@@ -525,7 +484,6 @@ app.OragnisationList = (function () {
                 var orgDescEncode = app.urlEncode(adminOrgProfileData[i].org_desc);
          
                 if (pos === -1) {              
-                    //alert("insert");
                     joinOrgAdminID.push(adminOrgProfileData[i].organisationID);      
 
                     var query = 'INSERT INTO JOINED_ORG_ADMIN(org_id , org_name , joinedDate , imageSource ,orgDesc , count) VALUES ("'
@@ -543,8 +501,6 @@ app.OragnisationList = (function () {
                                 + '")';              
                     app.insertQuery(tx, query);
                 }else {        
-                    //alert("update");
-                    // alert(adminOrgProfileData[i].org_name);
                     var queryUpdate = "UPDATE JOINED_ORG_ADMIN SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + adminOrgProfileData[i].org_logo + "',count='" + adminIncomMsgData[i].total + "' where org_id=" + adminOrgProfileData[i].organisationID;
                     app.updateQuery(tx, queryUpdate);                         
                 }                      
@@ -560,15 +516,9 @@ app.OragnisationList = (function () {
             
             liveIdLength = userOrgIdArray.length;
             dbIdLength = joinOrgAdminID.length;
-            
-            //alert(JSON.stringify(userOrgIdArray));
-            
+                        
             for (var i = 0;i < dbIdLength;i++) {
-                //alert(JSON.stringify(joinOrgAdminID[i]));
-                var dataVal = userOrgIdArray.indexOf(joinOrgAdminID[i]);
-                //alert(dataVal);
-                //var pos = $.inArray(joinOrgID[i], userLiveOrgIdArray[j]);           
-           
+                var dataVal = userOrgIdArray.indexOf(joinOrgAdminID[i]);           
                 if (dataVal===-1) {
                     orgAdminIdToDel = joinOrgAdminID[i];
                     var db = app.getDb();
@@ -613,8 +563,6 @@ app.OragnisationList = (function () {
         };
         
         var showLiveDataNew = function() {
-            console.log('alertvalue');
-            console.log(groupDataShow);            
             $("#progress2").hide();
                 
             var organisationListDataSource = new kendo.data.DataSource({
@@ -676,24 +624,23 @@ app.OragnisationList = (function () {
         };
             
         var organisationSelected = function (e) {
-            $("#progress2").show();
-            //app.mobileApp.pane.loader.show();
-            console.log(JSON.stringify(e.data));
+            //$("#progress2").show();
+            //console.log(JSON.stringify(e.data));
             var organisationID = e.data.organisationID;
             var bagCount = e.data.count;
-            //alert(bagCount);
-            //uid=' + e.data.uid
             
             app.MenuPage = false;	
             localStorage.setItem("user_SelectOrgID", organisationID);
             localStorage.setItem("user_ACCOUNT_ID", account_Id);
             localStorage.setItem("user_orgBagCount", bagCount);
             localStorage.setItem("user_selectedOrgName", e.data.orgName);
-
-            //app.mobileApp.navigate('views/activitiesView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&bagCount=' + bagCount + '&orgName=' + e.data.orgName);
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification List");            
-            //app.slide('left', 'green' , '3' , '#views/activitiesView.html');
-             app.mobileApp.navigate('views/activitiesView.html');
+  
+            app.mobileApp.navigate('views/activitiesView.html');
+
+            //app.mobileApp.navigate('#view-all-activities');
+
+            
         };
        
         var groupSelected = function (e) {
@@ -756,11 +703,6 @@ app.OragnisationList = (function () {
 
             var showMore = localStorage.getItem("ShowMore");
              
-            /*if(showMore!==1){
-            $("#goToAdmin").hide();             
-            }else{
-            $("#moreOption").hide();  
-            }*/
                         
             var db = app.getDb();
             db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
@@ -841,15 +783,11 @@ app.OragnisationList = (function () {
         var orgUserDataForOrgSuccess = function(tx, results) {
             var count1 = results.rows.length;
             console.log('count' + count1);
-            //orgDbData=[];
             
             if (count1 !== 0) {
-                //alert(JSON.stringify(tempArray));
                 for (var i = 0;i < count1;i++) {
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);                   
                     console.log(pos);
-                    //alert(results.rows.item(i).org_id);
-                    //alert(pos);
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
@@ -902,13 +840,7 @@ app.OragnisationList = (function () {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
             }
-           
-            /*var eventSyncOn = localStorage.getItem("eventSwitch");                        
-            if(eventSyncOn===1 || eventSyncOn==='1'){
-                var db = app.getDb();
-                db.transaction(getProfileForEventInfoDB, app.errorCB, getProfileEventDBSuccess);
-            }*/
-            
+                       
         };
             
         var orgMoreInfoSelected = function(e) {
@@ -928,13 +860,8 @@ app.OragnisationList = (function () {
             localStorage.setItem("selectedOrgDOJ", joinDate);
             localStorage.setItem("selectedOrgImgSou", imageSourceOrg);
             localStorage.setItem("selectedOrgImgData", imgData);
-            //alert(joinDate);
             app.MenuPage = false;	
-            //app.mobileApp.navigate('views/userOrgManage.html?orgID=' + orgID + '&orgName=' + orgName + '&orgDesc=' + orgDesc + '&account_Id=' + account_Id + '&role=' + role + '&joinDate=' + joinDate + '&imageSourceOrg=' + imageSourceOrg + '&imgData=' + imgData);
-
             app.analyticsService.viewModel.trackFeature("User navigate to Manage Organization List"); 
-
-            //app.slide('left', 'green' , '3' , '#views/userOrgManage.html');   
 
             app.mobileApp.navigate('views/userOrgManage.html');
 
@@ -954,14 +881,6 @@ app.OragnisationList = (function () {
             var imgData = localStorage.getItem("selectedOrgImgData");
             var account_Id = localStorage.getItem("ACCOUNT_ID");
 
-            //orgManageID = e.view.params.orgID;
-            //var orgName = e.view.params.orgName; 
-            //var orgDesc = e.view.params.orgDesc;
-            //var account_Id = e.view.params.account_Id;
-            //var role = e.view.params.role;                 
-            //var joinDate = e.view.params.joinDate;
-            //var imageSourceOrg = e.view.params.imageSourceOrg; 
-            //var imgData=e.view.params.imgData;   
             
             if (imgData===null || imgData==='null') {   
                 $("#organisationLogo").attr('src', 'styles/images/habicon.png');
@@ -977,7 +896,7 @@ app.OragnisationList = (function () {
             if (orgDesc==='') {
                 orgDesc = " ";
             }            
-            //alert(orgDesc+"||"+joinDate);
+
             if (role==='C') {
                 $("#manageOrgFooter").show();
             }else {
@@ -1034,8 +953,6 @@ app.OragnisationList = (function () {
             $("#editFirstName").val(fname);
             $("#editLastName").val(lnameVal);
             $("#editEmail").val(email);
-            //$("#editMobile").val(mobile);            
-            //document.getElementById("editMobile").readOnly = true;
         }
         
         var unsubscribeOrg = function() {                         
@@ -1062,7 +979,7 @@ app.OragnisationList = (function () {
                 },
                                                                    error: function (e) {
                                                                        //console.log(e);
-                                                                       app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from unsubscribe Organiazation .');      
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));              
                                                                    }
 	        
                                                                });         
@@ -1096,16 +1013,8 @@ app.OragnisationList = (function () {
             tempArray = [];
             $(".km-scroll-container").css("-webkit-transform", "");
 
-            //app.mobileApp.pane.loader.show();
             app.MenuPage = false;    
             
-            /*var showMore = localStorage.getItem("ShowMore");
-            if(showMore!==1){
-            $("#goToAdmin").hide();             
-            }else{
-            $("#moreOption").hide();  
-            }
-            */
             var db = app.getDb();
             db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
         };
@@ -1401,12 +1310,12 @@ app.OragnisationList = (function () {
                                                                            //console.log(e);
                                                                            //app.mobileApp.pane.loader.hide();
                                                                            
-                                                                           app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Edit Profile API.');
-                                                                                         
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                               window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                            }else {
-                                                                               app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                            }                                                                                         
                                                                        }               
                                                                    });  
@@ -1454,7 +1363,7 @@ app.OragnisationList = (function () {
             }else {
                 app.analyticsService.viewModel.trackFeature("User navigate to Calendar List Page");            
 
-                app.mobileApp.navigate('views/eventCalendar.html?orgManageID=' + orgManageID); 
+                app.mobileApp.navigate('views/eventCalendar.html'); 
             }
         }
         
@@ -1479,7 +1388,7 @@ app.OragnisationList = (function () {
         }
                 
         var success = function(message) {
-            console.log("Success: " + JSON.stringify(message));
+            //console.log("Success: " + JSON.stringify(message));
         };
         
         var error = function(message) {
@@ -1617,13 +1526,13 @@ app.OragnisationList = (function () {
                                                                     //console.log(e);              
                                                                     $("#savingDeviceCalenderLoader").hide();
 
-                                                                    app.analyticsService.viewModel.trackException(e, 'API Call , Unable to get response from User Event List API.');
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                     
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                            window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                         }else {
-                                                                            app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                            app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                         }               
                                                                     }                              
                                                                 }               
@@ -1645,11 +1554,11 @@ app.OragnisationList = (function () {
 
                         if (!app.checkSimulator()) {
                         
-                            window.plugins.toast.showLongBottom('No Event list to sync');  
+                            window.plugins.toast.showLongBottom('No event list to sync');  
                             
                         }else {
                         
-                            app.showAlert('No Event list to sync' , 'Notification');  
+                            app.showAlert('No event list to sync' , 'Notification');  
                             
                         }               
 
@@ -1761,9 +1670,9 @@ app.OragnisationList = (function () {
             $("#savingDeviceCalenderLoader").hide();
                         
             if (!app.checkSimulator()) {
-                window.plugins.toast.showLongBottom('Successfully synchronization Event with Device Calender');           
+                window.plugins.toast.showLongBottom('Successfully synchronized with device calendar');           
             }else {
-                app.showAlert('Successfully synchronization Event with Device Calender', 'Notification');            
+                app.showAlert('Successfully synchronized with device calendar', 'Notification');            
             }               
         }
         

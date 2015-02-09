@@ -1,54 +1,28 @@
-<!--data-layout="innerPages"-->
-<!--data-use-native-scrolling="true"-->
-
-<div data-role="view" id="view-all-activities" data-id="innerActivity" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
+<div data-role="view" id="view-all-activities" data-reload="true" data-id="innerActivity" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
     <div data-role="header">
         <div data-role="navbar">
             <span id="navBarHeader">Notification</span>
-            <!--<a data-role="button" style="background:transparent; border:none;" data-icon="reply" data-align="left"></a>
-            <a data-role="button" style="background:transparent; border:none;" data-icon="printer" data-align="right"></a>
-
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.Activities.goToAppFirstView"></a>
             <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
-            <!--<a class="nav-button nav-button-add hide-text" data-align="right" href="#moreFeature" data-role="button" data-rel="popover">Add</a>-->
         </div>
     </div>
 
     <div class="loader" id="progressNotification" style="display:none;">
         <div class="ball"></div>
-        <!--<div class="loading1">Loading...</div>-->
     </div>
 
     <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></span>
 
     <div id="showMoreButton" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.Activities.showMoreButtonPress">SHOW MORE</div>
-
-    <!--<p id="no-activities-span" hidden="hidden" class="no-items-msg">
-    <b>You have no Notification for you.</b>
-    </p>-->
 </div>
-
-<!-- data-role="touch" data-bind="events: { tap: activitySelected }" -->
-<!-- Activities ListView Template -->
 
 <script type="text/x-kendo-template" id="activityTemplate">            
 
     #if (org_id!=='0') {#
     <div class="cf">
-        <!--<div class="user-avatar">    
-        <img src="styles/images/notification1.png" />
-        </div>-->
-        <!--#if (date!==previousDate) {#          
-            <div style="text-align: center;margin-bottom:10px;margin-top:5px;">
-            <span id="activityTemplateDate" style="text-align:center;line-height:10pt;border-radius:6px;background-color:rgb(230,230,230);padding:2px 10px 2px 10px;color:rgb(53,152,219);">${date}</span>              
-            </div>
-        #}#-->
-
         <div class="notiList-content-new">
             <div class="dateDisplay">
                 <span id="activityTemplateDate" class="dateValue">${date}</span>
-                <!--<hr class="dateLine"/>-->
                 <span></span>
             </div>
 
@@ -56,31 +30,55 @@
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
             #}#
-        
-            <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;"/>-->           
-            
+                    
             #if (message.length > 200) {#
                 #messageVal = message.substr(0, 200) + '..';#
             #}else {#
                 #messageVal = message;#  
             #}#            
             <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
-            #if (attached!=='' && attached!=='0' && upload_type==="other") {#
-                <br/>
+            #if(attached!=='' && attached!=='0' && upload_type==="other"){#
+                    <br/>
                     <div style="overflow:hidden;">
                         <img src= ${attachedImg} style="max-height:200px;margin-top:10px;overflow:hidden;" /> 
+                        <br/>   
+        
+                        <div id="img_Div_${pid}" style="display:none">
+                            <div class="show-native-img"></div>
+                            <br/><br/>
+                        </div>
+                        <a data-role="button" id="imgToDownload_${pid}"  data-align="right" data-click="app.Activities.imageDownlaodClick"  style="float:right" data-imgPath=${attachedImg} data-notiid=${pid}>View</a> 
+                                 
                     </div>
             #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
-                     <br/>
-                        <video  width="300" height="300" controls>
+                        <br/>        
+                        <!--<video  width="300" height="300" controls>
                              <source src=${attachedImg} >
-                        </video>
-            #}#            
+                        </video>-->
+ 
+                       <div class="event-vid-show" id=""></div>        
+                       <br/>
+                            
+                        <div id="video_Div_${pid}" style="display:none">
+                            <div class="show-native-img"></div>
+                            <br/><br/>
+                        </div>
+                        <a data-role="button" id="videoToDownload_${pid}" data-align="right" style="float:right;" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid}>View</a>
         
+            #}#                    
         </div>
+
         <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">    
                   <div class="notiCommentIcon"></div>
                   <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
+             #if(comment_count!=='' && comment_count!=='null' && comment_count!==null && comment_count!==0){#
+                #if(comment_count==='1' || comment_count===1){#
+                <span class="user-comment-count">${comment_count} Reply</span>
+                #}else{#
+                <span class="user-comment-count">${comment_count} Replies</span>
+                #}#
+             #}#
+
         </div>
     </div>
     #}else {#

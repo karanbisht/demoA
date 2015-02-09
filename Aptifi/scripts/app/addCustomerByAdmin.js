@@ -7,8 +7,6 @@ app.addCustomerByAdmin = (function () {
         var $regLastName;
         var $regEmail;
         var $regMobile;
-        var backToRegPage = false;
-        var username;
         var organisationID;
         var addMoreMobile;
         var countMobile;
@@ -29,12 +27,15 @@ app.addCustomerByAdmin = (function () {
         // Navigate to activityView When some activity is selected
         
         var addNewRegistration = function (e) {
+
+            $('#groupInAddCustomer').find('input[type=checkbox]:checked').removeAttr('checked');
             app.userPosition = false;
             $regFirstName.val('');
             $regLastName.val('');
             $regEmail.val('');
             $regMobile.val('');
             organisationID = e.view.params.organisationID;
+                        
             addMoreMobile=0;
             countMobile=0;
             firstTime=0;
@@ -49,7 +50,7 @@ app.addCustomerByAdmin = (function () {
         var getGroupToShowInCombo = function(e) {
             
             var org = localStorage.getItem("orgSelectAdmin");
-             
+                         
             var comboGroupListDataSource = new kendo.data.DataSource({
                                                                          transport: {
                     read: {
@@ -60,15 +61,15 @@ app.addCustomerByAdmin = (function () {
                 },
                                                                          schema: {               
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];                       
                     }
                 },
                                                               error: function (e) {
-                                                                       console.log(JSON.stringify(e));
+                                                                       //console.log(JSON.stringify(e));
                                                                              $("#selectOrgLoader").hide();
-                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
-                         
+                                                                        
+                                                                  app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                      var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];
@@ -100,15 +101,15 @@ app.addCustomerByAdmin = (function () {
                                                            pid:'0'
                                                        });
                             }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                         }else if(data[0]['status'][0].Msg==="You don't have access"){
                                    
                                     if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                             window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                     }else {
-                                             app.showAlert("You don't have access" , 'Offline');  
+                                             app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }
                                 
                                   
@@ -133,8 +134,6 @@ app.addCustomerByAdmin = (function () {
 
         var showGroupDataInTemplate = function(){
 
-          //alert('hello');
-            console.log(groupDataShow);
             
             $(".km-scroll-container").css("-webkit-transform", "");
            
@@ -215,9 +214,6 @@ app.addCustomerByAdmin = (function () {
        };       
         
         var registerR = function() {            
-          
-            app.userPosition = false;     
-            backToRegPage = true;   
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
             var email = $regEmail.val();
@@ -259,10 +255,10 @@ app.addCustomerByAdmin = (function () {
                 app.showAlert("Please enter your First Name.", "Validation Error");
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", "Validation Error");
-            }else if (email === "Email" || email === "") {
+            /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");
             } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");
+                app.showAlert("Please enter a valid Email.", "Validation Error");*/
             } else if (mobile === "Mobile Number" || mobile === "") {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
@@ -309,20 +305,14 @@ app.addCustomerByAdmin = (function () {
                         }
                     },
                                                                        error: function (e) {
-                                                                           //apps.hideLoading();
                                                                            $("#saveMemberLoader").hide();
-                                                                            //console.log(e);                                                                           
-                                                                            console.log(JSON.stringify(e));           
-                                                                            //alert(JSON.stringify(e));
-                                                                            //app.mobileApp.pane.loader.hide();
+                                                                            //console.log(JSON.stringify(e));           
                                                                             
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));
-             
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                             if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                             }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                             }
            
                                                                        }               
@@ -336,9 +326,9 @@ app.addCustomerByAdmin = (function () {
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom('Member Added Successfully');   
+                                window.plugins.toast.showShortBottom(app.MEMBER_ADDED_MSG);   
                             }else {
-                                app.showAlert("Member Added Successfully", "Notification"); 
+                                app.showAlert(app.MEMBER_ADDED_MSG, "Notification"); 
                             }
                             
                             $("#saveMemberLoader").hide();
@@ -350,15 +340,15 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                                 
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                 }else {
-                                    app.showAlert("You don't have access" , 'Offline');  
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }
                                               
                             app.mobileApp.navigate('views/orgMemberPage.html');
@@ -406,17 +396,15 @@ app.addCustomerByAdmin = (function () {
                                                                        error: function (e) {
                                                                            $("#saveMemberLoader").hide();
                                                                            //console.log(e);
-                                                                           console.log(JSON.stringify(e));           
+                                                                           //console.log(JSON.stringify(e));           
              
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.');             
-                                                                           app.analyticsService.viewModel.trackException(e,'Api Call , Unable to get response from API fetching Add Member to Organization.'+JSON.stringify(e));             
-                                                                           
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                            //app.mobileApp.pane.loader.hide();
                                                                          
                                                                            if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                             }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification");
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification");
                                                                             }
                                                                        }               
                                                                    });  
@@ -429,9 +417,9 @@ app.addCustomerByAdmin = (function () {
                                
                         if (loginData.status[0].Msg==='Customer added successfully') {
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom('Member Added Successfully');   
+                                window.plugins.toast.showShortBottom(app.MEMBER_ADDED_MSG);   
                             }else {
-                                app.showAlert("Member Added Successfully", "Notification"); 
+                                app.showAlert(app.MEMBER_ADDED_MSG, "Notification"); 
                             }
                             
                             $("#saveMemberLoader").hide();
@@ -444,15 +432,15 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin(); 
                                 
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                 }else {
-                                    app.showAlert("You don't have access" , 'Offline');  
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }
                                               
                                 app.mobileApp.navigate('views/orgMemberPage.html');

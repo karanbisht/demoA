@@ -1,4 +1,13 @@
 
+$(document).ready(function() {
+    $(document).ajaxError(function(e, jqxhr, settings, exception) {  
+        if (jqxhr.readyState === 0 || jqxhr.status === 0) {  
+            return; //Skip this error  
+        }  
+    }); 
+}); 
+
+
 var app = (function (win) {
     'use strict';
     var db;
@@ -6,10 +15,35 @@ var app = (function (win) {
     var userTypeDBValue = [];
     var loginStatusDBValue;
     var adminLoginStatusDBValue;
-    var account_IdDBValue;
     var mobileApp;
     
-    var serverUrl = function() {
+    var INTERNET_ERROR = "Network problem. Please try again.";
+    var NO_ACCESS = "You don't have access.";
+    var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
+    var VERIFICATION_CODE_SEND = "Verification code not sent. Please click on Regenerate Code";
+    var VERIFICATION_CODE_NOT_SEND = "Verification code not sent. Please click on Regenerate Code";
+    var ENTER_CORRECT_V_CODE="Incorrect Verification Code";
+    var No_MEMBER_TO_ADD ="No member to add in group"; 
+    var LOGIN_ANOTHER_DEVICE = "Your have logged in from another device, Please re-login.";
+    var COMMENT_REPLY="Message sent successfully";
+    var NOTIFICATION_MSG_NOT_SENT="Error sending message.";
+    var NOTIFICATION_MSG_SENT="Message sent successfully";    
+    var NOTIFICATION_MSG_SCHEDULED="Message scheduled successfully";
+    var NEWS_ADDED_MSG="News added successfully";
+    var NEWS_UPDATED_MSG="News updated successfully";
+    var NEWS_EVENT_FAIL="Operation Failed. Please try again.";
+    var NEWS_DELETED_MSG="News deleted successfully";
+    var EVENT_ADDED_MSG="Event added successfully";
+    var EVENT_UPDATED_MSG="Event updated successfully";
+    var EVENT_DELETED_MSG="Event deleted successfully";
+    var GROUP_UPDATED_MSG="Group updated successfully";
+    var MEMBER_DELETED_MSG="Member deleted successfully";
+    var SELECT_MEMBER_TO_DELETE="Please select member to delete";
+    var MEMBER_DETAIL_UPDATED_MSG="Member detatil updated successfully";
+    var MEMBER_ADDED_MSG="Member added successfully";
+    var FORGET_PASSWORD_CODE_SEND="Code sent at your registered number.";
+    
+    var serverUrl = function() {        
         return 'https://app.Zaff.io/webservice/';        
         //return 'http://54.86.57.141/webservice/';
     }
@@ -81,10 +115,7 @@ var app = (function (win) {
     };
     
     var showNativeAlert = function () {
-        //if (!this.checkSimulator()) {
-        //alert("hello");
         window.plugins.toast.showShortBottom('klkkkkkkk' , app.successCB , app.errorCB);
-        //}
     };
     
     var checkSimulator = function() {
@@ -150,7 +181,7 @@ var app = (function (win) {
         if (count !== 0) {
             loginStatusDBValue = results.rows.item(0).login_status;
             adminLoginStatusDBValue = results.rows.item(0).Admin_login_status;
-            account_IdDBValue = results.rows.item(0).account_id;
+            //account_IdDBValue = results.rows.item(0).account_id;
         }
     };
      
@@ -197,15 +228,9 @@ var app = (function (win) {
         tx.executeSql(updateQue);
     };  
     
-    var errorCB = function(err) {
-       //alert("error--"+err.message);
-        
+    var errorCB = function(err) {        
        console.log("Error processing SQL: " + JSON.stringify(err));
-
-       //console.log("Error processing SQL: " + err.message);
-
        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
-        //app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing : " + err.message);
     };
     
     // Transaction success callback
@@ -214,6 +239,8 @@ var app = (function (win) {
     };
     
     var checkConnection = function() {
+    if(typeof navigator.connection.type !== "undefined")
+    {
         var networkState = navigator.connection.type;
         var states = {};
         states[Connection.UNKNOWN] = 'Unknown connection';
@@ -226,137 +253,54 @@ var app = (function (win) {
 
         if (states[networkState] === 'No network connection') {
             return false;    
-        }else {
-            return true;
         }
+        
+    }
+            return true;
     };
     
-    // Handle device back button tap
-
     var onBackKeyDown = function(e) { 
-        //var pathname = window.location.pathname;
-        //var pageNama = pathname.slice(-10);
-        //alert(app.userPosition);
-        //alert(app.MenuPage); 
-        //alert(app.mobileApp.view()['element']['0']['id']);
-        //if(app.userPosition){        
         if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
              e.preventDefault();           
              navigator.app.exitApp();
 
-            /*navigator.notification.confirm('Do you really want to exit?', function (confirmed) {           
-                if (confirmed === true || confirmed === 1) {
-                    navigator.app.exitApp();
-                }
-            }, 'Exit', ['OK', 'Cancel']);*/
-            
-            //}else if(app.MenuPage){
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
             e.preventDefault();            
             navigator.app.exitApp();
 
             
             
-            /*navigator.notification.confirm('Do you really want to exit from App?', function (confirmed) {           
-                if (confirmed === true || confirmed === 1) {
-                    navigator.app.exitApp();
-                }
-            }, 'Exit', ['OK', 'Cancel']);*/
-            
-            /*navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
-            if (checkLogout === true || checkLogout === 1) {
-            app.mobileApp.pane.loader.show();    
-            setTimeout(function() {
-            var db = app.getDb();
-            db.transaction(updateLoginStatus, updateLoginStatusError,updateLoginStatusSuccess);
-            }, 100);
-            }
-            }, 'Logout', ['OK', 'Cancel']);*/
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
-            //var account_Id = localStorage.getItem("ACCOUNT_ID");
-            //var userType = localStorage.getItem("USERTYPE");   
-
-
-            //flip('right','green','#organisationNotiList');
-            /*navigator.notification.confirm('Are you sure to Logout from Admin Panel ?', function (checkLogout) {
-                if (checkLogout === true || checkLogout === 1) {
-                    app.mobileApp.pane.loader.show();    
-                    var db = app.getDb();
-                    db.transaction(updateAdminLoginStatus, updateAdminLoginStatusError, updateAdminLoginStatusSuccess);
-                }
-            }, 'Logout', ['OK', 'Cancel']);*/
-            
         
         }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate("#organisationNotiList");      
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate("#organisationNotiList");         
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-userReply') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate("#view-all-activities-admin");          
         }else if (app.mobileApp.view()['element']['0']['id']==='groupMemberShow') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate("#view-all-activities-GroupDetail");
         }else if (app.mobileApp.view()['element']['0']['id']==='subGroupMemberShow') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('views/subGroupDetailView.html');
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-Group') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('views/groupListPage.html');
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupList') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#view-all-activities-GroupDetail');    
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
-            //app.mobileApp.navigate('#view-all-activities-admin');
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendar') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventList');     
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail' || app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventList');  
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEditEventCalendar') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();adminEventCalendarDetail
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#adminEventList');     
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventList') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();adminEventCalendarDetail
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#view-all-activities-GroupDetail');  
         }else if (app.mobileApp.view()['element']['0']['id']==='adminOrgNewsList') {
-            //var tabstrip = app.mobileApp.view().header.find(".km-tabstrip").data("kendoMobileTabStrip");
-            //tabstrip.clear();adminEventCalendarDetail
-            //tabstrip.switchTo("#organisationNotiList");        
             app.mobileApp.navigate('#view-all-activities-GroupDetail');                      
         }else if (app.mobileApp.view()['element']['0']['id']==='adminAddNews') {
             app.mobileApp.navigate('#adminOrgNewsList');
             $("#adminAddNews").data("kendoMobileModalView").close();
         }else {
-            //navigator.app.backHistory();
             app.mobileApp.navigate("#:back");    
         }
     };
@@ -392,7 +336,6 @@ var app = (function (win) {
 
     function updateLoginStatusSuccess() {
         localStorage.setItem("loginStatusCheck", 0);
-        //app.mobileApp.navigate('#welcome');
         window.location.href = "index.html";
     }
 
@@ -517,7 +460,7 @@ var app = (function (win) {
         app.analyticsService.viewModel.monitorStart();
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
         var loginStatus = localStorage.getItem("loginStatusCheck");
-
+        
         if(loginStatus !== '0' || loginStatus !== 0)
         {
             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
@@ -528,14 +471,13 @@ var app = (function (win) {
         }       
         
         
+        if(loginStatus!==0 && loginStatus!=='0'){
 
-        var device_id = localStorage.getItem("deviceTokenID");
-        var account_Id = localStorage.getItem("ACCOUNT_ID");
+                var device_id = localStorage.getItem("deviceTokenID");
+                var account_Id = localStorage.getItem("ACCOUNT_ID");
         
-        //alert(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
-        //console.log(app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id);
         
-         var dataSourceLogin = new kendo.data.DataSource({
+                var dataSourceLogin = new kendo.data.DataSource({
                     transport: {
                     read: {
                                                                             url: app.serverUrl() + "customer/isActive/"+account_Id+"/"+device_id,
@@ -562,8 +504,7 @@ var app = (function (win) {
                                                             });  
 	            
                 dataSourceLogin.fetch(function() {
-                //var loginDataView = dataSourceLogin.data();                            	                    
-                var data = this.data();     
+                    var data = this.data();     
                     console.log(JSON.stringify(data));
                 //$.each(loginDataView, function(i, loginData) {
                     //console.log(loginData.status[0].Msg);
@@ -571,15 +512,17 @@ var app = (function (win) {
                     if (data[0]['status'][0].Msg==='Fail') {                        
                         console.log('fail');                        
                         if (!app.checkSimulator()) {
-                                  window.plugins.toast.showLongBottom("Your have Logged in with another device , Please re-login.");  
+                                  window.plugins.toast.showLongBottom(app.LOGIN_ANOTHER_DEVICE);  
                         }else {
-                                 app.showAlert("Your have Logged in with another device , Please re-login." , 'Notification');  
+                                 app.showAlert(app.LOGIN_ANOTHER_DEVICE , 'Notification');  
                         }                        
                         var db = app.getDb();
                         db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
                         updateLoginStatusSuccess();                 
                     }                    
                });
+            
+            }
     };
     
     
@@ -659,7 +602,7 @@ var app = (function (win) {
 
         // Date formatter. Return date in d.m.yyyy format
         formatDate: function (dateString) {
-            var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+            var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
             var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             var today = new Date(dateString);
             return kendo.toString(days[today.getDay()] + ',' + today.getDate() + ' ' + month[today.getMonth()]);
@@ -717,6 +660,8 @@ var app = (function (win) {
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
            
             var messageSplitVal = event.id.split('#####');
+            
+            //alert(messageSplitVal);
                       
             messageDB = messageSplitVal[0];
             orgIdDB = messageSplitVal[1];
@@ -756,35 +701,25 @@ var app = (function (win) {
                             goToAppPage();                    
                         }    
                     }else {
-                        var db = app.getDb();
-                        db.transaction(insertOrgNotiData, app.errorCB, app.successCB);   
+                        //alert(typeDB);
+                        //alert('else');
+                        
+                        //var db = app.getDb();
+                        //db.transaction(insertOrgNotiData, app.errorCB, app.successCB);  
+                        
+                            if (typeDB!=='Reply') {
+                                var db = app.getDb();
+                                db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                            }else{   
+                                var db = app.getDb();
+                                db.transaction(insertCommentCount, app.errorCB, app.successCB);            
+                            }
                     }
                 }, 'Notification', ['View', 'Close']);        
             }else {
                 showAlert(messageDB , "Notification");
             } 
-            //var db = app.getDb();
-            //db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-            /*if ( event.foreground )
-            {
-            if(typeDB!=='Reply'){
-            var db = app.getDb();
-            db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
-            }
-            }else{
-            if(typeDB!=='Reply'){
-            var db = app.getDb();
-            db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);    
-            }else{
-            typeDB="Reply";
-            var temp;
-            temp=messageDB;
-            messageDB=notificationMsg;
-            notificationMsg=temp;
-            goToAppPage();                    
-            }    
-            }*/
-        }
+         }
     };
     
     //the function is a callback for all GCM events
@@ -794,149 +729,87 @@ var app = (function (win) {
             switch (e.event) {
                 case 'registered':
                     if (e.regid.length > 0) {
-                        //your GCM push server needs to know the regID before it can push to this device
-                        //you can store the regID for later use here
-                        //console.log('###token received');
                         console.log("TokenID Received" + e.regid);
                         localStorage.setItem("deviceTokenID", e.regid);
-                        //sendTokenToServer(e.regid);
                     }
                     break;
-                case 'message': 
-                    //alert(e);                      
-                    //console.log('----------------------');
-                    //alert(JSON.stringify(e));
-                    //console.log(JSON.stringify(e.event));
-                    //console.log(e.foreground);
-                    //alert(e.title);            
-            
-                    account_IdDB = localStorage.getItem("ACCOUNT_ID");             
-                    //console.log(account_IdDB);            
-
-                    //console.log(JSON.stringify(e.payload.default));           
-            
+                case 'message':             
+                    account_IdDB = localStorage.getItem("ACCOUNT_ID");                         
                     var messageSplitVal = e.payload.default.split('#####');
-                    
-                    //alert(messageSplitVal);
-                
-                    //console.log(messageSplitVal);
-                    
+                                               
                     messageDB = messageSplitVal[0];
                     orgIdDB = messageSplitVal[1];
                     notiIdDB = messageSplitVal[2];
                     typeDB = messageSplitVal[3];
                     titleDB = messageSplitVal[4];
-                    attachedDB = messageSplitVal[5];
+                    attachedDB = messageSplitVal[5]; 
                     commentAllowDB = messageSplitVal[6];   
                     notificationMsg = messageSplitVal[7];
                     uploadTypeNoti = messageSplitVal[8];
                     
-                     //console.log('---data-------');
-                    //send_DateDB= getPresentDateTime();           
+                    
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
-            
-                        //console.log(typeDB);
-                
+                            
                     if (typeDB!=='Add Customer') {
                         
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';
                         }
-
-                        //console.log(e.foreground);
                         
                         if (e.foreground) {
-                            //console.log('1');
                             if (typeDB!=='Reply') {
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                            }else{   
+                                var db = app.getDb();
+                                db.transaction(insertCommentCount, app.errorCB, app.successCB);            
                             }
                         }else {
-                            //console.log('2');
-
                             if (typeDB!=='Reply') {
-                                //console.log('3');
                                 var db = app.getDb();
                                 db.transaction(insertOrgNotiDataBagINC, app.errorCB, goToAppPage);    
                             }else {
-                                //console.log('4');
                                 typeDB = "Reply";
                                 var temp;
                                 temp = messageDB;
                                 messageDB = notificationMsg;
                                 notificationMsg = temp;
-                                goToAppPage();                    
+                                goToAppPage();                                
                             }    
                         }
                     } 
-                    /* if ( e.foreground )
-                    {
-                    //var soundfile = e.soundname || e.payload.sound;
-                    //var my_media = new Media("/android_asset/www/"+ soundfile);
-                    //my_media.play();
-                    //alert('foreGround');
-                    var db = app.getDb();
-                    db.transaction(insertOrgNotiData, app.errorCB, app.successCB);    
-                    }
-                    else
-                    {  // otherwise we were launched because the user touched a notification in the notification tray.
-                    if ( e.coldstart )
-                    {
-                    //alert('coldstart');
-                    var db = app.getDb();
-                    db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-                    }
-                    else
-                    {
-                    var db = app.getDb();
-                    db.transaction(insertOrgNotiData, app.errorCB, goToAppPage);
-                    }
-                    }*/
-            
-                    //return message;
-                    //alert('message = '+e.message+' msgcnt = '+e.msgcnt);            
-                    //getPromotionFromServer();
                     break;
                 case 'error':
-                    //alert('GCM error = ' + e.msg);
                         app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + e.msg);
                     break;
                 default:
-                    //alert('An unknown GCM event has occurred.');
                     break;
             }
         } catch (err) {
-
                    app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + err);
- 
-            //alert(err);
         }
         finally {    
         }   
     };  
+    
+        function insertCommentCount(tx) {
+            var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 where org_id='" + orgIdDB + "' and pid='"+notiIdDB+"'";
+            app.updateQuery(tx, query);
+        }
+
         
     function insertOrgNotiData(tx) {
-        //console.log('DATA VALUE1');
-        
-
         messageDB = app.urlEncode(messageDB);
         titleDB = app.urlEncode(titleDB);
         notificationMsg = app.urlEncode(notificationMsg);
-
                             
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        //console.log('DATA VALUE2');
-
         var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
         app.deleteQuery(tx, queryDelete);         
-
-        //console.log('DATA VALUE3');
           
-        //alert(send_DateDB);
-
         var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
                     + orgIdDB
                     + '","'
@@ -960,8 +833,7 @@ var app = (function (win) {
     }
     
     function insertOrgNotiDataBagINC(tx) {
-        //console.log('DATA VALUE1');
-
+    
         messageDB = app.urlEncode(messageDB);
         titleDB = app.urlEncode(titleDB);
         notificationMsg = app.urlEncode(notificationMsg);
@@ -969,14 +841,8 @@ var app = (function (win) {
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , bagCount=bagCount+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        //console.log('DATA VALUE2');
-
         var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
         app.deleteQuery(tx, queryDelete);   
-
-        //console.log('DATA VALUE3');
-          
-        //alert(send_DateDB);
 
         var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
                     + orgIdDB
@@ -1161,7 +1027,7 @@ var app = (function (win) {
     }());
      
     var formatDate = function (dateString) {
-        var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+        var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var today = new Date(dateString);
         return kendo.toString(days[today.getDay()] + ',' + today.getDate() + ' ' + month[today.getMonth()] + ' ' + today.getFullYear());
@@ -1182,7 +1048,7 @@ var app = (function (win) {
     }
     
     var currentDataFormate = function() {
-        var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+        var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var today = new Date();
         
@@ -1269,7 +1135,7 @@ var app = (function (win) {
     function timeConverter(UNIX_timestamp) {
         var a = new Date(UNIX_timestamp * 1000);
      
-        var days = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+        var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         
         var year = a.getFullYear();
@@ -1537,6 +1403,31 @@ var app = (function (win) {
         flip:flip,
         getDateMonth:getDateMonth,
         getDateDays:getDateDays,
-        getYear: getYear
+        getYear: getYear,
+        INTERNET_ERROR:INTERNET_ERROR,
+        NO_ACCESS:NO_ACCESS,
+        SESSION_EXPIRE:SESSION_EXPIRE,
+        VERIFICATION_CODE_SEND:VERIFICATION_CODE_SEND,
+        VERIFICATION_CODE_NOT_SEND:VERIFICATION_CODE_NOT_SEND,
+        ENTER_CORRECT_V_CODE:ENTER_CORRECT_V_CODE,
+        No_MEMBER_TO_ADD:No_MEMBER_TO_ADD,
+        LOGIN_ANOTHER_DEVICE:LOGIN_ANOTHER_DEVICE,
+        COMMENT_REPLY:COMMENT_REPLY,
+        NOTIFICATION_MSG_NOT_SENT:NOTIFICATION_MSG_NOT_SENT,
+        NOTIFICATION_MSG_SENT:NOTIFICATION_MSG_SENT,
+        NOTIFICATION_MSG_SCHEDULED:NOTIFICATION_MSG_SCHEDULED,
+        NEWS_ADDED_MSG:NEWS_ADDED_MSG,
+        NEWS_EVENT_FAIL:NEWS_EVENT_FAIL,
+        NEWS_UPDATED_MSG:NEWS_UPDATED_MSG,
+        NEWS_DELETED_MSG:NEWS_DELETED_MSG,
+        EVENT_ADDED_MSG:EVENT_ADDED_MSG,
+        EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
+        EVENT_DELETED_MSG:EVENT_DELETED_MSG,
+        GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
+        MEMBER_DELETED_MSG:MEMBER_DELETED_MSG,
+        SELECT_MEMBER_TO_DELETE:SELECT_MEMBER_TO_DELETE,
+        MEMBER_DETAIL_UPDATED_MSG:MEMBER_DETAIL_UPDATED_MSG,
+        MEMBER_ADDED_MSG:MEMBER_ADDED_MSG,
+        FORGET_PASSWORD_CODE_SEND:FORGET_PASSWORD_CODE_SEND
     };
-}(window));
+})(window);

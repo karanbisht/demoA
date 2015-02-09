@@ -33,17 +33,18 @@ app.orgNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     //console.log(e);
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                     }               
                                                                 }               
                                                             });  
@@ -144,6 +145,154 @@ app.orgNews = (function () {
  
         }
         
+        
+        
+                var attachedFilename;
+        var videoFile;
+        var notiFi;
+        
+        var videoDownlaodClick = function(e){            
+            var data = e.button.data();
+            //console.log(data);            
+            videoFile = data.someattribute;  
+            //console.log(videoFile);            
+            notiFi = data.notiid;
+            //alert(notiFi);
+            attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
+            var vidPathData = app.getfbValue();                    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_video_' + attachedFilename;             
+            window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
+        }
+        
+        var videoPathExist = function() {          
+            
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_video_' + attachedFilename;
+
+            /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
+            vid.attr('src', fp);
+            vid.appendTo('#video_Div_'+notiFi);*/
+            
+
+            if(device_type==="AP"){
+                  window.open(fp, "_blank");
+            }else{
+                  window.plugins.fileOpener.open(fp);
+            }
+            
+        }
+        
+        var videoPathNotExist = function() {
+            $("#video_Div_"+notiFi).show();
+            $("videoToDownload_"+notiFi).text('Downloading..');
+            var attachedVid = videoFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_video_' + attachedFilename;
+            
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(attachedVid, fp, 
+                                  function(entry) {
+                                      
+
+                                      if(device_type==="AP"){
+                                          window.open(fp, "_blank");
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+
+                                      $("#video_Div_"+notiFi).hide();
+                                      $("videoToDownload_"+notiFi).text('View');
+
+                                  },
+    
+                                  function(error) {
+                                      $("#video_Div_"+notiFi).hide();
+                                      $("videoToDownload_"+notiFi).text('View');
+                                      //$("#progressChat").hide();
+                                  }
+                );                
+        }
+        
+
+        var attachedImgFilename;
+        var imgFile;
+        var imgNotiFi;
+
+        var imageDownlaodClick = function(e){
+            var data = e.button.data();
+            console.log(data);            
+            imgFile = data.imgpath;  
+            console.log(imgFile);            
+            imgNotiFi = data.notiid;
+            attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+            attachedImgFilename=attachedImgFilename+'.jpg';
+            var vidPathData = app.getfbValue();                    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_img_' + attachedImgFilename;             
+            console.log(vidPathData);
+            console.log(fp);
+            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
+            //$("#img_Div_"+imgNotiFi).show();
+            
+            //alert("#img_Div_"+imgNotiFi);
+            
+            //alert('click');
+            //console.log(JSON.stringify(window.plugins));
+            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
+        }
+        
+                
+        var imgPathExist = function() {                    
+            //alert('img_exixt');
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_img_' + attachedImgFilename;   
+            //fp=fp+'.jpg';
+            console.log(fp);
+            
+                                      if(device_type==="AP"){
+                                          //alert('Show');
+                                          //window.open("www.google.com", "_system");
+                                          window.open(fp, '_blank');
+
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+
+        }
+        
+        var imgPathNotExist = function() {
+            //alert('img_not_exixt');
+
+            $("#img_Div_"+imgNotiFi).show();
+            $("#imgToDownload_"+imgNotiFi).text('Downloading..');
+            
+            var attachedImg = imgFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_news_img_' + attachedImgFilename;
+                        console.log(fp);
+
+
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(attachedImg, fp, 
+                                  function(entry) {
+                                      $("#imgToDownload_"+imgNotiFi).text('View');
+
+                                      if(device_type==="AP"){
+                                          //alert('1');
+                                          window.open(fp, "_blank");
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+                                      
+                                      $("#img_Div_"+imgNotiFi).hide();
+                                  },
+    
+                                  function(error) {
+                                      $("#imgToDownload_"+imgNotiFi).text('View');
+                                      $("#img_Div_"+imgNotiFi).hide();
+                                  }
+                );                
+        }
+
 
 
         
@@ -151,7 +300,10 @@ app.orgNews = (function () {
             init: init,
             show: show,
             gobackOrgPage:gobackOrgPage,
-            showInListView:showInListView
+            showInListView:showInListView,
+            videoDownlaodClick:videoDownlaodClick,
+            imageDownlaodClick:imageDownlaodClick
+            
         };
     }());
         

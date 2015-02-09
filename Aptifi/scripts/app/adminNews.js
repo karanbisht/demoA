@@ -1,6 +1,8 @@
 var app = app || {};
 
 app.adminNews = (function () {
+      'use strict';
+
     var adminNewsEventModel = (function () {
         var organisationID;
         var groupAllEvent = [];
@@ -8,6 +10,9 @@ app.adminNews = (function () {
         var newsDataToSend;
         var upload_type;
         var groupDataShow = [];
+        var pb;
+        var disabledDaysBefore=[];
+        var ft;
 
         var init = function() {
         }
@@ -27,7 +32,7 @@ app.adminNews = (function () {
             newsDataToSend = '';
             upload_type = '';
              
-            pb = $("#profileCompleteness").kendoProgressBar({
+            pb = $("#profileCompletenessNews").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
@@ -49,23 +54,23 @@ app.adminNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     //console.log(e);             
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                     $("#adminNewsListLoader").hide();
                                                                     $("#orgAllNewsList").show();
 
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                     }           
                                                                     
-                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization News List in Admin Panel.');
                          
                                                                     var showNotiTypes = [
                                                                         { message: "Please Check Your Internet Connection"}
@@ -101,14 +106,14 @@ app.adminNews = (function () {
                                            org_id: ''
                                        });
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {                                    
                     
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                     
                     goToManageOrgPage();
@@ -275,15 +280,11 @@ app.adminNews = (function () {
         }
         
         var addNewsshow = function() {
-            
-            
+                        
             $(".km-scroll-container").css("-webkit-transform", "");
            
             groupDataShow = [];
-            
-            /*var footer = $(".footer");
-            footer.css({ "top": footer.position().top, "bottom": "auto"});*/
-            
+                        
             $("#adddatePickerNews").removeAttr('disabled');           
             $("#adddateTimePickerNews").removeAttr('disabled');
 
@@ -320,6 +321,9 @@ app.adminNews = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
+
+            $('#groupInAddNews').find('input[type=checkbox]:checked').removeAttr('checked');
+
             var currentDate = app.getPresentDate();
             
             disabledDaysBefore = [
@@ -397,16 +401,16 @@ app.adminNews = (function () {
                 },
                                                                          schema: {               
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];                       
                     }
                 },
                                                                          error: function (e) {
-                                                                             console.log(JSON.stringify(e));
+                                                                             //console.log(JSON.stringify(e));
 
                                                                              $("#sendNewsLoader").hide();
 
-                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                          
                                                                              var showNotiTypes = [
                                                                                  { message: "Please Check Your Internet Connection"}
@@ -437,13 +441,13 @@ app.adminNews = (function () {
 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                     goToNewsListPage();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else {
                     var orgLength = data[0].status[0].groupData.length;
@@ -523,17 +527,18 @@ app.adminNews = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
-                                                                       console.log(JSON.stringify(e));
+                                                                       //console.log(JSON.stringify(e));
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                        if (!app.checkSimulator()) {
-                                                                           window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                        }else {
-                                                                           app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                        }               
                                                                    }               
           
@@ -547,15 +552,15 @@ app.adminNews = (function () {
                         app.mobileApp.navigate("#adminOrgNewsList");
                         
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom('News Deleted Successfully');  
+                            window.plugins.toast.showLongBottom(app.NEWS_DELETED_MSG);  
                         }else {
-                            app.showAlert('News Deleted Successfully', "Notification");  
+                            app.showAlert(app.NEWS_DELETED_MSG, "Notification");  
                         }
                     }else if (addGroupData.status[0].Msg==="You don't have access") {                                           
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                 }else {
-                                    app.showAlert("You don't have access" , 'Offline');  
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }                  
                                 goToNewsListPage();
                     }else {
@@ -577,7 +582,7 @@ app.adminNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");                                    
             $('#editNewsDesc').css('height', '80px');
             
-            pb = $("#profileCompleteness").kendoProgressBar({
+            pb = $("#profileCompletenessNews").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
@@ -633,21 +638,22 @@ app.adminNews = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(JSON.stringify(e));
                                                                            
                                                                            $("#sendEditNewsLoader").hide();
 
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                            
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                            }else {
-                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                               app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                            }
                                                                        }               
                                                                    });  
@@ -807,7 +813,7 @@ app.adminNews = (function () {
                                                       });
                         }
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -839,9 +845,14 @@ app.adminNews = (function () {
             var event_Time = $("#adddateTimePickerNews").val();
 
             var group = [];		    
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
-            });            
+            });*/            
+            
+            $('#groupInAddNews input:checked').each(function() {
+                group.push($(this).val());
+            });
+            
             group = String(group);       
             
             console.log(group);
@@ -984,19 +995,22 @@ app.adminNews = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                console.log(data);
-                                console.log(JSON.stringify(data))
+                                //console.log(data);
+                                //console.log(JSON.stringify(data))
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(JSON.stringify(e));
                                                                                $("#sendNewsLoader").hide();
+                                                                               
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                               
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                   window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                                }else {
-                                                                                   app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                   app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                                }               
                                                                            }              
                                                                        });  
@@ -1009,17 +1023,17 @@ app.adminNews = (function () {
                                 $(".km-scroll-container").css("-webkit-transform", "");                           
                                 $("#addNewsDesc").val('');                   
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('News Added Successfully');  
+                                    window.plugins.toast.showLongBottom(app.NEWS_ADDED_MSG);  
                                 }else {
-                                    app.showAlert('News Added Successfully", "Notification');  
+                                    app.showAlert(app.NEWS_ADDED_MSG, "Notification");  
                                 }                                                        
                                 $("#sendNewsLoader").hide();
                                 app.mobileApp.navigate("#adminOrgNewsList");
                             }else if (addGroupData.status[0].Msg==="You don't have access") {                                           
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                 }else {
-                                    app.showAlert("You don't have access" , 'Offline');  
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }                  
                                 goToNewsListPage();
                             }else {
@@ -1049,9 +1063,9 @@ app.adminNews = (function () {
             $("#sendNewsLoader").hide();
 
             if (!app.checkSimulator()) {
-                window.plugins.toast.showShortBottom('News Added Successfully');   
+                window.plugins.toast.showShortBottom(app.NEWS_ADDED_MSG);   
             }else {
-                app.showAlert("News Added Successfully", "Notification"); 
+                app.showAlert(app.NEWS_ADDED_MSG, "Notification"); 
             }
             
             $("#addNewsDesc").val('');             
@@ -1074,7 +1088,7 @@ app.adminNews = (function () {
             pb.value(0);
             $("#tabstrip-upload-file").data("kendoMobileModalView").close();
             //console.log(error);
-            console.log(JSON.stringify(error));
+            //console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             //console.log("upload error target " + error.target);
@@ -1084,15 +1098,15 @@ app.adminNews = (function () {
  
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Notification');  
                 } 
             }else{                
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('News Not Added/Updated Successfully');  
+                    window.plugins.toast.showLongBottom(app.NEWS_EVENT_FAIL);  
                 }else {
-                    app.showAlert('News Not Added/Updated Successfully' , 'Notification');  
+                    app.showAlert(app.NEWS_EVENT_FAIL , 'Notification');  
                 }
             }
 
@@ -1103,10 +1117,16 @@ app.adminNews = (function () {
             var event_Date = $("#editdatePickerNews").val();
             var event_Time = $("#editdateTimePickerNews").val();
 
-            var groupEdit = [];		    
-            $(':checkbox:checked').each(function(i) {
+            var groupEdit = [];		  
+            
+            $('#groupInEditNews input:checked').each(function() {
+                groupEdit.push($(this).val());
+            });
+            
+            /*$(':checkbox:checked').each(function(i) {
                 groupEdit[i] = $(this).val();
-            });            
+            });*/
+            
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
@@ -1215,7 +1235,7 @@ app.adminNews = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
@@ -1223,12 +1243,13 @@ app.adminNews = (function () {
                                                                                //apps.hideLoading();
                                                                                //console.log(e);
                                                                                
-                                                                               console.log(JSON.stringify(e));                                                                           
+                                                                               //console.log(JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                $("#sendEditNewsLoader").hide();
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                                   window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                                }else {
-                                                                                   app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                   app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                                }               
                                                                            }               
           
@@ -1241,12 +1262,23 @@ app.adminNews = (function () {
                             if (addGroupData.status[0].Msg==='News updated successfully') {         
                                 app.mobileApp.navigate("#adminOrgNewsList");
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('News Updated Successfully');  
+                                    window.plugins.toast.showLongBottom(app.NEWS_UPDATED_MSG);  
                                 }else {
-                                    app.showAlert("News Updated Successfully", "Notification");  
+                                    app.showAlert(app.NEWS_UPDATED_MSG, "Notification");  
                                 }
                                 $("#sendEditNewsLoader").hide();
-                            }else {
+                            }else if (addGroupData.status[0].Msg==="Session Expired") {
+                                app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                app.LogoutFromAdmin(); 
+                            }else if (addGroupData.status[0].Msg==="You don't have access") {
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }
+                     
+                                goToNewsListPage();
+                            } else {
                                 $("#sendEditNewsLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                             }
@@ -1265,9 +1297,9 @@ app.adminNews = (function () {
             $("#sendEditNewsLoader").hide();
 
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('News Updated Successfully');  
+                    window.plugins.toast.showLongBottom(app.NEWS_UPDATED_MSG);  
                 }else {
-                    app.showAlert('News Updated Successfully' , 'Notification');  
+                    app.showAlert(app.NEWS_UPDATED_MSG , 'Notification');  
                 }
                         
             app.mobileApp.navigate("#adminOrgNewsList");
@@ -1513,10 +1545,6 @@ app.adminNews = (function () {
             imageAttached.src = '';
             $("#attachedImgEditNews").hide();
             
-            //console.log(imageURI);            
-            // Uncomment to view the image file URI
-            // console.log(imageURI);
-            // Get image handle
             var largeImage = document.getElementById('attachedVidNewsEdit');
             largeImage.style.display = 'block';
             largeImage.src = 'styles/images/videoPlayIcon.png';
@@ -1529,8 +1557,6 @@ app.adminNews = (function () {
         
         function onFailEdit(message) {
             console.log('Failed because: ' + message);
-            //$("#removeEditNewsAttachment").hide(); 
-            //$("#attachedImgEditNews").hide();
         }
          
         var removeImageEdit = function() {

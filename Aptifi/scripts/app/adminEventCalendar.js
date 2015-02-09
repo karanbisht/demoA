@@ -1,14 +1,21 @@
 var app = app || {};
 
 app.adminEventCalender = (function () {
+     'use strict';
     var adminCalendarEventModel = (function () {
         var organisationID;
-        var account_Id;
+        //var account_Id;
         var eventDataToSend;
         var upload_type;
         var groupAllEvent = [];
         var tasks = [];
         var groupDataShow = [];
+        var pb;
+        var disabledDaysBefore=[];
+        var ft;
+        var EditGroupArrayMember = [];
+        var adminAllGroupArray = [];
+        var customerGroupArray = [];
         
         var init = function() {
             
@@ -20,6 +27,7 @@ app.adminEventCalender = (function () {
             $("#attachedImgEvent").hide();
             $("#attachedVidEvent").hide();
             
+            pb.value(0);
             eventDataToSend = '';
             upload_type = '';
 
@@ -29,7 +37,7 @@ app.adminEventCalender = (function () {
             multipleEventArray = [];
 
             organisationID = localStorage.getItem("orgSelectAdmin");
-            account_Id = localStorage.getItem("ACCOUNT_ID");
+            //account_Id = localStorage.getItem("ACCOUNT_ID");
              
             document.getElementById("admincalendar").innerHTML = "";
 
@@ -46,17 +54,17 @@ app.adminEventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     $("#adminCalProcess").hide();
-
+                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Notification');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Notification');  
                                                                     }           
                                                                 }               
                                                             });  
@@ -71,13 +79,13 @@ app.adminEventCalender = (function () {
                         groupAllEvent = [];
                         showEventInCalendar();
                     }else if (loginData.status[0].Msg==='Session Expired') {
-                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin();                         
                     }else if (loginData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom("You don't have access");  
+                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                         }else {
-                            app.showAlert("You don't have access" , 'Offline');  
+                            app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
                         goToEventListPage();
                     }else if (loginData.status[0].Msg==='Success') {
@@ -199,15 +207,10 @@ app.adminEventCalender = (function () {
 
             $("#eventDate").html(date2);
 
-            //console.log(groupAllEvent);
              
             var checkGotevent = 0;
             
             for (var i = 0;i < groupAllEvent.length;i++) {
-                //date=date.toString();
-                //groupAllEvent[i].event_date=groupAllEvent[i].event_date.toString();
-                //console.log(date);
-                //console.log(groupAllEvent[i].event_date);
                 var dateFmLive = groupAllEvent[i].event_date;
                 
                 var values = dateFmLive.split('/');
@@ -340,7 +343,9 @@ app.adminEventCalender = (function () {
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
             
-                       
+
+            $('#groupInAddEvent').find('input[type=checkbox]:checked').removeAttr('checked');
+
             var currentDate = app.getPresentDate();
             
             disabledDaysBefore = [
@@ -433,15 +438,14 @@ app.adminEventCalender = (function () {
                 },
                                                                          schema: {               
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];                       
                     }
                 },
                                                                          error: function (e) {
-                                                                             console.log(JSON.stringify(e));
+                                                                             //console.log(JSON.stringify(e));
                                                                              $("#sendEventLoader").hide();
-                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
-                         
+                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                              var showNotiTypes = [
                                                                                  { message: "Please Check Your Internet Connection"}
                                                                              ];
@@ -471,13 +475,13 @@ app.adminEventCalender = (function () {
 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                     goToEventListPage();
                 }else if (data[0]['status'][0].Msg==='Session Expired') {
-                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin();                         
                     }else {
                     var orgLength = data[0].status[0].groupData.length;
@@ -564,10 +568,11 @@ app.adminEventCalender = (function () {
                                                                    error: function (e) {
                                                                        //apps.hideLoading();
                                                                        //console.log(JSON.stringify(e));
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                        if (!app.checkSimulator()) {
-                                                                           window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                        }else {
-                                                                           app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                        }
                                                                    }               
           
@@ -576,26 +581,22 @@ app.adminEventCalender = (function () {
             dataSourceaddGroup.fetch(function() {
                 var loginDataView = dataSourceaddGroup.data();
                 $.each(loginDataView, function(i, addGroupData) {
-                    //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Deleted Successfully') {         
                         app.mobileApp.navigate("#adminEventList");
-                        //app.showAlert("Event Deleted Successfully", "Notification");
                         
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Event Deleted Successfully');   
+                            window.plugins.toast.showShortBottom(app.EVENT_DELETED_MSG);   
                         }else {
-                            app.showAlert("Event Deleted Successfully", "Notification");  
+                            app.showAlert(app.EVENT_DELETED_MSG ,"Notification");  
                         }
                     }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
                     
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                     
-                    
-                        
                 }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }
@@ -622,7 +623,7 @@ app.adminEventCalender = (function () {
             $("#backEventList").hide();
             $("#backCalender").show();
             }*/
-            
+                        
             $('body').append(hiddenDiv);
             txt.on('keyup', function () {
                 content = $(this).val();
@@ -633,7 +634,15 @@ app.adminEventCalender = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
-            $('#groupInEditEvent').find('input[type=checkbox]:checked').remove();
+             pb = $("#profileCompleteness").kendoProgressBar({
+                                                                type: "chunk",
+                                                                chunkCount: 100,
+                                                                min: 0,
+                                                                max: 100,
+                                                                value: 0
+                                                            }).data("kendoProgressBar");
+            
+            //$('#groupInEditEvent').find('input[type=checkbox]:checked').remove();
 
             $("#sendEditEventLoader").show();
             $("#wrapp_content").hide();
@@ -658,21 +667,23 @@ app.adminEventCalender = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            $("#sendEditEventLoader").hide(); 
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(JSON.stringify(e));
                                                                            
                                                                            $("#adminEditCustomer").hide();            
                                                                            $("#editOrgMemberContent").show();
                                                                            
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                           
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                            }else {
-                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                               app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                            }
                                                                        }               
                                                                    });  
@@ -685,15 +696,6 @@ app.adminEventCalender = (function () {
                         EditGroupArrayMember = [];
                         adminAllGroupArray = [];
                         customerGroupArray = [];
-                        
-                        /*eventNameEdit = e.data.event_name;
-                        eventDescEdit = e.data.event_desc;
-                        eventDateEdit = e.data.event_date;
-                        eventTimeEdit = e.data.event_time;
-                        eventImageEdit = e.data.event_image;
-                        eventUploadType = e.data.upload_type;
-                        eventPid = e.data.id;
-                        */                        
                         
                         eventNameEdit = addGroupData.status[0].eventDetail[0].event_name;
                         eventDescEdit = addGroupData.status[0].eventDetail[0].event_desc;
@@ -849,13 +851,13 @@ app.adminEventCalender = (function () {
                                                       });
                         }
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else if (addGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom("You don't have access");  
+                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                         }else {
-                            app.showAlert("You don't have access" , 'Offline');  
+                            app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -886,11 +888,18 @@ app.adminEventCalender = (function () {
             var event_Date = $("#adddatePickerEvent").val();
             var event_Time = $("#adddateTimePickerEvent").val();
             
-            var group = [];		    
-            $(':checkbox:checked').each(function(i) {
+            var group = [];
+            
+            $('#groupInAddEvent input:checked').each(function() {
+                group.push($(this).val());
+            });
+            
+            /*$(':checkbox:checked').each(function(i) {
                 group[i] = $(this).val();
-            });            
+            });*/            
+            
             group = String(group);
+            console.log(group);
             
             if (event_name === "Enter New Event Name" || event_name === "") {
                 app.showAlert("Please enter Event Name.", "Validation Error");
@@ -899,7 +908,6 @@ app.adminEventCalender = (function () {
             }else if (group.length===0 || group.length==='0') {
                 app.showAlert("Please select Group.", "Validation Error");    
             }else {
-                $("#sendEventLoader").show();
                 
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
@@ -933,6 +941,7 @@ app.adminEventCalender = (function () {
 
                 if (eventDataToSend!==undefined && eventDataToSend!=="undefined" && eventDataToSend!=='') { 
                     //alert("1");
+                      pb.value(0);
                     if ((eventDataToSend.substring(0, 21)==="content://com.android") && (upload_type==="image")) {
                         photo_split = eventDataToSend.split("%3A");
                         eventDataToSend = "content://media/external/images/media/" + photo_split[1];
@@ -952,7 +961,9 @@ app.adminEventCalender = (function () {
                         mimeTypeVal = "video/mpeg"
                     }
 
-                    var filename = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);                            
+                    
+                    var filename = eventDataToSend.substr(eventDataToSend.lastIndexOf('/') + 1);                      
+                    $("#event-upload-file").data("kendoMobileModalView").open();
                     
                     if (upload_type==="image" && vidFmAndroid===1) {
                         if (filename.indexOf('.') === -1) {
@@ -984,12 +995,24 @@ app.adminEventCalender = (function () {
                     //console.log(options.fileName);
 
                     options.mimeType = mimeTypeVal;
+                    options.chunkedMode = true;
                     options.params = params;
                     options.headers = {
                         Connection: "close"
                     }
-                    options.chunkedMode = true;
-                    var ft = new FileTransfer();
+
+                    ft = new FileTransfer();
+
+                    
+                    ft.onprogress = function(progressEvent) {
+                        if (progressEvent.lengthComputable) {
+                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+                            pb.value(perc);                            
+                        }else {
+                            pb.value('');                            
+                        }
+                    };
+                    
                  
                     ft.upload(eventDataToSend, app.serverUrl() + 'event/Add', win, fail, options , true);
                 }else {
@@ -997,6 +1020,9 @@ app.adminEventCalender = (function () {
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval,"cmbGroup":group}
             
                     console.log(jsonDataSaveGroup);
+                    
+                                    $("#sendEventLoader").show();
+
                     
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
@@ -1009,18 +1035,21 @@ app.adminEventCalender = (function () {
                         },
                                                                            schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(JSON.stringify(e));
                                                                                $("#sendEventLoader").hide();
                                                                                
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                               
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                               }else {                                                                                   app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                                   window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                               }else {  
+                                                                                   app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                                }
                                                                            }               
           
@@ -1034,21 +1063,21 @@ app.adminEventCalender = (function () {
                                 app.mobileApp.navigate("#adminEventList");
                                 
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('Event Added Successfully');  
+                                    window.plugins.toast.showLongBottom(app.EVENT_ADDED_MSG);  
                                 }else {
-                                    app.showAlert('Event Added Successfully", "Notification');  
+                                    app.showAlert(app.EVENT_ADDED_MSG, "Notification");  
                                 }    
                                 
                                 $("#sendEventLoader").hide();
                             }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
                     
-                    if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
-                    }else {
-                        app.showAlert("You don't have access" , 'Offline');  
-                    }
+                             if (!app.checkSimulator()) {
+                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                             }else {
+                                app.showAlert(app.NO_ACCESS , 'Offline');  
+                             }
                     
-                            goToEventListPage();
+                             goToEventListPage();
                             }else {
                                 $("#sendEventLoader").hide();
                                 app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -1058,17 +1087,29 @@ app.adminEventCalender = (function () {
                 }   
             }      
         }
+                
+         
+        var transferFileAbort = function() {           
+            ft.abort(); 
+            $("#event-upload-file").data("kendoMobileModalView").close();
+            pb.value(0); 
+        }
         
         function win(r) {
+            
+            
             console.log("Code = " + r.responseCode);
             console.log("Response = " + r.response);
             console.log("Sent = " + r.bytesSent);
           
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Event Added Successfully');  
+                    window.plugins.toast.showLongBottom(app.EVENT_ADDED_MSG);  
                 }else {
-                    app.showAlert('Event Added Successfully' , 'Notification');  
+                    app.showAlert(app.EVENT_ADDED_MSG , 'Notification');  
                 }
+            
+            pb.value(0);
+            $("#event-upload-file").data("kendoMobileModalView").close();
               
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';            
@@ -1088,21 +1129,26 @@ app.adminEventCalender = (function () {
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
             console.log("upload error target " + error.target);
+            
+            
+
+            pb.value(0);
+            $("#event-upload-file").data("kendoMobileModalView").close();
+
              
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else{                
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Event Not Added/Updated Successfully');  
+                    window.plugins.toast.showLongBottom(app.NEWS_EVENT_FAIL);  
                 }else {
-                    app.showAlert('Event Not Added/Updated Successfully' , 'Notification');  
+                    app.showAlert(app.NEWS_EVENT_FAIL , 'Notification');  
                 }
             }
-
             
             $("#sendEventLoader").hide();
             $("#sendEditEventLoader").show();
@@ -1115,9 +1161,15 @@ app.adminEventCalender = (function () {
             var event_Time = $("#editdateTimePicker").val();
             
             var groupEdit = [];		    
-            $(':checkbox:checked').each(function(i) {
+            /*$(':checkbox:checked').each(function(i) {
                 groupEdit[i] = $(this).val();
-            });            
+            });*/                       
+
+            $('#groupInEditEvent input:checked').each(function() {
+                groupEdit.push($(this).val());
+            });
+
+                         
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
@@ -1128,7 +1180,6 @@ app.adminEventCalender = (function () {
             }else if (groupEdit.length===0 || groupEdit.length==='0') {
                 app.showAlert("Please select Group.", "Validation Error");    
             }else {    
-                $("#sendEditEventLoader").show();
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
                 var day = values[1];            
@@ -1184,6 +1235,11 @@ app.adminEventCalender = (function () {
                    
                     var path = eventDataToSend;
                     //console.log(path);
+                                pb.value(0);
+        
+
+                    $("#event-upload-file").data("kendoMobileModalView").open();
+
                     
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
 
@@ -1212,15 +1268,28 @@ app.adminEventCalender = (function () {
                     }
                     options.chunkedMode = true;
                     
-                    var ft = new FileTransfer();
+                    ft = new FileTransfer();
                     //console.log(tasks);
                  
+
+                    ft.onprogress = function(progressEvent) {
+                        if (progressEvent.lengthComputable) {
+                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+                            pb.value(perc);                            
+                        }else {
+                            pb.value('');                            
+                        }
+                    };
+
                     //console.log("----------------------------------------------check-----------");
                     //dataToSend = '//C:/Users/Gaurav/Desktop/R_work/keyy.jpg';
                     ft.upload(eventDataToSend, app.serverUrl() + 'event/edit', winEdit, fail, options , true);
                 }else {
                     //alert(eventDataToSend);
-                    //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);
+                    //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + event_Time + "pid=" + eventPid + "action=" + actionval);                    
+
+                    $("#sendEditEventLoader").show();
+                    
                     var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval,"cmbGroup":groupEdit}
             
                     var dataSourceaddGroup = new kendo.data.DataSource({
@@ -1240,14 +1309,18 @@ app.adminEventCalender = (function () {
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(e);
+                                                                               //console.log(JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                
                                                                                $("#sendEditEventLoader").hide();
 
-                                                                               navigator.notification.alert("Please check your internet connection.",
-                                                                                                            function () {
-                                                                                                            }, "Notification", 'OK');
+                                                                               if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                              }else {
+                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                } 
+
                                                                            }               
           
                                                                        });  
@@ -1267,16 +1340,16 @@ app.adminEventCalender = (function () {
                                 $("#sendEditEventLoader").hide();
 
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showShortBottom('Event updated successfully');   
+                                    window.plugins.toast.showShortBottom(app.EVENT_UPDATED_MSG);   
                                 }else {
-                                    app.showAlert("Event updated successfully", "Notification"); 
+                                    app.showAlert(app.EVENT_UPDATED_MSG, "Notification"); 
                                 }
                             }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
                     
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                     
                     goToCalendarPageDetail();
@@ -1298,9 +1371,9 @@ app.adminEventCalender = (function () {
             $("#sendEditEventLoader").hide();
 
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Event Updated Successfully');  
+                    window.plugins.toast.showLongBottom(app.EVENT_UPDATED_MSG);  
                 }else {
-                    app.showAlert('Event Updated Successfully' , 'Notification');  
+                    app.showAlert(app.EVENT_UPDATED_MSG , 'Notification');  
                 }
          
             //if (pageToGo===1) {
@@ -1351,8 +1424,16 @@ app.adminEventCalender = (function () {
 
             organisationID = localStorage.getItem("orgSelectAdmin");
             
+                        pb = $("#profileCompleteness").kendoProgressBar({
+                                                                type: "chunk",
+                                                                chunkCount: 100,
+                                                                min: 0,
+                                                                max: 100,
+                                                                value: 0
+                                                            }).data("kendoProgressBar");
+            
             //alert(organisationID);
-            account_Id = localStorage.getItem("ACCOUNT_ID");
+            //account_Id = localStorage.getItem("ACCOUNT_ID");
              
             var jsonDataLogin = {"org_id":organisationID}
 
@@ -1367,25 +1448,24 @@ app.adminEventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e); 
-                                                                                                                                                console.log(JSON.stringify(e));
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(e); 
+                                                                    //console.log(JSON.stringify(e));
                                                                     
                                                                     $("#adminEventListLoader").hide();
                                                                     $("#eventCalendarAllList").show();
 
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                     }   
                                                                     
-                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Event List in Admin Panel.');
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                          
                                                                     var showNotiTypes = [
                                                                         { message: "Please Check Your Internet Connection"}
@@ -1425,15 +1505,15 @@ app.adminEventCalender = (function () {
                                            org_id: ''
                                        });
                 }else if (data[0]['status'][0].Msg==='Session Expired') {
-                            app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin();                         
                     
                 }else if (data[0]['status'][0].Msg==="You don't have access") {                                           
                 
                     if(!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }                       
                         goToManageOrgPage();
                 }else if (data[0]['status'][0].Msg==='Success') {
@@ -1551,17 +1631,9 @@ app.adminEventCalender = (function () {
             
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();            
-            //console.log(imageURI);            
-            // Uncomment to view the image file URI
-            // console.log(imageURI);
-            // Get image handle
             
             var videoAttached = document.getElementById('attachedVidEvent');
-            // Unhide image elements
-            //
             videoAttached.style.display = 'block';
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
             
             videoAttached.src = 'styles/images/videoPlayIcon.png';
             eventDataToSend = videoURI;    
@@ -1582,15 +1654,9 @@ app.adminEventCalender = (function () {
             $("#removeEventAttachment").hide(); 
             $("#attachedVidEvent").hide();
             
-            // Uncomment to view the image file URI
-            // console.log(imageURI);
-            // Get image handle
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.style.display = 'block';
                
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
             largeImage.src = imageURI;
                
             eventDataToSend = imageURI;              
@@ -1749,6 +1815,7 @@ app.adminEventCalender = (function () {
             addNewEventFunction:addNewEventFunction,
             addEventshow:addEventshow,
             eventDetailShow:eventDetailShow,
+            transferFileAbort:transferFileAbort,
             goToCalendarPageDetail:goToCalendarPageDetail,
             saveEditEventData:saveEditEventData,
             upcommingEventList:upcommingEventList,

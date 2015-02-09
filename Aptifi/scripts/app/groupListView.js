@@ -77,19 +77,21 @@ app.GroupList = (function () {
                  
                                                                             schema: {
                     data: function(data) {
-                        console.log(data);                                                                          
+                        //console.log(data);                                                                          
                         return [data]; 
                     }                                                            
                 },
                  
                                                                             error: function (e) {
                                                                                 $("#admin-groupList-loader").hide();
-                                                                                console.log(JSON.stringify(e));
+                                                                                //console.log(JSON.stringify(e));
+                                                                                
+                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                    
                                                                                 if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                 }else {
-                                                                                    app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                    app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                 }
                                                                                 getGroupDataDB();
                                                                             }	        
@@ -117,16 +119,16 @@ app.GroupList = (function () {
                                     $("#tabDeleteGroup").hide();
                                     showLiveData();
                                 }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                                 
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
                                     
                                     if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom("You don't have access");  
+                                             window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                     }else {
-                                             app.showAlert("You don't have access" , 'Offline');  
+                                             app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }
                                                              
                                     backToOrgDetail();
@@ -231,7 +233,7 @@ app.GroupList = (function () {
             
         var showLiveData = function() {
             //console.log('Hello');                 
-            console.log(JSON.stringify(groupDataShow));
+            //console.log(JSON.stringify(groupDataShow));
                 
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
@@ -330,11 +332,13 @@ app.GroupList = (function () {
                                                                    error: function (e) {
                                                                       $("#addGroupLoader").hide();
                                                                        console.log(e);
+                                                                       
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                       
                                                                        if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                        }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                        }
                                                                    }               
           
@@ -357,14 +361,14 @@ app.GroupList = (function () {
                         //app.showAlert("Group Added Successfully", "Notification");
                     }else if (addGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom("You don't have access");  
+                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                         }else {
-                            app.showAlert("You don't have access" , 'Offline');  
+                            app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
                      
                         goToGroupList();
                     }else if(addGroupData.status[0].Msg==="Session Expired"){
-                                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                                 
@@ -418,10 +422,12 @@ app.GroupList = (function () {
                                                                            $("#deleteGroupLoader").hide();
                                                                            console.log(e);
                                                                            
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                           
                                                                            if (!app.checkSimulator()) {
-                                                                            window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                            }else {
-                                                                            app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                            }
                                                                        }                         
                                                                    });  
@@ -442,16 +448,16 @@ app.GroupList = (function () {
                         //app.showAlert("Group Deleted Successfully","Notification");
                     }else if (deleteGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom("You don't have access");  
+                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                         }else {
-                            app.showAlert("You don't have access" , 'Offline');  
+                            app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
                                              
                         goToGroupList();
   
                     }else if(deleteGroupData.status[0].Msg==="Session Expired"){
   
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');                        
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');                        
                         app.LogoutFromAdmin(); 
                                                                 
                     }else {

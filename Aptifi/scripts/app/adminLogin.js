@@ -11,7 +11,6 @@ app.adminLogin = (function () {
         var usernameMob;
         var password;
         var account_Id;
-        var varifiCode;
                
         var init = function () {         
             app.userPosition = false;
@@ -72,20 +71,21 @@ app.adminLogin = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            console.log(JSON.stringify(e));
+                                                                            //console.log(JSON.stringify(e));
                                                                             $("#progress1").hide();
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
                                                                             if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                             }else {
-                                                                                app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                             }                                                                         
                                                                         }               
                                                                     });  
@@ -130,13 +130,13 @@ app.adminLogin = (function () {
                         //return [data];
                        
                         $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);   
+                            console.log(groupValue);   
                             //allData++;
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {    
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('No Organization to Manage , Login not allow.');  
+                                    window.plugins.toast.showLongBottom('No organization to manage, Login not allowed.');  
                                 }else {
-                                    app.showAlert('No Organization to Manage , Login not allow.' , 'Notification');  
+                                    app.showAlert('No organization to manage, Login not allowed.' , 'Notification');  
                                 }
  
                                 adminOrgInfo=[];
@@ -177,14 +177,15 @@ app.adminLogin = (function () {
                 },
                                                                            error: function (e) {
                                                                                $("#progress1").hide();  
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                                document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
     
                                                                                //console.log(e);
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                }else {
-                                                                                   app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                }
                                                                            }	        
                                                                        });
@@ -230,11 +231,12 @@ app.adminLogin = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                     }               
                                                                 }               
                                                             });  
@@ -346,13 +348,14 @@ app.adminLogin = (function () {
                                                                                       //apps.hideLoading();
                                                                                       console.log(e);
                                                                                       $("#progress1").hide();  
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                                       document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
                                                                                       if (!app.checkSimulator()) {
-                                                                                          window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                          window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                       }else {
-                                                                                          app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                          app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                       }
                                                                                   }	        
                                                                               });         
@@ -456,13 +459,14 @@ app.adminLogin = (function () {
                                                                                     //apps.hideLoading();
                    
                                                                                     $("#progress1").hide();
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                                     document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
                                                                                     if (!app.checkSimulator()) {
-                                                                                        window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                     }else {
-                                                                                        app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                        app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                     }
                                                                                 }	        
                                                                             });         
@@ -525,69 +529,140 @@ app.adminLogin = (function () {
         };
         
         var forgetPass = function(){
-            app.mobileApp.navigate('views/forgetPasswordView.html');
+                        
+            $("#progress1").show();
+            var userMobileNo = localStorage.getItem("username");
+            //alert(userMobileNo);
+
+            var jsonDataOTP = {"username":userMobileNo}       
+
+            
+            var adminOTP = new kendo.data.DataSource({
+                                                                                  transport: {
+                                                                                  read: {
+                                                                                                 url: app.serverUrl() + "organisation/generateOTP",
+                                                                                                 type:"POST",
+                                                                                                 dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                 data: jsonDataOTP           
+                                                                                  }
+                    },
+                                                                                     schema: {
+                        data: function(data) {
+                            console.log(data);
+                            return [data];                       
+                        }                       
+                    },
+                                           
+                                                                                error: function (e) {
+                                                                                         //console.log(JSON.stringify(e));
+                                                                                         
+                                                                                         if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                         }else {
+                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
+                                                                                         }
+                                                                                                     $("#progress1").hide();
+
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                    
+                                                                                     }	        
+                                                                                 });        
+                                
+ 
+            adminOTP.fetch(function() {
+                        var data = this.data();
+            
+                                    if (data[0]['status'][0].Msg ==='OTP SENT') {     
+                                        if (!app.checkSimulator()) {
+                                                  window.plugins.toast.showShortBottom(app.FORGET_PASSWORD_CODE_SEND);
+                                        }else {
+                                                 app.showAlert(app.FORGET_PASSWORD_CODE_SEND, "Notification");
+                                        }
+                                        app.mobileApp.navigate('views/forgetPasswordView.html');
+                                    }else{
+                                       app.showAlert(data[0]['status'][0].Msg,"Notification");
+                                       app.mobileApp.navigate('views/organisationLogin.html');                                
+                
+                                    }
+
+                $("#progress1").hide();
+
+            });
+
+            
         }
         
-        var forgetPassShow = function(){
-            
+        var forgetPassShow = function(){            
 
-           $("#forgetMobile").val('');            
-
-
-            var userMobileNo = localStorage.getItem("username");
-
-                varifiCode = genRand(0, 9);
-                console.log(varifiCode);
-                varifiCode = varifiCode.toString();
-              
-                var varifiCodeMsg = "Your Zaffio forget Password code -: " + varifiCode;
-          
-                //console.log("-----Verification code Login--" + varifiCode);
-
-
-                var dataSourceForgetPassword = new kendo.data.DataSource({
-                                                    transport: {
-                                                                read: {
-                                                                                 //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"                   
-                                                                                  url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + userMobileNo + "&msg=" + varifiCodeMsg + "&rout=transactional&from=ZAFFIO"
-                                                                             }
-                                                                       },
-                                                                     schema: {
-                            
-                                                                data: function(data) {                                                                                                                                                             
-                                                                    return [data];
-                                                                }                                                                
-                                                             },
-                                                                     error: function (e) {
-                                                                                                                                                                  
-                                                                        app.analyticsService.viewModel.trackException(e,'SMS Gateway , Unable to sent verification SMS at forget Password.');
-
-                                                                         if (!app.checkSimulator()) {
-                                                                             window.plugins.toast.showLongBottom('Forget Password Code not sent . Please click on Regenerate Code');  
-                                                                         }else {
-                                                                             app.showAlert('Forget Password Code not sent . Please click on Regenerate Code' , 'Forget Password');  
-                                                                         }
-                                                                     } 
-                                                                 });  
-	            
-            /*dataSourceForgetPassword.fetch(function() {
-                var forgetPasswordDataView = dataSourceForgetPassword.data();
-                alert('enterval');
-            });*/                   
+           $("#userOTP").val('');            
+           
         }
         
                 
         var changerPassword = function(){
            
-            var code =  $("#forgetMobile").val();            
-            //alert(code+"||"+varifiCode);
+                                      
+            var otp_input =  $("#userOTP").val();
+            var jsonDataOTP = {"otp":otp_input}       
             
-            if (code === "Code" || code === "") {
-                app.showAlert("Please enter your Code to change password.", "");
-            } else if (varifiCode!==code){
-                app.showAlert("Please enter correct Code to change password.", "Validation Error");    
-            }else{
-                app.mobileApp.navigate('#genrateNewPass');                            
+            if (otp_input === "Code" || otp_input === "") {
+                app.showAlert("Please enter your Code to change password.", "Validation Error");
+            }else{            
+                    
+                          $("#forgetPassLoader").show();
+  
+              var sendOPT = new kendo.data.DataSource({
+                                                                                  transport: {
+                                                                                  read: {
+                                                                                                 url: app.serverUrl() + "organisation/verifyOTP",
+                                                                                                 type:"POST",
+                                                                                                 dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                 data: jsonDataOTP           
+                                                                                  }
+                    },
+                                                                                     schema: {
+                        data: function(data) {
+                            //console.log(data);
+                            return [data];                       
+                        }                       
+                    },
+                                           
+                                                                                error: function (e) {
+                                                                                         //console.log(JSON.stringify(e));
+
+                                                                                    
+                                                                                    
+                                                                                         $("#forgetPassLoader").hide();
+
+                                                                                         if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                         }else {
+                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
+                                                                                         }
+                                                                                         
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                    
+                                                                                     }	        
+                                                                                 });        
+                                
+ 
+              sendOPT.fetch(function() {
+                        var data = this.data();
+            
+                                    if (data[0]['status'][0].Msg ==='SUCCESS') {     
+
+                                        app.mobileApp.navigate('#genrateNewPass');                            
+
+                                    }else{
+                                       app.showAlert(data[0]['status'][0].Msg,"Notification");
+                                        
+                                    }
+
+                  $("#forgetPassLoader").hide();
+                  
+              });
+
+
             }            
         }
         
@@ -609,15 +684,80 @@ app.adminLogin = (function () {
             var newPass =  $("#newMobile").val();
             var reNewPass =  $("#renewMobile").val();
             
-            
             if (newPass === "New Password" || newPass === "") {
                 app.showAlert("Please enter new password.", "");
             }else if (reNewPass === "Confirm password" || reNewPass === "") {
                 app.showAlert("Please enter confirm password.", "");
             } else if (newPass!==reNewPass){
-                app.showAlert("Your new password and confirm password do not match.", "Validation Error");    
+                app.showAlert("Passwords do not match", "Validation Error");    
             }else{
-                                            
+                
+                
+
+                $("#changePassLoader").show();
+                //console.log(newPass);
+                
+                var jsonNewPass = {"new_password":newPass}       
+                
+                var changePassword = new kendo.data.DataSource({
+                                                                                  transport: {
+                                                                                  read: {
+                                                                                                 url: app.serverUrl() + "organisation/setPassword",
+                                                                                                 type:"POST",
+                                                                                                 dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                 data: jsonNewPass           
+                                                                                  }
+                    },
+                                                                                     schema: {
+                        data: function(data) {
+                            //console.log(data);
+                            return [data];                       
+                        }                       
+                    },
+                                           
+                                                                                error: function (e) {
+                                                                                         //console.log(JSON.stringify(e));
+
+                                                                                         $("#changePassLoader").hide();
+
+                                                                                         if (!app.checkSimulator()) {
+                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                         }else {
+                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
+                                                                                         }
+                                                                                         
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                    
+                                                                                     }	        
+                                                                                 });        
+                                
+ 
+              changePassword.fetch(function(){
+                        var data = this.data();
+            
+                                    if (data[0]['status'][0].Msg ==='Success') {     
+                                        
+
+                                        if (!app.checkSimulator()) {
+                                                  window.plugins.toast.showShortBottom('Password changed successfully');   
+                                        }else {
+                                                 app.showAlert("Password changed successfully", "Notification");  
+                                        }
+                                        
+                                        app.mobileApp.navigate('views/organisationLogin.html');                                
+                                        
+                                    }else{
+                                        
+                                        app.showAlert(data[0]['status'][0].Msg,"Notification");
+                
+                                        app.mobileApp.navigate('views/organisationLogin.html');                                
+                
+                                    }
+                  
+                  $("#changePassLoader").hide();
+
+              });
+                
             }            
   
         }

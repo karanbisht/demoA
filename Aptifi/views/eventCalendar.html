@@ -1,4 +1,4 @@
-<div data-role="view" id="eventCalendar" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.eventCalender" data-show ="app.eventCalender.show">
+<div data-role="view" id="eventCalendar" data-id="innerActivity" data-layout="default" data-reload="true" class="activities-view-info"  data-model="app.eventCalender" data-show ="app.eventCalender.show">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span>Events</span>
@@ -13,30 +13,8 @@
     </div>
     
 
-    <!--    
-         <br/>    
-         <br/>
-         <div id="calendarContainerDiv" style="width:100%; text-align: center;">
-         <div id="calendar"></div>        
-    </div>-->
-
     <span id="eventCalendarFirstAllList" data-style="inset" data-role="listview"  data-bind="source: activities"></span>
         
-    <!--<div id="eventDetailDiv" class="calendarEvent-Click" data-role="touch" data-bind="events: { tap: eventMoreDetailClick }">
-    
-          <p style="color:rgb(122,184,77); text-align:left;">Data: <span id="eventDate" style="color:rgb(147,147,147)"></span></p>
-        
-          <li style="color:rgb(122,184,77);text-align:left;list-style-type: none;margin-bottom:10px;margin-left:15px;">Event</li>
-  	    <li id="eventTitle" style="list-style-type: none;"></li>        
-          <span style="color:rgb(122,184,77);text-align:center;margin-left:15px;">Click for More Details</span>
-    </div>-->
-    
-    
-        <!--<div data-role="footer">
-       	 <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
-                <a id="" data-icon="more" data-role="button" data-bind="click: upcommingEventList" >Event List</a>
-            </div>
-        </div>-->          
 </div>
 
 
@@ -53,16 +31,34 @@
     <span id="eventCalendarList" data-style="inset" data-role="listview" data-template="calendarTemplate"   data-bind="source: activities"></span>       
 </div>
 
+
 		<script type="text/x-kendo-template" id="calendarTemplate">
-            <!--data-bind="events: { tap: activitySelected }"-->            
             <div data-role="touch" >
        		<div>       
                   #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
                         <img id="eventBannwe" style="max-height:150px;width:100%" src=${event_image}>
+                                 <br/>
+                     
+                     <div id="img_Div_${id}" style="display:none">
+                            <div class="show-native-img"></div>
+                            <br/><br/>
+                     </div>
+                     <a data-role="button" id="imgToDownload_${id}"  data-align="right" data-click="app.Activities.imageDownlaodClick"  style="float:right" data-imgPath=${event_image} data-notiid=${id}>View</a> 
+
                   #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
-                        <video  width="300" height="300" controls>
+                        <!--<video  width="300" height="300" controls>
                              <source src=${event_image} >
-                        </video>
+                        </video>-->
+                      
+                       <div class="event-vid-show" id=""></div>        
+                       <br/>
+                            
+                        <div id="video_Div_${id}" style="display:none">
+                            <div class="show-native-img"></div>
+                            <br/><br/>
+                        </div>
+                        <a data-role="button" id="videoToDownload_${id}" data-align="right" style="float:right;" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${event_image} data-notiid=${id}>View</a>
+
                   #}else{#
                     <img id="eventBannwe" style="max-height:150px;width:100%" src="styles/images/event_banner.jpg">
                   #}#
@@ -86,45 +82,23 @@
 
 
 
-
-<!--<div data-role="view" id="CustomerEventList" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.eventCalender" data-show ="app.eventCalender.eventListShow">
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
-              <div data-role="navbar">     
-                 <span>All Event</span>
-                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.eventCalender.gobackToCalendar"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
-              </div>                                          
-    </div>   
-    <ul id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarEventListTemplate"   data-bind="source: activities"></ul>    
-</div>-->
-
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">
      
              #if(id!=='0' && id!==0){# 
              <div class="cf" data-role="touch"  data-bind="events: { tap: eventSelected }">                            
               <div class="calendarEvent-content">
                
-               #if(event_date!==preDateVal){#                  
-                 <div>
-                    <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>
-                  <span>
-                    <span id="activityTemplateDate" class="calDayClass">${event_above_day}</span>
-                    <span id="activityTemplateDate" class="calMonthClass">${event_below_day}</span>
-                  </span>
-                 </div>
-                <br/>
-       		#}#
-                   
                 <div class="calendarEvent-List" >                 
-                 #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
-                      <div class="user-avatar-event">
-                         <img src=${event_image} />      
-                      </div>                                      
-                 #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
-                         <div class="event-vid-show"></div>                    
-                 #}else {#
-                         <div class="event-img-show"></div>                    
-                 #}# 
+                   
+                        <div class="event-img-show">
+                            <div class="inner-event-img-show"> 
+                                 <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>                                 
+                                <div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>
+                                <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
+                 <br/>
+                            </div>
+                         </div>                    
+ 
                                                          
                    #if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#

@@ -9,16 +9,15 @@ app.registration = (function () {
         var $regFirstName;
         var $regLastName;
         var $regEmail;
-        var backToRegPage = false;
         var username;  
         var comingFrom;
         
         var account_Id;
         var userType = [];
         var UserProfileInformation;
-        var UserOrgInformation;
+        //var UserOrgInformation;
         var varifiCode;
-        var regClickButton;
+        //var regClickButton;
         var JoinedOrganisationYN = 1;
         
         var regInit = function () {
@@ -47,8 +46,7 @@ app.registration = (function () {
 
         var registerR = function() {
             app.userPosition = false;   
-            regClickButton = 0;   
-            backToRegPage = true;   
+            //regClickButton = 0;   
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
             var email = $regEmail.val();
@@ -57,10 +55,10 @@ app.registration = (function () {
                 app.showAlert("Please enter your First Name.", "Validation Error");
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", "Validation Error");
-            }else if (email === "Email" || email === "") {
+            /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");
             } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");
+                app.showAlert("Please enter a valid Email.", "Validation Error");*/
             } else {   
                 //app.mobileApp.navigate('views/selectOrganisationView.html');                     
                 //console.log(fname + "||" + lname + "||" + email + "||" + username);
@@ -101,12 +99,12 @@ app.registration = (function () {
 
                                                                            //console.log(e);
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                               window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                            }else {
-                                                                               app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                            }
                                                                                                                                                      
-                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Error in Res.');
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                        }               
                                                                    });  
 	            
@@ -130,7 +128,7 @@ app.registration = (function () {
                             }
                          
                             //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';            
-                            var device_id = localStorage.getItem("deviceTokenID");
+                              var device_id = localStorage.getItem("deviceTokenID");
             
                             //app.mobileApp.pane.loader.hide();           
                             //console.log(username + "||" + device_id + "||" + device_type);
@@ -155,13 +153,18 @@ app.registration = (function () {
                                                                                 error: function (e) {
                                                                                     //apps.hideLoading();
                                                                                     console.log(e);
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                    
                                                                                     $("#progressRegister").hide();
                                                                                     app.mobileApp.pane.loader.hide();
-                                                                                    navigator.notification.alert("Please check your internet connection.",
-                                                                                                                 function () {
-                                                                                                                 }, "Notification", 'OK');
+
+                                                                                    if (!app.checkSimulator()) {
+                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                    }else {
+                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                    }
                                                                                 }               
-                                                                            });  
+                                                                             });  
 	            
                             dataSourceLogin.fetch(function() {
                                 var loginDataView = dataSourceLogin.data();
@@ -219,11 +222,11 @@ app.registration = (function () {
                                                                      error: function (e) {
                                                                          //apps.hideLoading();
                                                                          console.log(e);
-
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
-                                                                             window.plugins.toast.showLongBottom('Verification Code not send . Please click on Regenerate Code');  
+                                                                             window.plugins.toast.showLongBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
-                                                                             app.showAlert('Verification Code not send . Please click on Regenerate Code' , 'Verification Code');  
+                                                                             app.showAlert(app.VERIFICATION_CODE_NOT_SEND , 'Verification Code');  
                                                                          }           
                                                                      } 
                                                                  });  
@@ -233,7 +236,7 @@ app.registration = (function () {
                
                 //app.showAlert("The Verification Code will be sent to this number." , "Notification");
                 $("#validationRowR").show();
-                regClickButton = 1;
+                //regClickButton = 1;
             });          
         };
         
@@ -292,7 +295,7 @@ app.registration = (function () {
                     }
 
                     //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-                    var device_id = localStorage.getItem("deviceTokenID");
+                      var device_id = localStorage.getItem("deviceTokenID");
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
        
@@ -315,9 +318,12 @@ app.registration = (function () {
                                                                             //apps.hideLoading();
                                                                             console.log(e);
                                                                             app.mobileApp.pane.loader.hide();
-                                                                            navigator.notification.alert("Please check your internet connection.",
-                                                                                                         function () {
-                                                                                                         }, "Notification", 'OK');
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                    if (!app.checkSimulator()) {
+                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                                    }else {
+                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                    }
                                                                         }               
                                                                     });  
 	            
@@ -340,7 +346,7 @@ app.registration = (function () {
                                 } 
                           
                                 if (loginData.status[0].JoinedOrg.length!==0) {
-                                    UserOrgInformation = loginData.status[0].JoinedOrg;
+                                    //UserOrgInformation = loginData.status[0].JoinedOrg;
                                     //saveOrgInfo(UserOrgInformation);  
                                 }
                      
@@ -356,7 +362,7 @@ app.registration = (function () {
                         });
                     });
                 }else {
-                    app.showAlert("Please Enter Correct Verification Code", "Notification");    
+                    app.showAlert(ENTER_CORRECT_V_CODE, "Notification");    
                     $("#progressRandomCode").hide();
                 }
             }
@@ -480,7 +486,8 @@ app.registration = (function () {
                     },
                                                                                   error: function (e) {
                                                                                       //apps.hideLoading();
-                                                                                      console.log(e);            	                     
+                                                                                      console.log(e);   
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                   }	        
                                                                               });         
             
@@ -497,11 +504,7 @@ app.registration = (function () {
         };
                         
         function insertOrgNotiData(tx) {
-            //var query = "DELETE FROM ORG_NOTIFICATION";
-            //app.deleteQuery(tx, query);         
-            var dataLength = orgNotiDataVal.length;
-            //alert('LiveDataVal'+dataLength);
-         
+            var dataLength = orgNotiDataVal.length; 
             var orgData;
             var orgLastMsg;
           
@@ -533,12 +536,9 @@ app.registration = (function () {
         }
         
         var goToHomePage = function() {
-            app.mobileApp.pane.loader.hide();
- 
+            app.mobileApp.pane.loader.hide(); 
             localStorage.setItem("ACCOUNT_ID", account_Id);
-
-            app.userPosition = false;	
-           
+            app.userPosition = false;	           
             app.mobileApp.navigate('#organisationNotiList');
             //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Login');
         }

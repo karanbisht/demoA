@@ -29,19 +29,19 @@ app.orgListView = (function () {
                  
                                                                               schema: {
                     data: function(data) {	
-                        console.log(data);                                            
+                        //console.log(data);                                            
                         return [data]; 
                     }                                                            
                 },
                  
                                                                               error: function (e) {
-                                                                                  console.log(JSON.stringify(e));                                                                                  
+                                                                                  //console.log(JSON.stringify(e));                                                                                  
                                                                                   $("#progressAdminNoti").hide();  
 
                                                                                   if (!app.checkSimulator()) {
-                                                                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                      window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                   }else {
-                                                                                      app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                      app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                   }
                                                                                   showMoreDbData();
                                                                               }	        
@@ -54,16 +54,26 @@ app.orgListView = (function () {
                 var data = this.data();                
                 var orgNotificationData; 
                        
-
-                           
                                 if (data[0]['status'][0].Msg ==='No notification') {     
                                     showMoreDbData();
                                 }else if (data[0]['status'][0].Msg==='Success') {
                                     orgNotificationData = data[0]['status'][0].notificationList;
                                     saveOrgNotification(orgNotificationData);                                                                                                                                                                      
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                        app.LogoutFromAdmin(); 
+                                
+                                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                    
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }
+                                                  
+                                    app.mobileApp.navigate('#view-all-activities-GroupDetail');
+          
                                 }
-                              
-
             
             });
 
@@ -81,8 +91,7 @@ app.orgListView = (function () {
             var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id=" + organisationID;
             app.deleteQuery(tx, query);
           
-            var dataLength = orgNotiDataVal.length;         
-          
+            var dataLength = orgNotiDataVal.length;                   
             for (var i = 0;i < dataLength;i++) {   
                 var query = 'INSERT INTO ADMIN_ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,group_id,customer_id,upload_type) VALUES ("'
                             + orgNotiDataVal[i].org_id
@@ -117,7 +126,6 @@ app.orgListView = (function () {
         }
         
         var getDataOrgNoti = function(tx) {
-            //var query = 'SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='+organisationID ;
             var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id=" + organisationID + " ORDER BY pid DESC" ;
             app.selectQuery(tx, query, getOrgNotiDataSuccess);
         };   
@@ -177,9 +185,7 @@ app.orgListView = (function () {
             var organisationALLListDataSource = new kendo.data.DataSource({
                                                                               data: groupDataShow
                                                                           });
-            
             $(".km-scroll-container").css("-webkit-transform", "");
-             
             organisationALLListDataSource.fetch(function() {
             });
                        
@@ -188,14 +194,12 @@ app.orgListView = (function () {
                                                               dataSource: organisationALLListDataSource
                                                           });             
             $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
-            
             $("#progressAdminNoti").hide();
             $("#admin-noti-listview").show();
         };
 
         var groupNotificationSelected = function (e) {
             app.MenuPage = false;	
-            //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
 	           

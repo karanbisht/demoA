@@ -2,6 +2,7 @@
 var app = app || {};
 
 app.eventCalender = (function () {
+         'use strict';
     var calendarEventModel = (function () {
         var eventOrgId;
         var account_Id;
@@ -12,22 +13,17 @@ app.eventCalender = (function () {
         }
     
         var show = function(e) {
-            $(".km-scroll-container").css("-webkit-transform", "");
- 
+            $(".km-scroll-container").css("-webkit-transform", ""); 
             tasks = [];
             multipleEventArray = [];
-             
             $("#CalProcess").show();                         
-            $("#eventDetailDiv").hide();
             
             account_Id = localStorage.getItem("ACCOUNT_ID");
-
             eventOrgId = localStorage.getItem("selectedOrgId");
              
-            $("#eventCalendarFirstAllList").show();
+            //$("#eventCalendarFirstAllList").show();
 
             var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id}
-
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
@@ -44,35 +40,30 @@ app.eventCalender = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(e);               
+                                                                    //console.log(e);               
                                                                     $("#CalProcess").hide();
+                                                                    
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                     if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                     }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                     }               
                                                                 }                              
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                //var loginDataView = dataSourceLogin.data();               
                 var data = this.data();
                 
-          						   
-                //$.each(loginDataView, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
                                
                     if (data[0]['status'][0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
-                        //$("#eventDetailDiv").hide();
-                        //showEventInCalendar();
                     }else if (data[0]['status'][0].Msg==='Success') {
                         groupAllEvent = [];
                         tasks = [];
                              
-                        var preDateVal = 0 ;00
 
                         if (data[0].status[0].eventData.length!==0) {
                             var eventListLength = data[0].status[0].eventData.length;
@@ -82,7 +73,7 @@ app.eventCalender = (function () {
                                 
                                  var eventDateString = data[0].status[0].eventData[i].event_date;
                                  var eventTimeString = data[0].status[0].eventData[i].event_time;
-                                 var eventDate = app.formatDate(eventDateString);
+                                 //var eventDate = app.formatDate(eventDateString);
                                  var eventTime = app.formatTime(eventTimeString);
                                 
                                  var aboveDay = app.getDateDays(eventDateString);   
@@ -114,7 +105,7 @@ app.eventCalender = (function () {
                                                        add_date: data[0].status[0].eventData[i].add_date,
                                                        event_date: saveData,
                                                        event_show_day:day,
-                                                       preDateVal:preDateVal,
+                                                       //preDateVal:preDateVal,
                                                        event_above_day:aboveDay,
                                                        event_below_day:belowData,
                                                        upload_type:data[0].status[0].eventData[i].upload_type,
@@ -126,9 +117,7 @@ app.eventCalender = (function () {
                                                        org_id: data[0].status[0].eventData[i].org_id
                                                    });
                              
-                                preDateVal=saveData;
                             }
-                            //showEventInCalendar();
                         } 
                     }                
                    
@@ -353,6 +342,153 @@ app.eventCalender = (function () {
             app.mobileApp.navigate('views/userOrgManage.html');            
         }
         
+        
+                        var attachedFilename;
+        var videoFile;
+        var notiFi;
+        
+        var videoDownlaodClick = function(e){            
+            var data = e.button.data();
+            //console.log(data);            
+            videoFile = data.someattribute;  
+            //console.log(videoFile);            
+            notiFi = data.notiid;
+            //alert(notiFi);
+            attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
+            var vidPathData = app.getfbValue();                    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_video_' + attachedFilename;             
+            window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
+        }
+        
+        var videoPathExist = function() {          
+            
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_video_' + attachedFilename;
+
+            /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
+            vid.attr('src', fp);
+            vid.appendTo('#video_Div_'+notiFi);*/
+            
+
+            if(device_type==="AP"){
+                  window.open(fp, "_blank");
+            }else{
+                  window.plugins.fileOpener.open(fp);
+            }
+            
+        }
+        
+        var videoPathNotExist = function() {
+            $("#video_Div_"+notiFi).show();
+            $("videoToDownload_"+notiFi).text('Downloading..');
+            var attachedVid = videoFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_video_' + attachedFilename;
+            
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(attachedVid, fp, 
+                                  function(entry) {
+                                      
+
+                                      if(device_type==="AP"){
+                                          window.open(fp, "_blank");
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+
+                                      $("#video_Div_"+notiFi).hide();
+                                      $("videoToDownload_"+notiFi).text('View');
+
+                                  },
+    
+                                  function(error) {
+                                      $("#video_Div_"+notiFi).hide();
+                                      $("videoToDownload_"+notiFi).text('View');
+                                      //$("#progressChat").hide();
+                                  }
+                );                
+        }
+        
+
+        var attachedImgFilename;
+        var imgFile;
+        var imgNotiFi;
+
+        var imageDownlaodClick = function(e){
+            var data = e.button.data();
+            console.log(data);            
+            imgFile = data.imgpath;  
+            console.log(imgFile);            
+            imgNotiFi = data.notiid;
+            attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+            attachedImgFilename=attachedImgFilename+'.jpg';
+            var vidPathData = app.getfbValue();                    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_img_' + attachedImgFilename;             
+            console.log(vidPathData);
+            console.log(fp);
+            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
+            //$("#img_Div_"+imgNotiFi).show();
+            
+            //alert("#img_Div_"+imgNotiFi);
+            
+            //alert('click');
+            //console.log(JSON.stringify(window.plugins));
+            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
+        }
+        
+                
+        var imgPathExist = function() {                    
+            //alert('img_exixt');
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_img_' + attachedImgFilename;   
+            //fp=fp+'.jpg';
+            console.log(fp);
+            
+                                      if(device_type==="AP"){
+                                          //alert('Show');
+                                          //window.open("www.google.com", "_system");
+                                          window.open(fp, '_blank');
+
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+
+        }
+        
+        var imgPathNotExist = function() {
+            //alert('img_not_exixt');
+
+            $("#img_Div_"+imgNotiFi).show();
+            $("#imgToDownload_"+imgNotiFi).text('Downloading..');
+            
+            var attachedImg = imgFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Aptifi/" + 'Zaffio_event_img_' + attachedImgFilename;
+                        console.log(fp);
+
+
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(attachedImg, fp, 
+                                  function(entry) {
+                                      $("#imgToDownload_"+imgNotiFi).text('View');
+
+                                      if(device_type==="AP"){
+                                          //alert('1');
+                                          window.open(fp, "_blank");
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+                                      
+                                      $("#img_Div_"+imgNotiFi).hide();
+                                  },
+    
+                                  function(error) {
+                                      $("#imgToDownload_"+imgNotiFi).text('View');
+                                      $("#img_Div_"+imgNotiFi).hide();
+                                  }
+                );                
+        }
+        
         return {
             init: init,
             show: show,
@@ -363,6 +499,8 @@ app.eventCalender = (function () {
             gobackToCalendar:gobackToCalendar,
             upcommingEventList:upcommingEventList,
             eventMoreDetailClick:eventMoreDetailClick,
+            imageDownlaodClick:imageDownlaodClick,
+            videoDownlaodClick:videoDownlaodClick,
             detailShow:detailShow
         };
     }());

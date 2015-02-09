@@ -77,9 +77,9 @@ app.orgGroupListView = (function () {
                                                        });                   
                                 }else if(orgVal.Msg==="You don't have access") {                                                         
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showLongBottom("You don't have access");  
+                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                     }else {
-                                        app.showAlert("You don't have access" , 'Offline');  
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }                    
 
                                     app.mobileApp.navigate("#view-all-activities-GroupDetail");
@@ -120,9 +120,11 @@ app.orgGroupListView = (function () {
                                                                               error: function (e) {
                                                                                   //apps.hideLoading();
                                                                                   console.log(e);
-                                                                                  navigator.notification.alert("Please check your internet connection.",
-                                                                                                               function () {
-                                                                                                               }, "Notification", 'OK');
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
                                                                               }
 	        
                                                                           });         

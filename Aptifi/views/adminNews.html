@@ -1,4 +1,4 @@
-<div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-noti"  data-model="app.adminNews" data-show ="app.adminNews.show" >
+<div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminNews" data-show ="app.adminNews.show" >
     <div data-role="header" style="border-bottom:2px solid #BABBBF">
         <div data-role="navbar">
             <span> News </span>
@@ -16,11 +16,10 @@
 
 <script type="text/x-kendo-template" id="newsListTemplate" >                        
     #if (id!==0) {#
-<div class="cf">
+  <div class="cf">
     <div class="notiList-content-new">
         <div class="dateDisplay">
             <span id="activityTemplateDate" class="dateValue">${news_date} , ${news_time}</span>
-            <!--<hr class="dateLine"/>-->
             <span></span>
         </div>
         <br/>
@@ -41,7 +40,7 @@
         <div class="notiNewsEditIcon"></div>
         <a id="activityTemplateMessage" class="notiListComment">Edit</a>
     </div>
-</div>   
+  </div>   
     #}else {#
     <div class="cf">
         <div id="activityTemplateTitle" class="HeadingClass">No News</div>
@@ -66,12 +65,7 @@
     
     <div data-role="content">
         <div id="enterNotification" class="textWithTextArea" >
-            
-            <!--<div class="textareaClass" >
-            <textarea id="addNewsDesc" placeholder="Please Enter News Here"></textarea>    
-            </div>
-            <br/>-->
-            
+                        
             <span id="activityTemplateDate"  class="defineTitleText">News :</span>
             <br/>
             <br/>
@@ -82,12 +76,8 @@
             
             <div class="selectGroupClass" style="margin-left:0px;" >Select Group to Add News :</div>
             <div id="groupInAddNews" class="selectDivClass"> </div>
-            
-            <!--<textarea rows="9" class="defineTextArea" id="addNewsDesc" placeholder="Please Enter News Here"></textarea>               
-            <br/>-->
-            
+                       
             <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span>
-
             <div style="margin-top:20px;">
                 <input id="adddatePickerNews" onkeydown="return false;" style="width:180px;"/>
             </div>
@@ -128,26 +118,17 @@
                     </li>
                 </ul>
             </div>
-            
-            <!--upload File-->
-            <!--upload File-->
-            
+                        
             <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewNewsFunction }">
                 Save
             </li>
         </div>
     </div>
-    <!--<div data-role="footer">
-    <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
-    <a id="" data-icon="more" data-role="button" data-bind="click: orgAllNewsList" >All News</a>
-    </div>
-    </div>-->
 </div>
 
 <div id="tabstrip-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.adminNews">
     <div class="docsUpload">
-        <!--<div class="flNmUpld" data-bind="text:uploadFileName">file name</div>-->
-        <div id="profileCompleteness" class="uploadBar" style="width:90%; height:17px;"></div>
+        <div id="profileCompletenessNews" class="uploadBar" style="width:90%; height:17px;"></div>
         <div class="clear"></div>
         <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
     </div>
@@ -178,14 +159,6 @@
             <div class="selectGroupClass" style="margin-left:0px;" >Select Group to Add News:</div>
             <div id="groupInEditNews" class="selectDivClass"> </div>
             
-            <!--<textarea rows="9" class="defineTextArea" id="editNewsDesc" placeholder="Please Enter News Here"></textarea>               
-            <br/>-->
-            
-            <!--<div class="textareaClass">
-            <textarea id="editNewsDesc" placeholder="Please Enter News Here"></textarea>    
-            </div>            
-            <br/>
-            -->
             
             <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span>
 
@@ -205,7 +178,6 @@
             <div style="display:inline;height:100px; width:100%;">
                 <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" ></a>
                 <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
-                <!--<a id="removeEditNewsAttachment" style="border:none;display:none;margin-left:15px;" data-icon="sounds" data-align="right" data-role="button" data-bind="click: removeImageEdit"></a>-->
                 
                 <div style="width:180px,height:50px;">
                     <!--<video id="attachedVidNewsEdit" width="180" height="50" controls style="display:none">
@@ -235,13 +207,6 @@
             </ul>
         </div>
         
-        <!--<li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditNewsData }">
-            Save Change
-        </li>
-        
-        <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: deleteNews }">
-            Delete News
-        </li>-->
         
         <div style="margin-bottom:10px;">
              <ol class="showInSameLine">
@@ -262,11 +227,6 @@
     
     </div>
 
-    <!--<div data-role="footer" class="footer" id="delNewsFooter">
-        <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
-            <a id="" data-icon="trash" data-role="button" data-bind="click: deleteNews" > Delete News</a>
-        </div>
-    </div>-->
 
 </div>
 

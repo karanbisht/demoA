@@ -1,6 +1,4 @@
-/**
- * Activity view model
- */
+
 var app = app || {};
 
 app.Activity = (function () {
@@ -23,43 +21,41 @@ app.Activity = (function () {
     var upload_type;
     
     var activityViewModel = (function () {
-        var activityUid, activity;
-        // $activityPicture;
+        var activityUid;
         
         var init = function () {
 
         };
                 
         var data;          
-        var userFirstName;
         var myScroll;
 
-        var getuserName = function() {
+        /*var getuserName = function() {
             var db = app.getDb();             
             db.transaction(getProfileInfo, app.onError, app.onSuccess);
-        };
+        };*/
         
-        var getProfileInfo = function(tx) {
+        /*var getProfileInfo = function(tx) {
             var query = "select first_name FROM PROFILE_INFO";
             app.selectQuery(tx, query, orgDataProfileSuccess);
-        };
+        };*/
         
-        var orgDataProfileSuccess = function(tx, results) {
+        /*var orgDataProfileSuccess = function(tx, results) {
             var count = results.rows.length;
             if (count !== 0) {
                 userFirstName = results.rows.item(0).first_name;
             }
-        }
+        }*/
         
-        var getUserName = function(idValue) {
+        /*var getUserName = function(idValue) {
             var userId = idValue;
             var user = $.grep(app.Users.users(), function (e) {
                 return e.Id === userId;
             })[0];
             return user ? user.DisplayName : 'Anonymous';
-        };
+        };*/
         
-        var befShow = function() {    
+        /*var befShow = function() {    
             if (app.checkConnection()) {
                 //console.log("online");
             } else {
@@ -67,9 +63,9 @@ app.Activity = (function () {
                 //var db = app.getDb();
                 //db.transaction(offlineQueryReplyDB, app.onError, offlineQueryReplyDBSuccess);
             }
-        };
+        };*/
       
-        var replyButton = function() {
+        /*var replyButton = function() {
             if (app.checkConnection()) {
                 //console.log(activity);
                 var notificationId = activity.notification_id;             
@@ -77,40 +73,40 @@ app.Activity = (function () {
             } else {
                 app.showAlert("You are currently offline , can't reply to post " , "Offline Mode");
             }
-        };
+        };*/
 
         function loaded() {
-        setTimeout(function() {    
-        myScroll = new iScroll('notiImage', {
-        bounce : false,
-        zoom : true,
-        zoomMax: 4,
-        momentum: false,
-        hScrollbar: false,
-        vScrollbar: false    
-        });
-        }, 100);            
+            setTimeout(function() {    
+                myScroll = new iScroll('notiImage', {
+                bounce : false,
+                zoom : true,
+                zoomMax: 4,
+                momentum: false,
+                hScrollbar: false,
+                vScrollbar: false    
+                });
+            }, 100);            
         }
 
         //document.addEventListener('DOMContentLoaded', loaded, false);
   
-        document.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        }, false);
+        /*document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, false);*/
         
        
 
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
-            groupDataShow = [];            
+            groupDataShow = [];    
+ 
+            $(".km-scroll-container").css("-webkit-transform", "");              
             $('#newComment').val(' ');
  
             $commentsContainer = $('#comments-listview');
             $commentsContainer.empty();        
-            //listScroller = e.view.scroller;
-            //listScroller.reset();
             
-            $('#newComment').css('height', '30px');
+            $('#newComment').css('height', '35px');
 
                 var txt = $('#newComment'),
                 hiddenDiv = $(document.createElement('div')),
@@ -146,30 +142,20 @@ app.Activity = (function () {
             title = app.proURIDecoder(title);
             upload_type = e.view.params.upload_type;
  
-            
-            //alert('dataValue');
-            
-            //console.log(org_id + '||' + notiId + '||' + account_Id + '||' + comment_allow + '||' + attached);
-            //alert(attached);
-            
-            //var attachedImg ='http://54.85.208.215/assets/attachment/'+attached;            
-            //console.log(attached);
+
+            app.mobileApp.pane.loader.hide();
+
             
             if ((title==='' || title==='null' || title===null) && (message==='' || message==='null' || message===null)) {
                 $('#titleContainer').hide();
             }
 
             if (attached!== null && attached!=='' && attached!=="0" && upload_type==="other") {
-                //loaded(); 
-                //$('#notiImage').css({"height":"200px"});
+                app.mobileApp.pane.loader.hide();
                 $('#notiImage').css({"max-height":"200px"});
-                //$('#notiImage').css({"width":'auto'});
                 $('#notiImage').css({"margin-top":"10px"}); 
                 var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';                                
-                //alert(fp);                                
-                //console.log('Image Saving Process');    
-                //console.log(attachedImg);    
+                var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg'; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
                 var notiImageShow = document.getElementById('notiDetailVid');
@@ -184,12 +170,10 @@ app.Activity = (function () {
             }else {                
                 $("#commentPanel").css("z-index", "-1");
                 $("#commentPanel").css("opacity", .4);	
-                document.getElementById('commentPanel').style.pointerEvents = 'none';
                 $("#newComment").val('');
                 $("#newComment").attr("placeholder", "Reply not allow.");
             }
             
-            //console.log(org_id + "||" + notiId + "||" + account_Id);            
             $("#personName").html(title);
             $("#activityText").html(message);
             $("#notiDate").html(date);
@@ -198,34 +182,34 @@ app.Activity = (function () {
 		                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
-                db.transaction(getDataOrgNotiComment, app.errorCB, app.successDB);      
+                db.transaction(getDataOrgNotiComment, app.errorCB, showOfflineData);      
             }else {
-                db.transaction(getDataOrgNotiComment, app.errorCB, commentShow);      
-            }
-            
-            db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
+                db.transaction(getDataOrgNotiComment, app.errorCB, firstShowOfflineData);      
+            }            
+            //db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
         };
         
         var imagePathExist = function() {
-            //alert('1');
+            app.mobileApp.pane.loader.hide();
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
+            
             var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
+
+            console.log(fp);
+              
         }
         
         var imagePathNotExist = function() {
-            //alert('2');
+            app.mobileApp.pane.loader.hide();
             $("#progressChat").show();
-            var attachedImg = attached;            
-            //alert(attached);            
-            //console.log(attached);
-            
+            var attachedImg = attached;                        
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
             
@@ -233,18 +217,17 @@ app.Activity = (function () {
             img.attr('src', attachedImg);
             img.appendTo('#notiImage'); 
  	
-            var fileTransfer = new FileTransfer();  
-            
-            //alert(attachedImg+"||"+fp);
-            
+            var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
                                       //alert('1');
+                                      app.mobileApp.pane.loader.hide();
                                       $("#progressChat").hide();
                                   },
     
                                   function(error) {
                                       //alert('2');
+                                      app.mobileApp.pane.loader.hide();
                                       $("#progressChat").hide();
                                   }
                 );                
@@ -256,39 +239,6 @@ app.Activity = (function () {
             app.mobileApp.pane.loader.hide();
             $("#progressChat").show();
 
-            var commentModel = {
-                id: 'Id',
-                fields: {
-                    comment: {
-                            field: 'comment',
-                            defaultValue: ''
-                        },
-                    user_id: {
-                            field: 'user_id',
-                            defaultValue:''
-                        }, 
-                    add_date: {
-                            field: 'add_date',
-                            defaultValue: new Date()
-                        }
-                },
-                CreatedAtFormatted: function () {
-                   // console.log(this.get('add_date'));
-                    return app.helper.formatDate(this.get('add_date'));
-                },
-                User: function () {
-                    //console.log(this.get('user_id'));                
-                    //var serUserId = this.get('user_id');
-                    if (this.get('user_type')==="Customer") {
-                        return userFirstName;                    
-                    }else {
-                        return 'Admin';
-                    }
-                    //return user ? user.DisplayName : 'Anonymous';    
-                }
-            };
-            
-            //console.log(org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID);
             
             app.mobileApp.pane.loader.hide();
  
@@ -297,115 +247,155 @@ app.Activity = (function () {
                     read: {
                                                                            url: app.serverUrl() + "notification/getNotificationComment/" + org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID,
                                                                            type:"POST",
-                                                                           dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
-                                                                           //async: false 
+                                                                           dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                            
                                                                        }
                 },
                                                                schema: {
-                    model: commentModel,
                                 
-                    data: function(data) {
-                        //console.log(data);
-               
-                        $.each(data, function(i, groupValue) {
-                            //console.log(groupValue);
-                                     
-                            var returnMsg = groupValue[0].Msg;
-                            var orgNotiCommentData;
-                            //console.log(returnMsg);
-                            if (returnMsg==='Success') {
-                                var commentLength = groupValue[0].AllComment.length;
-                              
-                                orgNotiCommentData = groupValue[0].AllComment;
-                                //console.log(commentLength);
-                               
-                                for (var j = 0;j < commentLength;j++) {
-                                    var dateString = groupValue[0].AllComment[j].add_date;
-                                    var split = dateString .split(' ');
-                                    //console.log(split[0] + " || " + split[1]);
-                                    var commentDate = app.formatDate(split[0]);
-                                    var commentTime = app.formatTime(split[1]);
-
-                                    //var commentTime = app.timeConvert(split[1]);
-                                    //alert(commentTime);
-                                         
-                                    groupDataShow.push({
-                                                           comment: groupValue[0].AllComment[j].comment,
-                                                           add_date: commentDate,
-                                                           add_time: commentTime,
-                                                           user_id : groupValue[0].AllComment[j].user_id,
-                                                           user_type : groupValue[0].AllComment[j].user_type
-                                                       });
-                                }
-                                saveOrgNotiComment(orgNotiCommentData);    
-                            } 
-                        });
-                       
-                        //console.log(groupDataShow);
-                        //alert(JSON.stringify(groupDataShow));
-                        return groupDataShow;
+                    data: function(data) {               
+                        return [data];
                     }                       
                 },
                                                                error: function (e) {
-                                                                   $("#progressChat").hide();
-
-                                                                   //console.log(e);
-                                                                   /*navigator.notification.alert("Please check your internet connection.",
-                                                                   function () { }, "Notification", 'OK');
-                                                                   */
-                                                                   app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Notification Comment .');
+                                                                   $("#progressChat").hide();                                                                   
                                                                    if (!app.checkConnection()) {
                                                                        if (!app.checkSimulator()) {
-                                                                           window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                        }else {
-                                                                           app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
                                                                        } 
+
                                                                    }
+                                                                   
+                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+
+                                                                   
+                                                                   
                                                                }
 	        
                                                            });         
             
-            //commentsDataSource.fetch(function() {               
-            //});
             
-            app.mobileApp.pane.loader.hide();
 
-            $("#comments-listview").kendoMobileListView({
-                                                            template: kendo.template($("#commentsTemplate").html()),    		
-                                                            dataSource: commentsDataSource,
-                                                            //pullToRefresh: true,   
-                                                            schema: {
-                    model:  commentModel
-                }			 
-                                                        });
+            commentsDataSource.fetch(function() {
+                        var data = this.data();
+                        var orgNotiCommentData;
+                        app.mobileApp.pane.loader.hide();
 
+
+                              if (data[0]['status'][0].Msg ==='No Comments') { 
+
+                              }else if (data[0]['status'][0].Msg==='Success') {
+                                var commentLength = data[0]['status'][0].AllComment.length;                              
+                                orgNotiCommentData = data[0]['status'][0].AllComment;
+                                console.log(commentLength);
+
+                                  app.mobileApp.pane.loader.hide();
+
+                               
+                                totalComment=totalComment+commentLength;
+
+                                for (var j = 0;j < commentLength;j++) {
+                                    var dateString = data[0]['status'][0].AllComment[j].add_date;
+                                    var split = dateString .split(' ');
+                                    var commentDate = app.formatDate(split[0]);
+                                    var commentTime = app.formatTime(split[1]);
+                                         
+                                    groupDataShow.push({
+                                                           comment: data[0]['status'][0].AllComment[j].comment,
+                                                           add_date: commentDate,
+                                                           add_time: commentTime,
+                                                           user_id : data[0]['status'][0].AllComment[j].user_id,
+                                                           user_type : data[0]['status'][0].AllComment[j].user_type
+                                                       });
+                                }
+                                showAllData();
+                                saveOrgNotiComment(orgNotiCommentData);                                                                                                                         
+                              }
+                saveCommentCount();
+
+            });
+                                    
             $("#progressChat").hide();
             
             app.mobileApp.pane.loader.hide();
             
-            if (!app.checkConnection()) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                } 
-            }
+
         };
+        
+        
+        
+        var showOfflineData = function() {
+            
+            var offlineDBData = new kendo.data.DataSource({
+                                 data: groupDataShow
+                                                                         });                        
+                        app.mobileApp.pane.loader.hide();
+
+            $("#comments-listview").kendoMobileListView({
+                                           template: kendo.template($("#commentsTemplate").html()),    		
+                                           dataSource: offlineDBData                                                            
+            });
+                        app.mobileApp.pane.loader.hide();
+
+                        
+        };
+        
+        
+        var firstShowOfflineData = function() {
+            
+            var offlineDBData = new kendo.data.DataSource({
+                                 data: groupDataShow
+                                                                         });                        
+                        app.mobileApp.pane.loader.hide();
+
+            $("#comments-listview").kendoMobileListView({
+                                           template: kendo.template($("#commentsTemplate").html()),    		
+                                           dataSource: offlineDBData                                                            
+            });
+                        app.mobileApp.pane.loader.hide();
+
+            
+            commentShow();
+        };
+        
+        
+        var showAllData = function() {
+            
+            var offlineDBData = new kendo.data.DataSource({
+                                 data: groupDataShow
+                                                                         });                        
+                        app.mobileApp.pane.loader.hide();
+
+            $("#comments-listview").kendoMobileListView({
+                                           template: kendo.template($("#commentsTemplate").html()),    		
+                                           dataSource: offlineDBData                                                            
+            });
+                        app.mobileApp.pane.loader.hide();
+
+        };
+        
+        
          
         var orgNotiCommentDataVal;
-        
         function saveOrgNotiComment(data) {
             orgNotiCommentDataVal = data;      
             var db = app.getDb();
-            db.transaction(insertOrgNotiCommentData, app.errorCB, app.successCB);
+            db.transaction(insertOrgNotiCommentData, app.errorCB, app.successCB);            
         };
-            
+        
+        function saveCommentCount(){
+            var db = app.getDb();
+            db.transaction(insertTotalCommentCount, app.errorCB, app.successCB);            
+        }
+        
+        function insertTotalCommentCount(tx) {
+            var query = "UPDATE ORG_NOTIFICATION SET adminReply='" + totalComment + "' where org_id='" + org_id + "' and pid='"+notiId+"'";
+            app.updateQuery(tx, query);
+        }
+        
         function insertOrgNotiCommentData(tx) {
-            //var query = "DELETE FROM ORG_NOTIFICATION";
-            //app.deleteQuery(tx, query);
-            var dataLength = orgNotiCommentDataVal.length;
-            //alert('LiveDataVal'+dataLength);
- 
+            var dataLength = orgNotiCommentDataVal.length; 
             for (var i = 0;i < dataLength;i++) {       
                 var query = 'INSERT INTO ORG_NOTI_COMMENT(id,notification_id, comment, add_date, reply_to, reply_to_id, user_id, user_type) VALUES ("'
                             + orgNotiCommentDataVal[i].id
@@ -435,10 +425,7 @@ app.Activity = (function () {
       
         function getOrgLogoDataSuccess(tx, results) {
             var count = results.rows.length;    
-            //for(var i =0 ; i<count ; i++){                       
             orgLogoToShow = results.rows.item(0).imageSource
-            //alert(orgLogoToShow);
-            //}
         }  
       
         function orgLogoShow() {
@@ -455,23 +442,20 @@ app.Activity = (function () {
             var query = 'SELECT * FROM ORG_NOTI_COMMENT where notification_id=' + notiId ;
             app.selectQuery(tx, query, getOrgNotiCommentDataSuccess);
         };    
+        
+        var totalComment = 0
             
         function getOrgNotiCommentDataSuccess(tx, results) {
             var count = results.rows.length;  
-            //lastNotiCommentID = count;
-            //alert(count);
+            totalComment=count;
+            
             if (count !== 0) {
                 groupDataShow = [];
                 for (var i = 0 ; i < count ; i++) {    
                     var dateString = results.rows.item(i).add_date;
-                    var split = dateString .split(' ');
-                   // console.log(split[0] + " || " + split[1]);
-                    
+                    var split = dateString .split(' ');                    
                     var commentDate = app.formatDate(split[0]);                    
                     var commentTime = app.formatTime(split[1]);
-
-                    //alert(commentTime);
-                    //alert(commentDate);
                     
                     groupDataShow.push({
                                            comment: results.rows.item(i).comment,
@@ -479,11 +463,9 @@ app.Activity = (function () {
                                            add_time: commentTime,
                                            user_id : results.rows.item(i).user_id,
                                            user_type : results.rows.item(i).user_type
-                                       });
-                    
+                                       });                    
                     lastNotiCommentID = results.rows.item(i).id;
                 }    
-                //console.log(lastNotiCommentID);
             }else {
                 lastNotiCommentID = 0;
             }                       
@@ -496,21 +478,14 @@ app.Activity = (function () {
         
         var offlineReplyQuerySuccess = function(tx, results) {
             var count = results.rows.length;
-          //  console.log("karan bisht" + count);
+              //  console.log("karan bisht" + count);
             if (count !== 0) {
                 for (var i = 0; i < count; i++) {
                     var ReplyText = results.rows.item(i).ReplyText;
                     var CreatedAt = results.rows.item(i).CreatedAt;
                     var UserNameofflineValue = results.rows.item(i).UserNameField;
-                   // console.log(UserNameofflineValue); 
-                    //var NotificationId = results.rows.item(i).NotificationId; 
-                    //var UserId = results.rows.item(i).UserId;
                     
                     var template;
-                    //if(i===0){
-                    //   template = kendo.template($("#commentsTemplate").html());
-                    // $("#comments-listview").html(template({User:function(){return UserNameofflineValue;} ,CreatedAtFormatted: function (){return app.helper.formatDate(CreatedAt);} ,ReplyText: ReplyText}));
-                    //}else{
                     template = kendo.template($("#commentsTemplate").html());
                     $("#comments-listview").append(template({User:function() {
                         return UserNameofflineValue;
@@ -548,36 +523,30 @@ app.Activity = (function () {
         };
 
         
-        var lastClickTime = 0;
         
         var saveComment = function () {    
-           
-            	var current = new Date().getTime();
-            	var delta = current - lastClickTime;
-	            lastClickTime = current;
-            	if (delta < 500) {
-		// This happens because of a bug, so we ignore it.
-		// http://code.google.com/p/android/issues/detail?id=38808
-	  } else {
-          
   
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else {  
                 
                 var comment = $("#newComment").val();
-                //var org_id = localStorage.getItem("UserOrgID");
-                //var customer_id = localStorage.getItem("UserID");
-             
+                
+
  
                 if (comment!=='' && comment!=='Reply') {
                 
-
                     $("#progressChat").show();
+                    
+                    
+                    $("#comments-listview").append('<li id="tryingComment"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>'+comment+'</a><br/><span class="user-time-span"> Sending.. </span></div></div></li>');                                
+                    $('#newComment').css('height', '35px');
+                    $("#newComment").val('');
+
 
                     var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
                    
@@ -587,58 +556,49 @@ app.Activity = (function () {
                                                                                           url: app.serverUrl() + "notification/userReply",
                                                                                           type:"POST",
                                                                                           dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                          //async: false,
                                                                                           data: jsonDatacomment
                                                                                       }
                         },
                                                                               schema: {
                             data: function(data) {
-                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                               error: function (e) {
-                                                                               //   console.log(e);
-                                                                                  navigator.notification.alert("Please check your internet connection.",
-                                                                                                               function () {
-                                                                                                               }, "Notification", 'OK');
-                                                                                  app.analyticsService.viewModel.trackException(e,'API Call , Unable to get response from User Reply API .');
-               
-                                                                                              $("#progressChat").hide();
+
+                                                                                  app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));               
+                                                                                  $("#progressChat").hide();
 
                                                                                   if (!app.checkSimulator()) {
-                                                                                      window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                      window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                   }else {
-                                                                                      app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                      app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                   }
                                                                               }               
                                                                           });  
 	            
                     saveCommentDataSource.fetch(function() {
                         var commentDataView = saveCommentDataSource.data();
-                       // console.log(commentDataView);
                         $.each(commentDataView, function(i, commentData) {           
-                         //   console.log(commentData.status[0].Msg);
-                            //refreshComment(); 
                             if (commentData.status[0].Msg === 'Reply sent successfully') {
                                 $("#progressChat").hide();
                                 lastNotiCommentID = lastNotiCommentID + 1;
-                                            $('#newComment').css('height', '30px');
-
+                                $('#newComment').css('height', '35px');
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showShortBottom('Reply sent successfully');   
+                                    window.plugins.toast.showShortBottom(app.COMMENT_REPLY);   
                                 }else {
-                                    app.showAlert("Reply sent successfully", "Notification");                                      
+                                    app.showAlert(app.COMMENT_REPLY, "Notification");                                      
                                 }
- 
+                                
+                                $('#tryingComment').remove();
                                 var commentDate = app.formatDate(new Date());
- 
-                                $("#comments-listview").append('<li><div class="user-comment-List" id="userCommentContainer"><div class="user-comment-content"><a>'+comment+'</a><br/><span class="user-time-span">'+commentDate+' just now </span></div></div></li>');                                
+                                $("#comments-listview").append('<li><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>'+comment+'</a><br/><span class="user-time-span">'+commentDate+' just now </span></div></div></li>');                                
                                  
                                 $("#newComment").val('');
+                                increaseCommentCount();
                             }else {
                                 $("#progressChat").hide();
-                                //app.showAlert(commentData.status[0].Msg ,'Notification'); 
+                                $('#adminTryingComment').remove();
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom(commentData.status[0].Msg);   
                                 }else {
@@ -655,38 +615,24 @@ app.Activity = (function () {
                     }
                 }        
             }  
-          }
         };
+        
+        function increaseCommentCount(){
+            var db = app.getDb();
+            db.transaction(insertCommentCount, app.errorCB, app.successCB);            
+        }
+        
+        function insertCommentCount(tx) {
+            var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 where org_id='" + org_id + "' and pid='"+notiId+"'";
+            app.updateQuery(tx, query);
+        }
 
-        function refreshComment() {
-           // console.log('refButton');
-            //console.log('save button click');
-            //app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
-            //var certificateList = $('#comments-listview').data('kendoMobileListView');
-            //certificateList.commentsDataSource.read();   // added line
-            //certificateList.refresh();
-  
-            app.Activity.commentShow();
-            /*setTimeout(function () {
-            app.mobileApp.navigate('views/activityView.html?message=' + message +'&title='+title+'&org_id='+org_id+'&notiId='+notiId+'&account_Id='+account_Id+'&comment_allow='+comment_allow);
-            $("#comments-listview").kendoMobileListView({            
-            dataSource: commentsDataSource,
-            template:  $("#commentsTemplate").text()
-            });
-            }, 100);*/
-        };
 		
         return {
             init: init,
             show: show,
             saveComment:saveComment,
-            commentShow:commentShow, 
-            befShow: befShow,
-            remove: removeActivity,
-            replyButton:replyButton,
-            activity: function () {
-                return activity;
-            },
+            commentShow:commentShow
         };
     }());
     

@@ -4,7 +4,6 @@ app.groupDetail = (function () {
     var orgName;
     var selectedGroupId;
     var orgDesc;
-    var custFromGroup = [];
     var alternateNumInfo = [];
 
     //var orgId = localStorage.getItem("UserOrgID");
@@ -28,6 +27,8 @@ app.groupDetail = (function () {
             localStorage.setItem("loginStatusCheck", 2);
 
             organisationID = localStorage.getItem("orgSelectAdmin");
+            
+            //alert(organisationID);
             account_Id = localStorage.getItem("ACCOUNT_ID");
             orgName = localStorage.getItem("orgNameAdmin");
             orgDesc = localStorage.getItem("orgDescAdmin");
@@ -59,7 +60,7 @@ app.groupDetail = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
                             //console.log(groupValue);   
@@ -70,9 +71,9 @@ app.groupDetail = (function () {
                                 //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
                                 //app.LogoutFromAdmin();    
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("You don't have access");  
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                                 }else {
-                                    app.showAlert("You don't have access" , 'Offline');  
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }
                                 //app.mobileApp.navigate('views/organisationLogin.html');   
                                 //localStorage.setItem("loginStatusCheck", 1);                                
@@ -95,15 +96,16 @@ app.groupDetail = (function () {
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(e);
+                                                                               //console.log(JSON.stringify(e));
                                                                                $("#progressAdmin").hide();             
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                                //beforeShow();
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom('Network problem . Please try again later');   
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
                                                                                }else {
-                                                                                   app.showAlert("Network problem . Please try again later", "Notification");  
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                }
                                                                            }	        
                                                                        });
@@ -159,8 +161,7 @@ app.groupDetail = (function () {
 
                 if (showData < 0) {
                     showData = 0;   
-                }
-                
+                }                
                 $("#countToShow").html(showData);            
             }            
         }
@@ -332,10 +333,13 @@ app.groupDetail = (function () {
         };
         
         var orgMemberShow = function(e) {
-            var organisationID = localStorage.getItem("orgSelectAdmin");         
-            $("#progressAdminOrgMem").show();   
+
+            $(".km-scroll-container").css("-webkit-transform", "");  
             
-                   
+            var organisationID = localStorage.getItem("orgSelectAdmin");         
+            $("#groupMember-listview").hide();
+            $("#progressAdminOrgMem").show();   
+                               
                         
             app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
@@ -351,25 +355,24 @@ app.groupDetail = (function () {
                 
                 
                     data: function(data) {
-                        console.log(data);                                             
+                        //console.log(data);                                             
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
 
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(JSON.stringify(e));
                                                                      
                                                                      e.type='show Data Member List';
                                                                                                                                           
                                                                      if (!app.checkSimulator()) {
-                                                                         window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                         window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                      }else {
-                                                                         app.showAlert('Network unavailable . Please try again later' , 'Network Problem');  
+                                                                         app.showAlert(app.INTERNET_ERROR , 'Network Problem');  
                                                                      }
-                                                                                         
-                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Member in Admin Panel'+JSON.stringify(e));
-                         
+                                                                                           
+                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                      var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];
@@ -384,13 +387,13 @@ app.groupDetail = (function () {
                                                                                                                     });
                     
                                                                      $("#progressAdminOrgMem").hide();
+                                                                     $("#groupMember-listview").show();
                                                                  }
 	        
                                                              });         
             
             MemberDataSource.fetch(function() {
-                var data = this.data();
-                        
+                var data = this.data();                        
                 groupDataShow = [];
                 if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
                     groupDataShow.push({
@@ -404,7 +407,7 @@ app.groupDetail = (function () {
                                        });     
                     $("#adminRemoveMember").hide();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==='Success') {
                     for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
@@ -418,11 +421,12 @@ app.groupDetail = (function () {
                                                orgID:data[0]['status'][0].allCustomer[i].orgID
                                            });
                     }     
+                    $("#adminRemoveMember").show();
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom("You don't have access");  
+                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                     }else {
-                        app.showAlert("You don't have access" , 'Offline');  
+                        app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
                   backToOrgDetail();  
                 }
@@ -432,11 +436,15 @@ app.groupDetail = (function () {
         }
         
         function showMemberDataFunc(data) {
+
+            $("#progressAdminOrgMem").hide();
+            $("#groupMember-listview").show();
+
+            
             $("#groupMember-listview").kendoMobileListView({
                                                                dataSource: data,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
-            $("#progressAdminOrgMem").hide();
 
             $('#groupMember-listview').data('kendoMobileListView').refresh(); 
         }
@@ -498,15 +506,19 @@ app.groupDetail = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
-                                                                       console.log(JSON.stringify(e));
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                    //console.log(JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                                                                      
+                                                                 
+                                                                    if (!app.checkSimulator()) {
+                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                    }else {
+                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                    }              
                                                                    }               
                                                                });  
 	            
@@ -516,15 +528,13 @@ app.groupDetail = (function () {
                     //console.log(addGroupData.status[0].Msg);           
                     if (addGroupData.status[0].Msg==='Success') {    
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom('Group Updated Successfully');   
+                            window.plugins.toast.showShortBottom(app.GROUP_UPDATED_MSG);   
                         }else {
-                            app.showAlert("Group Updated Successfully", "Notification");  
+                            app.showAlert(app.GROUP_UPDATED_MSG, "Notification");  
                         }
-
-                        //app.showAlert("Group Updated Successfully","Notification");
                         app.mobileApp.navigate('views/groupListPage.html');
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -535,120 +545,29 @@ app.groupDetail = (function () {
         
         var addMemberToGroup = function() {
             app.MenuPage = false;
-            
-            app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");            
-            //app.mobileApp.navigate('#addMemberToGroup');
-            
+            var organisationID = localStorage.getItem("orgSelectAdmin");
+            app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");                        
             app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
         };
         
         var backToOrgDetail = function() {
-            // app.mobileApp.navigate('views/groupDetailView.html?organisationID=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);
-            //app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');    
             app.mobileApp.navigate("#view-all-activities-GroupDetail");
         }
         
         var backToOrgAdminList = function() {       
             app.mobileApp.navigate('#view-all-activities-admin');  
-            //app.slide('right', 'green' , '3' , '#view-all-activities-GroupDetail');
         }   
         
-        /*var addMemberToGroupFunc = function(){
-        var successFlag = false;
-            
-        var val = [];
-        $(':checkbox:checked').each(function(i){
-        val[i] = $(this).val();
-        //console.log(val[i]);
-        });
-            
-        var jsonDataAddMember = {"customer":val ,"organisation":orgId,"group":selectedGroupId}
-                    
-        var dataSourceAddMember = new kendo.data.DataSource({
-        transport: {
-        read: {
-        url: "http://54.85.208.215/webservice/group/addCustomertoGroup",
-        type:"POST",
-        dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-        data: jsonDataAddMember
-        }
-        },
-        schema: {
-        data: function(data)
-        {	console.log(data);
-        return [data];
-        }
-        },
-        error: function (e) {
-        //apps.hideLoading();
-        console.log(e);
-        navigator.notification.alert("Please check your internet connection.",
-        function () { }, "Notification", 'OK');
-        }               
-          
-        });  
-	            
-        dataSourceAddMember.fetch(function() {
-        var loginDataView = dataSourceAddMember.data();
-        $.each(loginDataView, function(i, addGroupData) {
-        console.log(addGroupData.status[0].Msg);           
-        if(addGroupData.status[0].Msg==='Customer saved to group'){                                
-        app.showAlert("Member Added Successfully","Notification");
-        app.mobileApp.navigate('#groupMemberShow');
-        }else{
-        app.showAlert(addGroupData.status[0].Msg ,'Notification'); 
-        }
-                               
-        });
-        });        
-                                   
-        /*$.each(val,function(i,dataValue){  
-        console.log(dataValue);
-                  
-        var data = el.data('Users');
-	
-        data.update({ 'Group': 'Testing' }, // data
-        { 'Id': dataValue }, // filter
-                  
-        function(data){      
-        successFlag=true;
-        },
 
-        function(error){
-        successFlag=false;
-        });
-                
-        });	
-            
-        if(successFlag){
-        app.showAlert("Member Added to Group","Notification");               
-        }else{
-        app.showAlert("Error ","Notification");
-        }*/
-            
-        //};
         
         var removeMemberFromGroup = function() {           
             app.MenuPage = false;
             app.mobileApp.navigate('#removeMemberFromGroup');
-            /*
-            app.groupDetail.userData.filter({
-            field: 'Group',
-            operator: 'eq',
-            value: GroupName   	    				        	
-            });
-            kendo.bind($('#Member-Delete-template'), MemberDataSource); 
-            */
         };
                  
         var removeMemberClick = function() {
-            //var orgId = localStorage.getItem("UserOrgID"); 
-            //console.log(orgId);    
             var customer = [];
-		    
-            /*$(':checkbox:checked').each(function(i) {
-                customer[i] = $(this).val();
-            });*/
+		    var organisationID = localStorage.getItem("orgSelectAdmin");
             
              $('#deleteMemberData input:checked').each(function() {
                 customer.push($(this).val());
@@ -675,19 +594,19 @@ app.groupDetail = (function () {
                     },
                                                                            schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];
                         }
                     },
                                                                            error: function (e) {
                                                                                $("#deleteMemberLoader").hide();
                                                                                //console.log(e);
-                                                                               console.log(JSON.stringify(e));
-                                                                               
+                                                                               //console.log(JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e)); 
                                                                                if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                }else {
-                                                                                   app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                                }
                                                                            }               
           
@@ -700,19 +619,18 @@ app.groupDetail = (function () {
                       
                         if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom('Member Deleted Successfully');   
+                                window.plugins.toast.showShortBottom(app.MEMBER_DELETED_MSG);   
                             }else {
-                                app.showAlert("Member Deleted Successfully", "Notification");  
+                                app.showAlert(app.MEMBER_DELETED_MSG, "Notification");  
                             }                               
                             $("#deleteMemberLoader").hide();                            
-                            //app.showAlert("Member Deleted Successfully","Notification");
                             app.mobileApp.navigate('#groupMemberShow');
                             refreshOrgMember();
                         }else if (deleteGroupData.status[0].Msg==="You don't have access") {                                                        
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom("You don't have access");  
+                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
                             }else {
-                                app.showAlert("You don't have access" , 'Offline');  
+                                app.showAlert(app.NO_ACCESS , 'Offline');  
                             }                    
                             app.mobileApp.navigate('#groupMemberShow');
                         }else {
@@ -723,21 +641,19 @@ app.groupDetail = (function () {
                 }); 
             }else {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('Please Select Member To Delete.');   
+                    window.plugins.toast.showShortBottom(app.SELECT_MEMBER_TO_DELETE);   
                 }else {
-                    app.showAlert("Please Select Member To Delete.", "Notification");  
+                    app.showAlert(app.SELECT_MEMBER_TO_DELETE, "Notification");  
                 }
             }      
         };
         
         var showOrgGroupView = function() {
             app.MenuPage = false;
-            //console.log(organisationID);
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
         };
  
         function refreshOrgMember() {  
-            //console.log('go to member');
             app.groupDetail.showGroupMembers();
         };
 		        
@@ -785,21 +701,22 @@ app.groupDetail = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(JSON.stringify(e));
                                                                            
                                                                            $("#adminEditCustomer").hide();            
                                                                            $("#editOrgMemberContent").show();
                                                                            
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                                                                           
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                            }else {
-                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                               app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                            }
                                                                        }               
                                                                    });  
@@ -849,51 +766,45 @@ app.groupDetail = (function () {
                             }
                         }
                         
-                        if (addGroupData.status[0].customerGroup.length!==0 && addGroupData.status[0].customerGroup.length!==undefined) {
+                        if (addGroupData.status[0].customerGroup.groupID.length!==0 && addGroupData.status[0].customerGroup.groupID.length!==undefined) {
                             customerGroupArray = [];
-                            for (var i = 0 ; i < addGroupData.status[0].customerGroup.length;i++) {
+                            for (var i = 0 ; i < addGroupData.status[0].customerGroup.groupID.length;i++) {
                                 customerGroupArray.push({
-                                                            pid: addGroupData.status[0].customerGroup[i].groupID
+                                                            pid: addGroupData.status[0].customerGroup.groupID[i]
                                                         });
                             }
                         }
                         
                         var allGroupLength = adminAllGroupArray.length;
-                        var allCustomerLength = customerGroupArray.length;                        
+                        var allCustomerLength = customerGroupArray.length;    
+                        
                         for (var i = 0;i < allGroupLength;i++) {       
+                        
                             adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);
-                            //console.log(adminAllGroupArray[i].pid);
-                            //console.log(customerGroupArray);
-                            //alert(adminAllGroupArray[i].pid);
+                            var check = ''; 
                             
                             for (var j = 0;j < allCustomerLength;j++) {
-                                //alert(customerGroupArray[j].pid);
-                                //var pos = $.inArray(parseInt(adminAllGroupArray[i].pid), customerGroupArray[j].pid);           
-                                //console.log(pos); 
-                                //console.log("---------------------------------");
-                                //alert(JSON.stringify(joinOrgID));
-                                //alert(JSON.stringify(parseInt(adminOrgProfileData[i].organisationID)));
-                                if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
-                                    //alert(i);
-                                    //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
-                                    EditGroupArrayMember.push({
-                                                                  group_name: adminAllGroupArray[i].group_name,
-                                                                  pid: adminAllGroupArray[i].pid,
-                                                                  check:'checked'
-                                                              });
-                                }else {
-                                    //alert(i);
-                                    //alert(adminAllGroupArray[i].group_name+"||"+adminAllGroupArray[i].pid);
-                                    EditGroupArrayMember.push({
-                                                                  group_name: adminAllGroupArray[i].group_name,
-                                                                  pid: adminAllGroupArray[i].pid,
-                                                                  check:''
-                                                              });        
+                             
+                                if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) { 
+                                    check = 'checked';
+                                    break;
+                                    
+                                 }else {
+                                    
+                                     check = '';
+                                        
                                 }  
                             }
+                            
+                            EditGroupArrayMember.push({
+                                                                  group_name: adminAllGroupArray[i].group_name,
+                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  check:check
+                                                              });
+                            
                         }
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
+                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -1021,10 +932,16 @@ app.groupDetail = (function () {
             var mobile = $("#staticMobile").val();
             var alterEditMob = $("#editMobileAlterPage").val();
             
-            var groupEdit = [];		    
-            $(':checkbox:checked').each(function(i) {
+            var groupEdit = [];
+            
+            /*$(':checkbox:checked').each(function(i) {
                 groupEdit[i] = $(this).val();
-            });            
+            });*/         
+            
+             $('#groupInEditMember input:checked').each(function() {
+                groupEdit.push($(this).val());
+            });
+            
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
@@ -1087,26 +1004,25 @@ app.groupDetail = (function () {
                                                                                            url: app.serverUrl() + "customer/saveAlternate",
                                                                                            type:"POST",
                                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                           cache: false,                                                       
+                                                                                                                                                  
                                                                                            data: jsonDataRegister
                                                                                        }
                             },
                                                                                schema: {
                                 data: function(data) {
-                                    console.log(data);
+                                    //console.log(data);
                                     return [data];
                                 }
                             },
                                                                                error: function (e) {
                                                                                    $("#adminEditCustomer").hide();
-                                                                                   console.log(JSON.stringify(e));           
-
-                                                                                   app.mobileApp.pane.loader.hide();
+                                                                                   //console.log(JSON.stringify(e));           
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                                                                                   app.mobileApp.pane.loader.hide();
 
                                                                                    if (!app.checkSimulator()) {
-                                                                                       window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                                       window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                    }else {
-                                                                                       app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                                       app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                                    }
                                                                                }               
                                                                            });  
@@ -1119,13 +1035,26 @@ app.groupDetail = (function () {
                                 if (loginData.status[0].Msg==='Success') {
                                     $("#adminEditCustomer").hide();
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                                        window.plugins.toast.showShortBottom(app.MEMBER_DETAIL_UPDATED_MSG);   
                                     }else {
-                                        app.showAlert("Customer detatil updated successfully", "Notification");  
+                                        app.showAlert(app.MEMBER_DETAIL_UPDATED_MSG, "Notification");  
                                     }
                                     
                                     app.mobileApp.navigate('#groupMemberShow');
-                                    //app.mobileApp.navigate('#groupMemberShow');
+                                }else if(loginData.status[0].Msg==="Session Expired"){
+                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    app.LogoutFromAdmin(); 
+                                
+                                }else if (loginData.status[0].Msg==="You don't have access") {
+                    
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }
+                                              
+                                    app.mobileApp.navigate('views/orgMemberPage.html');
+      
                                 }else {
                                     $("#adminEditCustomer").hide();
                                     app.showAlert(loginData.status[0].Msg , 'Notification'); 
@@ -1149,27 +1078,26 @@ app.groupDetail = (function () {
                                                                                    url: app.serverUrl() + "customer/edit",
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   cache: false,                                                      
+                                                                                                                                         
                                                                                    data: jsonDataRegister
                                                                                }
                     },
                                                                        schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            $("#adminEditCustomer").hide();
 
-                                                                           console.log(JSON.stringify(e));           
-                                                                           
-                                                                           app.mobileApp.pane.loader.hide();
+                                                                           //console.log(JSON.stringify(e));           
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                                                                           app.mobileApp.pane.loader.hide();
                                                                          
                                                                            if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showShortBottom('Please check your internet connection.');
+                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                            }else {
-                                                                               app.showAlert("Please check your internet connection.", "Notification"); 
+                                                                               app.showAlert(app.INTERNET_ERROR, "Notification"); 
                                                                            }
                                                                        }               
                                                                    });  
@@ -1182,12 +1110,26 @@ app.groupDetail = (function () {
                         if (loginData.status[0].Msg==='Customer detatil updated successfully') {
                             $("#adminEditCustomer").hide();  
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom('Customer detatil updated successfully');   
+                                window.plugins.toast.showShortBottom(app.MEMBER_DETAIL_UPDATED_MSG);   
                             }else {
-                                app.showAlert("Customer detatil updated successfully", "Notification");  
+                                app.showAlert(app.MEMBER_DETAIL_UPDATED_MSG, "Notification");  
                             }
                             
                             app.mobileApp.navigate('#groupMemberShow');
+                        }else if(loginData.status[0].Msg==="Session Expired"){
+                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                            app.LogoutFromAdmin(); 
+                                
+                        }else if (loginData.status[0].Msg==="You don't have access") {
+                    
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                }else {
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
+                                }
+                                              
+                                app.mobileApp.navigate('views/orgMemberPage.html');
+  
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
                             $("#adminEditCustomer").hide();

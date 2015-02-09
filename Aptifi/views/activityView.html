@@ -2,7 +2,6 @@
     <div data-role="header">
         <div data-role="navbar">
             Message
-            <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="left" data-role="backbutton"><img src="styles/images/icon-arrow_left.png " style="background-position: .65em 50%;width:100%;height:90%"/></a>-->
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
         </div>
@@ -18,7 +17,6 @@
             <div class="notiList-content">
                 <div class="dateDisplay">
                     <span id="notiDate" class="dateValue">${date}</span>
-                    <!--<hr class="dateLine"/>-->
                     <span></span>
                 </div>
                 <br/>
@@ -33,7 +31,7 @@
                         <source src="">
                  </video>
         </div>
-
+   
         <div id="commentListContainer" >
             <div class="comments-wrp">
                 <ul id="comments-listview" data-template="commentsTemplate" ></ul>
@@ -44,35 +42,26 @@
     <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;">
             <div style="float:left;width:86%;border-radius:6px;border:none;bacground-color:#ffffff">
-               <textarea class="replyTextArea" id="newComment" placeholder="Reply" style="padding:7px 5px 1px 5px;margin-left:5px;border-radius:6px;border:none;"></textarea>
+               <textarea class="replyTextArea" id="newComment" placeholder="Reply" style="padding:7px 5px 0px 5px;margin-left:5px;border-radius:6px;border:none;"></textarea>
             </div>
-            <!--<input type="button" value="Send" style="width:19%;height:30px;background-color:#4583ED;border:none;color:#ffffff" data-role="button" data-bind="click: saveComment"/>-->
             <a style="background:transparent; border:none;float:right;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>
         </div>
     </div>
+    
 </div>
 
-<!-- Comments Template display: inline; float:right;-->
 <script type="text/x-kendo-template" id="commentsTemplate">
     # if (user_type !== 'Customer') { # 
         <div class="admin-comment-List">
-            <!--<h2 class="person-name">${User()}</h2>
-            <span class="time-span">${add_date}</span>-->
-            <!--<img src="styles/images/arrow.png" style="float:left;margin-left:-19px;position:center;"/>-->
          <div class="admin-comment-content">
             <a>${comment}</a>
-            <br/>
             <span class="admin-time-span">${add_date} ${add_time}</span>
          </div>
         </div>
     # }else { #
         <div class="user-comment-List" id="userCommentContainer">
-            <!--<h2 class="person-name">${User()}</h2>
-            <span class="time-span">${add_date}</span>-->
           <div class="user-comment-content">
             <a>${comment}</a>
-            <!--<img src="styles/images/arrowR.png" style="float:right;margin-right:-19px;position:center;"/>-->
-            <br/>
             <span class="user-time-span">${add_date} ${add_time}</span>
           </div>
         </div>        

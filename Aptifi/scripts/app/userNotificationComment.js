@@ -39,7 +39,7 @@ app.userNotiComment = (function () {
                 var notificationId = activity.notification_id;             
                 app.mobileApp.navigate('views/addCommentView.html?notificationId=' + notificationId);                         
             } else {
-                app.showAlert("You are currently offline , can't reply to post " , "Offline Mode");
+                app.showAlert("You are currently offline, can't reply to post " , "Offline Mode");
             }
         };
         
@@ -79,7 +79,7 @@ app.userNotiComment = (function () {
             listScroller = e.view.scroller;
             listScroller.reset();
             
-            $('#newAdminComment').css('height', '30px');
+            $('#newAdminComment').css('height', '35px');
 
             var txt = $('#newAdminComment'),
                 hiddenDiv = $(document.createElement('div')),
@@ -130,13 +130,15 @@ app.userNotiComment = (function () {
                                                                               //apps.hideLoading();
                                                                               //console.log(e);
                                                                               //console.log(JSON.stringify(e));
-                                                                               if (!app.checkSimulator()) {
-
-                                                                                   window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                              }else {
                                                                               
-                                                                                  app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                              } 
+                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                              
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification"); 
+                                                                                   
+                                                                               }   
                                                                           }
 	        
                                                                       });         
@@ -172,7 +174,7 @@ app.userNotiComment = (function () {
             document.getElementById("notiAdminImage").innerHTML = "";
             
             if (attached!== null && attached!=='' && attached!==undefined && attached!=='0') {             
-                loaded(); 
+                //loaded(); 
                 $('#notiAdminImage').css({"max-height":"200px"});
                 //$('#notiAdminImage').css({"height":"auto"});
                 //$('#notiAdminImage').css({"width":'auto'});
@@ -182,7 +184,7 @@ app.userNotiComment = (function () {
                 var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';    
             
                 //console.log(attachedImg);
-                window.resolveLocalFileSystemURI(fp, imagePathExist, imagePathNotExist);                
+                window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }
             
             if (comment_allow===0) {
@@ -316,9 +318,13 @@ app.userNotiComment = (function () {
                                                                        //apps.hideLoading();
                                                                        //console.log(e);
                                                                        //console.log(JSON.stringify(e));
-                                                                       navigator.notification.alert("Please check your internet connection.",
-                                                                                                    function () {
-                                                                                                    }, "Notification", 'OK');
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                       
+                                                                       if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
                                                                    }
 	        
                                                                });         
@@ -350,12 +356,16 @@ app.userNotiComment = (function () {
             } else {
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                     }else {
-                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
                 }else {  
                     var comment = $("#newAdminComment").val();
+                    
+                    $('#newAdminComment').css('height', '35px');
+                    $("#userComments-listview").append('<li id="adminTryingComment"><div class="Org-admin-comment-List"><div class="Org-admin-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Sending..</span></div></div></li>');
+                    $("#newAdminComment").val('');
 
                     if (comment!=='' && comment!=='Reply') {
                         $("#adminCommentPage").show();
@@ -381,12 +391,11 @@ app.userNotiComment = (function () {
                                                                                       app.mobileApp.pane.loader.hide();
                                                                           
                                                                                       if (!app.checkSimulator()) {
-                                                                                          window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
-                                                                                      }else {
-                                                                                          app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                                      }
-                                                                                         
-                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to saving response for Admin Comment .');
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
+                                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                   }               
                                                                               });  
 	            
@@ -399,20 +408,24 @@ app.userNotiComment = (function () {
                                 //console.log(commentData.status[0].Msg);
                                 if (commentData.status[0].Msg === 'Reply sent successfully') {
                                     $("#adminCommentPage").hide();
-                        
+                           
+                                    $('#newAdminComment').css('height', '35px');
+   
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showShortBottom('Reply sent successfully');   
+                                        window.plugins.toast.showShortBottom(app.COMMENT_REPLY);   
                                     }else {
-                                        app.showAlert("Reply sent successfully", "Notification");  
+                                        app.showAlert(app.COMMENT_REPLY, "Notification");  
                                     }
                         
-                                    var commentDate = app.formatDate(new Date());
+                                                         $('#adminTryingComment').remove();
 
-                                    $("#userComments-listview").append('<li><div class="Org-admin-comment-List"><div class="Org-admin-comment-content"><a>' + comment + '</a><br/><span class="user-time-span">' + commentDate + ' just now </span></div></div></li>');
+                                    var commentDate = app.formatDate(new Date());
+                                    $("#userComments-listview").append('<li><div class="Org-admin-comment-List"><div class="Org-admin-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span">' + commentDate + ' just now </span></div></div></li>');
                         
                                     //refreshComment();
                                     $("#newAdminComment").val('');
                                 }else {
+                                    $('#adminTryingComment').remove();
                                     $("#adminCommentPage").hide();
                                     app.showAlert(commentData.status[0].Msg , 'Notification'); 
                                 }
