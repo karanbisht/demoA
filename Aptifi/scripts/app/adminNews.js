@@ -1684,9 +1684,17 @@ app.adminNews = (function () {
         
         
         var showMoreButtonPress = function(){
+          if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+          }else{ 
             page++;
             dataReceived=dataReceived+10;
             getLiveData();            
+          }
         }
         
         return {

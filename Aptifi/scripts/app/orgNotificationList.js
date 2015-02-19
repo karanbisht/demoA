@@ -71,7 +71,7 @@ app.orgListView = (function () {
                                                                                   }else {
                                                                                       app.showAlert(app.INTERNET_ERROR, "Notification");  
                                                                                   }
-                                                                                  showMoreDbData();
+                                                                                  //showMoreDbData();
                                                                               }	        
                                                                           });         
             
@@ -197,8 +197,7 @@ app.orgListView = (function () {
         var previousDate = '';
         
         function getOrgNotiDataSuccess(tx, results) {
-            groupDataShow = [];
-            
+            groupDataShow = [];            
             var count = results.rows.length;
             DBGETDATAVALUE = count;           
 
@@ -280,9 +279,18 @@ app.orgListView = (function () {
         
         
         var showMoreButtonPress = function(){
+         if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+         }else { 
+
             page++;
             dataReceived=dataReceived+10;
             getLiveData();            
+         }
         }
 	           
         return {
