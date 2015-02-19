@@ -12,7 +12,9 @@
             </div>
 
     <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></span>
-</div>0
+    
+    <div id="showMoreNewsBtn" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.orgNews.showMoreButtonPress">SHOW MORE</div>
+</div>
 
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
             <div class="cf">         
@@ -27,30 +29,37 @@
             
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			                        
                   #if (news_image!=='' && news_image!==0 && upload_type==="image") {#
-                    <br/>
-                    <img src= ${news_image} style="max-height:200px;margin-top:10px;" />     
+                    <br/>                    
+                    <br/>                    
+ 
+                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id}>
+                       <div>
+                          <img src= ${news_image} style="max-height:200px;max-width:230px;" />    
+                       </div>
+                     </a>
+                     
                      <br/>
                      
-                     <div id="img_Div_${id}" style="display:none">
-                            <div class="show-native-img"></div>
-                            <br/><br/>
+                     <div id="img_Div_Image_${id}" style="display:none;color:rgb(87,167,12);">
+                        Downloading...
                      </div>
-                     <a data-role="button" id="imgToDownload_${id}"  data-align="right" data-click="app.Activities.imageDownlaodClick"  style="float:right" data-imgPath=${news_image} data-notiid=${id}>View</a> 
+                      
  
                   #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
-                        <!--<video  width="300" height="300" controls>
-                             <source src=${news_image} >
-                        </video>-->
-                                           
-                       <div class="event-vid-show" id=""></div>        
+                     <br/>
+                     
+                       <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id}>
+                            <div>
+                                 <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                            </div>
+                       </a>   
                        <br/>
                             
-                        <div id="video_Div_${id}" style="display:none">
-                            <div class="show-native-img"></div>
-                            <br/><br/>
+                        <div id="video_Div_Image_${id}" style="display:none;color:rgb(87,167,12);">
+                            Downloading...
                         </div>
-                        <a data-role="button" id="videoToDownload_${id}" data-align="right" style="float:right;" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id}>View</a>
+                        
 
                    #}#            
                 #}else{#   

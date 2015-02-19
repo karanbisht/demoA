@@ -11,7 +11,10 @@
         <div class="ball"></div>
     </div>
 
-    <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate"   data-bind="source: activities"></span>
+    <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate" data-bind="source: activities"></span>
+    
+    <div id="showMoreEventBtnNews" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.adminNews.showMoreButtonPress">SHOW MORE</div>
+
 </div>
 
 <script type="text/x-kendo-template" id="newsListTemplate" >                        
@@ -31,9 +34,9 @@
             <img src= ${news_image} style="max-height:200px;margin-top:10px;" />                
         #}else if (news_image!=='' && news_image!=='0' && upload_type==="video") {#          
             <br/>
-            <video  width="300" height="300" controls>
-                <source src=${news_image} >
-            </video>
+            <div>
+              <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+            </div>
         #}#
     </div>
     <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: editNews }">
@@ -43,8 +46,10 @@
   </div>   
     #}else {#
     <div class="cf">
-        <div id="activityTemplateTitle" class="HeadingClass">No News</div>
-        <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>
+       <div class="no-notiList-content-new">
+            <div id="activityTemplateTitle" class="HeadingClass">No News</div>
+            <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(147,147,147);" >#= news_desc #</a>
+       </div>
     </div>                            
     #}#
     
@@ -70,12 +75,12 @@
             <br/>
             <br/>
             
-            <textarea  id="addNewsDesc" placeholder="Please Enter News Here" class="common"></textarea>
-            <br/>
-            <br/>
+            <textarea  id="addNewsDesc" placeholder="Please Enter News Here" class="common"></textarea>            
+            <!--onclick="app.adminNews.clickToSelectGroup()" style="display:none" -->            
+            <div onclick="app.adminNews.clickToSelectGroup()" class="selectGroup">Select Group to Add News</div>            
             
-            <div class="selectGroupClass" style="margin-left:0px;" >Select Group to Add News :</div>
-            <div id="groupInAddNews" class="selectDivClass"> </div>
+            <div id="groupInAddNews" class="selectDivClass" style="display:none"> </div>
+            
                        
             <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span>
             <div style="margin-top:20px;">
@@ -90,9 +95,10 @@
             
             <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;">
-                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" ></a>
-                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none"/>
-                    
+                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" >
+                        <img src="styles/images/attachments.png" />                                                
+                    </a>
+                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
                     <div style="width:180px,height:50px;">
                         <!--<video id="attachedVidNews" width="180" height="50" controls style="display:none">
                         <source src="" type="">
@@ -174,19 +180,16 @@
         
         </div>
 
-        <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
+        <div id="newsAttachment" style="margin-top:10px;height:50px; width:100%;">
+
             <div style="display:inline;height:100px; width:100%;">
-                <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" ></a>
+                <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" >
+                    <img src="styles/images/attachments.png" />
+                </a>
                 <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
                 
-                <div style="width:180px,height:50px;">
-                    <!--<video id="attachedVidNewsEdit" width="180" height="50" controls style="display:none">
-                    <source src="" type="">
-                    </video>-->
-                    
-                    <img id="attachedVidNewsEdit" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                <img id="attachedVidNewsEdit" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
 
-                </div>
             </div>
             
             <ul data-role="actionsheet" id="newsEditImgSelect">
@@ -206,33 +209,23 @@
             
             </ul>
         </div>
-        
-        
-        <div style="margin-bottom:10px;">
-             <ol class="showInSameLine">
-                    <li style="width:100%;margin-bottom:30px;">
+                
+                    <li  class="showInSameLine" style="margin-bottom:30px;">
 
-                        <span id="registration" data-role="touch" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:6px;" data-bind="events: { tap: deleteNews }"> Delete News </span>
+                        <span id="registration" data-role="touch" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:3px;" data-bind="events: { tap: deleteNews }"> Delete News </span>
 
-                        <span id="registration" data-role="touch" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:6px;" data-bind="events: { tap: saveEditNewsData }"> Save Change </span>
+                        <span id="registration" data-role="touch" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" data-bind="events: { tap: saveEditNewsData }"> Save Change </span>
 
                     </li>
 
-                 </ol>
-                             <br/>
                  <br/>
             <br/>
-
-        </div>
     
     </div>
-
-
 </div>
 
 <script type="text/x-kendo-template" id="errorTemplate">    		
-    <div class="cf" style="margin-top:30%;border:none">
-        
+    <div class="cf" style="margin-top:30%;border:none">        
         <div class="error-avatar">
             <img src="styles/images/error.png"/>
         </div>

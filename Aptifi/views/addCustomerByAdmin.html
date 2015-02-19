@@ -35,11 +35,13 @@
                 </li>
             </ul>
             <ul id="addMemberUl" data-role="listview" data-style="inset"></ul>
-            <a style="padding-left:10px;color:#5992CB" data-role="touch" data-bind="events: { tap: addMoreMobileNo }" >Add more</a>
+            <a style="padding-left:10px;color:#7FBF4D" data-role="touch" data-bind="events: { tap: addMoreMobileNo }" >Add more</a>
                         
-            
-            <div class="selectGroupClass">Select Group to Add Member </div>
-            <div id="groupInAddCustomer" class="selectDivClass"> </div>            
+
+            <div onclick="app.addCustomerByAdmin.clickToSelectGroup()" class="selectGroupMember">Select Group to Add Member</div>            
+
+            <div id="groupInAddCustomer"  class="selectDivClass" style="display:none"></div>            
+    
         </form>
     </div>
     

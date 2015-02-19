@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     $(document).ajaxError(function(e, jqxhr, settings, exception) {  
         if (jqxhr.readyState === 0 || jqxhr.status === 0) {  
@@ -26,12 +25,13 @@ var app = (function (win) {
     var No_MEMBER_TO_ADD ="No member to add in group"; 
     var LOGIN_ANOTHER_DEVICE = "Your have logged in from another device, Please re-login.";
     var COMMENT_REPLY="Message sent successfully";
-    var NOTIFICATION_MSG_NOT_SENT="Error sending message.";
+    var NOTIFICATION_MSG_NOT_SENT="Operation Failed. Please try again.";
     var NOTIFICATION_MSG_SENT="Message sent successfully";    
     var NOTIFICATION_MSG_SCHEDULED="Message scheduled successfully";
     var NEWS_ADDED_MSG="News added successfully";
     var NEWS_UPDATED_MSG="News updated successfully";
     var NEWS_EVENT_FAIL="Operation Failed. Please try again.";
+    var CANNOT_CANCEL="Operation cannot be cancelled , Data sent.";
     var NEWS_DELETED_MSG="News deleted successfully";
     var EVENT_ADDED_MSG="Event added successfully";
     var EVENT_UPDATED_MSG="Event updated successfully";
@@ -382,16 +382,24 @@ var app = (function (win) {
     //layout: "tabstrip-layout",										
     skin: 'flat'
     });*/
+    
+    var Keyboardisoff = function() {
+      $("#single-activity").find(".km-scroll-container").css("-webkit-transform", "translate3d(0px, 0px, 0px)");        
+    };
+    
     var onDeviceReady = function() {
         //[data-role=footer]        
 
         feedback.initialize('8f965ba0-a6d8-11e4-962d-15be4c73b66b');
+        StatusBar.overlaysWebView(false);
+        StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
+        document.addEventListener("hidekeyboard", Keyboardisoff, false);
         
-        document.addEventListener("showkeyboard", function(){ $(".footer").hide();}, false);
-        document.addEventListener("hidekeyboard", function(){ $(".footer").show();}, false);        
+        /*document.addEventListener("showkeyboard", function(){ $(".footer").hide();}, false);
+        document.addEventListener("hidekeyboard", function(){ $(".footer").show();}, false);*/        
         
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
         
@@ -549,7 +557,7 @@ var app = (function (win) {
         fp = rootdir.toURL();        
         //alert(fp);
         //alert(fileSystem.root.fullPath);        
-        directoryEntry.getDirectory("Aptifi", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
+        directoryEntry.getDirectory("Zaffio", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         getfbValue();
 
     }
@@ -1050,8 +1058,7 @@ var app = (function (win) {
     var currentDataFormate = function() {
         var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var today = new Date();
-        
+        var today = new Date();     
         return kendo.toString(days[today.getDay()] + ',' + today.getDate() + ' ' + month[today.getMonth()] + ' ' + today.getFullYear()); 
     }
       
@@ -1421,6 +1428,7 @@ var app = (function (win) {
         NEWS_UPDATED_MSG:NEWS_UPDATED_MSG,
         NEWS_DELETED_MSG:NEWS_DELETED_MSG,
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
+        CANNOT_CANCEL:CANNOT_CANCEL,
         EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,

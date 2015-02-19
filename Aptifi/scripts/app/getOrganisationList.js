@@ -22,7 +22,7 @@ app.OragnisationList = (function () {
              
             localStorage.setItem("loginStatusCheck", 1);
             account_Id = localStorage.getItem("ACCOUNT_ID");
-            
+                        
             var db = app.getDb();
             db.transaction(getDataOrg, app.errorCB, showLiveData);   
         }
@@ -41,7 +41,6 @@ app.OragnisationList = (function () {
         var getDataOrgDB = [];
         var getDataCountDB = [];
         var org_id_DB;
-        var lastMessageShow;
         var org_Logi_Image
         
         function getDataSuccess(tx, results) {                        
@@ -430,7 +429,6 @@ app.OragnisationList = (function () {
             organisationListDataSource.fetch(function() {                
                 
                         var data = this.data();
-
                 
                             if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
@@ -553,9 +551,9 @@ app.OragnisationList = (function () {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else {
                 showUpdateLocalDB();
@@ -563,8 +561,7 @@ app.OragnisationList = (function () {
         };
         
         var showLiveDataNew = function() {
-            $("#progress2").hide();
-                
+            $("#progress2").hide();                
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
                                                                        });           
@@ -575,7 +572,7 @@ app.OragnisationList = (function () {
                                                             });
                 
             $("#progress2").hide();
-            
+    
             $('#organisation-listview').data('kendoMobileListView').refresh();
         };
         
@@ -584,18 +581,6 @@ app.OragnisationList = (function () {
             db.transaction(getDataOrg, app.errorCB, showLiveDataNew);   
         };
                                                         
-        function fileExist(file) {
-            var status;    
-            window.resolveLocalFileSystemURI('file://' + window.rootFS.fullPath + '/' + file,
-                                             function() {
-                                                 status = true;
-                                             },
-                                             function() {
-                                                 status = false;
-                                             }
-                );
-            return status;
-        }
             
         /* var imagePathExist = function(){
         return 1;    
@@ -606,22 +591,6 @@ app.OragnisationList = (function () {
         };
         */  
             
-        var storeImageSdcard = function(imageName , orgId) {
-            var imgData = 'http://54.85.208.215/assets/upload_logo/' + imageName;               
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_OrgLogo_' + orgId + '.jpg';
-            	
-            var fileTransfer = new FileTransfer();    
-            fileTransfer.download(imgData, fp, 
-                                  function(entry) {
-                                      app.mobileApp.pane.loader.hide();
-                                  },
-    
-                                  function(error) {
-                                      app.mobileApp.pane.loader.hide();
-                                  }
-                );                        
-        };
             
         var organisationSelected = function (e) {
             //$("#progress2").show();

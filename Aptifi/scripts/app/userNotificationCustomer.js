@@ -35,13 +35,13 @@ app.replyedCustomer = (function () {
                                                                  schema: {
                                 
                     data: function(data) {
-                        //console.log(data);
+                        console.log(JSON.stringify(data));
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     //console.log(JSON.stringify(e));
+                                                                     console.log(JSON.stringify(e));
                                                                      $("#loaderReplyCustomer").hide();
                                                                      $("#reply-customer-listview").show();
                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
@@ -107,7 +107,7 @@ app.replyedCustomer = (function () {
                                                customerID:data[0].status[0].customerList[i].customerID,
                                                user_type:data[0].status[0].customerList[i].user_type,
                                                //orgID:orgVal.customerList[i].orgID,
-                                               comment:data[0].status[0].customerList[i].comment,
+                                               comment:data[0].status[0].customerList[i].title,
                                                notification_id:data[0].status[0].customerList[i].notification_id,
                                                add_date:date_show,
                                                user_id:data[0].status[0].customerList[i].user_id

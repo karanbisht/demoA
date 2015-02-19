@@ -6,11 +6,19 @@
                  <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminEventCalender.addEventByAdmin"></a>
               </div>                                          
     </div>    
+
         <div class="loader" id="adminEventListLoader" style="display:none;">
                       <div class="ball"></div>
         </div>    
-    <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarAdminEventListTemplate"   data-bind="source: activities"></span>    
+
+    <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarAdminEventListTemplate" data-bind="source: activities"></span>    
+    
+    <div id="showMoreEventBtnEvent" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.adminEventCalender.showMoreButtonPress">SHOW MORE</div>
+
 </div>
+
+                                 <!--<div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>-->
+
 
 		<script type="text/x-kendo-template" id="calendarAdminEventListTemplate">
           #if(id!== 0 && id!== '0'){#  
@@ -18,15 +26,12 @@
              <div class="calendarEvent-content">                     
                    
                 <div class="calendarEvent-List" >                 
-                 
-                         <div class="event-img-show">
+                     <div class="event-img-show">
                             <div class="inner-event-img-show"> 
-                                 <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>
-                                 
-                                <div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>
-                                <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
+                                 <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>                                 
+                                 <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
                             </div>
-                         </div>                    
+                     </div>                    
                    
                    #if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#
@@ -59,7 +64,7 @@
 		</script>
 
 
-<div data-role="view" id="adminEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.show">
+<!--<div data-role="view" id="adminEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.show">
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span>Event Calendar</span>
@@ -84,7 +89,7 @@
     
         
        
-</div>
+</div>-->
 
 
 <div data-role="view" id="adminEventCalendarDetail" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.detailShow">
@@ -97,9 +102,7 @@
               </div>                                          
     </div>
 
-    <span id="eventCalendarList" data-style="inset" data-role="listview" data-template="calendarTemplate"   data-bind="source: activities"></span>
-    
-
+    <span id="eventCalendarListAdmin" data-style="inset" data-role="listview" data-template="calendarTemplateAdmin" data-bind="source: activities"></span>
     
     
     <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: deleteEvent }">
@@ -114,7 +117,7 @@
       </div>-->    
 </div>
 
-		<script type="text/x-kendo-template" id="calendarTemplate">
+		<script type="text/x-kendo-template" id="calendarTemplateAdmin">
             <div class="cf" data-role="touch" >                        
        		<div class="notiList-content-new" >             
        		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div>
@@ -126,9 +129,9 @@
                         <br/>
                     #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
                      <br/>
-                     <video  width="300" height="300" controls>
-                          <source src=${event_image} >
-                     </video>
+                         <div>
+                          <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                        </div>
                    #}#                                       
                         <br/>
                     <span id="activityTemplateDate"  style="float:left;color:rgb(122,184,77);margin-top:5px;">Date:<span style="color:rgb(147,147,147);"> ${event_show_day} ${event_below_day} </span></span>       	            
@@ -136,10 +139,12 @@
             
             
        		</div>
+            
+            
                 <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: editEvent }">    
                               <div class="notiNewsEditIcon"></div>
                               <a id="activityTemplateMessage" class="notiListComment">Edit</a>            			            
-              </div>
+                </div>
 
 		    </div>   
             
@@ -177,8 +182,9 @@
 
             <textarea  id="addEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
             <br/>            
-            <div class="selectGroupClass" style="margin-left:0px;">Select Group to Add Event : </div>
-            <div id="groupInAddEvent" style="margin-left:0px;" class="selectDivClass"> </div>            
+
+            <div onclick="app.adminEventCalender.clickToSelectGroup()" class="selectGroup">Select Group to Add Event</div>            
+            <div id="groupInAddEvent" style="margin-left:0px;display:none;" class="selectDivClass" > </div>            
 
             <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span>             
             
@@ -197,14 +203,13 @@
             <div id="eventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;">
                     
-                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" ></a>
+                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" >
+                        <img src="styles/images/attachments.png" />
+                    </a>
 
                     <img id="attachedImgEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
                     
                     <div style="width:180px,height:50px;">                        
-                        <!--<video id="attachedVidEvent" width="180" height="50" controls style="display:none">
-                             <source src="" type="">
-                        </video>-->                        
                         <img id="attachedVidEvent" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
                     </div>
 
@@ -247,7 +252,6 @@
 
 
 <div data-role="view" id="adminEditEventCalendar" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.editEventshow">
-
     <div data-role="header" style="border-bottom:2px solid #BABBBF">         
               <div data-role="navbar">     
                  <span> Edit Event </span>                 
@@ -279,8 +283,7 @@
                         
             <div class="selectGroupClass" style="margin-left:0px;" >Select Group to Edit Event :</div>
             <div id="groupInEditEvent" class="selectDivClass"> </div>
-            
-            
+                        
             <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span> 
             
             <div style="margin-top:20px" >
@@ -298,15 +301,13 @@
             <div id="editEventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
                 <div style="display:inline;">
                     
-                    <a style="background:transparent; border:none;float:left" data-icon="toprated" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" ></a>
+                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" >
+                        <img src="styles/images/attachments.png" />
+                    </a>
                     
                     <img id="attachedImgEditEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
                     
-                    <div style="width:180px,height:50px;">                        
-                        <!--<video id="attachedEditVidEvent" width="180" height="50" controls style="display:none">
-                             <source src="" type="">
-                        </video>-->
-                        
+                    <div style="width:180px,height:50px;">                                                
                         <img id="attachedEditVidEvent" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
                     </div>
 

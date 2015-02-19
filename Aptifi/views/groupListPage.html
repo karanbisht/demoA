@@ -18,12 +18,21 @@
         </p>
     </div> 
     
-    <div data-role="footer">
+    <!--<div data-role="footer">
         <div id="addGroupTabStrip" data-role="tabstrip" data-selected-index="2">
             <a id="tabAddGroup" data-icon="add" data-role="button" data-bind="click: addGroup" >Add Group</a>
             <a id="tabDeleteGroup" data-icon="trash" data-role="button" data-bind="click: deleteGroup" >Delete Group</a>
         </div>
-    </div>
+    </div>-->
+    
+    <div id="groupFooter" data-role="footer" style="padding-bottom:10px;background:#ffffff">
+                <ol class="reg-group-wrp" style="margin-top:10px">
+                    <li style="width:100%">
+                        <span id="tabAddGroup" class="clickEffect" data-role="touch" data-bind="events: { tap: addGroup }" style="float:left;margin;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Add Group </span>
+                        <span id="tabDeleteGroup" class="clickEffect" data-role="touch" data-bind="events: { tap: deleteGroup }"  style="float:right;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" >Delete Group</span>
+                    </li>
+                </ol>
+   </div>
 
 </div>
 

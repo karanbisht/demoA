@@ -51,6 +51,7 @@ app.GroupList = (function () {
         var show = function(e) {
             $("#admin-groupList-loader").show();
             $("#group-listview").hide();
+            $("#groupFooter").hide();
                   
             $(".km-scroll-container").css("-webkit-transform", "");
             //var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
@@ -117,6 +118,7 @@ app.GroupList = (function () {
                                                        });   
                     
                                     $("#tabDeleteGroup").hide();
+                                    $("#tabAddGroup").css('width','100%');
                                     showLiveData();
                                 }else if(data[0]['status'][0].Msg==="Session Expired"){
                                     app.showAlert(app.SESSION_EXPIRE , 'Notification');
@@ -216,6 +218,7 @@ app.GroupList = (function () {
                     }
                 }  
                                 $("#tabDeleteGroup").show();
+                                $("#tabAddGroup").css('width','45%');
 
             }else {                    
                 groupDataShow.push({
@@ -228,6 +231,8 @@ app.GroupList = (function () {
                                    });   
                     
                 $("#tabDeleteGroup").hide();
+                $("#tabAddGroup").css('width','100%');
+
             }
         }
             
@@ -248,6 +253,8 @@ app.GroupList = (function () {
               
             $("#admin-groupList-loader").hide();
             $("#group-listview").show();
+            $("#groupFooter").show();
+
         };
 
         var backToOrgDetail = function() {
@@ -274,24 +281,33 @@ app.GroupList = (function () {
         };
                 
         var addGroup = function() {
-            app.MenuPage = false;	
             
-            app.mobileApp.navigate('views/addGroup.html');  
-
-            app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
-
-            //app.slide('left', 'green' ,'3' ,'#views/addGroup.html');
- 
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                app.mobileApp.navigate('views/addGroup.html');  
+                app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
+            }            
+            //app.slide('left', 'green' ,'3' ,'#views/addGroup.html'); 
         };
         
+        
+        
         var deleteGroup = function() {
-            app.MenuPage = false;	
-            
-            app.mobileApp.navigate('views/deleteGroup.html');
-
-            app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
-
-            //app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                app.mobileApp.navigate('views/deleteGroup.html');
+                app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
+            }                       //app.slide('left', 'green' ,'3' ,'#views/deleteGroup.html');
  
         };
     

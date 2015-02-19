@@ -11,6 +11,7 @@ app.sendNotification = (function () {
     var tasks;
     var upload_type;
     var scheduleDiv = 0;
+    var dataCheckVal=0;
 
     var groupChecked = [];
     var sendNotificationViewModel = (function () {
@@ -130,6 +131,7 @@ app.sendNotification = (function () {
             
 
             pb.value(0);
+            dataCheckVal=0;
             noGroup = 0;
             noCustomer = 0;
             schedule = 0;
@@ -367,6 +369,7 @@ app.sendNotification = (function () {
                     //alert(upload_type);
                     if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
                         pb.value(0);
+                        dataCheckVal=0;
                         if ((dataToSend.substring(0, 21)==="content://com.android") && (upload_type==="other")) {
                             photo_split = dataToSend.split("%3A");
                             dataToSend = "content://media/external/images/media/" + photo_split[1];
@@ -431,9 +434,11 @@ app.sendNotification = (function () {
                        ft.onprogress = function(progressEvent) {
                          if (progressEvent.lengthComputable) {
                             var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                            pb.value(perc);                            
+                            pb.value(perc);  
+                             dataCheckVal=perc;
                          }else {
-                            pb.value('');                            
+                            pb.value('');  
+                             dataCheckVal=0;
                          }
                        };
                         
@@ -526,10 +531,19 @@ app.sendNotification = (function () {
         };
         
         
-        var transferFileAbort = function() {           
-            ft.abort(); 
-            $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
-            pb.value(0); 
+        var transferFileAbort = function() {     
+            if(dataCheckVal!==100){
+                ft.abort(); 
+                $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
+                pb.value(0);
+                dataCheckVal=0;
+           }else{
+                  if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.CANNOT_CANCEL);  
+                }else {
+                    app.showAlert(app.CANNOT_CANCEL , 'Notification');  
+                }     
+           }
         }
         
          
@@ -543,6 +557,7 @@ app.sendNotification = (function () {
               
             
             pb.value(0);
+            dataCheckVal=0;
             $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
             
             $("#notificationTitleValue").val('');            
@@ -563,6 +578,7 @@ app.sendNotification = (function () {
         function fail(error) {
             $("#progressSendNotification").hide();
             pb.value(0);
+            dataCheckVal=0;
             $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
  
             if (!app.checkConnection()) {
@@ -677,16 +693,36 @@ app.sendNotification = (function () {
         };
         
         var clickOnSelectGroup = function(){
+
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
                $("#selectGroupDiv").show();
                $("#selectGroupFooter").show();
                $("#whatToDo").hide();
+            }
+
         }
         
         
         var clickOnSelectCustomer = function(){
+            
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
                 $("#selectCustomerToSend").show();                            
                 $("#selectCustomerFooter").show();    
                 $("#whatToDo").hide();
+            }
+
         }
         
         var showDataInTemplate = function() {
@@ -1014,6 +1050,12 @@ app.sendNotification = (function () {
             $("#removeAttachment").show(); 
             $("#largeImage").show();
             upload_type = "other";
+            
+
+            var addedVideo = document.getElementById('attachedVidNoti');
+            addedVideo.src = ''; 
+            $("#attachedVidNoti").hide();            
+
             //alert(imageURI);
             //console.log(imageURI);
             //dataToSend = imageURI;
@@ -1022,7 +1064,6 @@ app.sendNotification = (function () {
         function onVideoURISuccessDataNoti(videoURI) {             
             var largeImage = document.getElementById('largeImage');
             largeImage.src = ''; 
-            $("#removeAttachment").hide(); 
             $("#largeImage").hide();            
             //console.log(imageURI);            
             // Uncomment to view the image file URI
@@ -1037,9 +1078,7 @@ app.sendNotification = (function () {
             
             videoAttached.src = 'styles/images/videoPlayIcon.png';
             dataToSend = videoURI;    
-            upload_type = "video";
-            
-            $("#removeAttachment").show(); 
+            upload_type = "video";            
             $("#attachedVidNoti").show();
             //alert(imageURI);
             //console.log(videoURI);

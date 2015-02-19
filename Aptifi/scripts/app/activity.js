@@ -19,6 +19,8 @@ app.Activity = (function () {
     var type;
     var date;
     var upload_type;
+    var attachedImgFilename;
+    var device_type = localStorage.getItem("DEVICE_TYPE"); 
     
     var activityViewModel = (function () {
         var activityUid;
@@ -127,7 +129,7 @@ app.Activity = (function () {
             
               var notiImageShow = document.getElementById('notiDetailVid');
               notiImageShow.style.display = 'none';
-              notiImageShow.src = '';
+              //notiImageShow.src = '';
             
             message = e.view.params.message;
             title = e.view.params.title;
@@ -149,18 +151,21 @@ app.Activity = (function () {
             if ((title==='' || title==='null' || title===null) && (message==='' || message==='null' || message===null)) {
                 $('#titleContainer').hide();
             }
-
             if (attached!== null && attached!=='' && attached!=="0" && upload_type==="other") {
+                $("#notiImageDiv").show();                
                 app.mobileApp.pane.loader.hide();
                 $('#notiImage').css({"max-height":"200px"});
-                $('#notiImage').css({"margin-top":"10px"}); 
+                $('#notiImage').css({"margin-top":"10px"});
+                attachedImgFilename = attached.replace(/^.*[\\\/]/, '');
+                //attachedImgFilename=attachedImgFilename+'.jpg';
                 var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg'; 
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_'+attachedImgFilename; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
+               $("#notiImageDiv").hide();
                 var notiImageShow = document.getElementById('notiDetailVid');
                 notiImageShow.style.display = 'block';
-                notiImageShow.src = attached; 
+                //notiImageShow.src = attached;*/ 
             }
                         
             if (comment_allow===1 || comment_allow==='1') {
@@ -196,44 +201,52 @@ app.Activity = (function () {
         var imagePathExist = function() {
             app.mobileApp.pane.loader.hide();
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
-            
-            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;            
+            var img = $('<img id="imgShow" style="max-height:180px"/>');
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
-
-            console.log(fp);
-              
+            console.log(fp);              
         }
         
         var imagePathNotExist = function() {
             app.mobileApp.pane.loader.hide();
-            $("#progressChat").show();
+            //$("#progressChat").show();
             var attachedImg = attached;                        
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Aptifi/" + 'Aptifi_' + notiId + '.jpg';
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
             
-            var img = $('<img id="imgShow" style="max-height:200px"/>'); //Equivalent: $(document.createElement('img'))       
+            var img = $('<img id="imgShow" style="max-height:180px"/>'); //Equivalent: $(document.createElement('img'))      
             img.attr('src', attachedImg);
             img.appendTo('#notiImage'); 
  	
             var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
-                                      //alert('1');
                                       app.mobileApp.pane.loader.hide();
-                                      $("#progressChat").hide();
+                                      //$("#progressChat").hide();
                                   },
     
                                   function(error) {
-                                      //alert('2');
-                                      app.mobileApp.pane.loader.hide();
+                                      //app.mobileApp.pane.loader.hide();
                                       $("#progressChat").hide();
                                   }
                 );                
         }
         
     
+        
+        var storeImageClick = function(){
+
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;   
+            
+                                      if(device_type==="AP"){
+                                          window.open(fp, '_blank' , 'EnableViewPortScale=yes');
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }            
+        }
+        
         
         var commentShow = function() {            
             app.mobileApp.pane.loader.hide();
@@ -632,6 +645,7 @@ app.Activity = (function () {
             init: init,
             show: show,
             saveComment:saveComment,
+            storeImageClick:storeImageClick,
             commentShow:commentShow
         };
     }());

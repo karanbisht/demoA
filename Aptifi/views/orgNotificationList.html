@@ -5,32 +5,24 @@
                <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
                <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
     	   </div>
-	  </div>
-
-     
+	  </div>     
      
          <div class="loader" id="progressAdminNoti" style="display:none;">
                 <div class="ball"></div>
          </div>
-
      
 	 <div>
     	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
-          
-         <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-	        	   <b>You have no Notification for you.</b>
-    	 </p>
- 	</div> 
-
+     </div> 
+     
+     <div id="showMoreEventBtnOrg" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.orgListView.showMoreButtonPress">SHOW MORE</div>
  </div>
 
 
 	<script type="text/x-kendo-template" id="adminNotiTemplate" >
             <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">
-         
-        
-               <div class="notiList-content">              
-        
+                 
+               <div class="notiList-content">                      
                     #if(date!==0 && date!=='0' ){#
                 <div class="dateDisplay">                  
                   <span id="activityTemplateDate" class="dateValue">${date}</span> 
@@ -61,9 +53,8 @@
                       <img src= ${attachedImg} style="max-height:200px;margin-top:10px;" /> 
                     #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
                         <br/>
-                        <video  width="300" height="300" controls>
-                             <source src=${attachedImg} >
-                        </video>
+                        <div class="event-vid-show" ></div>
+
                     #}#             
   
        		 </div>

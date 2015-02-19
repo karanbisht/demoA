@@ -1,7 +1,6 @@
 /**
  * Login view model
  */
-
 var app = app || {};
 
 app.Login = (function () {
@@ -59,8 +58,8 @@ app.Login = (function () {
             }
                          
             //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
-            var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            //var device_id = localStorage.getItem("deviceTokenID");          
+            //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+            var device_id = localStorage.getItem("deviceTokenID");          
             //console.log(device_id);            
             username = $("#loginUsername").val();
             //console.log(username);
@@ -172,10 +171,9 @@ app.Login = (function () {
         
         function insertProfileInfo(tx) {
             var query = "DELETE FROM PROFILE_INFO";
-            app.deleteQuery(tx, query);
-       	
+            app.deleteQuery(tx, query);       	
             userAccountID = profileInfoData.account_id;
-           
+            
             var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , login_status ) VALUES ("'
                         + profileInfoData.account_id
                         + '","'
@@ -193,7 +191,6 @@ app.Login = (function () {
                         + '" ,"'
                         + profileInfoData.mod_date
                         + '" ,"' + 1 + '")';              
-
             app.insertQuery(tx, query);       
         }
         
@@ -432,9 +429,7 @@ app.Login = (function () {
 
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
-                    read: {
-                                                                                 //url: "http://203.129.203.243/blank/sms/user/urlsmstemp.php?username=sakshay&pass=sakshay550&senderid=PRPMIS&dest_mobileno=+918447091551&tempid=21429&F1="+varifiCode+"&response=Y"
-                     
+                                                                            read: {                     
                                                                                  url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=ZAFFIO"
                                                                              }
                 },
@@ -445,6 +440,7 @@ app.Login = (function () {
                     }
                 },
                                                                      error: function (e) {
+                                                                         console.log(JSON.stringify(e));
                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                          $("#progress").hide();
                                                                          if (!app.checkSimulator()) {
@@ -487,14 +483,14 @@ app.Login = (function () {
                     }
 
                     //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
-                    var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-                    //var device_id = localStorage.getItem("deviceTokenID");                          
+                    //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+                    var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1'}
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
-                            read: {
+                        read: {
                                                                                     url: app.serverUrl() + "customer/login",
                                                                                     type:"POST",
                                                                                     dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests

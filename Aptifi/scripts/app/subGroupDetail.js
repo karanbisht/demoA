@@ -36,9 +36,18 @@ app.subGroupDetail = (function () {
         var groupMemberData = [];
         
          var showSubGroupMembers = function() {
-            app.mobileApp.pane.loader.hide();
-            app.mobileApp.navigate('#subGroupMemberShow');            
-            app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
+            
+             if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                app.mobileApp.pane.loader.hide();
+                app.mobileApp.navigate('#subGroupMemberShow');            
+                app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
+            }
                                
          }
         
@@ -46,6 +55,7 @@ app.subGroupDetail = (function () {
         
              $("#memberSGLoader").show();
              $("#subGroupMember-listview").hide();
+             $("#groupMemberFooter").hide();
              
 
              var MemberDataSource = new kendo.data.DataSource({
@@ -61,7 +71,7 @@ app.subGroupDetail = (function () {
                    
                                 
                     data: function(data) {
-                        //console.log(data);                       
+                        console.log(data);                       
                         return [data];
                     }
 
@@ -82,8 +92,8 @@ app.subGroupDetail = (function () {
                                                                                                                            dataSource: dataSource  
                                                                                                                        });
                                                                      
-                                                                                  $("#memberSGLoader").hide();
-                                                                                     $("#subGroupMember-listview").show();
+                                                                      $("#memberSGLoader").hide();
+                                                                      $("#subGroupMember-listview").show();
 
                                                                  }
 	        
@@ -105,6 +115,10 @@ app.subGroupDetail = (function () {
                                            orgID:0
                                        });                                         
                     $("#deleteGroupMemberBtn").hide();  
+                    $("#addGroupMemberBtn").css('width','100%');
+                    
+                    
+                    
                     groupMemberData = groupDataShow ;
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert(app.SESSION_EXPIRE , 'Notification');
@@ -112,8 +126,9 @@ app.subGroupDetail = (function () {
                 }else if (data[0]['status'][0].Msg==='Success') {
                     app.mobileApp.pane.loader.hide();
                                         
-                    $("#deleteGroupMemberBtn").show();  
-                    //console.log(orgVal.customerInfo.length);  
+                    $("#deleteGroupMemberBtn").show(); 
+                    $("#addGroupMemberBtn").css('width','45%');
+
                     for (var i = 0;i < data[0].status[0].customerInfo.length;i++) {
                         groupDataShow.push({
                                                first_name: data[0].status[0].customerInfo[i].first_name,
@@ -146,8 +161,12 @@ app.subGroupDetail = (function () {
 
             $("#memberSGLoader").hide();
             $("#subGroupMember-listview").show();
+            $("#groupMemberFooter").show();
+
 
             
+
+            console.log(groupMemberData);
             var subGroupDataListDataSource = new kendo.data.DataSource({
                                                                            data: groupMemberData
                                                                        });           

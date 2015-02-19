@@ -25,7 +25,6 @@
                 <span id="activityTemplateDate" class="dateValue">${date}</span>
                 <span></span>
             </div>
-
             <br/>
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
@@ -37,34 +36,33 @@
                 #messageVal = message;#  
             #}#            
             <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
-            #if(attached!=='' && attached!=='0' && upload_type==="other"){#
+            #if(attached!=='' && attached!=='0' && attached!==0 && upload_type==="other"){#
                     <br/>
                     <div style="overflow:hidden;">
-                        <img src= ${attachedImg} style="max-height:200px;margin-top:10px;overflow:hidden;" /> 
-                        <br/>   
-        
-                        <div id="img_Div_${pid}" style="display:none">
-                            <div class="show-native-img"></div>
-                            <br/><br/>
+                     <br/>
+                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid}>
+                            <div>
+                                <img src= ${attachedImg} style="max-height:200px;max-width:230px;"/>  
+                            </div>
+                        </a>
+                        <br/>           
+                        <div id="img_Div_${pid}" style="display:none;color:rgb(87,167,12);">
+                            Downloading...
                         </div>
-                        <a data-role="button" id="imgToDownload_${pid}"  data-align="right" data-click="app.Activities.imageDownlaodClick"  style="float:right" data-imgPath=${attachedImg} data-notiid=${pid}>View</a> 
-                                 
+                                                        
                     </div>
-            #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
-                        <br/>        
-                        <!--<video  width="300" height="300" controls>
-                             <source src=${attachedImg} >
-                        </video>-->
- 
-                       <div class="event-vid-show" id=""></div>        
-                       <br/>
-                            
-                        <div id="video_Div_${pid}" style="display:none">
-                            <div class="show-native-img"></div>
-                            <br/><br/>
-                        </div>
-                        <a data-role="button" id="videoToDownload_${pid}" data-align="right" style="float:right;" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid}>View</a>
-        
+            #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
+                     <br/>        
+                     <br/>        
+                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid}>
+                      <div>
+                            <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                      </div>
+                    </a>                       
+                    <br/>                    
+                        <div id="video_Div_${pid}" style="display:none;color:rgb(87,167,12);">
+                            Downloading...
+                        </div>                                
             #}#                    
         </div>
 

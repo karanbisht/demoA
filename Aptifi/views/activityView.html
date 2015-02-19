@@ -26,10 +26,9 @@
                 </li>
             </div>
             <br/>
-            <div id="notiImage" style="max-height:200px;margin-top:10px;"></div>
-                 <video id="notiDetailVid" width="300" height="300" controls style="display:none">
-                        <source src="">
-                 </video>
+            
+            <div id="notiImageDiv" style="max-height:200px;display:none"><a id="notiImage" data-role="button" data-click="app.Activity.storeImageClick"></a></div>            
+            <div class="event-vid-show" id="notiDetailVid"  style="display:none"></div>
         </div>
    
         <div id="commentListContainer" >
@@ -39,12 +38,12 @@
         </div>        
     </div>
 
-    <div id="commentPanel" data-role="footer" style="background-color:#FF9F23;padding:3px;padding-bottom:3px;padding-top:6px;">
+    <div id="commentPanel" data-role="footer" style="background-color:#7FBF4D;padding:3px;padding-bottom:3px;padding-top:6px;">
         <div style="display:inline;">
             <div style="float:left;width:86%;border-radius:6px;border:none;bacground-color:#ffffff">
                <textarea class="replyTextArea" id="newComment" placeholder="Reply" style="padding:7px 5px 0px 5px;margin-left:5px;border-radius:6px;border:none;"></textarea>
             </div>
-            <a style="background:transparent; border:none;float:right;" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>
+            <a style="background:transparent; border:none;float:right;" class="arrowBTN" data-icon="action" data-align="right" data-role="button" data-bind="click: saveComment"></a>
         </div>
     </div>
     

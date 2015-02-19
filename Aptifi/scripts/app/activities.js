@@ -1,8 +1,7 @@
 var app = app || {};
 
 app.Activities = (function () { 
-    'use strict';
-    
+    'use strict';    
     var organisationID;  
     var account_Id;  
     var bagCount;
@@ -23,8 +22,7 @@ app.Activities = (function () {
                     
         }   
         
-        var show = function(e) {            
-                    
+        var show = function(e) {                                
             StartDbCount = 0;
             checkVal=0;
             EndDbCount = 10;
@@ -82,7 +80,7 @@ app.Activities = (function () {
                                                                                              }
                     },
                                                                                      schema: {
-                        data: function(data) {
+                        data: function(data) {                            
                             return [data];                       
                         }                       
                     },
@@ -104,8 +102,7 @@ app.Activities = (function () {
                                 
  
             organisationALLNewListDataSource.fetch(function() {
-                        var data = this.data();
-            
+                        var data = this.data();            
                                     if (data[0]['status'][0].Msg ==='No notification') { 
                                         //alert('no noti 1');                                        
                                         /*var db = app.getDb();
@@ -143,7 +140,6 @@ app.Activities = (function () {
                 orgData = orgNotiDataVal[i].org_id;
                 orgLastMsg = orgNotiDataVal[i].message;
           
-
                 var notiTitleEncode = app.urlEncode(orgNotiDataVal[i].title);
                 var notiMessageEncode = app.urlEncode(orgNotiDataVal[i].message);
 
@@ -272,7 +268,7 @@ app.Activities = (function () {
 
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedData.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Aptifi/" + 'Aptifi_img_' + Filename;             
+                        var fp = vidPathData + "Aptifi/" + 'Zaffio_img_' + Filename;             
 
                         alert('data');
                         window.resolveLocalFileSystemURL(fp, 
@@ -409,14 +405,14 @@ app.Activities = (function () {
             //alert(notiFi);
             attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
             var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_Video_' + attachedFilename;             
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;             
             window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
         }
         
         var videoPathExist = function() {          
             
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_Video_' + attachedFilename;
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
 
             /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
             vid.attr('src', fp);
@@ -424,7 +420,7 @@ app.Activities = (function () {
             
 
             if(device_type==="AP"){
-                  window.open(fp, "_blank");
+                  window.open(fp, "_blank",'EnableViewPortScale=yes');
             }else{
                   window.plugins.fileOpener.open(fp);
             }
@@ -433,10 +429,10 @@ app.Activities = (function () {
         
         var videoPathNotExist = function() {
             $("#video_Div_"+notiFi).show();
-            $("videoToDownload_"+notiFi).text('Downloading..');
+            //$("videoToDownload_"+notiFi).text('Downloading..');
             var attachedVid = videoFile;                        
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_Video_' + attachedFilename;
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
             
             var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedVid, fp, 
@@ -444,19 +440,19 @@ app.Activities = (function () {
                                       
 
                                       if(device_type==="AP"){
-                                          window.open(fp, "_blank");
+                                          window.open(fp, "_blank",'EnableViewPortScale=yes');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
 
                                       $("#video_Div_"+notiFi).hide();
-                                      $("videoToDownload_"+notiFi).text('View');
+                                      //$("videoToDownload_"+notiFi).text('View');
 
                                   },
     
                                   function(error) {
                                       $("#video_Div_"+notiFi).hide();
-                                      $("videoToDownload_"+notiFi).text('View');
+                                      //$("videoToDownload_"+notiFi).text('View');
                                       //$("#progressChat").hide();
                                   }
                 );                
@@ -477,7 +473,7 @@ app.Activities = (function () {
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_img_' + attachedImgFilename;             
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;             
             console.log(vidPathData);
             console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
@@ -494,14 +490,14 @@ app.Activities = (function () {
         var imgPathExist = function() {                    
             //alert('img_exixt');
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_img_' + attachedImgFilename;   
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
             console.log(fp);
             
                                       if(device_type==="AP"){
                                           //alert('Show');
                                           //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank');
+                                          window.open(fp, '_blank' , 'EnableViewPortScale=yes');
 
                                       }else{
                                           window.plugins.fileOpener.open(fp);
@@ -513,31 +509,32 @@ app.Activities = (function () {
             //alert('img_not_exixt');
 
             $("#img_Div_"+imgNotiFi).show();
-            $("#imgToDownload_"+imgNotiFi).text('Downloading..');
+            //$("#imgToDownload_"+imgNotiFi).text('Downloading..');
             
             var attachedImg = imgFile;                        
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Aptifi/" + 'Aptifi_img_' + attachedImgFilename;
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
                         console.log(fp);
 
 
             var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
-                                      $("#imgToDownload_"+imgNotiFi).text('View');
+                                      //$("#imgToDownload_"+imgNotiFi).text('View');
+
+                                      $("#img_Div_"+imgNotiFi).hide();
 
                                       if(device_type==="AP"){
                                           //alert('1');
-                                          window.open(fp, "_blank");
+                                          window.open(fp, "_blank" , 'EnableViewPortScale=yes');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
                                       
-                                      $("#img_Div_"+imgNotiFi).hide();
                                   },
     
                                   function(error) {
-                                      $("#imgToDownload_"+imgNotiFi).text('View');
+                                      //$("#imgToDownload_"+imgNotiFi).text('View');
                                       $("#img_Div_"+imgNotiFi).hide();
                                   }
                 );                

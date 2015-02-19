@@ -59,45 +59,14 @@ app.groupDetail = (function () {
                                                                                    }
                 },
                                                                            schema: {                                
-                    data: function(data) {	
-                        //console.log(JSON.stringify(data));
-                        $.each(data, function(i, groupValue) {
-                            //alert("IN");
-                            //console.log(groupValue);   
-                            if (groupValue[0].Msg ==='No Orgnisation to manage') {                                   
-                                adminOrgInfo = [];
-                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);  
-                            }else if (groupValue[0].Msg==="You don't have access") {
-                                //app.showAlert('Current user session has expired. Please re-login in Admin Panel' , 'Notification');
-                                //app.LogoutFromAdmin();    
-                                if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
-                                }else {
-                                    app.showAlert(app.NO_ACCESS , 'Offline');  
-                                }
-                                //app.mobileApp.navigate('views/organisationLogin.html');   
-                                //localStorage.setItem("loginStatusCheck", 1);                                
-                            }else if (groupValue[0].Msg==='Success') {
-                                console.log(groupValue[0]);
-                                var adminOrgInformation = groupValue[0].orgData;                                
-                                var adminIncomMsg = groupValue[0].last;
-                                saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
-              
-                                for (var i = 0 ; i < adminOrgInformation.length ;i++) {
-                                    adminOrgInfo.push({
-                                                          id: groupValue[0].orgData[i].organisationID,
-                                                          org_name:groupValue[0].orgData[i].org_name
-                                                      });
-                                }                           
-                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
-                            }
-                        });
+                    data: function(data) {
+                        console.log(data);                                            
                         return [data];
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               //console.log(e);
-                                                                               //console.log(JSON.stringify(e));
+                                                                               console.log(e);
+                                                                               console.log(JSON.stringify(e));
                                                                                $("#progressAdmin").hide();             
                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
@@ -111,18 +80,35 @@ app.groupDetail = (function () {
                                                                        });
                         
             organisationListDataSource.fetch(function() {
-                /*
-                var loginAdminDataView = organisationListDataSource.data();
-                $.each(loginAdminDataView, function(i, groupValue) {
-                console.log(groupValue);                                     
-                if(groupValue.status[0].Msg ==='Not a customer to any organisation'){     
-                }else if(groupValue.status[0].Msg==='Success'){
-                console.log(groupValue.status[0].orgData.length);  
-                var adminOrgInformation = groupValue.status[0].orgData;
-                saveAdminOrgInfo(adminOrgInformation); 
-                }
-                });
-                */
+                var data = this.data();                
+                            if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {                                   
+                                adminOrgInfo = [];
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo); 
+                                
+                            }else if (data[0]['status'][0].Msg==="You don't have access") {
+                                if (!app.checkSimulator()) {
+                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);
+                                }else {
+                                    app.showAlert(app.NO_ACCESS , 'Offline');  
+                                }                                
+                            }else if (data[0]['status'][0].Msg==='Session Expired') {
+                                app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                app.LogoutFromAdmin();          
+                                
+                            }else if (data[0]['status'][0].Msg==='Success') {
+                                var adminOrgInformation = data[0]['status'][0].orgData;                                
+                                var adminIncomMsg = data[0]['status'][0].last;
+                                saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
+              
+                                for (var i = 0 ; i < adminOrgInformation.length ;i++) {
+                                    adminOrgInfo.push({
+                                                          id: data[0]['status'][0].orgData[i].organisationID,
+                                                          org_name:data[0]['status'][0].orgData[i].org_name
+                                                      });
+                                }    
+                                
+                                localStorage["ADMIN_ORG_DATA"] = JSON.stringify(adminOrgInfo);
+                            }
             });
         };
         
@@ -317,28 +303,43 @@ app.groupDetail = (function () {
         } 
            
         var showGroupNotification = function() {
-            app.MenuPage = false;
-            app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
-            app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID + '&account_Id=' + account_Id);
+            
+
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                    app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
+                    app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID + '&account_Id=' + account_Id);
+            }
+
             //app.mobileApp.navigate('#groupNotificationShow');
         };   
 
         var groupDataShow = [];        
         var showGroupMembers = function() {            
-            app.MenuPage = false;
 
-            app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
-
-            app.mobileApp.navigate('views/orgMemberPage.html');                              
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                    app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
+                    app.mobileApp.navigate('views/orgMemberPage.html');                              
+            }
         };
         
         var orgMemberShow = function(e) {
-
-            $(".km-scroll-container").css("-webkit-transform", "");  
-            
+            $(".km-scroll-container").css("-webkit-transform", "");              
             var organisationID = localStorage.getItem("orgSelectAdmin");         
             $("#groupMember-listview").hide();
-            $("#progressAdminOrgMem").show();   
+            $("#progressAdminOrgMem").show();
+            $("#orgMemFooter").hide();
                                
                         
             app.mobileApp.pane.loader.hide();
@@ -406,6 +407,7 @@ app.groupDetail = (function () {
                                            orgID:'0'
                                        });     
                     $("#adminRemoveMember").hide();
+                    $("#adminAddMember").css('width','100%');
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
@@ -422,6 +424,8 @@ app.groupDetail = (function () {
                                            });
                     }     
                     $("#adminRemoveMember").show();
+                    $("#adminAddMember").css('width','45%');
+
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom(app.NO_ACCESS);  
@@ -439,6 +443,7 @@ app.groupDetail = (function () {
 
             $("#progressAdminOrgMem").hide();
             $("#groupMember-listview").show();
+            $("#orgMemFooter").show();
 
             
             $("#groupMember-listview").kendoMobileListView({
@@ -544,10 +549,18 @@ app.groupDetail = (function () {
         };
         
         var addMemberToGroup = function() {
-            app.MenuPage = false;
-            var organisationID = localStorage.getItem("orgSelectAdmin");
-            app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");                        
-            app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                var organisationID = localStorage.getItem("orgSelectAdmin");
+                app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");                        
+                app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
+           }
+
         };
         
         var backToOrgDetail = function() {
@@ -561,7 +574,6 @@ app.groupDetail = (function () {
 
         
         var removeMemberFromGroup = function() {           
-            app.MenuPage = false;
             app.mobileApp.navigate('#removeMemberFromGroup');
         };
                  
@@ -649,8 +661,16 @@ app.groupDetail = (function () {
         };
         
         var showOrgGroupView = function() {
-            app.MenuPage = false;
-            app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                   app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID + '&account_Id=' + account_Id + '&orgName=' + orgName + '&orgDesc=' + orgDesc);                
+            }
+
         };
  
         function refreshOrgMember() {  
@@ -661,11 +681,20 @@ app.groupDetail = (function () {
         var memberSelectedCustID;
          
         var clickOnOrgMember = function(e) {
-            //console.log(e.data);
             memberSelectedOrgID = e.data.orgID;
-            memberSelectedCustID = e.data.customerID;   
-            app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
-            app.mobileApp.navigate('#editMemberInAdmin');       
+            memberSelectedCustID = e.data.customerID;  
+            
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                 app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
+                 app.mobileApp.navigate('#editMemberInAdmin');       
+            }
+            
         };
 
         var alernateMobileVal;
@@ -701,13 +730,13 @@ app.groupDetail = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        //console.log(data);
+                        console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           //console.log(JSON.stringify(e));
+                                                                           console.log(JSON.stringify(e));
                                                                            
                                                                            $("#adminEditCustomer").hide();            
                                                                            $("#editOrgMemberContent").show();
@@ -722,55 +751,57 @@ app.groupDetail = (function () {
                                                                    });  
 	            
             dataSourceMemberDetail.fetch(function() {
-                var loginDataView = dataSourceMemberDetail.data();                                    
-                $.each(loginDataView, function(i, addGroupData) {
-                    console.log(addGroupData);
-                    if (addGroupData.status[0].Msg==='Success') {
-                        var cust_Mobile_no = addGroupData.status[0].customerDetail[0].uacc_username;
-                        var cust_email = addGroupData.status[0].customerDetail[0].user_email;
-                        var cust_fname = addGroupData.status[0].customerDetail[0].user_fname;
-                        var cust_lname = addGroupData.status[0].customerDetail[0].user_lname;
+                //var loginDataView = dataSourceMemberDetail.data();                                    
+                
 
-                        $("#editFirstName").val(cust_fname);
-                        $("#editLastName").val(cust_lname);
-                        $("#editEmail").val(cust_email);
+                var data = this.data();                
+
+                    if (data[0]['status'][0].Msg==='Success') {
+                        var cust_Mobile_no = data[0]['status'][0].customerDetail[0].uacc_username;
+                        var cust_email = data[0]['status'][0].customerDetail[0].user_email;
+                        var cust_fname = data[0]['status'][0].customerDetail[0].user_fname;
+                        var cust_lname = data[0]['status'][0].customerDetail[0].user_lname;
+
+                        $("#editFirstNameAdmin").val(cust_fname);
+                        $("#editLastNameAdmin").val(cust_lname);
+                        $("#editEmailAdmin").val(cust_email);
                         $("#staticMobile").val(cust_Mobile_no);
                         
-                        if (addGroupData.status[0].alternate.length!==0 && addGroupData.status[0].alternate.length!==undefined) { 
-                            var alternateNoAdded = addGroupData.status[0].alternate.length;                          
+                        if (data[0]['status'][0].alternate.length!==0 && data[0]['status'][0].alternate.length!==undefined) { 
+                            var alternateNoAdded = data[0]['status'][0].alternate.length;                          
                             for (var i = 0 ; i < alternateNoAdded ;i++) {
                                 alernateMobileVal++;
                                 alternateNumInfo.push({
                                                           count:i,
-                                                          id: addGroupData.status[0].alternate[i].custID,
-                                                          alternateNo: addGroupData.status[0].alternate[i].uacc_username,
+                                                          id: data[0]['status'][0].alternate[i].custID,
+                                                          alternateNo: data[0]['status'][0].alternate[i].uacc_username,
                                                           customerId: memberSelectedCustID,
-                                                          org_id: addGroupData.status[0].alternate[i].orgID
+                                                          org_id: data[0]['status'][0].alternate[i].orgID
                                                       });
 
                                 $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
-                                $("#editMobile" + alernateMobileVal).val(addGroupData.status[0].alternate[i].uacc_username);  
+                                $("#editMobile" + alernateMobileVal).val(data[0]['status'][0].alternate[i].uacc_username);  
                             }                           
                             localStorage["ALTER_ARRAY"] = JSON.stringify(alternateNumInfo);
                         }else {
                             $("#showAlternateList").hide();
                         }  
                         
-                        if (addGroupData.status[0].AdminGroup.length!==0 && addGroupData.status[0].AdminGroup.length!==undefined) {
+                        if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined){
                             adminAllGroupArray = [];
-                            for (var i = 0 ; i < addGroupData.status[0].AdminGroup.length;i++) {
+                            for (var i = 0 ; i < data[0]['status'][0].AdminGroup.length;i++) {
                                 adminAllGroupArray.push({
-                                                            group_name: addGroupData.status[0].AdminGroup[i].group_name,
-                                                            pid: addGroupData.status[0].AdminGroup[i].pid
+                                                            group_name: data[0]['status'][0].AdminGroup[i].group_name,
+                                                            pid: data[0]['status'][0].AdminGroup[i].pid
                                                         });
                             }
                         }
                         
-                        if (addGroupData.status[0].customerGroup.groupID.length!==0 && addGroupData.status[0].customerGroup.groupID.length!==undefined) {
+                        if (data[0]['status'][0].customerGroup.groupID.length!==0 && data[0]['status'][0].customerGroup.groupID.length!==undefined) {
                             customerGroupArray = [];
-                            for (var i = 0 ; i < addGroupData.status[0].customerGroup.groupID.length;i++) {
+                            for (var i = 0 ; i < data[0]['status'][0].customerGroup.groupID.length;i++) {
                                 customerGroupArray.push({
-                                                            pid: addGroupData.status[0].customerGroup.groupID[i]
+                                                            pid: data[0]['status'][0].customerGroup.groupID[i]
                                                         });
                             }
                         }
@@ -824,7 +855,6 @@ app.groupDetail = (function () {
                     $("#adminEditCustomer").hide();            
                     $("#editOrgMemberContent").show();
                 });
-            });
             //showGroupDataToEditInTemplate();   
         }
         
@@ -891,14 +921,30 @@ app.groupDetail = (function () {
         };
         
         var showOrgEvent = function() {
-            app.MenuPage = false;
-            app.mobileApp.navigate('views/adminEventCalendar.html');                
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                    app.mobileApp.navigate('views/adminEventCalendar.html');                
+            }
             //app.slide('left', 'green' , '3' , '#views/adminEventCalendar.html');
         }
         
         var showOrgNews = function() {
-            app.MenuPage = false;
-            app.mobileApp.navigate('views/adminNews.html');
+                
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                   app.mobileApp.navigate('views/adminNews.html');
+            }
+        
             //app.slide('left', 'green' , '3' , '#views/adminNews.html');
         }
         
@@ -926,9 +972,9 @@ app.groupDetail = (function () {
         }
                       
         var editProfileFunc = function() {
-            var fname = $("#editFirstName").val();
-            var lname = $("#editLastName").val();
-            var email = $("#editEmail").val();
+            var fname = $("#editFirstNameAdmin").val();
+            var lname = $("#editLastNameAdmin").val();
+            var email = $("#editEmailAdmin").val();
             var mobile = $("#staticMobile").val();
             var alterEditMob = $("#editMobileAlterPage").val();
             

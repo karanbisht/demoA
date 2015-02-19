@@ -41,8 +41,13 @@ app.addCustomerByAdmin = (function () {
             firstTime=0;
             mobileArray=[];
             groupDataShow=[];
-                                              
+                              
+
+            document.getElementById('groupInAddCustomer').style.display="none";
+
             getGroupToShowInCombo();
+            
+            
                       
         };
         
@@ -147,6 +152,11 @@ app.addCustomerByAdmin = (function () {
                                                         dataSource: comboGroupListDataSource
             });
             
+            
+
+            $("#groupInAddCustomer li:eq(0)").before('<li id="selectAll" class="getGroupCombo" onclick="app.addCustomerByAdmin.selectAllCheckBox()"><label><input type="checkbox" class="largerCheckbox" value="" /><span class="groupName_Select">Select All</span></label></li>');        
+
+            
 
               /* document.getElementById("multiSelectGroupName").innerHTML = "";
             
@@ -218,6 +228,7 @@ app.addCustomerByAdmin = (function () {
             var lname = $regLastName.val();
             var email = $regEmail.val();
             var mobile = $regMobile.val();
+
             if(firstTime===0){
             countMobile=addMoreMobile;
             }else{
@@ -465,10 +476,33 @@ app.addCustomerByAdmin = (function () {
         }
         
         
+        var open=0;
+        var clickToSelectGroup = function(){            
+            if(open===0){
+                $("#groupInAddCustomer").hide().slideDown({duration: 500});
+                open=1;
+            }else{
+                $("#groupInAddCustomer" ).slideUp("slow");
+                open=0
+            }
+        }
+        
+        var selectAllCheckBox = function(){
+             if ($("#selectAll").prop('checked')===true){ 
+                    $('.largerCheckbox').prop('checked', false);
+                    document.getElementById("selectAll").checked=false;
+                }else{
+                    $('.largerCheckbox').prop('checked', true); 
+                    document.getElementById("selectAll").checked=true;
+                }
+        }       
+        
         return {
             regInit: regInit,
             addNewRegistration: addNewRegistration,
             addMoreMobileNo:addMoreMobileNo,
+            clickToSelectGroup:clickToSelectGroup,
+            selectAllCheckBox:selectAllCheckBox,
             registerR: registerR
         };
     }());
