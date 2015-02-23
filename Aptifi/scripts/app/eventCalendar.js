@@ -12,9 +12,8 @@ app.eventCalender = (function () {
         var page=0;
         var totalListView=0;
         var dataReceived=0;
-
         var device_type = localStorage.getItem("DEVICE_TYPE"); 
-
+        var imageSourceOrg;
 
         var init = function() {
         }
@@ -29,6 +28,9 @@ app.eventCalender = (function () {
             account_Id = localStorage.getItem("ACCOUNT_ID");
             eventOrgId = localStorage.getItem("selectedOrgId");
             
+
+            imageSourceOrg = localStorage.getItem("selectedOrgImgSou");
+
 
             page=0;
             dataReceived=0;
@@ -355,7 +357,8 @@ app.eventCalender = (function () {
                                                 event_below_day:e.data.event_below_day,
                                                 event_image:e.data.event_image,
                                                 event_time: e.data.event_time,                                                                                  										  
-                                                mod_date: e.data.mod_date,                                     
+                                                mod_date: e.data.mod_date,
+                                                imageSourceOrg:imageSourceOrg,
                                                 org_id: e.data.org_id
                                             });
             console.log(multipleEventArray);

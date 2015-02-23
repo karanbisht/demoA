@@ -3,16 +3,31 @@ var app = app || {};
 app.orgsubGroupListView = (function () {
     var organisationID;
     var group_ID;
+
+    var page=0;
+    var totalListView=0;
+    var dataReceived=0;
+
     var orgDetailViewModel = (function () {
         var init = function () {
         };
 
         var adminNotificationShow = function(e) {
+            page=0;
+            dataReceived=0;
+            totalListView=0; 
+            $("#group-Notilist-Loader").show();
+            $("#admin-sub-noti-listview").hide();
+            $("#showMoreGroupBtnOrg").hide();
+            groupDataShow=[];
+
             organisationID = e.view.params.organisationID;
             group_ID = e.view.params.group_ID;
           
-            var db = app.getDb();
-            db.transaction(getDataOrgNoti, app.errorCB, showLiveData); 
+            //var db = app.getDb();
+            //db.transaction(getDataOrgNoti, app.errorCB, showLiveData); 
+            
+            getLiveData();
         };
         
         var getDataOrgNoti = function(tx) {
@@ -66,13 +81,114 @@ app.orgsubGroupListView = (function () {
                                        attached:''  
                                    });                   
             }                       
-        };       
+        };     
+        
+        
+
+        
+        var getLiveData = function(){
+                                 
+            var jsonDataLogin = {"group_id":group_ID,"page":page}                        
+            var organisationALLListDataSource = new kendo.data.DataSource({                
+                                                                              transport: {
+                                                                                      read: {
+                                                                                          url: app.serverUrl() + "notification/groupNotification",
+                                                                                          type:"POST",
+                                                                                          dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                          data: jsonDataLogin
+                                                                                      }
+                                                                                    },
+                 
+                                                                              schema: {
+                    data: function(data) {	
+                        console.log(data);                                            
+                        return [data]; 
+                    }                                                            
+                },
+                 
+                                                                              error: function (e) {
+                                                                                  console.log(JSON.stringify(e));                                                                                  
+                                                                                  
+                                                                                    $("#group-Notilist-Loader").hide();
+                                                                                    $("#admin-sub-noti-listview").show();
+
+
+                                                                                  if (!app.checkSimulator()) {
+                                                                                      window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                                  }else {
+                                                                                      app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                                  }
+                                                                              }	        
+                                                                          });         
+            
+          
+          
+            organisationALLListDataSource.fetch(function() {
+                            
+                var data = this.data();                                       
+                                if (data[0]['status'][0].Msg ==='No Record') {     
+                                    groupDataShow=[];                                                                       
+                                        groupDataShow.push({
+                                           title: ' No Message ',
+                                           message: 'No messages in this group',
+                                           date:'0',  
+                                           comment_allow : 'Y',
+                                           org_id:'0', 
+                                           pid:'',
+                                           bagCount : '',
+                                           attachedImg :'',  
+                                           attached:''  
+                                       });                                                                     
+                                }else if (data[0]['status'][0].Msg==='Success') {
+                                    totalListView = data[0]['status'][0].Total;
+                                    
+                                    //orgNotificationData = data[0]['status'][0].SentNotification.notiData;
+                                    var orgDataLength = data[0]['status'][0].SentNotification.notiData.length;
+                                    
+
+                                    for (var i = 0 ; i < orgDataLength ;i++) {
+
+                                        var notiDate = app.timeConverter(data[0].status[0].SentNotification.notiData[i].send_date);
+                                        groupDataShow.push({
+                                           message: data[0].status[0].SentNotification.notiData[i].message,
+                                           org_id: data[0].status[0].SentNotification.notiData[i].org_id,
+                                           date:notiDate,
+                                           title:data[0].status[0].SentNotification.notiData[i].title,
+                                           pid :data[0].status[0].SentNotification.notiData[i].pid ,
+                                           comment_allow:data[0].status[0].SentNotification.notiData[i].comment_allow ,
+                                           bagCount : 'C',
+                                           upload_type:data[0].status[0].SentNotification.notiData[i].upload_type,
+                                           attached :data[0].status[0].SentNotification.notiData[i].attached,
+                                           attachedImg :data[0].status[0].SentNotification.notiData[i].attached
+                                       });                                        
+                                    }
+                                }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                        app.LogoutFromAdmin();                                 
+                                }else if (data[0]['status'][0].Msg==="You don't have access") {                    
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }                                                  
+                                    app.mobileApp.navigate('#view-all-activities-GroupDetail');
+          
+                                }            
+                showLiveData();
+            });            
+        }
+        
+        
         
         var showLiveData = function() {
             var organisationALLListDataSource = new kendo.data.DataSource({
                                                                               data: groupDataShow
                                                                           });
-             
+
+            $("#group-Notilist-Loader").hide();
+            $("#admin-sub-noti-listview").show();
+
+            
             organisationALLListDataSource.fetch(function() {
             });
             
@@ -82,6 +198,16 @@ app.orgsubGroupListView = (function () {
                                                               });              
             
             $('#admin-sub-noti-listview').data('kendoMobileListView').refresh(); 
+            
+            
+            
+
+            if((totalListView > 10) && (totalListView >=dataReceived+10)){
+                $("#showMoreGroupBtnOrg").show();
+            }else{
+                $("#showMoreGroupBtnOrg").hide();
+            }
+
         };
         
         var groupNotificationSelected = function (e) {
@@ -89,10 +215,26 @@ app.orgsubGroupListView = (function () {
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
+        
+          var showMoreButtonPress = function(){
+          if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+          }else{ 
+            page++;
+            dataReceived=dataReceived+10;
+            getLiveData();            
+          }
+        }
 	           
         return {
             init: init,
             adminNotificationShow: adminNotificationShow,
+            showMoreButtonPress:showMoreButtonPress,
+            getLiveData:getLiveData,
             groupNotificationSelected:groupNotificationSelected   
         };
     }());

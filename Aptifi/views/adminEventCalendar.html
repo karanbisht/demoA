@@ -13,7 +13,7 @@
 
     <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarAdminEventListTemplate" data-bind="source: activities"></span>    
     
-    <div id="showMoreEventBtnEvent" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.adminEventCalender.showMoreButtonPress">LOAD MORE</div>
+    <div id="showMoreEventBtnEvent" class="showMore" data-role="button" data-click="app.adminEventCalender.showMoreButtonPress">LOAD MORE</div>
 
 </div>
 
@@ -24,14 +24,19 @@
           #if(id!== 0 && id!== '0'){#  
             <div class="cf" data-role="touch" data-bind="events: { tap: eventDetailShow }">                        
              <div class="calendarEvent-content">                     
-                   
-                <div class="calendarEvent-List" >                 
-                     <div class="event-img-show">
-                            <div class="inner-event-img-show"> 
+               <div class="calendarEvent-List" >            
+                   #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
+                             <div class="event-img-show" style="background-image: url(${event_image});background-size:cover;">
                                  <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>                                 
                                  <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
-                            </div>
-                     </div>                    
+                             </div>                                         
+                  #}else{#   
+                         <div class="event-img-show">
+                                 <span id="activityTemplateDate" class="noCalenderdateValue">${event_show_day}</span>                                 
+                                 <div id="activityTemplateDate" class="nocalMonthClass">${event_below_day}</div>
+                                <br/>
+                         </div>                    
+                  #}#
                    
                    #if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#
@@ -223,9 +228,9 @@
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a href="#" data-role="button" data-bind="click: getVideoVal">Video</a>
-                    </li>
+                    </li>-->
                     <li>
                         <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
                     </li>
@@ -321,9 +326,9 @@
                     <li>
                         <a href="#" data-role="button" data-bind="click: getPhotoValEdit">Album</a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a href="#" data-role="button" data-bind="click: getVideoValEdit">Video</a>
-                    </li>
+                    </li>-->
                      <li>
                         <a href="#" data-role="button" data-bind="click: removeImageEdit">Remove</a>
                     </li>

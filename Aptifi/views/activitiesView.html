@@ -13,7 +13,7 @@
 
     <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></span>
 
-    <div id="showMoreButton" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.Activities.showMoreButtonPress">SHOW MORE</div>
+    <div id="showMoreButton" class="showMore" data-role="button" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
 </div>
 
 <script type="text/x-kendo-template" id="activityTemplate">            
@@ -40,9 +40,9 @@
                     <br/>
                     <div style="overflow:hidden;">
                      <br/>
-                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid}>
+                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid} style="min-height:100px;min-width:100px;">
                             <div>
-                                <img src= ${attachedImg} style="max-height:200px;max-width:230px;"/>  
+                                <img src= ${attachedImg} style="max-height:200px;max-width:230px;margin:-2px -6px -6px -6px ;"/>  
                             </div>
                         </a>
                         <br/>           

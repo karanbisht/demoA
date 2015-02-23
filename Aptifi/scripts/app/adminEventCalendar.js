@@ -918,8 +918,27 @@ app.adminEventCalender = (function () {
 
             var event_Date = $("#adddatePickerEvent").val();
             var event_Time = $("#adddateTimePickerEvent").val();            
+
+            var currentDate = app.getCurrentDateTime();
+            var values = currentDate.split('||');            
+            var compareDate = values[0];        
+            var compareTime = values[1];            
+
+            //alert(event_Date+"||"+event_Time+"||"+currentDate);
             
-            console.log(event_Date);            
+            /*if(event_Date===compareDate){
+                alert('yes');  
+            }else{
+                alert('no');
+            }
+            
+            if(event_Time>compareTime){
+              alert('greater');  
+            }else{
+                alert('small');                
+            }*/
+            
+            console.log(event_Date +"||"+ compareDate +"||"+  event_Time +"||"+compareTime);            
             var group = [];
             
             $('#groupInAddEvent input:checked').each(function() {
@@ -938,7 +957,9 @@ app.adminEventCalender = (function () {
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
                 app.showAlert("Please enter Event Description.", "Validation Error");
             }else if (group.length===0 || group.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", "Validation Error");
+            }else if((event_Date===compareDate) && (event_Time<compareTime)){
+                app.showAlert("Event Can not be add in back time.", "Validation Error");                
             }else {
                 
                 var values = event_Date.split('/');            
@@ -1028,7 +1049,7 @@ app.adminEventCalender = (function () {
                     //console.log(options.fileName);
 
                     options.mimeType = mimeTypeVal;
-                    options.chunkedMode = true;
+                    options.chunkedMode = false;
                     options.params = params;
                     options.headers = {
                         Connection: "close"
@@ -1234,6 +1255,13 @@ app.adminEventCalender = (function () {
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
+
+            /*var currentDate = app.getCurrentDateTime();
+            var values = currentDate.split('||');            
+            var compareDate = values[0];        
+            var compareTime = values[1];*/            
+
+            
             if (event_name === "Enter New Event Name" || event_name === "") {
                 app.showAlert("Please enter Event Name.", "Validation Error");
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
@@ -1328,7 +1356,7 @@ app.adminEventCalender = (function () {
                     options.headers = {
                         Connection: "close"
                     }
-                    options.chunkedMode = true;
+                    options.chunkedMode = false;
                     
                     ft = new FileTransfer();
                     //console.log(tasks);

@@ -15,28 +15,27 @@
     	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
      </div> 
      
-     <div id="showMoreEventBtnOrg" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>
+     <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>
  </div>
 
 
 	<script type="text/x-kendo-template" id="adminNotiTemplate" >
             <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">
                  
-               <div class="notiList-content">                      
+               <div class="no-notiList-content-new">                      
                     #if(date!==0 && date!=='0' ){#
-                <div class="dateDisplay">                  
-                  <span id="activityTemplateDate" class="dateValue">${date}</span> 
-                  <span></span>
-                </div>
-                              <br/>
-
-                             #}#
+                        <div class="dateDisplay">                  
+                              <span id="activityTemplateDate" class="dateValue">${date}</span> 
+                              <span></span>
+                        </div>
+                        <br/>
+                   #}#
 
 
        		    
                   #if(title!=='' && title!=='null' && title!==null){#
                          <h2 id="activityTemplateTitle" class="notiNameList" style="margin-left:0px;" >${title}</h2>
-                 #}#
+                  #}#
         
         
                              #if(message.length > 200){#
@@ -50,7 +49,12 @@
          
                     #if(attached!=='' && attached!=="0" && upload_type==="other"){#
                       <br/>   
-                      <img src= ${attachedImg} style="max-height:200px;margin-top:10px;" /> 
+                      <img src= ${attachedImg} style="max-height:150px;margin-top:10px;" />
+                        
+                       <!--   
+                        <div class="backgroundAdminImgShow" style="width:100%;background-image: url(${attachedImg});background-size:contain;background-repeat: no-repeat;"></div>
+                          --> 
+             
                     #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
                         <br/>
                         <div class="event-vid-show" ></div>

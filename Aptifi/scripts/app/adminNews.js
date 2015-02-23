@@ -1024,7 +1024,7 @@ app.adminNews = (function () {
               
                     options.mimeType = mimeTypeVal;
                     options.params = params;
-                    options.chunkedMode = true;
+                    options.chunkedMode = false;
                     options.headers = {
                         Connection: "close"
                     }
@@ -1116,9 +1116,7 @@ app.adminNews = (function () {
         }
         
         var transferFileAbort = function() {          
-
-            console.log(countVal);
-            
+            console.log(countVal);            
             if(countVal!==100){
                 pbNews.value(0);
                 $("#sendNewsLoader").hide();
@@ -1167,8 +1165,7 @@ app.adminNews = (function () {
                 
         function fail(error) {
             pbNews.value(0);
-            countVal=0;
-            
+            countVal=0;            
             console.log(error);          
             console.log(JSON.stringify(error));
             
@@ -1291,7 +1288,7 @@ app.adminNews = (function () {
                     options.headers = {
                         Connection: "close"
                     }
-                    options.chunkedMode = true;
+                    options.chunkedMode = false;
              
                     $("#tabstrip-upload-file").data("kendoMobileModalView").open();
                      

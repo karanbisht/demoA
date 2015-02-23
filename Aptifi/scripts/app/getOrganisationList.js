@@ -8,6 +8,10 @@ app.OragnisationList = (function () {
     var groupDataShow = [];   
     var UserOrgInformation;
     var JoinedOrganisationYN = 1;
+    var orgLogoName;
+    var imgPathData;
+    var checkForImg=0;
+    var fp;
     
     var organisationViewModel = (function () {
         var init = function() {
@@ -41,7 +45,7 @@ app.OragnisationList = (function () {
         var getDataOrgDB = [];
         var getDataCountDB = [];
         var org_id_DB;
-        var org_Logi_Image
+        var org_Logi_Image;
         
         function getDataSuccess(tx, results) {                        
             $('#organisation-listview').data('kendoMobileListView').refresh(); 
@@ -54,14 +58,31 @@ app.OragnisationList = (function () {
 			
             if (count !== 0) {                
                 var tempArray = [];
-
-                for (var i = 0 ; i < count ; i++) {                       
-                    //console.log('functionRun' + i);					
-                    org_id_DB = results.rows.item(i).org_id;                  
+                for (var i = 0 ; i < count ; i++) {                      
+                    checkForImg=0;
+                    var orgImage;
+                    org_Logi_Image = results.rows.item(i).imageSource;
                     
-                    //var db = app.getDb();
-                    //db.transaction(getLastNotification, app.errorCB, app.successCB);                     
-
+                    if(org_Logi_Image!=='null' && org_Logi_Image!==null){
+                        orgLogoName = org_Logi_Image.replace(/^.*[\\\/]/, '');                        
+                        imgPathData = app.getfbValue();                    
+                        fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+orgLogoName;                         
+                        window.resolveLocalFileSystemURL(fp, 
+                        function(entry)
+                        {
+                          //orgImage=imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+orgLogoName; 
+                           checkForImg=1; 
+                        },function(error)
+                        {
+                          checkForImg=0;  
+                          //orgImage=results.rows.item(i).imageSource;  
+                        });                                    
+                    }else{
+                          //orgImage='null';
+                          checkForImg=0;
+                    }
+                    
+                    org_id_DB = results.rows.item(i).org_id;                                      
                     var bagCount = results.rows.item(i).bagCount;                   
                     var countVal = results.rows.item(i).count;                   
                     
@@ -76,7 +97,6 @@ app.OragnisationList = (function () {
                     getDataCountDB.push(bagCount);
                     
                     var bagCountValue;
-
                     var lastNotifi;                    
                     if (results.rows.item(i).lastNoti===null || results.rows.item(i).lastNoti==='null') {
                         lastNotifi = '';   
@@ -87,15 +107,12 @@ app.OragnisationList = (function () {
                     countValue = countVal - bagCount;
                     if (countValue < 0) {
                         countValue = 0;
-                    }
-                    
+                    }                    
                     lastNotifi = app.urldecode(lastNotifi);
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
-                    
-                    org_Logi_Image = results.rows.item(i).imageSource;
-    
+                                        
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(i).org_id);                                     
@@ -105,12 +122,14 @@ app.OragnisationList = (function () {
                                                organisationID:results.rows.item(i).org_id,
                                                org_logo:results.rows.item(i).imageSource,
                                                imageSource:results.rows.item(i).imageSource,
+                                               localImageSource:fp,
+                                               checkForImg:checkForImg,
                                                bagCount : bagCountValue,
                                                countData:countValue,
                                                count : countVal
                                            });
                     }
-                }    
+                }  
             }else {
                 groupDataShow.push({
                                        orgName: 'No Messages',
@@ -125,30 +144,7 @@ app.OragnisationList = (function () {
             }
         };   
      
-        var imagePathExist = function() {
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';
-
-            //console.log(fp);
-        }
-        
-        var imagePathNotExist = function() {
-            var attachedImg = org_Logi_Image;            
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_Org_' + org_id_DB + '.jpg';
-            //console.log(fp);
             
-            var fileTransfer = new FileTransfer();    
-            fileTransfer.download(attachedImg, fp, 
-                                  function(entry) {    
-                                      console.log('downloading completed');
-                                  },
-    
-                                  function(error) {
-                                      console.log('error in downloading');
-                                  }
-                );                
-        }
         
         function getAdminDataSuccess(tx, results) {                        		
             var count = results.rows.length;                    
@@ -294,23 +290,19 @@ app.OragnisationList = (function () {
         function insertOrgInfo(tx) {
             //console.log(profileOrgData);
             //console.log(profileAdminOrgData);
-
             var dataLength = profileOrgData.length;
             userLiveOrgIdArray = [];            
 
             for (var i = 0;i < dataLength;i++) {                             
                 userLiveOrgIdArray.push(parseInt(profileOrgData[i].organisationID));           
                 //console.log(profileOrgData[i]); 
-                profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);
-           
-                var LastNotificationMsg;
-           
+                profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);           
+                var LastNotificationMsg;           
                 if (profileAdminOrgData[i].total!==0) {
                     LastNotificationMsg = profileAdminOrgData[i].last_notification.message; 
                 }else {
                     LastNotificationMsg = ""; 
                 }
-
                 LastNotificationMsg = app.urlEncode(LastNotificationMsg);
                 var orgNameEncode = app.urlEncode(profileOrgData[i].org_name);
                 var orgDescEncode = app.urlEncode(profileOrgData[i].org_desc);
@@ -531,8 +523,8 @@ app.OragnisationList = (function () {
         }
 
         var showLiveData = function() {
-            console.log('alertvalue');
-            console.log(groupDataShow);
+            //console.log('alertvalue');
+            //console.log(groupDataShow);
             
             $("#progress2").hide();
                 
@@ -581,28 +573,20 @@ app.OragnisationList = (function () {
             db.transaction(getDataOrg, app.errorCB, showLiveDataNew);   
         };
                                                         
-            
-        /* var imagePathExist = function(){
-        return 1;    
-        };
-
-        var imagePathNotExist = function(){
-        return 2;    
-        };
-        */  
-            
+                        
             
         var organisationSelected = function (e) {
             //$("#progress2").show();
-            //console.log(JSON.stringify(e.data));
-            var organisationID = e.data.organisationID;
-            var bagCount = e.data.count;
             
+            console.log(JSON.stringify(e.data));
+            var organisationID = e.data.organisationID;
+            var bagCount = e.data.count;            
             app.MenuPage = false;	
             localStorage.setItem("user_SelectOrgID", organisationID);
             localStorage.setItem("user_ACCOUNT_ID", account_Id);
             localStorage.setItem("user_orgBagCount", bagCount);
             localStorage.setItem("user_selectedOrgName", e.data.orgName);
+            localStorage.setItem("user_selectedOrgLogo", e.data.imageSource);
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification List");            
   
             app.mobileApp.navigate('views/activitiesView.html');
@@ -669,10 +653,8 @@ app.OragnisationList = (function () {
  
             app.MenuPage = false;
             $("#organisation-listview1").html("");
-
             var showMore = localStorage.getItem("ShowMore");
-             
-                        
+                                     
             var db = app.getDb();
             db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
         };                        
@@ -804,9 +786,9 @@ app.OragnisationList = (function () {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                 }else {
-                    app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }
                        
@@ -852,12 +834,16 @@ app.OragnisationList = (function () {
 
             
             if (imgData===null || imgData==='null') {   
-                $("#organisationLogo").attr('src', 'styles/images/habicon.png');
+                $("#organisationLogo").css("background", "url(styles/images/habicon.png) no-repeat");
+                $("#organisationLogo").css("background-size", "contain");
+                $("#organisationLogo").css("background-position", "center");
             }else {
-                $("#organisationLogo").attr('src', imageSourceOrg);
+                $("#organisationLogo").css("background", "url("+imageSourceOrg+") no-repeat");
+                $("#organisationLogo").css("background-size", "contain");
+                $("#organisationLogo").css("background-position", "center");
             }    
             
-            $("#orgDescList").css("background-color", "#ffffff");
+           $("#orgDescList").css("background-color", "#ffffff");
             $("#manageOrgDesc").css("background-color", "#ffffff");
             $("#orgDescList").css("z-index", "999");
             $("#manageOrgDesc").css("z-index", "999");

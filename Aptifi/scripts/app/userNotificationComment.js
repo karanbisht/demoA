@@ -181,8 +181,7 @@ app.userNotiComment = (function () {
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
 
                 var imgPathData = app.getfbValue();    
-                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';    
-            
+                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';                
                 //console.log(attachedImg);
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }
@@ -197,8 +196,7 @@ app.userNotiComment = (function () {
             $("#activityText").html(message);
                       
             // kendo.bind(e.view.element, datasource, kendo.mobile.ui);
-            //  var notificationId = activity.notification_id; 
-         
+            //  var notificationId = activity.notification_id;          
             adminComment();
         }
         
@@ -387,6 +385,8 @@ app.userNotiComment = (function () {
                                 }
                             },
                                                                                   error: function (e) {
+                                                                          
+                                                                                      console.log(JSON.stringify(e));
                                                                                       $("#adminCommentPage").hide();
                                                                                       app.mobileApp.pane.loader.hide();
                                                                           

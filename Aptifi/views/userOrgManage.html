@@ -11,18 +11,13 @@
     <div style="z-index: 100;">
         <ul id="manageOrgDesc" data-style="inset" data-role="listview" style="background-color: white;z-index: 100;">
 
-            <img id="organisationLogo" style="max-height:250px;width:100%">
-
-            <br/>
-            <br/>
-
-            <span id="OrgDescData" style="color:#838383;"></span>
+            <div id="organisationLogo" class="backgroundImgShow" style="width:100%;"></div>
             
-            <br/>
-            <br/>
-            <span style="color:#B0D695;" id="joinedDate">
+            <div id="OrgDescData" style="color:#838383;margin-top:20px;"></div>
+            
+            <div style="color:#B0D695;margin-top:20px;" id="joinedDate">
                 Joined On : <span style="color:#838383" id="orgJoinData"></span>
-            </span>
+            </div>
         </ul>
     </div>
 
@@ -44,11 +39,14 @@
 
     </div>
 
+    <li class="defineSaveButton" style="margin-top:10%;" data-role="touch" data-bind="events: { tap: unsubscribeOrg }">
+        Leave Organization
+    </li>
 
-    <div data-role="footer">
+    <!--<div data-role="footer">
         <div id="manageOrgFooter" data-role="tabstrip" data-selected-index="2">
             <a id="" data-icon="trash" data-role="button" data-bind="click: unsubscribeOrg" >Click here to unsubscribe</a>
         </div>
-    </div>
+    </div>-->
 
 </div>

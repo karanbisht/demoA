@@ -34,14 +34,14 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.7.0",
-  "BundleVersion": "1.4.0",
+  "BundleVersion": "1.6.0",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "14",
+  "AndroidVersionCode": "16",
   "DisplayName": "Zaffio",
   "Author": "karan",
   "Description": "Zaffio Mobile Application",

@@ -13,7 +13,7 @@
 
     <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></span>
     
-    <div id="showMoreNewsBtn" style="color:#57A70C;margin:10px;width:93%;" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
+    <div id="showMoreNewsBtn" class="showMore" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
 </div>
 
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
@@ -32,9 +32,9 @@
                     <br/>                    
                     <br/>                    
  
-                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id}>
+                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="min-height:100px;min-width:100px;">
                        <div>
-                          <img src= ${news_image} style="max-height:200px;max-width:230px;" />    
+                          <img src= ${news_image} style="max-height:180px;max-width:230px;margin:-2px -6px -6px -6px;"/>    
                        </div>
                      </a>
                      

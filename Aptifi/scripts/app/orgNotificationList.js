@@ -57,7 +57,7 @@ app.orgListView = (function () {
                  
                                                                               schema: {
                     data: function(data) {	
-                        console.log(data);                                            
+                        console.log(JSON.stringify(data));                                            
                         return [data]; 
                     }                                                            
                 },

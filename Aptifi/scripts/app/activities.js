@@ -8,13 +8,15 @@ app.Activities = (function () {
     var groupDataShow = [];
     var lastNotificationPID;
     var orgName;
+    var orgLogo;
+    var logoFileName;
     var totalOrgNotification = 0;    
     var StartDbCount = 0;
     var EndDbCount = 10;
     var checkVal=0;
     var noDatainDB=0;
     var device_type = localStorage.getItem("DEVICE_TYPE"); 
-
+    var imgPathData;
     
     var activitiesViewModel = (function () {
     
@@ -33,14 +35,13 @@ app.Activities = (function () {
             app.mobileApp.pane.loader.hide();
 
             $(".km-scroll-container").css("-webkit-transform", "");  
-        
-            
+                    
             organisationID = localStorage.getItem("user_SelectOrgID");
             account_Id = localStorage.getItem("user_ACCOUNT_ID");
             bagCount = localStorage.getItem("user_orgBagCount");
             orgName = localStorage.getItem("user_selectedOrgName");
-                         
-
+            orgLogo = localStorage.getItem("user_selectedOrgLogo");
+                                                
             var OrgDisplayName;
             if (orgName.length > 25) {
                     OrgDisplayName = orgName.substr(0, 25) + '..';
@@ -48,10 +49,37 @@ app.Activities = (function () {
                     OrgDisplayName = orgName;
                 
             }
-            $("#navBarHeader").html(OrgDisplayName);                  
-        
-            getDataFromDB();
+            
+            $("#navBarHeader").html(OrgDisplayName);                          
+            getDataFromDB();            
+            
+            if(orgLogo!=='null' && orgLogo!==null){
+                logoFileName = orgLogo.replace(/^.*[\\\/]/, '');          
+                imgPathData = app.getfbValue();                    
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+logoFileName; 
+                window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);
+            }
         };
+        
+        var imagePathExist = function() {
+             //alert('already exist');
+        }
+        
+        var imagePathNotExist = function() {
+            var attachedImg = logoFileName;                        
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_' + attachedImg;
+             	
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(orgLogo, fp, 
+                                  function(entry) {
+                                      //alert('success');
+                                  },
+    
+                                  function(error) {
+                                      //alert('errro');
+                                  }
+                );                
+        }
         
         var getDataFromDB = function(){
             groupDataShow = [];

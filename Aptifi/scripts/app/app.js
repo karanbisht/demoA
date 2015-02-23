@@ -389,7 +389,6 @@ var app = (function (win) {
     
     var onDeviceReady = function() {
         //[data-role=footer]        
-
         feedback.initialize('8f965ba0-a6d8-11e4-962d-15be4c73b66b');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
@@ -801,10 +800,11 @@ var app = (function (win) {
         }   
     };  
     
-        function insertCommentCount(tx) {
+
+    function insertCommentCount(tx) {
             var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 where org_id='" + orgIdDB + "' and pid='"+notiIdDB+"'";
             app.updateQuery(tx, query);
-        }
+    }
 
         
     function insertOrgNotiData(tx) {
@@ -1005,6 +1005,60 @@ var app = (function (win) {
         var seconds = currentDate.getSeconds();
         var time = hours + ":" + minutes + ":" + seconds;            
         var totalTime = CurDateVal + ' ' + time;
+        return totalTime;
+    }
+    
+    var getCurrentDateTime = function() {
+        var currentDate = new Date();
+        var month = currentDate.getMonth() + 1;
+        var day = currentDate.getDate();
+        var year = currentDate.getFullYear();
+        /*if (day < 10) {
+            day = '0' + day;
+        }*/
+        var CurDateVal = month + '/' + day + '/' + year;
+
+        var hours = currentDate.getHours();
+        var minutes = currentDate.getMinutes();
+        
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+
+        
+        var dayNight = hours < 12 ? ' AM' : ' PM'; 
+        
+        if (hours > 12) {
+            hours = hours - 12;
+        }        
+        var time = hours + ":" + minutes + dayNight;            
+        var totalTime = CurDateVal+'||'+time;
+        return totalTime;
+    }
+    
+    var getSendNotiDateTime = function() {
+
+        var currentDate = new Date();
+        
+        var month = currentDate.getMonth() + 1;
+        var day = currentDate.getDate();
+        var year = currentDate.getFullYear();
+              
+        var hours = currentDate.getHours();
+        var minutes = currentDate.getMinutes();        
+        
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+
+        /*if (hours!=='12' && hours!==12) {
+            hours = parseInt(hours) + 12;
+        }*/        
+        
+        var second="00";
+        
+        var totalTime = year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + second;
         return totalTime;
     }
     
@@ -1429,6 +1483,8 @@ var app = (function (win) {
         NEWS_DELETED_MSG:NEWS_DELETED_MSG,
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
         CANNOT_CANCEL:CANNOT_CANCEL,
+        getSendNotiDateTime:getSendNotiDateTime,
+        getCurrentDateTime:getCurrentDateTime,
         EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,

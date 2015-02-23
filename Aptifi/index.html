@@ -79,7 +79,6 @@
                 <ol class="reg-group-wrp" style="margin-bottom:10px;">
                     <li style="width:100%">
                         <span id="registration" data-role="touch" style="float:right;border-radius:3px;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCode }"> Ok </span>
-
                         <span id="registration" data-role="touch" style="float:left;border-radius:3px;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRC }"> Cancel </span>
                     </li>
                 </ol>
@@ -90,12 +89,11 @@
                         <div class="ball"></div>                   
                     </div>
                 
-                <div style="background-color:#F3F3F3;color:#313C50;text-align:center;padding:10px;">
-                    Verification
-                </div>
+                    <div style="background-color:#F3F3F3;color:#313C50;text-align:center;padding:10px;">
+                        Verification
+                    </div>
                 
                 <form id="verification-form" data-bind="events: { keyup: checkEnterCode }">
-
                     <div style="text-align:center;color:#313C50;padding-top:10px;">
                         Verification Code sent to your registered Mobile Number.Please use this Verification Code to continue with the Registration.<br/>
                         <br/>
@@ -106,7 +104,6 @@
                                 <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;"/>
                             </li>
                         </ul>
-
                     </div>
 
 
@@ -138,9 +135,6 @@
 
             <div id="organisationListView">
                 <ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-bind="source: activities"></ul>
-                <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-                    <b>You have no Notification for you.</b>
-                </p>
             </div>
 
         </div>
@@ -321,16 +315,16 @@
         
         
         <script type="text/x-kendo-template" id="organisationTemplate">
-
            #if(organisationID!==0 && organisationID!=='0'){# 
             <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">                    
                 #if (org_logo===null || org_logo==='null') {#   
                     <div class="org-img-show"></div>
                 #}else {#
-                    <div class="user-avatar">
-                        <img id="logo" src=${imageSource} />
-                    </div>             
-                #}#  
+                    
+                        <div class="user-avatar" style="background-image: url(${imageSource});">
+                          
+                        </div>
+                #}#
                         
                 <div class="orgList-content">
                     <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:0px;">${orgName}</h2>
@@ -342,10 +336,9 @@
                     #}else {#
                         #orgDescVal = orgDesc;#  
                     #}#
-                            <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
+                     <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
                 </div>
-            </div>
-                
+            </div>                
           #}else{#     
             <div class="cf">                    
                 <div class="org-img-show"></div>                     
@@ -368,9 +361,7 @@
               #if (imgData===null || imgData==='null') {#                                              
                     <div class="org-img-show"></div>
                 #}else {#                  
-                    <div class="user-avatar">
-                        <img src=${imageSourceOrg} />
-                        <!--<img id="logoOrg" data-bind="attr: { src:imageSource, alt: imageAlt }" />-->
+                    <div class="user-avatar" style="background-image: url(${imageSourceOrg});">
                     </div>
                 #}#    
                 <div class="orgList-content">
@@ -500,22 +491,16 @@
 
 
         <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
-                
-            
             <div>
                 <div class="loader" id="progressAdmin" style="display:none;">
                     <div class="ball"></div>
                 </div>
-
                 <ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
-                <p id="no-activities-span" hidden="hidden" class="no-items-msg">
-                    <b>You have no Notification for you.</b>
-                </p>
             </div>
         </div>
         
         
-    <div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-title="Message" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show">
+     <div data-role="view" id="subGroupMemberReplyShow" data-id="innerActivity" data-title="Message" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.replyedCustomer" data-init="app.replyedCustomer.init" data-show="app.replyedCustomer.show">
     
         <div class="loader" id="loaderReplyCustomer" style="display:none;">
         <div class="ball"></div>
@@ -524,8 +509,8 @@
         <div>
         <ul id="reply-customer-listview"  data-style="inset" data-role="listview"  data-template="replyCustomerTemplate" data-bind="source: activities"></ul>
         </div> 
-         
-    </div>
+          
+     </div>
 
  <script type="text/x-kendo-template" id="replyCustomerTemplate">
         

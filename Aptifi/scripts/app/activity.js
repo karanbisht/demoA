@@ -143,7 +143,8 @@ app.Activity = (function () {
             message = app.proURIDecoder(message);
             title = app.proURIDecoder(title);
             upload_type = e.view.params.upload_type;
- 
+             
+            console.log(comment_allow);
 
             app.mobileApp.pane.loader.hide();
 
@@ -183,8 +184,7 @@ app.Activity = (function () {
             $("#activityText").html(message);
             $("#notiDate").html(date);
                                        
-            var db = app.getDb();
-		                 
+            var db = app.getDb();		                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
@@ -194,15 +194,14 @@ app.Activity = (function () {
                 db.transaction(getDataOrgNotiComment, app.errorCB, showOfflineData);      
             }else {
                 db.transaction(getDataOrgNotiComment, app.errorCB, firstShowOfflineData);      
-            }            
-            //db.transaction(getOrgImgLogo, app.errorCB, orgLogoShow);  
+            }      
         };
         
         var imagePathExist = function() {
             app.mobileApp.pane.loader.hide();
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;            
-            var img = $('<img id="imgShow" style="max-height:180px"/>');
+            var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>');
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
             console.log(fp);              
@@ -210,12 +209,11 @@ app.Activity = (function () {
         
         var imagePathNotExist = function() {
             app.mobileApp.pane.loader.hide();
-            //$("#progressChat").show();
             var attachedImg = attached;                        
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
             
-            var img = $('<img id="imgShow" style="max-height:180px"/>'); //Equivalent: $(document.createElement('img'))      
+            var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>'); //Equivalent: $(document.createElement('img'))      
             img.attr('src', attachedImg);
             img.appendTo('#notiImage'); 
  	
@@ -577,8 +575,8 @@ app.Activity = (function () {
                                 return [data];
                             }
                         },
-                                                                              error: function (e) {
-
+                                                                               error: function (e) {
+                                                                                  console.log(JSON.stringify(e));
                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));               
                                                                                   $("#progressChat").hide();
 

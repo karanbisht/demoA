@@ -662,6 +662,13 @@ input:focus, textarea:focus {
   margin-top:-5px;
 }
 
+#admin-noti-listview > li
+{
+    border: none;
+    box-shadow:none;
+    
+}
+
 #eventCalendarAllList > li
 {
     border: none;
@@ -774,7 +781,7 @@ input:focus, textarea:focus {
     float: left;
     width: 50px;
     height: 50px;
-    background-size: cover; 
+    background-size: contain; 
     background-position: center center; 
     background-repeat: no-repeat; 
 }
@@ -1340,7 +1347,14 @@ white-space: nowrap;
 
 }
 
-
+.showMore{
+  position:absolute;
+    right:0;
+    left:0;
+    margin:10px auto 10px auto;
+    color:#57A70C;
+    width:94%;  
+}
 
 
 .person-name
@@ -1652,38 +1666,57 @@ background: #fff none;
 
 .CalenderdateValue
 {
-    margin-top:10px;
-    width: 50px;
-    font-size: 2.5rem; 
-    /*color: #7FBF4D;*/
+    margin-top:5px;
+    font-size: 1.8rem; 
     color: #FFFFFF;
+    float:left;
+    padding-left:5px;
+    font-weight: 300;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #dddddd;
+}
+
+.noCalenderdateValue
+{
+    margin-top:5px;
+    font-size: 1.8rem; 
+    color: #FFFFFF;
+    float:left;
+    padding-left:5px;
+    font-weight: 300;
 }
 
 
 .calDayClass
 {
-    /*color: #7FBF4D;*/
     color: #FFFFFF;
     font-size: .7rem; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
-    font-weight: 300; 
-    /*margin-top:-2px;*/
-
-}
+    font-weight: 300;
+}   
 
 
 .calMonthClass
 {
-    /*color: #B3ADA1;*/
     color: #FFFFFF;
-    font-size: .7rem; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; 
+    font-size: .7rem;  
     font-weight: 400; 
-    /*margin-top:-2px;*/
+    float:left;
+    padding-left:5px;
+     -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #dddddd;
+}
+
+
+.nocalMonthClass
+{
+    color: #FFFFFF;
+    font-size: .7rem;  
+    font-weight: 400; 
+    float:left;
+    padding-left:5px;
 }
 
 .orgContentMsg
@@ -1731,6 +1764,16 @@ background: #fff none;
     border-radius: 12px;
     color: #ffffff;
     font-size:12px;
+}
+
+
+.backgroundImgDiv
+{
+    width:100%; 
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
 }
 
 #comments-listview > li
@@ -2367,6 +2410,8 @@ float:right;
 {
     background-color: #E4F6D5;
     width: 90%;
+    right:0;
+    left:0;
     padding: 10px;
     margin:10px;
     height: 120px;
@@ -2911,6 +2956,7 @@ float:right;
 
 }
 
+
 #Aptifi .org-img-show
 {
     float: left;
@@ -2921,7 +2967,6 @@ float:right;
     background-repeat: no-repeat; 
     background-image: url('images/habicon.png');
     
-    border-radius: 6px;
     overflow: hidden;
     display: inline-block;
     text-align: center;
@@ -2948,6 +2993,24 @@ float:right;
     /*vertical-align: middle;*/ 
 }
 
+
+.backgroundImgShow
+{
+    width: 90px;
+    height: 90px;   
+    border-radius: 3px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.backgroundAdminImgShow
+{
+    float: left;
+    width: 90px;
+    height: 90px;   
+    overflow: hidden;
+    text-align: center;
+}
 
  .inner-event-img-show
 {

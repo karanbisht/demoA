@@ -1,6 +1,8 @@
 var app = app || {};
 
 app.sendNotification = (function () {
+    'use strict';
+    
     var dataToSend ;
     var noGroup = 0;
     var noCustomer = 0;
@@ -8,7 +10,10 @@ app.sendNotification = (function () {
     var scheduleDate;
     var scheduleTime;
     var sending_option = 'now';
+    var pb;
+    var ft;
     var tasks;
+    var tasks1;
     var upload_type;
     var scheduleDiv = 0;
     var dataCheckVal=0;
@@ -167,7 +172,7 @@ app.sendNotification = (function () {
             $("#selectCustomerFooter").hide();
 
             var currentDate = app.getPresentDate();            
-            disabledDaysBefore = [
+            var disabledDaysBefore = [
                 +new Date(currentDate)
             ];
 
@@ -301,8 +306,7 @@ app.sendNotification = (function () {
                 if (scheduleDiv===1) {
                     sending_option = 'later';    
                     //console.log('later div open');
-                    var schedule_Date = $("#scheduleDatePicker").val();
-               
+                    var schedule_Date = $("#scheduleDatePicker").val();               
                     var values = schedule_Date.split('/');
                
                     var month = values[0]; // globle variable
@@ -327,18 +331,23 @@ app.sendNotification = (function () {
             
                     //console.log(Hour + "||" + minute + "||" + AmPm);
             
-                    schedule_Time = Hour + ":" + minute + ":00";
-               
-                    var second = "00";
-                                                 
+                    schedule_Time = Hour + ":" + minute + ":00";               
+                    var second = "00";                                                 
                     tasks = +new Date(year + "/" + month + "/" + day + " " + Hour + ":" + minute + ":" + second);
-                                  
-                    var sendNotificationTime = new Date(schedule_Date + " " + schedule_Time);     
+                    
+                    //alert(app.getSendNotiDateTime());
+                    
+                    tasks1 = +new Date(app.getSendNotiDateTime());                    
+                    var sendNotificationTime = new Date(schedule_Date + " " + schedule_Time);  
+                    
                 }else {
                     tasks = '';  
+                    tasks1= '';
                     sending_option = 'now';    
                 }  
                
+                //alert(tasks);
+                //alert(tasks1);
                 if (org_id===null) {
                     app.showAlert('Please select Organization', 'Validation Error');
                 }/*else if (cmbGroup ==='' && (cmbCust==='' || cmbCust==="null")) {
@@ -362,10 +371,13 @@ app.sendNotification = (function () {
                 }else if (notificationValue==='') {
                     app.showAlert('Please enter Message', 'Validation Error');    
                 }else if (type==='') {
-                    app.showAlert('Please select Message Type', 'Validation Error');     
+                    app.showAlert('Please select Message Type', 'Validation Error');
+                }else if (tasks1 > tasks) {
+                    app.showAlert('Message Can not be schedule in back time', 'Validation Error');
                 }else { 
                     //var url = "http://54.85.208.215/webservice/notification/sendNotification";              
-                    var vidFmAndroid = 0;                    
+                    var vidFmAndroid = 0; 
+                    var photo_split;
                     //alert(upload_type);
                     if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
                         pb.value(0);
@@ -427,7 +439,7 @@ app.sendNotification = (function () {
                         options.headers = {
                             Connection: "close"
                         }
-                        options.chunkedMode = true;
+                        options.chunkedMode = false;
                          
                        ft = new FileTransfer();
                                              
@@ -467,11 +479,12 @@ app.sendNotification = (function () {
                             },
                                                                                        error: function (e) {
                                                                                            //console.log(JSON.stringify(e));
+
                                                                                            if (!app.checkSimulator()) {
-                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                                    }else {
-                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                                    }
+                                                                                               window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                                            }else {
+                                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                            }
                    
                                                                                            $("#notificationTitleValue").val('');            
                                                                                            $("#notificationDesc").val('');
@@ -532,11 +545,11 @@ app.sendNotification = (function () {
         
         
         var transferFileAbort = function() {     
-            if(dataCheckVal!==100){
+           if(dataCheckVal!==100){
+                pb.value(0);
+                dataCheckVal=0; 
                 ft.abort(); 
                 $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
-                pb.value(0);
-                dataCheckVal=0;
            }else{
                   if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom(app.CANNOT_CANCEL);  
@@ -576,7 +589,10 @@ app.sendNotification = (function () {
         }
          
         function fail(error) {
-            $("#progressSendNotification").hide();
+            $("#progressSendNotification").hide();            
+            console.log(error);          
+            console.log(JSON.stringify(error));
+            
             pb.value(0);
             dataCheckVal=0;
             $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
@@ -812,7 +828,7 @@ app.sendNotification = (function () {
                                                        orgID:data[0].status[0].allCustomer[i].orgID
                                                    });
                     }     
-                    
+                                        
                     $("#selectCustomerLI").show();
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
@@ -992,23 +1008,8 @@ app.sendNotification = (function () {
             app.mobileApp.pane.loader.hide();    
         };
         
-        goBackToGroupCustomer = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
-            /*if (noGroup===1) {
-                $("#selectGroupDiv").hide();
-                $("#selectGroupFooter").hide();
-
-                $("#selectCustomerToSend").show();
-                $("#selectCustomerFooter").show();
-            }else {
-                $("#selectGroupDiv").show();
-                $("#selectGroupFooter").show();
-
-                $("#selectCustomerToSend").hide();
-                $("#selectCustomerFooter").hide();
-            }*/
-            
+        var goBackToGroupCustomer = function() {
+            $(".km-scroll-container").css("-webkit-transform", "");                        
             $("#whatToDo").show();
             $("#sendNotificationDivMsg").hide();
             $("#sendNotiDiv").hide(); 
@@ -1128,6 +1129,7 @@ app.sendNotification = (function () {
             scheduleDate = '';
             scheduleTime = '';
             tasks = '';
+            tasks1='';
             sending_option = 'now';
             $("#selectScheduleDT").hide();
             $("#sendButton").show();
