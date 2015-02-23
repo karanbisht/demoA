@@ -2,7 +2,10 @@
     var AnalyticsModel,
         app = global.app = global.app || {};
     
-    var productId = "3533a3c811324734a532336ccef5f288",
+    var productId = "de832bdbd16c4e8fb0d35e41152a50cf",
+    
+    //3533a3c811324734a532336ccef5f288
+    
     version   = localStorage.getItem("AppVersion");
     
     AnalyticsModel = kendo.data.ObservableObject.extend({
