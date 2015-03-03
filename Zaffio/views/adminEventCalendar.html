@@ -27,12 +27,12 @@
                <div class="calendarEvent-List" >            
                    #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
                              <div class="event-img-show" style="background-image: url(${event_image});background-size:cover;">
-                                 <span id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</span>                                 
+                                 <div id="activityTemplateDate" class="CalenderdateValue"><span style="float:left;">${event_show_day}</span></div>                                 
                                  <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
                              </div>                                         
                   #}else{#   
                          <div class="event-img-show">
-                                 <span id="activityTemplateDate" class="noCalenderdateValue">${event_show_day}</span>                                 
+                                 <div id="activityTemplateDate" class="noCalenderdateValue"><span style="float:left;">${event_show_day}</span></div>                                 
                                  <div id="activityTemplateDate" class="nocalMonthClass">${event_below_day}</div>
                                 <br/>
                          </div>                    

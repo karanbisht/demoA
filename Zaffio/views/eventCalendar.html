@@ -59,7 +59,7 @@
                          <div class="eventDetail-img-show-loc"></div>                    
             		     <a id="activityTemplateMessage"  class="eventDetailTime">New Delhi</a>
                     </div>
-       		</div>
+    		</div>
 		</script>
 
                                 <!--<div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>-->
@@ -67,24 +67,22 @@
 
 
 		<script type="text/x-kendo-template" id="calendarEventListTemplate">     
-             #if(id!=='0' && id!==0){# 
+           #if(id!=='0' && id!==0){# 
              <div class="cf" data-role="touch"  data-bind="events: { tap: eventSelected }">                            
               <div class="calendarEvent-content">               
-                <div class="calendarEvent-List" >   
-            
+                <div class="calendarEvent-List" >               
                    #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
-                        <div class="event-img-show" style="background-image: url(${event_image});background-size:cover;">
-                                 <div id="activityTemplateDate" class="CalenderdateValue">${event_show_day}</div>                                 
+                         <div class="event-img-show" style="background-image: url(${event_image});background-size:cover;">
+                                 <div id="activityTemplateDate" class="CalenderdateValue"><span style="float:left;">${event_show_day}</span></div>
+                                 <br/>
                                  <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
-                                <br/>
                          </div>                    
                     #}else{#   
                          <div class="event-img-show">
-                                 <span id="activityTemplateDate" class="noCalenderdateValue">${event_show_day}</span>                                 
-                                 <div id="activityTemplateDate" class="nocalMonthClass">${event_below_day}</div>
-                                <br/>
+                                 <div id="activityTemplateDate" class="noCalenderdateValue"><span style="float:left;">${event_show_day}</span></div> 
+                                 <br/>
+                                 <div id="activityTemplateDate" class="nocalMonthClass">${event_below_day}</div>                                
                          </div>                    
-
                        #}#
                                                          
                    #if (event_desc.length > 80) {#
@@ -101,13 +99,13 @@
        		</div>
               </div>                  
  		    </div>   
-           #}else{#
+          #}else{#
               <div class="cf" data-role="touch" >                        
         		<div class="no_calendarEvent-List">       
        		     <div id="activityTemplateTitle" class="HeadingClass" >${event_name}</div> 
        		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;text-align:justify;" >${event_desc}</span>            			                 
         		</div>
 	  	    </div>
-           #}#
+          #}#
 		</script>
 
