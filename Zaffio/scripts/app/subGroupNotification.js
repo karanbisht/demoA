@@ -13,6 +13,10 @@ app.orgsubGroupListView = (function () {
         };
 
         var adminNotificationShow = function(e) {
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
+            
             page=0;
             dataReceived=0;
             totalListView=0; 
@@ -65,7 +69,6 @@ app.orgsubGroupListView = (function () {
                     
                     lastNotificationPID = results.rows.item(i).pid;
                 }    
-                //console.log(lastNotificationPID);
             }else {
                 lastNotificationPID = 0;
 
@@ -140,12 +143,10 @@ app.orgsubGroupListView = (function () {
                                            attached:''  
                                        });                                                                     
                                 }else if (data[0]['status'][0].Msg==='Success') {
-                                    totalListView = data[0]['status'][0].Total;
-                                    
+                                    totalListView = data[0]['status'][0].Total;                                    
                                     //orgNotificationData = data[0]['status'][0].SentNotification.notiData;
                                     var orgDataLength = data[0]['status'][0].SentNotification.notiData.length;
                                     
-
                                     for (var i = 0 ; i < orgDataLength ;i++) {
 
                                         var notiDate = app.timeConverter(data[0].status[0].SentNotification.notiData[i].send_date);
@@ -184,7 +185,6 @@ app.orgsubGroupListView = (function () {
             var organisationALLListDataSource = new kendo.data.DataSource({
                                                                               data: groupDataShow
                                                                           });
-
             $("#group-Notilist-Loader").hide();
             $("#admin-sub-noti-listview").show();
 

@@ -64,9 +64,8 @@ app.adminNews = (function () {
         
         var getLiveData = function(){
             
-
             var jsonDataLogin = {"org_id":organisationID,"page":page}
-
+            
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
@@ -513,11 +512,12 @@ app.adminNews = (function () {
                                                                      });          
             
             $("#groupInAddNews").kendoListView({
-                                                   template: kendo.template($("#groupNameShowTemplate").html()),    		
+                                                   template: kendo.template($("#groupNameShowTemplateNews").html()),    		
                                                    dataSource: comboGroupListDataSource
                                                });
             
-            $("#groupInAddNews li:eq(0)").before('<li id="selectAll" class="getGroupCombo" onclick="app.adminNews.selectAllCheckBox()"><label><input type="checkbox" class="largerCheckbox" value="" /><span class="groupName_Select">Select All</span></label></li>');        
+            $("#groupInAddNews li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminNews.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');
+
         }
         
         
@@ -896,8 +896,8 @@ app.adminNews = (function () {
                                                             template: kendo.template($("#groupNameEditShowTemplate").html()),    		
                                                             dataSource: EditGroupArrayMember
                                                         });
-                                $("#sendEditNewsLoader").hide();
-                                $("#wrappe_news").show();
+                    $("#sendEditNewsLoader").hide();
+                    $("#wrappe_news").show();
 
             });
         }
@@ -988,7 +988,7 @@ app.adminNews = (function () {
                         mimeTypeVal = "video/mpeg"
                     }    
 
-                    //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
+                    console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);                            
                     //alert(newsDataToSend);
                             
                     var filename = newsDataToSend.substr(newsDataToSend.lastIndexOf('/') + 1);                            
@@ -1004,9 +1004,11 @@ app.adminNews = (function () {
                     }
                             
                     var path = newsDataToSend;
-                    //console.log(path);
+                    //console.log(path);                    
+                    var openView = $("#tabstrip-upload-file").data("kendoMobileModalView");
+                    openView.shim.popup.options.animation.open.duration = 400;
+                    openView.open();
                     
-                    $("#tabstrip-upload-file").data("kendoMobileModalView").open();
                     
                     var params = new Object();
                     params.org_id = organisationID;  //you can send additional info with the file
@@ -1014,8 +1016,7 @@ app.adminNews = (function () {
                     params.txtNewsDate = event_Date;
                     params.txtNewsTime = eventTimeSend;
                     params.upload_type = upload_type;
-                    params.cmbGroup = group;
-                            
+                    params.cmbGroup = group;                            
                     ft = new FileTransfer();
                     var options = new FileUploadOptions();
                     options.fileKey = "news_image";
@@ -1047,7 +1048,7 @@ app.adminNews = (function () {
 
                     $("#sendNewsLoader").show();
 
-                    //console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
+                    console.log("org_id=" + organisationID + "txtNewsDesc=" + event_description + "txtNewsDate=" + event_Date + "txtNewsTime=" + eventTimeSend);
                     var jsonDataSaveGroup = {"org_id":organisationID,"txtNewsDesc":event_description,"txtNewsDate":event_Date,"txtNewsTime":eventTimeSend,"cmbGroup":group}
                 
                     console.log(jsonDataSaveGroup);
@@ -1115,13 +1116,14 @@ app.adminNews = (function () {
             }      
         }
         
-        var transferFileAbort = function() {          
-            console.log(countVal);            
-            if(countVal!==100){
+
+        
+        var transferFileAbort = function() {    
+            console.log(countVal +"||"+pbNews.value());            
+            if(countVal < 90){
                 pbNews.value(0);
                 $("#sendNewsLoader").hide();
-                $("#sendEditNewsLoader").hide();
-              
+                $("#sendEditNewsLoader").hide();              
                 ft.abort(); 
                 $("#tabstrip-upload-file").data("kendoMobileModalView").close();
             }else{
@@ -1166,16 +1168,14 @@ app.adminNews = (function () {
         function fail(error) {
             pbNews.value(0);
             countVal=0;            
-            console.log(error);          
-            console.log(JSON.stringify(error));
-            
+            //console.log(error);          
+            console.log(JSON.stringify(error));           
             $("#tabstrip-upload-file").data("kendoMobileModalView").close();
-            //console.log(error);
-            //console.log(JSON.stringify(error));
+                //console.log(error);
+                //console.log(JSON.stringify(error));
             console.log("An error has occurred: Code = " + error.code);
             console.log("upload error source " + error.source);
-            //console.log("upload error target " + error.target);
-
+                //console.log("upload error target " + error.target);
             $("#sendNewsLoader").hide();
             $("#sendEditNewsLoader").hide();
  
@@ -1192,9 +1192,7 @@ app.adminNews = (function () {
                     app.showAlert(app.NEWS_EVENT_FAIL , 'Notification');  
                 }
             }
-
             app.analyticsService.viewModel.trackFeature("News Add or Update fail"+JSON.stringify(error));            
-
         }
 
         var saveEditNewsData = function() {
@@ -1331,7 +1329,7 @@ app.adminNews = (function () {
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
                                                                                //console.log(e);
-                                                                               
+                                                                              
                                                                                //console.log(JSON.stringify(e));
                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                $("#sendEditNewsLoader").hide();
@@ -1382,7 +1380,7 @@ app.adminNews = (function () {
             countVal=0;
             $("#tabstrip-upload-file").data("kendoMobileModalView").close();
             
-            console.log('karan');
+            //console.log('karan');
             console.log("Response = " + r.response);
             //console.log("Response = " + r.response.status);
             //console.log("Response = " + r.response.status['0'].Msg);
@@ -1474,8 +1472,7 @@ app.adminNews = (function () {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            saveToPhotoAlbum:true,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,                                     
                                             correctOrientation: true
                                         });
         };
@@ -1586,8 +1583,7 @@ app.adminNews = (function () {
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            correctOrientation: true,
-                                            saveToPhotoAlbum:true
+                                            correctOrientation: true
                                         });
         };
         
@@ -1694,10 +1690,19 @@ app.adminNews = (function () {
           }
         }
         
+         
+        var checkClick = function(){
+            if ($("#selectAll").prop('checked')===true){
+                    $('.largerCheckboxSelectAll').prop('checked', false);
+                    document.getElementById("selectAll").checked=false;
+            }
+        }
+        
         return {
             init: init,
             show: show,
             editNews:editNews,
+            checkClick:checkClick,
             eventListShow:eventListShow,
             getTakePhoto:getTakePhoto,
             getVideoValEdit:getVideoValEdit,

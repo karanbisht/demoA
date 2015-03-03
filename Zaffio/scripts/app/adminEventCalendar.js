@@ -532,11 +532,11 @@ app.adminEventCalender = (function () {
                                                                      });              
             
             $("#groupInAddEvent").kendoListView({
-                                                    template: kendo.template($("#groupNameShowTemplate").html()),    		
+                                                    template: kendo.template($("#groupNameShowTemplateEvent").html()),    		
                                                     dataSource: comboGroupListDataSource
                                                 });
             
-            $("#groupInAddEvent li:eq(0)").before('<li id="selectAllEvent" class="getGroupCombo" onclick="app.adminEventCalender.selectAllCheckBox()"><label><input type="checkbox" class="largerCheckbox" value="" /><span class="groupName_Select">Select All</span></label></li>');        
+            $("#groupInAddEvent li:eq(0)").before('<li id="selectAllEvent" class="getGroupCombo" ><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminEventCalender.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');        
 
         }
         
@@ -1145,9 +1145,9 @@ app.adminEventCalender = (function () {
          
         var transferFileAbort = function() {
 
-            console.log(countVal);
+          console.log(countVal);
             
-          if(countVal!==100){
+          if(countVal < 90){
             pbEvent.value(0);
             $("#sendEventLoader").hide();
             $("#sendEditEventLoader").hide();
@@ -1714,8 +1714,7 @@ app.adminEventCalender = (function () {
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            correctOrientation: true,
-                                            saveToPhotoAlbum:true
+                                            correctOrientation: true
                                         });
         };
         
@@ -1808,8 +1807,7 @@ app.adminEventCalender = (function () {
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            correctOrientation: true,
-                                            saveToPhotoAlbum:true
+                                            correctOrientation: true
                                         });
         };
         
@@ -1897,8 +1895,7 @@ app.adminEventCalender = (function () {
         var addEventByAdmin = function() {
             app.mobileApp.navigate('#adminAddEventCalendar');
         }
-        
-        
+                
         var open=0;
         var clickToSelectGroup = function(){
             
@@ -1912,9 +1909,7 @@ app.adminEventCalender = (function () {
 
         }
 
-        
-        
-        
+                
         var selectAllCheckBox = function(){
 
             if ($("#selectAllEvent").prop('checked')===true){ 
@@ -1941,12 +1936,21 @@ app.adminEventCalender = (function () {
           }
         }
         
+         
+        var checkClick = function(){
+            if ($("#selectAllEvent").prop('checked')===true){
+                    $('.largerCheckboxSelectAll').prop('checked', false);
+                    document.getElementById("selectAllEvent").checked=false;
+            }
+        }
+        
         return {
             init: init,
             //show: show,
             getTakePhoto:getTakePhoto,
             getPhotoVal:getPhotoVal,
             getVideoVal:getVideoVal,
+            checkClick:checkClick,
             addEventByAdmin:addEventByAdmin,
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoValEdit:getPhotoValEdit,

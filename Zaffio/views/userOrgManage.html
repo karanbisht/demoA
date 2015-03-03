@@ -7,6 +7,10 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
         </div>
     </div>
+    
+    <div class="loader" id="leaveOrganization" style="display:none;margin">
+                      <div class="ball"></div>
+    </div>
 
     <div style="z-index: 100;">
         <ul id="manageOrgDesc" data-style="inset" data-role="listview" style="background-color: white;z-index: 100;">
@@ -33,13 +37,12 @@
                     <div id="show-calander-icon"></div>
                     Events
                 </td>
-
             </tr>
         </table>
 
     </div>
 
-    <li class="defineSaveButton" style="margin-top:10%;" data-role="touch" data-bind="events: { tap: unsubscribeOrg }">
+    <li id="manageOrgFooter" class="defineSaveButton" style="margin-top:10%;" data-role="touch" data-bind="events: { tap: unsubscribeOrg }">
         Leave Organization
     </li>
 

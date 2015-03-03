@@ -465,8 +465,7 @@ app.Login = (function () {
         
         var doneVerification = function() {
             //varifiCode='123456';
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
+            $(".km-scroll-container").css("-webkit-transform", "");            
             var validationCodeId = $("#validationCodeId").val();
             
             if (validationCodeId==='Verification Code' || validationCodeId==='') {            

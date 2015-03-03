@@ -147,7 +147,7 @@
 <script  type="text/x-kendo-template" id="sub-Member-Delete-template">
     <div class="deleteGroupShow">
         <label >
-            <input type="checkbox" class="largerCheckbox" value="${customerID}" />${first_name}
+            <input type="checkbox" class="largerCheckbox" value="${customerID}" />${first_name} ${last_name}
         </label>
     </div>
 </script>
@@ -162,24 +162,23 @@
     
 <script type="text/x-kendo-template" id="subGroupMemberTemplate">
     <div data-role="touch" class="cf">
-        <div class="user-avatar-img-show"></div>
-    
-    #if(orgID!==0){#
-        <div class="activity-content" >
-            <h2 id="" class="person-name">${first_name} ${last_name}</h2>
-            <a id="activityTemplateMessage" class="user-share-txt">${mobile}</a>
-        </div>
-    #}else{#
-        <div class="activity-content" >
-            <h2 id="" class="person-name">${first_name} ${last_name}</h2>
-            <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
-        </div>
-    #}#
+        <div class="user-avatar-img-show"></div>    
+        #if(orgID!==0){#
+            <div class="activity-content" >
+                <h2 id="" class="person-name">${first_name} ${last_name}</h2>
+                <a id="activityTemplateMessage" class="user-share-txt">${mobile}</a>
+            </div>
+        #}else{#
+            <div class="activity-content" >
+                <h2 id="" class="person-name">${first_name} ${last_name}</h2>
+                <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
+            </div>
+        #}#
     </div>
 </script>
     
 <script type="text/x-kendo-template" id="errorTemplate">    		
-                <div class="cf" style="margin-top:50%;border:none">
+    <div class="cf" style="margin-top:50%;border:none">
                 <div class="error-content">
                     <h5 style="color:rgb();text-align:center" >${message}</h5>
                 </div>

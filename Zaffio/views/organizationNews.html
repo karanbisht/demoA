@@ -16,6 +16,8 @@
     <div id="showMoreNewsBtn" class="showMore" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
 </div>
 
+<!--<div style="margin:-2px -6px -6px -6px;">-->
+
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
             <div class="cf">         
              <div class="newsList-content-new">
@@ -32,10 +34,8 @@
                     <br/>                    
                     <br/>                    
  
-                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="min-height:100px;min-width:100px;">
-                       <div>
-                          <img src= ${news_image} style="max-height:180px;max-width:230px;margin:-2px -6px -6px -6px;"/>    
-                       </div>
+                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">                       
+                          <img src= ${news_image} style="width:100%;"/>    
                      </a>
                      
                      <br/>

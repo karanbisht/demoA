@@ -15,9 +15,7 @@ app.registration = (function () {
         var account_Id;
         var userType = [];
         var UserProfileInformation;
-        //var UserOrgInformation;
         var varifiCode;
-        //var regClickButton;
         var JoinedOrganisationYN = 1;
         
         var regInit = function () {
@@ -45,8 +43,6 @@ app.registration = (function () {
         };
 
         var registerR = function() {
-            app.userPosition = false;   
-            //regClickButton = 0;   
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
             var email = $regEmail.val();
@@ -90,6 +86,7 @@ app.registration = (function () {
                                                                        schema: {
                         data: function(data) {
                             //console.log(data);
+                            console.log(JSON.stringify(data));
                             return [data];
                         }
                     },
@@ -97,7 +94,7 @@ app.registration = (function () {
                                                                            //apps.hideLoading();
                                                                            $("#progressRegister").hide();
 
-                                                                           //console.log(e);
+                                                                           console.log(JSON.stringify(e));
                                                                            if (!app.checkSimulator()) {
                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                            }else {
@@ -109,12 +106,10 @@ app.registration = (function () {
                                                                    });  
 	            
                 dataSourceRegister.fetch(function() {
-                    var loginDataView = dataSourceRegister.data();
-                    //console.log(loginDataView);       
-                    var orgDataId = [];
-                    var userAllGroupId = [];
-                    $.each(loginDataView, function(i, loginData) {
-                        if (loginData.status[0].Msg==='Registration Success' || loginData.status[0].Msg==='Profile Created') {
+                     var data = this.data();
+                    
+
+                    if (data[0]['status'][0].Msg==='Registration Success' || data[0]['status'][0].Msg==='Profile Created') {
                             app.mobileApp.pane.loader.hide();
                             app.userPosition = false;
                             //app.mobileApp.navigate('views/getOrganisationList.html');  
@@ -147,12 +142,14 @@ app.registration = (function () {
                                                                                 schema: {
                                     data: function(data) {
                                         //console.log(data);
+                                        console.log(JSON.stringify(data));
                                         return [data];
                                     }
                                 },
                                                                                 error: function (e) {
-                                                                                    //apps.hideLoading();
-                                                                                    console.log(e);
+                                                                                    //apps.hideLoading(); 
+                                                                                    console.log(JSON.stringify(e));
+
                                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                     
                                                                                     $("#progressRegister").hide();
@@ -167,24 +164,19 @@ app.registration = (function () {
                                                                              });  
 	            
                             dataSourceLogin.fetch(function() {
-                                var loginDataView = dataSourceLogin.data();
-                                //console.log(loginDataView);               
-                                var orgDataId = [];
-                                var userAllGroupId = [];
-                                $.each(loginDataView, function(i, loginData) {
-                                    //console.log(loginData.status[0].Msg);
-                                    if (loginData.status[0].Msg==='Authentication Required') {
+                  
+                                var data = this.data();
+                  
+                                    if (data[0]['status'][0].Msg==='Authentication Required') {
                                         app.mobileApp.pane.loader.hide();
 
                                         $("#progressRegister").hide();
 
                                         clickforRegenerateCodeR();   
                                     }
-                                });
                             });            
                         }
                     });
-                });             
             }
         };
        
@@ -232,7 +224,6 @@ app.registration = (function () {
                                                                  });  
  	            
             dataSourceValidation.fetch(function() {
-                var registrationDataView = dataSourceValidation.data();
                
                 //app.showAlert("The Verification Code will be sent to this number." , "Notification");
                 $("#validationRowR").show();
@@ -328,39 +319,33 @@ app.registration = (function () {
                                                                     });  
 	            
                     dataSourceLogin.fetch(function() {
-                        var loginDataView = dataSourceLogin.data();
-       
-                        $.each(loginDataView, function(i, loginData) {
-                            //console.log(loginData.status[0].Msg);
-                            if (loginData.status[0].Msg==='Success') {
-                                account_Id = loginData.status[0].ProfileInfo[0].account_id;
-                               
-                                if (loginData.status[0].JoinedOrg.length!==0) {
-                                    var roleLength = loginData.status[0].JoinedOrg.role.length;
-                                    //console.log(loginData.status[0].JoinedOrg.role[0])                          
+                           var data = this.data();                  
+                  
+                            if (data[0]['status'][0].Msg==='Success') {
+                                account_Id = data[0]['status'][0].ProfileInfo[0].account_id; 
+                                if (data[0]['status'][0].JoinedOrg.length!==0) {
+                                    var roleLength = data[0]['status'][0].JoinedOrg.role.length;
                                     for (var i = 0;i < roleLength;i++) {
-                                        userType.push(loginData.status[0].JoinedOrg.role[i]); 
+                                        userType.push(data[0]['status'][0].JoinedOrg.role[i]); 
                                     }
                                 }else {
                                     JoinedOrganisationYN = 0;
                                 } 
                           
-                                if (loginData.status[0].JoinedOrg.length!==0) {
-                                    //UserOrgInformation = loginData.status[0].JoinedOrg;
+                                if (data[0]['status'][0].JoinedOrg.length!==0) {
                                     //saveOrgInfo(UserOrgInformation);  
                                 }
                      
-                                UserProfileInformation = loginData.status[0].ProfileInfo[0];
+                                UserProfileInformation = data[0]['status'][0].ProfileInfo[0];
                           
                                 //db = app.getDb();
                                 //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
                                 saveProfileInfo(UserProfileInformation);                          
                             }else {
                                 app.mobileApp.pane.loader.hide();
-                                app.showAlert(loginData.status[0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, "Notification");
                             }      
                         });
-                    });
                 }else {
                     app.showAlert(ENTER_CORRECT_V_CODE, "Notification");    
                     $("#progressRandomCode").hide();

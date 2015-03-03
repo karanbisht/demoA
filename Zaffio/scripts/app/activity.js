@@ -20,7 +20,7 @@ app.Activity = (function () {
     var date;
     var upload_type;
     var attachedImgFilename;
-    var device_type = localStorage.getItem("DEVICE_TYPE"); 
+    var device_type;
     
     var activityViewModel = (function () {
         var activityUid;
@@ -100,7 +100,9 @@ app.Activity = (function () {
 
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
-            groupDataShow = [];    
+            groupDataShow = [];  
+            
+            device_type = localStorage.getItem("DEVICE_TYPE");
  
             $(".km-scroll-container").css("-webkit-transform", "");              
             $('#newComment').val(' ');
@@ -110,9 +112,9 @@ app.Activity = (function () {
             
             $('#newComment').css('height', '35px');
 
-                var txt = $('#newComment'),
-                hiddenDiv = $(document.createElement('div')),
-                content = null;
+            var txt = $('#newComment'),
+            hiddenDiv = $(document.createElement('div')),
+            content = null;
     
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv replyTextArea');
@@ -122,14 +124,13 @@ app.Activity = (function () {
             txt.on('keyup', function () {
                 content = $(this).val();    
                 content = content.replace(/\n/g, '<br>');
-                hiddenDiv.html(content + '<br class="lbr">');
-    
+                hiddenDiv.html(content + '<br class="lbr">');    
                 $(this).css('height', hiddenDiv.height());
             });
             
-              var notiImageShow = document.getElementById('notiDetailVid');
-              notiImageShow.style.display = 'none';
-              //notiImageShow.src = '';
+            var notiImageShow = document.getElementById('notiDetailVid');
+            notiImageShow.style.display = 'none';
+            //notiImageShow.src = '';
             
             message = e.view.params.message;
             title = e.view.params.title;
@@ -198,6 +199,7 @@ app.Activity = (function () {
         };
         
         var imagePathExist = function() {
+            //alert('in');
             app.mobileApp.pane.loader.hide();
             var imgPathData = app.getfbValue();    
             var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;            
@@ -208,17 +210,23 @@ app.Activity = (function () {
         }
         
         var imagePathNotExist = function() {
-            app.mobileApp.pane.loader.hide();
-            var attachedImg = attached;                        
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
+
+            //alert('download');
+             
+            if (!app.checkConnection()) {
             
-            var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>'); //Equivalent: $(document.createElement('img'))      
-            img.attr('src', attachedImg);
-            img.appendTo('#notiImage'); 
+            }else{                
+                app.mobileApp.pane.loader.hide();
+                var attachedImg = attached;                        
+                var imgPathData = app.getfbValue();    
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
+            
+                var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>'); //Equivalent: $(document.createElement('img'))      
+                img.attr('src', attachedImg);
+                img.appendTo('#notiImage'); 
  	
-            var fileTransfer = new FileTransfer();              
-            fileTransfer.download(attachedImg, fp, 
+                var fileTransfer = new FileTransfer();              
+                fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
                                       app.mobileApp.pane.loader.hide();
                                       //$("#progressChat").hide();
@@ -229,6 +237,9 @@ app.Activity = (function () {
                                       $("#progressChat").hide();
                                   }
                 );                
+            }
+
+
         }
         
     

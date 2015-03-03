@@ -8,7 +8,9 @@
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.CAMERA",
     "android.permission.INTERNET",
+    "android.permission.MANAGE_ACCOUNTS",
     "android.permission.READ_PHONE_STATE",
+    "android.permission.VIBRATE",
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
@@ -34,14 +36,14 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.7.0",
-  "BundleVersion": "1.6.0",
+  "BundleVersion": "1.6.3",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "16",
+  "AndroidVersionCode": "19",
   "DisplayName": "Zaffio",
   "Author": "karan",
   "Description": "Zaffio Mobile Application",

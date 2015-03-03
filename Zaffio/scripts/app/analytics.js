@@ -2,7 +2,9 @@
     var AnalyticsModel,
         app = global.app = global.app || {};
     
-    var productId = "de832bdbd16c4e8fb0d35e41152a50cf",
+     var productId = "de832bdbd16c4e8fb0d35e41152a50cf", // for Live Project
+    
+    //var productId = "3533a3c811324734a532336ccef5f288 ", // for local project
     
     //3533a3c811324734a532336ccef5f288
     

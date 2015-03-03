@@ -997,10 +997,10 @@ app.groupDetail = (function () {
                 app.showAlert("Please enter your First Name.", "Validation Error");
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", "Validation Error");
-            }else if (email === "Email" || email === "") {
+            /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");
             } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");
+                app.showAlert("Please enter a valid Email.", "Validation Error");*/
             } else if (mobile === "Mobile Number" || mobile === "") {
                 app.showAlert("Please enter your Mobile Number.", "Validation Error");
             } else if (!app.validateMobile(mobile)) {
@@ -1185,6 +1185,20 @@ app.groupDetail = (function () {
             }
         };
         
+        var attendance = function(){
+            
+               if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                   app.mobileApp.navigate('views/adminAttendance.html');
+            }
+            
+        }
+        
         return {
             init: init,
             show: show,
@@ -1192,6 +1206,7 @@ app.groupDetail = (function () {
             showOrgNews:showOrgNews,
             editProfileFunc:editProfileFunc,
             addAlternateNo:addAlternateNo,
+            attendance:attendance,
             clickOnOrgMember:clickOnOrgMember,     
             sendNotification:sendNotification,    
             removeMemberClick:removeMemberClick,

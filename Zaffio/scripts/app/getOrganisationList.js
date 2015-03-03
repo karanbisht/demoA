@@ -7,7 +7,7 @@ app.OragnisationList = (function () {
     var account_Id;
     var groupDataShow = [];   
     var UserOrgInformation;
-    var JoinedOrganisationYN = 1;
+    //var JoinedOrganisationYN = 1;
     var orgLogoName;
     var imgPathData;
     var checkForImg=0;
@@ -59,9 +59,10 @@ app.OragnisationList = (function () {
             if (count !== 0) {                
                 var tempArray = [];
                 for (var i = 0 ; i < count ; i++) {                      
-                    checkForImg=0;
+                    //checkForImg=0;
                     var orgImage;
                     org_Logi_Image = results.rows.item(i).imageSource;
+                    orgImage = results.rows.item(i).imageSource;
                     
                     if(org_Logi_Image!=='null' && org_Logi_Image!==null){
                         orgLogoName = org_Logi_Image.replace(/^.*[\\\/]/, '');                        
@@ -70,17 +71,18 @@ app.OragnisationList = (function () {
                         window.resolveLocalFileSystemURL(fp, 
                         function(entry)
                         {
-                          //orgImage=imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+orgLogoName; 
-                           checkForImg=1; 
+                           //alert('local');
+                          orgImage=imgPathData + "Zaffio/"+'Zaffio_orgLogo_'+orgLogoName; 
+                           //checkForImg=1; 
                         },function(error)
                         {
-                          checkForImg=0;  
-                          //orgImage=results.rows.item(i).imageSource;  
+                          //alert('no available');  
+                          //checkForImg=0;  
+                          orgImage=results.rows.item(i).imageSource;  
                         });                                    
-                    }else{
-                          //orgImage='null';
-                          checkForImg=0;
                     }
+                    
+                    //alert(orgImage);
                     
                     org_id_DB = results.rows.item(i).org_id;                                      
                     var bagCount = results.rows.item(i).bagCount;                   
@@ -112,7 +114,8 @@ app.OragnisationList = (function () {
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
-                                        
+                                     
+                    
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(i).org_id);                                     
@@ -121,7 +124,7 @@ app.OragnisationList = (function () {
                                                orgDesc: lastNotifi,
                                                organisationID:results.rows.item(i).org_id,
                                                org_logo:results.rows.item(i).imageSource,
-                                               imageSource:results.rows.item(i).imageSource,
+                                               imageSource:orgImage,
                                                localImageSource:fp,
                                                checkForImg:checkForImg,
                                                bagCount : bagCountValue,
@@ -182,7 +185,7 @@ app.OragnisationList = (function () {
             dataSourceLogin.fetch(function() {
                 var data = this.data();                                		                                  
                     if (data[0]['status'][0].Msg==='Not a customer to any organisation') {
-                        JoinedOrganisationYN = 0;
+                        //JoinedOrganisationYN = 0;
                         groupDataShow = [];                               
                         groupDataShow.push({
                                                orgName: 'No Organization',
@@ -201,12 +204,12 @@ app.OragnisationList = (function () {
                     }else if (data[0]['status'][0].Msg==='Success') {
                         if (data[0]['status'][0].orgData.length!==0) {
                             //var roleLength = loginData.status[0].JoinedOrg.role.length;
-                            JoinedOrganisationYN = 1;                              
+                            //JoinedOrganisationYN = 1;                              
                             UserOrgInformation = data[0]['status'][0].orgData;
                             var userOrgLastNoti = data[0]['status'][0].last;                             
                             saveOrgInfo(UserOrgInformation, userOrgLastNoti);
                         }else {
-                            JoinedOrganisationYN = 0;
+                            //JoinedOrganisationYN = 0;
                             groupDataShow = []; 
                             $("#moreOption").show();
                               
@@ -581,7 +584,6 @@ app.OragnisationList = (function () {
             console.log(JSON.stringify(e.data));
             var organisationID = e.data.organisationID;
             var bagCount = e.data.count;            
-            app.MenuPage = false;	
             localStorage.setItem("user_SelectOrgID", organisationID);
             localStorage.setItem("user_ACCOUNT_ID", account_Id);
             localStorage.setItem("user_orgBagCount", bagCount);
@@ -598,43 +600,36 @@ app.OragnisationList = (function () {
        
         var groupSelected = function (e) {
             console.log("karan Bisht" + e);
-            app.MenuPage = false;	
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
          
         var offlineActivitySelected = function (i) {
             console.log(i);
-            app.MenuPage = false;	
             console.log("click");
             //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
         
         var notificationSelected = function (e) {
-            app.MenuPage = false;	
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
 
         // Navigate to app home
         var navigateHome = function () {
-            app.MenuPage = false;
             app.mobileApp.navigate('#welcome');
             //app.slide('right', 'green' , '3' , '#welcome');    
         };
         
         var replyUser = function() {
-            app.MenuPage = false;	
             app.mobileApp.navigate('views/userReplyView.html');                         
         };
         
         var manageGroup = function() {
-            app.MenuPage = false;	
             //app.mobileApp.pane.loader.show();
             app.mobileApp.navigate('views/groupListPage.html');           
         };
         
         var sendNotification = function() {
-            app.MenuPage = false;
             //document.location.href="#sendNotificationDiv";
             app.mobileApp.navigate('views/sendNotification.html');
             //app.slide('left', 'green' , '3' , '#views/sendNotification.html');
@@ -651,7 +646,6 @@ app.OragnisationList = (function () {
             orgDbData = [];
             tempArray = [];
  
-            app.MenuPage = false;
             $("#organisation-listview1").html("");
             var showMore = localStorage.getItem("ShowMore");
                                      
@@ -811,9 +805,7 @@ app.OragnisationList = (function () {
             localStorage.setItem("selectedOrgDOJ", joinDate);
             localStorage.setItem("selectedOrgImgSou", imageSourceOrg);
             localStorage.setItem("selectedOrgImgData", imgData);
-            app.MenuPage = false;	
             app.analyticsService.viewModel.trackFeature("User navigate to Manage Organization List"); 
-
             app.mobileApp.navigate('views/userOrgManage.html');
 
         };    
@@ -897,7 +889,6 @@ app.OragnisationList = (function () {
         }
         
         var editProfilePage = function() {        
-            app.MenuPage = false;	
 
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Profile Page");            
 
@@ -907,10 +898,15 @@ app.OragnisationList = (function () {
         var editProfileShow = function() {
             $("#editFirstName").val(fname);
             $("#editLastName").val(lnameVal);
+            
             $("#editEmail").val(email);
+                      
         }
         
         var unsubscribeOrg = function() {                         
+
+            $("#leaveOrganization").show();
+            
             var delOrgfromServerDB = new kendo.data.DataSource({
                                                                    transport: {
                     read: {
@@ -933,7 +929,15 @@ app.OragnisationList = (function () {
                     }                       
                 },
                                                                    error: function (e) {
-                                                                       //console.log(e);
+                                                                       $("#leaveOrganization").hide();
+                                                                       
+                                                                       if (!app.checkConnection()) {
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                                }else {
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                }                
+                                                                       }
                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));              
                                                                    }
 	        
@@ -951,6 +955,8 @@ app.OragnisationList = (function () {
         }
 
         function delOrgSuccess() {
+            $("#leaveOrganization").hide();
+
             app.showAlert('Successfully Unsubscribe Organisation', 'Unsubscribe');
             app.callUserLogin();
         }
@@ -960,7 +966,6 @@ app.OragnisationList = (function () {
         }
            
         var userProfileInt = function () {       
-            app.MenuPage = false; 
         };
         
         var userProfileShow = function() {
@@ -968,7 +973,6 @@ app.OragnisationList = (function () {
             tempArray = [];
             $(".km-scroll-container").css("-webkit-transform", "");
 
-            app.MenuPage = false;    
             
             var db = app.getDb();
             db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
@@ -1001,6 +1005,13 @@ app.OragnisationList = (function () {
                 lnameVal = results.rows.item(0).last_name;
 
                 email = results.rows.item(0).email;
+                            
+                if(email===null || email==="null" || email===''){
+                    $("#emailToShow").hide();
+                }else{
+                    $("#emailToShow").show();
+                }
+                
                 mobile = results.rows.item(0).mobile;
                 profileImage = results.rows.item(0).profile_image; 
 
@@ -1098,7 +1109,6 @@ app.OragnisationList = (function () {
         };
                      
         var callOrganisationLogin = function() {
-            app.MenuPage = false;	
             //window.location.href = "views/organisationLogin.html"; 
             //console.log(account_Id);
 
@@ -1159,22 +1169,18 @@ app.OragnisationList = (function () {
         }
             
         var inAppBrowser = function() {
-            app.MenuPage = false;
             window.open('http://www.sakshay.in', '_blank');
         };
                         
         var makeCall = function() {
-            app.MenuPage = false;
             document.location.href = 'tel:+91-981-859-2244';
         };
        
         var about = function() {
-            app.MenuPage = false;
             document.location.href = "#infoDiv";
         };
     
         var setting = function() {
-            app.MenuPage = false;
             document.location.href = "#settingDiv";
         };       
         
@@ -1235,11 +1241,11 @@ app.OragnisationList = (function () {
                 app.showAlert("Please enter your First Name.", "Validation Error");
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", "Validation Error");
-            }else if (email === "Email" || email === "") {
+            }/*else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");
             } else if (!app.validateEmail(email)) {
                 app.showAlert("Please enter a valid Email.", "Validation Error");
-            }else {    
+            }*/else {    
                 //console.log(fname+"||"+lname+"||"+email+"||"+mobile+"||"+organisationID);  
                 var jsonDataRegister;
                           

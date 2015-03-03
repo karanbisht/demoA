@@ -1096,6 +1096,16 @@ input:focus, textarea:focus {
 }
 
 
+.getGroupComboSelectAll
+{
+    display: block;
+    margin: 5px 5px 5px 5px;
+    color: #343434;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #f5f7f8;
+}
+
+
 .emptyGetGroupCombo
 {
     display: block;
@@ -1631,8 +1641,8 @@ background: #fff none;
     color: #57A70C;
     font-size: 1.2rem; 
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; 
+    /*text-overflow: ellipsis;*/
+    /*white-space: nowrap;*/ 
     font-weight: 600; 
 }
 
@@ -1893,6 +1903,10 @@ input.largerCheckbox
     border: 2px solid #000000;
     */
     zoom: 150%;
+}
+
+input.largerCheckboxSelectAll{
+    zoom: 150%;    
 }
 
 .error-content
@@ -2619,6 +2633,18 @@ float:right;
     width: 50px;
 }
 
+
+#show-admin-attendance-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/attendance_management.png");
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 40px; 
+    width: 40px;
+}
+
 #show-admin-news-icon
 {
     background-color: #2D344B; 
@@ -2996,8 +3022,8 @@ float:right;
 
 .backgroundImgShow
 {
-    width: 90px;
-    height: 90px;   
+    width: 150px;
+    height: 150px;   
     border-radius: 3px;
     overflow: hidden;
     text-align: center;

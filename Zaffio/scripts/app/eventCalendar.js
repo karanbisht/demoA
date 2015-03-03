@@ -12,14 +12,17 @@ app.eventCalender = (function () {
         var page=0;
         var totalListView=0;
         var dataReceived=0;
-        var device_type = localStorage.getItem("DEVICE_TYPE"); 
+        var device_type; 
         var imageSourceOrg;
 
         var init = function() {
         }
     
         var show = function(e) {
-             $("#showMoreEventBtn").hide();
+
+            device_type = localStorage.getItem("DEVICE_TYPE"); 
+
+            $("#showMoreEventBtn").hide();
             $(".km-scroll-container").css("-webkit-transform", ""); 
             tasks = [];
             multipleEventArray = [];
@@ -475,7 +478,7 @@ app.eventCalender = (function () {
                                       if(device_type==="AP"){
                                           //alert('Show');
                                           //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank','EnableViewPortScale=yes');
+                                          window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
 
                                       }else{
                                           window.plugins.fileOpener.open(fp);
@@ -504,7 +507,7 @@ app.eventCalender = (function () {
 
                                       if(device_type==="AP"){
                                           //alert('1');
-                                          window.open(fp, "_blank",'EnableViewPortScale=yes');
+                                          window.open(fp, "_blank",'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }

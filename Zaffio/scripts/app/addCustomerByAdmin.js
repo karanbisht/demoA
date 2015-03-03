@@ -151,12 +151,8 @@ app.addCustomerByAdmin = (function () {
                                                         template: kendo.template($("#groupNameShowTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
             });
-            
-            
 
-            $("#groupInAddCustomer li:eq(0)").before('<li id="selectAll" class="getGroupCombo" onclick="app.addCustomerByAdmin.selectAllCheckBox()"><label><input type="checkbox" class="largerCheckbox" value="" /><span class="groupName_Select">Select All</span></label></li>');        
-
-            
+            $("#groupInAddCustomer li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.addCustomerByAdmin.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');        
 
               /* document.getElementById("multiSelectGroupName").innerHTML = "";
             
@@ -223,6 +219,7 @@ app.addCustomerByAdmin = (function () {
             console.log(multiSelect);*/
        };       
         
+              
         var registerR = function() {            
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
@@ -495,7 +492,14 @@ app.addCustomerByAdmin = (function () {
                     $('.largerCheckbox').prop('checked', true); 
                     document.getElementById("selectAll").checked=true;
                 }
-        }       
+        } 
+        
+        var checkClick = function(){
+            if ($("#selectAll").prop('checked')===true){
+                    $('.largerCheckboxSelectAll').prop('checked', false);
+                    document.getElementById("selectAll").checked=false;
+            }
+        }
         
         return {
             regInit: regInit,
@@ -503,6 +507,7 @@ app.addCustomerByAdmin = (function () {
             addMoreMobileNo:addMoreMobileNo,
             clickToSelectGroup:clickToSelectGroup,
             selectAllCheckBox:selectAllCheckBox,
+            checkClick:checkClick,
             registerR: registerR
         };
     }());

@@ -29,19 +29,15 @@
 
 
 		<script type="text/x-kendo-template" id="calendarTemplate">
-            <div data-role="touch" >
-            
+            <div data-role="touch" >            
                  #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
-
-                      <div class="backgroundImgShow" style="width:100%;background-image: url(${event_image});background-size:contain;background-repeat: no-repeat;background-position: center;"></div>
-                     
+                      <div class="backgroundImgShow" style="width:100%;background-image: url(${event_image});background-size:contain;background-repeat: no-repeat;background-position:center;"></div>
                       <div id="img_Div_Event_${id}" style="display:none;color:rgb(87,167,12);">
                             Downloading...
                       </div> 
                   #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#                                                       
                          <div class="event-vid-show" id=""></div>
-                       <br/>
-                            
+                       <br/>                            
                         <div id="video_Div_Event_${id}" style="display:none;color:rgb(87,167,12);">
                             Downloading...
                         </div>                      

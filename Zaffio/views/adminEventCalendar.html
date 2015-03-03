@@ -130,7 +130,7 @@
                   
                     #if (event_image!=='' && event_image!=='0'  && upload_type==="image") {#
                         <br/>
-                            <img src= ${event_image} style="max-height:200px;margin-top:10px;" /> 
+                            <img src= ${event_image} style="width:100%;margin-top:10px;" /> 
                         <br/>
                     #}else if (event_image!=='' && event_image!=='0' && upload_type==="video"){#          
                      <br/>
@@ -239,7 +239,7 @@
         
 
          
-           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewEventFunction }">
+           <li class="defineSaveButton"  data-bind="click:addNewEventFunction">
                 Save   
            </li>
     </div> 
@@ -335,11 +335,27 @@
                 </ul>
             </div>
          
-           <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: saveEditEventData }">
+           <li class="defineSaveButton" data-bind="click:saveEditEventData">
                        Save Change   
            </li>       
    </div>      
 </div>
+
+
+        <script type="text/x-kendo-template" id="groupNameShowTemplateEvent"> 
+           #if(pid !=='0'){#
+                <li class="getGroupCombo">
+                    <label>
+                        <input type="checkbox" class="largerCheckbox" value="${pid}" onclick="app.adminEventCalender.checkClick()"/>
+                        <span class="groupName_Select">#:group_name#</span>
+                    </label>
+                </li>
+           #}else{#
+                 <li class="emptyGetGroupCombo">#:group_name#</li>                  
+           #}#                    
+        </script>
+
+
 
  <script type="text/x-kendo-template" id="errorTemplate">    		
             <div class="cf" style="margin-top:30%;border:none">

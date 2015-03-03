@@ -68,17 +68,15 @@ app.sendNotification = (function () {
                                                                        });                           
              
             $("#organisation-Name-listview").kendoMobileListView({
-                                                                     template: kendo.template($("#orgNameTemplate").html()),    		
-                                                                     dataSource: organisationListDataSource
-                                                                 });                
+                                         template: kendo.template($("#orgNameTemplate").html()),    		
+                                         dataSource: organisationListDataSource
+            });                
           
             $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
             $("#selectOrgDiv").show();
         };
                                        
         var show = function(e) {
-            app.MenuPage = false;
-            app.userPosition = false;
               
             $("#notificationType").kendoComboBox({
                                                      dataTextField: "text",
@@ -242,8 +240,7 @@ app.sendNotification = (function () {
                                             quality: 50,                                            
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            correctOrientation: true,
-                                            saveToPhotoAlbum:true
+                                            correctOrientation: true
                                         });
         };
         
@@ -617,16 +614,13 @@ app.sendNotification = (function () {
         
         var sendNotificationOrg = function(e) {
             $("#selectOrgLoader").show();
-            //console.log(e.data.org_id);
-            //var org = e.data.org_id;       
 
             var org = localStorage.getItem("orgSelectAdmin");
-
             localStorage.setItem("SELECTED_ORG", org);
              
             var comboGroupListDataSource = new kendo.data.DataSource({
-                                                                         transport: {
-                    read: {
+                                                                        transport: {
+                                                                        read: {
                                                                                      url: app.serverUrl() + "group/adminGroup/" + org + "/A",
                                                                                      type:"POST",
                                                                                      dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
@@ -640,23 +634,24 @@ app.sendNotification = (function () {
                 },
                                                                          error: function (e) {
                                                                              $("#selectOrgLoader").hide();
+                                                                             
+                                                                             $("#selectOrgDiv").hide();
+                                                                             $("#whatToDo").show();
+                                                                             $("#selectGroupLI").show();
+                                                                             $("#selectOrgLoader").hide();
+                                                                             
+                                                                             if (!app.checkSimulator()) {
+                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                             }else {
+                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                             }
+                                                                     
+                                                                             
                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
                          
-                                                                             var showNotiTypes = [
-                                                                                 { message: "Please Check Your Internet Connection"}
-                                                                             ];
-                       
-                                                                             var dataSource = new kendo.data.DataSource({
-                                                                                                                            data: showNotiTypes
-                                                                                                                        });
-                    
-                                                                             $("#group-Name-listview").kendoMobileListView({
-                                                                                                                               template: kendo.template($("#errorTemplate").html()),
-                                                                                                                               dataSource: dataSource  
-                                                                                                                           });
                                                                          },       
-                                                                         sort: { field: 'add', dir: 'desc' }    	     
-                                                                     });
+                                                                         
+                        });
             
             comboGroupListDataSource.fetch(function() {                                                       
                 groupDataShow = [];
@@ -669,7 +664,7 @@ app.sendNotification = (function () {
                     $("#selectOrgDiv").hide();
                     noGroup = 1;      
                     
-                    $("#selectGroupLI").hide();
+                    //$("#selectGroupLI").hide();
                     $("#whatToDo").show();
                                          
                     localStorage.setItem("SELECTED_GROUP", 0); 
@@ -683,7 +678,6 @@ app.sendNotification = (function () {
                     }else {
                         app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
-
                     app.mobileApp.navigate('#view-all-activities-GroupDetail');
 
                 }else {
@@ -697,7 +691,8 @@ app.sendNotification = (function () {
                                                pid:data[0].status[0].groupData[j].pid
                                            });
                         }
-                                                                
+                                                               
+                    noGroup = 0;
                     $("#selectOrgDiv").hide();
                     $("#whatToDo").show();
                     $("#selectGroupLI").show();
@@ -710,23 +705,32 @@ app.sendNotification = (function () {
         
         var clickOnSelectGroup = function(){
 
-            if (!app.checkConnection()) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                }else {
-                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                } 
-            }else{                
-               $("#selectGroupDiv").show();
-               $("#selectGroupFooter").show();
-               $("#whatToDo").hide();
-            }
+          if(noGroup===0){
+                if (!app.checkConnection()) {
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    }else {
+                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                    } 
+                }else{                
+                   $("#selectGroupDiv").show();
+                   $("#selectGroupFooter").show();
+                   $("#whatToDo").hide();
+                }
+           }else{
+                   if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("No Group in this Organization");  
+                   }else {
+                        app.showAlert("No Group in this Organization" , 'Offline');  
+                   } 
+           }   
 
         }
-        
+ 
         
         var clickOnSelectCustomer = function(){
-            
+
+         if(noCustomer===0){            
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
@@ -738,23 +742,32 @@ app.sendNotification = (function () {
                 $("#selectCustomerFooter").show();    
                 $("#whatToDo").hide();
             }
+         }else{
+
+             if (!app.checkSimulator()) {
+                        window.plugins.toast.showLongBottom("No Customer in this Organization");  
+             }else {
+                        app.showAlert("No Customer in this Organization" , 'Offline');  
+             } 
+
+         }  
 
         }
         
         var showDataInTemplate = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
+            //$(".km-scroll-container").css("-webkit-transform", "");
            
-            var comboGroupListDataSource = new kendo.data.DataSource({
+            var comboGroupListDataSource1 = new kendo.data.DataSource({
                                                                          data: groupDataShow
                                                                      });      
             
             $("#group-Name-listview").kendoListView({
-                                                        template: kendo.template($("#groupNameTemplate").html()),    		
-                                                        dataSource: comboGroupListDataSource
-                                                    });
+                                            dataSource: comboGroupListDataSource1,                                        
+                                            template: kendo.template($("#groupNameTemplate").html())    		
+            });
              
-            app.mobileApp.pane.loader.hide();
-
+            //app.mobileApp.pane.loader.hide();
+            
             getCustomerForOrg();
         }
 
@@ -780,7 +793,7 @@ app.sendNotification = (function () {
                 },
                                                                  error: function (e) {
                                                                     
-                                                                     if (!app.checkSimulator()) {
+                                                                                    if (!app.checkSimulator()) {
                                                                                            window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
                                                                                     }else {
                                                                                            app.showAlert(app.INTERNET_ERROR , 'Offline');  
@@ -788,7 +801,7 @@ app.sendNotification = (function () {
                                                                      
                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Customer for Send Notification in Admin Panel.');
                          
-                                                                     var showNotiTypes = [
+                                                                     /*var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];
                        
@@ -799,7 +812,8 @@ app.sendNotification = (function () {
                                                                      $("#customer-Name-listview").kendoMobileListView({
                                                                                                                           template: kendo.template($("#errorTemplate").html()),
                                                                                                                           dataSource: dataSource  
-                                                                                                                      });               
+                                                                                                                      });
+                                                                     */
                                                                  }	        
                                                              });         
             
@@ -809,8 +823,8 @@ app.sendNotification = (function () {
                      
                 if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
                     noCustomer = 1;
-                    $("#selectCustomerLI").hide();
-                    $("#whatToDo").show();
+                    //$("#selectCustomerLI").hide();
+                    //$("#whatToDo").show();
                     //escapeGroupClick();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert(app.SESSION_EXPIRE , 'Notification');
@@ -828,7 +842,7 @@ app.sendNotification = (function () {
                                                        orgID:data[0].status[0].allCustomer[i].orgID
                                                    });
                     }     
-                                        
+                    noCustomer = 0;                      
                     $("#selectCustomerLI").show();
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {

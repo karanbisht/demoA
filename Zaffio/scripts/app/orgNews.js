@@ -7,7 +7,7 @@ app.orgNews = (function () {
         var eventOrgId;
         var account_Id;
         var groupAllEvent = [];
-        var device_type = localStorage.getItem("DEVICE_TYPE");
+        var device_type;
         var page=0;
         var totalListView=0;
         var dataReceived=0;
@@ -17,7 +17,8 @@ app.orgNews = (function () {
         }
     
         var show = function(e) {      
-             $("#showMoreNewsBtn").hide();
+            device_type = localStorage.getItem("DEVICE_TYPE");
+            $("#showMoreNewsBtn").hide();
             $("#newsLoader").show();            
             $(".km-scroll-container").css("-webkit-transform", "");             
             eventOrgId = localStorage.getItem("selectedOrgId");
@@ -203,7 +204,6 @@ app.orgNews = (function () {
             fileTransfer.download(attachedVid, fp, 
                                   function(entry) {
                                       
-
                                       if(device_type==="AP"){
                                           window.open(fp, "_blank");
                                       }else{
@@ -257,11 +257,11 @@ app.orgNews = (function () {
             var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
             console.log(fp);
-            
+                        
                                       if(device_type==="AP"){
                                           //alert('Show');
                                           //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank', 'EnableViewPortScale=yes');
+                                          window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
 
                                       }else{
                                           window.plugins.fileOpener.open(fp);
@@ -290,7 +290,7 @@ app.orgNews = (function () {
 
                                       if(device_type==="AP"){
                                           //alert('1');
-                                          window.open(fp, "_blank", 'EnableViewPortScale=yes');
+                                          window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }

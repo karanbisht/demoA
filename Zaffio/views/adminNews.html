@@ -31,7 +31,7 @@
         
         #if (news_image!=='' && news_image!=='0' && upload_type==="image") {#
             <br/>
-            <img src= ${news_image} style="max-height:150px;margin-top:10px;" />                
+            <img src= ${news_image} style="width:100%;margin-top:10px;" />                
         #}else if (news_image!=='' && news_image!=='0' && upload_type==="video") {#          
             <br/>
             <div>
@@ -125,7 +125,7 @@
                 </ul>
             </div>
                         
-            <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: addNewNewsFunction }">
+            <li class="defineSaveButton" data-bind="click:addNewNewsFunction">
                 Save
             </li>
         </div>
@@ -212,9 +212,9 @@
                 
                     <li  class="showInSameLine" style="margin-bottom:30px;">
 
-                        <span id="registration" data-role="touch" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:3px;" data-bind="events: { tap: deleteNews }"> Delete News </span>
+                        <span id="registration" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:3px;" data-bind="click:deleteNews"> Delete News </span>
 
-                        <span id="registration" data-role="touch" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" data-bind="events: { tap: saveEditNewsData }"> Save Change </span>
+                        <span id="registration" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" data-bind="click:saveEditNewsData" > Save Change </span>
 
                     </li>
 
@@ -223,6 +223,21 @@
     
     </div>
 </div>
+
+
+        <script type="text/x-kendo-template" id="groupNameShowTemplateNews"> 
+           #if(pid !=='0'){#
+                <li class="getGroupCombo">
+                    <label>
+                        <input type="checkbox" class="largerCheckbox" value="${pid}" onclick="app.adminNews.checkClick()"/>
+                        <span class="groupName_Select">#:group_name#</span>
+                    </label>
+                </li>
+           #}else{#
+                 <li class="emptyGetGroupCombo">#:group_name#</li>                  
+           #}#                    
+        </script>
+
 
 <script type="text/x-kendo-template" id="errorTemplate">    		
     <div class="cf" style="margin-top:30%;border:none">        

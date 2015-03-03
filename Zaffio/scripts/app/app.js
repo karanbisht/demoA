@@ -6,7 +6,6 @@ $(document).ready(function() {
     }); 
 }); 
 
-
 var app = (function (win) {
     'use strict';
     var db;
@@ -39,7 +38,7 @@ var app = (function (win) {
     var GROUP_UPDATED_MSG="Group updated successfully";
     var MEMBER_DELETED_MSG="Member deleted successfully";
     var SELECT_MEMBER_TO_DELETE="Please select member to delete";
-    var MEMBER_DETAIL_UPDATED_MSG="Member detatil updated successfully";
+    var MEMBER_DETAIL_UPDATED_MSG="Member detail updated successfully";
     var MEMBER_ADDED_MSG="Member added successfully";
     var FORGET_PASSWORD_CODE_SEND="Code sent at your registered number.";
     
@@ -299,7 +298,7 @@ var app = (function (win) {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');                      
         }else if (app.mobileApp.view()['element']['0']['id']==='adminAddNews') {
             app.mobileApp.navigate('#adminOrgNewsList');
-            $("#adminAddNews").data("kendoMobileModalView").close();
+            //$("#adminAddNews").data("kendoMobileModalView").close();
         }else {
             app.mobileApp.navigate("#:back");    
         }
@@ -388,8 +387,7 @@ var app = (function (win) {
     };
     
     var onDeviceReady = function() {
-        //[data-role=footer]        
-        feedback.initialize('8f965ba0-a6d8-11e4-962d-15be4c73b66b');
+        //feedback.initialize('8f965ba0-a6d8-11e4-962d-15be4c73b66b');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -679,14 +677,34 @@ var app = (function (win) {
             commentAllowDB = messageSplitVal[6];
             notificationMsg = messageSplitVal[7];
             uploadTypeNoti = messageSplitVal[8];
+            
+                    if(attachedDB!==0 || attachedDB!=="0"){                       
+                        var vidPathData = app.getfbValue();    
+                        var Filename = attachedDB.replace(/^.*[\\\/]/, '');
+                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;  
+                        
+                        var fileTransfer = new FileTransfer();              
+                        fileTransfer.download(attachedDB, fp, 
+                                  function(entry) {
+                                      //alert('complete');
+                                      app.mobileApp.pane.loader.hide();
+                                      //$("#progressChat").hide();
+                                  },
+    
+                                  function(error) {
+                                      //alert('error');
+                                      app.mobileApp.pane.loader.hide();
+                                      
+                                  }
+                        );
 
+                    }
                         
             //send_DateDB= getPresentDateTime();
             send_DateDB = getPresntTimeStamp();   
-
             sendDateInside = timeConverter(send_DateDB);
           
-            if (typeDB!=='Add Customer') {
+            if (typeDB!=='Add Customer' && typeDB!=='Attendance') {
                 if (commentAllowDB==='') {
                     commentAllowDB = 0;
                 }
@@ -731,6 +749,7 @@ var app = (function (win) {
     
     //the function is a callback for all GCM events
     var onNotificationGCM = function(e) {
+        //console.log(JSON.stringify(e));
         //alert(JSON.stringify(e));
         try {
             switch (e.event) {
@@ -757,8 +776,30 @@ var app = (function (win) {
                     
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
+                
+                    if(attachedDB!==0 || attachedDB!=="0"){                       
+                        var vidPathData = app.getfbValue();    
+                        var Filename = attachedDB.replace(/^.*[\\\/]/, '');
+                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;  
+                        
+                        var fileTransfer = new FileTransfer();              
+                        fileTransfer.download(attachedDB, fp, 
+                                  function(entry) {
+                                      //alert('complete');
+                                      app.mobileApp.pane.loader.hide();
+                                      //$("#progressChat").hide();
+                                  },
+    
+                                  function(error) {
+                                      //alert('error');
+                                      app.mobileApp.pane.loader.hide();
+
+                                  }
+                        );
+
+                    }
                             
-                    if (typeDB!=='Add Customer') {
+                    if (typeDB!=='Add Customer' && typeDB!=='Attendance') {
                         
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';

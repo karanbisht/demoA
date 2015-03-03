@@ -1,5 +1,4 @@
-<div data-role="view" id="view-all-activities" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin"
-     data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" >
+<div data-role="view" id="view-all-activities" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin" data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" >
     <div data-role="header">
         <div data-role="navbar">
             Add Members
@@ -7,7 +6,6 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
         </div>
     </div>
-
 
     <div class="loader" id="saveMemberLoader" style="display:none;">
         <div class="ball"></div>
@@ -51,3 +49,28 @@
 </div> 
 
 
+        <script type="text/x-kendo-template" id="groupNameShowTemplate"> 
+           #if(pid !=='0'){#
+                <li class="getGroupCombo">
+                    <label>
+                        <input type="checkbox" class="largerCheckbox" value="${pid}" onclick="app.addCustomerByAdmin.checkClick()"/>
+                        <span class="groupName_Select">#:group_name#</span>
+                    </label>
+                </li>
+           #}else{#
+                 <li class="emptyGetGroupCombo">#:group_name#</li>                  
+           #}#                    
+        </script>
+
+<script>
+
+  $(document).ready(function () {
+            
+    $('#groupInAddCustomer :checkbox').on('click', function (event) {
+        event.stopPropagation();
+        alert('clicked checkbox');
+    });
+      
+  });
+    
+</script>

@@ -15,7 +15,7 @@ app.Activities = (function () {
     var EndDbCount = 10;
     var checkVal=0;
     var noDatainDB=0;
-    var device_type = localStorage.getItem("DEVICE_TYPE"); 
+    var device_type; 
     var imgPathData;
     
     var activitiesViewModel = (function () {
@@ -25,6 +25,7 @@ app.Activities = (function () {
         }   
         
         var show = function(e) {                                
+            device_type = localStorage.getItem("DEVICE_TYPE");
             StartDbCount = 0;
             checkVal=0;
             EndDbCount = 10;
@@ -101,7 +102,7 @@ app.Activities = (function () {
                         
             var organisationALLNewListDataSource = new kendo.data.DataSource({
                                                                                      transport: {
-                        read: {
+                                                                                       read: {
                                                                                                  url: app.serverUrl() + "notification/getCustomerNotification/" + organisationID + "/" + account_Id + "/" + lastNotificationPID,
                                                                                                  type:"POST",
                                                                                                  dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
@@ -233,9 +234,7 @@ app.Activities = (function () {
             
             if (totalOrgNotification > StartDbCount) {
                 $("#showMoreButton").show();
-
-            }else {
-                                
+            }else {                                
                 $("#showMoreButton").hide();
             }
         }
@@ -290,29 +289,32 @@ app.Activities = (function () {
 
                     var attachedData=results.rows.item(i).attached;
                     var uplaodData=results.rows.item(i).upload_type;
-                    var downlaod=0;
+                    var downloadedImg;
 
-                    /*if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="other"){        
+                    if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="other"){        
 
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedData.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Aptifi/" + 'Zaffio_img_' + Filename;             
+                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;             
 
-                        alert('data');
+                        downloadedImg = results.rows.item(i).attached;
+                        
                         window.resolveLocalFileSystemURL(fp, 
                         function(entry)
                         {
-
-                            alert('got');
-
-                          downlaod=1;   
+                          //alert('got');
+                          downloadedImg = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;
+                          //downlaod=1;   
                         },function(error)
                         {
-                                                        alert('not');
-
-                          downlaod=0;  
+                          //alert('not');
+                          //downlaod=0;  
+                          downloadedImg = results.rows.item(i).attached;
                         });                                    
-                    }else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
+                        
+                        //alert(downloadedImg);
+                        
+                    }/*else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
                          var vidPathData = app.getfbValue();    
                          var Filename = attachedData.replace(/^.*[\\\/]/, '');
                          var fp = vidPathData + "Aptifi/" + 'Aptifi_Video_' + Filename;             
@@ -337,7 +339,7 @@ app.Activities = (function () {
                                            attached :results.rows.item(i).attached,
                                            previousDate:previousDate,
                                            //inLocal:downlaod,
-                                           attachedImg :results.rows.item(i).attached
+                                           attachedImg :downloadedImg
                                        });                    
                     
                     previousDate = notiDate;                    
@@ -525,7 +527,7 @@ app.Activities = (function () {
                                       if(device_type==="AP"){
                                           //alert('Show');
                                           //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank' , 'EnableViewPortScale=yes');
+                                          window.open(fp, '_blank' , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
 
                                       }else{
                                           window.plugins.fileOpener.open(fp);
@@ -554,7 +556,7 @@ app.Activities = (function () {
 
                                       if(device_type==="AP"){
                                           //alert('1');
-                                          window.open(fp, "_blank" , 'EnableViewPortScale=yes');
+                                          window.open(fp, "_blank" , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
