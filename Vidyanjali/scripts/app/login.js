@@ -57,7 +57,6 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
             //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
             var device_id = localStorage.getItem("deviceTokenID");          
             //console.log(device_id);            
@@ -482,7 +481,6 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    //var device_id = '9bd2a47f918c4f5ee257141160db82a39ebefb42c95497d7a2935e57d44a310';
                     //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");                          
                     //console.log(device_id);

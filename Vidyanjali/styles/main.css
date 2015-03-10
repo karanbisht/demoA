@@ -2572,6 +2572,19 @@ float:right;
     margin-left: 0px;
 }
 
+
+#side-poweredBy-icon
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/powered_by.png");
+    background-size: 75px 45px;
+    background-repeat: no-repeat;
+    height: 45px;
+    width: 75px;
+    margin-left: 0px;
+}
+
+
 #side-about-icon
 {
     background-color: #2D344B; 

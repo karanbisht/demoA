@@ -39,7 +39,7 @@
                 <div class="ball"></div>
             </div>
             
-            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;margin-bottom:15px;display:none;max-width:600px;background:#ffffff;">                
+            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;display:none;max-width:600px;margin-bottom:15px;background:#ffffff;">                
                 <form id="login-form" data-bind="events: { keyup: checkEnter }" class="" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
                         <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
@@ -54,8 +54,8 @@
                             </span>
                         </li>
                     </ol>
-
                 </form>
+                <!--<div id="poweredBy" style="width:auto; margin:0 auto; text-align:center; position:absolute; left:0px; right:0px; bottom:5px;color:#999999;">Powered by Zaffio</div>-->
             </div>
 
 
@@ -444,7 +444,7 @@
         
 <!--,'#infoDiv'-->
 
-        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','userOrgManage','profileDiv','settingDiv','views/organisationLogin.html']">
+        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','userOrgManage','profileDiv','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','views/organisationLogin.html']">
             <header data-role="header">
                 <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
@@ -452,33 +452,36 @@
             </header>
 
             <ul data-role="listview" style="overflow:hidden;">
-                <li style="height:3.2em;">
+                <li style="height:3.2em;border-color:#43495c">
                     <img src="styles/images/zaffio.png" style="margin-top:-10px;height:2.8em;margin-left:10px;"/>
                 </li>
-                <li >
+                <li style="border-color:#43495c">
                     <a id="side-noti-icon"  href="#view-all-activities" data-transition="none"></a>
                 </li>
-                <li >
+                <li style="border-color:#43495c">
                     <a id="side-org-icon" href="#userOrgManage" data-transition="none"></a>
                 </li>
-                <li >
+                <li style="border-color:#43495c">
                     <a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a>
                 </li>
-                <li >
+                <li style="border-color:#43495c">
                     <a id="side-org-news-icon" href="views/organizationNews.html?orgin=1"  data-transition="none"></a>
                 </li>
-                <li >
+                <li style="border-color:#43495c">
                     <a id="side-org-event-icon" href="views/eventCalendar.html?orgin=1"  data-transition="none"></a>
                 </li>
-                <li >
+                <!--<li >
                     <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
+                </li>
+                <li style="border-color:#2e2e2e">
+                    <a id="side-poweredBy-icon" data-transition="none"></a>
                 </li>
                 <!--<li >
                     <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
                 </li>-->
-                <!--<li id="goToAdmin" >
+                <li id="goToAdmin" style="border-color:#43495c">
                     <a id="side-admin-icon"  href="views/organisationLogin.html" data-transition="none"></a>
-                </li>-->
+                </li>
             </ul>
         </div>
 
@@ -797,27 +800,27 @@
             </header>
 
             <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
-                <li style="height:3.2em;">
+                <li style="height:3.2em;border-color:#43495c;">
                     <img src="styles/images/zaffio.png" style="margin-top:-10px;height:2.8em;margin-left:30px;"/>
                 </li>
 
-                <li class="clickEffect">
+                <li class="clickEffect" style="border-color:#43495c">
                     <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()"><span id="setOrgName">Organization</span><br/><span style="color:#AEB5D3;font-size:14px;text-align: center;">Select Organization</span></a>
                 </li>
                 
-                <li class="clickEffect">
+                <li class="clickEffect" style="border-color:#43495c">
                     <a id="side-admin-manageOrg-icon" href="#view-all-activities-GroupDetail" data-transition="none"><span></span></a>
                 </li>
                 
-                <li class="clickEffect">
+                <li class="clickEffect" style="border-color:#43495c">
                     <div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;margin-right:40px;padding-top:5px;"></div>
                     <a id="side-admin-message-icon"  href="#subGroupMemberReplyShow" data-transition="none"></a>                              
                 </li>
                 
-                <li class="clickEffect">
+                <li class="clickEffect" style="border-color:#43495c">
                     <a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a>
                 </li>
-                <li class="clickEffect">
+                <li class="clickEffect" style="border-color:#43495c">
                     <a id="side-admin-user-icon"  onclick="Logout()"  data-transition="none" ></a>
                 </li>
             </ul>

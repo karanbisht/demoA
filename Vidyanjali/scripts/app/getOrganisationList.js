@@ -393,18 +393,19 @@ app.OragnisationList = (function () {
             app.deleteQuery(tx, query);
         }  
         
-        var loginSuccessCB = function() {
+        var loginSuccessCB = function() {            
+            
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            transport: {
                     read: {
-                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
+                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id + app.CLIENT_APP_ID,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        console.log(data);                                             
+                        console.log(JSON.stringify(data));                                             
                         return [data];
                     }                                                            
                 },
@@ -850,7 +851,7 @@ app.OragnisationList = (function () {
                 $("#manageOrgFooter").hide();
             }
             
-            if (joinDate!==0 && joinDate!=='0' && joinDate!=='undefined') {               
+            if (joinDate!==0 && joinDate!=='0' && joinDate!=='undefined' && joinDate!=='null') { 
                 joinDate = app.formatDate(joinDate);
                 $("#orgJoinData").html(joinDate);
             }else {

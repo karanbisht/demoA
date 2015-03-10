@@ -7,6 +7,7 @@ app.Activities = (function () {
     var bagCount;
     var groupDataShow = [];
     var lastNotificationPID;
+    var UserOrgInformation;
     var orgName;
     var orgLogo;
     var logoFileName;
@@ -317,9 +318,9 @@ app.Activities = (function () {
                                                count : 0
                                            });
                                
-                        //var db = app.getDb();
-                        //db.transaction(delOrgDataDB, app.errorCB, app.successCB);                                                    
-                        //loginSuccessCB();
+                        var db = app.getDb();
+                        db.transaction(delOrgDataDB, app.errorCB, app.successCB);                                                    
+                        loginSuccessForManageOrg();
                     }else if (data[0]['status'][0].Msg==='Success') {
                         //if (data[0]['status'][0].orgData.length!==0) {                                                            
                                 //account_Id = data[0]['status'][0].ProfileInfo[0].account_id;                                  
@@ -332,10 +333,13 @@ app.Activities = (function () {
                                 //localStorage.setItem("selectedOrgRole", data[0]['status'][0].orgData[0].role);
                                 localStorage.setItem("selectedOrgDOJ", data[0]['status'][0].orgData[0].joinedON);
 
-                            //UserOrgInformation = data[0]['status'][0].orgData;
-                            //var userOrgLastNoti = data[0]['status'][0].last;                             
-                            //saveOrgInfo(UserOrgInformation, userOrgLastNoti);
-                        /*}else {
+                            if (data[0]['status'][0].orgData.length!==0) {
+                            //var roleLength = loginData.status[0].JoinedOrg.role.length;
+                            //JoinedOrganisationYN = 1;                              
+                            UserOrgInformation = data[0]['status'][0].orgData;
+                            var userOrgLastNoti = data[0]['status'][0].last;                             
+                            saveOrgInfo(UserOrgInformation, userOrgLastNoti);
+                        }else {
                             //JoinedOrganisationYN = 0;
                             groupDataShow = []; 
                             $("#moreOption").show();
@@ -353,12 +357,239 @@ app.Activities = (function () {
                                
                             var db = app.getDb();
                             db.transaction(delOrgDataDB, app.errorCB, app.successCB);                          
-                        }*/ 
+                        } 
                     }else {
                         //$("#progress2").hide();
-                    }                            
+                    }                      
             }); 
+                                   
         };
+        
+        
+
+        function delOrgDataDB(tx) {
+            var query = "DELETE FROM JOINED_ORG";
+            app.deleteQuery(tx, query);
+
+            var query = "DELETE FROM ORG_NOTIFICATION";
+            app.deleteQuery(tx, query);
+        }
+        
+        
+        
+        
+                var profileAdminOrgData;
+        var profileOrgData;
+                
+        function saveOrgInfo(data1, data2) {
+            profileOrgData = data1;
+            profileAdminOrgData = data2;
+            var db = app.getDb();
+            db.transaction(getOrgIdFmDB, app.errorCB, nowGetLiveData);        
+        };
+
+        var joinOrgID = [];               
+        var joinOrgAdminID = [];
+        
+        var getOrgIdFmDB = function(tx) {
+            var query = 'SELECT org_id FROM JOINED_ORG';
+            app.selectQuery(tx, query, getOrgDataSuccess);   
+
+            var query = 'SELECT org_id FROM JOINED_ORG_ADMIN';
+            app.selectQuery(tx, query, getOrgAdminDataSuccess);   
+        } 
+                
+        function getOrgDataSuccess(tx, results) {
+            var count = results.rows.length;
+            joinOrgID = [];
+            if (count !== 0) {
+                for (var i = 0;i < count;i++) {
+                    joinOrgID.push(parseInt(results.rows.item(i).org_id));
+                }
+            }
+        }
+        
+        function getOrgAdminDataSuccess(tx, results) {
+            var count = results.rows.length;
+            joinOrgAdminID = [];
+            if (count !== 0) {
+                for (var i = 0;i < count;i++) {
+                    joinOrgAdminID.push(parseInt(results.rows.item(i).org_id));
+                }
+            }
+        }
+        
+        var nowGetLiveData = function() {
+            var db = app.getDb();
+            db.transaction(insertOrgInfo, app.errorCB, loginSuccessForManageOrg);   
+        } 
+               
+        var userLiveOrgIdArray = [];
+        var userOrgIdArray = [];  
+        
+        function insertOrgInfo(tx) {
+            //console.log(profileOrgData);
+            //console.log(profileAdminOrgData);
+            var dataLength = profileOrgData.length;
+            userLiveOrgIdArray = [];            
+
+            for (var i = 0;i < dataLength;i++) {                             
+                userLiveOrgIdArray.push(parseInt(profileOrgData[i].organisationID));           
+                //console.log(profileOrgData[i]); 
+                profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);           
+                var LastNotificationMsg;           
+                if (profileAdminOrgData[i].total!==0) {
+                    LastNotificationMsg = profileAdminOrgData[i].last_notification.message; 
+                }else {
+                    LastNotificationMsg = ""; 
+                }
+                LastNotificationMsg = app.urlEncode(LastNotificationMsg);
+                var orgNameEncode = app.urlEncode(profileOrgData[i].org_name);
+                var orgDescEncode = app.urlEncode(profileOrgData[i].org_desc);
+
+                var pos = $.inArray(parseInt(profileOrgData[i].organisationID), joinOrgID);           
+
+                if (pos === -1) {
+                    joinOrgID.push(profileOrgData[i].organisationID);     
+                    var first_login = localStorage.getItem("FIRST_LOGIN");
+
+                    if (first_login===0) {
+                        //alert('New Data');               
+                        var query = 'INSERT INTO JOINED_ORG(org_id,org_name,imageSource,joinedDate,orgDesc,lastNoti,count) VALUES ("'
+                                    + profileOrgData[i].organisationID
+                                    + '","'
+                                    + orgNameEncode
+                                    + '","'
+                                    + profileOrgData[i].org_logo
+                                    + '","'
+                                    + profileOrgData[i].joinedON
+                                    + '","'
+                                    + orgDescEncode
+                                    + '","'
+                                    + LastNotificationMsg
+                                    + '","'
+                                    + profileAdminOrgData[i].total
+                                    + '")';              
+                        app.insertQuery(tx, query);
+                    }else {
+                        localStorage.setItem("FIRST_LOGIN", 0); 
+                        var query = 'INSERT INTO JOINED_ORG(org_id,org_name,imageSource,joinedDate,orgDesc,lastNoti,count,bagCount) VALUES ("'
+                                    + profileOrgData[i].organisationID
+                                    + '","'
+                                    + orgNameEncode
+                                    + '","'
+                                    + profileOrgData[i].org_logo
+                                    + '","'
+                                    + profileOrgData[i].joinedON
+                                    + '","'
+                                    + orgDescEncode
+                                    + '","'
+                                    + LastNotificationMsg
+                                    + '","'
+                                    + profileAdminOrgData[i].total
+                                    + '","'
+                                    + profileAdminOrgData[i].total
+                                    + '")';              
+                        app.insertQuery(tx, query);
+                    }
+                }else {                    
+                    var queryUpdate = "UPDATE JOINED_ORG SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + profileOrgData[i].org_logo + "',joinedDate='" + profileOrgData[i].joinedON + "',lastNoti='" + LastNotificationMsg + "',count='" + profileAdminOrgData[i].total + "' where org_id=" + profileOrgData[i].organisationID;
+                    app.updateQuery(tx, queryUpdate);                         
+                }                      
+            }                               
+            checkDeletedData();   
+        }  
+
+        var orgIdToDel;
+        var checkDeletedData = function() {
+            var liveIdLength;
+            var dbIdLength;
+            
+            liveIdLength = userLiveOrgIdArray.length;
+            dbIdLength = joinOrgID.length;
+            
+            //alert(JSON.stringify(userLiveOrgIdArray));
+            
+            for (var i = 0;i < dbIdLength;i++) {
+                //alert(JSON.stringify(joinOrgID[i]));
+                var dataVal = userLiveOrgIdArray.indexOf(joinOrgID[i]);
+
+                if (dataVal===-1) {
+                    orgIdToDel = joinOrgID[i];
+                    var db = app.getDb();
+                    db.transaction(delOrgDataId, app.errorCB, app.successCB);                          
+                } 
+            }            
+        }
+
+        function delOrgDataId(tx) {
+            var query = "DELETE FROM JOINED_ORG where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query);
+             
+            var query = "DELETE FROM ORG_NOTIFICATION where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query);
+        }  
+        
+
+        var loginSuccessForManageOrg = function() {
+                        
+            var organisationListDataSource = new kendo.data.DataSource({
+                                                                           transport: {
+                    read: {
+                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id +"/"+ app.CLIENT_APP_ID,
+                                                                                       type:"POST",
+                                                                                       dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                   }
+                },
+                                                                           schema: {                                
+                    data: function(data) {	
+                        console.log(JSON.stringify(data));                                             
+                        return [data];
+                    }                                                            
+                },
+                                                                           error: function (e) {
+                                                                               //console.log(e);
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                               
+                                                                               //showLiveDataUpdated();  
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
+                                                                               }
+                                                                           }	        
+                                                                       });
+                        
+            organisationListDataSource.fetch(function() {                
+                
+                        var data = this.data();
+                
+                            if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
+                                $("#moreOption").show();
+                                $("#goToAdmin").hide();
+
+                                var db = app.getDb();
+                                db.transaction(delAdminOrgDataDB, app.errorCB, app.successCB);                          
+    
+                                //showLiveDataUpdated();  
+                            }else if (data[0]['status'][0].Msg==='Success') {
+                                $("#moreOption").hide();
+                                $("#goToAdmin").show();
+                                //var adminOrgInformation = data[0]['status'][0].orgData;
+                                //var adminIncomMsg = data[0]['status'][0].last;
+                                //saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
+                            }
+                        });
+        }
+        
+
+        function delAdminOrgDataDB(tx) {
+            var query = "DELETE FROM JOINED_ORG_ADMIN";
+            app.deleteQuery(tx, query);
+        }  
+
+        
+        
         
         
         

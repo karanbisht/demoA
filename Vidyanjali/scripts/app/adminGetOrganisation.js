@@ -125,7 +125,7 @@ app.adminOragnisationList = (function () {
             var organisationListDataSource = new kendo.data.DataSource({
                                                              transport: {
                                                             read: {
-                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
+                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id +"/"+ app.CLIENT_APP_ID,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
