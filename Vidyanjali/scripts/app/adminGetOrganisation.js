@@ -107,8 +107,6 @@ app.adminOragnisationList = (function () {
 
         var show = function(e) {
             localStorage.setItem("loginStatusCheck", 2);
- 
- 
             groupDataShow = [];
             joinOrgID = []; 
              
@@ -118,13 +116,11 @@ app.adminOragnisationList = (function () {
   
             $(".km-scroll-container").css("-webkit-transform", "");
             $("#progressAdmin").show();             
-            app.MenuPage = false;
-            app.userPosition = false;
             account_Id = localStorage.getItem("ACCOUNT_ID");
 
             var organisationListDataSource = new kendo.data.DataSource({
                                                              transport: {
-                                                            read: {
+                                                             read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id +"/"+ app.CLIENT_APP_ID,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 

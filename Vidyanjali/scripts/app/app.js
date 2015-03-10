@@ -15,7 +15,8 @@ var app = (function (win) {
     var adminLoginStatusDBValue;
     var mobileApp;
     
-    var CLIENT_APP_ID = "2015020051";    
+    var CLIENT_APP_ID = "2015020051";
+    var APP_NAME="Vidyanjali";
     var INTERNET_ERROR = "Network problem. Please try again.";
     var NO_ACCESS = "You don't have access.";
     var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
@@ -1464,6 +1465,7 @@ var app = (function (win) {
 
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
+        APP_NAME:APP_NAME,
         showAlert: showAlert,
         showError: showError,
         serverUrl:serverUrl,

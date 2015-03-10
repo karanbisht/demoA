@@ -423,14 +423,14 @@ app.Login = (function () {
             console.log(varifiCode);
             varifiCode = varifiCode.toString();
               
-            var varifiCodeMsg = "Your Vidyanjali verification code-: " + varifiCode;
+            var varifiCodeMsg = "Your "+ app.APP_NAME+" verification code-: " + varifiCode;
           
             //console.log("-----Verification code Login--" + varifiCode);
 
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
                                                                             read: {                     
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=VIDYANJALI"
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from="+app.APP_NAME
                                                                              }
                 },
                                                                      schema: {

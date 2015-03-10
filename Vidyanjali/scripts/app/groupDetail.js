@@ -53,7 +53,7 @@ app.groupDetail = (function () {
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            transport: {
                     read: {
-                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id,
+                                                                                       url: app.serverUrl() + "organisation/managableOrg/" + account_Id +"/"+ app.CLIENT_APP_ID,
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
@@ -797,10 +797,13 @@ app.groupDetail = (function () {
                             }
                         }
                         
-                        if (data[0]['status'][0].customerGroup.groupID.length!==0 && data[0]['status'][0].customerGroup.groupID.length!==undefined) {
+
+                        if(data[0]['status'][0].customerGroup !== null){
+                                                                            
+                        if (data[0]['status'][0].customerGroup.groupID.length!==0 && data[0]['status'][0].customerGroup.groupID.length!==undefined ) {
                             customerGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].customerGroup.groupID.length;i++) {
-                                customerGroupArray.push({
+                                                        customerGroupArray.push({
                                                             pid: data[0]['status'][0].customerGroup.groupID[i]
                                                         });
                             }
@@ -834,6 +837,24 @@ app.groupDetail = (function () {
                                                               });
                             
                         }
+                       }else{
+                        
+                        var allGroupLength = adminAllGroupArray.length;
+                         
+                        for (var i = 0;i < allGroupLength;i++) {       
+                        
+                            var check = ''; 
+                            
+       
+                            
+                            EditGroupArrayMember.push({
+                                                                  group_name: adminAllGroupArray[i].group_name,
+                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  check:check
+                                                              });
+                            
+                        }  
+                       }     
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
                         app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 

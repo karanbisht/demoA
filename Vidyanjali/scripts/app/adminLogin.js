@@ -120,14 +120,18 @@ app.adminLogin = (function () {
                                                                                        type:"POST",
                                                                                        dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
                                                                                    }
-                },
+                    },
                                                                            schema: {                                
+
+                                          
+                                                                               
                     data: function(data) {	
+                    
+                        console.log(data);
+                        
                         var datacheck = 0;
                         var allData = 0;
                         var adminOrgInfo =[];
-                        //console.log(data);
-                        //return [data];
                        
                         $.each(data, function(i, groupValue) {
                             console.log(groupValue);   

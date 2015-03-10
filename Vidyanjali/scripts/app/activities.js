@@ -27,7 +27,6 @@ app.Activities = (function () {
         
         var show = function(e) {                                
             device_type = localStorage.getItem("DEVICE_TYPE");
-
             localStorage.setItem("loginStatusCheck", 1);
 
             StartDbCount = 0;
@@ -106,7 +105,7 @@ app.Activities = (function () {
             if (lastNotificationPID===null) {
                 lastNotificationPID = 0;
             }
-                        
+
             var organisationALLNewListDataSource = new kendo.data.DataSource({
                                                                                      transport: {
                                                                                        read: {
@@ -549,6 +548,7 @@ app.Activities = (function () {
                 },
                                                                            error: function (e) {
                                                                                //console.log(e);
+                                                                               console.log(JSON.stringify(e));
                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                
                                                                                //showLiveDataUpdated();  
