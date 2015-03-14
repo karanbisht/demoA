@@ -430,7 +430,7 @@ app.Login = (function () {
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
                                                                             read: {                     
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from="+app.APP_NAME
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=Zaffio"
                                                                              }
                 },
                                                                      schema: {

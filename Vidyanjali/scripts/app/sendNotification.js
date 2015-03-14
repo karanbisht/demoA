@@ -457,6 +457,8 @@ app.sendNotification = (function () {
 
                         $("#progressSendNotification").show();
                         
+                        //alert(cmbGroup+"||"+cmbCust+"||"+type+"||"+titleValue+"||"+notificationValue+"||"+org_id+"||"+cmmt_allow+"||"+sending_option+"||"+tasks+"||"+0);
+                        
                         var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
                         var dataSourceSendNotification = new kendo.data.DataSource({
                                                                                        transport: {

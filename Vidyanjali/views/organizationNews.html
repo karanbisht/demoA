@@ -36,30 +36,31 @@
                     <br/>                    
  
                      <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">                       
-                          <img src= ${news_image} style="width:100%;"/>    
-                     </a>
-                     
+                         <div id="img_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="loaderIV">
+                                    <div class="ballIV"></div>                   
+                                </div>                            
+                         </div>                                                           
+                         <img src= ${news_image} style="width:100%;"/>    
+                     </a>                     
                      <br/>
                      
-                     <div id="img_Div_Image_${id}" style="display:none;color:rgb(87,167,12);">
-                        Downloading...
-                     </div>
                       
  
                   #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
                      <br/>
                      
-                       <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id}>
+                       <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">
                             <div>
-                                 <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                                <div id="video_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                    <div class="loaderIV">
+                                        <div class="ballIV"></div>                   
+                                    </div>                            
+                                </div>                                
+                                <img src="styles/images/video.png" style="width:100%;"/>                   
                             </div>
                        </a>   
-                       <br/>
-                            
-                        <div id="video_Div_Image_${id}" style="display:none;color:rgb(87,167,12);">
-                            Downloading...
-                        </div>
                         
 
                    #}#            

@@ -444,7 +444,7 @@
         
 <!--,'#infoDiv'-->
 
-        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','userOrgManage','profileDiv','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','views/organisationLogin.html']">
+        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','userOrgManage','profileDiv','views/organisationLogin.html']">
             <header data-role="header">
                 <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
@@ -459,16 +459,17 @@
                     <a id="side-noti-icon"  href="#view-all-activities" data-transition="none"></a>
                 </li>
                 <li style="border-color:#43495c">
-                    <a id="side-org-icon" href="#userOrgManage" data-transition="none"></a>
-                </li>
-                <li style="border-color:#43495c">
-                    <a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a>
-                </li>
-                <li style="border-color:#43495c">
                     <a id="side-org-news-icon" href="views/organizationNews.html?orgin=1"  data-transition="none"></a>
                 </li>
                 <li style="border-color:#43495c">
                     <a id="side-org-event-icon" href="views/eventCalendar.html?orgin=1"  data-transition="none"></a>
+                </li>
+
+                <li style="border-color:#43495c">
+                    <a id="side-org-icon" href="#userOrgManage" data-transition="none"></a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a>
                 </li>
                 <!--<li >
                     <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
@@ -1148,13 +1149,13 @@
         
         <script type="text/x-kendo-template" id="activityTemplate">            
 
-    #if (org_id!=='0') {#
-    <div class="cf">
-        <div class="notiList-content-new">
-            <div class="dateDisplay">
-                <span id="activityTemplateDate" class="dateValue">${date}</span>
-                <span></span>
-            </div>
+        #if (org_id!=='0') {#
+        <div class="cf">
+            <div class="notiList-content-new">
+                <div class="dateDisplay">
+                    <span id="activityTemplateDate" class="dateValue">${date}</span>
+                    <span></span>
+                </div>
             <br/>
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
@@ -1164,33 +1165,35 @@
                 #messageVal = message.substr(0, 200) + '..';#
             #}else {#
                 #messageVal = message;#  
-            #}#            
+            #}#
+            
             <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
             #if(attached!=='' && attached!=='0' && attached!==0 && upload_type==="other"){#
                     <br/>
                     <div style="overflow:hidden;">
-                     <br/>
+                     <br/>       
                         <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
-                                <img src= ${attachedImg} style="width:100%;"/>  
-                        </a>
-                        <br/>           
-                        <div id="img_Div_${pid}" style="display:none;color:rgb(87,167,12);">
-                            Downloading...
-                        </div>
-                                                        
+                            <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="loaderIV">
+                                    <div class="ballIV"></div>                   
+                                </div>                            
+                            </div>       
+                            <img src= ${attachedImg} style="width:100%;"/>  
+                        </a>                                                        
                     </div>
             #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
                      <br/>        
-                     <br/>        
-                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid}>
+                     <br/> 
+                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
                       <div>
-                            <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                        <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="loaderIV">
+                                    <div class="ballIV"></div>                   
+                                </div>                            
+                        </div>                             
+                        <img src="styles/images/video.png" style="width:100%"/>                   
                       </div>
-                    </a>                       
-                    <br/>                    
-                        <div id="video_Div_${pid}" style="display:none;color:rgb(87,167,12);">
-                            Downloading...
-                        </div>                                
+                    </a>                                
             #}#                    
         </div>
 

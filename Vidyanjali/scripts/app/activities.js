@@ -52,8 +52,7 @@ app.Activities = (function () {
             if (orgName.length > 25) {
                     OrgDisplayName = orgName.substr(0, 25) + '..';
             }else {
-                    OrgDisplayName = orgName;
-                
+                    OrgDisplayName = orgName;                
             }
             
             $("#navBarHeader").html(OrgDisplayName);                          
@@ -642,17 +641,26 @@ app.Activities = (function () {
                         
                         //alert(downloadedImg);
                         
-                    }/*else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
-                         var vidPathData = app.getfbValue();    
-                         var Filename = attachedData.replace(/^.*[\\\/]/, '');
-                         var fp = vidPathData + "Aptifi/" + 'Aptifi_Video_' + Filename;             
-                         window.resolveLocalFileSystemURL(fp, 
-                         function(entry){
-                           downlaod=1;   
-                         },function(error){
-                           downlaod=0;  
-                         });
-                    }*/
+                    }else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
+                        var vidPathData = app.getfbValue();    
+                        var Filename = attachedData.replace(/^.*[\\\/]/, '');
+                        var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + Filename;             
+
+                        downloadedImg = results.rows.item(i).attached;
+                        
+                        window.resolveLocalFileSystemURL(fp, 
+                        function(entry)
+                        {
+                          //alert('got');
+                          downloadedImg = vidPathData + "Zaffio/" + 'Zaffio_Video_' + Filename;
+                          //downlaod=1;   
+                        },function(error)
+                        {
+                          //alert('not');
+                          //downlaod=0;  
+                          downloadedImg = results.rows.item(i).attached;
+                        });
+                    }
                     
                     groupDataShow.push({
                                            message: notiMessageDecode,
@@ -756,11 +764,9 @@ app.Activities = (function () {
         
         var videoDownlaodClick = function(e){            
             var data = e.button.data();
-            //console.log(data);            
             videoFile = data.someattribute;  
-            //console.log(videoFile);            
+            
             notiFi = data.notiid;
-            //alert(notiFi);
             attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
             var vidPathData = app.getfbValue();                    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;             
@@ -774,8 +780,7 @@ app.Activities = (function () {
 
             /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
             vid.attr('src', fp);
-            vid.appendTo('#video_Div_'+notiFi);*/
-            
+            vid.appendTo('#video_Div_'+notiFi);*/            
 
             if(device_type==="AP"){
                   window.open(fp, "_blank",'EnableViewPortScale=yes');
@@ -785,33 +790,33 @@ app.Activities = (function () {
             
         }
         
-        var videoPathNotExist = function() {
+        var videoPathNotExist = function() {            
+            
             $("#video_Div_"+notiFi).show();
             //$("videoToDownload_"+notiFi).text('Downloading..');
             var attachedVid = videoFile;                        
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
             
-            var fileTransfer = new FileTransfer();              
+            var fileTransfer = new FileTransfer(); 
+            
             fileTransfer.download(attachedVid, fp, 
                                   function(entry) {
                                       
-
                                       if(device_type==="AP"){
                                           window.open(fp, "_blank",'EnableViewPortScale=yes');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
-
+                                      
                                       $("#video_Div_"+notiFi).hide();
-                                      //$("videoToDownload_"+notiFi).text('View');
 
                                   },
     
                                   function(error) {
+
                                       $("#video_Div_"+notiFi).hide();
-                                      //$("videoToDownload_"+notiFi).text('View');
-                                      //$("#progressChat").hide();
+                                      
                                   }
                 );                
         }

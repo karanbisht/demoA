@@ -1948,10 +1948,9 @@ input.largerCheckboxSelectAll{
 
 .popupBox { -moz-box-shadow: 0px 0px 0px #7f7f7f; -webkit-box-shadow: 0px 0px 0 px #7f7f7f; box-shadow: 0px 0px 0px #7f7f7f; margin: -13px 0 0; border: 1px solid #ccc !important; }
 .popupBox li { color: #333; }
-
 .refreshPop { width: 45% !important; height: 25%!important; }
-
 .popup { text-indent: -9000px; width: 40px; background-position: center center; height: 40px; background-repeat: no-repeat; margin: 0; padding: 5px; border: 0; background-color: #f4f4f4; border-radius: 0; }
+
 
 .loader
 {
@@ -1966,6 +1965,38 @@ input.largerCheckboxSelectAll{
     left: 0px;
     right: 0px; 
 }
+
+.loaderIV
+{ 
+    background-color: #999999;
+    width:40px;
+    height:40px;
+    z-index: 999;
+    position:absolute;
+    font-size: 18px;
+    border-radius: 3px;
+    text-align: center;
+    left:45%;
+    top: 45%;
+    padding-top:5px;
+    padding-left:5px;
+}
+
+
+.ballIV
+{
+    background-color: rgba(242, 242, 242, 0.8);
+    border: 5px solid rgba(127, 191, 77, 0.8);
+    opacity: .7;
+    border-top: 5px solid;
+    border-left: 5px solid;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    -moz-animation: spin .5s infinite linear;
+    -webkit-animation: spin .5s infinite linear;
+}
+
 
 /*
 @keyframes spin {
@@ -3096,13 +3127,12 @@ float:right;
 #Aptifi .event-vid-show
 {
     float: left;
-    width: 90px;
-    height: 90px;
+    width: 200px;
+    height: 200px;
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 
-    background-image: url('images/videoPlayIcon.png');
-    
+    background-image: url('images/video.png');    
     border-radius: 6px;
     overflow: hidden;
     display: inline-block;

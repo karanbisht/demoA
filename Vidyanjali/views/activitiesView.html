@@ -28,8 +28,7 @@
             <br/>
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
-            #}#
-                    
+            #}#                    
             #if (message.length > 200) {#
                 #messageVal = message.substr(0, 200) + '..';#
             #}else {#
@@ -41,31 +40,32 @@
                     <div style="overflow:hidden;">
                      <br/>
                         <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
+                            <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="loaderIV">
+                                    <div class="ballIV"></div>                   
+                                </div>                            
+                            </div>       
                                 <img src= ${attachedImg} style="width:100%;"/>  
                         </a>
-                        <br/>           
-                        <div id="img_Div_${pid}" style="display:none;color:rgb(87,167,12);">
-                            Downloading...
-                        </div>
-                                                        
                     </div>
             #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
                      <br/>        
                      <br/>        
-                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid}>
+                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
                       <div>
-                            <img src="styles/images/videoPlayIcon.png" style="max-height:200px;max-width:230px;"/>                   
+                        <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="loaderIV">
+                                    <div class="ballIV"></div>                   
+                                </div>                            
+                        </div>                             
+                        <img src="styles/images/video.png" style="width:100%"/>                   
                       </div>
                     </a>                       
-                    <br/>                    
-                        <div id="video_Div_${pid}" style="display:none;color:rgb(87,167,12);">
-                            Downloading...
-                        </div>                                
             #}#                    
         </div>
 
         <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">    
-                  <div class="notiCommentIcon"></div>
+             <div class="notiCommentIcon"></div>
                   <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
              #if(comment_count!=='' && comment_count!=='null' && comment_count!==null && comment_count!==0){#
                 #if(comment_count==='1' || comment_count===1){#

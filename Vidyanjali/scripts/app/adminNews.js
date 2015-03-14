@@ -836,7 +836,7 @@ app.adminNews = (function () {
                                                                          }                
                                                                      });
                                    
-                        //alert(addGroupData.status[0].AdminGroup.length);                        
+                    if(data[0]['status'][0].AdminGroup!==false){
                         if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined) {
                             adminAllGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].AdminGroup.length;i++) {
@@ -846,8 +846,8 @@ app.adminNews = (function () {
                                                         });
                             }
                         }
-                        
-                        //alert(addGroupData.status[0].newsGroup.length);
+
+                     if(data[0]['status'][0].newsGroup !== null){
                         if (data[0]['status'][0].newsGroup.length!==0 && data[0]['status'][0].newsGroup.length!==undefined) {
                             customerGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].newsGroup.length;i++) {
@@ -879,6 +879,24 @@ app.adminNews = (function () {
                                                           check:check
                                                       });
                         }
+                      }else{
+                          var allGroupLength = adminAllGroupArray.length;                         
+                          for (var i = 0;i < allGroupLength;i++) {       
+                            EditGroupArrayMember.push({
+                                                                  group_name: adminAllGroupArray[i].group_name,
+                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  check:''
+                                                              });
+                            
+                          }
+                      }   
+                     }else{
+                          EditGroupArrayMember.push({
+                                                                  group_name: 'No Group Available , First Add Group',
+                                                                  pid:'0',
+                                                                  check:''
+                                                              }); 
+                     }   
                     }else if (data[0]['status'][0].Msg==="Session Expired") {
                         app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 

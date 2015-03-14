@@ -50,7 +50,7 @@ var app = (function (win) {
     }
 
     var showAppVersion = function() {
-        cordova.getAppVersion(function(version) {
+        cordova.getAppVersion(function(version) {           
             //showAlert("Current App Version: " + version , "App Version");
                              localStorage.setItem("AppVersion", version);
         });
@@ -759,7 +759,7 @@ var app = (function (win) {
     
     //the function is a callback for all GCM events
     var onNotificationGCM = function(e) {
-        //console.log(JSON.stringify(e));
+         //alert(JSON.stringify(e));
         //alert(JSON.stringify(e));
         try {
             switch (e.event) {

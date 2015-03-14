@@ -787,6 +787,7 @@ app.groupDetail = (function () {
                             $("#showAlternateList").hide();
                         }  
                         
+                    if(data[0]['status'][0].AdminGroup!==false){
                         if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined){
                             adminAllGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].AdminGroup.length;i++) {
@@ -837,24 +838,24 @@ app.groupDetail = (function () {
                                                               });
                             
                         }
-                       }else{
-                        
-                        var allGroupLength = adminAllGroupArray.length;
-                         
-                        for (var i = 0;i < allGroupLength;i++) {       
-                        
-                            var check = ''; 
-                            
-       
-                            
+                       }else{                        
+                        var allGroupLength = adminAllGroupArray.length;                         
+                        for (var i = 0;i < allGroupLength;i++) {                                                    
                             EditGroupArrayMember.push({
                                                                   group_name: adminAllGroupArray[i].group_name,
                                                                   pid: adminAllGroupArray[i].pid,
-                                                                  check:check
+                                                                  check:''
                                                               });
                             
                         }  
-                       }     
+                       } 
+                     }else{
+                         EditGroupArrayMember.push({
+                                                                  group_name: 'No Group Available , First Add Group',
+                                                                  pid:'0',
+                                                                  check:''
+                                                              });
+                     }   
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
                         app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
