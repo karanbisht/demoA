@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
+
 import com.google.android.gcm.GCMBaseIntentService;
 
 @SuppressLint("NewApi")
@@ -81,15 +81,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	public void createNotification(Context context, Bundle extras)
-	{
-
-            /*Toast.makeText(context, "context-:", Toast.LENGTH_LONG).show();
-
-            Toast.makeText(context, "context-:" + context, Toast.LENGTH_LONG).show();
-
-            Toast.makeText(context, "extras-:" + extras, Toast.LENGTH_LONG).show();*/
-
-
+	{		
+		
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		String appName = getAppName(this);
 
@@ -97,8 +90,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		notificationIntent.putExtra("pushBundle", extras);
 
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
 		int defaults = Notification.DEFAULT_ALL;
 
 		if (extras.getString("defaults") != null) {
@@ -106,12 +97,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 				defaults = Integer.parseInt(extras.getString("defaults"));
 			} catch (NumberFormatException e) {}
 		}
-		
 
-		String message = extras.getString("default");
-             
-        //String messageval =message.trim().toString();
-        
+
+        String message = extras.getString("default");                     
         String [] messageSplitVal ;
         messageSplitVal = message.toString().trim().split("#####");
 
@@ -124,7 +112,23 @@ public class GCMIntentService extends GCMBaseIntentService {
         String commentAllowDB=messageSplitVal[6];
         String notificationMsg = messageSplitVal[7];
 
+		int notId = 0;
+		
+		try {
+			//Random rand = new Random();
+			//notId = Integer.parseInt(extras.getString("notId",rand.nextInt(1000)));
+			notId = Integer.parseInt(notiIdDB);
+		}
+		catch(NumberFormatException e) {
+			Log.e(TAG, "Number format exception - Error parsing Notification ID: " + e.getMessage());
+		}
+		catch(Exception e) {
+			Log.e(TAG, "Number format exception - Error parsing Notification ID" + e.getMessage());
+		}
 
+		PendingIntent contentIntent = PendingIntent.getActivity(this, notId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
@@ -133,31 +137,34 @@ public class GCMIntentService extends GCMBaseIntentService {
 				.setContentTitle(titleDB)
 				.setTicker(titleDB)
 				.setContentIntent(contentIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageDB))
 				.setAutoCancel(true);
+        
+        /*
+          NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+          Notification notification = builder.setContentIntent(contentIntent)
+            .setSmallIcon(icon)
+            .setTicker(appname)
+            .setWhen(0)
+            .setAutoCancel(true)
+            .setContentTitle(appname)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+            .setContentText(messageDB)
+            .build();
+        */
 
+ 
 		if (message != null) {
 			mBuilder.setContentText(messageDB);
 		} else {
 			mBuilder.setContentText("<missing message content>");
 		}
-
+       
 		String msgcnt = extras.getString("msgcnt");
 		if (msgcnt != null) {
 			mBuilder.setNumber(Integer.parseInt(msgcnt));
-		}
-		
-		int notId = 0;
-		
-		try {
-			notId = Integer.parseInt(extras.getString("notId"));
-		}
-		catch(NumberFormatException e) {
-			Log.e(TAG, "Number format exception - Error parsing Notification ID: " + e.getMessage());
-		}
-		catch(Exception e) {
-			Log.e(TAG, "Number format exception - Error parsing Notification ID" + e.getMessage());
-		}
-		
+		}	
+	
 		mNotificationManager.notify((String) appName, notId, mBuilder.build());
 	}
 	

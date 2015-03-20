@@ -9,8 +9,7 @@ app.userNotiComment = (function () {
     
     var $commentsContainer,
         listScroller;
-    var attached;
-    
+    var attached;    
     var userActivityViewModel = (function () {
         var activityUid, activity;
         // $activityPicture;
@@ -26,6 +25,8 @@ app.userNotiComment = (function () {
         var attached;
         var comment_allow;
         var pid;
+        var upload_type;
+        var attachedImgFilename;
         var date;
         
         var init = function () {
@@ -91,11 +92,9 @@ app.userNotiComment = (function () {
             $('body').append(hiddenDiv);
 
             txt.on('keyup', function () {
-                content = $(this).val();
-    
+                content = $(this).val();    
                 content = content.replace(/\n/g, '<br>');
-                hiddenDiv.html(content + '<br class="lbr">');
-    
+                hiddenDiv.html(content + '<br class="lbr">');    
                 $(this).css('height', hiddenDiv.height());
             });
             
@@ -106,8 +105,7 @@ app.userNotiComment = (function () {
             //var comment_allow = e.view.params.comment_allow;
             customerID = e.view.params.customerID;
             userName = e.view.params.userName;
-           //alert(userName);
-         
+            //alert(userName);         
             //attached = e.view.params.attached;
             notiId = e.view.params.notification_id;
             date = e.view.params.date;
@@ -122,7 +120,7 @@ app.userNotiComment = (function () {
                 },
                                                                           schema: {
                     data: function(data) {
-                        //console.log(data);
+                        console.log(data);
                         return [data];
                     }                   
                 },
@@ -153,7 +151,7 @@ app.userNotiComment = (function () {
                         message = loginData.status[0].notificationList[0].message;
                         pid = loginData.status[0].notificationList[0].pid;
                         title = loginData.status[0].notificationList[0].title;
-
+                        upload_type = loginData.status[0].notificationList[0].upload_type; 
                         moreDataToLoad();            
                     }
 
@@ -167,23 +165,44 @@ app.userNotiComment = (function () {
         };
         
         var moreDataToLoad = function() {
-            var attachedImg = 'http://54.85.208.215/assets/attachment/' + attached;
+            
+            var attachedImg = attached;
             
             //console.log(message+"||"+title+'||'+userName);
             
             document.getElementById("notiAdminImage").innerHTML = "";
             
-            if (attached!== null && attached!=='' && attached!==undefined && attached!=='0') {             
+            /*if (attached!== null && attached!=='' && attached!==undefined && attached!=='0') {             
                 //loaded(); 
-                $('#notiAdminImage').css({"max-height":"200px"});
+                $('#notiAdminImage').css({"max-height":"300px"});
                 //$('#notiAdminImage').css({"height":"auto"});
                 //$('#notiAdminImage').css({"width":'auto'});
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
 
                 var imgPathData = app.getfbValue();    
-                var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';                
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';                
                 //console.log(attachedImg);
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
+            }*/
+            
+             $("#notiAdminDetailVid").hide();
+             $("#notiAdminImage").hide();
+            if (attached!== null && attached!=='' && attached!=="0" && upload_type==="other") {
+                $("#notiAdminDetailVid").hide();
+                $("#notiAdminImage").show();                
+                app.mobileApp.pane.loader.hide();
+                $('#notiAdminImage').css({"max-height":"200px"});
+                $('#notiAdminImage').css({"margin-top":"10px"});
+                attachedImgFilename = attached.replace(/^.*[\\\/]/, '');
+                //attachedImgFilename=attachedImgFilename+'.jpg';
+                var imgPathData = app.getfbValue();                    
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_'+attachedImgFilename; 
+                window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
+            }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
+               $("#notiAdminImage").hide();
+                var notiImageShow = document.getElementById('notiAdminDetailVid');
+                notiImageShow.style.display = 'block';
+                //notiImageShow.src = attached;*/ 
             }
             
             if (comment_allow===0) {
@@ -200,22 +219,21 @@ app.userNotiComment = (function () {
             adminComment();
         }
         
-        var imagePathExist = function() {
+        /*var imagePathExist = function() {
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
-            var img = $('<img id="imgShowAdmin" style="max-height:200px" />');
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';
+            var img = $('<img id="imgShowAdmin" style="max-height:300px" />');
             img.attr('src', fp);
             img.appendTo('#notiAdminImage');
             app.mobileApp.pane.loader.hide();
         };
         
         var imagePathNotExist = function() {
-            //alert('2');
             var attachedImg = attached;
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "/Aptifi/" + 'Aptifi_' + notiId + '.jpg';
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';
             
-            var img = $('<img id="imgShowAdmin" style="max-height:200px" />'); //Equivalent: $(document.createElement('img'))
+            var img = $('<img id="imgShowAdmin" style="max-height:300px"/>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', attachedImg);
             img.appendTo('#notiAdminImage'); 
             app.mobileApp.pane.loader.hide();
@@ -230,6 +248,45 @@ app.userNotiComment = (function () {
                                   }
                 );                
         };
+        */
+        
+        var imagePathExist = function() {
+            var imgPathData = app.getfbValue();    
+            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;                        
+            var img = $('<img id="imgShowAdmin" style="max-height:200px" />');
+            img.attr('src', fp);
+            img.appendTo('#notiAdminImage');
+            console.log(fp);              
+        }
+        
+        var imagePathNotExist = function() {
+            if (!app.checkConnection()) {
+            
+            }else{                
+                var attachedImg = attached;                        
+                var imgPathData = app.getfbValue();    
+                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
+            
+                var img = $('<img id="imgShowAdmin" style="max-height:300px"/>'); //Equivalent: $(document.createElement('img'))
+                img.attr('src', attachedImg);
+                img.appendTo('#notiAdminImage'); 
+                app.mobileApp.pane.loader.hide();
+ 	
+                var fileTransfer = new FileTransfer();              
+                fileTransfer.download(attachedImg, fp, 
+                                  function(entry) {
+                                      app.mobileApp.pane.loader.hide();
+                                  },
+    
+                                  function(error) {
+                                       app.mobileApp.pane.loader.hide();
+                                 }
+                );                
+            }
+        }
+        
+        
+        
         
         var adminComment = function() {
             var userCommentModel = {

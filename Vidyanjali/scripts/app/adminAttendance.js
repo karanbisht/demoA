@@ -79,6 +79,7 @@ app.attendance = (function () {
                                            first_name: '',
                                            email:'No Member in this Organization',  
                                            last_name : '',
+                                           full_name:'',
                                            customerID:'0',
                                            account_id:'0',
                                            orgID:'0'
@@ -100,6 +101,7 @@ app.attendance = (function () {
                                                email:data[0]['status'][0].allCustomer[i].user_email,  
                                                last_name : data[0]['status'][0].allCustomer[i].user_lname,
                                                customerID:data[0]['status'][0].allCustomer[i].custID,
+                                               full_name:data[0]['status'][0].allCustomer[i].user_fname+" "+data[0]['status'][0].allCustomer[i].user_lname,
                                                account_id:data[0]['status'][0].allCustomer[i].account_id,
                                                check:check,
                                                orgID:data[0]['status'][0].allCustomer[i].orgID
@@ -138,8 +140,8 @@ app.attendance = (function () {
                             dataSource: comboGroupListDataSource,                                        
                             template: kendo.template($("#attendanceTemplate").html()),
                             filterable: {
-                field: "first_name",
-                operator: "startswith",
+                field: "full_name",
+                operator: "contains",
                 },
             });                
             
