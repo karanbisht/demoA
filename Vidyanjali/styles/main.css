@@ -103,12 +103,12 @@
 #Aptifi.km-flat #welcome .km-navbar,
 #Aptifi.km-flat #welcome .km-content
 {
-    background: #2A3144; 
-    background: url("images/background.png") no-repeat center center fixed #000; 
+    background: #ffffff; 
+    /*background: url("images/background.png") no-repeat center center fixed #000; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
+    background-size: cover;*/
     color: #2A3144;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -1358,13 +1358,23 @@ white-space: nowrap;
 }
 
 .showMore{
-  position:absolute;
+    position:absolute;
     right:0;
     left:0;
     margin:10px auto 10px auto;
     color:#57A70C;
     width:94%;  
 }
+
+.logoImg{
+    position:relative;
+    right:0;
+    left:0;
+    margin: 10px auto 10px auto;
+    color:#57A70C;
+    width:70%; 
+}
+
 
 
 .person-name

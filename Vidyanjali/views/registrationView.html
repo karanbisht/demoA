@@ -36,7 +36,18 @@
     
 
 
-    <div data-role="view" id="regenerateDivR" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;margin:20% auto 10px auto; border-radius:3px; padding:30px 10px 30px 10px;border: 2px solid #E9E9E9;height:380px;width:94%;max-width:600px;overflow:hidden;">
+    <div data-role="view" id="regenerateDivR" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
+
+
+        <script>
+                if (screen.width>screen.height){
+                      $("#regenerateDivR").css("margin","8% auto 10px auto"); 
+                      $("#regenerateDivR").css("padding","5% 10px 5% 10px");
+                }else{
+                    $("#regenerateDivR").css("margin","20% auto 10px auto");
+                    $("#regenerateDivR").css("padding","10% 10px 10% 10px");
+                }    
+        </script>
 
         <div data-role="content" style="background-color:#f3f3f3">
 
@@ -63,8 +74,18 @@
         </div>
     </div>
 
-    <div data-role="view" id="validationRowR" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;margin:20% auto 10px auto; border-radius:3px; padding:10px 10px 10px 10px;border: 2px solid #E9E9E9;height:380px;width:94%;max-width:600px;overflow:hidden;">
+    <div data-role="view" id="validationRowR" style="position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
+             <script>
+                if (screen.width>screen.height){
+                      $("#validationRowR").css("margin","8% auto 10px auto");
+                      $("#validationRowR").css("padding","5% 10px 5% 10px");
+                }else{
+                    $("#validationRowR").css("margin","20% auto 10px auto");
+                    $("#validationRowR").css("padding","10% 10px 10% 10px");
+                }    
+              </script>
 
+        
     <div data-role="content" style="background-color:#f3f3f3">
 
         <div style="background-color:#F3F3F3;color:#313C50;text-align:center;padding:10px;">

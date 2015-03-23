@@ -23,7 +23,7 @@ app.Login = (function () {
         var show = function () {
             $('#loginUsername').val('');           
             $("#selectionDiv").show();
-                        
+            $("#logo").show();            
             $("#validationRow").hide();  
             $("#regenerateDiv").hide();  
 
@@ -369,12 +369,14 @@ app.Login = (function () {
         var goToLoginPage = function() {
             $("#regenerateDiv").hide();
             $("#validationRow").hide();
+            $("#logo").show();
         };
         
         var clickforRegenerateCode = function() {
             $("#progress").hide();            
             $(".km-scroll-container").css("-webkit-transform", "");  
             $("#regenerateDiv").show();
+            $("#logo").hide();
             $("#selectionDiv").hide();
 
             $("#validationRow").hide(); 
@@ -394,6 +396,7 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "1");
             $("#selectionDiv").css("opacity", 1);
             $("#regDoneButton").show();*/
+            $("#logo").show();
             $("#selectionDiv").show();
             $("#regenerateDiv").hide();
             $("#validationRow").hide();
