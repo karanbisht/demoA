@@ -906,6 +906,7 @@ input:focus, textarea:focus {
     border-top:1px solid #dddddd;
     border-right:1px solid #dddddd;
     border-left:1px solid #dddddd;
+    
 }
 
 
@@ -1187,6 +1188,7 @@ white-space: nowrap;
 {
     color: #34495e;
     font-size: 1.1rem;
+    white-space: pre-line;
 }
 
 #Aptifi .activity-content .comment-content .user-share-txt
@@ -1742,11 +1744,20 @@ background: #fff none;
     padding-left:5px;
 }
 
+
 .orgContentMsg
 {
     color: #939393;
     font-size: 1.2rem; 
+    white-space: pre-line;
 }
+
+.orgContentMsgFirst
+{
+    color: #939393;
+    font-size: 1.2rem; 
+}
+
 
 .eventContentMsg
 {

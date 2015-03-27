@@ -22,7 +22,14 @@ app.subGroupDetail = (function () {
             GroupName = localStorage.getItem("groupNameAdmin");
             selectedGroupDesc = localStorage.getItem("groupDescAdmin");
             
-            $("#adminGroupHeader").html(GroupName);           
+            var GroupNameVal;
+            if (GroupName.length > 20) {
+                GroupNameVal = GroupName.substr(0, 20) + '..';
+            }else {
+                GroupNameVal = GroupName;  
+            }            
+            
+            $("#adminGroupHeader").html(GroupNameVal);           
         };
            
         var showSubGroupNotification = function() {

@@ -36,14 +36,14 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.7.0",
-  "BundleVersion": "1.0.4",
+  "BundleVersion": "1.0.5",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "5",
+  "AndroidVersionCode": "6",
   "DisplayName": "Vidyanjali",
   "Author": "karan",
   "Description": "Vidyanjali Mobile Application",

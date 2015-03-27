@@ -1,3 +1,15 @@
+/*  
+ANDROID
+  PackageID = io.zaffio.vidyanjali
+  CurrentVersion = 1.0.5
+  VersionCode = 6
+
+IOS
+  PackageID = io.zaffio.vidyanjali
+  CurrentVersion = 1.0.0
+  VersionCode = 1
+*/
+
 $(document).ready(function() {
     $(document).ajaxError(function(e, jqxhr, settings, exception) {  
         if (jqxhr.readyState === 0 || jqxhr.status === 0) {  
@@ -866,7 +878,7 @@ var app = (function (win) {
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
+        /*var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
         app.deleteQuery(tx, queryDelete);         
           
         var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
@@ -889,6 +901,7 @@ var app = (function (win) {
                     + uploadTypeNoti
                     + '")';              
         app.insertQuery(tx, query);               
+       */ 
     }
     
     function insertOrgNotiDataBagINC(tx) {
@@ -900,8 +913,8 @@ var app = (function (win) {
         var queryUpdate = "UPDATE JOINED_ORG SET count=count+1 , bagCount=bagCount+1 , lastNoti='" + messageDB + "' where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
           
-        var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
-        app.deleteQuery(tx, queryDelete);   
+       /* var queryDelete = "DELETE FROM ORG_NOTIFICATION where pid =" + notiIdDB;
+          app.deleteQuery(tx, queryDelete);   
 
         var query = 'INSERT INTO ORG_NOTIFICATION(org_id,attached,message,title,comment_allow,type,send_date,pid,upload_type) VALUES ("'
                     + orgIdDB
@@ -923,6 +936,7 @@ var app = (function (win) {
                     + uploadTypeNoti
                     + '")';              
         app.insertQuery(tx, query);               
+        */
     }
     
     function goToAppPage() {        
