@@ -38,15 +38,15 @@
                          </div>                    
                   #}#
                    
-                   #if (event_desc.length > 80) {#
+                   <!--#if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#
                    #}else {#
                         #event_desc_val = event_desc;#  
-                   #}#
+                   #}#-->
 
                                
        		     <div id="activityTemplateTitle" class="eventNameList">${event_name}</div>
-         		   <span  id="activityTemplateMessage"  class="eventContentMsg" >${event_desc_val}</span>            			            
+         		   <div  id="activityTemplateMessage"  class="eventContentMsg" >${event_desc}</div>            			            
 
                </div> 
                      <div class="calendarEventbelow-List" >           

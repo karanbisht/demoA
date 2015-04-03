@@ -20,8 +20,8 @@
 
 
 	<script type="text/x-kendo-template" id="adminNotiTemplate" >
-            <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">
-                 
+        #if(org_id!=='0'){#
+            <div class="cf" data-role="touch" data-bind="events: { tap: groupNotificationSelected }">        
                <div class="no-notiList-content-new">                      
                     #if(date!==0 && date!=='0' ){#
                         <div class="dateDisplay">                  
@@ -30,37 +30,24 @@
                         </div>
                         <br/>
                    #}#
-
-
        		    
                   #if(title!=='' && title!=='null' && title!==null){#
                          <h2 id="activityTemplateTitle" class="notiNameList" style="margin-left:0px;" >${title}</h2>
                   #}#
-        
-        
-                             #if(message.length > 200){#
-                                #messageVal = message.substr(0, 200) + '..';#
-                                #}else{#
-                                #messageVal = message;#  
-                                #}#
-                          
-       		     <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			            
-          
-         
+                                   
+       		     <a id="activityTemplateMessage" class="orgContentMsg">${message}</a>            			            
                     #if(attached!=='' && attached!=="0" && upload_type==="other"){#
-                      <br/>   
-                      <img src= ${attachedImg} style="width:100%;margin-top:10px;" />
-                        
-                       <!--   
-                        <div class="backgroundAdminImgShow" style="width:100%;background-image: url(${attachedImg});background-size:contain;background-repeat: no-repeat;"></div>
-                       --> 
-             
+                          <br/>   
+                          <img src= ${attachedImg} style="width:100%;margin-top:10px;" />
                     #}else if (attached!=='' && attached!=='0' && upload_type==="video"){#          
-                        <br/>
-                        <img src="styles/images/video.png" style="width:100%"/>
-
-                    #}#             
-  
+                          <br/>
+                          <img src="styles/images/video.png" style="width:100%"/>
+                    #}#               
        		 </div>
 		    </div>
+        #}else{#
+                <div class="empty-notiList-content-new">                                          
+       	  	     <a id="activityTemplateMessage" class="orgContentMsg">${message}</a>            			                          
+       		 </div>
+	    #}#   
 	</script>

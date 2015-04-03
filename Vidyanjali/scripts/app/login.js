@@ -23,9 +23,11 @@ app.Login = (function () {
         var show = function () {
             $('#loginUsername').val('');           
             $("#selectionDiv").show();
-            $("#logo").show();            
+                        
             $("#validationRow").hide();  
             $("#regenerateDiv").hide();  
+            
+            $("#logo").show();
 
             $("#validationRowR").hide();  
             $("#regenerateDivR").hide();  
@@ -376,8 +378,9 @@ app.Login = (function () {
             $("#progress").hide();            
             $(".km-scroll-container").css("-webkit-transform", "");  
             $("#regenerateDiv").show();
-            $("#logo").hide();
             $("#selectionDiv").hide();
+            
+            $("#logo").hide();
 
             $("#validationRow").hide(); 
             $("#userRegMobNum").html('+91' + username);    
@@ -396,9 +399,9 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "1");
             $("#selectionDiv").css("opacity", 1);
             $("#regDoneButton").show();*/
-            $("#logo").show();
             $("#selectionDiv").show();
             $("#regenerateDiv").hide();
+            $("#logo").show();
             $("#validationRow").hide();
             $('#validationCodeId').val('');
             document.getElementById('selectionDiv').style.pointerEvents = 'auto'; 
@@ -416,6 +419,7 @@ app.Login = (function () {
             $(".km-scroll-container").css("-webkit-transform", ""); 
             $("#regenerateDiv").hide();
             $("#validationRow").show();
+            $("#logo").hide();
             $("#selectionDiv").hide();
             $("#regDoneButton").hide();
             $("#selectionDiv").css("z-index", "-1");
@@ -574,7 +578,7 @@ app.Login = (function () {
             genRand:genRand,
             checkEnterCode:checkEnterCode,
             doneVerification:doneVerification,
-            clickforRegenerateCode : clickforRegenerateCode
+            clickforRegenerateRegenerateCode : clickforRegenerateCode
         };
     }());
 

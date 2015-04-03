@@ -1,8 +1,8 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.0.5
-  VersionCode = 6
+  CurrentVersion = 1.0.6
+  VersionCode = 7
 
 IOS
   PackageID = io.zaffio.vidyanjali
@@ -30,6 +30,7 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
     var INTERNET_ERROR = "Network problem. Please try again.";
+    var ERROR_MESSAGE = "Unable to reach server. Please try again.";
     var NO_ACCESS = "You don't have access.";
     var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
     var VERIFICATION_CODE_SEND = "Verification code not sent. Please click on Regenerate Code";
@@ -400,8 +401,9 @@ var app = (function (win) {
     skin: 'flat'
     });*/
     
-    var Keyboardisoff = function() {
-      $("#single-activity").find(".km-scroll-container").css("-webkit-transform", "translate3d(0px, 0px, 0px)");        
+    var Keyboardisoff = function() {       
+      $(".km-scroll-container").css("-webkit-transform", "");  
+      //$("#single-activity").find(".km-scroll-container").css("-webkit-transform", "translate3d(0px, 0px, 0px)");        
     };
     
     var onDeviceReady = function() {
@@ -479,7 +481,7 @@ var app = (function (win) {
         app.analyticsService.viewModel.monitorStop();
     };
     
-    var onResume = function(){ 
+    var onResume = function(){
         app.analyticsService.viewModel.monitorStart();
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
         var loginStatus = localStorage.getItem("loginStatusCheck");
@@ -1533,6 +1535,7 @@ var app = (function (win) {
         getDateDays:getDateDays,
         getYear: getYear,
         INTERNET_ERROR:INTERNET_ERROR,
+        ERROR_MESSAGE:ERROR_MESSAGE,
         NO_ACCESS:NO_ACCESS,
         SESSION_EXPIRE:SESSION_EXPIRE,
         VERIFICATION_CODE_SEND:VERIFICATION_CODE_SEND,

@@ -57,23 +57,20 @@
 
 <script type="text/x-kendo-template" id="groupMemberTemplate">
     #if(orgID!=='0'){#
-    <div class="cf" data-role="touch" data-bind="events: { tap: clickOnOrgMember }">
+    <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: clickOnOrgMember }">
         <div class="user-avatar-img-show"></div>
         <div class="activity-content" >
             <h2 id="" class="person-name">${first_name} ${last_name}</h2>
             <a id="activityTemplateMessage" class="user-share-txt">${mobile}</a>
         </div>
     </div>
-    #}else{#
-    <div class="cf">
-        <div class="user-avatar-img-show"></div>
-        <div class="activity-content" >
-            <h2 id="" class="person-name">${first_name} ${last_name}</h2>
-            <span id="" class="time-span" >${mobile}</span>
-            <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
-        </div>
-    </div>
-        
+   #}else{#
+         <div class="cf">
+            <div class="user-avatar-img-show"></div>
+            <div class="no-activity-content">
+                <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
+            </div>
+         </div>        
         #}#
 </script>
 

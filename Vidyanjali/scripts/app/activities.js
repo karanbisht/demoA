@@ -376,7 +376,7 @@ app.Activities = (function () {
         
         
         
-                var profileAdminOrgData;
+        var profileAdminOrgData;
         var profileOrgData;
                 
         function saveOrgInfo(data1, data2) {

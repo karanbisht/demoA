@@ -881,6 +881,9 @@ app.sendNotification = (function () {
         };
          
         var goBackToGroup = function() {
+
+            $(".km-scroll-container").css("-webkit-transform", "");
+
             $("#whatToDo").show();            
             $("#selectCustomerToSend").hide();
             $("#selectCustomerFooter").hide();
@@ -924,6 +927,8 @@ app.sendNotification = (function () {
         };
          
         var skipToCustomerType = function() {
+
+            $(".km-scroll-container").css("-webkit-transform", "");
             $("#selectGroupDiv").hide();
             $("#selectGroupFooter").hide();
             localStorage.setItem("SELECTED_GROUP", '');

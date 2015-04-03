@@ -580,8 +580,7 @@ app.OragnisationList = (function () {
                         
             
         var organisationSelected = function (e) {
-            //$("#progress2").show();
-            
+            //$("#progress2").show();            
             console.log(JSON.stringify(e.data));
             var organisationID = e.data.organisationID;
             var bagCount = e.data.count;            
@@ -836,7 +835,7 @@ app.OragnisationList = (function () {
                 $("#organisationLogo").css("background-position", "center");
             }    
             
-           $("#orgDescList").css("background-color", "#ffffff");
+            $("#orgDescList").css("background-color", "#ffffff");
             $("#manageOrgDesc").css("background-color", "#ffffff");
             $("#orgDescList").css("z-index", "999");
             $("#manageOrgDesc").css("z-index", "999");

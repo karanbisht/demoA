@@ -418,13 +418,15 @@ app.userNotiComment = (function () {
                 }else {  
                     var comment = $("#newAdminComment").val();
                     
-                    $('#newAdminComment').css('height', '35px');
-                    $("#userComments-listview").append('<li id="adminTryingComment"><div class="Org-admin-comment-List"><div class="Org-admin-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Sending..</span></div></div></li>');
-                    $("#newAdminComment").val('');
 
                     if (comment!=='' && comment!=='Reply') {
                         $("#adminCommentPage").show();
                 
+
+                        $('#newAdminComment').css('height', '35px');
+                        $("#userComments-listview").append('<li id="adminTryingComment"><div class="Org-admin-comment-List"><div class="Org-admin-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Sending..</span></div></div></li>');
+                        $("#newAdminComment").val('');
+                        
                         var jsonDatacomment = {"org_id":org_id,"notification_id":notiId, "comment":comment,"customer_id":customerID}
                    
                         var saveCommentDataSource = new kendo.data.DataSource({

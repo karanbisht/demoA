@@ -47,8 +47,8 @@
                   #}#
                     <br/>
                     <br/>           
-                    <div id="activityTemplateTitle" class="eventNameList" style="margin-left:-10px;margin-top:-7px;">${event_name}</div>                                             
-       		     <span  id="activityTemplateMessage"  class="orgContentMsg" >${event_desc}</span>            
+                    <div id="activityTemplateTitle" class="eventNameList" style="margin-top:-7px;">${event_name}</div>                                             
+       		     <div  id="activityTemplateMessage"  class="orgContentMsg" >${event_desc}</div>            
                     <br/>
                     <br/>
            
@@ -86,14 +86,14 @@
                          </div>                    
                        #}#
                                                          
-                   #if (event_desc.length > 80) {#
+                   <!--#if (event_desc.length > 80) {#
                         #event_desc_val = event_desc.substr(0, 80) + '..';#
                    #}else {#
                         #event_desc_val = event_desc;#  
-                   #}#
+                   #}#-->
                 
        		     <div id="activityTemplateTitle" class="eventNameList" >${event_name}</div> 
-       		     <a id="activityTemplateMessage"  class="eventContentMsg">${event_desc_val}</a>            			                                                                  
+       		     <div id="activityTemplateMessage"  class="eventContentMsg">${event_desc}</div>            			                                                                  
        		 </div>                
                <div class="calendarEventbelow-List" >           
        	         <span id="activityTemplateDate" class="calanderTimeClass">${event_time}</span>       	            

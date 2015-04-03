@@ -10,6 +10,35 @@
 
 
 
+.noti-title
+{
+    overflow: hidden;
+    width: 90%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.navBarClass
+{
+    margin-left:15%;
+    margin-right:7%;
+    display:block;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
+}
+
+.inner_navBarClass
+{
+    margin-left:15%;
+    margin-right:15%;
+    display:block;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
+}
+
+
 
 .parentView
 {
@@ -59,6 +88,32 @@
 .cf:after
 {
     clear: both;
+}
+
+
+
+.cf-clickEffect
+{
+    zoom: 1;
+}
+
+.cf-clickEffect:before,
+.cf-clickEffect:after
+{
+    display: table;
+    content: '';
+}
+
+.cf-clickEffect:after
+{
+    clear: both;
+}
+.cf-clickEffect:active { 
+  background: #D4D4D4;   
+}
+
+.li_clickEffect:active { 
+  background: #D4D4D4;   
 }
 
 .km-flat .km-tabstrip,
@@ -293,8 +348,8 @@ input:focus, textarea:focus {
     color:#ffffff;
 }
 
-.clickEffect:hover{
-    background-color:#D4D4D4;
+.clickEffect:active { 
+    background: #D4D4D4;    
 }
 
 
@@ -510,6 +565,25 @@ input:focus, textarea:focus {
     list-style-type: none;
     text-align: center;
     background-color: #ffffff;
+}
+
+#Aptifi .no-activity-content
+{
+    position: relative;
+    padding-top:10px;
+    padding-left: 6em;
+    font-size: .85rem;
+}
+
+.empty-notiList-content-new{
+    position: relative;
+    font-size: .85rem;
+    background-color:#f3f3f3;
+    border-radius:6px;
+    padding:10px;
+    overflow:hidden;
+    z-index:1;
+    border:1px solid #dddddd;    
 }
 
 #Aptifi .welcome-scrn .group-wrp
@@ -949,8 +1023,8 @@ input:focus, textarea:focus {
     border:1px solid #dddddd;  
 }
 
-.notiListbelow-List:hover {
-  background: #D4D4D4;   
+.notiListbelow-List:active { 
+    background: #D4D4D4;    
 }
 
 
@@ -979,6 +1053,12 @@ input:focus, textarea:focus {
     border-left:1px solid #dddddd;
     min-height:110px;
 }
+
+
+.calendarEvent-List:active {
+    background: #D4D4D4;
+}
+
 
 
 .no_calendarEvent-List
@@ -1163,7 +1243,7 @@ white-space: nowrap;
 #Aptifi .add-comment-view .person-name
 {
     overflow: hidden;
-    width: 70%;
+    width: 95%;
     text-overflow: ellipsis;
     white-space: nowrap; 
 }
@@ -1664,7 +1744,6 @@ background: #fff none;
     display: block;
     margin: .5em 0 .5em ;
     color: #696969;
-    padding-left:10px;
     font-size: 1rem; 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1689,26 +1768,28 @@ background: #fff none;
 .CalenderdateValue
 {
     margin-top:5px;
-    font-size: 1.8rem; 
+    font-size: 1.9rem; 
     color: #FFFFFF;
     float:left;
     padding-left:5px;
     font-weight: 300;
     width:100%;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #dddddd;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: #212121;
 }
 
 .noCalenderdateValue
 {
     margin-top:5px;
     display: inline-block;
-    font-size: 1.8rem; 
+    font-size: 1.9rem; 
     color: #FFFFFF;
     float:left;
     width:100%;
     padding-left:5px;
     font-weight: 300;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: #212121;
 }
 
 
@@ -1726,22 +1807,24 @@ background: #fff none;
 .calMonthClass
 {
     color: #FFFFFF;
-    font-size: .7rem;  
-    font-weight: 400; 
+    font-size: .8rem;  
+    font-weight: 300; 
     float:left;
     padding-left:5px;
-     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #dddddd;
+     -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: #212121;
 }
 
 
 .nocalMonthClass
 {
     color: #FFFFFF;
-    font-size: .7rem;  
-    font-weight: 400; 
+    font-size: .8rem;  
+    font-weight: 300; 
     float:left;
     padding-left:5px;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: #212121;
 }
 
 
@@ -1763,7 +1846,8 @@ background: #fff none;
 {
     color: #9B9B9B;
     font-size: .75rem; 
-    padding-left:10px;
+    height:58px;
+    overflow:hidden;
 }
 
 .dateDisplay
@@ -2450,12 +2534,12 @@ float:right;
     text-align: center;
 }
 
-.manageOrgDiv:hover{
+.manageOrgDiv:active { 
     background: #D4D4D4;    
 }
 
 
-.manageOrgDivAdmin:hover{
+.manageOrgDivAdmin:active { 
     background: #D4D4D4;    
 }
 
@@ -2490,9 +2574,10 @@ float:right;
     font-size:1.7rem;
 }
 
-.sendNotiSubMenu:hover{
-    background-color:#D4D4D4;
+.sendNotiSubMenu:active { 
+    background: #D4D4D4;    
 }
+
 
 .k-calendar .k-state-selected { background-color: #7FBF4D; color: #ffffff; border-color: #7FBF4D; }
 .k-calendar .k-state-selected .k-state-hover { background-color: #7FBF4D; }
@@ -2966,9 +3051,9 @@ float:right;
     font-size: 1.2rem;
 }
 
-/*.defineSaveButton:hover{
+.defineSaveButton:active { 
     background: #D4D4D4;    
-}*/
+}
 
 
 .popUpDivToShow
@@ -3102,6 +3187,7 @@ float:right;
     height: 90px;
     /*background-color: #7FBF4D;*/
     background-color: #dddddd;
+    margin-right:10px;
     /*background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 

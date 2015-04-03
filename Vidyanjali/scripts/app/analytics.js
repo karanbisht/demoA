@@ -69,17 +69,27 @@
         
         monitorStart:function()
         {
+             
             var monitor = window.plugins.EqatecAnalytics.Monitor;
-            var loginStatus = localStorage.getItem("isLoggedIn");
-
-            if(loginStatus === 'true' || loginStatus === true)
-            {
-                app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
-            }
-            else
+            //var loginStatus = localStorage.getItem("isLoggedIn");            
+            var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
+    
+        
+            //alert(loginStatusCheck);
+             //alert(loginStatusCheck);
+            //if(loginStatus === 'true' || loginStatus === true)
+            
+            if (loginStatusCheck==='0' || loginStatusCheck===null)
             {
                 app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
             }
+            else
+            {
+                var userNumber = localStorage.getItem("username");                
+                app.analyticsService.viewModel.setInstallationInfo(userNumber);
+                //alert(userNumber);
+            }
+            
             monitor.Start(function()
             {
                 //console.log(monitor);
