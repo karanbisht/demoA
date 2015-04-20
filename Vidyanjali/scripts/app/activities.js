@@ -272,10 +272,7 @@ app.Activities = (function () {
                 db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
             }
         };
-        
-        
-        
-        
+                
         
         var showUpdateLocalDB = function(e) {       
             account_Id = localStorage.getItem("ACCOUNT_ID");   
@@ -304,8 +301,8 @@ app.Activities = (function () {
                 var data = this.data();                                		                                  
                     if (data[0]['status'][0].Msg==='Not a customer to any organisation') {
                         //JoinedOrganisationYN = 0;
-                        groupDataShow = [];                               
-                        groupDataShow.push({
+                            groupDataShow = [];                               
+                            groupDataShow.push({
                                                orgName: 'No Organization',
                                                orgDesc: 'Not a member of any Organization',
                                                organisationID:'0',

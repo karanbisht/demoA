@@ -1,11 +1,11 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.0.6
-  VersionCode = 7
+  CurrentVersion = 1.0.8
+  VersionCode = 9
 
 IOS
-  PackageID = io.zaffio.vidyanjali
+  PackageID = io.zaff.vidyanjali
   CurrentVersion = 1.0.0
   VersionCode = 1
 */
@@ -407,7 +407,7 @@ var app = (function (win) {
     };
     
     var onDeviceReady = function() {
-        //feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
+        feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -439,18 +439,28 @@ var app = (function (win) {
         if (device.platform === "iOS") {
             localStorage.setItem("DEVICE_TYPE", "AP");
 
-            pushNotification.register(apnSuccessfulRegistration,
+            /*pushNotification.register(apnSuccessfulRegistration,
                                       apnFailedRegistration, {
                                           "badge": "true",
                                           "sound": "true",
                                           "alert": "true",
                                           "ecb": "pushCallbacks.onNotificationAPN"
+                                      });*/
+            
+            pushNotification.register(successHandler,
+                                      errorHandler, {
+                                          "badge": "true",
+                                          "sound": "true",
+                                          "alert": "true",
+                                          "ecb": "window.onNotificationAPN"
                                       });
+            
         } else {
             localStorage.setItem("DEVICE_TYPE", "AN");
-
+            pushNotification.register(successHandler, errorHandler, {"senderID":"477270485762","ecb":"window.onNotificationGCM"});
             
-            pushNotification.register(
+            
+            /*pushNotification.register(
                 function(id) {
                     addCallback('onNotificationGCM', onNotificationGCM);
                 },
@@ -460,13 +470,22 @@ var app = (function (win) {
                 }, {
                     "senderID": "477270485762",
                     "ecb": "pushCallbacks.onNotificationGCM"
-                });
+                });*/
         }
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
         
         //navigator.splashscreen.hide();
     };    
+    
+
+    function successHandler (result) {
+                localStorage.setItem("deviceTokenID", result);
+    }
+
+    function errorHandler (error) {
+
+    }
     
     
     var oncallback = function(position)
@@ -485,6 +504,12 @@ var app = (function (win) {
         app.analyticsService.viewModel.monitorStart();
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
         var loginStatus = localStorage.getItem("loginStatusCheck");
+        
+        if (loginStatus==='1') {
+          app.Activities.show();
+        }else if (loginStatus==='2') {
+          app.groupDetail.show();     
+        }
         
         if(loginStatus !== '0' || loginStatus !== 0)
         {
@@ -679,7 +704,7 @@ var app = (function (win) {
     //the function is a callback when a notification from APN is received
     //var onNotificationAPN = function(e) {
         
-    var onNotificationAPN = function(event) {
+    window.onNotificationAPN = function(event) {
         //console.log(JSON.stringify(event));           
         if (event.id) {                   
             //var receivedMesage = JSON.stringify(event.id, null, 4);
@@ -772,9 +797,10 @@ var app = (function (win) {
     };
     
     //the function is a callback for all GCM events
-    var onNotificationGCM = function(e) {
+    window.onNotificationGCM = function(e) {
          //alert(JSON.stringify(e));
         //alert(JSON.stringify(e));
+
         try {
             switch (e.event) {
                 case 'registered':

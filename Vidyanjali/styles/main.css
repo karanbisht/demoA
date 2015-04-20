@@ -270,6 +270,14 @@
     border-color: #eaeced;
 }
 
+#Aptifi.km-flat form .km-listinset > li,
+#Aptifi.km-flat form .km-listgroupinset .km-list > li
+{
+    border-width: 0 0 1px;
+    border-color: #eaeced;
+}
+
+
 #Aptifi.km-flat form .km-listinset > li:first-child,
 #Aptifi.km-flat form .km-listgroupinset .km-list > li:first-child
 {
@@ -1457,6 +1465,14 @@ white-space: nowrap;
     width:70%; 
 }
 
+.regLogoImg{
+    position:relative;
+    right:0;
+    left:0;
+    margin: 25px auto 25px auto;
+    color:#57A70C;
+    width:30%; 
+}
 
 
 .person-name

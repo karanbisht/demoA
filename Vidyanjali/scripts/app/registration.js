@@ -34,7 +34,8 @@ app.registration = (function () {
             $regEmail.val('');
             
             username = e.view.params.mobile;
-            comingFrom = e.view.params.type
+            comingFrom = e.view.params.type;            
+            account_Id = e.view.params.accountId;
 
             document.getElementById('selectionDivR').style.pointerEvents = 'auto'; 
 
@@ -52,9 +53,9 @@ app.registration = (function () {
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", "Validation Error");
             /*}else if (email === "Email" || email === "") {
-                app.showAlert("Please enter your Email.", "Validation Error");
-            } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");*/
+                app.showAlert("Please enter your Email.", "Validation Error");*/
+            } else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
+                app.showAlert("Please enter a valid Email.", "Validation Error");
             } else {   
                 //app.mobileApp.navigate('views/selectOrganisationView.html');                     
                 //console.log(fname + "||" + lname + "||" + email + "||" + username);
@@ -70,7 +71,7 @@ app.registration = (function () {
                     goToUrl = app.serverUrl() + "customer/register"  
                 }else {
                     //console.log("2");  
-                    jsonDataRegister = {"account_id":username,"first_name":fname,"last_name":lname,"email":email, "app_id":app.CLIENT_APP_ID} 
+                    jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email, "app_id":app.CLIENT_APP_ID} 
                     goToUrl = app.serverUrl() + "customer/createProfile"
                 }
        

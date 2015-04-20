@@ -6,9 +6,8 @@
     
     //var productId = "3533a3c811324734a532336ccef5f288 ", // for local project
     
-    //3533a3c811324734a532336ccef5f288
     
-    version   = localStorage.getItem("AppVersion");
+    version   = "1.0.7"; //localStorage.getItem("AppVersion");
     
     AnalyticsModel = kendo.data.ObservableObject.extend({
        

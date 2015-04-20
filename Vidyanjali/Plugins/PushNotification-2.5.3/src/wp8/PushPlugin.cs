@@ -29,7 +29,7 @@ namespace WPCordovaClassLib.Cordova.Commands
             if (pushChannel == null)
             {
                 pushChannel = new HttpNotificationChannel(this.pushOptions.ChannelName);
-
+                SubscribePushChannelEvents(pushChannel);
                 try
                 {
                     pushChannel.Open();
@@ -43,15 +43,28 @@ namespace WPCordovaClassLib.Cordova.Commands
                 pushChannel.BindToShellToast();
                 pushChannel.BindToShellTile();
             }
-
-            SubscribePushChannelEvents(pushChannel);
-            var result = new RegisterResult
+            else
             {
-                ChannelName = this.pushOptions.ChannelName,
-                Uri = pushChannel.ChannelUri == null ? string.Empty : pushChannel.ChannelUri.ToString()
-            };
+                SubscribePushChannelEvents(pushChannel);
+            }
 
-            this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+            if (pushChannel.ChannelUri == null)
+            {
+                // Wait for the channel to become ready.
+                // Need to respond with OK instead of NO_RESULT because of https://issues.apache.org/jira/browse/CB-8580
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+                pluginResult.KeepCallback = true;
+                this.DispatchCommandResult(pluginResult, this.CurrentCommandCallbackId);
+            }
+            else
+            {
+                var result = new RegisterResult
+                {
+                    ChannelName = this.pushOptions.ChannelName,
+                    Uri = pushChannel.ChannelUri.ToString()
+                };
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+           }
         }
 
         public void unregister(string options)
@@ -77,6 +90,18 @@ namespace WPCordovaClassLib.Cordova.Commands
             }
         }
 
+        public void areNotificationsEnabled(string options)
+        {
+            Options isRegisteredOptions;
+            if (!TryDeserializeOptions(options, out isRegisteredOptions))
+            {
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+                return;
+            }
+            var pushChannel = HttpNotificationChannel.Find(isRegisteredOptions.ChannelName);
+            this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, pushChannel != null));
+        }
+
         public void showToastNotification(string options)
         {
             ShellToast toast;
@@ -97,6 +122,10 @@ namespace WPCordovaClassLib.Cordova.Commands
                 ChannelName = this.pushOptions.ChannelName,
                 Uri = e.ChannelUri.ToString()
             };
+            if (this.CurrentCommandCallbackId != null)
+            {
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+            }
             this.ExecuteCallback(this.pushOptions.UriChangedCallback, JsonConvert.SerializeObject(result));
         }
 
