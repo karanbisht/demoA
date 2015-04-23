@@ -30,7 +30,7 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
     var INTERNET_ERROR = "Network problem. Please try again.";
-    var ERROR_MESSAGE = "Unable to reach server. Please try again.";
+    var ERROR_MESSAGE = "Network problem. Please try again."; //"Unable to reach server. Please try again.";
     var NO_ACCESS = "You don't have access.";
     var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
     var VERIFICATION_CODE_SEND = "Verification code not sent. Please click on Regenerate Code";
@@ -403,7 +403,6 @@ var app = (function (win) {
     
     var Keyboardisoff = function() {       
       $(".km-scroll-container").css("-webkit-transform", "");  
-      //$("#single-activity").find(".km-scroll-container").css("-webkit-transform", "translate3d(0px, 0px, 0px)");        
     };
     
     var onDeviceReady = function() {
@@ -414,17 +413,15 @@ var app = (function (win) {
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
-        
-        /*document.addEventListener("showkeyboard", function(){ $(".footer").hide();}, false);
-        document.addEventListener("hidekeyboard", function(){ $(".footer").show();}, false);*/        
-        
+                
+         if (!app.checkSimulator()) {
+              app.showAppVersion();
+         }else {
+             localStorage.setItem("AppVersion", '9.9.9');
+         }    
+
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
-        
-        //fixViewResize();
-        
-        
-        //console.log(window.plugins);
-        
+                
         var pushNotification = window.plugins.pushNotification;   
         
          if(navigator.geolocation)
@@ -438,14 +435,6 @@ var app = (function (win) {
                 
         if (device.platform === "iOS") {
             localStorage.setItem("DEVICE_TYPE", "AP");
-
-            /*pushNotification.register(apnSuccessfulRegistration,
-                                      apnFailedRegistration, {
-                                          "badge": "true",
-                                          "sound": "true",
-                                          "alert": "true",
-                                          "ecb": "pushCallbacks.onNotificationAPN"
-                                      });*/
             
             pushNotification.register(successHandler,
                                       errorHandler, {
@@ -459,23 +448,10 @@ var app = (function (win) {
             localStorage.setItem("DEVICE_TYPE", "AN");
             pushNotification.register(successHandler, errorHandler, {"senderID":"477270485762","ecb":"window.onNotificationGCM"});
             
-            
-            /*pushNotification.register(
-                function(id) {
-                    addCallback('onNotificationGCM', onNotificationGCM);
-                },
- 
-                function(error) {
-                    //alert("###Error " + error.toString());
-                }, {
-                    "senderID": "477270485762",
-                    "ecb": "pushCallbacks.onNotificationGCM"
-                });*/
         }
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
         
-        //navigator.splashscreen.hide();
     };    
     
 
@@ -1472,11 +1448,21 @@ var app = (function (win) {
                                                                          
                                                                             //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                                                             
-                                                                            if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showShortBottom('Network problem . Please try again later');   
-                                                                            }else {
-                                                                                app.showAlert("Network problem . Please try again later", "Notification");  
-                                                                            }
+                                                                            if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                             
                                                                             //navigator.notification.alert("Please check your internet connection.",
                                                                             //function () { }, "Notification", 'OK');

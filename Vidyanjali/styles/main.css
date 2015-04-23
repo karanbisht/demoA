@@ -3224,6 +3224,20 @@ float:right;
     border-radius: 3px;
     overflow: hidden;
     text-align: center;
+   
+}
+
+.OrgbackgroundImgShow{
+    width: 150px;
+    height: 150px;   
+    border-radius: 3px;
+    overflow: hidden;
+    text-align: center;
+    
+    background-size: contain; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/Vidyanjali_Logo.png');
 }
 
 .backgroundAdminImgShow

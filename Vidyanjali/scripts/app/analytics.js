@@ -2,16 +2,22 @@
     var AnalyticsModel,
         app = global.app = global.app || {};
     
-     var productId = "5abfaadb59a5409db079e2397413015b", // for Live Project
-    
-    //var productId = "3533a3c811324734a532336ccef5f288 ", // for local project
-    
-    
-    version   = "1.0.7"; //localStorage.getItem("AppVersion");
-    
-    AnalyticsModel = kendo.data.ObservableObject.extend({
+     var productId;
+     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
+        
+     if (loginStatusCheck==='2') {    
+        productId = "8ceb1f3a508f48d5855c239f12a99dd1"; // for Live Project for Admin
+     }else{
+        productId = "5abfaadb59a5409db079e2397413015b"; // for Live Project for User 
+     }
        
-       setAnalyticMonitor:function(latitude,longitude)
+     //var productId = "3533a3c811324734a532336ccef5f288 ", // for local project
+        
+     version   = localStorage.getItem("AppVersion");     
+    
+     AnalyticsModel = kendo.data.ObservableObject.extend({
+
+     setAnalyticMonitor:function(latitude,longitude)
        {  
            var factory = window.plugins.EqatecAnalytics.Factory;
            
@@ -84,7 +90,7 @@
             }
             else
             {
-                var userNumber = localStorage.getItem("username");                
+                var userNumber = localStorage.getItem("usernameAnalytic");                
                 app.analyticsService.viewModel.setInstallationInfo(userNumber);
                 //alert(userNumber);
             }
@@ -118,8 +124,8 @@
         },
         userLoginStatus:function()
         {              
-               app.analyticsService.viewModel.trackFeature("Login.User login with Mobile No:"+localStorage.getItem("username"));
-               app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));           
+               app.analyticsService.viewModel.trackFeature("Login.User login with Mobile No:"+localStorage.getItem("usernameAnalytic"));
+               app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("usernameAnalytic"));           
         },
         
         trackFeature:function(feature)

@@ -479,11 +479,21 @@ app.sendNotification = (function () {
                                                                                        error: function (e) {
                                                                                            //console.log(JSON.stringify(e));
 
-                                                                                           if (!app.checkSimulator()) {
-                                                                                               window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                                                                                          if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                              } 
+                                                                                          }else {
+                                                                               
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
                                                                                             }else {
-                                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                          }
                    
                                                                                            $("#notificationTitleValue").val('');            
                                                                                            $("#notificationDesc").val('');
@@ -642,15 +652,21 @@ app.sendNotification = (function () {
                                                                              $("#selectGroupLI").show();
                                                                              $("#selectOrgLoader").hide();
                                                                              
-                                                                             if (!app.checkSimulator()) {
-                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                             }else {
-                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                             }
-                                                                     
-                                                                             
-                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Group for Send Notification in Admin Panel.');
-                         
+                                                                             if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }                         
                                                                          },       
                                                                          
                         });
@@ -795,14 +811,23 @@ app.sendNotification = (function () {
                 },
                                                                  error: function (e) {
                                                                     
-                                                                                    if (!app.checkSimulator()) {
-                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                                    }else {
-                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                                    }
+                                                                             
+                                                                     if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                      
-                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response from API fetching Organization Customer for Send Notification in Admin Panel.');
-                         
                                                                      /*var showNotiTypes = [
                                                                          { message: "Please Check Your Internet Connection"}
                                                                      ];

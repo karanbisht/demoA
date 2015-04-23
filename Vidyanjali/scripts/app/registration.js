@@ -94,15 +94,24 @@ app.registration = (function () {
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            $("#progressRegister").hide();
-
                                                                            console.log(JSON.stringify(e));
-                                                                           if (!app.checkSimulator()) {
-                                                                               window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                           }else {
-                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                           }
-                                                                                                                                                     
-                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                           
+                                                                           if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
+
                                                                        }               
                                                                    });  
 	            
@@ -149,18 +158,25 @@ app.registration = (function () {
                                 },
                                                                                 error: function (e) {
                                                                                     //apps.hideLoading(); 
-                                                                                    console.log(JSON.stringify(e));
-
-                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                    
+                                                                                    console.log(JSON.stringify(e));                                                                                    
                                                                                     $("#progressRegister").hide();
                                                                                     app.mobileApp.pane.loader.hide();
-
-                                                                                    if (!app.checkSimulator()) {
-                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
-                                                                                    }else {
-                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                                    }
+                                                                              
+                                                                                    if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                                 }               
                                                                              });  
 	            
@@ -309,12 +325,21 @@ app.registration = (function () {
                                                                             //apps.hideLoading();
                                                                             console.log(e);
                                                                             app.mobileApp.pane.loader.hide();
-                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                    if (!app.checkSimulator()) {
-                                                                                           window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                                    }else {
-                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                                    }
+                                                                            if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                         }               
                                                                     });  
 	            

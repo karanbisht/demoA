@@ -13,21 +13,15 @@ app.adminLogin = (function () {
         var account_Id;
                
         var init = function () {         
-            app.userPosition = false;
-            app.MenuPage = false;	            
         };
 
         var show = function (e) {            
-
             account_Id = localStorage.getItem("ACCOUNT_ID");
-
-            app.userPosition = false;
-            app.MenuPage = false;	
-
             var userMobileNo = localStorage.getItem("username");
             $("#loginMob").val(userMobileNo);            
             document.getElementById("loginMob").readOnly = true;
             $('#loginPassword').val('');
+            
         };
         
         var checkEnter = function (e) {
@@ -78,15 +72,24 @@ app.adminLogin = (function () {
                                                                         error: function (e) {
                                                                             //console.log(JSON.stringify(e));
                                                                             $("#progress1").hide();
-                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
 
                                                                             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                            if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
 
-                                                                            if (!app.checkSimulator()) {
-                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
-                                                                            }else {
-                                                                                app.showAlert(app.INTERNET_ERROR, "Notification");  
-                                                                            }                                                                         
                                                                         }               
                                                                     });  
 	            
@@ -181,16 +184,23 @@ app.adminLogin = (function () {
                 },
                                                                            error: function (e) {
                                                                                $("#progress1").hide();  
-                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-
                                                                                document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
     
-                                                                               //console.log(e);
-                                                                               if (!app.checkSimulator()) {
-                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
-                                                                               }else {
-                                                                                   app.showAlert(app.INTERNET_ERROR, "Notification");  
-                                                                               }
+                                                                               if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                            }	        
                                                                        });
                         
@@ -236,12 +246,22 @@ app.adminLogin = (function () {
                 },
                                                                 error: function (e) {
                                                                     //console.log(JSON.stringify(e));
-                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                    if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
-                                                                    }else {
-                                                                        app.showAlert(app.INTERNET_ERROR , 'Offline');  
-                                                                    }               
+                                                                    
+                                                                    if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                 }               
                                                             });  
 	            
@@ -349,18 +369,24 @@ app.adminLogin = (function () {
                  
                                                                                   error: function (e) {
                                                                                       e.preventDefault();
-                                                                                      //apps.hideLoading();
-                                                                                      console.log(e);
                                                                                       $("#progress1").hide();  
-                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-
                                                                                       document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-
-                                                                                      if (!app.checkSimulator()) {
-                                                                                          window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
-                                                                                      }else {
-                                                                                          app.showAlert(app.INTERNET_ERROR, "Notification");  
-                                                                                      }
+                                                                                      
+                                                                                      if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                                   }	        
                                                                               });         
             
@@ -463,15 +489,23 @@ app.adminLogin = (function () {
                                                                                     //apps.hideLoading();
                    
                                                                                     $("#progress1").hide();
-                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-
                                                                                     document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
-                                                                                    if (!app.checkSimulator()) {
-                                                                                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);   
-                                                                                    }else {
-                                                                                        app.showAlert(app.INTERNET_ERROR, "Notification");  
-                                                                                    }
+                                                                                    if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                                 }	        
                                                                             });         
                 organisationGroupDataSource.read();                                  
@@ -513,22 +547,21 @@ app.adminLogin = (function () {
 
         var goToAdminDashboard = function() {            
             //app.mobileApp.pane.loader.hide();
-            
             $("#progress1").hide();
-            
             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-            app.userPosition = false;
             //app.mobileApp.navigate('#view-all-activities-admin'); 
             localStorage.setItem("open", 5);
             localStorage.setItem("loginStatusCheck", 2);                        
+
+            
+            app.analyticsService.viewModel.setAnalyticMonitor();
             app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
 
             //app.slide('left', 'green' ,'3' ,'#view-all-activities-admin');    
             
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
 
-             //app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
-
+            //app.slide('left', 'green' ,'3' ,'#view-all-activities-GroupDetail');
             //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id); 
         };
         
@@ -559,15 +592,23 @@ app.adminLogin = (function () {
                                            
                                                                                 error: function (e) {
                                                                                          //console.log(JSON.stringify(e));
-                                                                                         
-                                                                                         if (!app.checkSimulator()) {
-                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
-                                                                                         }else {
-                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
-                                                                                         }
-                                                                                                     $("#progress1").hide();
-
-                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                         $("#progress1").hide();
+                                                                                     
+                                                                                        if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                     
                                                                                      }	        
                                                                                  });        
@@ -633,18 +674,25 @@ app.adminLogin = (function () {
                                            
                                                                                 error: function (e) {
                                                                                          //console.log(JSON.stringify(e));
-
-                                                                                    
-                                                                                    
                                                                                          $("#forgetPassLoader").hide();
+                                                                                    
+                                                                                        if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                 window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
 
-                                                                                         if (!app.checkSimulator()) {
-                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
-                                                                                         }else {
-                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
-                                                                                         }
-                                                                                         
-                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                    
                     
                                                                                      }	        
                                                                                  });        
@@ -723,15 +771,22 @@ app.adminLogin = (function () {
                                                                                          //console.log(JSON.stringify(e));
 
                                                                                          $("#changePassLoader").hide();
+                                                                                        if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
 
-                                                                                         if (!app.checkSimulator()) {
-                                                                                             window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
-                                                                                         }else {
-                                                                                             app.showAlert(app.INTERNET_ERROR , 'Offline');
-                                                                                         }
-                                                                                         
-                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                    
                                                                                      }	        
                                                                                  });        
                                 
