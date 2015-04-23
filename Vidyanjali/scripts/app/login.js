@@ -61,8 +61,8 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            //var device_id = localStorage.getItem("deviceTokenID");          
+            //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+            var device_id = localStorage.getItem("deviceTokenID");          
                
             username = $("#loginUsername").val();
             
@@ -80,7 +80,9 @@ app.Login = (function () {
                 }else {
                     $("#progress").show();
                     console.log(username + "||" + device_id + "||" + device_type);
-                    localStorage.setItem("username", username); 
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("usernameAnalytic", username);
+                    
                     //console.log('--------static server URL-----' + app.serverUrl());
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "APP_ID":app.CLIENT_APP_ID}
                     var dataSourceLogin = new kendo.data.DataSource({
@@ -399,8 +401,8 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-                    //var device_id = localStorage.getItem("deviceTokenID");                          
+                    //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+                    var device_id = localStorage.getItem("deviceTokenID");                          
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1', "APP_ID":app.CLIENT_APP_ID}
                     var dataSourceLogin = new kendo.data.DataSource({

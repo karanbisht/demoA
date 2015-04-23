@@ -573,12 +573,15 @@ app.Activities = (function () {
                         
             organisationListDataSource.fetch(function() {                
                 
-                        var data = this.data();
-                
+                            var data = this.data();
+                            var anay_UserName = localStorage.getItem("username");         
+  
                             if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
                                 $("#goToAdmin").hide();
-
+                                
+                                localStorage.setItem("usernameAnalytic", anay_UserName);
+                             
                                 var db = app.getDb();
                                 db.transaction(delAdminOrgDataDB, app.errorCB, app.successCB);                          
     
@@ -586,6 +589,10 @@ app.Activities = (function () {
                             }else if (data[0]['status'][0].Msg==='Success') {
                                 $("#moreOption").hide();
                                 $("#goToAdmin").show();
+                                
+                                anay_UserName = anay_UserName+' A';                
+                                localStorage.setItem("usernameAnalytic", anay_UserName);
+
                                 //var adminOrgInformation = data[0]['status'][0].orgData;
                                 //var adminIncomMsg = data[0]['status'][0].last;
                                 //saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 

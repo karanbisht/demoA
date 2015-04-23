@@ -90,7 +90,7 @@
             }
             else
             {
-                var userNumber = localStorage.getItem("usernameAnalytic");                
+                var userNumber = localStorage.getItem("usernameAnalytic"); 
                 app.analyticsService.viewModel.setInstallationInfo(userNumber);
                 //alert(userNumber);
             }
