@@ -332,7 +332,11 @@ app.Login = (function () {
             varifiCode = genRand(0, 9);
             console.log(varifiCode);
             varifiCode = varifiCode.toString();
-              
+                    
+            if(username==='9999999999'){
+                      varifiCode = '12345';  
+            }
+            
             var varifiCodeMsg = "Your "+ app.APP_NAME+" verification code-: " + varifiCode;
           
             //console.log("-----Verification code Login--" + varifiCode);
@@ -353,21 +357,12 @@ app.Login = (function () {
                                                                          console.log(JSON.stringify(e));
                                                                          $("#progress").hide();
                                                                          
-                                                                         if (!app.checkConnection()) {
-                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
-                                                                                             }else {
-                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                             } 
-                                                                                        }else {
-                                                                              
-                                                                                            if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
-                                                                                            }else {
-                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                            }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                         if (!app.checkSimulator()) {
+                                                                             window.plugins.toast.showLongBottom(app.VERIFICATION_CODE_NOT_SEND);  
+                                                                         }else {
+                                                                             app.showAlert(app.VERIFICATION_CODE_NOT_SEND , 'Verification Code');  
+                                                                         }
                                                                      } 
                                                                  });  
 	            

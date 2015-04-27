@@ -1,8 +1,8 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.0.8
-  VersionCode = 9
+  CurrentVersion = 1.1.0
+  VersionCode = 11
 
 IOS
   PackageID = io.zaff.vidyanjali

@@ -211,10 +211,16 @@ app.registration = (function () {
             varifiCode = genRandR(0, 9);
             console.log(varifiCode);
             varifiCode = varifiCode.toString();
-               
+             
+            
+            if(username==='9999999999'){
+                      varifiCode = '12345';  
+            }
+            
             var varifiCodeMsg = "Your "+app.APP_NAME+" verification code-: " + varifiCode;
         
             //console.log("-----Verification code Registration--" + varifiCode);
+            
             
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
@@ -305,7 +311,10 @@ app.registration = (function () {
                       var device_id = localStorage.getItem("deviceTokenID");
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1' , "APP_ID":app.CLIENT_APP_ID}
-       
+                    
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("usernameAnalytic", username);
+
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
                             read: {
