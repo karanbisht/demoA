@@ -385,7 +385,6 @@ var app = (function (win) {
     }
 
     var navigateHome = function () {
-        app.MenuPage = false;
         app.mobileApp.navigate('#welcome');
     };
     
@@ -406,6 +405,7 @@ var app = (function (win) {
     };
     
     var onDeviceReady = function() {
+        
         feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
@@ -424,7 +424,7 @@ var app = (function (win) {
                 
         var pushNotification = window.plugins.pushNotification;   
         
-         if(navigator.geolocation)
+        if(navigator.geolocation)
         {
             navigator.geolocation.getCurrentPosition(oncallback);
         }
@@ -446,9 +446,9 @@ var app = (function (win) {
             
         } else {
             localStorage.setItem("DEVICE_TYPE", "AN");
-            pushNotification.register(successHandler, errorHandler, {"senderID":"477270485762","ecb":"window.onNotificationGCM"});
-            
+            pushNotification.register(successHandler, errorHandler, {"senderID":"477270485762","ecb":"window.onNotificationGCM"});            
         }
+        
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
         
@@ -456,11 +456,12 @@ var app = (function (win) {
     
 
     function successHandler (result) {
+        
                 localStorage.setItem("deviceTokenID", result);
     }
 
     function errorHandler (error) {
-
+        alert(error);
     }
     
     
@@ -563,7 +564,11 @@ var app = (function (win) {
     }*/
        
     // Handle "deviceready" event
-    document.addEventListener('deviceready',onDeviceReady, false);    
+    
+    
+    var onLoad = function(){
+      document.addEventListener('deviceready',onDeviceReady, false);      
+    }
     
     // Handle "orientationchange" event
     document.addEventListener('orientationchange', fixViewResize);
@@ -1497,6 +1502,7 @@ var app = (function (win) {
         showAlert: showAlert,
         showError: showError,
         serverUrl:serverUrl,
+        onLoad:onLoad,
         showAppVersion:showAppVersion,
         callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,

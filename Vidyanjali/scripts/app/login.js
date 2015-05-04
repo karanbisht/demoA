@@ -69,14 +69,17 @@ app.Login = (function () {
             if (username === "Mobile Number" || username === "") {
                 app.showAlert("Please enter your Mobile No.", "Validation Error");
             } else if (!validateMobile(username)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");
+                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");            
             } else {         
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                    } 
+                    }
+                } else if (device_id===null || device_id==='null') {
+                    app.onLoad();              
+                    app.showAlert("Click Next to Continue.", app.APP_NAME);
                 }else {
                     $("#progress").show();
                     console.log(username + "||" + device_id + "||" + device_type);
