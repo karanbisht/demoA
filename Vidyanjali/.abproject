@@ -1,7 +1,7 @@
 {
   "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "AppIdentifier": "io.zaff.vidyanjali",
+  "AppIdentifier": "io.zaffio.vidyanjali",
   "ProjectName": "Vidyanjali",
   "IsRunnable": "true",
   "AndroidPermissions": [
@@ -14,23 +14,23 @@
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
+    "com.telerik.feedback",
+    "com.telerik.plugin.eqatecanalytics",
     "org.apache.cordova.camera",
-    "org.apache.cordova.media-capture",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "org.apache.cordova.device-motion",
+    "org.apache.cordova.dialogs",
     "org.apache.cordova.file",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.geolocation",
     "org.apache.cordova.globalization",
     "org.apache.cordova.inappbrowser",
     "org.apache.cordova.media",
+    "org.apache.cordova.media-capture",
     "org.apache.cordova.network-information",
-    "org.apache.cordova.dialogs",
     "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar",
-    "com.telerik.plugin.eqatecanalytics",
-    "com.telerik.feedback"
+    "org.apache.cordova.statusbar"
   ],
   "DeviceOrientations": [
     "Portrait"
@@ -38,7 +38,7 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.7.0",
-  "BundleVersion": "1.0.0",
+  "BundleVersion": "1.1.0",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",

@@ -420,6 +420,13 @@ var app = (function (win) {
              localStorage.setItem("AppVersion", '9.9.9');
          }    
 
+            var loginStatus = localStorage.getItem("loginStatusCheck");
+            if (loginStatus==='1') {
+              app.Activities.show();
+            }else if (loginStatus==='2') {
+              app.groupDetail.show();     
+            }
+
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
                 
         var pushNotification = window.plugins.pushNotification;   
@@ -461,7 +468,7 @@ var app = (function (win) {
     }
 
     function errorHandler (error) {
-        alert(error);
+        console.log(error);
     }
     
     
@@ -481,13 +488,7 @@ var app = (function (win) {
         app.analyticsService.viewModel.monitorStart();
         app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
         var loginStatus = localStorage.getItem("loginStatusCheck");
-        
-        if (loginStatus==='1') {
-          app.Activities.show();
-        }else if (loginStatus==='2') {
-          app.groupDetail.show();     
-        }
-        
+                
         if(loginStatus !== '0' || loginStatus !== 0)
         {
             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
