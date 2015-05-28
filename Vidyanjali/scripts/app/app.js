@@ -26,12 +26,14 @@ var app = (function (win) {
     var loginStatusDBValue;
     var adminLoginStatusDBValue;
     var mobileApp;
+    var deviceId_Not_Receive = 0;
     
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
     var INTERNET_ERROR = "Network problem. Please try again.";
     var ERROR_MESSAGE = "Network problem. Please try again."; //"Unable to reach server. Please try again.";
     var NO_ACCESS = "You don't have access.";
+    var EXIT_APP ="Press again to exit.";
     var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
     var VERIFICATION_CODE_SEND = "Verification code not sent. Please click on Regenerate Code";
     var VERIFICATION_CODE_NOT_SEND = "Verification code not sent. Please click on Regenerate Code";
@@ -55,7 +57,12 @@ var app = (function (win) {
     var SELECT_MEMBER_TO_DELETE="Please select member to delete";
     var MEMBER_DETAIL_UPDATED_MSG="Member detail updated successfully";
     var MEMBER_ADDED_MSG="Member added successfully";
+    var NO_GROUP_AVAILABLE="No Group Available , Please Add Group."
     var FORGET_PASSWORD_CODE_SEND="Code sent at your registered number.";
+    var DELETE_CONFIRM="Are you sure you want to delete this.";
+    var VIDEO_ALY_DOWNLOAD="Please wait until the previous download processing is complete before attempting to downlaod new video."
+    var SOCIAL_SHARE_ERROR_MSG ="Application not installed on your device , you need to install it first to use this feature."
+
     
     var serverUrl = function() {        
         return 'https://app.Zaff.io/webservice/';        
@@ -272,7 +279,9 @@ var app = (function (win) {
     }
             return true;
     };
-    
+
+    var lastClickTime11 = 0;
+    var backButtonClickCount=0;
     var onBackKeyDown = function(e) { 
         if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
              e.preventDefault();           
@@ -280,12 +289,36 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
             e.preventDefault();            
             navigator.app.exitApp();
-        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities') {
-            e.preventDefault();            
-            navigator.app.exitApp();                      
+        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities') {     
+            
+            if(backButtonClickCount===0){
+                window.plugins.toast.showShortBottom(app.EXIT_APP);                  
+            }
+            var current = new Date().getTime();
+	        var delta = current - lastClickTime11;
+	        lastClickTime11 = current;
+	        if (delta < 3000) {
+                e.preventDefault();            
+                navigator.app.exitApp();
+                backButtonClickCount=1;
+	        }else {
+                if(current === lastClickTime11){
+                }else{
+                    backButtonClickCount=0;
+                }                
+        	}                        
+            /*navigator.notification.confirm(app.EXIT_APP, function (confirmed) {           
+                    if (confirmed === true || confirmed === 1) {
+                        e.preventDefault();            
+                        navigator.app.exitApp();
+                    }else {
+
+                    }
+                }, app.APP_NAME, ['Yes', 'No']);*/
+            
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
         
-        }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv') {
+        }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv' || app.mobileApp.view()['element']['0']['id']==='eventCalendar'){
             //app.mobileApp.navigate("#organisationNotiList");
             app.mobileApp.navigate("#view-all-activities");            
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
@@ -301,20 +334,32 @@ var app = (function (win) {
             app.mobileApp.navigate('views/groupListPage.html');
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupList') {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');    
+        }else if(app.mobileApp.view()['element']['0']['id']==='addAdminCustomer'){
+            app.mobileApp.navigate('#groupMemberShow');
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendar') {
             app.mobileApp.navigate('#adminEventList');     
-        }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail' || app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar') {
-            app.mobileApp.navigate('#adminEventList');  
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail'){
+            app.mobileApp.navigate('#adminEventList'); 
+        }else if( app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar'){
+            app.mobileApp.navigate('#adminEventList'); 
+            app.adminEventCalender.onBackClsPicker('add');
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEditEventCalendar') {
-            app.mobileApp.navigate('#adminEventList');     
+            app.mobileApp.navigate('#adminEventList');   
+            app.adminEventCalender.onBackClsPicker('edit');
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventList') {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');  
         }else if (app.mobileApp.view()['element']['0']['id']==='adminOrgNewsList') {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');                      
         }else if (app.mobileApp.view()['element']['0']['id']==='adminAddNews') {
             app.mobileApp.navigate('#adminOrgNewsList');
-            //$("#adminAddNews").data("kendoMobileModalView").close();
+            app.adminNews.onBackClsPicker('add');
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminEditNews') {
+            app.mobileApp.navigate('#adminOrgNewsList');
+            app.adminNews.onBackClsPicker('edit');
+        }else if (app.mobileApp.view()['element']['0']['id']==='sendNotificationDiv') {
+            app.mobileApp.navigate('#adminGraph');
+            app.sendNotification.onBackClsPicker();    
         }else {
             app.mobileApp.navigate("#:back");    
         }
@@ -405,7 +450,8 @@ var app = (function (win) {
     };
     
     var onDeviceReady = function() {
-        
+      
+        app.deviceId_Not_Receive=0;
         feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
@@ -421,14 +467,13 @@ var app = (function (win) {
          }    
 
             var loginStatus = localStorage.getItem("loginStatusCheck");
-            if (loginStatus==='1') {
+            if (loginStatus==='1' || loginStatus===1){
               app.Activities.show();
-            }else if (loginStatus==='2') {
+            }else if (loginStatus==='2' || loginStatus===2){
               app.groupDetail.show();     
             }
 
-        window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);
-                
+        window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);                
         var pushNotification = window.plugins.pushNotification;   
         
         if(navigator.geolocation)
@@ -463,8 +508,9 @@ var app = (function (win) {
     
 
     function successHandler (result) {
-        
-                localStorage.setItem("deviceTokenID", result);
+
+        app.deviceId_Not_Receive = 0;
+        localStorage.setItem("deviceTokenID", result);
     }
 
     function errorHandler (error) {
@@ -583,7 +629,7 @@ var app = (function (win) {
         fp = rootdir.toURL();        
         //alert(fp);
         //alert(fileSystem.root.fullPath);        
-        directoryEntry.getDirectory("Zaffio", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
+        rootdir.getDirectory("Zaffio", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         getfbValue();
 
     }
@@ -775,6 +821,11 @@ var app = (function (win) {
             }else {
                 showAlert(messageDB , "Notification");
             } 
+            
+            if(app.deviceId_Not_Receive===1){
+                //alert('inside APN');
+                app.Login.login();
+            }
          }
     };
     
@@ -865,6 +916,11 @@ var app = (function (win) {
                     break;
                 default:
                     break;
+            }
+            
+            if(app.deviceId_Not_Receive===1){
+                //alert('inside APN');
+                app.Login.login();
             }
         } catch (err) {
                    app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + err);
@@ -1434,6 +1490,12 @@ var app = (function (win) {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');
                 } 
             }else { 
+                
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom(app.SESSION_EXPIRE);  
+                    }else {
+                        app.showAlert(app.SESSION_EXPIRE);
+                    }
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
                             read: {
@@ -1484,7 +1546,8 @@ var app = (function (win) {
                
                 
                             if (data[0]['status'][0].Msg==='You have been successfully logged out.') {                                
-                                app.mobileApp.navigate('views/organisationLogin.html');                                
+                                app.mobileApp.navigate('views/organisationLogin.html');
+                                localStorage.setItem("loginStatusCheck", 1);
                                 //app.flip('left', 'green', '#organisationNotiList')                                
                             }else {
                                 //app.mobileApp.pane.loader.hide();
@@ -1496,15 +1559,220 @@ var app = (function (win) {
                 }
        }
     
+        var noGroupAvailable = function(){
+               if (!app.checkSimulator()) {
+                     window.plugins.toast.showShortBottom(app.NO_GROUP_AVAILABLE);   
+               }else {
+                    app.showAlert(app.NO_GROUP_AVAILABLE);  
+               }
+        }
+    
+    
+    
+         var shareMessageAndURLViaTwitter=function () {
+           var shareImg = localStorage.getItem("shareImg");
+           var shareMsg = localStorage.getItem("shareMsg");
+           var shareTitle = localStorage.getItem("shareTitle");
+           
+           if (!app.checkSimulator()) { 
+             if(shareImg!== null && shareImg!=='' && shareImg!=="0" && shareImg!=="null"){
+                window.plugins.socialsharing.shareViaTwitter(
+                shareMsg, 
+                shareImg,  // img
+                null,      //link 
+                app.shareSuccess, 
+                app.shareError);
+             }else{
+                window.plugins.socialsharing.shareViaTwitter(
+                shareMsg, 
+                null, 
+                null, 
+                app.shareSuccess, 
+                app.shareError);
+             }    
+           }
+        }
 
+        var shareImagesViaFacebook =function () {
+
+            var shareImg = localStorage.getItem("shareImg");
+            var shareMsg = localStorage.getItem("shareMsg");
+            var shareTitle = localStorage.getItem("shareTitle");
+            
+            if (!app.checkSimulator()) {
+             if(shareImg!== null && shareImg!=='' && shareImg!=="0" && shareImg!=="null"){
+                window.plugins.socialsharing.shareViaFacebook(
+                shareMsg,
+                shareImg,   //img
+                null,   //url
+                app.shareSuccess, 
+                app.shareError);
+             }else{
+                window.plugins.socialsharing.shareViaFacebook(
+                shareMsg,
+                null,  //img
+                null,  //url
+                app.shareSuccess, 
+                app.shareError);
+             }    
+            }
+        }
+
+        var shareMessageViaWhatsApp = function () {
+            var shareImg = localStorage.getItem("shareImg");
+            var shareMsg = localStorage.getItem("shareMsg");
+            var shareTitle = localStorage.getItem("shareTitle");
+                        
+            if (!app.checkSimulator()) {
+             if(shareImg!==null && shareImg!=='' && shareImg!=="0" && shareImg!=="null"){
+                window.plugins.socialsharing.shareViaWhatsApp (
+                shareMsg, 
+                shareImg, //img 
+                null,     //url
+                app.shareSuccess, app.shareError);
+             }else{
+                window.plugins.socialsharing.shareViaWhatsApp (
+                shareMsg, 
+                null, 
+                null, 
+                app.shareSuccess, app.shareError);
+             }    
+            }         
+        }
+
+        var shareMessageViaSMS = function () {
+            var shareImg = localStorage.getItem("shareImg");
+            var shareMsg = localStorage.getItem("shareMsg");
+            var shareTitle = localStorage.getItem("shareTitle");
+
+            /*if (!app.checkSimulator()) {
+ 	           window.plugins.socialsharing.shareViaSMS (
+                shareMsg, 
+                null,
+                app.shareSuccess, 
+                app.shareError);
+            }*/            
+            
+            //CONFIGURATION
+                var options = {
+                    android: {
+                        intent: 'INTENT'  // send SMS with the native android SMS messaging
+                        //intent: '' // send SMS without open any other app
+                    }
+                };
+
+                sms.send('', shareMsg, options, app.shareSuccess, app.shareMessageError);
+        }
+        
+        var shareViaEmail = function (e){
+            var shareImg = localStorage.getItem("shareImg");
+            var shareMsg = localStorage.getItem("shareMsg");
+            var shareTitle = localStorage.getItem("shareTitle");            
+            if (!app.checkSimulator()) {
+              if(shareImg!== null && shareImg!=='' && shareImg!=="0" && shareImg!=="null"){
+ 	           window.plugins.socialsharing.shareViaEmail (
+                   shareMsg,
+                   shareTitle,
+                   null, // TO: must be null or an array  ['to@person1.com', 'to@person2.com']
+                   null, // CC: must be null or an array  ['cc@person1.com']
+                   null, // BCC: must be null or an array
+                   [shareImg],
+                   app.shareSuccess,
+                   app.shareMessageError
+               );
+             }else{
+                 window.plugins.socialsharing.shareViaEmail (
+                   shareMsg,
+                   shareTitle,
+                   null, // TO: must be null or an array  ['to@person1.com', 'to@person2.com']
+                   null, // CC: must be null or an array  ['cc@person1.com']
+                   null, // BCC: must be null or an array
+                   app.shareSuccess,
+                   app.shareMessageError
+               );
+             }    
+            }
+        }
+    
+    
+        var socialShare = function(){
+            window.plugins.socialsharing.share(
+              'message',
+              'subject',
+              null,
+              null,
+              [app.shareSuccess], // e.g. function(result) {console.log('result: ' + result)}
+              [app.shareError]    // e.g. function(result) {alert('error: ' + result);
+            );
+        }
+    
+        var shareSuccess = function(){
+             //console.log('success');
+        }
+    
+        var shareError = function(errormsg){               
+            if(errormsg!=="URL_NOT_SUPPORTED" && errormsg!=="not available"){
+                 window.plugins.toast.showShortBottom(app.SOCIAL_SHARE_ERROR_MSG);
+            }else if('errormsg==="not available"'){
+                 window.plugins.toast.showShortBottom(app.SOCIAL_SHARE_ERROR_MSG);
+            }   
+        }
+    
+        var shareMessageError = function(){              
+               
+        }
+    
+        var getMonthData = function (dateString) {
+            var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+            var today = new Date(dateString);
+            return kendo.toString(month[today.getMonth()]);
+        }
+    
+    
+     var getDeviceID = function(){
+        app.deviceId_Not_Receive = 1;                
+        //alert('getDevice_ID');
+        var pushNotification = window.plugins.pushNotification;   
+        //console.log(window.plugins);        
+                        
+        if (device.platform === "iOS") {            
+            localStorage.setItem("DEVICE_TYPE", "AP");
+                       
+              pushNotification.register(successHandler,
+                                      errorHandler, {
+                                          "badge": "true",
+                                          "sound": "true",
+                                          "alert": "true",
+                                          "ecb": "window.onNotificationAPN"
+                                      });
+            
+            
+        } else if (device.platform === 'android' || device.platform === 'Android') {
+            localStorage.setItem("DEVICE_TYPE", "AN");            
+            
+            pushNotification.register(successHandler, errorHandler, {"senderID":"995203039585","ecb":"window.onNotificationGCM"});
+                        
+        }
+    }
+    
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
         showAlert: showAlert,
         showError: showError,
         serverUrl:serverUrl,
+        shareMessageViaWhatsApp:shareMessageViaWhatsApp,
+        shareImagesViaFacebook:shareImagesViaFacebook,
+        shareMessageAndURLViaTwitter:shareMessageAndURLViaTwitter,
+        shareSuccess:shareSuccess,
+        socialShare:socialShare,
+        shareMessageViaSMS:shareMessageViaSMS,
+        shareViaEmail:shareViaEmail,
         onLoad:onLoad,
+        shareMessageError:shareMessageError,
+        shareError:shareError,
         showAppVersion:showAppVersion,
+        noGroupAvailable:noGroupAvailable,
         callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,
         callAdminOrganisationList:callAdminOrganisationList,
@@ -1512,6 +1780,7 @@ var app = (function (win) {
         convertTimeSpan:convertTimeSpan,
         timeConverter:timeConverter,
         ScaleImage:ScaleImage,
+        getMonthData:getMonthData,
         toTitleCase:toTitleCase,
         checkIfFileExists:checkIfFileExists,
         sendNotification:sendNotification,
@@ -1522,6 +1791,7 @@ var app = (function (win) {
         checkSimulator:checkSimulator,
         showNativeAlert:showNativeAlert,
         getDb:getDb,
+        NO_GROUP_AVAILABLE:NO_GROUP_AVAILABLE,
         formatDate:formatDate,
         currentDataFormate:currentDataFormate,
         timeConvert:timeConvert,
@@ -1553,6 +1823,7 @@ var app = (function (win) {
         getDateMonth:getDateMonth,
         getDateDays:getDateDays,
         getYear: getYear,
+        getDeviceID:getDeviceID,
         INTERNET_ERROR:INTERNET_ERROR,
         ERROR_MESSAGE:ERROR_MESSAGE,
         NO_ACCESS:NO_ACCESS,
@@ -1563,6 +1834,7 @@ var app = (function (win) {
         No_MEMBER_TO_ADD:No_MEMBER_TO_ADD,
         LOGIN_ANOTHER_DEVICE:LOGIN_ANOTHER_DEVICE,
         COMMENT_REPLY:COMMENT_REPLY,
+        deviceId_Not_Receive:deviceId_Not_Receive,
         NOTIFICATION_MSG_NOT_SENT:NOTIFICATION_MSG_NOT_SENT,
         NOTIFICATION_MSG_SENT:NOTIFICATION_MSG_SENT,
         NOTIFICATION_MSG_SCHEDULED:NOTIFICATION_MSG_SCHEDULED,
@@ -1572,11 +1844,15 @@ var app = (function (win) {
         NEWS_DELETED_MSG:NEWS_DELETED_MSG,
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
         CANNOT_CANCEL:CANNOT_CANCEL,
+        EXIT_APP:EXIT_APP,
+        DELETE_CONFIRM:DELETE_CONFIRM,
+        SOCIAL_SHARE_ERROR_MSG:SOCIAL_SHARE_ERROR_MSG,
         getSendNotiDateTime:getSendNotiDateTime,
         getCurrentDateTime:getCurrentDateTime,
         EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
+        VIDEO_ALY_DOWNLOAD:VIDEO_ALY_DOWNLOAD,
         MEMBER_DELETED_MSG:MEMBER_DELETED_MSG,
         SELECT_MEMBER_TO_DELETE:SELECT_MEMBER_TO_DELETE,
         MEMBER_DETAIL_UPDATED_MSG:MEMBER_DETAIL_UPDATED_MSG,

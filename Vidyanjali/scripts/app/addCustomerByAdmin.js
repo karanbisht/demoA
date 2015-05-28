@@ -43,7 +43,10 @@ app.addCustomerByAdmin = (function () {
             groupDataShow=[];
                               
 
-            document.getElementById('groupInAddCustomer').style.display="none";
+            $("#groupInAddCustomer option:selected").removeAttr("selected");
+            $('#groupInAddCustomer').empty();
+            
+            //document.getElementById('groupInAddCustomer').style.display="none";
 
             getGroupToShowInCombo();
             
@@ -100,15 +103,16 @@ app.addCustomerByAdmin = (function () {
                                             
                             if (data[0]['status'][0].Msg==='No Group list') {
                                          
-                                groupDataShow.push({
+                                /*groupDataShow.push({
                                                           
                                                            group_name: 'No Group Available , To Add Member First Add Group',
                                                            pid:'0'
-                                                       });
-                            }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
-                                    app.LogoutFromAdmin(); 
+                                                       });*/
+                                 app.noGroupAvailable();
                                 
+                            }else if(data[0]['status'][0].Msg==="Session Expired"){
+                                   //app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    app.LogoutFromAdmin();                                 
                         }else if(data[0]['status'][0].Msg==="You don't have access"){
                                    
                                     if (!app.checkSimulator()) {
@@ -142,18 +146,24 @@ app.addCustomerByAdmin = (function () {
             
             $(".km-scroll-container").css("-webkit-transform", "");
            
-               var comboGroupListDataSource = new kendo.data.DataSource({
+            /*var comboGroupListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
-                                                                       });              
-           
-            
+                                                                       });               
             $("#groupInAddCustomer").kendoListView({
                                                         template: kendo.template($("#groupNameShowTemplate").html()),    		
                                                         dataSource: comboGroupListDataSource
             });
 
-            $("#groupInAddCustomer li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.addCustomerByAdmin.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');        
+            $("#groupInAddCustomer li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.addCustomerByAdmin.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');*/        
 
+            $.each(groupDataShow, function (index, value) {
+                $('#groupInAddCustomer').append($('<option/>', { 
+                    value: value.pid,
+                    text : value.group_name 
+                }));
+            });
+            
+            
               /* document.getElementById("multiSelectGroupName").innerHTML = "";
             
                $("#multiSelectGroupName").kendoMultiSelect({
@@ -237,8 +247,12 @@ app.addCustomerByAdmin = (function () {
                 group[i] = $(this).val();
             });*/     
             
-            $('#groupInAddCustomer input:checked').each(function() {
+            /*$('#groupInAddCustomer input:checked').each(function() {
                 group.push($(this).val());
+            });*/
+            
+             $('#groupInAddCustomer :selected').each(function(i, selected){ 
+                  group[i] = $(selected).val(); 
             });
             
             group = String(group);       
@@ -357,8 +371,8 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
-                        app.LogoutFromAdmin(); 
+                            //app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                            app.LogoutFromAdmin(); 
                                 
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     

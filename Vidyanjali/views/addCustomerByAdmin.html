@@ -1,4 +1,4 @@
-<div data-role="view" id="view-all-activities" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin" data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" >
+<div data-role="view" id="addAdminCustomer" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin" data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" >
     <div data-role="header">
         <div data-role="navbar">
             Add Members
@@ -17,7 +17,6 @@
     </div>-->
 
     <div>
-        <form>
             <ul data-role="listview" data-style="inset">
                 <li class="username">
                     <input type="text"  id="regFirstName" placeholder="First Name" />
@@ -36,11 +35,15 @@
             <a style="padding-left:10px;color:#7FBF4D" data-role="touch" data-bind="events: { tap: addMoreMobileNo }" >Add more</a>
                         
 
-            <div onclick="app.addCustomerByAdmin.clickToSelectGroup()" class="selectGroupMember">Select Group to Add Member</div>            
-
-            <div id="groupInAddCustomer"  class="selectDivClass" style="display:none"></div>            
+            <!--<div onclick="app.addCustomerByAdmin.clickToSelectGroup()" class="selectGroupMember">Select Group to Add Member</div>            
+            <div id="groupInAddCustomer"  class="selectDivClass" style="display:none"></div>-->
+            
+             <br/>
+               <li data-style="inset" data-role="listview" style="color:rgb(127,191,77);">
+                   <span>Select Group to Add Member</span>
+        		   <select id="groupInAddCustomer"  multiple ></select>
+               </li>
     
-        </form>
     </div>
     
     <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
@@ -64,13 +67,11 @@
 
 <script>
 
-  $(document).ready(function () {
-            
+  /*$(document).ready(function () {            
     $('#groupInAddCustomer :checkbox').on('click', function (event) {
         event.stopPropagation();
         alert('clicked checkbox');
-    });
-      
-  });
+    });    
+  });*/
     
 </script>

@@ -9,6 +9,7 @@ app.adminEventCalender = (function () {
         var upload_type;
         var groupAllEvent = [];
         var tasks = [];
+        var device_type;
         var groupDataShow = [];
         var pbEvent;
         var disabledDaysBefore=[];
@@ -339,7 +340,8 @@ app.adminEventCalender = (function () {
         
         var addEventshow = function() {
             
-            $("#sendEventLoader").show();            
+            $("#sendEventLoader").show();       
+            device_type = localStorage.getItem("DEVICE_TYPE");
             //$(".km-scroll-container").css("-webkit-transform", "");
             $(".km-native-scroller").scrollTop(0);
 
@@ -357,17 +359,39 @@ app.adminEventCalender = (function () {
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
             
-            $("#adddatePickerEvent").parent().css('width', "160px");
-            $("#adddateTimePickerEvent").parent().css('width', "160px");
+            $("#adddatePickerEvent").parent().css('width', "180px");
+            $("#adddateTimePickerEvent").parent().css('width', "180px");
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
 
-            document.getElementById('groupInAddEvent').style.display="none";
+            //document.getElementById('groupInAddEvent').style.display="none";            
+            //$('#groupInAddEvent').find('input[type=checkbox]:checked').removeAttr('checked');
             
-            $('#groupInAddEvent').find('input[type=checkbox]:checked').removeAttr('checked');
+             $('#addEventDesc').css('height', '40px');
 
-            var currentDate = app.getPresentDate();
+            var txt = $('#addEventDesc'),
+                hiddenDiv = $(document.createElement('div')),
+                content = null;
+    
+            txt.addClass('txtstuff');
+            hiddenDiv.addClass('hiddendiv common');
+
+            $('body').append(hiddenDiv);
+
+            txt.on('keyup', function () {
+                content = $(this).val();
+    
+                content = content.replace(/\n/g, '<br>');
+                hiddenDiv.html(content + '<br class="lbr">');
+    
+                $(this).css('height', hiddenDiv.height());
+            });
             
+            
+            $("#groupInAddEvent option:selected").removeAttr("selected");
+            $('#groupInAddEvent').empty();
+            
+            var currentDate = app.getPresentDate();            
             disabledDaysBefore = [
                 +new Date(currentDate)
             ];
@@ -398,14 +422,11 @@ app.adminEventCalender = (function () {
                  
                                                          change: function() {
                                                              var value = this.value();
-                                                             //console.log(value); 
-                                                             /*if(new Date(value) < new Date(currentDate)){                   
-                                                             if(!app.checkSimulator()){
-                                                             window.plugins.toast.showLongBottom('You Cannot Add Event on Back Date');  
-                                                             }else{
-                                                             app.showAlert('You Cannot Add Event on Back Date',"Event");  
-                                                             }                                
-                                                             }*/    
+                                                             
+                                                             if(new Date(value) < new Date(currentDate)){                   
+                                                                    var todayDate = new Date();
+                                                                    $('#adddatePickerEvent').data("kendoDatePicker").value(todayDate);                                       
+                                                                 }    
                                                          }
                                                      }).data("kendoDatePicker");
                          
@@ -488,10 +509,11 @@ app.adminEventCalender = (function () {
                                             
                 if (data[0]['status'][0].Msg==='No Group list') {
                     groupDataShow=[];
-                                            groupDataShow.push({
+                                            /*groupDataShow.push({
                                                group_name: 'No Group Found , To Add Event First Add Group',
                                                pid:'0'
-                                           });
+                                           });*/
+                    app.noGroupAvailable();
 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
@@ -501,9 +523,9 @@ app.adminEventCalender = (function () {
                     }
                     goToEventListPage();
                 }else if (data[0]['status'][0].Msg==='Session Expired') {
-                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                            //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin();                         
-                    }else {
+                }else {
                     var orgLength = data[0].status[0].groupData.length;
                     for (var j = 0;j < orgLength;j++) {
                         groupDataShow.push({
@@ -513,10 +535,11 @@ app.adminEventCalender = (function () {
                                                //org_id:data[0].status[0].groupData[j].org_id,
                                                pid:data[0].status[0].groupData[j].pid
                                            });
-                    }                                
+                    }
+                    showGroupDataInTemplate();
                 }  
                 
-                showGroupDataInTemplate();
+                $("#sendEventLoader").hide();                 
             });
         };
         
@@ -527,7 +550,7 @@ app.adminEventCalender = (function () {
             
             $(".km-scroll-container").css("-webkit-transform", "");
            
-            var comboGroupListDataSource = new kendo.data.DataSource({
+            /*var comboGroupListDataSource = new kendo.data.DataSource({
                                                                          data: groupDataShow
                                                                      });              
             
@@ -536,8 +559,14 @@ app.adminEventCalender = (function () {
                                                     dataSource: comboGroupListDataSource
                                                 });
             
-            $("#groupInAddEvent li:eq(0)").before('<li id="selectAllEvent" class="getGroupCombo" ><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminEventCalender.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');        
-
+            $("#groupInAddEvent li:eq(0)").before('<li id="selectAllEvent" class="getGroupCombo" ><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminEventCalender.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');*/
+            
+            $.each(groupDataShow, function (index, value) {
+                $('#groupInAddEvent').append($('<option/>', { 
+                    value: value.pid,
+                    text : value.group_name 
+                }));
+            });
         }
         
         var eventNameEdit;
@@ -552,14 +581,14 @@ app.adminEventCalender = (function () {
         var editEvent = function(e) {
             //console.log(e.data.uid);
             //console.log(e.data);
-            eventNameEdit = e.data.event_name;
+            /*eventNameEdit = e.data.event_name;
             eventDescEdit = e.data.event_desc;
             eventDateEdit = e.data.event_date;
             eventTimeEdit = e.data.event_time;
             eventImageEdit = e.data.event_image;
             eventUploadType = e.data.upload_type;
             eventPid = e.data.id;
-            pageToGo = e.data.page;
+            pageToGo = e.data.page;*/
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
@@ -568,12 +597,15 @@ app.adminEventCalender = (function () {
             //console.log(e.data.uid);
             //console.log(e.data);
             //var eventPid = e.data.id;
-            organisationID = localStorage.getItem("orgSelectAdmin");
             
-            //console.log('orgID=' + organisationID + "pid=" + eventPid)
-            var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
+          navigator.notification.confirm(app.DELETE_CONFIRM, function (confirmed) {           
+                    if (confirmed === true || confirmed === 1) {
+                        
+                        organisationID = localStorage.getItem("orgSelectAdmin");            
+                        //console.log('orgID=' + organisationID + "pid=" + eventPid)
+                        var jsonDataSaveGroup = {"orgID":organisationID,"pid":eventPid}
             
-            var dataSourceaddGroup = new kendo.data.DataSource({
+                    var dataSourceaddGroup = new kendo.data.DataSource({
                                                                    transport: {
                     read: {
                                                                                url: app.serverUrl() + "event/delete/",
@@ -581,13 +613,13 @@ app.adminEventCalender = (function () {
                                                                                dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                                data: jsonDataSaveGroup
                                                                            }
-                },
+                    },
                                                                    schema: {
                     data: function(data) {
                         //console.log(data);
                         return [data];
                     }
-                },
+                    },
                                                                    error: function (e) {
                                                                        if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
@@ -608,30 +640,36 @@ app.adminEventCalender = (function () {
           
                                                                });  
 	            
-            dataSourceaddGroup.fetch(function() {
-                var loginDataView = dataSourceaddGroup.data();
-                $.each(loginDataView, function(i, addGroupData) {
-                    if (addGroupData.status[0].Msg==='Deleted Successfully') {         
-                        app.mobileApp.navigate("#adminEventList");
+                  dataSourceaddGroup.fetch(function() {
+                        var loginDataView = dataSourceaddGroup.data();
+                        $.each(loginDataView, function(i, addGroupData) {
+                            if (addGroupData.status[0].Msg==='Deleted Successfully') {         
+                                app.mobileApp.navigate("#adminEventList");
                         
-                        if (!app.checkSimulator()) {
-                            window.plugins.toast.showShortBottom(app.EVENT_DELETED_MSG);   
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom(app.EVENT_DELETED_MSG);   
+                            }else {
+                                app.showAlert(app.EVENT_DELETED_MSG ,"Notification");  
+                            }
+                            }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
+                    
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            }else {
+                                app.showAlert(app.NO_ACCESS , 'Offline');  
+                            }
+                                
                         }else {
-                            app.showAlert(app.EVENT_DELETED_MSG ,"Notification");  
+                            app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                         }
-                    }else if (addGroupData.status[0].Msg==="You don't have access") {                                    
-                    
-                    if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
-                    }else {
-                        app.showAlert(app.NO_ACCESS , 'Offline');  
-                    }
-                    
-                }else {
-                        app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
-                    }
-                });
-            });
+                    });                    
+                  });                        
+           }else {
+
+           }
+
+          }, app.APP_NAME, ['Yes', 'No']);
+            
         }
 
         var upload_type_edit;
@@ -675,12 +713,15 @@ app.adminEventCalender = (function () {
             
             //$('#groupInEditEvent').find('input[type=checkbox]:checked').remove();
 
+            $("#groupInEditEvent option:selected").removeAttr("selected");
+            $('#groupInEditEvent').empty();
+            
             $("#sendEditEventLoader").show();
             $("#wrapp_content").hide();
             $("#editdatePicker").removeAttr('disabled');
             $("#editdateTimePicker").removeAttr('disabled');            
-            $("#editdatePicker").parent().css('width', "160px");
-            $("#editdateTimePicker").parent().css('width', "160px");
+            $("#editdatePicker").parent().css('width', "180px");
+            $("#editdateTimePicker").parent().css('width', "180px");
             $("#editdatePicker").removeClass("k-input");
             $("#editdateTimePicker").removeClass("k-input");            
                                                 
@@ -887,7 +928,7 @@ app.adminEventCalender = (function () {
                             
                             for (var j = 0;j < allCustomerLength;j++) {
                                 if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {              
-                                    check = 'checked';
+                                    check = 'selected';
                                     break;
                                 }else {
                                     check = '';                                         
@@ -902,8 +943,7 @@ app.adminEventCalender = (function () {
                         }
                        }else{
                          
-                          var allGroupLength = adminAllGroupArray.length;
-                         
+                          var allGroupLength = adminAllGroupArray.length;                         
                           for (var i = 0;i < allGroupLength;i++) {       
                             EditGroupArrayMember.push({
                                                                   group_name: adminAllGroupArray[i].group_name,
@@ -913,15 +953,32 @@ app.adminEventCalender = (function () {
                             
                           }
                        }    
+                          
+                           $.each(EditGroupArrayMember, function (index, value) {                            
+                            if(value.check===''){
+                                $('#groupInEditEvent').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name                                   
+                                }));   
+                            }else{
+                                $('#groupInEditEvent').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name ,
+                                    selected:"selected"
+                                }));   
+   
+                            }                                
+                          });
                       }else{
-                           EditGroupArrayMember.push({
+                           /*EditGroupArrayMember.push({
                                                                   group_name: 'No Group Available , First Add Group',
                                                                   pid:'0',
                                                                   check:''
-                                                              }); 
+                                                              }); */
+                           app.noGroupAvailable();
                       }    
                     }else if (data[0]['status'][0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else if (data[0]['status'][0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
@@ -939,10 +996,10 @@ app.adminEventCalender = (function () {
                     data: EditGroupArrayMember
                     }); */                        
             
-                    $("#groupInEditEvent").kendoListView({
+                    /*$("#groupInEditEvent").kendoListView({
                                                              template: kendo.template($("#groupNameEditShowTemplate").html()),    		
                                                              dataSource: EditGroupArrayMember
-                                                         });
+                                                         });*/
                     
                     $("#sendEditEventLoader").hide();
                     $("#wrapp_content").show();
@@ -979,8 +1036,12 @@ app.adminEventCalender = (function () {
             console.log(event_Date +"||"+ compareDate +"||"+  event_Time +"||"+compareTime);            
             var group = [];
             
-            $('#groupInAddEvent input:checked').each(function() {
+            /*$('#groupInAddEvent input:checked').each(function() {
                 group.push($(this).val());
+            });*/
+            
+             $('#groupInAddEvent :selected').each(function(i, selected){ 
+                  group[i] = $(selected).val(); 
             });
             
             /*$(':checkbox:checked').each(function(i) {
@@ -1282,6 +1343,85 @@ app.adminEventCalender = (function () {
         }
 
 
+        var attachedImgFilename;
+        var imgFile;
+        var imgNotiFi;
+
+        var imageDownlaodClick = function(e){
+            var data = e.button.data();           
+            console.log(data);            
+            imgFile = data.imgpath;  
+            console.log(imgFile);            
+            imgNotiFi = data.notiid;
+            attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+            attachedImgFilename=attachedImgFilename+'.jpg';
+            var vidPathData = app.getfbValue();                    
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;             
+            console.log(vidPathData);
+            console.log(fp);
+            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
+            //$("#img_Div_"+imgNotiFi).show();
+            
+            //alert("#img_Div_"+imgNotiFi);
+            
+            //alert('click');
+            //console.log(JSON.stringify(window.plugins));
+            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
+        }
+        
+                
+        var imgPathExist = function() {                    
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;   
+            //fp=fp+'.jpg';
+            console.log(fp);
+            
+                                      if(device_type==="AP"){
+                                          //alert('Show');
+                                          //window.open("www.google.com", "_system");
+                                          window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
+
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+
+        }
+        
+        var imgPathNotExist = function() {
+
+            $("#img_Adm_Div_Event_"+imgNotiFi).show();
+            //$("#imgToDownloadEvent_"+imgNotiFi).text('Downloading..');
+            
+            var attachedImg = imgFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;
+                        console.log(fp);
+
+
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(attachedImg, fp, 
+                                  function(entry) {
+
+                                      //$("#imgToDownloadEvent_"+imgNotiFi).text('View');
+                                      $("#img_Adm_Div_Event_"+imgNotiFi).hide();
+
+
+                                      if(device_type==="AP"){
+                                          //alert('1');
+                                          window.open(fp, "_blank",'location=no,enableViewportScale=yes,closebuttoncaption=Close');
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+                                      
+                                  },
+    
+                                  function(error) {
+                                      //$("#imgToDownloadEvent_"+imgNotiFi).text('View');
+                                      $("#img_Adm_Div_Event_"+imgNotiFi).hide();
+                                  }
+                );                
+        }
+
         var saveEditEventData = function() {
             var event_name = $("#editEventName").val();     
             var event_description = $("#editEventDesc").val();
@@ -1293,10 +1433,13 @@ app.adminEventCalender = (function () {
                 groupEdit[i] = $(this).val();
             });*/                       
 
-            $('#groupInEditEvent input:checked').each(function() {
+            /*$('#groupInEditEvent input:checked').each(function() {
                 groupEdit.push($(this).val());
+            });*/
+            
+            $('#groupInEditEvent :selected').each(function(i, selected){ 
+                  groupEdit[i] = $(selected).val(); 
             });
-
                          
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
@@ -1699,7 +1842,9 @@ app.adminEventCalender = (function () {
                             var eventTime = app.formatTime(eventTimeString);
                           
                             //var aboveDay = app.getDateDays(eventDateString);   
-                            var belowData = app.getDateMonth(eventDateString);
+                            /*var belowData = app.getDateMonth(eventDateString);*/
+                            
+                            var belowData = app.getMonthData(eventDateString);
                                 
                             var eventDaya = data[0].status[0].eventData[i].event_date
                             var values = eventDaya.split('-');
@@ -1719,6 +1864,7 @@ app.adminEventCalender = (function () {
                                                    event_show_day:day,
                                                    preDateVal:preDateVal,
                                                    //event_above_day:aboveDay,
+                                                   event_date_To_Show:eventDate,
                                                    event_below_day:belowData,
                                                    event_desc: data[0].status[0].eventData[i].event_desc,
                                                    upload_type: data[0].status[0].eventData[i].upload_type,
@@ -2002,6 +2148,21 @@ app.adminEventCalender = (function () {
             }
         }
         
+        var onBackClsPicker = function(dataForm){                             
+            if(dataForm==='add') {
+                $("#adddatePickerEvent").data("kendoDatePicker").close();
+                $("#adddateTimePickerEvent").data("kendoTimePicker").close();
+            }else{
+                $("#editdatePicker").data("kendoDatePicker").close();
+                $("#editdateTimePicker").data("kendoTimePicker").close();
+            }
+        }
+        
+        var closeParentPopover = function(){
+            var popover = e.sender.element.closest('[data-role=popover]').data('kendoMobilePopOver');
+            popover.close();
+        }
+        
         return {
             init: init,
             //show: show,
@@ -2014,6 +2175,7 @@ app.adminEventCalender = (function () {
             getPhotoValEdit:getPhotoValEdit,
             getVideoValEdit:getVideoValEdit,
             removeImage:removeImage,
+            closeParentPopover:closeParentPopover,
             goToAddEventPage:goToAddEventPage,
             removeImageEdit:removeImageEdit,
             editEvent:editEvent,
@@ -2021,11 +2183,13 @@ app.adminEventCalender = (function () {
             eventListShow:eventListShow,
             getLiveData:getLiveData,
             addNewEvent:addNewEvent,
+            onBackClsPicker:onBackClsPicker,
             deleteEvent:deleteEvent,
             editEventshow:editEventshow,
             goToCalendarPage:goToCalendarPage,
             showMoreButtonPress:showMoreButtonPress,
             goToManageOrgPage:goToManageOrgPage,
+            imageDownlaodClick:imageDownlaodClick,
             //eventMoreDetailClick:eventMoreDetailClick,
             addNewEventFunction:addNewEventFunction,
             addEventshow:addEventshow,

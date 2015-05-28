@@ -304,33 +304,54 @@ input::-webkit-inner-spin-button
     margin: 0;
 }
 
-
 input:focus, textarea:focus {
     outline: none;
+    
 }
-
 
 
 #Aptifi.km-flat .km-list input[type="text"]:not(.k-input),
 #Aptifi.km-flat .km-list input[type="password"],
 #Aptifi.km-flat .km-list input[type="email"],
 #Aptifi.km-flat .km-list input[type="date"],
-#Aptifi.km-flat .km-list input[type="number"],
+#Aptifi.km-flat .km-list input[type="number"]
 /*#Aptifi.km-flat textarea,*/
-#Aptifi.km-flat select
 {
     position: static;
     width: 100%;
     height: 30px;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none !important;
 }
 
-
+#Aptifi.km-flat textarea
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none !important;
+}
 
 #Aptifi.km-flat select
 {
     padding: .4em .2em;
+    position: static;
+    width: 100%;
+    font-size: 1rem;
+    border-radius:3px;    
+    margin: 10px auto 10px auto; 
+    border: solid 1px #E5E5E5;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none !important;
+    background:#ffffff;
 }
+
+#Aptifi.km-flat select[disabled]{
+  color: #E5E5E5;
+}
+
 
 /* Buttons */
 
@@ -780,6 +801,7 @@ input:focus, textarea:focus {
     border-color: #eaeced;
     background-color: #fff;
     -webkit-box-shadow: none;
+    -moz-box-shadow: none;
     box-shadow: none;
     color: #34495e;
 }
@@ -1035,6 +1057,12 @@ input:focus, textarea:focus {
     background: #D4D4D4;    
 }
 
+.eventImgClass
+{
+    width:100%;height:100%;background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;filter: brightness(50%);-webkit-filter: brightness(50%);-moz-filter: brightness(50%);-o-filter: brightness(50%);-ms-filter: brightness(50%);
+}
 
 
 .calendarEvent-content
@@ -1046,7 +1074,6 @@ input:focus, textarea:focus {
     border:none;
 }
 
-
 .calendarEvent-List
 {
     position: relative;
@@ -1054,14 +1081,14 @@ input:focus, textarea:focus {
     text-align: justify;
     padding:10px;
     background-color:#F3F3F3;
-    border-radius:6px 6px 0px 0px;
+    border-radius:6px 6px 6px 6px;
     z-index:1;
     border-top:1px solid #dddddd;
     border-right:1px solid #dddddd;
     border-left:1px solid #dddddd;
+    border-bottom:1px solid #dddddd;
     min-height:110px;
 }
-
 
 .calendarEvent-List:active {
     background: #D4D4D4;
@@ -1092,10 +1119,23 @@ input:focus, textarea:focus {
     padding:10px;
     background-color:#FBFBFB;
     z-index:1;
-    border:1px solid #D7D4CB;
+    border-bottom:1px solid #dddddd;
     min-height:40px;    
     margin-right:-10px;
     margin-left:-10px;
+}
+
+.calendarEventAbtDetail
+{
+    margin-top:10px;
+    position: relative;
+    font-size: .85rem;
+    text-align: justify;
+    padding:10px;
+    background-color:#F3F3F3;
+    border-radius:3px;
+    z-index:1;
+    border:1px solid #dddddd;    
 }
 
 .calendarEventbelow-List
@@ -1111,10 +1151,6 @@ input:focus, textarea:focus {
 
 }
 
-.calanderTimeClass{
-    font-size: .7rem;
-    margin:5px 0px 5px 0px; 
-}
 
 .notiListComment{
     padding-left:10px;
@@ -1758,15 +1794,19 @@ background: #fff none;
 .eventNameList
 {
     display: block;
-    margin: .5em 0 .5em ;
+    margin: .0em 0 .3em ;
     color: #696969;
-    font-size: 1rem; 
+    font-size: 1.2rem; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
     font-weight: 700; 
 }
 
+.calanderTimeClass{
+    font-size: .8rem;
+    margin:5px 0px 5px 0px; 
+}
 
 .eventDetailTime{
     display: block;
@@ -1783,15 +1823,21 @@ background: #fff none;
 
 .CalenderdateValue
 {
-    margin-top:5px;
+    display: inline-block;
     font-size: 1.9rem; 
     color: #FFFFFF;
-    float:left;
+    font-weight: 600;
+    width:110px;
+    left:0;
+    right:0;
+    zoom:1;
+    position: absolute;
+    top:50px;
+    
+    /*float:left;
     padding-left:5px;
-    font-weight: 300;
-    width:100%;
     -webkit-text-stroke-width: .5px;
-    -webkit-text-stroke-color: #212121;
+    -webkit-text-stroke-color: #212121;*/
 }
 
 .noCalenderdateValue
@@ -1822,13 +1868,15 @@ background: #fff none;
 
 .calMonthClass
 {
-    color: #FFFFFF;
-    font-size: .8rem;  
-    font-weight: 300; 
-    float:left;
-    padding-left:5px;
-     -webkit-text-stroke-width: .5px;
-    -webkit-text-stroke-color: #212121;
+    position: absolute;
+     top:20px;
+     color: #FFFFFF;
+     font-size: 1.9rem;  
+     font-weight: 300; 
+     zoom:1;
+     width:110px;
+     left:0;
+     right:0;
 }
 
 
@@ -1855,6 +1903,10 @@ background: #fff none;
 {
     color: #939393;
     font-size: 1.2rem; 
+    display:block;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space: nowrap; 
 }
 
 
@@ -2478,7 +2530,9 @@ float:right;
 .km-graph:before, .km-graph:after { content: "\e0ac"; }
 .km-volume:before, .km-volume:after { content: "\e099"; }
 .km-toprated:before, .km-toprated:after { content: "\e084"; }
+.km-more:before, .km-more:after { content: "\e316"; }
 .km-sounds:before, .km-sounds:after { content: "\e038"; }
+.km-share:before, .km-share:after { content: "\e314";color: #212121 !important;}
 .km-action:before, .km-action:after { content: "\e323";color: #FFF !important; }
 .arrowBTN{color:#FFF !important}
 
@@ -2594,17 +2648,39 @@ float:right;
     background: #D4D4D4;    
 }
 
+.km-flat .km-popup-wrapper#popover-eventAction{padding:15px 2px 15px 15px}
+.km-flat .km-popup.km-pane#popover-eventAction{min-height:80px;}
+
+/*.km-flat .km-popup-arrow:after {border-color: rgba(127,191,77, 0.8) transparent;}
+
+.km-flat .km-popup-arrow:after#popover-eventAction{border-color:rgba(127,191,77, 0.8);margin-right:5px;}
+
+.km-flat .km-actionsheet>li>a {background: #7FBF4D;}
+.km-tablet .km-flat .km-actionsheet-wrapper {background-color: #7FBF4D;}*/
 
 .k-calendar .k-state-selected { background-color: #7FBF4D; color: #ffffff; border-color: #7FBF4D; }
 .k-calendar .k-state-selected .k-state-hover { background-color: #7FBF4D; }
 .k-calendar .k-state { background-color: #7FBF4D; }
 .k-calendar a.k-state { background-color: #7FBF4D; } 
+
+/*k-widget k-datepicker k-header k-state-border-down
+.k-block, .k-header, .k-grid-header, .k-toolbar, .k-grouping-header, .k-pager-wrap, .k-button, .k-draghandle, .k-treemap-tile, html .km-pane-wrapper .k-header {
+*/
+    
+/*.k-datepicker .k-header html .km-pane-wrapper .k-header{ background-color: #7FBF4D; }*/
  
-#calendar .k-footer { background-color: #7FBF4D; }
-#calendar .k-header { background-color: #7FBF4D; }
+.k-calendar .k-footer { background-color: #7FBF4D; }
+.k-calendar .k-header { background-color: #7FBF4D; }
+.k-calendar .k-header .k-link.k-nav-prev, .k-calendar .k-header .k-link.k-nav-next,.k-calendar .k-header .k-link .k-nav-fast {background:transparent}
+.k-datepicker{border-radius:3px;}
+.k-state-default>.k-select{background-color: #7FBF4D;border-color: #7FBF4D;}
+.k-picker-wrap .k-select{border-radius: 0 3px 3px 0;}
+.k-state-default{border-color:#E5E5E5;}
+.k-webkit .k-picker-wrap:before{padding-bottom:0px;}
 
 #admincalendar .k-footer { background-color: #7FBF4D; }
 #admincalendar .k-header { background-color: #7FBF4D; }
+
 
 .k-calendar td
 {
@@ -3004,17 +3080,35 @@ float:right;
 }
 
 .common
-{
-   
+{   
     width: 100%;
-    min-height: 80px;
-    max-height:250px;
+    min-height: 40px;
+    max-height:180px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     overflow: hidden;    
     border-radius: 3px;
     border-color: #E5E5E5;
     padding:5px 5px 0px 5px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.commonEdit
+{   
+    width: 100%;
+    min-height: 80px;
+    max-height:180px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;    
+    border-radius: 3px;
+    border-color: #E5E5E5;
+    padding:5px 5px 0px 5px;
+    margin-top:10px;
+    margin-bottom:10px;
+
+    /*border-width:0 0 1px;*/
 }
 
 .defineTextArea
@@ -3030,8 +3124,6 @@ float:right;
     /*background-color:rgb(217,244,195);*/
     font-size: 15px;
 }
-/*    border-color: #E5E5E5;
-*/
 
 .defineTextBox
 {
@@ -3040,13 +3132,16 @@ float:right;
     border-radius: 3px; 
     border: solid 1px #E5E5E5;
     padding: 10px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none !important;
+
 }
 
 .defineTitleText
 { 
-    color: #676767;
+    color: #7FBF4D;
+    margin-bottom:10px;
 }
 
 .defineSaveButton
@@ -3067,9 +3162,9 @@ float:right;
     font-size: 1.2rem;
 }
 
-.defineSaveButton:active { 
+/*.defineSaveButton:active { 
     background: #D4D4D4;    
-}
+}*/
 
 
 .popUpDivToShow
@@ -3201,39 +3296,34 @@ float:right;
     float: left;
     width: 90px;
     height: 90px;
-    /*background-color: #7FBF4D;*/
-    background-color: #dddddd;
-    margin-right:10px;
-    /*background-size: cover; 
-    background-position: center center; 
-    background-repeat: no-repeat; 
-    background-image: url('images/eventImg.png');*/
-    
+    background-color: #575B5F;    
     border-radius: 3px;
     overflow: hidden;
-    /*display: inline-block;*/
     text-align: center;
-    /*vertical-align: middle;*/ 
+    margin-right:10px; 
 }
 
 
 .backgroundImgShow
 {
-    width: 150px;
-    height: 150px;   
-    border-radius: 3px;
+    position:relative;
+    min-height:220px;         
     overflow: hidden;
-    text-align: center;
+    margin:-2px -10px 0px -10px;
+    background-color:#0e6b0a;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center center;
    
 }
+
 
 .OrgbackgroundImgShow{
     width: 150px;
     height: 150px;   
     border-radius: 3px;
     overflow: hidden;
-    text-align: center;
-    
+    text-align: center;    
     background-size: contain; 
     background-position: center center; 
     background-repeat: no-repeat; 
@@ -3247,6 +3337,22 @@ float:right;
     height: 90px;   
     overflow: hidden;
     text-align: center;
+}
+
+
+.eventNameListDetail
+{ 
+    width:100%;
+    position:absolute;
+    font-size: 1.6rem; 
+    overflow: hidden;
+    font-weight: 400;    
+    zoom:-1;
+    bottom:0px;
+    padding-left:10px;
+    background-color: rgba(0,0,0,0.4);
+    color: rgba(255, 255, 255, 1);
+    fill-opacity:0.9;
 }
 
  .inner-event-img-show
@@ -3357,11 +3463,16 @@ float:right;
     vertical-align: middle; 
 }
 
+.videoDownload{position:absolute;width:100%;z-index: 999;text-align:center;left:0;right:0;top:45%;}
+.innervideoDownload{position:absolute; width:90%;border-radius:3px;height:25px;z-index: 999;left:0;right:0;background: rgba(0,0,0,0.4);margin:auto;}
+.downloadBar{width:80%; height:5px;text-align:left;background-color:white;margin:10px 5px 5px 30px;}
+.progressValueClass{margin-top:-13px;color:#ffffff;font-weight:bold;width:25px;margin-left:5px;}
+
 
 .docsUpload {position:absolute; width:100%;border-radius:3px;height:100%; background: rgba(0,0,0,0.4); text-align:center;}
 .uploadBar {margin:3% 3% 5% 4%; text-align:left;}
 .clear{ clear:both}
-.cancelUpld {/* Safari 4-5, Chrome 1-9 */ background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#cbcbcb), to(#e7e7e7)); /* Safari 5.1, Chrome 10+ */ background: -webkit-linear-gradient(top, #e7e7e7, #cbcbcb); /* Firefox 3.6+ */ background: -moz-linear-gradient(top, #e7e7e7, #cbcbcb); /* IE 10 */ background: -ms-linear-gradient(top, #e7e7e7, #cbcbcb); /* Opera 11.10+ */ background: -o-linear-gradient(top, #e7e7e7, #cbcbcb); border:1px solid #808080;color:#000; font-size:1em; -moz-box-shadow: inset 0px 0px 1px #7a9e0e;-webkit-box-shadow: inset 0px -1px 1px #7a9e0e;box-shadow: inset 0px 0px 1px #7a9e0e; border-radius:3px; padding:0.72em 2em; border:1px solid #808080; z-index:1000; margin:0; display:inline-block;}
+.cancelUpld {background:#303645;border:1px solid #303645;color:#ffffff; font-size:1em; -moz-box-shadow: inset 0px 0px 1px #7a9e0e;-webkit-box-shadow: inset 0px -1px 1px #7a9e0e;box-shadow: inset 0px 0px 1px #7a9e0e; border-radius:3px; padding:0.72em 2em; border:1px solid #808080; z-index:1000; margin:0; display:inline-block;}
 #tabstrip-download-file.modal-mess-Popup, #tabstrip-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
 #tabstrip-download-file.modal-mess-Popup, #event-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
 #tabstrip-download-file.modal-mess-Popup, #sendNotifcation-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}

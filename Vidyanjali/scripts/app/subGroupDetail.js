@@ -196,7 +196,7 @@ app.subGroupDetail = (function () {
                
             $("#editGroupName").val(GroupName);
             
-            $('#editGroupDesc').css('height', '80px');
+            $('#editGroupDesc').css('height', '40px');
 
             var txt = $('#editGroupDesc'),
                 hiddenDiv = $(document.createElement('div')),

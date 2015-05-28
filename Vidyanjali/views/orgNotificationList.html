@@ -13,9 +13,30 @@
      
 	 <div>
     	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
-     </div> 
-     
+     </div>      
      <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>
+     
+            <ul data-role="actionsheet" id="notiShareAction">
+                    <li class="km-actionsheet-title">Share</li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
+                    </li>-->
+                    <li> 
+                        <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
+                    </li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
+                    </li>-->                     
+                    <li> 
+                        <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
+                    </li>
+                    <li>
+                        <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
+                    </li>
+            </ul>
  </div>
 
 
@@ -28,6 +49,7 @@
                               <span id="activityTemplateDate" class="dateValue">${date}</span> 
                               <span></span>
                         </div>
+                        <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#notiShareAction"></a>
                         <br/>
                    #}#
        		    

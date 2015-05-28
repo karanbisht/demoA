@@ -1,5 +1,5 @@
 <div data-role="view" id="newsList" data-id="innerActivity" data-layout="default" data-reload="true" class="activities-view-info" data-model="app.orgNews" data-show ="app.orgNews.show">
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">         
+    <div data-role="header">         
               <div data-role="navbar">     
                  <span>Organization News</span>
                  <a id="idBackOrgNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.orgNews.gobackOrgPage"></a> 
@@ -12,29 +12,50 @@
                       <div class="ball"></div>
             </div>
 
-    <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></span>
-    
+    <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></span>    
     <div id="showMoreNewsBtn" class="showMore" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
+
+     <ul data-role="actionsheet" id="newsShareAction">
+                    <li class="km-actionsheet-title">Share</li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
+                    </li>-->
+                    <li> 
+                        <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
+                    </li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
+                    </li>-->                     
+                    <li> 
+                        <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
+                    </li>
+                    <li>
+                        <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
+                    </li>
+     </ul>
+    
 </div>
 
 <!--<div style="margin:-2px -6px -6px -6px;">-->
 
 		<script type="text/x-kendo-template" id="orgNewsTemplate">
-            <div class="cf">         
+            <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">         
              <div class="newsList-content-new">
                  #if(id!==0){#
                     <div class="dateDisplay">
                         <span id="activityTemplateDate" class="dateValue">${news_date} ${news_time}</span>
                         <span></span>
                     </div>           
-                <br/>
-                <br/>
+                     <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-5px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#newsShareAction"></a>                         
+                    <br/>
             
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			                        
                   #if (news_image!=='' && news_image!==0 && upload_type==="image") {#
                     <br/>                    
-                    <br/>                    
- 
+                    <br/>                     
                      <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">                       
                          <div id="img_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">
@@ -44,8 +65,6 @@
                          <img src= ${news_image} style="width:100%;"/>    
                      </a>                     
                      <br/>
-                     
-                      
  
                   #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
@@ -54,11 +73,22 @@
                        <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">
                             <div>
                                 <div id="video_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
-                                    <div class="loaderIV">
+                                    <!--<div class="loaderIV">
                                         <div class="ballIV"></div>                   
-                                    </div>                            
+                                    </div>-->                     
+                                 <div class="videoDownload">
+                                  <div class="innervideoDownload">
+                                    <!--<div id="profileCompletenessNews" class="downloadBar">-->
+                                       <progress id="downloadPerNews_${id}"  value="0" max="100" class="downloadBar"></progress>
+                                    <!--</div>-->                                    
+                                    <div class="progressValueClass"><span id="progressValueNews_${id}">0</span>%</div>
+                            
+                                    <!--<div class="clear"></div>
+                                    <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>-->
+                                  </div>
+                                 </div>
                                 </div>                                
-                                <img src="styles/images/video.png" style="width:100%;"/>                   
+                               <img src="styles/images/video.png" style="width:100%;"/>                    
                             </div>
                        </a>   
                         

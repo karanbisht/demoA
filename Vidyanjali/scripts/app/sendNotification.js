@@ -78,7 +78,7 @@ app.sendNotification = (function () {
                                        
         var show = function(e) {
               
-            $("#notificationType").kendoComboBox({
+            /*$("#notificationType").kendoComboBox({
                                                      dataTextField: "text",
                                                      dataValueField: "value",
                                                      dataSource: [
@@ -93,14 +93,14 @@ app.sendNotification = (function () {
                                                      suggest: true
                                                  });
             
-            var input = $("#notificationType").data("kendoComboBox").input;
-            input.attr("readonly", "readonly");
+             var input = $("#notificationType").data("kendoComboBox").input;
+             input.attr("readonly", "readonly");*/
             
             $(".km-scroll-container").css("-webkit-transform", "");
-            $('#notificationDesc').css('height', '80px');
-            
-            $("#scheduleDatePicker").parent().css('width', "160px");
-            $("#scheduleTimePicker").parent().css('width', "160px");
+            $('#notificationDesc').css('height', '40px');
+            $("#notificationType option:selected").removeAttr("selected");
+            $("#scheduleDatePicker").parent().css('width', "180px");
+            $("#scheduleTimePicker").parent().css('width', "180px");
             $("#scheduleDatePicker").removeClass("k-input");
             $("#scheduleTimePicker").removeClass("k-input");
 
@@ -132,7 +132,6 @@ app.sendNotification = (function () {
                                                             }).data("kendoProgressBar");
 
             
-
             pb.value(0);
             dataCheckVal=0;
             noGroup = 0;
@@ -200,7 +199,13 @@ app.sendNotification = (function () {
                  
                                                          change: function() {
                                                              var value = this.value();
-                                                             scheduleDate = value;
+                                                             if(new Date(value) < new Date(currentDate)){                   
+                                                                    var todayDate = new Date();
+                                                                    $('#scheduleDatePicker').data("kendoDatePicker").value(todayDate);                                       
+                                                                    scheduleDate = todayDate;
+                                                             }else{
+                                                                 scheduleDate = value;
+                                                             } 
                                                          }
                                                      }).data("kendoDatePicker");
             
@@ -214,8 +219,10 @@ app.sendNotification = (function () {
                                                              var value = this.value();
                                                              scheduleTime = value;
                                                          }                
-                                                     });            
-
+                                                     });  
+            
+            $('#scheduleDatePicker').attr('disabled', 'disabled');
+            $('#scheduleTimePicker').attr('disabled', 'disabled');
             sendNotificationOrg();
         };    
                               
@@ -254,6 +261,12 @@ app.sendNotification = (function () {
                                             correctOrientation: true
                                             });
         }
+        
+        
+        var selectedType;        
+        $("select[name='msgTypeNoti']").on("change", function(e){
+		        	selectedType = $(e.target).val();
+        });
                 
         var sendNotificationMessage = function () {                 
             
@@ -283,9 +296,10 @@ app.sendNotification = (function () {
              
                 //alert(cmbGroup);
              
-                var selectedType = $("#notificationType").data("kendoComboBox");
-                var type = selectedType.value();
+                /*var selectedType = $("#notificationType").data("kendoComboBox");
+                var type = selectedType.value();*/
              
+                var type = selectedType;
                 //var type = notificationTypeSelected;
                 //alert(type);
              
@@ -688,7 +702,7 @@ app.sendNotification = (function () {
                     localStorage.setItem("SELECTED_GROUP", 0); 
                     //escapeGroupGoCustClick();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin();                                 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {

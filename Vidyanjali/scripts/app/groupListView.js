@@ -25,7 +25,7 @@ app.GroupList = (function () {
             $('#newGroup').val('');
             $('#newGroupDesc').val('');
             
-                        $('#newGroupDesc').css('height', '80px');
+            $('#newGroupDesc').css('height', '40px');
 
             var txt = $('#newGroupDesc'),
                 hiddenDiv = $(document.createElement('div')),

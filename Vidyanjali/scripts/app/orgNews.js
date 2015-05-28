@@ -12,6 +12,7 @@ app.orgNews = (function () {
         var totalListView=0;
         var dataReceived=0;
         var orgin;
+        var countValNews=0;
 
 
         var init = function() {
@@ -38,6 +39,7 @@ app.orgNews = (function () {
                 $("#idBackOrgNews").show();               
             }
             getLiveData();
+            
         }
         
         var getLiveData = function(){
@@ -170,6 +172,8 @@ app.orgNews = (function () {
             }else{
                 $("#showMoreNewsBtn").hide();
             }
+            
+            countValNews=0;
         }
         
         var gobackOrgPage = function() {
@@ -212,7 +216,7 @@ app.orgNews = (function () {
             
         }
         
-        var videoPathNotExist = function() {
+       /* var videoPathNotExist = function() {
             $("#video_Div_Image_"+notiFi).show();
             //$("videoToDownloadImage_"+notiFi).text('Downloading..');
             var attachedVid = videoFile;                        
@@ -240,7 +244,68 @@ app.orgNews = (function () {
                                       //$("#progressChat").hide();
                                   }
                 );                
+        }*/
+        
+        
+        var videoPathNotExist = function() {        
+            if(countValNews!==0){
+                if (!app.checkSimulator()) {                                                                                               
+                    window.plugins.toast.showShortBottom(app.VIDEO_ALY_DOWNLOAD);                                                                                           
+                }else {                                                                                                
+                    app.showAlert(app.VIDEO_ALY_DOWNLOAD , 'Errro');                                                                                             
+                }                                
+            }else{      
+            var newNotiFi = notiFi;
+                
+            $("#video_Div_Image_"+newNotiFi).show();
+            //pbNews.value(0);           
+            //$("videoToDownload_"+newNotiFi).text('Downloading..');
+            var attachedVid = videoFile;                        
+            var vidPathData = app.getfbValue();    
+            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_video_' + attachedFilename;               
+            
+            var fileTransfer = new FileTransfer();        
+            
+            fileTransfer.onprogress = function(progressEvent) {
+                        if (progressEvent.lengthComputable) {
+                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
+                            //pbNews.value(perc); 
+                            countValNews=perc;
+                            document.getElementById("downloadPerNews_"+newNotiFi).value = countValNews;
+                            document.getElementById("progressValueNews_"+newNotiFi).innerHTML = countValNews;                                                                                     
+                        }else {
+                            //pbNews.value('');
+                            document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;
+                            countValNews=0;
+                        }
+                    };
+            
+                        
+                  fileTransfer.download(attachedVid, fp, 
+                                  function(entry) {                                                                            
+                                      if(device_type==="AP"){
+                                          window.open(fp, "_blank",'EnableViewPortScale=yes');
+                                      }else{
+                                          window.plugins.fileOpener.open(fp);
+                                      }
+                                      
+                                      $("#video_Div_Image_"+newNotiFi).hide();
+                                      $("#downloadPerNews_"+newNotiFi).hide();   
+                                      countValNews=0;
+                                      document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;
+                                  },
+    
+                                  function(error) {
+                                      countValNews=0;
+                                      $("#video_Div_Image_"+newNotiFi).hide();
+                                      $("#downloadPerNews_"+newNotiFi).hide();
+                                      document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;                                   
+                                  }
+                );                
+            }   
         }
+        
+        
         
 
         var attachedImgFilename;
@@ -254,6 +319,7 @@ app.orgNews = (function () {
             console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;             
@@ -340,11 +406,30 @@ app.orgNews = (function () {
             }
         }
         
+        var getDataToPost = function(e){
+            console.log(e.data);
+            var message = e.data.news_desc;
+            var title = '';
+            var attached = e.data.news_image;
+            var type = e.data.upload_type;            
+
+            if (attached!== null && attached!=='' && attached!=="0"){
+                 localStorage.setItem("shareImg", attached);
+            }else{
+                localStorage.setItem("shareImg", null);
+            }
+            
+            localStorage.setItem("shareMsg", message);
+            localStorage.setItem("shareTitle", title);            
+            console.log(message+"||"+title+"||"+attached+"||"+type);
+        }
+        
         return {
             init: init,
             show: show,
             showMoreButtonPress:showMoreButtonPress,
             gobackOrgPage:gobackOrgPage,
+            getDataToPost:getDataToPost,
             getLiveData:getLiveData,
             showInListView:showInListView,
             videoDownlaodClick:videoDownlaodClick,

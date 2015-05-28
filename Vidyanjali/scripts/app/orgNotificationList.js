@@ -283,8 +283,21 @@ app.orgListView = (function () {
         };
 
         var groupNotificationSelected = function (e) {
-            app.MenuPage = false;	
-            app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
+            var message = e.data.message;
+            var title = e.data.title;
+            var attached = e.data.attached;
+            var type = e.data.upload_type;            
+
+            if (attached!== null && attached!=='' && attached!=="0"){
+                 localStorage.setItem("shareImg", attached);
+            }else{
+                 localStorage.setItem("shareImg", null);
+            }
+            
+            localStorage.setItem("shareMsg", message);
+            localStorage.setItem("shareTitle", title);
+
+            //app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
         
         

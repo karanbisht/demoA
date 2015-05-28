@@ -139,7 +139,7 @@ app.adminNews = (function () {
                                            org_id: ''
                                        });
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {                                    
                     
@@ -332,12 +332,12 @@ app.adminNews = (function () {
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
             
-            $("#adddatePickerNews").parent().css('width', "160px");
-            $("#adddateTimePickerNews").parent().css('width', "160px");
+            $("#adddatePickerNews").parent().css('width', "180px");
+            $("#adddateTimePickerNews").parent().css('width', "180px");
             $("#adddatePickerNews").removeClass("k-input");
             $("#adddateTimePickerNews").removeClass("k-input");            
             
-            $('#addNewsDesc').css('height', '80px');
+            $('#addNewsDesc').css('height', '40px');
 
             var txt = $('#addNewsDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -346,7 +346,7 @@ app.adminNews = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
 
-            document.getElementById('groupInAddNews').style.display="none";
+            //document.getElementById('groupInAddNews').style.display="none";
             
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
@@ -365,8 +365,10 @@ app.adminNews = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
+            $("#groupInAddNews option:selected").removeAttr("selected");
+            $('#groupInAddNews').empty();
 
-            $('#groupInAddNews').find('input[type=checkbox]:checked').removeAttr('checked');
+            //$('#groupInAddNews').find('input[type=checkbox]:checked').removeAttr('checked');
 
             var currentDate = app.getPresentDate();
             
@@ -387,12 +389,7 @@ app.adminNews = (function () {
                             '#= data.value #' +
                             '# } #'
                 },
-                                                        position: "bottom left",
-                                                        animation: {
-                    open: {
-                                                        effects: "slideIn:up"
-                          }                
-                },
+                  
                                                         open: function(e) {
                                                             $(".disabledDay").parent().removeClass("k-link")
                                                             $(".disabledDay").parent().removeAttr("href")
@@ -401,6 +398,11 @@ app.adminNews = (function () {
                  
                                                         change: function() {
                                                             var value = this.value();
+                                                            if(new Date(value) > new Date(currentDate)){                   
+                                                                var todayDate = new Date();
+                                                                $('#adddatePickerNews').data("kendoDatePicker").value(todayDate);
+                                                            }
+                                                            
                                                             //console.log(value); 
                                                             /*if(new Date(value) < new Date(currentDate)){                   
                                                             if(!app.checkSimulator()){
@@ -476,11 +478,13 @@ app.adminNews = (function () {
                                             
                 if (data[0]['status'][0].Msg==='No Group list') {
                     groupDataShow=[];
-                                            groupDataShow.push({
+                                           /*groupDataShow.push({
                                                group_name: 'No Group Found , To Add Event First Add Group',
                                                pid:'0'
-                                           });
-
+                                           });*/
+                    $("#sendNewsLoader").hide(); 
+                    app.noGroupAvailable();
+                    
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showLongBottom(app.NO_ACCESS);  
@@ -489,7 +493,7 @@ app.adminNews = (function () {
                     }
                     goToNewsListPage();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else {
                   var orgLength = data[0].status[0].groupData.length;
@@ -506,6 +510,7 @@ app.adminNews = (function () {
                 
                 showGroupDataInTemplate();
             });
+             $("#sendNewsLoader").hide(); 
         };
         
         var showGroupDataInTemplate = function() {
@@ -516,7 +521,7 @@ app.adminNews = (function () {
             
             $(".km-scroll-container").css("-webkit-transform", "");
            
-            var comboGroupListDataSource = new kendo.data.DataSource({
+            /*var comboGroupListDataSource = new kendo.data.DataSource({
                                                                          data: groupDataShow
                                                                      });          
             
@@ -525,8 +530,14 @@ app.adminNews = (function () {
                                                    dataSource: comboGroupListDataSource
                                                });
             
-            $("#groupInAddNews li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminNews.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');
-
+            $("#groupInAddNews li:eq(0)").before('<li id="selectAll" class="getGroupCombo"><label><input type="checkbox" class="largerCheckboxSelectAll" value="" onclick="app.adminNews.selectAllCheckBox()"/><span class="groupName_Select">Select All</span></label></li>');*/
+            
+            $.each(groupDataShow, function (index, value) {
+                $('#groupInAddNews').append($('<option/>', { 
+                    value: value.pid,
+                    text : value.group_name 
+                }));
+            });
         }
         
         
@@ -572,6 +583,10 @@ app.adminNews = (function () {
         var deleteNews = function(e) {
             //console.log(e.data.uid);
             //console.log(e.data);
+            
+       navigator.notification.confirm(app.DELETE_CONFIRM, function (confirmed) {           
+        if (confirmed === true || confirmed === 1) {
+
             organisationID = localStorage.getItem("orgSelectAdmin");
             
             //console.log('orgID=' + organisationID + "pid=" + newsPid)
@@ -638,6 +653,12 @@ app.adminNews = (function () {
                     }
                 });
             });
+            
+           }else {
+
+           }
+
+          }, app.APP_NAME, ['Yes', 'No']);
         }
         
         var adminAllGroupArray = [];
@@ -670,8 +691,8 @@ app.adminNews = (function () {
             
             $("#editdatePickerNews").removeAttr('disabled');
             $("#editdateTimePickerNews").removeAttr('disabled');
-            $("#editdatePickerNews").parent().css('width', "160px");
-            $("#editdateTimePickerNews").parent().css('width', "160px");
+            $("#editdatePickerNews").parent().css('width', "180px");
+            $("#editdateTimePickerNews").parent().css('width', "180px");
             $("#editdatePickerNews").removeClass("k-input");
             $("#editdateTimePickerNews").removeClass("k-input");        
             $('body').append(hiddenDiv);            
@@ -859,6 +880,8 @@ app.adminNews = (function () {
                                                                              //console.log(value); //value is the selected date in the timepicker
                                                                          }                
                                                                      });
+                      $('#editdatePickerNews').attr('disabled', 'disabled');
+                      $('#editdateTimePickerNews').attr('disabled', 'disabled');
                                    
                     if(data[0]['status'][0].AdminGroup!==false){
                         if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined) {
@@ -890,7 +913,7 @@ app.adminNews = (function () {
                             var check = ''; 
                             for (var j = 0;j < allCustomerLength;j++) {       
                                 if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) {                                  
-                                    check = 'checked';
+                                    check = 'selected';
                                     break;
                                 }else {                        
                                     check = '';                                               
@@ -914,15 +937,32 @@ app.adminNews = (function () {
                             
                           }
                       }   
+                        
+                        $.each(EditGroupArrayMember, function (index, value) {                            
+                            if(value.check===''){
+                                $('#groupInEditNews').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name                                   
+                                }));   
+                            }else{
+                                $('#groupInEditNews').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name ,
+                                    selected:"selected"
+                                }));   
+   
+                            }                                
+                        });
                      }else{
-                          EditGroupArrayMember.push({
+                          /*EditGroupArrayMember.push({
                                                                   group_name: 'No Group Available , First Add Group',
                                                                   pid:'0',
                                                                   check:''
-                                                              }); 
+                                                              });*/
+                           app.noGroupAvailable();
                      }   
                     }else if (data[0]['status'][0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(data[0]['status'][0].Msg , 'Notification'); 
@@ -934,10 +974,10 @@ app.adminNews = (function () {
                     data: EditGroupArrayMember
                     }); */                        
             
-                    $("#groupInEditNews").kendoListView({
+                    /*$("#groupInEditNews").kendoListView({
                                                             template: kendo.template($("#groupNameEditShowTemplate").html()),    		
                                                             dataSource: EditGroupArrayMember
-                                                        });
+                                                        });*/
                     $("#sendEditNewsLoader").hide();
                     $("#wrappe_news").show();
 
@@ -957,8 +997,12 @@ app.adminNews = (function () {
                 group[i] = $(this).val();
             });*/            
             
-            $('#groupInAddNews input:checked').each(function() {
+            /*$('#groupInAddNews input:checked').each(function() {
                 group.push($(this).val());
+            });*/
+            
+             $('#groupInAddNews :selected').each(function(i, selected){ 
+                  group[i] = $(selected).val(); 
             });
             
             group = String(group);       
@@ -1253,14 +1297,18 @@ app.adminNews = (function () {
 
             var groupEdit = [];		  
             
-            $('#groupInEditNews input:checked').each(function() {
+            /*$('#groupInEditNews input:checked').each(function() {
                 groupEdit.push($(this).val());
-            });
+            });*/
             
             /*$(':checkbox:checked').each(function(i) {
                 groupEdit[i] = $(this).val();
             });*/
             
+            $('#groupInEditNews :selected').each(function(i, selected){ 
+                  groupEdit[i] = $(selected).val(); 
+            });
+                        
             groupEdit = String(groupEdit);             
             console.log(groupEdit);
             
@@ -1756,6 +1804,34 @@ app.adminNews = (function () {
             }
         }
         
+         var getDataToPost = function(e){
+            //console.log(e.data);
+            var message = e.data.news_desc;
+            var title = '';
+            var attached = e.data.news_image;
+            var type = e.data.upload_type;            
+
+            if (attached!== null && attached!=='' && attached!=="0"){
+                 localStorage.setItem("shareImg", attached);
+            }else{
+                localStorage.setItem("shareImg", null);
+            }
+            
+            localStorage.setItem("shareMsg", message);
+            localStorage.setItem("shareTitle", title);            
+            //console.log(message+"||"+title+"||"+attached+"||"+type);
+        }
+        
+        var onBackClsPicker = function(dataForm){                             
+            if(dataForm==='add') {
+                $("#adddatePickerNews").data("kendoDatePicker").close();
+                $("#adddateTimePickerNews").data("kendoTimePicker").close();
+            }else{
+                $("#editdatePickerNews").data("kendoDatePicker").close();
+                $("#editdateTimePickerNews").data("kendoTimePicker").close();
+            }
+        }     
+        
         return {
             init: init,
             show: show,
@@ -1768,6 +1844,8 @@ app.adminNews = (function () {
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoVal:getPhotoVal,
             getVideoVal:getVideoVal,
+            onBackClsPicker:onBackClsPicker,
+            getDataToPost:getDataToPost,
             removeImage:removeImage,
             removeImageEdit:removeImageEdit,
             addNewEvent:addNewEvent,

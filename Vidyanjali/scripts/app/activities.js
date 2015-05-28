@@ -1,5 +1,4 @@
 var app = app || {};
-
 app.Activities = (function () { 
     'use strict';    
     var organisationID;  
@@ -18,6 +17,7 @@ app.Activities = (function () {
     var noDatainDB=0;
     var device_type; 
     var imgPathData;
+    var countVal=0;
     
     var activitiesViewModel = (function () {
     
@@ -28,7 +28,6 @@ app.Activities = (function () {
         var show = function(e) {                                
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
-
             StartDbCount = 0;
             checkVal=0;
             EndDbCount = 10;
@@ -64,6 +63,8 @@ app.Activities = (function () {
                 //var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+logoFileName; 
                 //window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);
             }
+            
+            countVal=0;
         };
         
         var imagePathExist = function() {
@@ -227,6 +228,7 @@ app.Activities = (function () {
         }
         
         function showDBNotification() {
+            
             var db = app.getDb();
             db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
         }
@@ -607,11 +609,6 @@ app.Activities = (function () {
         }  
 
         
-        
-        
-        
-        
-        
                
         function getOrgNotiDataSuccess(tx, results) {
             var count = results.rows.length;             
@@ -621,8 +618,7 @@ app.Activities = (function () {
                 StartDbCount=StartDbCount+count;
             }    
             checkVal++;
-            var previousDate = '';
-            
+            var previousDate = '';            
             if (count !== 0) {
                 //groupDataShow=[];
                 for (var i = 0 ; i < count ; i++) {                    
@@ -639,7 +635,7 @@ app.Activities = (function () {
 
                     if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="other"){        
 
-                        var vidPathData = app.getfbValue();    
+                        /*var vidPathData = app.getfbValue();    
                         var Filename = attachedData.replace(/^.*[\\\/]/, '');
                         var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;             
 
@@ -656,12 +652,12 @@ app.Activities = (function () {
                           //alert('not');
                           //downlaod=0;  
                           downloadedImg = results.rows.item(i).attached;
-                        });                                    
+                        });*/                                    
                         
                         //alert(downloadedImg);
                         
                     }else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
-                        var vidPathData = app.getfbValue();    
+                        /*var vidPathData = app.getfbValue();    
                         var Filename = attachedData.replace(/^.*[\\\/]/, '');
                         var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + Filename;             
 
@@ -678,7 +674,7 @@ app.Activities = (function () {
                           //alert('not');
                           //downlaod=0;  
                           downloadedImg = results.rows.item(i).attached;
-                        });
+                        });*/
                     }
                     
                     groupDataShow.push({
@@ -694,7 +690,7 @@ app.Activities = (function () {
                                            attached :results.rows.item(i).attached,
                                            previousDate:previousDate,
                                            //inLocal:downlaod,
-                                           attachedImg :downloadedImg
+                                           attachedImg :results.rows.item(i).attached
                                        });                    
                     
                     previousDate = notiDate;                    
@@ -811,13 +807,37 @@ app.Activities = (function () {
         
         var videoPathNotExist = function() {            
             
-            $("#video_Div_"+notiFi).show();
+          if(countVal!==0){
+                if (!app.checkSimulator()) {                                                                                               
+                    window.plugins.toast.showShortBottom(app.VIDEO_ALY_DOWNLOAD);                                                                                           
+                }else {                                                                                                
+                    app.showAlert(app.VIDEO_ALY_DOWNLOAD , 'Error');                                                                                             
+                }                                
+        
+          }else{      
+            var newNotiFi = notiFi;
+                
+            $("#video_Div_"+newNotiFi).show();
             //$("videoToDownload_"+notiFi).text('Downloading..');
             var attachedVid = videoFile;                        
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
             
             var fileTransfer = new FileTransfer(); 
+            
+            fileTransfer.onprogress = function(progressEvent) {
+                        if (progressEvent.lengthComputable) {
+                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
+                            //pbNews.value(perc); 
+                            countVal=perc;
+                            document.getElementById("downloadPer_"+newNotiFi).value = countVal;
+                            document.getElementById("progressValue_"+newNotiFi).innerHTML = countVal;                                                                                     
+                        }else {
+                            //pbNews.value('');
+                            document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;
+                            countVal=0;
+                        }
+                    };
             
             fileTransfer.download(attachedVid, fp, 
                                   function(entry) {
@@ -828,16 +848,21 @@ app.Activities = (function () {
                                           window.plugins.fileOpener.open(fp);
                                       }
                                       
-                                      $("#video_Div_"+notiFi).hide();
+                                      $("#video_Div_"+newNotiFi).hide();
+                                      $("#downloadPer_"+newNotiFi).hide();   
+                                      countVal=0;
+                                      document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;
 
                                   },
     
                                   function(error) {
-
-                                      $("#video_Div_"+notiFi).hide();
-                                      
+                                      countVal=0;
+                                      $("#video_Div_"+newNotiFi).hide();
+                                      $("#downloadPer_"+newNotiFi).hide();
+                                      document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;                                      
                                   }
-                );                
+                );   
+          }
         }
         
 
@@ -921,11 +946,30 @@ app.Activities = (function () {
                                   }
                 );                
         }
+        
+         var getDataToPost = function(e){
+            //console.log(e.data);
+            var message = e.data.message;
+            var title = e.data.title;
+            var attached = e.data.attached;
+            var type = e.data.upload_type;            
+
+            if (attached!== null && attached!=='' && attached!=="0"){
+                 localStorage.setItem("shareImg", attached);
+            }else{
+                localStorage.setItem("shareImg", null);
+            }
+            
+            localStorage.setItem("shareMsg", message);
+            localStorage.setItem("shareTitle", title);            
+            //console.log(message+"||"+title+"||"+attached+"||"+type);
+        }
 
 
         return {
             activitySelected: activitySelected,
             init:init,
+            getDataToPost:getDataToPost,
             videoDownlaodClick:videoDownlaodClick,
             goToAppFirstView:goToAppFirstView,
             show:show,

@@ -39,6 +39,12 @@
             <true/>
             </dict>
         </dict>
+
+        <key>UIBackgroundModes</key>
+        <array>
+            <string>remote-notification</string>
+        </array>
+
         <key>CFBundleIdentifier</key>
         <string>$AppIdentifier$</string>
         <key>CFBundleName</key>

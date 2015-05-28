@@ -103,6 +103,7 @@ app.eventCalender = (function () {
                         tasks = [];
                              
                         totalListView = data[0]['status'][0].Total;
+                        var orgNameToShow = localStorage.getItem("selectedOrgName");
 
                         if (data[0].status[0].eventData.length!==0) {
                             var eventListLength = data[0].status[0].eventData.length;
@@ -113,12 +114,12 @@ app.eventCalender = (function () {
                                  var eventDaya = data[0].status[0].eventData[i].event_date;                                
                                  var eventDateString = data[0].status[0].eventData[i].event_date;
                                  var eventTimeString = data[0].status[0].eventData[i].event_time;
-                                 //var eventDate = app.formatDate(eventDateString);
+                                 var eventDate = app.formatDate(eventDateString);
                                  var eventTime = app.formatTime(eventTimeString);   
                                
                                 //var aboveDay = app.getDateDays(eventDateString);   
                                 //alert(aboveDay);
-                                var belowData = app.getDateMonth(eventDateString);
+                                var belowData = app.getMonthData(eventDateString);
                                 //alert(belowData);
                                 
                                 var values = eventDaya.split('-');
@@ -146,8 +147,10 @@ app.eventCalender = (function () {
                                                        add_date: data[0].status[0].eventData[i].add_date,
                                                        event_date: saveData,
                                                        event_show_day:day,
+                                                       org_name_to_show:orgNameToShow,
                                                        //preDateVal:preDateVal,
                                                        //event_above_day:aboveDay,
+                                                       event_date_To_Show:eventDate,
                                                        event_below_day:belowData,
                                                        upload_type:data[0].status[0].eventData[i].upload_type,
                                                        event_desc: data[0].status[0].eventData[i].event_desc,                                                                                 										  
@@ -371,6 +374,7 @@ app.eventCalender = (function () {
                                                 event_desc: e.data.event_desc,
                                                 event_show_day:e.data.event_show_day,
                                                 event_name: e.data.event_name,
+                                                org_name_to_show:e.data.org_name_to_show,
                                                 upload_type:e.data.upload_type,
                                                 //event_above_day:e.data.event_above_day,
                                                 event_below_day:e.data.event_below_day,
@@ -462,8 +466,7 @@ app.eventCalender = (function () {
         var imgNotiFi;
 
         var imageDownlaodClick = function(e){
-            var data = e.button.data();
-            
+            var data = e.button.data();            
             console.log(data);            
             imgFile = data.imgpath;  
             console.log(imgFile);            
@@ -495,7 +498,6 @@ app.eventCalender = (function () {
                                           //alert('Show');
                                           //window.open("www.google.com", "_system");
                                           window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
-
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }

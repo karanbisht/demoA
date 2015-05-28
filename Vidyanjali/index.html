@@ -160,8 +160,31 @@
         <div class="loader" id="progressNotification" style="display:none;">
             <div class="ball"></div>
         </div>
-        <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></span>
+        <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-bind="source: activities"></span>
         <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
+         
+            <ul data-role="actionsheet" id="notiShareAction">
+                    <li class="km-actionsheet-title">Share</li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
+                    </li>-->
+                    <li> 
+                        <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
+                    </li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
+                    </li>-->                     
+                    <li> 
+                        <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
+                    </li>
+                    <li>
+                        <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
+                    </li>
+            </ul>  
+         
      </div>
         
                 
@@ -352,8 +375,10 @@
             .value { color: #bbb; }
         </style>
 
+        <!-- style="border-bottom:2px solid #F0F0F0"-->
+        
         <div data-role="view" id="settingDiv" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.settingShow">
-            <div data-role="header" style="border-bottom:2px solid #F0F0F0">
+            <div data-role="header">
                 <div data-role="navbar">
                     Settings
                     <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage"></a>
@@ -680,36 +705,54 @@
 
                 <div id="sendNotificationDivMsg" style="display:none;overflow:hidden;margin:10px;">
 
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Message Title :</span>
+                    <!--<span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Message Title :</span>
                     <br/>
                     <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title" autofocus />
                     <br/>
-
-
                     <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Message Detail :</span>
-
                     <br/>
                     <br/>
-
+                    <textarea  id="notificationDesc" placeholder="Write Message to Send ?" class="common"></textarea>
+                    <br/>
+                    <br/>-->
+                    
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Title</span>
+                    <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title"/>
+                    
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Detail</span>
                     <textarea  id="notificationDesc" placeholder="Write Message to Send ?" class="common"></textarea>
 
 
-                    <br/>
-                  <br/>
-
-                    <div>
+                    <!--<div>
                             <span style="color:rgb(127,191,77);margin-right:10px;">Message Type</span>               
                             <span><input id="notificationType" onkeydown="return false;" style="width:180px;"/></span>
-                    </div>
-
-                    <!--class="largerCheckbox"-->
-                    
+                    </div>-->
+                    <!--class="largerCheckbox"                    
                        <br/>
 
                     <li style="color:#1B205E;list-style-type: none;">
                         <span> <span style="color:rgb(127,191,77)" >Comment Allow</span>
                             <input type="checkbox" id="comment_allow" value="" /> </span>
-                    </li>
+                    </li>-->
+                    
+                    
+                    <span style="color:rgb(127,191,77);">Message Type</span>                                   
+                    <label>
+    		    		<select name="msgTypeNoti" id="notificationType">
+				    	    <option selected="true" disabled="disabled" default>Select Message Type</option>
+				    	    <option value="P">Promotion</option>
+					        <option value="V">Invitation</option>
+				        	<option value="I">Information</option>
+			    	    	<option value="R">Reminder</option>
+			    	    	<option value="A">Alert</option>
+		    		    </select>
+        			</label>
+                                        
+                    <label class="checkbox">
+        				<input type="checkbox" id="comment_allow" name="giftwrap" data-cost="8">
+		        		<em style="color:rgb(127,191,77)">Allow Comment</em>
+        			</label>
+                    
 
                     <div id="selectScheduleDT" style="margin-top:10px;border-radius:6px;border:1px solid #7FBF4D;padding:10px;display:none;">
 
@@ -719,13 +762,13 @@
                         <br/>
 
                         <div style="padding:10px,10px;">
-                            <input id="scheduleDatePicker"/>
+                            <input id="scheduleDatePicker" onkeydown="return false;"/>
                         </div>
 
                         <br/>
 
                         <div style="padding:10px,10px;">
-                            <input id="scheduleTimePicker"/>
+                            <input id="scheduleTimePicker" onkeydown="return false;"/>
                         </div>
                     </div>
                     
@@ -798,7 +841,7 @@
         
      <div id="sendNotifcation-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.sendNotification">
        <div class="docsUpload">
-        <div id="profileCompletenessNotification" class="uploadBar" style="width:90%; height:17px;"></div>
+        <div id="profileCompletenessNotification" class="uploadBar" style="width:90%; height:15px;"></div>
         <div class="clear"></div>
         <div id="uploadProcessNotification" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
        </div>
@@ -1181,12 +1224,13 @@
         
         <script type="text/x-kendo-template" id="activityTemplate">            
         #if (org_id!=='0') {#
-        <div class="cf">
+        <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">
             <div class="notiList-content-new">
                 <div class="dateDisplay">
                     <span id="activityTemplateDate" class="dateValue">${date}</span>
                     <span></span>
                 </div>
+             <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#notiShareAction"></a>
             <br/>
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
@@ -1216,11 +1260,22 @@
                      <br/>        
                      <br/> 
                     <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
-                      <div>
+                      <div>                        
                         <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
-                                <div class="loaderIV">
+                                <!--<div class="loaderIV">
                                     <div class="ballIV"></div>                   
-                                </div>                            
+                                </div>-->
+                                <div class="videoDownload">
+                                  <div class="innervideoDownload">
+                                    <!--<div id="profileCompletenessNews" class="downloadBar">-->
+                                       <progress id="downloadPer_${pid}"  value="0" max="100" class="downloadBar"></progress>
+                                    <!--</div>-->                                    
+                                    <div class="progressValueClass"><span id="progressValue_${pid}">0</span>%</div>
+                            
+                                    <!--<div class="clear"></div>
+                                    <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>-->
+                                  </div>
+                                </div>
                         </div>                             
                         <img src="styles/images/video.png" style="width:100%"/>                   
                       </div>

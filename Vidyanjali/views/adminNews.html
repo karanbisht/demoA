@@ -1,5 +1,5 @@
 <div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminNews" data-show ="app.adminNews.show" >
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">
+    <div data-role="header">
         <div data-role="navbar">
             <span> News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToManageOrgPage"></a>
@@ -14,18 +14,39 @@
     <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate" data-bind="source: activities"></span>
     
     <div id="showMoreEventBtnNews" class="showMore" data-role="button" data-click="app.adminNews.showMoreButtonPress">LOAD MORE</div>
-
+    
+    <ul data-role="actionsheet" id="newsShareAction">
+                    <li class="km-actionsheet-title">Share</li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
+                    </li>-->
+                    <li> 
+                        <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
+                    </li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
+                    </li>-->                     
+                    <li> 
+                        <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
+                    </li>
+                    <li>
+                        <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
+                   </li>
+    </ul> 
 </div>
 
 <script type="text/x-kendo-template" id="newsListTemplate" >                        
-    #if (id!==0) {#
-  <div class="cf">
+ #if (id!==0) {#
+  <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">
     <div class="notiList-content-new">
         <div class="dateDisplay">
             <span id="activityTemplateDate" class="dateValue">${news_date} , ${news_time}</span>
             <span></span>
         </div>
-        <br/>
+        <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#newsShareAction"></a>
         <br/>
         <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>          
         
@@ -56,7 +77,7 @@
 </script>
 
 <div data-role="view" id="adminAddNews" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminNews" data-show ="app.adminNews.addNewsshow">
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">
+    <div data-role="header">
         <div data-role="navbar">
             <span> Add News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>
@@ -71,26 +92,29 @@
     <div data-role="content">
         <div id="enterNotification" class="textWithTextArea" >
                         
-            <span id="activityTemplateDate"  class="defineTitleText">News :</span>
-            <br/>
-            <br/>
+            <span id="activityTemplateDate"  class="defineTitleText">News</span>
+            <textarea  id="addNewsDesc" placeholder="Please Enter News Here" class="common"></textarea>
             
-            <textarea  id="addNewsDesc" placeholder="Please Enter News Here" class="common"></textarea>            
             <!--onclick="app.adminNews.clickToSelectGroup()" style="display:none" -->            
-            <div onclick="app.adminNews.clickToSelectGroup()" class="selectGroup">Select Group to Add News</div>            
+            <!--<div onclick="app.adminNews.clickToSelectGroup()" class="selectGroup">Select Group to Add News</div>                        
+            <div id="groupInAddNews" class="selectDivClass" style="display:none"> </div>-->
             
-            <div id="groupInAddNews" class="selectDivClass" style="display:none"> </div>
-            
-                       
-            <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span>
-            <div style="margin-top:20px;">
-                <input id="adddatePickerNews" onkeydown="return false;" style="width:180px;"/>
-            </div>
+            <br/>
+               <label style="margin:10px 0px 10px 0px;color:rgb(127,191,77);">
+                   <span>Select Group to Add News</span>
+        		   <select id="groupInAddNews"  multiple ></select>
+               </label>           
+            <br/>
+                        
+            <span id="activityTemplateDate" style="color:rgb(127,191,77);" class="defineTitleText" >News Date</span>
+            <div style="margin-top:10px;">
+                <input id="adddatePickerNews" onkeydown="return false;"/>
+            </div>                       
             <br/>
             
-            <span id="activityTemplateDate"  class="defineTitleText" >News Time :</span>
-            <div style="margin-top:20px;" >
-                <input id="adddateTimePickerNews" onkeydown="return false;" style="width:180px;"/>
+            <span id="activityTemplateDate" style="color:rgb(127,191,77);" class="defineTitleText" >News Time</span>
+            <div style="margin-top:10px;" >
+                <input id="adddateTimePickerNews" onkeydown="return false;"/>
             </div>
             
             <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
@@ -99,11 +123,11 @@
                         <img src="styles/images/attachments.png" />                                                
                     </a>
                     <img id="attachedImgNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
-                    <div style="width:180px,height:50px;">
+                    <div style="width:180px,height:35px;">
                         <!--<video id="attachedVidNews" width="180" height="50" controls style="display:none">
                         <source src="" type="">
                         </video>-->
-                        <img id="attachedVidNews" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                        <img id="attachedVidNews" src="" alt="" align="right"  style="height:35px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
                     </div>
                 
                 </div>
@@ -134,14 +158,14 @@
 
 <div id="tabstrip-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.adminNews">
     <div class="docsUpload">
-        <div id="profileCompletenessNews" class="uploadBar" style="width:90%; height:17px;"></div>
+        <div id="profileCompletenessNews" class="uploadBar" style="width:90%; height:15px;"></div>
         <div class="clear"></div>
         <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
     </div>
 </div>
 
 <div data-role="view" id="adminEditNews" data-id="innerActivity" data-layout="default" class="activities-view"  data-model="app.adminNews" data-show ="app.adminNews.editNewsshow" >
-    <div data-role="header" style="border-bottom:2px solid #BABBBF">
+    <div data-role="header">
         <div data-role="navbar">
             <span> Edit News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>
@@ -155,28 +179,29 @@
     
     <div data-role="content" id="wrappe_news">
         <div id="enterNotification" class="textWithTextArea">
-            <span id="activityTemplateDate"  class="defineTitleText" >News :</span>
-            <br/>
-            <br/>
-            
-            <textarea  id="editNewsDesc" placeholder="Please Enter News Here" class="common"></textarea>
-            <br/>
-            
-            <div class="selectGroupClass" style="margin-left:0px;" >Select Group to Add News:</div>
-            <div id="groupInEditNews" class="selectDivClass"> </div>
-            
-            
-            <span id="activityTemplateDate"  class="defineTitleText" >News Date :</span>
 
-            <div style="margin-top:20px;" >
-                <input id="editdatePickerNews" onkeydown="return false;" style="width:180px;"/>
+            <span id="activityTemplateDate"  class="defineTitleText" >News</span>            
+            <textarea  id="editNewsDesc" placeholder="Please Enter News Here" class="commonEdit"></textarea>
+
+            <label style="margin:10px 0px 10px 0px;color:rgb(127,191,77);">
+              <span>Selected Group</span>
+              <select id="groupInEditNews"  multiple></select>
+            </label>
+                        
+            <!--<div class="selectGroupClass" style="margin-left:0px;" >Select Group to Add News:</div>
+            <div id="groupInEditNews" class="selectDivClass"> </div>-->
+                        
+
+             <span id="activityTemplateDate"  class="defineTitleText" >News Date</span>
+            <div style="margin-top:10px;" >
+                <input id="editdatePickerNews" onkeydown="return false;"/>
             </div>
             <br/>
             
-            <span id="activityTemplateDate"  class="defineTitleText" >News Time :</span>
-            <div style="margin-top:20px;" >
-                <input id="editdateTimePickerNews" onkeydown="return false;" style="width:180px;"/>
-            </div>
+            <span id="activityTemplateDate"  class="defineTitleText" >News Time</span>
+            <div style="margin-top:10px;" >
+                <input id="editdateTimePickerNews" onkeydown="return false;"/>
+            </div> 
         
         </div>
 
@@ -188,7 +213,7 @@
                 </a>
                 <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
                 
-                <img id="attachedVidNewsEdit" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                <img id="attachedVidNewsEdit" src="" alt="" align="right"  style="height:35px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
 
             </div>
             
@@ -243,8 +268,7 @@
     <div class="cf" style="margin-top:30%;border:none">        
         <div class="error-avatar">
             <img src="styles/images/error.png"/>
-        </div>
-        
+        </div>        
         <div class="error-content">
             <h5 style="color:rgb();text-align:center" >${message}</h5>
             

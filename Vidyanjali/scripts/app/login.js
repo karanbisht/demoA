@@ -78,10 +78,12 @@ app.Login = (function () {
                         app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                     }
                 } else if (device_id===null || device_id==='null') {
-                    app.onLoad();              
-                    app.showAlert("Click Next to Continue.", app.APP_NAME);
+                    //app.onLoad();              
+                    //app.showAlert("Click Next to Continue.", app.APP_NAME);
+                    app.getDeviceID(); 
                 }else {
                     $("#progress").show();
+                    app.deviceId_Not_Receive=0;
                     console.log(username + "||" + device_id + "||" + device_type);
                     localStorage.setItem("username", username);
                     localStorage.setItem("usernameAnalytic", username);

@@ -755,6 +755,9 @@ app.groupDetail = (function () {
             mobileArray = [];
             $("#showAlternateList").show();
             $("#alternateMobileList").empty();
+            
+            $("#groupInEditMember option:selected").removeAttr("selected");
+            $('#groupInEditMember').empty();
 
             var dataSourceMemberDetail = new kendo.data.DataSource({
                                                                        transport: {
@@ -866,7 +869,7 @@ app.groupDetail = (function () {
                             for (var j = 0;j < allCustomerLength;j++) {
                              
                                 if (parseInt(adminAllGroupArray[i].pid)===parseInt(customerGroupArray[j].pid)) { 
-                                    check = 'checked';
+                                    check = 'selected';
                                     break;
                                     
                                  }else {
@@ -883,6 +886,24 @@ app.groupDetail = (function () {
                                                               });
                             
                         }
+                         
+   
+                          $.each(EditGroupArrayMember, function (index, value) {
+                            
+                            if(value.check===''){
+                                $('#groupInEditMember').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name                                   
+                                }));   
+                            }else{
+                                $('#groupInEditMember').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name ,
+                                    selected:"selected"
+                                }));   
+   
+                            }                                
+                          });
                        }else{                        
                         var allGroupLength = adminAllGroupArray.length;                         
                         for (var i = 0;i < allGroupLength;i++) {                                                    
@@ -895,14 +916,16 @@ app.groupDetail = (function () {
                         }  
                        } 
                      }else{
-                         EditGroupArrayMember.push({
+                         /*EditGroupArrayMember.push({
                                                                   group_name: 'No Group Available , First Add Group',
                                                                   pid:'0',
                                                                   check:''
-                                                              });
+                                                              });*/
+                         app.noGroupAvailable();
+                         
                      }   
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -914,11 +937,12 @@ app.groupDetail = (function () {
                     data: EditGroupArrayMember
                     }); */                        
             
-                    $("#groupInEditMember").kendoListView({
+                    /*$("#groupInEditMember").kendoListView({
                                                               template: kendo.template($("#groupNameEditShowTemplate").html()),    		
                                                               dataSource: EditGroupArrayMember
-                                                          });
-                    
+                                                          });*/
+                
+                       
                     $("#adminEditCustomer").hide();            
                     $("#editOrgMemberContent").show();
                 });
