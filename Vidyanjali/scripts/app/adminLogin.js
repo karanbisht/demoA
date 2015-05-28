@@ -34,7 +34,7 @@ app.adminLogin = (function () {
         var login = function () {		
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -76,14 +76,14 @@ app.adminLogin = (function () {
                                                                             document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -130,18 +130,18 @@ app.adminLogin = (function () {
                                                                                
                     data: function(data) {	
                     
-                        console.log(data);
+                        //console.log(data);
                         
                         var datacheck = 0;
                         var allData = 0;
                         var adminOrgInfo =[];
                        
                         $.each(data, function(i, groupValue) {
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             //allData++;
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {    
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('No organization to manage, Login not allowed.');  
+                                    window.plugins.toast.showShortBottom('No organization to manage, Login not allowed.');  
                                 }else {
                                     app.showAlert('No organization to manage, Login not allowed.' , 'Notification');  
                                 }
@@ -188,14 +188,14 @@ app.adminLogin = (function () {
     
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -240,7 +240,7 @@ app.adminLogin = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
@@ -249,14 +249,14 @@ app.adminLogin = (function () {
                                                                     
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -321,7 +321,7 @@ app.adminLogin = (function () {
         }  
       
         var loginSuccessCB = function() {
-            console.log('DataBase Saved');
+            //console.log('DataBase Saved');
             //console.log(userOrgIdArray);          
             //console.log(userRoleArray);
             
@@ -374,14 +374,14 @@ app.adminLogin = (function () {
                                                                                       
                                                                                       if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -493,14 +493,14 @@ app.adminLogin = (function () {
 
                                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -585,7 +585,7 @@ app.adminLogin = (function () {
                     },
                                                                                      schema: {
                         data: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             return [data];                       
                         }                       
                     },
@@ -596,14 +596,14 @@ app.adminLogin = (function () {
                                                                                      
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -678,14 +678,14 @@ app.adminLogin = (function () {
                                                                                     
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                 window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -773,14 +773,14 @@ app.adminLogin = (function () {
                                                                                          $("#changePassLoader").hide();
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }

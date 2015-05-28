@@ -50,26 +50,26 @@ app.attendance = (function () {
                 
                 
                     data: function(data) {
-                        console.log(data);                                             
+                        //console.log(data);                                             
                         return [data];
                     }
                 },
                                                                  error: function (e) {
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(JSON.stringify(e));
                                                                      
                                                                      $("#progressAdminAttendance").hide();
                                                                      $("#attendance-listview").show();
                                                                
                                                                      if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -99,7 +99,7 @@ app.attendance = (function () {
 
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                     
                 }else if (data[0]['status'][0].Msg==='Success') {  
@@ -123,7 +123,7 @@ app.attendance = (function () {
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                 
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                     }else {
                         app.showAlert(app.NO_ACCESS , 'Offline');  
                     }                    
@@ -191,12 +191,12 @@ app.attendance = (function () {
                 });
             
                 group = String(group);                 
-                console.log(group);
+                //console.log(group);
         
             if (group.length!==0 && group.length!=='0') {
                   if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
@@ -204,7 +204,7 @@ app.attendance = (function () {
 
                       $("#progressAdminAttendance").show();
 
-                      console.log(organisationID+"||"+group);
+                      //console.log(organisationID+"||"+group);
                       var typeVal="A";
                       var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal}            
                       var dataSourceLogin = new kendo.data.DataSource({
@@ -218,25 +218,25 @@ app.attendance = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     //console.log(e);
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
                                                                     $("#progressAdminAttendance").hide();
 
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -249,11 +249,11 @@ app.attendance = (function () {
                dataSourceLogin.fetch(function() {
                 var data = this.data();                                               
                     if (data[0]['status'][0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("User marked as Absent");  
+                                    window.plugins.toast.showShortBottom("User marked as Absent");  
                                 }else {
                                     app.showAlert("User marked as Absent", "Notification");  
                                 }     
@@ -264,7 +264,7 @@ app.attendance = (function () {
                     
                     }else if (data[0]['status'][0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
@@ -295,12 +295,12 @@ app.attendance = (function () {
                 group.push($(this).val());
             });            
             group = String(group);                   
-            console.log(group);
+            //console.log(group);
           
             if (group.length!==0 && group.length!=='0') {
                   if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
@@ -309,7 +309,7 @@ app.attendance = (function () {
 
                       $("#progressAdminAttendance").show();
 
-                      console.log(organisationID+"||"+group);
+                      //console.log(organisationID+"||"+group);
                       var typeVal="P";
                       var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal}            
                       var dataSourceLogin = new kendo.data.DataSource({
@@ -323,26 +323,26 @@ app.attendance = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     //console.log(e);
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
 
                                                                     $("#progressAdminAttendance").hide();
                                                                     
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -356,11 +356,11 @@ app.attendance = (function () {
                dataSourceLogin.fetch(function() {
                 var data = this.data();                                               
                     if (data[0]['status'][0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom("User marked as Present");  
+                                    window.plugins.toast.showShortBottom("User marked as Present");  
                                 }else {
                                     app.showAlert("User marked as Present", "Notification");  
                                 }     
@@ -371,7 +371,7 @@ app.attendance = (function () {
                     
                     }else if (data[0]['status'][0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
@@ -400,10 +400,10 @@ app.attendance = (function () {
         var checkClick = function(val){
             var arrayLength = groupDataShow.length;
             
-            console.log(groupDataShow);
+            //console.log(groupDataShow);
             
             for(var i=0; i<arrayLength;i++){               
-              console.log(groupDataShow[i].customerID +"||"+ val);
+              //console.log(groupDataShow[i].customerID +"||"+ val);
                 
               if(parseInt(groupDataShow[i].customerID) === parseInt(val)){
                      //alert(groupDataShow[i].customerID +"||"+val);    
@@ -427,7 +427,7 @@ app.attendance = (function () {
               }  
             }            
             
-            console.log(groupDataShow);
+            //console.log(groupDataShow);
             
             comboGroupListDataSource = new kendo.data.DataSource({
                                           data: groupDataShow
@@ -442,7 +442,7 @@ app.attendance = (function () {
 	                selectedStudentArray.splice(i, 1);
                 }
             }
-            console.log(selectedStudentArray);
+            //console.log(selectedStudentArray);
         }
         
         

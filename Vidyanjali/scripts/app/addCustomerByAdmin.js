@@ -116,7 +116,7 @@ app.addCustomerByAdmin = (function () {
                         }else if(data[0]['status'][0].Msg==="You don't have access"){
                                    
                                     if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                             window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                     }else {
                                              app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }
@@ -214,19 +214,19 @@ app.addCustomerByAdmin = (function () {
         }
         
         function onchangeGroupData(e){
-          console.log(e);   
+          //console.log(e);   
         }
         
 
         function onSelectGroupData(e) {            
             /*var item = e.item;
-            console.log(item);
+            //console.log(item);
             var text = item.text();
-            console.log(text);
+            //console.log(text);
             var value = item.val();
-            console.log(value);
+            //console.log(value);
             var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
-            console.log(multiSelect);*/
+            //console.log(multiSelect);*/
        };       
         
               
@@ -332,14 +332,14 @@ app.addCustomerByAdmin = (function () {
                                                                             
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -377,7 +377,7 @@ app.addCustomerByAdmin = (function () {
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                 }else {
                                     app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }
@@ -431,14 +431,14 @@ app.addCustomerByAdmin = (function () {
            
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -471,13 +471,13 @@ app.addCustomerByAdmin = (function () {
                             $regMobile.val('');
                             //app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                            //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin(); 
                                 
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                 }else {
                                     app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }

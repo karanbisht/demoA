@@ -31,7 +31,7 @@
         </div>
 
 
-        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn form-view" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">            
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">            
             <div class="loader" id="progress" style="display:none;">
                 <div class="ball"></div>
             </div>
@@ -649,7 +649,7 @@
         
         
 
-        <div data-role="view" id="sendNotificationDiv" class="activities-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
+        <div data-role="view" id="sendNotificationDiv" class="form-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
 
           <div data-role="content">
 
@@ -682,21 +682,20 @@
                             </td>
                         </tr>
                     </table>
-
                 </div>
                                 
                                                                
-                <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;">
+                <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;background-color:#ffffff">
 
-                    <p style="color:#343434;font-size:1.2rem;">Select group to send message. </p>
+                    <p style="color:#343434;font-size:1.2rem;padding-top:10px;">Select group to send message. </p>
 
                     <div id="group-Name-listview" style="border:none"> </div>
 
                 </div>
 
-                <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;">
+                <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;background-color:#ffffff">
 
-                    <p style="color:#343434;font-size:1.2rem;">Select member to send message.</p>
+                    <p style="color:#343434;font-size:1.2rem;padding-top:10px;">Select member to send message.</p>
 
                     <div id="customer-Name-listview"  style="border:none;"> </div>
 
@@ -931,22 +930,22 @@
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -974,7 +973,7 @@
                             
                 function selectOrgFmDrawer(data){
                     var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                    
-                    console.log(arrayval);       
+                    //console.log(arrayval);       
         
                     var orgId = arrayval[data].id;
                     var org_name = arrayval[data].org_name;
@@ -1054,7 +1053,7 @@
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
@@ -1069,7 +1068,7 @@
                         },
                                                                         schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
@@ -1080,14 +1079,14 @@
 
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1098,10 +1097,10 @@
 	            
                     dataSourceLogin.fetch(function() {
                         var loginDataView = dataSourceLogin.data();
-                        console.log(loginDataView);
+                        //console.log(loginDataView);
                
                         $.each(loginDataView, function(i, loginData) {
-                            console.log(loginData.status[0].Msg);
+                            //console.log(loginData.status[0].Msg);
 
                             if (loginData.status[0].Msg==='You have been successfully logged out.') {
                                 app.mobileApp.navigate('#view-all-activities');

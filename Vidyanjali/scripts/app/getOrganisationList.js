@@ -405,7 +405,7 @@ app.OragnisationList = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        console.log(JSON.stringify(data));                                             
+                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }                                                            
                 },
@@ -415,14 +415,14 @@ app.OragnisationList = (function () {
                                                                                showLiveDataUpdated();  
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -556,7 +556,7 @@ app.OragnisationList = (function () {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -590,7 +590,7 @@ app.OragnisationList = (function () {
             
         var organisationSelected = function (e) {
             //$("#progress2").show();            
-            console.log(JSON.stringify(e.data));
+            //console.log(JSON.stringify(e.data));
             var organisationID = e.data.organisationID;
             var bagCount = e.data.count;            
             localStorage.setItem("user_SelectOrgID", organisationID);
@@ -608,13 +608,13 @@ app.OragnisationList = (function () {
         };
        
         var groupSelected = function (e) {
-            console.log("karan Bisht" + e);
+            //console.log("karan Bisht" + e);
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
          
         var offlineActivitySelected = function (i) {
-            console.log(i);
-            console.log("click");
+            //console.log(i);
+            //console.log("click");
             //app.mobileApp.navigate('views/activityView.html?uid=' + e.data.uid);
         };
         
@@ -679,11 +679,11 @@ app.OragnisationList = (function () {
             
             var count = results.rows.length;
             //alert(count);
-            console.log('count' + count);
+            //console.log('count' + count);
             if (count !== 0) {
                 for (var i = 0;i < count;i++) {
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);                   
-                    console.log(pos);
+                    //console.log(pos);
                     
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
@@ -736,12 +736,12 @@ app.OragnisationList = (function () {
         
         var orgUserDataForOrgSuccess = function(tx, results) {
             var count1 = results.rows.length;
-            console.log('count' + count1);
+            //console.log('count' + count1);
             
             if (count1 !== 0) {
                 for (var i = 0;i < count1;i++) {
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);                   
-                    console.log(pos);
+                    //console.log(pos);
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
                     var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
@@ -789,7 +789,7 @@ app.OragnisationList = (function () {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -798,7 +798,7 @@ app.OragnisationList = (function () {
         };
             
         var orgMoreInfoSelected = function(e) {
-            console.log(e.data);
+            //console.log(e.data);
             var orgID = e.data.org_id;
             var orgName = e.data.org_name;
             var orgDesc = e.data.orgDesc;
@@ -879,7 +879,7 @@ app.OragnisationList = (function () {
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
@@ -942,14 +942,14 @@ app.OragnisationList = (function () {
                                                                        
                                                                        if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1290,14 +1290,14 @@ app.OragnisationList = (function () {
                                                                           
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1314,7 +1314,7 @@ app.OragnisationList = (function () {
                                
                         if (loginData.status[0].Msg==='Profile Updated') {
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom('Your profile was updated successfully');  
+                                window.plugins.toast.showShortBottom('Your profile was updated successfully');  
                             }else {
                                 app.showAlert('Your profile was updated successfully' , 'Notification');  
                             }
@@ -1342,7 +1342,7 @@ app.OragnisationList = (function () {
         var showCalendar = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
@@ -1356,7 +1356,7 @@ app.OragnisationList = (function () {
         var showOrgNews = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
@@ -1378,7 +1378,7 @@ app.OragnisationList = (function () {
         };
         
         var error = function(message) {
-            console.log("Error: " + message);
+            //console.log("Error: " + message);
         };
                  
         function getProfileForEventInfoDB(tx) {
@@ -1419,7 +1419,7 @@ app.OragnisationList = (function () {
             if (count !== 0) {                                        
                 for (var x = 0; x < count;x++) {
                     var pos = $.inArray(results.rows.item(x).org_id, tempArrayEvent);
-                    console.log(pos);
+                    //console.log(pos);
                     if (pos === -1) {
                         tempArrayEvent.push(results.rows.item(x).org_id);								                    
                     }
@@ -1491,7 +1491,7 @@ app.OragnisationList = (function () {
             }            
         
             var jsonDataLogin = {"org_id":tempArrayEvent}         
-            console.log(tempArrayEvent);
+            //console.log(tempArrayEvent);
             //alert(tempArrayEvent);
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
@@ -1504,7 +1504,7 @@ app.OragnisationList = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
@@ -1514,14 +1514,14 @@ app.OragnisationList = (function () {
 
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1546,7 +1546,7 @@ app.OragnisationList = (function () {
 
                         if (!app.checkSimulator()) {
                         
-                            window.plugins.toast.showLongBottom('No event list to sync');  
+                            window.plugins.toast.showShortBottom('No event list to sync');  
                             
                         }else {
                         
@@ -1662,7 +1662,7 @@ app.OragnisationList = (function () {
             $("#savingDeviceCalenderLoader").hide();
                         
             if (!app.checkSimulator()) {
-                window.plugins.toast.showLongBottom('Successfully synchronized with device calendar');           
+                window.plugins.toast.showShortBottom('Successfully synchronized with device calendar');           
             }else {
                 app.showAlert('Successfully synchronized with device calendar', 'Notification');            
             }               

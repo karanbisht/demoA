@@ -89,14 +89,14 @@ app.GroupList = (function () {
                                                                                 
                                                                                 if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -110,8 +110,7 @@ app.GroupList = (function () {
    
             
             organisationGroupDataSource.fetch(function(){
-                
-                  
+                                  
                   var orgNotificationData;
                   
                        var data = this.data();
@@ -131,14 +130,14 @@ app.GroupList = (function () {
                                     $("#tabAddGroup").css('width','100%');
                                     showLiveData();
                                 }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                                 
                                 }else if(data[0]['status'][0].Msg==="You don't have access"){
                                     
                                     if (!app.checkSimulator()) {
-                                             window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                             window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                     }else {
                                              app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }
@@ -208,8 +207,7 @@ app.GroupList = (function () {
         function getDataSuccess(tx, results) {                        
             groupDataShow = []; 
             var tempArray = [];
-            var count = results.rows.length;
-                       
+            var count = results.rows.length;                       
             if (count !== 0) {                
                 for (var i = 0 ; i < count ; i++) {
                     var pos = $.inArray(results.rows.item(i).groupID, tempArray);
@@ -294,7 +292,7 @@ app.GroupList = (function () {
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -310,7 +308,7 @@ app.GroupList = (function () {
         var deleteGroup = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -323,7 +321,6 @@ app.GroupList = (function () {
     
         var goToGroupList = function() {
             app.analyticsService.viewModel.trackFeature("User navigate to Group List Page in Admin");            
-
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);                
         }
          
@@ -351,24 +348,24 @@ app.GroupList = (function () {
                 },
                                                                    schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                    error: function (e) {
                                                                       $("#addGroupLoader").hide();
-                                                                       console.log(e);
+                                                                       //console.log(e);
                                                                       
                                                                        if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -396,14 +393,14 @@ app.GroupList = (function () {
                         //app.showAlert("Group Added Successfully", "Notification");
                     }else if (addGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
                      
                         goToGroupList();
                     }else if(addGroupData.status[0].Msg==="Session Expired"){
-                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
                                 
@@ -430,9 +427,9 @@ app.GroupList = (function () {
             });
             
             groupID = String(groupID);
+            //console.log(groupID);
             
-            
-        if(groupID.length!==0 && groupID.length!=='0'){
+          if(groupID.length!==0 && groupID.length!=='0'){
 
            $("#deleteGroupLoader").show();
             
@@ -449,24 +446,24 @@ app.GroupList = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            $("#deleteGroupLoader").hide();
-                                                                           console.log(e);
+                                                                           //console.log(e);
                                                                            
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -493,7 +490,7 @@ app.GroupList = (function () {
                         //app.showAlert("Group Deleted Successfully","Notification");
                     }else if (deleteGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
@@ -502,7 +499,7 @@ app.GroupList = (function () {
   
                     }else if(deleteGroupData.status[0].Msg==="Session Expired"){
   
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');                        
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');                        
                         app.LogoutFromAdmin(); 
                                                                 
                     }else {
@@ -535,11 +532,30 @@ app.GroupList = (function () {
 
             //console.log(groupDataShow);
              
-            $("#deleteGroupData").kendoListView({
+            /*$("#deleteGroupData").kendoListView({
                                                     template: kendo.template($("#Group-Delete-template").html()),    		
                                                     dataSource: groupDataShow 
-                                                });    
-        }; 
+                                                });*/
+            
+             $(".km-scroll-container").css("-webkit-transform", "");
+             $("#deleteGroupData").removeClass("km-list");
+             $(".km-filter-form").hide();
+            
+               
+            $("#deleteGroupData").kendoMobileListView({
+                            dataSource: groupDataShow,                                        
+                            template: kendo.template($("#Group-Delete-template").html()),
+                            filterable: {
+                field: "groupName",
+                operator: "contains",
+                },
+            });
+            
+            
+            $('#deleteGroupData').data('kendoMobileListView').refresh();          
+            $("#deleteGroupData").removeClass("km-list");
+            
+        }
                 
         return {
             init: init,

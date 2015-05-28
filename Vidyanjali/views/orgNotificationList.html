@@ -14,9 +14,9 @@
 	 <div>
     	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
      </div>      
-     <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>
-     
-            <ul data-role="actionsheet" id="notiShareAction">
+     <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>     
+    
+     <ul data-role="actionsheet" id="notiShareAction">
                     <li class="km-actionsheet-title">Share</li>
                     <!--<li>
                         <a href="#" data-role="button" data-click="app.socialShare">share More</a>
@@ -36,9 +36,8 @@
                     <li>
                         <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
                     </li>
-            </ul>
+     </ul>
  </div>
-
 
 	<script type="text/x-kendo-template" id="adminNotiTemplate" >
         #if(org_id!=='0'){#
@@ -65,7 +64,7 @@
                           <br/>
                           <img src="styles/images/video.png" style="width:100%"/>
                     #}#               
-       		 </div>
+       		</div>
 		    </div>
         #}else{#
                 <div class="empty-notiList-content-new">                                          

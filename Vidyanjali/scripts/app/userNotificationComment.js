@@ -120,7 +120,7 @@ app.userNotiComment = (function () {
                 },
                                                                           schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }                   
                 },
@@ -131,14 +131,14 @@ app.userNotiComment = (function () {
                                                                              
                                                                               if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -264,7 +264,7 @@ app.userNotiComment = (function () {
             var img = $('<img id="imgShowAdmin" style="max-height:200px" />');
             img.attr('src', fp);
             img.appendTo('#notiAdminImage');
-            console.log(fp);              
+            //console.log(fp);              
         }
         
         var imagePathNotExist = function() {
@@ -384,14 +384,14 @@ app.userNotiComment = (function () {
                                                                        
                                                                        if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -428,7 +428,7 @@ app.userNotiComment = (function () {
             } else {
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
@@ -462,20 +462,20 @@ app.userNotiComment = (function () {
                             },
                                                                                   error: function (e) {
                                                                           
-                                                                                      console.log(JSON.stringify(e));
+                                                                                      //console.log(JSON.stringify(e));
                                                                                       $("#adminCommentPage").hide();
                                                                                       app.mobileApp.pane.loader.hide();
                                                                                       
                                                                                       if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }

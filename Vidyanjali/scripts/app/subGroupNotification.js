@@ -104,13 +104,13 @@ app.orgsubGroupListView = (function () {
                  
                                                                               schema: {
                     data: function(data) {	
-                        console.log(data);                                            
+                        //console.log(data);                                            
                         return [data]; 
                     }                                                            
                 },
                  
                                                                               error: function (e) {
-                                                                                  console.log(JSON.stringify(e));                                                                                  
+                                                                                  //console.log(JSON.stringify(e));                                                                                  
                                                                                   
                                                                                     $("#group-Notilist-Loader").hide();
                                                                                     $("#admin-sub-noti-listview").show();
@@ -118,14 +118,14 @@ app.orgsubGroupListView = (function () {
 
                                                                                   if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -175,11 +175,11 @@ app.orgsubGroupListView = (function () {
                                        });                                        
                                     }
                                 }else if(data[0]['status'][0].Msg==="Session Expired"){
-                                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                         app.LogoutFromAdmin();                                 
                                 }else if (data[0]['status'][0].Msg==="You don't have access") {                    
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                     }else {
                                         app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }                                                  
@@ -230,7 +230,7 @@ app.orgsubGroupListView = (function () {
           var showMoreButtonPress = function(){
           if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 

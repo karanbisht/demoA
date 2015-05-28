@@ -67,24 +67,24 @@ app.eventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(JSON.stringify(e));               
+                                                                    //console.log(JSON.stringify(e));               
                                                                     $("#CalProcess").hide();
                                                                     
                                                                    if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -365,7 +365,7 @@ app.eventCalender = (function () {
         
         
         var eventSelected = function(e){
-            console.log(e);           
+            //console.log(e);           
             
                                multipleEventArray.push({
                                                 id: e.data.id,
@@ -384,7 +384,7 @@ app.eventCalender = (function () {
                                                 imageSourceOrg:imageSourceOrg,
                                                 org_id: e.data.org_id
                                             });
-            console.log(multipleEventArray);
+            //console.log(multipleEventArray);
             
             setTimeout(function(){
                 app.mobileApp.navigate('#eventCalendarDetail');            
@@ -467,16 +467,16 @@ app.eventCalender = (function () {
 
         var imageDownlaodClick = function(e){
             var data = e.button.data();            
-            console.log(data);            
+            //console.log(data);            
             imgFile = data.imgpath;  
-            console.log(imgFile);            
+            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;             
-            console.log(vidPathData);
-            console.log(fp);
+            //console.log(vidPathData);
+            //console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
             //$("#img_Div_"+imgNotiFi).show();
             
@@ -492,7 +492,7 @@ app.eventCalender = (function () {
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
-            console.log(fp);
+            //console.log(fp);
             
                                       if(device_type==="AP"){
                                           //alert('Show');
@@ -512,7 +512,7 @@ app.eventCalender = (function () {
             var attachedImg = imgFile;                        
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;
-                        console.log(fp);
+                        //console.log(fp);
 
 
             var fileTransfer = new FileTransfer();              
@@ -543,7 +543,7 @@ app.eventCalender = (function () {
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 

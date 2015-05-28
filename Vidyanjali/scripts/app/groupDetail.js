@@ -60,26 +60,26 @@ app.groupDetail = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {
-                        console.log(data);                                            
+                        //console.log(data);                                            
                         return [data];
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(e);
+                                                                               //console.log(JSON.stringify(e));
                                                                                $("#progressAdmin").hide();             
                                                                                //beforeShow();
                                                                                
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -96,12 +96,12 @@ app.groupDetail = (function () {
                                 
                             }else if (data[0]['status'][0].Msg==="You don't have access") {
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);
+                                    window.plugins.toast.showShortBottom(app.NO_ACCESS);
                                 }else {
                                     app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }                                
                             }else if (data[0]['status'][0].Msg==='Session Expired') {
-                                app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                 app.LogoutFromAdmin();          
                                 
                             }else if (data[0]['status'][0].Msg==='Success') {
@@ -316,7 +316,7 @@ app.groupDetail = (function () {
 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -333,7 +333,7 @@ app.groupDetail = (function () {
 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -376,14 +376,14 @@ app.groupDetail = (function () {
                                                                      
                                                                      if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -425,7 +425,7 @@ app.groupDetail = (function () {
                     $("#adminRemoveMember").hide();
                     $("#adminAddMember").css('width','100%');
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==='Success') {
                     for (var i = 0;i < data[0]['status'][0].allCustomer.length;i++) {
@@ -434,6 +434,7 @@ app.groupDetail = (function () {
                                                first_name: data[0]['status'][0].allCustomer[i].user_fname,
                                                email:data[0]['status'][0].allCustomer[i].user_email,  
                                                last_name : data[0]['status'][0].allCustomer[i].user_lname,
+                                               full_name:data[0]['status'][0].allCustomer[i].user_fname+" "+data[0]['status'][0].allCustomer[i].user_lname,
                                                customerID:data[0]['status'][0].allCustomer[i].custID,
                                                account_id:data[0]['status'][0].allCustomer[i].account_id,
                                                orgID:data[0]['status'][0].allCustomer[i].orgID
@@ -444,7 +445,7 @@ app.groupDetail = (function () {
 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
-                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                     }else {
                         app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
@@ -456,11 +457,9 @@ app.groupDetail = (function () {
         }
         
         function showMemberDataFunc(data) {
-
             $("#progressAdminOrgMem").hide();
             $("#groupMember-listview").show();
             $("#orgMemFooter").show();
-
             
             $("#groupMember-listview").kendoMobileListView({
                                                                dataSource: data,
@@ -471,11 +470,31 @@ app.groupDetail = (function () {
         }
         
         var showGroupToDelete = function() {
+            
+            
+             $(".km-scroll-container").css("-webkit-transform", "");
+             $("#deleteMemberData").removeClass("km-list");
+             $(".km-filter-form").hide();
+            
+            
+               
+            $("#deleteMemberData").kendoMobileListView({
+                            dataSource: groupDataShow,                                        
+                            template: kendo.template($("#Member-Delete-template").html()),
+                            filterable: {
+                field: "full_name",
+                operator: "contains",
+                },
+            });
+            
+            $('#deleteMemberData').data('kendoMobileListView').refresh();          
+            $("#deleteMemberData").removeClass("km-list");
+            
             //console.log("---------------------GROUP DATA----------------");
-            $("#deleteMemberData").kendoListView({
+            /*$("#deleteMemberData").kendoListView({
                                                      template: kendo.template($("#Member-Delete-template").html()),    		
                                                      dataSource: groupDataShow
-                                                 });
+                                                 });*/
         }
         
         var addNemMember = function() {
@@ -536,14 +555,14 @@ app.groupDetail = (function () {
                                                                        
                                                                        if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -565,7 +584,7 @@ app.groupDetail = (function () {
                         }
                         app.mobileApp.navigate('views/groupListPage.html');
                     }else if (addGroupData.status[0].Msg==="Session Expired") {
-                        app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                        //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                         app.LogoutFromAdmin(); 
                     }else {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
@@ -577,7 +596,7 @@ app.groupDetail = (function () {
         var addMemberToGroup = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -610,14 +629,14 @@ app.groupDetail = (function () {
              $('#deleteMemberData input:checked').each(function() {
                 customer.push($(this).val());
             });
-            
+                        
             //console.log('Delete Button');
             customer = String(customer);        
             
-            console.log(customer);            
+            //console.log(customer);            
                         
             if (customer.length!==0 && customer.length!=='0') {
-                $("#deleteMemberLoader").show();
+               $("#deleteMemberLoader").show();
                 
                 var jsonDataDeleteMember = {'customer_id':customer ,'orgID':organisationID}
                         
@@ -643,14 +662,14 @@ app.groupDetail = (function () {
                                                                                
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -663,7 +682,7 @@ app.groupDetail = (function () {
                 dataSourceDeleteMember.fetch(function() {
                     var loginDataView = dataSourceDeleteMember.data();
                     $.each(loginDataView, function(i, deleteGroupData) {
-                        console.log(deleteGroupData.status[0].Msg);
+                        //console.log(deleteGroupData.status[0].Msg);
                       
                         if (deleteGroupData.status[0].Msg==='Deleted successfully' || deleteGroupData.status[0].Code===2) {                                
                             if (!app.checkSimulator()) {
@@ -676,7 +695,7 @@ app.groupDetail = (function () {
                             refreshOrgMember();
                         }else if (deleteGroupData.status[0].Msg==="You don't have access") {                                                        
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                             }else {
                                 app.showAlert(app.NO_ACCESS , 'Offline');  
                             }                    
@@ -699,7 +718,7 @@ app.groupDetail = (function () {
         var showOrgGroupView = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -722,7 +741,7 @@ app.groupDetail = (function () {
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -769,27 +788,27 @@ app.groupDetail = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(JSON.stringify(e));
                                                                            
                                                                            $("#adminEditCustomer").hide();            
                                                                            $("#editOrgMemberContent").show();
                                                                            
                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -931,7 +950,7 @@ app.groupDetail = (function () {
                         app.showAlert(addGroupData.status[0].Msg , 'Notification'); 
                     }                               
                     //console.log('------------------');
-                    console.log(EditGroupArrayMember);
+                    //console.log(EditGroupArrayMember);
                                
                     /*var comboEditGroupListDataSource = new kendo.data.DataSource({
                     data: EditGroupArrayMember
@@ -1014,7 +1033,7 @@ app.groupDetail = (function () {
         var showOrgEvent = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -1028,7 +1047,7 @@ app.groupDetail = (function () {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -1080,7 +1099,7 @@ app.groupDetail = (function () {
             });
             
             groupEdit = String(groupEdit);             
-            console.log(groupEdit);
+            //console.log(groupEdit);
             
             var organisationID = localStorage.getItem("orgSelectAdmin");
             
@@ -1125,7 +1144,7 @@ app.groupDetail = (function () {
 
                     if (count===addMoreEditMobile) {
                         //alert('inside');
-                        console.log(mobileArray);
+                        //console.log(mobileArray);
 
                         var jsonDataRegister;
                         //alert(localStorage.getItem("orgSelectAdmin"));
@@ -1157,14 +1176,14 @@ app.groupDetail = (function () {
 
                                                                                    if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1188,13 +1207,12 @@ app.groupDetail = (function () {
                                     
                                     app.mobileApp.navigate('#groupMemberShow');
                                 }else if(loginData.status[0].Msg==="Session Expired"){
-                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 
-                                }else if (loginData.status[0].Msg==="You don't have access") {
-                    
+                                }else if (loginData.status[0].Msg==="You don't have access") {                    
                                     if (!app.checkSimulator()) {
-                                        window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                     }else {
                                         app.showAlert(app.NO_ACCESS , 'Offline');  
                                     }
@@ -1241,14 +1259,14 @@ app.groupDetail = (function () {
                                                                          
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -1272,13 +1290,13 @@ app.groupDetail = (function () {
                             
                             app.mobileApp.navigate('#groupMemberShow');
                         }else if(loginData.status[0].Msg==="Session Expired"){
-                            app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                            //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin(); 
                                 
                         }else if (loginData.status[0].Msg==="You don't have access") {
                     
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                    window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                 }else {
                                     app.showAlert(app.NO_ACCESS , 'Offline');  
                                 }
@@ -1298,7 +1316,7 @@ app.groupDetail = (function () {
             
                if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 

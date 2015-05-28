@@ -124,14 +124,14 @@ app.Activities = (function () {
 
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -272,7 +272,7 @@ app.Activities = (function () {
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -297,7 +297,7 @@ app.Activities = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
@@ -547,24 +547,24 @@ app.Activities = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        console.log(JSON.stringify(data));                                             
+                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }                                                            
                 },
                                                                            error: function (e) {
                                                                                //console.log(e);
-                                                                               console.log(JSON.stringify(e));
+                                                                               //console.log(JSON.stringify(e));
                                                                                         
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -873,16 +873,16 @@ app.Activities = (function () {
         var imageDownlaodClick = function(e){
             //alert('imgclick');
             var data = e.button.data();
-            console.log(data);            
+            //console.log(data);            
             imgFile = data.imgpath;  
-            console.log(imgFile);            
+            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;             
-            console.log(vidPathData);
-            console.log(fp);
+            //console.log(vidPathData);
+            //console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
             //$("#img_Div_"+imgNotiFi).show();
             
@@ -899,7 +899,7 @@ app.Activities = (function () {
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
-            console.log(fp);
+            //console.log(fp);
             
                                       if(device_type==="AP"){
                                           //alert('Show');
@@ -921,7 +921,7 @@ app.Activities = (function () {
             var attachedImg = imgFile;                        
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
-                        console.log(fp);
+                        //console.log(fp);
 
 
             var fileTransfer = new FileTransfer();              

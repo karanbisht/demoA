@@ -56,24 +56,24 @@ app.orgNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        console.log(data);
+                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
                                                                     //console.log(e);
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
                                                                     
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -314,17 +314,17 @@ app.orgNews = (function () {
 
         var imageDownlaodClick = function(e){
             var data = e.button.data();
-            console.log(data);            
+            //console.log(data);            
             imgFile = data.imgpath;  
-            console.log(imgFile);            
+            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
 
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;             
-            console.log(vidPathData);
-            console.log(fp);
+            //console.log(vidPathData);
+            //console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
             //$("#img_Div_"+imgNotiFi).show();
             
@@ -341,7 +341,7 @@ app.orgNews = (function () {
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
-            console.log(fp);
+            //console.log(fp);
                         
                                       if(device_type==="AP"){
                                           //alert('Show');
@@ -363,7 +363,7 @@ app.orgNews = (function () {
             var attachedImg = imgFile;                        
             var vidPathData = app.getfbValue();    
             var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;
-                        console.log(fp);
+                        //console.log(fp);
 
 
             var fileTransfer = new FileTransfer();              
@@ -395,7 +395,7 @@ app.orgNews = (function () {
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -407,7 +407,7 @@ app.orgNews = (function () {
         }
         
         var getDataToPost = function(e){
-            console.log(e.data);
+            //console.log(e.data);
             var message = e.data.news_desc;
             var title = '';
             var attached = e.data.news_image;
@@ -421,7 +421,7 @@ app.orgNews = (function () {
             
             localStorage.setItem("shareMsg", message);
             localStorage.setItem("shareTitle", title);            
-            console.log(message+"||"+title+"||"+attached+"||"+type);
+            //console.log(message+"||"+title+"||"+attached+"||"+type);
         }
         
         return {

@@ -145,7 +145,7 @@ app.Activity = (function () {
             title = app.proURIDecoder(title);
             upload_type = e.view.params.upload_type;
              
-            console.log(comment_allow);
+            //console.log(comment_allow);
 
             app.mobileApp.pane.loader.hide();
 
@@ -188,7 +188,7 @@ app.Activity = (function () {
             var db = app.getDb();		                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -206,7 +206,7 @@ app.Activity = (function () {
             var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>');
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
-            console.log(fp);              
+            //console.log(fp);              
         }
         
         var imagePathNotExist = function() {
@@ -283,14 +283,14 @@ app.Activity = (function () {
                                                                               
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -314,7 +314,7 @@ app.Activity = (function () {
                               }else if (data[0]['status'][0].Msg==='Success') {
                                 var commentLength = data[0]['status'][0].AllComment.length;                              
                                 orgNotiCommentData = data[0]['status'][0].AllComment;
-                                console.log(commentLength);
+                                //console.log(commentLength);
 
                                   app.mobileApp.pane.loader.hide();
 
@@ -554,7 +554,7 @@ app.Activity = (function () {
   
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -591,19 +591,19 @@ app.Activity = (function () {
                             }
                         },
                                                                                error: function (e) {
-                                                                                  console.log(JSON.stringify(e));
+                                                                                  //console.log(JSON.stringify(e));
                                                                                   $("#progressChat").hide();
                                                                               
                                                                                    if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }

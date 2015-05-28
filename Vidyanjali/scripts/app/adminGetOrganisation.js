@@ -93,7 +93,7 @@ app.adminOragnisationList = (function () {
                
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
@@ -135,11 +135,11 @@ app.adminOragnisationList = (function () {
                        
                         $.each(data, function(i, groupValue) {
                             //alert("IN");
-                            console.log(groupValue);   
+                            //console.log(groupValue);   
                             if (groupValue[0].Msg ==='No Orgnisation to manage') {     
                                 //beforeShow();
                                 if (!app.checkSimulator()) {
-                                    window.plugins.toast.showLongBottom('No Organization to Manage.');  
+                                    window.plugins.toast.showShortBottom('No Organization to Manage.');  
                                 }else {
                                     app.showAlert('No Organization to Manage.' , 'Notification');  
                                 }
@@ -163,14 +163,14 @@ app.adminOragnisationList = (function () {
                                                                                beforeShow();
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -617,11 +617,11 @@ app.adminOragnisationList = (function () {
         }
 
         function updateAdminLoginStatusError(err) {
-            console.log(err);
+            //console.log(err);
         }
 
         function listViewClick(e) {
-            console.log(e.item); // The clicked item as a jQuery object
+            //console.log(e.item); // The clicked item as a jQuery object
         }
 
         return {

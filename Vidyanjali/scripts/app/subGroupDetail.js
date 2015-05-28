@@ -46,7 +46,7 @@ app.subGroupDetail = (function () {
             
              if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom(app.INTERNET_ERROR);  
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
@@ -78,7 +78,7 @@ app.subGroupDetail = (function () {
                    
                                 
                     data: function(data) {
-                        console.log(data);                       
+                        //console.log(data);                       
                         return [data];
                     }
 
@@ -117,6 +117,7 @@ app.subGroupDetail = (function () {
                                            mobile: '',
                                            first_name: '',
                                            email:'No member in this group',  
+                                           full_name:'',
                                            last_name : '',
                                            customerID:'0',
                                            orgID:0
@@ -128,7 +129,7 @@ app.subGroupDetail = (function () {
                     
                     groupMemberData = groupDataShow ;
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
-                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==='Success') {
                     app.mobileApp.pane.loader.hide();
@@ -141,6 +142,7 @@ app.subGroupDetail = (function () {
                                                first_name: data[0].status[0].customerInfo[i].first_name,
                                                email:data[0].status[0].customerInfo[i].email,  
                                                last_name : data[0].status[0].customerInfo[i].last_name,
+                                               full_name:data[0].status[0].customerInfo[i].first_name+" "+data[0].status[0].customerInfo[i].last_name,
                                                customerID:data[0].status[0].customerInfo[i].customerID,
                                                mobile:data[0].status[0].customerInfo[i].mobile,
                                                orgID:data[0].status[0].customerInfo[i].orgID
@@ -150,7 +152,7 @@ app.subGroupDetail = (function () {
                     groupMemberData = groupDataShow ;
                 }else if (addGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }
@@ -173,7 +175,7 @@ app.subGroupDetail = (function () {
 
             
 
-            console.log(groupMemberData);
+            //console.log(groupMemberData);
             var subGroupDataListDataSource = new kendo.data.DataSource({
                                                                            data: groupMemberData
                                                                        });           
@@ -218,10 +220,27 @@ app.subGroupDetail = (function () {
         };
         
         var showDeleteGroupMember = function() {
-            $("#deleteSubMemberData").kendoListView({
+            /*$("#deleteSubMemberData").kendoListView({
                                                         template: kendo.template($("#sub-Member-Delete-template").html()),    		
                                                         dataSource: groupMemberData 
-                                                    });
+                                                    });*/           
+             $(".km-scroll-container").css("-webkit-transform", "");
+             $("#deleteSubMemberData").removeClass("km-list");
+             $(".km-filter-form").hide();
+            
+               
+            $("#deleteSubMemberData").kendoMobileListView({
+                            dataSource: groupMemberData,                                        
+                            template: kendo.template($("#sub-Member-Delete-template").html()),
+                            filterable: {
+                field: "full_name",
+                operator: "contains",
+                },
+            });
+            
+            
+            $('#deleteSubMemberData').data('kendoMobileListView').refresh();          
+            $("#deleteSubMemberData").removeClass("km-list");
         }
         
         var manageGroup = function() {
@@ -268,14 +287,14 @@ app.subGroupDetail = (function () {
                                                                       
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -298,7 +317,7 @@ app.subGroupDetail = (function () {
                             //app.showAlert("Group Updated Successfully","Notification");
                         }else if (addGroupData.status[0].Msg==="You don't have access") {
                             if (!app.checkSimulator()) {
-                                window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                             }else {
                                 app.showAlert(app.NO_ACCESS , 'Offline');  
                             }
@@ -323,8 +342,13 @@ app.subGroupDetail = (function () {
         var showAddMember = function() {
             
             $("#addSGMemberLoader").show();
-            $("#groupAddMemberList").hide();
-            $("#groupAddMember").hide();
+            //$("#groupAddMemberList").hide();
+            //$("#groupAddMember").hide();
+            
+            $("#addMemberData-listview").hide();
+            $("#addMemberData-listview").removeClass("km-list");
+            $(".km-filter-form").hide();
+            
             
             var groupDataAllShow = [];
             var remDataValue = [];
@@ -339,20 +363,21 @@ app.subGroupDetail = (function () {
                 },
                                                                  schema: {                              
                     data: function(data) {
-                        console.log(data);
+                        //console.log(data);
                        
                         $.each(data, function(i, groupValue) {
                             //console.log(groupValue);
                             $.each(groupValue, function(i, orgVal) {
-                                console.log(orgVal);
+                                //console.log(orgVal);
 
                                 if (orgVal.Msg==='Success') {
-                                    console.log(orgVal.allCustomer.length);  
+                                    //console.log(orgVal.allCustomer.length);  
                                     for (var i = 0;i < orgVal.allCustomer.length;i++) {
                                         groupDataAllShow.push({
                                                                   mobile: orgVal.allCustomer[i].uacc_username,
                                                                   first_name: orgVal.allCustomer[i].user_fname,
-                                                                  email:orgVal.allCustomer[i].user_email,  
+                                                                  email:orgVal.allCustomer[i].user_email,
+                                                                  full_name:orgVal.allCustomer[i].user_fname+" "+orgVal.allCustomer[i].user_lname,
                                                                   last_name : orgVal.allCustomer[i].user_lname,
                                                                   customerID:orgVal.allCustomer[i].custID,
                                                                   account_id:orgVal.allCustomer[i].account_id,
@@ -360,7 +385,7 @@ app.subGroupDetail = (function () {
                                                               });
                                     }        
                                 }else if (orgVal.Msg==="Session Expired") {
-                                    app.showAlert(app.SESSION_EXPIRE , 'Notification');
+                                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
                                 }else if (orgVal.Msg==='No Customer in this organisation') {
                                     if (!app.checkSimulator()) {
@@ -372,9 +397,8 @@ app.subGroupDetail = (function () {
                                 }
                                 
                                             $("#addSGMemberLoader").hide();
-                                            $("#groupAddMemberList").show();
-                                            $("#groupAddMember").show();
-    
+                                            $("#addMemberData-listview").show();
+                                            //$("#groupAddMember").show();
                             });
                         });
 		                                                           
@@ -393,7 +417,8 @@ app.subGroupDetail = (function () {
                                 remDataValue.push({
                                                       mobile: groupDataAllShow[x].mobile,
                                                       first_name: groupDataAllShow[x].first_name,
-                                                      email:groupDataAllShow[x].email,  
+                                                      email:groupDataAllShow[x].email,
+                                                      full_name:groupDataAllShow[x].first_name+" "+groupDataAllShow[x].last_name,                                                 
                                                       last_name : groupDataAllShow[x].last_name,
                                                       customerID:groupDataAllShow[x].customerID,
                                                       account_id:groupDataAllShow[x].account_id,
@@ -422,14 +447,14 @@ app.subGroupDetail = (function () {
                                                                      //console.log(JSON.stringify(e));
                                                                   if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -440,14 +465,30 @@ app.subGroupDetail = (function () {
                                                                  }	        
                                                              });         
         
-            $("#addMemberData-listview").kendoListView({
+            /*$("#addMemberData-listview").kendoListView({
                                                            template: kendo.template($("#Sub-Member-Add-template").html()),
                                                            dataSource: MemberDataSource
-                                                       });
+                                                       });*/
+            
+
+            
+            $("#addMemberData-listview").kendoMobileListView({
+                            dataSource: MemberDataSource,                                        
+                            template: kendo.template($("#Sub-Member-Add-template").html()),
+                            filterable: {
+                field: "full_name",
+                operator: "contains",
+                },
+            });                
+            
+
+             $("#addMemberData-listview").show();
+             $('#addMemberData-listview').data('kendoMobileListView').refresh();          
+             $("#addMemberData-listview").removeClass("km-list");
+                        
         };
         
-        var addMemberToGroupFunc = function() {
-            
+        var addMemberToGroupFunc = function() {            
             var customer = [];
             /*$(':checkbox:checked').each(function(i) {
                 customer[i] = $(this).val();
@@ -457,10 +498,9 @@ app.subGroupDetail = (function () {
             $('#addMemberData-listview input:checked').each(function() {
                 customer.push($(this).val());
             });
-
             
             customer = String(customer);        
-            console.log(customer);            
+            //console.log(customer);            
                         
             if (customer.length!==0 && customer.length!=='0') {
                 //var customer = String(customer);        
@@ -487,14 +527,14 @@ app.subGroupDetail = (function () {
                                                                             $("#addSGMemberLoader").hide();
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -507,7 +547,7 @@ app.subGroupDetail = (function () {
                 dataSourceAddMember.fetch(function() {
                     var loginDataView = dataSourceAddMember.data();
                     $.each(loginDataView, function(i, addGroupData) {
-                        console.log(addGroupData.status[0].Msg);           
+                        //console.log(addGroupData.status[0].Msg);           
                         if (addGroupData.status[0].Msg==='Customer Added to group successfully') { 
                             $("#addSGMemberLoader").hide();
                             if (!app.checkSimulator()) {
@@ -521,7 +561,7 @@ app.subGroupDetail = (function () {
                             showSubGroupMembers();
                         }else if (addGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }                     
@@ -562,7 +602,7 @@ app.subGroupDetail = (function () {
             
             customer = String(customer);        
             
-            console.log(customer);            
+            //console.log(customer);            
                          
             if (customer.length!==0 && customer.length!=='0') {
                 $("#deleteSGMemberLoader").hide();  
@@ -595,14 +635,14 @@ app.subGroupDetail = (function () {
                                                                              
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -626,7 +666,7 @@ app.subGroupDetail = (function () {
                             showSubGroupMembers();
                         }else if (deleteGroupData.status[0].Msg==="You don't have access") {
                         if (!app.checkSimulator()) {
-                            window.plugins.toast.showLongBottom(app.NO_ACCESS);  
+                            window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                         }else {
                             app.showAlert(app.NO_ACCESS , 'Offline');  
                         }                     

@@ -838,6 +838,37 @@ input:focus, textarea:focus {
     /*overflow-y: hidden;*/
 }
 
+#Aptifi .form-view .km-content,
+#Aptifi .form-view .km-listview
+{
+   background-color: #f3f3f3;    
+    
+}
+#Aptifi .form-view .km-list > li
+{
+    overflow: visible;
+    padding: .75em 0;
+    border-width: 0 0 1px;
+    border-color: #eaeced;
+    background-color: #fff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #34495e;
+}
+#Aptifi .form-view .km-list > li:first-child   /* Height of first child from TOP by karan*/
+{
+    padding-top: .15em;
+}
+#Aptifi .form-view .person-name
+{
+    overflow: hidden;
+    width: 95%;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+
+
+
 #Aptifi .activities-view .km-list > li,
 #Aptifi .activity-view .km-list > li
 {
@@ -2530,7 +2561,7 @@ float:right;
 .km-graph:before, .km-graph:after { content: "\e0ac"; }
 .km-volume:before, .km-volume:after { content: "\e099"; }
 .km-toprated:before, .km-toprated:after { content: "\e084"; }
-.km-more:before, .km-more:after { content: "\e316"; }
+.km-delete:before, .km-delete:after { content: "\e0ec"; }
 .km-sounds:before, .km-sounds:after { content: "\e038"; }
 .km-share:before, .km-share:after { content: "\e314";color: #212121 !important;}
 .km-action:before, .km-action:after { content: "\e323";color: #FFF !important; }

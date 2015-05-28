@@ -89,7 +89,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        console.log(message, 'Error');
+        //console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e,'Error in Aptifi App -:'+ message);
         return true;
     });
@@ -250,13 +250,13 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {        
-       console.log("Error processing SQL: " + JSON.stringify(err));
+       //console.log("Error processing SQL: " + JSON.stringify(err));
        app.analyticsService.viewModel.trackException(err,"Error in Sqlite local Storage processing");
     };
     
     // Transaction success callback
     var successCB = function() {
-        console.log("success DB Function!");
+        //console.log("success DB Function!");
     };
     
     var checkConnection = function() {
@@ -514,7 +514,7 @@ var app = (function (win) {
     }
 
     function errorHandler (error) {
-        console.log(error);
+        //console.log(error);
     }
     
     
@@ -572,7 +572,7 @@ var app = (function (win) {
                                                                     //console.log(e);
                                                                     //console.log(JSON.stringify(e));
                                                                     /*if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                                                                        window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                                                                     }else {
                                                                         app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                                                                     }*/              
@@ -581,14 +581,14 @@ var app = (function (win) {
 	            
                 dataSourceLogin.fetch(function() {
                     var data = this.data();     
-                    console.log(JSON.stringify(data));
+                    //console.log(JSON.stringify(data));
                 //$.each(loginDataView, function(i, loginData) {
                     //console.log(loginData.status[0].Msg);
                                
                     if (data[0]['status'][0].Msg==='Fail') {                        
-                        console.log('fail');                        
+                        //console.log('fail');                        
                         if (!app.checkSimulator()) {
-                                  window.plugins.toast.showLongBottom(app.LOGIN_ANOTHER_DEVICE);  
+                                  window.plugins.toast.showShortBottom(app.LOGIN_ANOTHER_DEVICE);  
                         }else {
                                  app.showAlert(app.LOGIN_ANOTHER_DEVICE , 'Notification');  
                         }                        
@@ -640,16 +640,16 @@ var app = (function (win) {
     };
     
     function onDirectorySuccess(parent) {
-        console.log(parent);
+        //console.log(parent);
     }
  
     function onDirectoryFail(error) {
-        console.log("Unable to create new directory: " + error.code);
+        //console.log("Unable to create new directory: " + error.code);
     }
     
     function fileSystemFail(evt) {
-        alert(evt.target.error.code);
-        console.log(evt.target.error.code);
+        //alert(evt.target.error.code);
+        //console.log(evt.target.error.code);
     }
 
     // Initialize Everlive SDK
@@ -712,7 +712,7 @@ var app = (function (win) {
     }
  
     var apnFailedRegistration = function(error) {
-        console.log("Error: " + error.toString());
+        //console.log("Error: " + error.toString());
         app.analyticsService.viewModel.trackException(error,"Error in APN PUSH Registration : " + error.toString());
     }
     
@@ -838,7 +838,7 @@ var app = (function (win) {
             switch (e.event) {
                 case 'registered':
                     if (e.regid.length > 0) {
-                        console.log("TokenID Received" + e.regid);
+                        //console.log("TokenID Received" + e.regid);
                         localStorage.setItem("deviceTokenID", e.regid);
                     }
                     break;
@@ -1034,15 +1034,15 @@ var app = (function (win) {
     }
 
     function fileExists(fileEntry) {
-        console.log("File " + fileEntry.fullPath + " exists!");
+        //console.log("File " + fileEntry.fullPath + " exists!");
     }
 	
     function fileDoesNotExist() {
-        console.log("file does not exist");
+        //console.log("file does not exist");
     }
     
     function getFSFail(evt) {
-        console.log(evt.target.error.code);
+        //console.log(evt.target.error.code);
     }
     
     function urldecode(str) {
@@ -1401,7 +1401,7 @@ var app = (function (win) {
            window.plugins.nativepagetransitions.slide(
             theOptions,
             function () {
-                console.log('------------------- slide transition finished');
+                //console.log('------------------- slide transition finished');
             },
             function (msg) {
 
@@ -1432,7 +1432,7 @@ var app = (function (win) {
           'href': href
         },
         function () {
-          console.log('------------------- flip transition finished');
+          //console.log('------------------- flip transition finished');
         },
         function (msg) {
           //alert('error: ' + msg);
@@ -1485,7 +1485,7 @@ var app = (function (win) {
                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
-                    window.plugins.toast.showLongBottom('Network unavailable . Please try again later');  
+                    window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');
                 } 
@@ -1506,7 +1506,7 @@ var app = (function (win) {
                         },
                                                                         schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
@@ -1518,14 +1518,14 @@ var app = (function (win) {
                                                                             
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }

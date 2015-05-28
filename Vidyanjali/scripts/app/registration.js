@@ -87,25 +87,25 @@ app.registration = (function () {
                                                                        schema: {
                         data: function(data) {
                             //console.log(data);
-                            console.log(JSON.stringify(data));
+                            //console.log(JSON.stringify(data));
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
                                                                            $("#progressRegister").hide();
-                                                                           console.log(JSON.stringify(e));
+                                                                           //console.log(JSON.stringify(e));
                                                                            
                                                                            if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -152,26 +152,26 @@ app.registration = (function () {
                                                                                 schema: {
                                     data: function(data) {
                                         //console.log(data);
-                                        console.log(JSON.stringify(data));
+                                        //console.log(JSON.stringify(data));
                                         return [data];
                                     }
                                 },
                                                                                 error: function (e) {
                                                                                     //apps.hideLoading(); 
-                                                                                    console.log(JSON.stringify(e));                                                                                    
+                                                                                    //console.log(JSON.stringify(e));                                                                                    
                                                                                     $("#progressRegister").hide();
                                                                                     app.mobileApp.pane.loader.hide();
                                                                               
                                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -235,10 +235,10 @@ app.registration = (function () {
                 },
                                                                      error: function (e) {
                                                                          //apps.hideLoading();
-                                                                         console.log(e);
+                                                                         //console.log(e);
                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
-                                                                             window.plugins.toast.showLongBottom(app.VERIFICATION_CODE_NOT_SEND);  
+                                                                             window.plugins.toast.showShortBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
                                                                              app.showAlert(app.VERIFICATION_CODE_NOT_SEND , 'Verification Code');  
                                                                          }           
@@ -326,24 +326,24 @@ app.registration = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                console.log(data);
+                                //console.log(data);
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
                                                                             //apps.hideLoading();
-                                                                            console.log(e);
+                                                                            //console.log(e);
                                                                             app.mobileApp.pane.loader.hide();
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.INTERNET_ERROR);
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
                                                                                         }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showLongBottom(app.ERROR_MESSAGE);
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
@@ -515,7 +515,7 @@ app.registration = (function () {
                     },
                                                                                   error: function (e) {
                                                                                       //apps.hideLoading();
-                                                                                      console.log(e);   
+                                                                                      //console.log(e);   
                                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                   }	        
                                                                               });         
