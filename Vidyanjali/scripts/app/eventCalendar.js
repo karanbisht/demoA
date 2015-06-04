@@ -635,8 +635,8 @@ app.eventCalender = (function () {
 
         var AddEventToCalender = function() {
             fromCalDeleteEvent();            
-            var deviceName = app.devicePlatform();                  
-            var cal = window.plugins.calendar;
+                var deviceName = app.devicePlatform();                  
+                var cal = window.plugins.calendar;
             
             /*if (deviceName==='iOS') {
                 cal.deleteCalendar(calendarName, success, error);    
