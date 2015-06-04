@@ -62,6 +62,8 @@ var app = (function (win) {
     var DELETE_CONFIRM="Are you sure you want to delete this.";
     var VIDEO_ALY_DOWNLOAD="Please wait until the previous download processing is complete before attempting to downlaod new video."
     var SOCIAL_SHARE_ERROR_MSG ="Application not installed on your device , you need to install it first to use this feature."
+    var GEO_PLACE_API ="https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&sensor=false&key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&input=";    
+    var GEO_MAP_API="https://www.google.com/maps/embed/v1/place?key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&q=";
 
     
     var serverUrl = function() {        
@@ -298,15 +300,18 @@ var app = (function (win) {
 	        var delta = current - lastClickTime11;
 	        lastClickTime11 = current;
 	        if (delta < 3000) {
+                backButtonClickCount=0;
                 e.preventDefault();            
                 navigator.app.exitApp();
-                backButtonClickCount=1;
+                
 	        }else {
-                if(current === lastClickTime11){
+                if(backButtonClickCount===0){
+                    backButtonClickCount=1;
                 }else{
-                    backButtonClickCount=0;
+                   window.plugins.toast.showShortBottom(app.EXIT_APP); 
                 }                
-        	}                        
+        	}
+            
             /*navigator.notification.confirm(app.EXIT_APP, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         e.preventDefault();            
@@ -1845,6 +1850,8 @@ var app = (function (win) {
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
         CANNOT_CANCEL:CANNOT_CANCEL,
         EXIT_APP:EXIT_APP,
+        GEO_PLACE_API:GEO_PLACE_API,
+        GEO_MAP_API:GEO_MAP_API,
         DELETE_CONFIRM:DELETE_CONFIRM,
         SOCIAL_SHARE_ERROR_MSG:SOCIAL_SHARE_ERROR_MSG,
         getSendNotiDateTime:getSendNotiDateTime,

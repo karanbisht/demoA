@@ -1057,6 +1057,21 @@ input:focus, textarea:focus {
     border:1px solid #dddddd;    
 }
 
+.attachBackgroundImgShow
+{
+    position:relative;
+    height:160px;       
+    max-width:250px;
+    overflow: hidden;
+    margin-top:20px;
+    right:0;
+    left:0;
+    background-color:#0e6b0a;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center center;   
+}
+
 .newsList-content-new{
     position: relative;
     font-size: .85rem;
@@ -1251,6 +1266,23 @@ input:focus, textarea:focus {
     border-bottom: 1px solid #f5f7f8;
 }
 
+
+#Aptifi .locationSearchImg
+{
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/searchLocation.png');    
+    border-radius: 6px;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle; 
+
+}
 
 .getGroupComboSelectAll
 {
@@ -2681,6 +2713,8 @@ float:right;
 
 .km-flat .km-popup-wrapper#popover-eventAction{padding:15px 2px 15px 15px}
 .km-flat .km-popup.km-pane#popover-eventAction{min-height:80px;}
+.km-flat .km-popup-wrapper#popover-editNews{padding:15px 2px 15px 15px}
+.km-flat .km-popup.km-pane#popover-editNews{min-height:80px;}
 
 /*.km-flat .km-popup-arrow:after {border-color: rgba(127,191,77, 0.8) transparent;}
 
@@ -2703,15 +2737,18 @@ float:right;
 .k-calendar .k-footer { background-color: #7FBF4D; }
 .k-calendar .k-header { background-color: #7FBF4D; }
 .k-calendar .k-header .k-link.k-nav-prev, .k-calendar .k-header .k-link.k-nav-next,.k-calendar .k-header .k-link .k-nav-fast {background:transparent}
-.k-datepicker{border-radius:3px;}
-.k-state-default>.k-select{background-color: #7FBF4D;border-color: #7FBF4D;}
+
+.k-datepicker{border-radius:3px;vertical-align: middle;width:48%!important;-webkit-appearance: none;-moz-appearance: none;box-shadow: none !important;}
+.k-timepicker{border-radius:3px;vertical-align: middle;width:48%!important;-webkit-appearance: none;-moz-appearance: none;box-shadow: none !important;}
+
+
+.k-state-default>.k-select{background-color: #7FBF4D;border-color: #7FBF4D;height:auto;}
 .k-picker-wrap .k-select{border-radius: 0 3px 3px 0;}
 .k-state-default{border-color:#E5E5E5;}
-.k-webkit .k-picker-wrap:before{padding-bottom:0px;}
+.k-webkit .k-picker-wrap:before{padding:0px;}
 
 #admincalendar .k-footer { background-color: #7FBF4D; }
 #admincalendar .k-header { background-color: #7FBF4D; }
-
 
 .k-calendar td
 {
@@ -3169,6 +3206,24 @@ float:right;
 
 }
 
+
+.locationTextBox
+{
+    margin: 10px; 
+    width:63%;
+    border-radius: 3px; 
+    border: solid 1px #E5E5E5;
+    padding: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none !important;
+    
+    background-repeat: no-repeat; 
+    background-size: 25px auto;
+    background-position: 10px center;
+    background-image: url('images/search.png');    
+}
+
 .defineTitleText
 { 
     color: #7FBF4D;
@@ -3482,8 +3537,8 @@ float:right;
 .eventDetail-img-show-loc
 {
     float: left;
-    width: 20px;
-    height: 20px;    
+    width: 23px;
+    height: 23px;    
     background-size: cover; 
     background-position: center center; 
     background-repeat: no-repeat; 

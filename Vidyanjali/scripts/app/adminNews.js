@@ -332,8 +332,8 @@ app.adminNews = (function () {
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
             
-            $("#adddatePickerNews").parent().css('width', "180px");
-            $("#adddateTimePickerNews").parent().css('width', "180px");
+            $("#adddatePickerNews").parent().css('width', "160px");
+            $("#adddateTimePickerNews").parent().css('width', "160px");
             $("#adddatePickerNews").removeClass("k-input");
             $("#adddateTimePickerNews").removeClass("k-input");            
             
@@ -691,8 +691,8 @@ app.adminNews = (function () {
             
             $("#editdatePickerNews").removeAttr('disabled');
             $("#editdateTimePickerNews").removeAttr('disabled');
-            $("#editdatePickerNews").parent().css('width', "180px");
-            $("#editdateTimePickerNews").parent().css('width', "180px");
+            $("#editdatePickerNews").parent().css('width', "160px");
+            $("#editdateTimePickerNews").parent().css('width', "160px");
             $("#editdatePickerNews").removeClass("k-input");
             $("#editdateTimePickerNews").removeClass("k-input");        
             $('body').append(hiddenDiv);            

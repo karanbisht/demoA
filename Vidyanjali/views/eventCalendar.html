@@ -22,14 +22,23 @@
               <div data-role="navbar">     
                   Event
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
+                 <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>-->
+                 <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-eventAction" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a>      
               </div>                                          
     </div>
      <div data-role="contain">
             <ul id="eventCalendarList" data-role="listview" data-template="calendarTemplate"></ul>     
     </div>
+    
+     <div data-role="popover" id="popover-eventAction" data-popup='{"width": "240"}' style="margin-right:-20px;">
+        <div data-role="view">
+            <ul data-role="listview">               
+                <a style="width:100%;background:transparent;" data-role="button" data-click="app.eventCalender.AddEventToCalender"><label>Sync with Calendar</label></a>
+                <a style="width:100%;background:transparent;" data-role="button" data-click="app.eventCalender.DeleteEventFromCalendar"><label>Delete from Calendar</label></a>
+            </ul>
+        </div>
+     </div>
 </div>
-
 
 		<script type="text/x-kendo-template" id="calendarTemplate">
             <div data-role="touch" >            
@@ -57,7 +66,7 @@
                   #}else{#                     
                          <!--<div class="OrgbackgroundImgShow" style="width:100%;"></div>-->
                          <div class="backgroundImgShow">
-                            <div id="activityTemplateTitle" class="eventNameListDetail">${event_name}
+                            <div id="activityTemplateTitle" class="eventNameListDetail">
                                  <span style="z-index:1;">${event_name}</span>                              
                                  <br/>
                                  <span style="font-size: 1.4rem;">Hosted by ${org_name_to_show}</span> 
@@ -70,12 +79,30 @@
             		     <a id="activityTemplateMessage"  class="eventDetailTime">${event_show_day} ${event_below_day} at ${event_time}</a>
                     </div>
                      
+                      #if(location!==''){# 
+                        <div class="calendarDetail-List" >
+                             <div class="eventDetail-img-show-loc"></div>                    
+            		         <a id="activityTemplateMessage"  class="eventDetailTime" data-role="button" data-rel="modalview" href="\#location_Map_UserSide"  data-click="app.eventCalender.iFrameLocUrl" style="background:transparent;border:none;margin:0px;padding:0px 0px 0px 10px;float:left; display:inline-block;text-overflow: ellipsis;width:90%;text-align:left;">${location}</a>
+                        </div>
+                    #}#
+                     
                      <div class="calendarEventAbtDetail">
                          <span  id="activityTemplateMessage"  class="orgContentMsg" >About <br/><span style="color:rgb(33,33,33);margin-top:10px;">${event_desc}</span></span>
                      </div> 
                       
     		</div>
 		</script>
+
+
+        <div data-role="modalview" id="location_Map_UserSide" style="width:96%;height:80%;">
+                        <div data-role="header" style="background-color:rgb(204,204,204);height:35px;">
+                            <div style="margin:5px 10px 10px 10px;width:100px;float:left;font-size:20px;color:rgb(255,255,255)"> Location </div>
+                            <a data-click="app.eventCalender.closeLocationMap" data-role="button" data-align="right" style="float:right;color:rgb(255,255,255);border:none;" >Close</a>
+                        </div>
+                        <div id="setIFrame_UserSide"></div>    
+        </div>
+
+
 
         <!--<div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>-->
 
@@ -117,6 +144,8 @@
                        
                     <div id="activityTemplateTitle" class="eventNameList" >${event_name}</div> 
                     <span id="activityTemplateDate" class="calanderTimeClass">${event_date_To_Show} at ${event_time}</span>            			                                                                  
+                     <br/>   
+                    <span id="activityTemplateDate" class="calanderTimeClass">${location}</span>
        		 </div>                              
               </div>                  
  		    </div>   

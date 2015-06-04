@@ -99,8 +99,8 @@ app.sendNotification = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");
             $('#notificationDesc').css('height', '40px');
             $("#notificationType option:selected").removeAttr("selected");
-            $("#scheduleDatePicker").parent().css('width', "180px");
-            $("#scheduleTimePicker").parent().css('width', "180px");
+            $("#scheduleDatePicker").parent().css('width', "160px");
+            $("#scheduleTimePicker").parent().css('width', "160px");
             $("#scheduleDatePicker").removeClass("k-input");
             $("#scheduleTimePicker").removeClass("k-input");
 

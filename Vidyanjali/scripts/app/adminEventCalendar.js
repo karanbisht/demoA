@@ -20,13 +20,9 @@ app.adminEventCalender = (function () {
         var photo_split;
         var countVal=0;
         var multipleEventArrayAdmin = [];
-
         var page=0;
         var totalListView=0;
         var dataReceived=0;
-
-
-
         
         var init = function() {
             
@@ -291,10 +287,13 @@ app.adminEventCalender = (function () {
             app.mobileApp.navigate('#adminEventCalendarDetail');           
         }*/
         
+        
+        var mapLocationShow;
         var eventDetailShow = function(e) {
             //console.log(e.data);
             //alert(e.data.event_name);
             eventPid = e.data.id;
+            mapLocationShow = e.data.location;
             multipleEventArrayAdmin.push({
                                         id: e.data.id,
                                         add_date: e.data.add_date,
@@ -302,6 +301,7 @@ app.adminEventCalender = (function () {
                                         event_show_day : e.data.event_show_day,
                                         event_below_day : e.data.event_below_day,
                                         event_desc: e.data.event_desc,
+                                        location:e.data.location,
                                         event_image : e.data.event_image,
                                         event_name: e.data.event_name,
                                         upload_type: e.data.upload_type,
@@ -317,6 +317,12 @@ app.adminEventCalender = (function () {
             },100);
             
             app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
+        }
+        
+        var iFrameLocUrl = function(){     
+            
+            var mapUrl = app.GEO_MAP_API+mapLocationShow;
+            document.getElementById("setIFrame").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width-20;this.height=screen.height"></iframe>';             
         }
         
         var detailShow = function() {
@@ -347,6 +353,7 @@ app.adminEventCalender = (function () {
 
             $("#addEventName").val('');
             $("#addEventDesc").val('');
+            $("#placeValue").val('');
             //console.log(date2);
             groupDataShow = [];
             
@@ -359,8 +366,8 @@ app.adminEventCalender = (function () {
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
             
-            $("#adddatePickerEvent").parent().css('width', "180px");
-            $("#adddateTimePickerEvent").parent().css('width', "180px");
+            //$("#adddatePickerEvent").parent().css('width', "160px");
+            //$("#adddateTimePickerEvent").parent().css('width', "160px");
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
 
@@ -575,6 +582,7 @@ app.adminEventCalender = (function () {
         var eventTimeEdit;
         var eventImageEdit;
         var eventPid;
+        var eventLocEdit;
         var pageToGo;
         var eventUploadType;
         
@@ -720,8 +728,8 @@ app.adminEventCalender = (function () {
             $("#wrapp_content").hide();
             $("#editdatePicker").removeAttr('disabled');
             $("#editdateTimePicker").removeAttr('disabled');            
-            $("#editdatePicker").parent().css('width', "180px");
-            $("#editdateTimePicker").parent().css('width', "180px");
+            //$("#editdatePicker").parent().css('width', "160px");
+            //$("#editdateTimePicker").parent().css('width', "160px");
             $("#editdatePicker").removeClass("k-input");
             $("#editdateTimePicker").removeClass("k-input");            
                                                 
@@ -785,6 +793,7 @@ app.adminEventCalender = (function () {
                         eventTimeEdit = data[0]['status'][0].eventDetail[0].event_time;
                         eventImageEdit = data[0]['status'][0].eventDetail[0].event_image; 
                         eventUploadType = data[0]['status'][0].eventDetail[0].upload_type; 
+                        eventLocEdit = data[0]['status'][0].eventDetail[0].location;
                         eventPid = data[0]['status'][0].eventDetail[0].id;
                                                 
                         var values = eventDateEdit.split('-');            
@@ -797,6 +806,7 @@ app.adminEventCalender = (function () {
                         
                         $("#editEventName").val(app.htmlDecode(eventNameEdit)); 
                         $("#editEventDesc").html(app.htmlDecode(eventDescEdit));
+                        $("#editPlaceValue").val(eventLocEdit);
                                     
                         if (eventImageEdit!==undefined && eventImageEdit!=="undefined" && eventImageEdit!=='' && eventUploadType==="image") {
                             var largeImage = document.getElementById('attachedImgEditEvent');
@@ -1013,7 +1023,7 @@ app.adminEventCalender = (function () {
 
             var event_Date = $("#adddatePickerEvent").val();
             var event_Time = $("#adddateTimePickerEvent").val();            
-
+            var event_Location =$("#placeValue").val();
             var currentDate = app.getCurrentDateTime();
             var values = currentDate.split('||');            
             var compareDate = values[0];        
@@ -1140,6 +1150,7 @@ app.adminEventCalender = (function () {
                     params.action = actionval;
                     params.upload_type = upload_type;
                     params.cmbGroup = group;
+                    params.location=event_Location;
                                                
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
@@ -1172,11 +1183,10 @@ app.adminEventCalender = (function () {
                     ft.upload(eventDataToSend, app.serverUrl() + 'event/Add', win, fail, options , true);
                 }else {
                     //console.log("org_id=" + organisationID + "txtEventName=" + event_name + "txtEventDesc=" + event_description + "txtEventDate=" + event_Date + "eventStartTime=" + eventTimeSend + "action=" + actionval);
-                    var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval,"cmbGroup":group}
+                    var jsonDataSaveGroup = {"org_id":organisationID,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":eventTimeSend,"action":actionval,"cmbGroup":group ,"location":event_Location}
             
                     //console.log(jsonDataSaveGroup);                    
                     $("#sendEventLoader").show();
-
                     
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
@@ -1427,6 +1437,7 @@ app.adminEventCalender = (function () {
             var event_description = $("#editEventDesc").val();
             var event_Date = $("#editdatePicker").val();
             var event_Time = $("#editdateTimePicker").val();
+            var edit_Location = $("#editPlaceValue").val();
             
             var groupEdit = [];		    
             /*$(':checkbox:checked').each(function(i) {
@@ -1532,6 +1543,7 @@ app.adminEventCalender = (function () {
                     params.action = actionval;    
                     params.upload_type = upload_type_edit;
                     params.cmbGroup = groupEdit;
+                    params.location =edit_Location;
        
                     var options = new FileUploadOptions();
                     options.fileKey = "event_image";
@@ -1573,7 +1585,7 @@ app.adminEventCalender = (function () {
 
                     $("#sendEditEventLoader").show();
                     
-                    var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval,"cmbGroup":groupEdit,"upload_type":upload_type_edit}
+                    var jsonDataSaveGroup = {"org_id":organisationID ,"txtEventName":event_name,"txtEventDesc":event_description,"txtEventDate":event_Date,"eventStartTime":event_Time,"pid":eventPid,"action":actionval,"cmbGroup":groupEdit,"upload_type":upload_type_edit,"location":edit_Location}
             
                     var dataSourceaddGroup = new kendo.data.DataSource({
                                                                            transport: {
@@ -1811,7 +1823,8 @@ app.adminEventCalender = (function () {
                                            event_desc: 'This Organization has no event.',                                                                                 										  
                                            event_name: 'No Event', 
                                            event_image:'',
-                                           event_time: '',                                                                                  										  
+                                           event_time: '',
+                                           location:'',
                                            mod_date: '',                                     
                                            org_id: ''
                                        });
@@ -1865,6 +1878,7 @@ app.adminEventCalender = (function () {
                                                    preDateVal:preDateVal,
                                                    //event_above_day:aboveDay,
                                                    event_date_To_Show:eventDate,
+                                                   location:data[0].status[0].eventData[i].location,
                                                    event_below_day:belowData,
                                                    event_desc: data[0].status[0].eventData[i].event_desc,
                                                    upload_type: data[0].status[0].eventData[i].upload_type,
@@ -2163,6 +2177,188 @@ app.adminEventCalender = (function () {
             popover.close();
         }
         
+        var placeArray=[];
+        var getlocationGoogle = function(txtVal){
+            var txtBxVal = txtVal.value;
+            if(txtBxVal.length!==0){
+                var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.GEO_PLACE_API+txtBxVal,
+                                                                            type:"POST",
+                                                                            dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                    
+                                                                        }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {   
+                                                                    //console.log('error');
+                                                                    if (!app.checkConnection()) {
+                                                                                 if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                 }else {
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                 } 
+                                                                          }else {
+                                                                              if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                              }else {
+                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                              }
+                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                          }
+                                                                                           
+                                                                }                                    
+                });  
+	            
+              dataSourceLogin.fetch(function() {                
+                var data = this.data();   
+                //console.log(data);
+                placeArray=[];
+                if (data[0]['status']==='ZERO_RESULTS') {
+                    placeArray.push({                                          
+                                      placeName: 'Just use "'+txtBxVal+'"',
+                                      valueGot:'NO'  
+                                    });
+                }else if(data[0]['status']==='OK') {
+
+                        var eventListLength = data[0]['predictions'].length;
+                            
+                        for (var i = 0 ; i < eventListLength ;i++) {
+                            placeArray.push({
+                                                   placeName: data[0]['predictions'][i].description,
+                                                   valueGot:'YES'
+                            });
+                        }
+                }  
+                showPlaceInListView();  
+              });
+                
+            }            
+        }
+        
+        function showPlaceInListView(){
+                        
+            $("#location-listview").kendoMobileListView({
+                                                               dataSource:placeArray,
+                                                               template: kendo.template($("#placeTemplate").html())
+                                                           });
+
+            $('#location-listview').data('kendoMobileListView').refresh();     
+        }
+        
+        
+                
+        var placeArrayEdit=[];
+        var getlocationGoogleEdit = function(txtVal){
+            var txtBxVal = txtVal.value;
+            if(txtBxVal.length!==0){
+                var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.GEO_PLACE_API+txtBxVal,
+                                                                            type:"POST",
+                                                                            dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                    
+                                                                        }
+                },
+                                                                schema: {
+                    data: function(data) {	
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {   
+                                                                    //console.log('error');
+                                                                    if (!app.checkConnection()) {
+                                                                                 if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                 }else {
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                 } 
+                                                                          }else {
+                                                                              if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                              }else {
+                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                              }
+                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                          }
+                                                                                           
+                                                                }                                    
+                });  
+	            
+              dataSourceLogin.fetch(function() {                
+                var data = this.data();   
+                //console.log(data);
+                placeArrayEdit=[];
+                if (data[0]['status']==='ZERO_RESULTS') {
+                    placeArrayEdit.push({                                          
+                                      placeName: 'Just use "'+txtBxVal+'"',
+                                      valueGot:'NO'  
+                                    });
+                }else if(data[0]['status']==='OK') {
+
+                        var eventListLength = data[0]['predictions'].length;
+                            
+                        for (var i = 0 ; i < eventListLength ;i++) {
+                            placeArrayEdit.push({
+                                                   placeName: data[0]['predictions'][i].description,
+                                                   valueGot:'YES'
+                            });
+                        }
+                }  
+                showPlaceInEditListView();  
+              });
+                
+            }            
+        }
+        
+        function showPlaceInEditListView(){
+                        
+            $("#edit-location-listview").kendoMobileListView({
+                                                               dataSource:placeArrayEdit,
+                                                               template: kendo.template($("#editPlaceTemplate").html())
+                                                           });
+
+            $('#edit-location-listview').data('kendoMobileListView').refresh();     
+        }
+        
+        
+        
+        var clickOnSelectLOC = function(e){
+            var nameReceiv = e.data.placeName;
+            if(e.data.valueGot==='NO'){
+                var gotVal = nameReceiv.split('"');
+                nameReceiv = gotVal[1];
+            }
+            $("#placeValue").val(nameReceiv);
+            closeModalViewLogin();
+        }
+        
+        var clickOnSelectLOCEdit = function(e){
+            var nameReceiv = e.data.placeName;
+            if(e.data.valueGot==='NO'){
+                var gotVal = nameReceiv.split('"');
+                nameReceiv = gotVal[1];
+            }
+            $("#editPlaceValue").val(nameReceiv);
+            editCloseModalViewLogin();
+        }
+        
+        var closeModalViewLogin = function() {
+            $("#modalview-login").kendoMobileModalView("close");
+        }
+        
+        var editCloseModalViewLogin = function() {
+            $("#editEventLocation").kendoMobileModalView("close");
+        }
+        
+         var closeLocationMap = function() {
+            $("#location_Map").kendoMobileModalView("close");
+        }
+                      
         return {
             init: init,
             //show: show,
@@ -2174,6 +2370,13 @@ app.adminEventCalender = (function () {
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoValEdit:getPhotoValEdit,
             getVideoValEdit:getVideoValEdit,
+            closeLocationMap:closeLocationMap,
+            clickOnSelectLOCEdit:clickOnSelectLOCEdit,
+            editCloseModalViewLogin:editCloseModalViewLogin,
+            clickOnSelectLOC:clickOnSelectLOC,
+            closeModalViewLogin:closeModalViewLogin,
+            getlocationGoogleEdit:getlocationGoogleEdit,
+            getlocationGoogle:getlocationGoogle,
             removeImage:removeImage,
             closeParentPopover:closeParentPopover,
             goToAddEventPage:goToAddEventPage,
@@ -2187,6 +2390,7 @@ app.adminEventCalender = (function () {
             deleteEvent:deleteEvent,
             editEventshow:editEventshow,
             goToCalendarPage:goToCalendarPage,
+            iFrameLocUrl:iFrameLocUrl,
             showMoreButtonPress:showMoreButtonPress,
             goToManageOrgPage:goToManageOrgPage,
             imageDownlaodClick:imageDownlaodClick,

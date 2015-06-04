@@ -152,6 +152,9 @@ app.eventCalender = (function () {
                                                        //event_above_day:aboveDay,
                                                        event_date_To_Show:eventDate,
                                                        event_below_day:belowData,
+                                                       calandar_Date:eventDaya,
+                                                       calandar_Time:eventTimeString,
+                                                       location:data[0].status[0].eventData[i].location,
                                                        upload_type:data[0].status[0].eventData[i].upload_type,
                                                        event_desc: data[0].status[0].eventData[i].event_desc,                                                                                 										  
                                                        event_name: data[0].status[0].eventData[i].event_name, 
@@ -338,6 +341,7 @@ app.eventCalender = (function () {
                                        event_desc: 'This Organization has no event.',                                                                                 										  
                                        event_name: 'No Event',                                                                                  										  
                                        event_time: '',
+                                       location:'',
                                        event_image:'',
                                        mod_date: '',                                     
                                        org_id: ''
@@ -363,10 +367,12 @@ app.eventCalender = (function () {
             }
         }
         
-        
+
+        var mapLocationShow;
         var eventSelected = function(e){
             //console.log(e);           
             
+            mapLocationShow = e.data.location;
                                multipleEventArray.push({
                                                 id: e.data.id,
                                                 add_date: e.data.add_date,
@@ -376,6 +382,9 @@ app.eventCalender = (function () {
                                                 event_name: e.data.event_name,
                                                 org_name_to_show:e.data.org_name_to_show,
                                                 upload_type:e.data.upload_type,
+                                                calandar_Date:e.data.calandar_Date,
+                                                calandar_Time:e.data.calandar_Time,
+                                                location:e.data.location,
                                                 //event_above_day:e.data.event_above_day,
                                                 event_below_day:e.data.event_below_day,
                                                 event_image:e.data.event_image,
@@ -554,12 +563,150 @@ app.eventCalender = (function () {
             }
         }
         
+        var closeLocationMap = function() {
+            $("#location_Map_UserSide").kendoMobileModalView("close");
+        }
+        
+         var iFrameLocUrl = function(){    
+            
+            var mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBNTSIiae6uNUtrZlpxVdGVsDxQ65xZ2O4&q="+mapLocationShow;
+            document.getElementById("setIFrame_UserSide").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width;this.height=screen.height"></iframe>';             
+        }
+        
+        
+         var DeleteEventFromCalendar = function(){            
+                    var title = multipleEventArray[0].event_name ;
+                    var location = multipleEventArray[0].location ;
+                    var notes = multipleEventArray[0].event_desc ;
+                    var eventDaya = multipleEventArray[0].calandar_Date ;
+                    var eventTime = multipleEventArray[0].calandar_Time ;
+                                             
+                    var values = eventDaya.split('-');
+                    var year = values[0]; // globle variable
+                    var month = values[1];
+                    var day = values[2];
+                                  
+                    var valueTime = eventTime.split(':');            
+                    var Hour = valueTime[0]; // globle variable            
+                    var Min = valueTime[1];        
+                    var sec = valueTime[2];
+            
+                    var endHour = 23;
+                    var endMin = 59;
+                    var endSec = 0;
+            
+                                                                                                                         
+                    var start = new Date(year + "/" + month + "/" + day + " " + Hour + ":" + Min + ":" + sec);      
+                    //var start = new Date(2015,0,1,20,0,0,0,0);
+                    var end = new Date(year + "/" + month + "/" + day + " " + endHour + ":" + endMin + ":" + endSec);
+                    window.plugins.calendar.deleteEvent(title, location, notes, start, end, deleteSuccess, error);
+        }
+
+        
+        function fromCalDeleteEvent(){
+                    var title = multipleEventArray[0].event_name ;
+                    var location = multipleEventArray[0].location ;
+                    var notes = multipleEventArray[0].event_desc ;
+                    var eventDaya = multipleEventArray[0].calandar_Date ;
+                    var eventTime = multipleEventArray[0].calandar_Time ;
+                                             
+                    var values = eventDaya.split('-');
+                    var year = values[0]; // globle variable
+                    var month = values[1];
+                    var day = values[2];
+                                  
+                    var valueTime = eventTime.split(':');            
+                    var Hour = valueTime[0]; // globle variable            
+                    var Min = valueTime[1];        
+                    var sec = valueTime[2];
+            
+                    var endHour = 23;
+                    var endMin = 59;
+                    var endSec = 0;
+            
+                                                                                                                         
+                    var start = new Date(year + "/" + month + "/" + day + " " + Hour + ":" + Min + ":" + sec);      
+                    //var start = new Date(2015,0,1,20,0,0,0,0);
+                    var end = new Date(year + "/" + month + "/" + day + " " + endHour + ":" + endMin + ":" + endSec);
+                    window.plugins.calendar.deleteEvent(title, location, notes, start, end, delSuccess, error);
+        }
+
+        
+
+        var AddEventToCalender = function() {
+            fromCalDeleteEvent();            
+            var deviceName = app.devicePlatform();                  
+            var cal = window.plugins.calendar;
+            
+            /*if (deviceName==='iOS') {
+                cal.deleteCalendar(calendarName, success, error);    
+                var options = cal.getCreateCalendarOptions();
+                options.calendarName = calendarName;
+                options.calendarColor = "#FF0000"; // passing null make iOS pick a color for you
+                cal.createCalendar(options, success, error);         
+            }*/            
+        
+            
+                    var title = multipleEventArray[0].event_name ;
+                    var location = multipleEventArray[0].location ;
+                    var notes = multipleEventArray[0].event_desc ;
+                    var eventDaya = multipleEventArray[0].calandar_Date ;
+                    var eventTime = multipleEventArray[0].calandar_Time ;
+
+                                var values = eventDaya.split('-');
+                                var year = values[0]; // globle variable
+                                var month = values[1];
+                                var day = values[2];
+
+                                var valueTime = eventTime.split(':');            
+                                var Hour = valueTime[0]; // globle variable            
+                                var Min = valueTime[1];        
+                                var sec = valueTime[2];
+            
+                                var endHour = 23;
+                                var endMin = 59;
+                                var endSec = 0;
+                                                                                                             
+                                var start = new Date(year + "/" + month + "/" + day + " " + Hour + ":" + Min + ":" + sec);      
+                                //var start = new Date(2015,0,1,20,0,0,0,0);
+                                var end = new Date(year + "/" + month + "/" + day + " " + endHour + ":" + endMin + ":" + endSec);
+                                //var end = new Date(2015,0,1,22,0,0,0,0); 
+            
+                                if (deviceName==='Android') {
+                                    cal.createEvent(title, location, notes, start, end, success, error);
+                                }else if (deviceName==='iOS') {
+                                    //console.log("-----------------insert--------------------");
+                                    cal.createEvent(title, location, notes, start, end, success, error);
+                                    //cal.createEventInNamedCalendar(title,location,notes,start,end,calendarName,success,error);            
+                                }
+        }
+
+        function delSuccess(){
+            console.log('success');
+        }
+        
+        var success = function(message) {
+            window.plugins.toast.showShortBottom('Event synced to your device calendar');
+        };
+        
+        var deleteSuccess = function(message) {
+            window.plugins.toast.showShortBottom('Event deleted from your device calendar');
+        };
+        
+        var error = function(message) {
+
+        };
+        
         return {
             init: init,
             show: show,
             //eventListShow:eventListShow,
             eventSelected:eventSelected,
+            DeleteEventFromCalendar:DeleteEventFromCalendar,
+            AddEventToCalender:AddEventToCalender,
             eventListFirstShow:eventListFirstShow,
+            closeLocationMap:closeLocationMap,
+            iFrameLocUrl:iFrameLocUrl,
             gobackOrgPage:gobackOrgPage,
             gobackToCalendar:gobackToCalendar,
             showMoreButtonPress:showMoreButtonPress,

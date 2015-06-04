@@ -81,7 +81,11 @@
         <div data-role="navbar">
             <span> Add News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+
+            <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#newsImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+            <a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminNews.addNewNewsFunction">Save</a>
+ 
         </div>
     </div>
     
@@ -106,7 +110,7 @@
                </label>           
             <br/>
                         
-            <span id="activityTemplateDate" style="color:rgb(127,191,77);" class="defineTitleText" >News Date</span>
+            <!--<span id="activityTemplateDate" style="color:rgb(127,191,77);" class="defineTitleText" >News Date</span>
             <div style="margin-top:10px;">
                 <input id="adddatePickerNews" onkeydown="return false;"/>
             </div>                       
@@ -115,21 +119,30 @@
             <span id="activityTemplateDate" style="color:rgb(127,191,77);" class="defineTitleText" >News Time</span>
             <div style="margin-top:10px;" >
                 <input id="adddateTimePickerNews" onkeydown="return false;"/>
-            </div>
+            </div>-->
             
-            <div id="newsAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
+             
+            <span id="activityTemplateDate" class="defineTitleText">Event Date & Time </span>
+            <ul data-style="inset" data-role="listview" style="margin-left:0px;margin-right:0px;">
+                <li style="display:inline">
+                    <input id="adddatePickerNews" onkeydown="return false;" style="float:left;"/>
+                    <input id="adddateTimePickerNews" onkeydown="return false;" style="float:right;"/>
+                </li>
+            </ul>
+            
+            
+          <div id="newsAttachment">
                 <div style="display:inline;">
-                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect" >
+                    <!--<a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsImgSelect">
                         <img src="styles/images/attachments.png" />                                                
-                    </a>
-                    <img id="attachedImgNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none"/>                    
-                    <div style="width:180px,height:35px;">
+                    </a>-->
+                    <img id="attachedImgNews" class="attachBackgroundImgShow"  style="display:none;border: 5px solid #cccccc;"/>                    
+                    <div style="width:180px,height:150px;">
                         <!--<video id="attachedVidNews" width="180" height="50" controls style="display:none">
                         <source src="" type="">
                         </video>-->
-                        <img id="attachedVidNews" src="" alt="" align="right"  style="height:35px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
-                    </div>
-                
+                        <img id="attachedVidNews" src="" alt="" align="right"  style="margin-top:10px;height:150px;width:180px;float:left;border:none;display:none"/>
+                    </div>                
                 </div>
 
                 <ul data-role="actionsheet" id="newsImgSelect">
@@ -149,9 +162,9 @@
                 </ul>
             </div>
                         
-            <li class="defineSaveButton" data-bind="click:addNewNewsFunction">
+            <!--<li class="defineSaveButton" data-bind="click:addNewNewsFunction">
                 Save
-            </li>
+            </li>-->
         </div>
     </div>
 </div>
@@ -169,7 +182,9 @@
         <div data-role="navbar">
             <span> Edit News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToNewsListPage"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->            
+            <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#newsEditImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+            <a style="width: 3.4em;height:2.8em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-editNews" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a> 
         </div>
     </div>
     
@@ -192,7 +207,7 @@
             <div id="groupInEditNews" class="selectDivClass"> </div>-->
                         
 
-             <span id="activityTemplateDate"  class="defineTitleText" >News Date</span>
+            <!--<span id="activityTemplateDate"  class="defineTitleText" >News Date</span>
             <div style="margin-top:10px;" >
                 <input id="editdatePickerNews" onkeydown="return false;"/>
             </div>
@@ -201,19 +216,27 @@
             <span id="activityTemplateDate"  class="defineTitleText" >News Time</span>
             <div style="margin-top:10px;" >
                 <input id="editdateTimePickerNews" onkeydown="return false;"/>
-            </div> 
+            </div>-->
+            
+            <span id="activityTemplateDate" class="defineTitleText">Event Date & Time </span>
+
+            <ul data-style="inset" data-role="listview" style="margin-left:0px;margin-right:0px;">
+                <li style="display:inline">
+                    <input id="editdatePickerNews" onkeydown="return false;" style="float:left;"/>
+                    <input id="editdateTimePickerNews" onkeydown="return false;" style="float:right;"/>
+                </li>
+            </ul>
         
         </div>
 
-        <div id="newsAttachment" style="margin-top:10px;height:50px; width:100%;">
-
-            <div style="display:inline;height:100px; width:100%;">
-                <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" >
+       <div id="newsAttachment" style="margin-left:10px;">
+            <div>
+                <!--<a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#newsEditImgSelect" >
                     <img src="styles/images/attachments.png" />
-                </a>
-                <img id="attachedImgEditNews" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
+                </a>-->
+                <img id="attachedImgEditNews" class="attachBackgroundImgShow"  style="display:none;border: 5px solid #cccccc;"/>
                 
-                <img id="attachedVidNewsEdit" src="" alt="" align="right"  style="height:35px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                <img id="attachedVidNewsEdit" style="margin-top:10px;height150px;width:180px;float:left;border:none;display:none"/>
 
             </div>
             
@@ -235,13 +258,22 @@
             </ul>
         </div>
                 
-                    <li  class="showInSameLine" style="margin-bottom:30px;">
+                    <!--<li  class="showInSameLine" style="margin-bottom:30px;">
 
                         <span id="registration" style="float:right;height:40px;padding-top:10px;width:49%;background-color:#303645;color:#ffffff;border-radius:3px;" data-bind="click:deleteNews"> Delete News </span>
 
                         <span id="registration" style="float:left;width:49%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" data-bind="click:saveEditNewsData" > Save Change </span>
 
-                    </li>
+                    </li>-->
+        
+         <div data-role="popover" id="popover-editNews" data-popup='{"width": "180"}' style="margin-right:-20px;">
+            <div data-role="view">
+                <ul data-role="listview">                              
+                     <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminNews.saveEditNewsData"><label>Save News</label></a>
+                     <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminNews.deleteNews"><label>Delete News</label></a>
+                </ul>
+            </div>
+         </div>
 
                  <br/>
             <br/>

@@ -59,6 +59,9 @@
                      
                     <div id="activityTemplateTitle" class="eventNameList" >${event_name}</div> 
                     <span id="activityTemplateDate" class="calanderTimeClass">${event_date_To_Show} at ${event_time}</span>
+                     <br/>   
+                    <span id="activityTemplateDate" class="calanderTimeClass" style="text-align:left;">${location}</span>   
+  
 
                </div> 
               </div> 
@@ -113,7 +116,6 @@
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToEventListPage"></a>    
                  <!--<a style="background:transparent; border:none;" data-icon="more" data-align="right" data-role="button" href="#popover-eventAction" data-rel="popover"></a>-->
                  <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-eventAction" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a>
-
               </div>                                          
     </div>
 
@@ -174,7 +176,7 @@
                   #}else{#                     
                          <!--<div class="OrgbackgroundImgShow" style="width:100%;"></div>-->
                          <div class="backgroundImgShow">
-                            <div id="activityTemplateTitle" class="eventNameListDetail">${event_name}
+                            <div id="activityTemplateTitle" class="eventNameListDetail">
                                  <span style="z-index:1;">${event_name}</span>                              
                                  <br/>
                             </div>
@@ -185,6 +187,13 @@
                          <div class="eventDetail-img-show"></div>
             		     <a id="activityTemplateMessage"  class="eventDetailTime">${event_show_day} ${event_below_day} at ${event_time}</a>
                     </div>
+                    
+                    #if(location!==''){# 
+                        <div class="calendarDetail-List" >
+                             <div class="eventDetail-img-show-loc"></div>                    
+            		         <a id="activityTemplateMessage"  class="eventDetailTime" data-role="button" data-rel="modalview" href="\#location_Map"  data-click="app.adminEventCalender.iFrameLocUrl" style="background:transparent;border:none;margin:0px;padding:0px 0px 0px 10px;float:left; display:inline-block;text-overflow: ellipsis;width:90%;text-align:left;">${location}</a>
+                        </div>
+                    #}#
                      
                      <div class="calendarEventAbtDetail">
                          <span  id="activityTemplateMessage"  class="orgContentMsg" >About <br/><span style="color:rgb(33,33,33);margin-top:10px;">${event_desc}</span></span>
@@ -222,13 +231,24 @@
             
 		</script>
 
+        <div data-role="modalview" id="location_Map" style="width:96%;height:80%;">
+                        <div data-role="header" style="background-color:rgb(204,204,204);height:35px;">
+                            <div style="margin:5px 10px 10px 10px;width:100px;float:left;font-size:20px;color:rgb(255,255,255)"> Location </div>
+                            <a data-click="app.adminEventCalender.closeLocationMap" data-role="button" data-align="right" style="float:right;color:rgb(255,255,255);border:none;" >Close</a>
+                        </div>
+                        <div id="setIFrame"></div>    
+        </div>
+
 
 <div data-role="view" id="adminAddEventCalendar" data-id="innerActivity" data-layout="default" class="form-view"  data-model="app.adminEventCalender" data-show ="app.adminEventCalender.addEventshow">
     <div data-role="header">         
               <div data-role="navbar">     
                  <span> Add Event </span>
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToEventListPage"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+                 <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+                <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#eventImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+                <a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminEventCalender.addNewEventFunction">Save</a>
+
               </div>                                          
     </div>
     
@@ -260,13 +280,18 @@
                 <input id="adddateTimePickerEvent" onkeydown="return false;" style="width:180px;"/>
             </div>-->
             
+            <span id="activityTemplateDate" class="defineTitleText">Event Location</span> 
+            <a style="background:transparent; border:none;width:100%;margin:10px 0px 10px 0px;padding:0px;" data-role="button" data-rel="modalview" href="#modalview-login">
+                <input type="text"  id="placeValue" class="defineTextBox"  style="margin:0px;" placeholder="Location"/> 
+            </a>            
             <br/>
+            
             <label style="margin:10px 0px 10px 0px;color:rgb(127,191,77);">
                    <span>Select Group to Add Event</span>
         		   <select id="groupInAddEvent"  multiple ></select>
             </label>           
             <br/>
-            <span id="activityTemplateDate" class="defineTitleText">Event Date </span>                         
+            <!--<span id="activityTemplateDate" class="defineTitleText">Event Date </span>                         
             <div style="margin-top:10px;" >
                 <input id="adddatePickerEvent" onkeydown="return false;" />
             </div>            
@@ -274,22 +299,30 @@
             <span style="color:rgb(127,191,77);" id="activityTemplateDate"  class="defineTitleText">Event Time </span>             
             <div style="margin-top:10px;" >
                 <input id="adddateTimePickerEvent" onkeydown="return false;" />
-            </div>
+            </div>-->
+            
+            <span id="activityTemplateDate" class="defineTitleText">Event Date & Time </span>
+
+            <ul data-style="inset" data-role="listview" style="margin-left:0px;margin-right:0px;">
+                <li style="display:inline">
+                    <input id="adddatePickerEvent" onkeydown="return false;" style="float:left;"/>
+                    <input id="adddateTimePickerEvent" onkeydown="return false;" style="float:right;"/>
+                </li>
+            </ul>
             
         </div>
          
         
-            <div id="eventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
-                <div style="display:inline;">
-                    
-                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" >
+           <div id="eventAttachment" style="margin-left:10px;">
+                <div>                    
+                    <!--<a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" >
                         <img src="styles/images/attachments.png" />
-                    </a>
-
-                    <img id="attachedImgEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    </a>-->
                     
-                    <div style="width:180px,height:50px;">                        
-                        <img id="attachedVidEvent" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                    <img id="attachedImgEvent" class="attachBackgroundImgShow"  style="display:none;border: 5px solid #cccccc;"/>
+                    
+                    <div style="width:180px,height:150px;">                        
+                        <img id="attachedVidEvent" style="margin-top:10px;height:150px;width:180px;float:left;border:none;display:none"/>
                     </div>
 
                 </div>
@@ -311,11 +344,22 @@
                 </ul>
             </div>
         
+        
+            <div data-role="modalview" id="modalview-login" style="width: 96%;height:96%;border-radius:3px;">
+                <div data-role="header" style="background-color:#cccccc;overflow:hidden;display: inline-block;">
+                    <input type="text"  id="addlocation" class="locationTextBox"  placeholder="Search places" onkeyup="app.adminEventCalender.getlocationGoogle(this);" style="padding-left:45px;"/>
+                    <a data-click="app.adminEventCalender.closeModalViewLogin" data-role="button" data-align="right" style="margin:10px;float:right;color:rgb(255,255,255);width:65px;">Close</a>
+                </div>
+                 
+                 <div>                      
+                    <ul id="location-listview" data-style="inset" data-role="listview" data-template="placeTemplate" data-bind="source: adminEventCalender" style="margin:0px;"></ul> 
+                 </div>                                
+            </div>
 
          
-           <li class="defineSaveButton"  data-bind="click:addNewEventFunction">
+           <!--<li class="defineSaveButton"  data-bind="click:addNewEventFunction">
                 Save   
-           </li>
+           </li>-->
     </div> 
 </div>
 
@@ -335,7 +379,10 @@
               <div data-role="navbar">     
                  <span> Edit Event </span>                 
                  <a id="backCalender" style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToCalendarPageDetail"></a>    
-                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+                 <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+
+                 <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#editEventImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+                 <a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminEventCalender.saveEditEventData">Save</a> 
               </div>                                          
     </div>
     
@@ -370,13 +417,18 @@
                     <input id="editdateTimePicker" />
                 </div>-->
             
+            <span id="activityTemplateDate" class="defineTitleText">Event Location</span> 
+            <a style="background:transparent; border:none;width:100%;margin:10px 0px 10px 0px;padding:0px;" data-role="button" data-rel="modalview" href="#editEventLocation">
+                <input type="text"  id="editPlaceValue" class="defineTextBox"  style="margin:0px;" placeholder="Location"/> 
+            </a>            
+            <br/>
             
             <label style="margin:10px 0px 10px 0px;color:rgb(127,191,77);">
               <span>Selected Group</span>
               <select id="groupInEditEvent"  multiple></select>
             </label>
                         
-            <span id="activityTemplateDate"  class="defineTitleText">Event Date</span> 
+            <!--<span id="activityTemplateDate"  class="defineTitleText">Event Date</span> 
                         <div style="margin-top:10px" >
                 <input id="editdatePicker" />
             </div>
@@ -385,19 +437,41 @@
             <span id="activityTemplateDate"  class="defineTitleText">Event Time</span> 
                 <div style="margin-top:10px" >
                     <input id="editdateTimePicker" />
-                </div>                       
+                </div>-->                       
+            
+            <span id="activityTemplateDate" class="defineTitleText">Event Date & Time </span>
+
+            <ul data-style="inset" data-role="listview" style="margin-left:0px;margin-right:0px;">
+                <li style="display:inline">
+                    <input id="editdatePicker" onkeydown="return false;" style="float:left;"/>
+                    <input id="editdateTimePicker" onkeydown="return false;" style="float:right;"/>
+                </li>
+            </ul>
+            
+            
+            <div data-role="modalview" id="editEventLocation" style="width: 96%;height:96%;border-radius:3px;">
+                <div data-role="header" style="background-color:#cccccc;overflow:hidden;display: inline-block;">
+                    <input type="text"  id="editlocation" class="locationTextBox"  placeholder="Search places" onkeyup="app.adminEventCalender.getlocationGoogleEdit(this);" style="padding-left:45px;"/>
+                    <a data-click="app.adminEventCalender.editCloseModalViewLogin" data-role="button" data-align="right" style="margin:10px;float:right;color:rgb(255,255,255);width:65px;">Close</a>
+                </div>                 
+                <div>                      
+                    <ul id="edit-location-listview" data-style="inset" data-role="listview" data-template="editPlaceTemplate" data-bind="source: adminEventCalender" style="margin:0px;">
+                    </ul> 
+                </div>                                
+            </div>
         </div>
          
-            <div id="editEventAttachment" style="margin-top:10px;margin-bottom:10px;height:50px; width:100%;">
-                <div style="display:inline;">                    
-                    <a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" >
+            <div id="editEventAttachment" style="margin-left:10px;">
+                <div>
+                    
+                    <!--<a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#editEventImgSelect" >
                         <img src="styles/images/attachments.png" />
-                    </a>
+                    </a>-->
                     
-                    <img id="attachedImgEditEvent" src="" alt="" align="right"  style="height:50px;width:100px;margin-left:10px;float:left;border:none;display:none" />
+                    <img id="attachedImgEditEvent" class="attachBackgroundImgShow"  style="display:none;border: 5px solid #cccccc;" />
                     
-                    <div style="width:180px,height:50px;">                                                
-                        <img id="attachedEditVidEvent" src="" alt="" align="right"  style="height:50px;width:50px;margin-left:10px;float:left;border:none;display:none"/>
+                    <div style="width:180px,height:150px;">                                                
+                        <img id="attachedEditVidEvent" style="margin-top:10px;height150px;width:180px;float:left;border:none;display:none"/>
                     </div>
 
                 </div>
@@ -419,11 +493,27 @@
                 </ul>
             </div>
          
-           <li class="defineSaveButton" data-bind="click:saveEditEventData">
+           <!--<li class="defineSaveButton" data-bind="click:saveEditEventData">
                        Save Change   
-           </li>       
+           </li>-->       
    </div>      
 </div>
+
+
+<script type="text/x-kendo-template" id="placeTemplate">
+    <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: clickOnSelectLOC }">
+        <div class="locationSearchImg" style="margin-right:10px;"></div>
+        <div class="orgContentMsg" style="margin-top:5px;">${placeName}</div>
+    </div>
+</script>
+
+
+<script type="text/x-kendo-template" id="editPlaceTemplate">
+    <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: clickOnSelectLOCEdit }">
+        <div class="locationSearchImg" style="margin-right:10px;"></div>
+        <div class="orgContentMsg" style="margin-top:5px;">${placeName}</div>
+    </div>
+</script>
 
 
         <script type="text/x-kendo-template" id="groupNameShowTemplateEvent"> 
