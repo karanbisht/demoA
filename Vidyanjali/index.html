@@ -3,6 +3,7 @@
     <head>
         <title></title>
         <meta charset="utf-8" />
+        
         <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
@@ -25,13 +26,12 @@
                     <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
-
                 </div>
             </div>
         </div>
 
 
-        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show">            
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show" data-use-native-scrolling="true">            
             <div class="loader" id="progress" style="display:none;">
                 <div class="ball"></div>
             </div>
@@ -51,7 +51,7 @@
                   
             
             <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;display:none;max-width:600px;margin-bottom:15px;background:#ffffff;">                
-                <form id="login-form" data-bind="events: { keyup: checkEnter }" style="background:#ffffff;">
+                <form id="login-form" data-bind="events: { keydown: checkEnter }" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
                         <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
                             <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.6rem;margin-left:25px;height:53px;">
@@ -69,7 +69,7 @@
             </div>
 
 
-            <div  data-role="view" id="regenerateDiv" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px; padding:10% 10px 10% 10px; border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
+            <div  data-role="view" id="regenerateDiv" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px; padding:10% 10px 10% 10px; border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
                <script>
                 if (screen.width>screen.height){
                     $("#regenerateDiv").css("margin","8% auto 10px auto"); 
@@ -103,7 +103,7 @@
             </div>
 
             
-          <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
+          <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
               <script>
                 if (screen.width>screen.height){
                       $("#validationRow").css("margin","8% auto 10px auto");
@@ -119,7 +119,7 @@
                         Verification
                     </div>
                 
-                <form id="verification-form" data-bind="events: { keyup: checkEnterCode }">
+                <form id="verification-form" data-bind="events: { keydown: checkEnterCode }">
                     <div style="text-align:center;color:#313C50;padding-top:10px;">
                         Verification Code sent to your registered Mobile Number.Please use this Verification Code to continue with the Registration.<br/>
                         <br/>
@@ -156,12 +156,12 @@
       
         <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>
         
-     <div data-role="view" id="view-all-activities"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow">
-        <div class="loader" id="progressNotification" style="display:none;">
-            <div class="ball"></div>
-        </div>
-        <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-bind="source: activities"></span>
-        <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
+       <div data-role="view" id="view-all-activities"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow">
+            <div class="loader" id="progressNotification" style="display:none;">
+                <div class="ball"></div>
+            </div>
+            <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-bind="source: activities"></span>
+            <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
          
             <ul data-role="actionsheet" id="notiShareAction">
                     <li class="km-actionsheet-title">Share</li>
@@ -183,12 +183,11 @@
                     <li>
                         <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
                     </li>
-            </ul>  
-         
-     </div>
+            </ul>          
+       </div>
         
                 
-        <div data-role="view" id="userOrgManage" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view"  data-model="app.OragnisationList"  data-show ="app.OragnisationList.showOrgInfoPage">    
+        <div data-role="view" id="userOrgManage" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view"  data-model="app.OragnisationList"  data-show ="app.OragnisationList.showOrgInfoPage" data-use-native-scrolling="true">     
             <div class="loader" id="leaveOrganization" style="display:none;margin">
                       <div class="ball"></div>
             </div>
@@ -215,9 +214,9 @@
                     <td style="width:10px;"></td>
                     <td class="manageOrgDiv" data-role="touch" data-bind="events: { tap: showCalendar }">
                         <div id="show-calander-icon"></div>
-                    Events
+                        Events
                     </td>
-                </tr>
+            </tr>
           </table>    
       </div>
             <li id="manageOrgFooter" class="defineSaveButton" style="margin-top:10%;" data-role="touch" data-bind="events: { tap: unsubscribeOrg }">
@@ -226,9 +225,8 @@
         </div>
 
         
-                
-        
-        <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show">             
+                        
+        <div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-use-native-scrolling="true">             
             <div class="loader" id="progress2" style="display:none;">
                 <div class="ball"></div>
             </div>
@@ -548,7 +546,7 @@
         </div>
         
                 
-  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show">
+  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" data-use-native-scrolling="true">
       <div>
         <table style="margin:10px;">
             <tr>
@@ -619,8 +617,7 @@
 
         <div>
         <ul id="reply-customer-listview"  data-style="inset" data-role="listview"  data-template="replyCustomerTemplate" data-bind="source: activities"></ul>
-        </div> 
-          
+        </div>           
      </div>
 
  <script type="text/x-kendo-template" id="replyCustomerTemplate">
@@ -649,22 +646,15 @@
         
         
 
-        <div data-role="view" id="sendNotificationDiv" class="form-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show">
-
+        <div data-role="view" id="sendNotificationDiv" class="form-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-use-native-scrolling="true">
           <div data-role="content">
-
-                
                 <div class="loader" id="selectOrgLoader" style="display:none;">
                     <div class="ball"></div>
                 </div>
-
-
-              <div class="loader" id="progressSendNotification" style="display:none;">
+                <div class="loader" id="progressSendNotification" style="display:none;">
                     <div class="ball"></div>
-                </div>
-              
+                </div>              
                 <div  id="whatToDo">
-
                     <table style="margin:23% auto auto auto">
                         <tr id="selectGroupLI">
                             <td class="sendNotiSubMenu"  data-bind="click:clickOnSelectGroup">
@@ -672,9 +662,7 @@
                               Send to group
                             </td>
                         </tr>
-
-                             <tr style="height:40px;"></tr>
-
+                        <tr style="height:40px;"></tr>
                         <tr id="selectCustomerLI">                            
                             <td class="sendNotiSubMenu" data-bind="click:clickOnSelectCustomer">
                                 <div id="sendToIndicon"></div>
@@ -686,11 +674,8 @@
                                 
                                                                
                 <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;background-color:#ffffff">
-
                     <p style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;">Select group to send message. </p>
-
                     <div id="group-Name-listview" style="border:none"> </div>
-
                 </div>
 
                 <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;background-color:#ffffff">

@@ -36,14 +36,14 @@ app.Login = (function () {
         };
                 
         var checkEnter = function (e) {
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 || e.keyCode === 9) {
                 login();
                 $(e.target).blur();
             }
         };
         
         var checkEnterCode = function (e) {
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 || e.keyCode === 9) {
                 doneVerification();
                 $(e.target).blur();
             }
@@ -349,7 +349,7 @@ app.Login = (function () {
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
                                                                             read: {                     
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=Zaffio"
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=POSTIF"
                                                                              }
                 },
                                                                      schema: {

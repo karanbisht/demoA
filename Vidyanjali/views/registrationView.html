@@ -1,24 +1,20 @@
 <div data-role="view" id="view-all-activities" data-layout="default" class="" data-model="app.registration"
-     data-init="app.registration.regInit" data-show="app.registration.addNewRegistration" >
+     data-init="app.registration.regInit" data-show="app.registration.addNewRegistration" data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
             Registration
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
         </div>
     </div>
-    
-
     <div class="loader" id="progressRegister" style="display:none;">
-                <div class="ball"></div>
+          <div class="ball"></div>
     </div>
-
-
     <div id="selectionDivR">
         <div class="regLogoImg">
                    <img id="logo" src="styles/images/Vidyanjali_Logo.png"  style="width:100%;"/>                   
         </div> 
         <div>
-            <form>
+            <form data-bind="events: { keydown: checkEnter }">
                 <ul data-role="listview" data-style="inset">
                     <li>
                         <input type="text" id="regFirstName" placeholder="First Name" onfocusout="app.toTitleCase(this ,'regFirstName');" />
@@ -38,10 +34,7 @@
     </div>
     
 
-
-    <div data-role="view" id="regenerateDivR" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
-
-
+    <div data-role="view" id="regenerateDivR" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
         <script>
                 if (screen.width>screen.height){
                       $("#regenerateDivR").css("margin","8% auto 10px auto"); 
@@ -51,33 +44,28 @@
                     $("#regenerateDivR").css("padding","10% 10px 10% 10px");
                 }    
         </script>
-
         <div data-role="content" style="background-color:#f3f3f3">
+            <div style="vertical-align:middle; text-align:center">
+                <img src="styles/images/msgIcon.png" height="100" width="100"/>
+            </div>
 
-        <div style="vertical-align:middle; text-align:center">
-            <img src="styles/images/msgIcon.png" height="100" width="100"/>
-        </div>
+            <div style="vertical-align:middle; text-align:center">
+                <span id="userRegMobNumR" style="color:#61B85C;"></span>
+            </div>
 
-        <div style="vertical-align:middle; text-align:center">
-            <span id="userRegMobNumR" style="color:#61B85C;"></span>
-        </div>
-
-        <div style="text-align:center;color:#BCBCBC;padding-top:10px;">
-            Verification code will be sent to this number.If you'd like to change your phone number,please select cancel
-        </div>
-        <ol class="reg-group-wrp" style="margin-bottom:10px;">
-            <li style="width:100%">
-                <span id="registration" data-role="touch" style="float:right;border-radius:3px;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCodeR }"> Ok </span>
-
-                <span id="registration" data-role="touch" style="float:left;border-radius:3px;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRCR }"> Cancel </span>
-            </li>
-        </ol>
-            
-            
+            <div style="text-align:center;color:#BCBCBC;padding-top:10px;">
+                Verification code will be sent to this number.If you'd like to change your phone number,please select cancel
+            </div>
+            <ol class="reg-group-wrp" style="margin-bottom:10px;">
+                <li style="width:100%">
+                    <span id="registration" data-role="touch" style="float:right;border-radius:3px;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCodeR }"> Ok </span>
+                    <span id="registration" data-role="touch" style="float:left;border-radius:3px;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRCR }"> Cancel </span>
+                </li>
+            </ol>       
         </div>
     </div>
 
-    <div data-role="view" id="validationRowR" style="position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;">
+    <div data-role="view" id="validationRowR" style="position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
              <script>
                 if (screen.width>screen.height){
                       $("#validationRowR").css("margin","8% auto 10px auto");
@@ -86,22 +74,18 @@
                     $("#validationRowR").css("margin","20% auto 10px auto");
                     $("#validationRowR").css("padding","10% 10px 10% 10px");
                 }    
-              </script>
-
+             </script>
         
-    <div data-role="content" style="background-color:#f3f3f3">
-
+      <div data-role="content" style="background-color:#f3f3f3">
         <div style="background-color:#F3F3F3;color:#313C50;text-align:center;padding:10px;">
             Verification
         </div>
+              
+        <div class="loader" id="progressRandomCodeR" style="display:none;">
+             <div class="ball"></div>
+        </div>
 
-                     <div class="loader" id="progressRandomCodeR" style="display:none;">
-                        <div class="ball"></div>
-
-                     </div>
-
-        <form id="reg-verification-form" data-bind="events: { keyup: checkEnterCode }" class="">
-
+        <form id="reg-verification-form" data-bind="events: { keydown: checkEnterCode }" class="">
             <div style="text-align:center;color:#313C50;padding-top:10px;">
                 Verification Code sent to your registered Mobile Number.Please use this Verification Code to continue with the Registration. <br/>
                 <br/>
@@ -112,8 +96,7 @@
                     </li>
                 </ul>
             </div>
-            
-            
+                        
             <ol class="reg-group-wrp" style="margin-bottom:25x;">
                 <li style="width:100%">
                     <span id="registration" data-role="touch" style="float:right;width:31.33%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: doneVerificationR }"> Next </span>
@@ -123,9 +106,7 @@
                     <span id="registration" data-role="touch" style="float:left;margin-right:5px;height:40px;padding-top:10px;width:33.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: clickforRegenerateCodeR }"> Regenerate </span>
                 </li>
             </ol>
-
         </form>
-    </div>      
-  </div>
-    
+      </div>      
+    </div>    
 </div>

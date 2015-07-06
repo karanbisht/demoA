@@ -10,8 +10,7 @@ app.registration = (function () {
         var $regLastName;
         var $regEmail;
         var username;  
-        var comingFrom;
-        
+        var comingFrom;        
         var account_Id;
         var userType = [];
         var UserProfileInformation;
@@ -32,13 +31,10 @@ app.registration = (function () {
             $regFirstName.val('');
             $regLastName.val('');
             $regEmail.val('');
-            
             username = e.view.params.mobile;
             comingFrom = e.view.params.type;            
             account_Id = e.view.params.accountId;
-
             document.getElementById('selectionDivR').style.pointerEvents = 'auto'; 
-
             $("#selectionDivR").css("z-index", "999");
             $("#selectionDivR").css("opacity", 1);	
         };
@@ -225,7 +221,7 @@ app.registration = (function () {
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
                     read: {
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=Zaffio"
+                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=POSTIF"
                                                                              }
                 },
                                                                      schema: {
@@ -592,8 +588,15 @@ app.registration = (function () {
         }
         
         var checkEnterCode = function (e) {
-            if (e.keyCode === 13) {
+            if (e.keyCode === 13 || e.keyCode === 9) {
                 doneVerification();
+                $(e.target).blur();
+            }
+        };
+        
+        var checkEnter = function (e) {
+            if (e.keyCode === 13 || e.keyCode === 9) {
+                registerR();
                 $(e.target).blur();
             }
         };
@@ -608,6 +611,7 @@ app.registration = (function () {
             genRandR:genRandR,
             doneVerificationR:doneVerificationR,
             checkEnterCode:checkEnterCode,
+            checkEnter:checkEnter,
             registerR: registerR
         };
     }());

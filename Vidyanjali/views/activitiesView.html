@@ -1,4 +1,4 @@
-<div data-role="view" id="view-all-activities" data-reload="true" data-id="innerActivity" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" >
+<div data-role="view" id="view-all-activities" data-reload="true" data-id="innerActivity" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow">
     <div data-role="header">
         <div data-role="navbar">
             <span id="navBarHeader">Notification</span>
@@ -6,18 +6,14 @@
             <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
         </div>
     </div>
-
     <div class="loader" id="progressNotification" style="display:none;">
         <div class="ball"></div>
     </div>
-
     <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate"   data-bind="source: activities"></span>
-
     <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
 </div>
 
 <script type="text/x-kendo-template" id="activityTemplate">            
-
     #if (org_id!=='0') {#
     <div class="cf">
         <div class="notiList-content-new">

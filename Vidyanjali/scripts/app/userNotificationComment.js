@@ -59,9 +59,9 @@ app.userNotiComment = (function () {
 
         //document.addEventListener('DOMContentLoaded', loaded, false);
   
-        document.addEventListener('touchmove', function(e) {
+        /*document.addEventListener('touchmove', function(e) {
             e.preventDefault();
-        }, false);
+        }, false);*/
 
         var show = function (e) {
             $("#adminCommentPage").show();
