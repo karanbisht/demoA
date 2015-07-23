@@ -1,12 +1,12 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.1.0
-  VersionCode = 11
+  CurrentVersion = 1.1.1
+  VersionCode = 12
 
 IOS
   PackageID = io.zaff.vidyanjali
-  CurrentVersion = 1.0.0
+  CurrentVersion = 1.0.1
   VersionCode = 1
 */
 
@@ -363,7 +363,7 @@ var app = (function (win) {
             app.mobileApp.navigate('#adminOrgNewsList');
             app.adminNews.onBackClsPicker('edit');
         }else if (app.mobileApp.view()['element']['0']['id']==='sendNotificationDiv') {
-            app.mobileApp.navigate('#adminGraph');
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');
             app.sendNotification.onBackClsPicker();    
         }else {
             app.mobileApp.navigate("#:back");    
@@ -1015,16 +1015,30 @@ var app = (function (win) {
 
         var db = app.getDb();
         db.transaction(updatebagCount, app.errorCB, app.successCB);
-          
-        //alert(messageDB+'title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);            
-        //console.log('karrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaaaaaaaaaaaannnnnnn');    
-        //alert('message='+messageDB+'&title='+titleDB+'&org_id='+orgIdDB+'&notiId='+notiIdDB+'&account_Id='+account_IdDB+'&comment_allow='+commentAllowDB+'&attached='+attachedDB);
 
         var messageDBVal = app.urlEncode(messageDB); 
         var titleDBVal = app.urlEncode(titleDB);
+        
+            if (attachedDB!== null && attachedDB!=='' && attachedDB!=="0"){
+                localStorage.setItem("shareImg", attachedDB);
+            }else{
+                localStorage.setItem("shareImg", null);
+            }
+        
+         localStorage.setItem("shareMsg", messageDB);
+         localStorage.setItem("shareTitle", titleDB);    
+             
+         localStorage.setItem("shareOrgId", orgIdDB);
+         localStorage.setItem("shareNotiID", notiIdDB);
+         localStorage.setItem("shareComAllow", commentAllowDB);
+         localStorage.setItem("shareUploadType", uploadTypeNoti);
+         localStorage.setItem("shareDate", sendDateInside);
+         localStorage.setItem("shareType", typeDB);
          
         //console.log('go to page');     
-        app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside+ '&upload_type=' + uploadTypeNoti);
+        //app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside+ '&upload_type=' + uploadTypeNoti);
+        
+        app.mobileApp.navigate('views/activityView.html');
     }
     
     function updatebagCount(tx) {

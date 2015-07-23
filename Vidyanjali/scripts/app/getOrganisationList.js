@@ -1062,15 +1062,15 @@ app.OragnisationList = (function () {
         function orgDataSuccess(tx, results) {    
             var count = results.rows.length;              	
             //alert(count);	
+            document.getElementById("orgData").innerHTML = "";                    
+
             if (count !== 0) {                    
                 document.getElementById("orgData").innerHTML = "";                    
                 for (var x = 0; x < count;x++) {
                     //alert(JSON.stringify(tempArray));
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                     //console.log(pos);
-
                     var orgName = app.urldecode(results.rows.item(x).org_name); 
-
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
                         document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 

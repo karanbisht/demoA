@@ -127,7 +127,7 @@
 
                         <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
                             <li class="username" style="padding-top:15px;border:1px solid #E9E9E9;border-radius:3px;" >
-                                <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;"/>
+                                <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;height:35px;"/>
                             </li>
                         </ul>
                     </div>
@@ -496,7 +496,7 @@
 
             <ul data-role="listview" style="overflow:hidden;">
                 <li style="height:3.2em;border-color:#43495c">
-                    <img src="styles/images/zaffio.png" style="margin-top:-10px;height:2.8em;margin-left:10px;"/>
+                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-5px;height:2.6em;margin-left:-5px;"/>
                 </li>
                 <li style="border-color:#43495c">
                     <a id="side-noti-icon"  href="#view-all-activities" data-transition="none"></a>
@@ -546,7 +546,7 @@
         </div>
         
                 
-  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" data-use-native-scrolling="true">
+  <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" >
       <div>
         <table style="margin:10px;">
             <tr>
@@ -673,17 +673,14 @@
                 </div>
                                 
                                                                
-                <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;background-color:#ffffff">
+                <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;background-color:#f3f3f3">
                     <p style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;">Select group to send message. </p>
-                    <div id="group-Name-listview" style="border:none"> </div>
+                    <div id="group-Name-listview" style="border:none;background-color:#f3f3f3;"> </div>
                 </div>
 
-                <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;background-color:#ffffff">
-
+                <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;background-color:#f3f3f3">
                     <p style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;">Select member to send message.</p>
-
-                    <div id="customer-Name-listview"  style="border:none;"> </div>
-
+                    <div id="customer-Name-listview"  style="border:none;background-color:#f3f3f3;"> </div>
                 </div>
 
 
@@ -723,7 +720,6 @@
                     <span style="color:rgb(127,191,77);">Message Type</span>                                   
                     <label>
     		    		<select name="msgTypeNoti" id="notificationType">
-				    	    <option selected="true" disabled="disabled" default>Select Message Type</option>
 				    	    <option value="P">Promotion</option>
 					        <option value="V">Invitation</option>
 				        	<option value="I">Information</option>
@@ -784,21 +780,19 @@
                 </ul>
             </div>
 
-            <div id="selectGroupFooter" data-role="footer" style="background:#ffffff;padding-bottom:10px; display:none;">
+            <div id="selectGroupFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
                     <li style="width:100%">
                         <span id="registration"  class="clickEffect" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
-
                         <span id="registration" class="clickEffect" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
                     </li>
                 </ol>
             </div>
 
-            <div id="selectCustomerFooter" data-role="footer" style="background:#ffffff;padding-bottom:10px; display:none;">
+            <div id="selectCustomerFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
                     <li style="width:100%">
                         <span id="customerNextButton" class="clickEffect" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
-
                         <span id="customerBackButton" class="clickEffect" data-role="touch" data-bind="events: { tap: goBackToGroup }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
                     </li>
                 </ol>
@@ -841,7 +835,7 @@
 
             <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
                 <li style="height:3.2em;border-color:#43495c;">
-                    <img src="styles/images/zaffio.png" style="margin-top:-10px;height:2.8em;margin-left:30px;"/>
+                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-7px;height:2.8em;margin-left:15px;"/>
                 </li>
 
                 <!--<li class="clickEffect" style="border-color:#43495c">
@@ -1107,7 +1101,7 @@
 
         <script type="text/x-kendo-template" id="groupNameTemplate"> 
 
-            <li class="deleteGroupShow">
+            <li class="admSentNotideleteGroupShow">
                 <label>
                     <input type="checkbox" class="largerCheckbox" value="${pid}" />
                     <span class="firstName">#:group_name#</span>
@@ -1115,9 +1109,8 @@
             </li>
         </script>
 
-
         <script type="text/x-kendo-template" id="customerNameTemplate">            
-            <li class="deleteGroupShow">
+            <li class="admSentNotideleteGroupShow">
                 <span>
                     <label><input type="checkbox" class="largerCheckbox" value="${customerID}" /> <span class="firstName">#:first_name# #:last_name#</span></label>
                 </span>

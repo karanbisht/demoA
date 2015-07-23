@@ -26,6 +26,8 @@ app.Activities = (function () {
         }   
         
         var show = function(e) {                                
+            
+            $(".km-scroll-container").css("-webkit-transform", "");  
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
             StartDbCount = 0;
@@ -34,18 +36,13 @@ app.Activities = (function () {
             totalOrgNotification = 0;
             groupDataShow = [];
             $("#showMoreButton").hide();
-
             app.mobileApp.pane.loader.hide();
-
-            $(".km-scroll-container").css("-webkit-transform", "");  
-                    
+            
             organisationID = localStorage.getItem("selectedOrgId");
             account_Id = localStorage.getItem("ACCOUNT_ID");
             bagCount = localStorage.getItem("orgBagCount");
             orgName = localStorage.getItem("selectedOrgName");
             orgLogo = localStorage.getItem("selectedOrgLogo");
-
-            //alert(organisationID+"||"+account_Id+"||"+bagCount+"||"+orgName+"||"+orgLogo);
             
             var OrgDisplayName;
             if (orgName.length > 25) {
@@ -57,17 +54,17 @@ app.Activities = (function () {
             $("#navBarHeader").html(OrgDisplayName);                          
             getDataFromDB();            
             
-            if(orgLogo!=='null' && orgLogo!==null){
+            /*if(orgLogo!=='null' && orgLogo!==null){
                 logoFileName = orgLogo.replace(/^.*[\\\/]/, '');          
                 imgPathData = app.getfbValue();                    
                 //var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+logoFileName; 
                 //window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);
-            }
+            }*/
             
             countVal=0;
         };
         
-        var imagePathExist = function() {
+        /*var imagePathExist = function() {
              //alert('already exist');
         }
         
@@ -85,7 +82,7 @@ app.Activities = (function () {
                                       //alert('errro');
                                   }
                 );                
-        }
+        }*/
         
         var getDataFromDB = function(){
             groupDataShow = [];
@@ -96,11 +93,14 @@ app.Activities = (function () {
         var getLastOrgNoti = function(tx) {
             var query = "SELECT MAX(pid) as pid FROM ORG_NOTIFICATION where org_id=" + organisationID;
             app.selectQuery(tx, query, getOrgLastNotiDataSuccess);
+            
+            var queryUp = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            app.updateQuery(tx, queryUp);
         };    
                     
         function getOrgLastNotiDataSuccess(tx, results) {
             var count = results.rows.length;
-            //alert(count);
+            
             var lastNotificationPID = results.rows.item(0).pid;
             if (lastNotificationPID===null) {
                 lastNotificationPID = 0;
@@ -159,11 +159,9 @@ app.Activities = (function () {
                                     }
 
             });
-
         }                      
         
-        var orgNotiDataVal;
-        
+        var orgNotiDataVal;        
         function saveOrgNotification(data) {
             orgNotiDataVal = data;      
             var db = app.getDb();
@@ -707,6 +705,7 @@ app.Activities = (function () {
                     noDatainDB=0;
                 }
                 
+                groupDataShow=[];
                 groupDataShow.push({
                                        title: ' No Message ',
                                        message: 'No messages from this organization',
@@ -752,7 +751,7 @@ app.Activities = (function () {
               
             
         var activitySelected = function (e) {
-            var message = e.data.message;
+            /*var message = e.data.message;
             var title = e.data.title;
             var org_id = e.data.org_id;
             var notiId = e.data.pid;
@@ -762,9 +761,12 @@ app.Activities = (function () {
             //var upload_type = e.data.upload_type;                            
             var messageVal = app.urlEncode(message); 
             var titleVal = app.urlEncode(title);
-            app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date + '&upload_type=' + e.data.upload_type);
+            app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date + '&upload_type=' + e.data.upload_type);            
+            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");*/            
             
+            app.mobileApp.navigate('views/activityView.html');
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
+
 
         };
       
@@ -953,6 +955,12 @@ app.Activities = (function () {
             var title = e.data.title;
             var attached = e.data.attached;
             var type = e.data.upload_type;            
+             
+            var org_id = e.data.org_id;
+            var notiId = e.data.pid;
+            var comment_allow = e.data.comment_allow; //"1"
+            var upload_type = e.data.upload_type;                            
+            var date = e.data.date;
 
             if (attached!== null && attached!=='' && attached!=="0"){
                  localStorage.setItem("shareImg", attached);
@@ -961,9 +969,15 @@ app.Activities = (function () {
             }
             
             localStorage.setItem("shareMsg", message);
-            localStorage.setItem("shareTitle", title);            
-            //console.log(message+"||"+title+"||"+attached+"||"+type);
-        }
+            localStorage.setItem("shareTitle", title);    
+             
+            localStorage.setItem("shareOrgId", org_id);
+            localStorage.setItem("shareNotiID", notiId);
+            localStorage.setItem("shareComAllow", comment_allow);
+            localStorage.setItem("shareUploadType", upload_type);
+            localStorage.setItem("shareDate", date);
+            localStorage.setItem("shareType", type);
+         }
 
 
         return {

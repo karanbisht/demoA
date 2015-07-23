@@ -331,8 +331,8 @@ app.GroupList = (function () {
             
             if (group_name === "Enter New Group Name" || group_name === "") {
                 app.showAlert("Please enter Group Name.", "Validation Error");
-            }else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
-                app.showAlert("Please enter Group Description.", "Validation Error");
+            /*}else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
+                app.showAlert("Please enter Group Description.", "Validation Error");*/
             }else{
             $("#addGroupLoader").show();
             var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description}

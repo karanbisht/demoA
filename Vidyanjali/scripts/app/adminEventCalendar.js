@@ -320,12 +320,20 @@ app.adminEventCalender = (function () {
         }
         
         var iFrameLocUrl = function(){     
-            
+            $("#admIFrameLoader").show();
             var mapUrl = app.GEO_MAP_API+mapLocationShow;
             document.getElementById("setIFrame").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width-20;this.height=screen.height"></iframe>';             
+            setTimeout(function(){
+                $("#admIFrameLoader").hide();
+            },5000);
         }
         
         var detailShow = function() {
+            
+            $("#popover-eventAction").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow");
+
+            
             $(".km-scroll-container").css("-webkit-transform", "");
             
             var dateShow = multipleEventArrayAdmin[0].event_date;

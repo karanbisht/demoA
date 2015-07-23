@@ -30,7 +30,7 @@ app.Activity = (function () {
         };
                 
         var data;          
-        var myScroll;
+        //var myScroll;
 
         /*var getuserName = function() {
             var db = app.getDb();             
@@ -77,7 +77,7 @@ app.Activity = (function () {
             }
         };*/
 
-        function loaded() {
+        /*function loaded() {
             setTimeout(function() {    
                 myScroll = new iScroll('notiImage', {
                 bounce : false,
@@ -88,7 +88,7 @@ app.Activity = (function () {
                 vScrollbar: false    
                 });
             }, 100);            
-        }
+        }*/
 
         //document.addEventListener('DOMContentLoaded', loaded, false);
   
@@ -101,7 +101,7 @@ app.Activity = (function () {
         var show = function (e) {
             app.mobileApp.pane.loader.hide();
             groupDataShow = [];  
-            
+            $('#notiImage').html('');
             device_type = localStorage.getItem("DEVICE_TYPE");
  
             $(".km-scroll-container").css("-webkit-transform", "");              
@@ -132,7 +132,7 @@ app.Activity = (function () {
             notiImageShow.style.display = 'none';
             //notiImageShow.src = '';
             
-            message = e.view.params.message;
+            /*message = e.view.params.message;
             title = e.view.params.title;
             org_id = e.view.params.org_id;
             notiId = e.view.params.notiId;
@@ -141,9 +141,21 @@ app.Activity = (function () {
             attached = e.view.params.attached;
             type = e.view.params.type;
             date = e.view.params.date;
+            upload_type = e.view.params.upload_type;*/
+            
+    		message = localStorage.getItem("shareMsg");
+            title = localStorage.getItem("shareTitle");
+            org_id = localStorage.getItem("shareOrgId");
+            notiId = localStorage.getItem("shareNotiID");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+            comment_allow = localStorage.getItem("shareComAllow");
+            attached = localStorage.getItem("shareImg");
+            type = localStorage.getItem("shareType");
+            date = localStorage.getItem("shareDate");
+            upload_type = localStorage.getItem("shareUploadType");
+            
             message = app.proURIDecoder(message);
             title = app.proURIDecoder(title);
-            upload_type = e.view.params.upload_type;
              
             //console.log(comment_allow);
 
@@ -153,7 +165,7 @@ app.Activity = (function () {
             if ((title==='' || title==='null' || title===null) && (message==='' || message==='null' || message===null)) {
                 $('#titleContainer').hide();
             }
-            if (attached!== null && attached!=='' && attached!=="0" && upload_type==="other") {
+            if (attached!== null && attached!== 'null' && attached!=='' && attached!=="0" && upload_type==="other") {
                 $("#notiImageDiv").show();                
                 app.mobileApp.pane.loader.hide();
                 $('#notiImage').css({"max-height":"200px"});
@@ -163,7 +175,7 @@ app.Activity = (function () {
                 var imgPathData = app.getfbValue();                    
                 var fp = imgPathData + "Zaffio/" + 'Zaffio_img_'+attachedImgFilename; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
-            }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
+            }else if(attached!== null && attached!== 'null' && attached!=='' && attached!=="0" && upload_type==="video"){
                $("#notiImageDiv").hide();
                 var notiImageShow = document.getElementById('notiDetailVid');
                 notiImageShow.style.display = 'block';

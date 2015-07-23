@@ -48,7 +48,6 @@
 
   <!-- android -->
   <platform name="android">
-
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="SocialSharing">
         <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
@@ -56,7 +55,7 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest">
-      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     </config-file>
 
     <source-file src="src/android/nl/xservices/plugins/SocialSharing.java" target-dir="src/nl/xservices/plugins"/>

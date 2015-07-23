@@ -266,14 +266,23 @@
 
                     </li>-->
         
-         <div data-role="popover" id="popover-editNews" data-popup='{"width": "180"}' style="margin-right:-20px;">
+         <!--<div data-role="popover" id="popover-editNews" data-popup='{"width": "180"}' style="margin-right:-20px;">
             <div data-role="view">
                 <ul data-role="listview">                              
                      <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminNews.saveEditNewsData"><label>Save News</label></a>
                      <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminNews.deleteNews"><label>Delete News</label></a>
                 </ul>
             </div>
+         </div>-->
+        
+       <div data-role="popover" id="popover-editNews" data-popup='{"width": "180"}' style="margin-right:-10px;margin-top:-13px;border-radius:3px;">
+         <div data-role="view">
+            <ul data-role="listview" style="margin:0px;background-color:#E6E6E6;z-index:1;">
+                <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.adminNews.saveEditNewsData"><label style="float:left;padding:10px;">Save News</label></a>
+                <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.adminNews.deleteNews"><label style="float:left;padding:10px;">Delete News</label></a>
+            </ul>
          </div>
+       </div>
 
                  <br/>
             <br/>

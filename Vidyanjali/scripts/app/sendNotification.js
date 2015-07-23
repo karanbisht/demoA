@@ -263,11 +263,12 @@ app.sendNotification = (function () {
         }
         
         
-        var selectedType;        
+        var selectedType='P';        
         $("select[name='msgTypeNoti']").on("change", function(e){
 		        	selectedType = $(e.target).val();
         });
-                
+        
+        var lastClickTime11=0;                
         var sendNotificationMessage = function () {                 
             
             if (!app.checkConnection()) {
@@ -471,6 +472,13 @@ app.sendNotification = (function () {
 
                         $("#progressSendNotification").show();
                         
+                        var current = new Date().getTime();
+  	                  var delta = current - lastClickTime11;
+                  	  lastClickTime11 = current;
+                  	  if (delta < 1000) {                          
+                          console.log('multi click');    
+                        }else{
+                          console.log('hello');
                         //alert(cmbGroup+"||"+cmbCust+"||"+type+"||"+titleValue+"||"+notificationValue+"||"+org_id+"||"+cmmt_allow+"||"+sending_option+"||"+tasks+"||"+0);
                         
                         var notificationData = {"cmbGroup":cmbGroup,"cmbCust":cmbCust ,"type":type,"title":titleValue, "message":notificationValue ,"org_id" : org_id,"comment_allow":cmmt_allow,"sending_option":sending_option,"send_date":tasks ,"attached":0}                            
@@ -560,7 +568,8 @@ app.sendNotification = (function () {
                                     $("#progressSendNotification").hide();
                                 }
                             });               
-                        });                
+                        });
+                      }
                     }  
                 }
             }   

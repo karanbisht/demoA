@@ -280,7 +280,10 @@ app.eventCalender = (function () {
         }
     
         var detailShow = function() {
-                        
+                      
+            $("#popover-usereventAction").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow");
+            
             $(".km-scroll-container").css("-webkit-transform", "");            
             $("#detailEventData").html("Event On " + multipleEventArray[0].event_date);
             
@@ -568,9 +571,12 @@ app.eventCalender = (function () {
         }
         
          var iFrameLocUrl = function(){    
-            
+            $("#userIFrameLoader").show();
             var mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBNTSIiae6uNUtrZlpxVdGVsDxQ65xZ2O4&q="+mapLocationShow;
             document.getElementById("setIFrame_UserSide").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width;this.height=screen.height"></iframe>';             
+            setTimeout(function(){
+                $("#userIFrameLoader").hide();
+            },5000);             
         }
         
         

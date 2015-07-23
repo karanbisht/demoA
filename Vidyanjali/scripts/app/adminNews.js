@@ -666,6 +666,10 @@ app.adminNews = (function () {
         var EditGroupArrayMember = [];
         
         var editNewsshow = function() {
+
+            $("#popover-editNews").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow");
+
             EditGroupArrayMember = [];
             adminAllGroupArray = [];
             customerGroupArray = [];                                                
@@ -681,10 +685,15 @@ app.adminNews = (function () {
                                                                 max: 100,
                                                                 value: 0
                                                             }).data("kendoProgressBar");
+            
+
+            $("#groupInEditNews option:selected").removeAttr("selected");
+            $('#groupInEditNews').empty();
 
             var txt = $('#editNewsDesc'),
                 hiddenDiv = $(document.createElement('div')),
                 content = null;
+            
     
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
