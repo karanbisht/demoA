@@ -473,7 +473,7 @@ var app = (function (win) {
 
             var loginStatus = localStorage.getItem("loginStatusCheck");
             if (loginStatus==='1' || loginStatus===1){
-              app.Activities.show();
+              //app.Activities.show();
             }else if (loginStatus==='2' || loginStatus===2){
               app.groupDetail.show();     
             }
