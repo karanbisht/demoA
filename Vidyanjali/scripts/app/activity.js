@@ -19,6 +19,8 @@ app.Activity = (function () {
     var upload_type;
     var attachedImgFilename;
     var device_type;
+    var sdcardPath;
+    
     
     var activityViewModel = (function () {
         var activityUid;
@@ -31,6 +33,7 @@ app.Activity = (function () {
             app.mobileApp.pane.loader.hide();
             $(".km-scroll-container").css("-webkit-transform", "");              
             device_type = localStorage.getItem("DEVICE_TYPE"); 
+            sdcardPath = localStorage.getItem("sdCardPath");
             groupDataShow = [];  
             $('#notiImage').html('');
             $('#newComment').val(' '); 
@@ -84,8 +87,7 @@ app.Activity = (function () {
                 if (ext==='') {
                    Filename = attachedImgFilename + '.jpg'; 
                 }
-                var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_'+attachedImgFilename; 
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_img_'+attachedImgFilename; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }else if(attached!== null && attached!== 'null' && attached!=='' && attached!=="0" && upload_type==="video"){
                $("#notiImageDiv").hide();
@@ -124,27 +126,22 @@ app.Activity = (function () {
         };
         
         var imagePathExist = function() {
-            //alert('in');
             app.mobileApp.pane.loader.hide();
-            var imgPathData = app.getfbValue();    
-            var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;            
+            console.log('Image already Downloaded');
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;            
             var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>');
             img.attr('src', fp);
             img.appendTo('#notiImage'); 
             //console.log(fp);              
         }
         
-        var imagePathNotExist = function() {
-
-            //alert('download');
-             
+        var imagePathNotExist = function() {             
             if (!app.checkConnection()) {
             
             }else{                
                 app.mobileApp.pane.loader.hide();
                 var attachedImg = attached;                        
-                var imgPathData = app.getfbValue();    
-                var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;
             
                 var img = $('<img id="imgShow" style="max-height:150px;margin:-2px -6px -6px -6px"/>'); //Equivalent: $(document.createElement('img'))      
                 img.attr('src', attachedImg);
@@ -154,12 +151,12 @@ app.Activity = (function () {
                 fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
                                       app.mobileApp.pane.loader.hide();
-                                      //$("#progressChat").hide();
+                                      console.log('Image Downloaded');
                                   },
     
                                   function(error) {
-                                      //app.mobileApp.pane.loader.hide();
                                       $("#progressChat").hide();
+                                      console.log('Error in Image Downloading');
                                   }
                 );                
             }

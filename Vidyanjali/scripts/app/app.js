@@ -154,15 +154,6 @@ var app = (function (win) {
         }
     };
     
-    /*var openDb = function() {
-    if (window.sqlitePlugin !== undefined) {
-    app.db = window.sqlitePlugin.openDatabase("AptifiDB");
-    } else {
-    // For debugging in simulator fallback to native SQL Lite
-    app.db = window.openDatabase("AptifiDB", "1.0", "Cordova Demo", 50000000);    
-    }
-    };*/
-
     function getDb() {
         return window.openDatabase("AptifiDB", "1.0", "Cordova Demo", 50000000);
     };
@@ -432,24 +423,12 @@ var app = (function (win) {
     }
 
     function updateAdminLoginStatusSuccess() {
-        var account_Id = localStorage.getItem("ACCOUNT_ID");
-        var userType = localStorage.getItem("USERTYPE");   
-        
-        //app.mobileApp.navigate('#organisationNotiList');
         app.mobileApp.navigate('#view-all-activities');
-        
-        
-        //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
     }
 
     function updateAdminLoginStatusError(err) {
         //console.log(err);
-    }
-
-    var navigateHome = function () {
-        app.mobileApp.navigate('#welcome');
-    };
-    
+    }    
     
     var Keyboardisoff = function() {       
       $(".km-scroll-container").css("-webkit-transform", "");  
