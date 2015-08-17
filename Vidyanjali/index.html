@@ -1023,7 +1023,7 @@
           function getDataSuccess(tx, results) {                                   
                             
              var count = results.rows.length;
-            if (count !== 0) { 
+             if (count !== 0) { 
                     var bagCountData = results.rows.item(0).bagCount;                  
                     var countData = results.rows.item(0).count;
                    
@@ -1045,7 +1045,7 @@
                 }
                                 
                 $("#countToShow").html(showData);            
-            }            
+             }            
           }
             
             
@@ -1073,10 +1073,6 @@
                             }
                         },
                                                                         error: function (e) {
-                                                                            
-                                                                         
-                                                                            document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
-
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);

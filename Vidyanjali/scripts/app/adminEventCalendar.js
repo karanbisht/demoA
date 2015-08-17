@@ -1960,7 +1960,7 @@ app.adminEventCalender = (function () {
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
             $("#attachedVidEvent").hide();            
-            newsDataToSend = '';             
+            eventDataToSend = '';             
         }
         
         var goToEventListPage = function() {

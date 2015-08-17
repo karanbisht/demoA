@@ -589,7 +589,7 @@ app.registration = (function () {
         
         var checkEnterCode = function (e) {
             if (e.keyCode === 13 || e.keyCode === 9) {
-                doneVerification();
+                doneVerificationR();
                 $(e.target).blur();
             }
         };
