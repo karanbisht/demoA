@@ -3,20 +3,15 @@
         app = global.app = global.app || {};
     
      var productId;
-     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
-        
+     var loginStatusCheck = localStorage.getItem("loginStatusCheck");                                     
      if (loginStatusCheck==='2') {    
         productId = "8ceb1f3a508f48d5855c239f12a99dd1"; // for Live Project for Admin
      }else{
         productId = "5abfaadb59a5409db079e2397413015b"; // for Live Project for User 
-     }
-       
-     //var productId = "3533a3c811324734a532336ccef5f288 ", // for local project
-        
-     version   = localStorage.getItem("AppVersion");     
+     }               
+     var version   = localStorage.getItem("AppVersion");     
     
      AnalyticsModel = kendo.data.ObservableObject.extend({
-
      setAnalyticMonitor:function(latitude,longitude)
        {  
            var factory = window.plugins.EqatecAnalytics.Factory;

@@ -26,43 +26,22 @@
              <div class="calendarEvent-content">                     
                <div class="calendarEvent-List">            
                    #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
-                             <!--<div class="event-img-show" style="background-image: url(${event_image});background-size: 90px 90px;background-repeat: no-repeat;">
-                                 <div id="activityTemplateDate" class="CalenderdateValue"><span style="float:left;">${event_show_day}</span></div>                                 
-                                 <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
-                             </div>-->                    
                        <div class="event-img-show">
                                  <img src="${event_image}" class="eventImgClass"/>
                                  <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>
                                  <div id="activityTemplateDate" class="CalenderdateValue"><span>${event_show_day}</span></div>                                                               
                        </div>
                   #}else{#   
-                         <!--<div class="event-img-show">
-                                 <div id="activityTemplateDate" class="noCalenderdateValue"><span style="float:left;">${event_show_day}</span></div>                                 
-                                 <div id="activityTemplateDate" class="nocalMonthClass">${event_below_day}</div>
-                                <br/>
-                         </div>-->                       
                        <div class="event-img-show">                       
                            <div id="activityTemplateDate" class="calMonthClass">${event_below_day}</div>                                        
                            <div id="activityTemplateDate" class="CalenderdateValue"><span>${event_show_day}</span></div>                                         
                        </div> 
                   #}#
-                   
-                   <!--#if (event_desc.length > 80) {#
-                        #event_desc_val = event_desc.substr(0, 80) + '..';#
-                   #}else {#
-                        #event_desc_val = event_desc;#  
-                   #}#-->
-
-                               
-       		     <!--<div id="activityTemplateTitle" class="eventNameList">${event_name}</div>
-         		   <div  id="activityTemplateMessage"  class="eventContentMsg" >${event_desc}</div>-->
-                     
+                       
                     <div id="activityTemplateTitle" class="eventNameList" >${event_name}</div> 
                     <span id="activityTemplateDate" class="calanderTimeClass">${event_date_To_Show} at ${event_time}</span>
                      <br/>   
                     <span id="activityTemplateDate" class="calanderTimeClass" style="text-align:left;">${location}</span>   
-  
-
                </div> 
               </div> 
 		    </div>   
@@ -251,40 +230,20 @@
               <div data-role="navbar">     
                  <span> Add Event </span>
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToEventListPage"></a>    
-                 <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
-                <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#eventImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
-                <a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminEventCalender.addNewEventFunction">Save</a>
-
+                 <a style="width:2.8em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#eventImgSelect"><img src="styles/images/attachment.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+                 <a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminEventCalender.addNewEventFunction">Save</a>
               </div>                                          
-    </div>
-    
-    
+    </div>    
     <div class="loader" id="sendEventLoader" style="display:none;">
           <div class="ball"></div>
-    </div>
-    	   
+    </div>    	   
     <div data-role="content">
-
         <div id="enterNotification" class="textWithTextArea" >             
-
             <span id="activityTemplateDate" class="defineTitleText" >Event Title</span> 
             <input type="text"  id="addEventName" class="defineTextBox"  placeholder="Enter New Event Name" />
 
             <span id="activityTemplateDate"  class="defineTitleText">Event Detail</span> 
             <textarea  id="addEventDesc" placeholder="Write Event description here (Optional) ?" class="common"></textarea> 
-            
-
-            <!--<div onclick="app.adminEventCalender.clickToSelectGroup()" class="selectGroup">Select Group to Add Event</div>            
-            <div id="groupInAddEvent" style="margin-left:0px;display:none;" class="selectDivClass" > </div>            
-            <span id="activityTemplateDate"  class="defineTitleText">Event Date :</span>                         
-            <div style="margin-top:10px;" >
-                <input id="adddatePickerEvent" onkeydown="return false;" style="width:180px;"/>
-            </div>            
-            <br/>            
-            <span id="activityTemplateDate"  class="defineTitleText">Event Time :</span>             
-            <div style="margin-top:10px;" >
-                <input id="adddateTimePickerEvent" onkeydown="return false;" style="width:180px;"/>
-            </div>-->
             
             <span id="activityTemplateDate" class="defineTitleText">Event Location</span> 
             <a style="background:transparent; border:none;width:100%;margin:10px 0px 10px 0px;padding:0px;" data-role="button" data-rel="modalview" href="#modalview-login">
@@ -296,17 +255,7 @@
                    <span>Select Group to Add Event</span>
         		   <select id="groupInAddEvent"  multiple ></select>
             </label>           
-            <br/>
-            <!--<span id="activityTemplateDate" class="defineTitleText">Event Date </span>                         
-            <div style="margin-top:10px;" >
-                <input id="adddatePickerEvent" onkeydown="return false;" />
-            </div>            
             <br/>            
-            <span style="color:rgb(127,191,77);" id="activityTemplateDate"  class="defineTitleText">Event Time </span>             
-            <div style="margin-top:10px;" >
-                <input id="adddateTimePickerEvent" onkeydown="return false;" />
-            </div>-->
-            
             <span id="activityTemplateDate" class="defineTitleText">Event Date & Time </span>
 
             <ul data-style="inset" data-role="listview" style="margin-left:0px;margin-right:0px;">
@@ -314,17 +263,12 @@
                     <input id="adddatePickerEvent" onkeydown="return false;" style="float:left;"/>
                     <input id="adddateTimePickerEvent" onkeydown="return false;" style="float:right;"/>
                 </li>
-            </ul>
-            
+            </ul>            
         </div>
          
         
            <div id="eventAttachment" style="margin-left:10px;">
-                <div>                    
-                    <!--<a style="background:transparent; border:none;float:left" data-role="button" data-rel="actionsheet" data-align="left" href="#eventImgSelect" >
-                        <img src="styles/images/attachments.png" />
-                    </a>-->
-                    
+                <div>                                        
                     <img id="attachedImgEvent" class="attachBackgroundImgShow"  style="display:none;border: 5px solid #cccccc;"/>
                     
                     <div style="width:180px,height:150px;">                        
@@ -534,19 +478,3 @@
                  <li class="emptyGetGroupCombo">#:group_name#</li>                  
            #}#                    
         </script>
-
-
-
- <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="margin-top:30%;border:none">
-
-                <div class="error-avatar">
-                    <img src="styles/images/error.png"/>
-                </div>
-
-                <div class="error-content">
-                    <h5 style="color:rgb();text-align:center" >${message}</h5>
-
-                </div>
-            </div>
-</script>

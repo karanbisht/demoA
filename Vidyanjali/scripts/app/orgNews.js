@@ -1,8 +1,6 @@
 var app = app || {};
-
 app.orgNews = (function () {
-    'use strict'
-    
+    'use strict';    
     var orgNewsModel = (function () {
         var eventOrgId;
         var account_Id;
@@ -13,10 +11,10 @@ app.orgNews = (function () {
         var dataReceived=0;
         var orgin;
         var countValNews=0;
-
+        var sdcardPath;
 
         var init = function() {
-        }
+        };
     
         var show = function(e) {      
             device_type = localStorage.getItem("DEVICE_TYPE");
@@ -25,6 +23,7 @@ app.orgNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");             
             eventOrgId = localStorage.getItem("selectedOrgId");
             account_Id = localStorage.getItem("ACCOUNT_ID");
+            sdcardPath = localStorage.getItem("sdCardPath");
             orgin = e.view.params.orgin;
             page=0;
             dataReceived=0;
@@ -38,13 +37,22 @@ app.orgNews = (function () {
                 $("#idBackHomeNews").hide();
                 $("#idBackOrgNews").show();               
             }
-            getLiveData();
             
-        }
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {                                                                     
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+                }else {              
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');                   
+                }              
+                getLocalData();  
+            }else {
+                getLiveData();  
+            }            
+        };
         
         var getLiveData = function(){
         
-            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id,"page":page}            
+            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id,"page":page};            
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                                                                 read: {
@@ -56,14 +64,10 @@ app.orgNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
                         return [data];
                     }
                 },
-                                                                error: function (e) {
-                                                                    //console.log(e);
-                                                                    //console.log(JSON.stringify(e));
-                                                                    
+                                                                error: function (e) {                                                                
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -79,20 +83,14 @@ app.orgNews = (function () {
                                                                                             }
                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                         }
+                                                                    getLocalData();
                                                                 }               
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                //var loginDataView = dataSourceLogin.data();               
-             	
-                var data = this.data();
-                
-                //$.each(loginDataView, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
-                               
+                var data = this.data();                               
                     if (data[0]['status'][0].Msg==='No News list') {
-                        groupAllEvent = [];
-                          
+                        groupAllEvent = [];                          
                         groupAllEvent.push({
                                                id: 0,
                                                add_date: 0,
@@ -104,36 +102,51 @@ app.orgNews = (function () {
                                                mod_date: '',                                     
                                                org_id: ''
                                            });
+                        showInListView();
                     }else if (data[0]['status'][0].Msg==='Success') {
-                        //groupAllEvent = [];
                         totalListView = data[0]['status'][0].Total;
-                        
-                    if (data[0]['status'][0].newsData!=='No News List') { 
-                        if (data[0].status[0].newsData.length!==0) {
-                            var eventListLength = data[0].status[0].newsData.length;
-                              
-                            for (var i = 0 ; i < eventListLength ;i++) {                                                               
-                                    var newsDateString = data[0].status[0].newsData[i].news_date;
-                                    var newsTimeString = data[0].status[0].newsData[i].news_time;
-                                    var newsDate = app.formatDate(newsDateString);
-                                    var newsTime = app.formatTime(newsTimeString);
+                      if (data[0]['status'][0].newsData!=='No News List') { 
+                        if (data[0].status[0].newsData.length!==0) {                           
+                            $
+                                .each(
+                                    data[0].status[0].newsData,
+                                    function(i, newsData) {  
+                                        var newsDateString = newsData.news_date;
+                                        var newsTimeString = newsData.news_time;
+                                        var newsDate = app.formatDate(newsDateString);
+                                        var newsTime = app.formatTime(newsTimeString);
                                  
-                                groupAllEvent.push({
-                                                       id: data[0].status[0].newsData[i].id,
-                                                       add_date: data[0].status[0].newsData[i].add_date,
-                                                       news_date: newsDate,
-                                                       upload_type:data[0].status[0].newsData[i].upload_type,
-                                                       news_desc: data[0].status[0].newsData[i].news_desc,                                                                                 										  
-                                                       news_name: data[0].status[0].newsData[i].org_name, 
-                                                       news_image : data[0].status[0].newsData[i].news_image,
-                                                       news_time: newsTime,                                                                                  										  
-                                                       mod_date: data[0].status[0].newsData[i].mod_date,                                     
-                                                       org_id: data[0].status[0].newsData[i].org_id
-                                                   });
-                            }
+                                        var Filename;
+                                        var fp;
+                                        var downloadedImg;                                  
+                                        var attachedData = newsData.news_image;  
+                                        var uplaodData = newsData.upload_type;
+                                        console.log(uplaodData);
+                                        if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="image") {     
+                                            Filename = attachedData.replace(/^.*[\\\/]/, '');
+                                            var ext = app.getFileExtension(Filename);
+                                            if (ext==='') {
+                                                Filename = Filename + '.jpg'; 
+                                            }
+                                            fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + Filename;                                                                 
+                                            window.resolveLocalFileSystemURL(fp, 
+                                                                             function(entry) {
+                                                                                 console.log('sdcard');
+                                                                                 downloadedImg = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + Filename;                        
+                                                                                 pushDataInArray(newsData, newsDate, newsTime, i, downloadedImg);  
+                                                                             }, function(error) {
+                                                                                 console.log('not in sdcard');  
+                                                                                 downloadedImg = newsData.news_image;
+                                                                                 pushDataInArray(newsData, newsDate, newsTime, i, downloadedImg);  
+                                                                             });
+                                        }else {
+                                            downloadedImg = '';
+                                            pushDataInArray(newsData, newsDate, newsTime, i, downloadedImg);
+                                        }                                      
+                                    });
                         }
-                      }else{
-                                groupAllEvent.push({
+                    }else {
+                        groupAllEvent.push({
                                                id: 0,
                                                add_date: 0,
                                                news_date: 0,
@@ -142,19 +155,111 @@ app.orgNews = (function () {
                                                news_time: '',
                                                news_image:'',
                                                mod_date: '',                                     
-                                               org_id: ''
-                                           });  
-                      }  
-                    }
+                                               org_id: '',
+                                               index:'0'
+                                           });
+                        showInListView();
+                    }  
+                }
 
-                    showInListView();
-                });
-
+                    //showInListView();
+             });
         }
     
-        var showInListView = function() {                        
-            $("#newsLoader").hide();
-            $(".km-scroll-container").css("-webkit-transform", "");
+        function pushDataInArray(newsData, newsDate, newsTime, i, downloadedImg) {             
+            var indexVal; 
+            if (page!==0) {
+                indexVal = parseInt(page + '0') + i + 1;
+            }else {
+                indexVal = i + 1;
+            }            
+            groupAllEvent.push({
+                                   id: newsData.id,
+                                   add_date: newsData.add_date,
+                                   news_date: newsDate,
+                                   upload_type:newsData.upload_type,
+                                   news_desc: newsData.news_desc,                                                                                 										  
+                                   news_name: newsData.org_name, 
+                                   news_image : newsData.news_image,
+                                   news_image_show : downloadedImg,
+                                   news_time: newsTime,                                                                                  										  
+                                   mod_date: newsData.mod_date,                                     
+                                   org_id: newsData.org_id,
+                                   index:indexVal
+                               });
+
+            if (totalListView===indexVal) {
+                showInListView(); 
+                setTimeout(function() {
+                    callNewsSaving();
+                }, 100);    
+            }else if (indexVal % 10 ===0) {                     
+                showInListView();
+                setTimeout(function() {     
+                    callNewsSaving();
+                }, 100);     
+            }                       
+        }
+        
+        function callNewsSaving() {        
+            var db = app.getDb();
+            db.transaction(saveEventOffline, app.errorCB, app.successCB);
+        }
+        
+        function saveEventOffline(tx) {
+            var length = groupAllEvent.length;      
+            var queryDelete = "DELETE FROM ORG_NEWS";
+            app.deleteQuery(tx, queryDelete);               
+            if (length!==null && length!=='null' && length!==0 && length!=='0') {                                    
+                for (var i = 0;i < length;i++) {
+                    /*console.log(groupAllEvent[i].id+"||"+groupAllEvent[i].org_id+"||"+groupAllEvent[i].event_name+"||"+groupAllEvent[i].event_desc+"||"+groupAllEvent[i].event_image_show+"||"+
+                    groupAllEvent[i].upload_type+"||"+groupAllEvent[i].calandar_Date+"||"+groupAllEvent[i].calandar_Time+"||"+groupAllEvent[i].location);*/
+                    var query = 'INSERT INTO ORG_NEWS(id,org_id,news_name,news_desc,news_image,news_image_DB,upload_type,news_date,news_time) VALUES ("'
+                                + groupAllEvent[i].id
+                                + '","'
+                                + groupAllEvent[i].org_id
+                                + '","'
+                                + groupAllEvent[i].news_name
+                                + '","'
+                                + groupAllEvent[i].news_desc
+                                + '","'
+                                + groupAllEvent[i].news_image
+                                + '","'                      
+                                + groupAllEvent[i].news_image_show
+                                + '","'
+                                + groupAllEvent[i].upload_type
+                                + '","'
+                                + groupAllEvent[i].news_date
+                                + '","'
+                                + groupAllEvent[i].news_time
+                                + '")';                                      
+                    app.insertQuery(tx, query);
+                }                                                                        
+            }    
+        }
+        
+        
+        var showInListView = function() {           
+          var allEventLength = groupAllEvent.length;                        
+          if (allEventLength===0) {
+                groupAllEvent.push({
+                                       id: 0,
+                                       add_date: 0,
+                                       news_date: 0,
+                                       news_desc: 'No News from this Organization',                                                                                 										  
+                                       news_name: 'No News',                                                                                  										  
+                                       news_time: '',
+                                       news_image:'',
+                                       mod_date: '',                                     
+                                       org_id: '',
+                                       index:'0'
+                                   });  
+          }            
+          setTimeout(function() {    
+                $("#newsLoader").hide();
+                groupAllEvent = groupAllEvent.sort(function(a, b) {
+                    return parseInt(a.index) - parseInt(b.index);
+                });
            
             var organisationListDataSource = new kendo.data.DataSource({
                               data: groupAllEvent
@@ -174,11 +279,11 @@ app.orgNews = (function () {
             }
             
             countValNews=0;
+          }, 300);  
         }
         
         var gobackOrgPage = function() {
             app.mobileApp.navigate('#userOrgManage'); 
-            //app.slide('right', 'green' ,'3' ,'#views/userOrgManage.html');
         }
         
                 
@@ -186,211 +291,124 @@ app.orgNews = (function () {
         var videoFile;
         var notiFi;
         
-        var videoDownlaodClick = function(e){            
+        var videoDownlaodClick = function(e) {            
             var data = e.button.data();
-            //console.log(data);            
             videoFile = data.someattribute;  
-            //console.log(videoFile);            
             notiFi = data.notiid;
-            //alert(notiFi);
             attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
-            var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_video_' + attachedFilename;             
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_video_' + attachedFilename;             
             window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
         }
         
         var videoPathExist = function() {                      
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_video_' + attachedFilename;
-
-            /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
-            vid.attr('src', fp);
-            vid.appendTo('#video_Div_'+notiFi);*/
-            
-
-            if(device_type==="AP"){
-                  window.open(fp, "_blank");
-            }else{
-                  window.plugins.fileOpener.open(fp);
-            }
-            
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_news_video_' + attachedFilename;            
+            if (device_type==="AP") {
+                window.open(fp, "_blank");
+            }else {
+                window.plugins.fileOpener.open(fp);
+            }            
         }
         
-       /* var videoPathNotExist = function() {
-            $("#video_Div_Image_"+notiFi).show();
-            //$("videoToDownloadImage_"+notiFi).text('Downloading..');
-            var attachedVid = videoFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_video_' + attachedFilename;
-            
-            var fileTransfer = new FileTransfer();              
-            fileTransfer.download(attachedVid, fp, 
-                                  function(entry) {
-                                      
-                                      if(device_type==="AP"){
-                                          window.open(fp, "_blank");
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-
-                                      $("#video_Div_Image_"+notiFi).hide();
-                                      //$("videoToDownloadImage_"+notiFi).text('View');
-
-                                  },
-    
-                                  function(error) {
-                                      $("#video_Div_Image_"+notiFi).hide();
-                                      //$("videoToDownloadImage_"+notiFi).text('View');
-                                      //$("#progressChat").hide();
-                                  }
-                );                
-        }*/
-        
-        
         var videoPathNotExist = function() {        
-            if(countValNews!==0){
+            if (countValNews!==0) {
                 if (!app.checkSimulator()) {                                                                                               
                     window.plugins.toast.showShortBottom(app.VIDEO_ALY_DOWNLOAD);                                                                                           
                 }else {                                                                                                
                     app.showAlert(app.VIDEO_ALY_DOWNLOAD , 'Errro');                                                                                             
                 }                                
-            }else{      
-            var newNotiFi = notiFi;
-                
-            $("#video_Div_Image_"+newNotiFi).show();
-            //pbNews.value(0);           
-            //$("videoToDownload_"+newNotiFi).text('Downloading..');
-            var attachedVid = videoFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_video_' + attachedFilename;               
-            
-            var fileTransfer = new FileTransfer();        
-            
-            fileTransfer.onprogress = function(progressEvent) {
-                        if (progressEvent.lengthComputable) {
-                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
-                            //pbNews.value(perc); 
-                            countValNews=perc;
-                            document.getElementById("downloadPerNews_"+newNotiFi).value = countValNews;
-                            document.getElementById("progressValueNews_"+newNotiFi).innerHTML = countValNews;                                                                                     
-                        }else {
-                            //pbNews.value('');
-                            document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;
-                            countValNews=0;
-                        }
-                    };
-            
+            }else {      
+                var newNotiFi = notiFi;                
+                $("#video_Div_Image_" + newNotiFi).show();
+                var attachedVid = videoFile;                        
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_video_' + attachedFilename;                           
+                var fileTransfer = new FileTransfer();                    
+                fileTransfer.onprogress = function(progressEvent) {
+                    if (progressEvent.lengthComputable) {
+                        var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
+                        countValNews = perc;
+                        document.getElementById("downloadPerNews_" + newNotiFi).value = countValNews;
+                        document.getElementById("progressValueNews_" + newNotiFi).innerHTML = countValNews;                                                                                     
+                    }else {
+                        //pbNews.value('');
+                        document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;
+                        countValNews = 0;
+                    }
+                };
                         
-                  fileTransfer.download(attachedVid, fp, 
-                                  function(entry) {                                                                            
-                                      if(device_type==="AP"){
-                                          window.open(fp, "_blank",'EnableViewPortScale=yes');
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-                                      
-                                      $("#video_Div_Image_"+newNotiFi).hide();
-                                      $("#downloadPerNews_"+newNotiFi).hide();   
-                                      countValNews=0;
-                                      document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;
-                                  },
+                fileTransfer.download(attachedVid, fp, 
+                                      function(entry) {                                                                            
+                                          if (device_type==="AP") {
+                                              //window.open(fp, "_blank",'EnableViewPortScale=yes');
+                                          }else {
+                                              //window.plugins.fileOpener.open(fp);
+                                          }                                      
+                                          $("#video_Div_Image_" + newNotiFi).hide();
+                                          $("#downloadPerNews_" + newNotiFi).hide();   
+                                          countValNews = 0;
+                                          document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;
+                                      },
     
-                                  function(error) {
-                                      countValNews=0;
-                                      $("#video_Div_Image_"+newNotiFi).hide();
-                                      $("#downloadPerNews_"+newNotiFi).hide();
-                                      document.getElementById("progressValueNews_"+newNotiFi).innerHTML = 0;                                   
-                                  }
-                );                
+                                      function(error) {
+                                          countValNews = 0;
+                                          $("#video_Div_Image_" + newNotiFi).hide();
+                                          $("#downloadPerNews_" + newNotiFi).hide();
+                                          document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;                                   
+                                      }
+                    );                
             }   
         }
-        
-        
-        
 
         var attachedImgFilename;
         var imgFile;
         var imgNotiFi;
 
-        var imageDownlaodClick = function(e){
+        var imageDownlaodClick = function(e) {
             var data = e.button.data();
-            //console.log(data);            
             imgFile = data.imgpath;  
-            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
-
-            attachedImgFilename=attachedImgFilename+'.jpg';
-            var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;             
-            //console.log(vidPathData);
-            //console.log(fp);
-            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
-            //$("#img_Div_"+imgNotiFi).show();
-            
-            //alert("#img_Div_"+imgNotiFi);
-            
-            //alert('click');
-            //console.log(JSON.stringify(window.plugins));
-            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
+            var ext = app.getFileExtension(attachedImgFilename);
+            if (ext==='') {
+                attachedImgFilename = attachedImgFilename + '.jpg'; 
+            }
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;             
+            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                                
         }
-        
-                
-        var imgPathExist = function() {                    
-            //alert('img_exixt');
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;   
-            //fp=fp+'.jpg';
-            //console.log(fp);
                         
-                                      if(device_type==="AP"){
-                                          //alert('Show');
-                                          //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
-
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-
+        var imgPathExist = function() {                    
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;                           
+            if (device_type==="AP") {
+                window.open(fp, '_blank', 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
+            }else {
+                window.plugins.fileOpener.open(fp);
+            }
         }
         
         var imgPathNotExist = function() {
-            //alert('img_not_exixt');
-
-            $("#img_Div_Image_"+imgNotiFi).show();
-            //$("#imgToDownloadImage_"+imgNotiFi).text('Downloading..');
-            
-            var attachedImg = imgFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_news_img_' + attachedImgFilename;
-                        //console.log(fp);
-
-
-            var fileTransfer = new FileTransfer();              
-            fileTransfer.download(attachedImg, fp, 
-                                  function(entry) {
-                                      //$("#imgToDownloadImage_"+imgNotiFi).text('View');
-                                      $("#img_Div_Image_"+imgNotiFi).hide();
-
-
-                                      if(device_type==="AP"){
-                                          //alert('1');
-                                          window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-                                      
-                                  },
+            if (!app.checkConnection()) {
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+            }else {
+                $("#img_Div_Image_" + imgNotiFi).show();            
+                var attachedImg = imgFile;                           
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;
+                var fileTransfer = new FileTransfer();              
+                fileTransfer.download(attachedImg, fp, 
+                                      function(entry) {
+                                          $("#img_Div_Image_" + imgNotiFi).hide();
+                                          if (device_type==="AP") {
+                                              window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
+                                          }else {
+                                              window.plugins.fileOpener.open(fp);
+                                          }                                      
+                                      },
     
-                                  function(error) {
-                                      //$("#imgToDownloadImage_"+imgNotiFi).text('View');
-                                      $("#img_Div_Image_"+imgNotiFi).hide();
-                                  }
-                );                
+                                      function(error) {
+                                          $("#img_Div_Image_" + imgNotiFi).hide();
+                                      }
+                    );                
+            }
         }
-
-        
-        
 
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {
@@ -422,6 +440,36 @@ app.orgNews = (function () {
             localStorage.setItem("shareMsg", message);
             localStorage.setItem("shareTitle", title);            
             //console.log(message+"||"+title+"||"+attached+"||"+type);
+        }
+        
+        function getLocalData() {
+            var db = app.getDb();
+            db.transaction(getDatafromDB, app.errorCB, showInListView);         
+        }
+        
+        function getDatafromDB(tx) {
+            var query = "SELECT * FROM ORG_NEWS";
+            app.selectQuery(tx, query, dataFromEventDB);
+        }
+        
+        function dataFromEventDB(tx, results) {
+            var count = results.rows.length;
+            console.log(count);
+            if (count !== 0) {
+                for (var i = 0;i < count;i++) {
+                    groupAllEvent.push({
+                                           id: results.rows.item(i).id,
+                                           news_date: results.rows.item(i).news_date,
+                                           upload_type:results.rows.item(i).upload_type,
+                                           news_desc: results.rows.item(i).news_desc,                                                                                 										  
+                                           news_name: results.rows.item(i).org_name, 
+                                           news_image : results.rows.item(i).news_image,
+                                           news_image_show : results.rows.item(i).news_image_DB,
+                                           news_time: results.rows.item(i).news_time,                                                                                  										  
+                                           org_id: results.rows.item(i).org_id
+                                       });
+                }
+            } 
         }
         
         return {

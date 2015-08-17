@@ -1,17 +1,14 @@
-<div data-role="view" id="single-activity" data-layout="innerActivity" class="activity-view"  data-init="app.Activity.init"  data-show="app.Activity.show" data-before-show="app.Activity.befShow" data-model="app.Activity" data-reload="true" data-use-native-scrolling="true">
+<div data-role="view" id="single-activity-user" data-layout="innerActivity" class="activity-view"  data-init="app.Activity.init"  data-show="app.Activity.show" data-before-show="app.Activity.befShow" data-model="app.Activity" data-reload="true" data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
             Message
-            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.Activity.goToBackPage"></a>
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
         </div>
     </div>
-
-
     <div class="loader" id="progressChat" style="display:none;">
             <div class="ball"></div>
     </div>
-
     <div id="status-container" class="user-status-wrp cf" data-role="listview" data-style="inset">
         <div>
             <div class="notiList-content">
@@ -25,8 +22,7 @@
                     <span id="activityText" data-bind="text: message" class="user-share-txt"></span>
                 </li>
             </div>
-            <br/>
-            
+            <br/>         
             <div id="notiImageDiv" style="max-height:300px;display:none;">
                 <a id="notiImage" data-role="button" data-click="app.Activity.storeImageClick" style="min-height:100px;min-width:100px;padding:0px;background:transparent;border:none;"></a>               
             </div>            

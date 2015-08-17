@@ -188,7 +188,7 @@ app.userNotiComment = (function () {
                 $('#notiAdminImage').css({"margin-top":"10px"}); 
 
                 var imgPathData = app.getfbValue();    
-                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';                
+                var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + notiId + '.jpg';                
                 //console.log(attachedImg);
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }*/
@@ -204,7 +204,7 @@ app.userNotiComment = (function () {
                 attachedImgFilename = attached.replace(/^.*[\\\/]/, '');
                 //attachedImgFilename=attachedImgFilename+'.jpg';
                 var imgPathData = app.getfbValue();                    
-                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_'+attachedImgFilename; 
+                var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_'+attachedImgFilename; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
             }else if(attached!== null && attached!=='' && attached!=="0" && upload_type==="video"){
                $("#notiAdminImage").hide();
@@ -229,7 +229,7 @@ app.userNotiComment = (function () {
         
         /*var imagePathExist = function() {
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';
+            var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + notiId + '.jpg';
             var img = $('<img id="imgShowAdmin" style="max-height:300px" />');
             img.attr('src', fp);
             img.appendTo('#notiAdminImage');
@@ -239,7 +239,7 @@ app.userNotiComment = (function () {
         var imagePathNotExist = function() {
             var attachedImg = attached;
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + notiId + '.jpg';
+            var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + notiId + '.jpg';
             
             var img = $('<img id="imgShowAdmin" style="max-height:300px"/>'); //Equivalent: $(document.createElement('img'))
             img.attr('src', attachedImg);
@@ -260,7 +260,7 @@ app.userNotiComment = (function () {
         
         var imagePathExist = function() {
             var imgPathData = app.getfbValue();    
-            var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;                        
+            var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;                        
             var img = $('<img id="imgShowAdmin" style="max-height:200px" />');
             img.attr('src', fp);
             img.appendTo('#notiAdminImage');
@@ -273,7 +273,7 @@ app.userNotiComment = (function () {
             }else{                
                 var attachedImg = attached;                        
                 var imgPathData = app.getfbValue();    
-                var fp = imgPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
+                var fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;
             
                 var img = $('<img id="imgShowAdmin" style="max-height:300px"/>'); //Equivalent: $(document.createElement('img'))
                 img.attr('src', attachedImg);

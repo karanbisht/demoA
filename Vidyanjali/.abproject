@@ -1,7 +1,7 @@
 {
   "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "AppIdentifier": "io.zaffio.vidyanjali",
+  "AppIdentifier": "io.zaff.vidyanjali",
   "ProjectName": "Vidyanjali",
   "IsRunnable": "true",
   "AndroidPermissions": [
@@ -38,14 +38,14 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "1.1.1",
+  "BundleVersion": "1.0.2",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
-  "AndroidVersionCode": "11",
+  "AndroidVersionCode": "13",
   "DisplayName": "Vidyanjali",
   "Author": "karan",
   "Description": "Vidyanjali Mobile Application",
@@ -64,5 +64,6 @@
   "projectVersion": "1",
   "WPSdk": "8.0",
   "WP8WindowsPublisherName": "CN=Telerik",
-  "WP8PackageIdentityName": "1234Telerik.io.zaffio.vidyanjali"
+  "WP8PackageIdentityName": "1234Telerik.io.zaffio.vidyanjali",
+  "iOSDeploymentTarget": "6.0"
 }

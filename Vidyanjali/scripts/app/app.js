@@ -1,12 +1,12 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.1.1
-  VersionCode = 12
+  CurrentVersion = 1.1.2
+  VersionCode = 13
 
 IOS
   PackageID = io.zaff.vidyanjali
-  CurrentVersion = 1.0.1
+  CurrentVersion = 1.0.2
   VersionCode = 1
 */
 
@@ -30,6 +30,7 @@ var app = (function (win) {
     
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
+    var SD_NAME="Vidyanjali";
     var INTERNET_ERROR = "Network problem. Please try again.";
     var ERROR_MESSAGE = "Network problem. Please try again."; //"Unable to reach server. Please try again.";
     var NO_ACCESS = "You don't have access.";
@@ -182,8 +183,11 @@ var app = (function (win) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_GROUP(org_id INTEGER, groupID INTEGER, org_name TEXT, group_name TEXT , group_desc TEXT , addDate TEXT )');
   
         tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTI_COMMENT(id INTEGER,notification_id INTEGER, comment TEXT, add_date TEXT , reply_to TEXT , reply_to_id INTEGER , user_id INTEGER , user_type TEXT)');
-        
-        tx.executeSql('CREATE TABLE IF NOT EXISTS EVENT(title TEXT,location TEXT, notes TEXT, startDate TEXT , endDate TEXT , startTime TEXT , endTime TEXT )');
+                
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_EVENT(id INTEGER , org_id INTEGER , event_name TEXT, event_desc TEXT, event_image TEXT, event_image_DB TEXT , upload_type TEXT, event_date TEXT,event_time TEXT,location TEXT)');
+
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NEWS(id INTEGER , org_id INTEGER , news_name TEXT, news_desc TEXT, news_image TEXT, news_image_DB TEXT, upload_type TEXT, news_date TEXT,news_time TEXT)');
+
     };	
     
     var checkForLoginStatus = function () {
@@ -195,8 +199,8 @@ var app = (function (win) {
         var query = 'SELECT * FROM PROFILE_INFO';
         selectQuery(tx, query, loginResultSuccess);  
         
-        var query = 'SELECT * FROM JOINED_ORG';
-        selectQuery(tx, query, loginOrgResultSuccess);
+        var query1 = 'SELECT * FROM JOINED_ORG';
+        selectQuery(tx, query1, loginOrgResultSuccess);
     };
     
     var loginResultSuccess = function(tx, results) {
@@ -204,7 +208,6 @@ var app = (function (win) {
         if (count !== 0) {
             loginStatusDBValue = results.rows.item(0).login_status;
             adminLoginStatusDBValue = results.rows.item(0).Admin_login_status;
-            //account_IdDBValue = results.rows.item(0).account_id;
         }
     };
      
@@ -218,20 +221,22 @@ var app = (function (win) {
         }
     };
     
-    var loginStatusQuerySuccess = function() {        
-        //console.log(loginStatusDBValue + "||" + account_IdDBValue + "||" + userTypeDBValue);        
-        if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
-            //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_IdDBValue+'&userType='+userTypeDBValue+'&from=Reload');
-            localStorage.setItem("loginStatusCheck", 1);
-        }else if (loginStatusDBValue===1 && adminLoginStatusDBValue===1) {
-            //var account_Id = localStorage.getItem("ACCOUNT_ID");
-            //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
-            localStorage.setItem("loginStatusCheck", 2);    
-        } else {            
-            //app.mobileApp.navigate('index.html');
-            localStorage.setItem("loginStatusCheck", 0);
-            localStorage.setItem("adminloginStatusCheck", 0);
-        }        
+    var loginStatusQuerySuccess = function() {
+        
+        var gotNoti = localStorage.getItem("gotNotification");
+        if(gotNoti!==1 && gotNoti!=='1'){
+            if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
+                app.mobileApp.navigate('#view-all-activities');
+                localStorage.setItem("loginStatusCheck", 1);
+            }else if (loginStatusDBValue===1 && adminLoginStatusDBValue===1) {
+               app.mobileApp.navigate('#view-all-activities-GroupDetail');
+               localStorage.setItem("loginStatusCheck", 2);    
+            } else {            
+               app.mobileApp.navigate('#welcome');
+               localStorage.setItem("loginStatusCheck", 0);
+               localStorage.setItem("adminloginStatusCheck", 0);
+            }        
+        }    
             navigator.splashscreen.hide();
     };
     
@@ -365,6 +370,13 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='sendNotificationDiv') {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
             app.sendNotification.onBackClsPicker();    
+        }else if(app.mobileApp.view()['element']['0']['id']==='single-activity-user'){
+             var gotNoti = localStorage.getItem("gotNotification");             
+             if(gotNoti===1 || gotNoti==='1'){
+                 app.onLoad();
+             }else{
+               app.mobileApp.navigate('#view-all-activities');  
+             }    
         }else {
             app.mobileApp.navigate("#:back");    
         }
@@ -438,45 +450,28 @@ var app = (function (win) {
         app.mobileApp.navigate('#welcome');
     };
     
-    //console.log(loginStatusCheck);
-    
-    //if(loginStatusCheck==='0'){
-    
-    /*mobileApp = new kendo.mobile.Application(document.body, {
-    //transition: 'slide',
-    //statusBarStyle: statusBarStyle,
-    //loading: "<h1>Please wait...</h1>",
-    //layout: "tabstrip-layout",										
-    skin: 'flat'
-    });*/
     
     var Keyboardisoff = function() {       
       $(".km-scroll-container").css("-webkit-transform", "");  
     };
     
-    var onDeviceReady = function() {
-      
+    var onDeviceReady = function() {       
         app.deviceId_Not_Receive=0;
-        feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
+        localStorage.setItem("gotNotification", 0);
+        //feedback.initialize('c2ff46e0-c17d-11e4-89b4-ff04e4cbb1ef');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
+
                 
          if (!app.checkSimulator()) {
               app.showAppVersion();
          }else {
              localStorage.setItem("AppVersion", '9.9.9');
          }    
-
-            var loginStatus = localStorage.getItem("loginStatusCheck");
-            if (loginStatus==='1' || loginStatus===1){
-              //app.Activities.show();
-            }else if (loginStatus==='2' || loginStatus===2){
-              app.groupDetail.show();     
-            }
 
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);                
         var pushNotification = window.plugins.pushNotification;   
@@ -513,7 +508,6 @@ var app = (function (win) {
     
 
     function successHandler (result) {
-
         app.deviceId_Not_Receive = 0;
         localStorage.setItem("deviceTokenID", result);
     }
@@ -536,24 +530,19 @@ var app = (function (win) {
     };
     
     var onResume = function(){
-        app.analyticsService.viewModel.monitorStart();
-        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
-        var loginStatus = localStorage.getItem("loginStatusCheck");
-                
-        if(loginStatus !== '0' || loginStatus !== 0)
-        {
+        var loginStatus = localStorage.getItem("loginStatusCheck");    
+        //alert(loginStatus);
+        if(loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null')
+        {            
             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
-        }
-        else
-        {
-            app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
-        }       
-        
-        
-        if(loginStatus!==0 && loginStatus!=='0'){
 
-                var device_id = localStorage.getItem("deviceTokenID");
-                var account_Id = localStorage.getItem("ACCOUNT_ID");
+            if (loginStatus==='1' || loginStatus===1){
+                  app.Activities.show();
+            }else if (loginStatus==='2' || loginStatus===2){
+                  app.groupDetail.show();     
+            }             
+            var device_id = localStorage.getItem("deviceTokenID");
+            var account_Id = localStorage.getItem("ACCOUNT_ID");
         
         
                 var jsonDataLogin = {"APP_ID":app.CLIENT_APP_ID}
@@ -568,30 +557,16 @@ var app = (function (win) {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
-                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    //console.log(e);
-                                                                    //console.log(JSON.stringify(e));
-                                                                    /*if (!app.checkSimulator()) {
-                                                                        window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
-                                                                    }else {
-                                                                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
-                                                                    }*/              
                                                                 }               
                                                             });  
 	            
                 dataSourceLogin.fetch(function() {
-                    var data = this.data();     
-                    //console.log(JSON.stringify(data));
-                //$.each(loginDataView, function(i, loginData) {
-                    //console.log(loginData.status[0].Msg);
-                               
+                    var data = this.data();                                    
                     if (data[0]['status'][0].Msg==='Fail') {                        
-                        //console.log('fail');                        
                         if (!app.checkSimulator()) {
                                   window.plugins.toast.showShortBottom(app.LOGIN_ANOTHER_DEVICE);  
                         }else {
@@ -601,9 +576,14 @@ var app = (function (win) {
                         db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
                         updateLoginStatusSuccess();                 
                     }                    
-               });
-            
-            }
+               });            
+        }
+        else
+        {
+            app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
+        }       
+        app.analyticsService.viewModel.monitorStart();
+        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
     };
     
     
@@ -626,21 +606,16 @@ var app = (function (win) {
     document.addEventListener('orientationchange', fixViewResize);
     
     var fileSystemSuccess = function(fileSystem) {
-        //alert(fileSystem.name);
-        //var directoryEntry = fileSystem.root;
-        //console.log(directoryEntry);
         var rootdir = fileSystem.root;
-        //console.log(rootdir);
         fp = rootdir.toURL();        
-        //alert(fp);
-        //alert(fileSystem.root.fullPath);        
-        rootdir.getDirectory("Zaffio", {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
+        rootdir.getDirectory(app.SD_NAME, {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail); 
         getfbValue();
 
     }
     
     var getfbValue = function() {
         var fbValue = fp;
+        localStorage.setItem("sdCardPath", fbValue);
         return fbValue;
     };
     
@@ -653,21 +628,12 @@ var app = (function (win) {
     }
     
     function fileSystemFail(evt) {
-        //alert(evt.target.error.code);
         //console.log(evt.target.error.code);
     }
 
-    // Initialize Everlive SDK
-    /* var el = new Everlive({
-    apiKey: appSettings.everlive.apiKey,
-    scheme: appSettings.everlive.scheme
-    });*/
-
     var emptyGuid = '00000000-0000-0000-0000-000000000000';
-
     var AppHelper = {
         
-        // Return user profile picture url
         resolveProfilePictureUrl: function (id) {
             if (id && id !== emptyGuid) {
                 //return el.Files.getDownloadUrl(id);
@@ -700,27 +666,7 @@ var app = (function (win) {
             window.location.href('index.html');
         }
     };
-    
-    var addCallback = function addCallback(key, callback) {
-        if (window.pushCallbacks === undefined) {
-            window.pushCallbacks = {}
-        }
-        window.pushCallbacks[key] = callback;
-    };
- 
-    var apnSuccessfulRegistration = function(token) {
-        //alert(token);
-        //alert(token.toString(16));
-        localStorage.setItem("deviceTokenID", token); //token.toString(16)
-        //sendTokenToServer(token.toString(16));
-        addCallback('onNotificationAPN', onNotificationAPN);
-    }
- 
-    var apnFailedRegistration = function(error) {
-        //console.log("Error: " + error.toString());
-        app.analyticsService.viewModel.trackException(error,"Error in APN PUSH Registration : " + error.toString());
-    }
-    
+       
     var messageDB;
     var orgIdDB;
     var notiIdDB;
@@ -733,20 +679,11 @@ var app = (function (win) {
     var notificationMsg;
     var sendDateInside; 
     var uploadTypeNoti;
-    
-    //the function is a callback when a notification from APN is received
-    //var onNotificationAPN = function(e) {
         
     window.onNotificationAPN = function(event) {
-        //console.log(JSON.stringify(event));           
         if (event.id) {                   
-            //var receivedMesage = JSON.stringify(event.id, null, 4);
-            //console.log(receivedMesage);
             account_IdDB = localStorage.getItem("ACCOUNT_ID");
-           
             var messageSplitVal = event.id.split('#####');
-            
-            //alert(messageSplitVal);
                       
             messageDB = messageSplitVal[0];
             orgIdDB = messageSplitVal[1];
@@ -761,7 +698,7 @@ var app = (function (win) {
                     if(attachedDB!==0 || attachedDB!=="0"){                       
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedDB.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;  
+                        var fp = vidPathData + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;  
                         
                         var fileTransfer = new FileTransfer();              
                         fileTransfer.download(attachedDB, fp, 
@@ -790,10 +727,7 @@ var app = (function (win) {
                 if (commentAllowDB==='') {
                     commentAllowDB = 0;
                 }
-                        
-                //console.log("RECEIVED VALUE------------------------");
-                //console.log(messageDB + "||" + orgIdDB + "||" + notiIdDB + "||" + typeDB + "||" + titleDB + "||" + attachedDB + "||" + commentAllowDB + "||" + notificationMsg + "||" + send_DateDB);
-            
+                                    
                 navigator.notification.confirm(titleDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         if (typeDB!=='Reply') {
@@ -836,7 +770,7 @@ var app = (function (win) {
     
     //the function is a callback for all GCM events
     window.onNotificationGCM = function(e) {
-         //alert(JSON.stringify(e));
+        //alert(JSON.stringify(e));
         //alert(JSON.stringify(e));
 
         try {
@@ -868,7 +802,7 @@ var app = (function (win) {
                     if(attachedDB!==0 || attachedDB!=="0"){                       
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedDB.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;  
+                        var fp = vidPathData + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;  
                         
                         var fileTransfer = new FileTransfer();              
                         fileTransfer.download(attachedDB, fp, 
@@ -884,7 +818,6 @@ var app = (function (win) {
 
                                   }
                         );
-
                     }
                             
                     if (typeDB!=='Add Customer' && typeDB!=='Attendance') {
@@ -1010,14 +943,14 @@ var app = (function (win) {
         */
     }
     
-    function goToAppPage() {        
-        //console.log('DATA VALUE4');
-
+    function goToAppPage() { 
+                
         var db = app.getDb();
         db.transaction(updatebagCount, app.errorCB, app.successCB);
 
         var messageDBVal = app.urlEncode(messageDB); 
         var titleDBVal = app.urlEncode(titleDB);
+        
         
             if (attachedDB!== null && attachedDB!=='' && attachedDB!=="0"){
                 localStorage.setItem("shareImg", attachedDB);
@@ -1033,10 +966,8 @@ var app = (function (win) {
          localStorage.setItem("shareComAllow", commentAllowDB);
          localStorage.setItem("shareUploadType", uploadTypeNoti);
          localStorage.setItem("shareDate", sendDateInside);
-         localStorage.setItem("shareType", typeDB);
-         
-        //console.log('go to page');     
-        //app.mobileApp.navigate('views/activityView.html?message=' + messageDBVal + '&title=' + titleDBVal + '&org_id=' + orgIdDB + '&notiId=' + notiIdDB + '&account_Id=' + account_IdDB + '&comment_allow=' + commentAllowDB + '&attached=' + attachedDB + '&type=' + typeDB + '&date=' + sendDateInside+ '&upload_type=' + uploadTypeNoti);
+         localStorage.setItem("shareType", typeDB);        
+         localStorage.setItem("gotNotification", 1);
         
         app.mobileApp.navigate('views/activityView.html');
     }
@@ -1083,17 +1014,7 @@ var app = (function (win) {
         return cval;
     }
     
-    /*
-    var os = kendo.support.mobileOS,
-    statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';
-    */
-    
-    // Initialize KendoUI mobile application
-
-    var loginStatusCheck = localStorage.getItem("loginStatusCheck");                             
-    
-    //console.log(loginStatusCheck);
-    
+    var loginStatusCheck = localStorage.getItem("loginStatusCheck");                                 
     //alert(loginStatusCheck);
     
     if (loginStatusCheck==='0' || loginStatusCheck===null) {    
@@ -1103,42 +1024,27 @@ var app = (function (win) {
                                                  });
     }else if (loginStatusCheck==='1') {
         mobileApp = new kendo.mobile.Application(document.body, {
-                                                     initial: "#view-all-activities",
+                                                     initial: "#firstScreen",
                                                      skin: 'flat'
                                                  });
     }else if (loginStatusCheck==='2') {
         mobileApp = new kendo.mobile.Application(document.body, {
-                                                     initial: "#view-all-activities-GroupDetail",
+                                                     initial: "#firstScreen",
                                                      skin: 'flat'
                                                  });       
     }
     
     var callOrganisationLogin = function() {
         var account_Id = localStorage.getItem("ACCOUNT_ID");
-        app.MenuPage = false;	
-        //console.log(account_Id);
         app.mobileApp.navigate('views/organisationLogin.html?account_Id=' + account_Id);
-        //app.mobileApp.navigate('#organisationNotiList');
     };
        
-    var callUserLogin = function() {
-        var account_Id = localStorage.getItem("ACCOUNT_ID");
-        var userType = localStorage.getItem("USERTYPE");
-        app.MenuPage = false;	
-        //console.log(account_Id);
-        //app.mobileApp.navigate('views/getOrganisationList.html?account_Id='+account_Id+'&userType='+userType+'&from=Admin');
-        
+    var callUserLogin = function() {        
          app.mobileApp.navigate('#view-all-activities');
-         //app.slide('right', 'green' ,'3' ,'#organisationNotiList');
     };
     
     var callAdminOrganisationList = function() {
-        var account_Id = localStorage.getItem("ACCOUNT_ID");
-        app.userPosition = false;
-        //app.mobileApp.navigate('views/adminGetOrganisation.html?account_Id='+account_Id);
-        //app.mobileApp.navigate('#view-all-activities-admin'); 
          app.mobileApp.navigate('#view-all-activities-GroupDetail');
-         //app.slide('right', 'green' ,'3' ,'#view-all-activities-GroupDetail');
     }; 
     
     var getPresentDateTime = function() {
@@ -1287,61 +1193,11 @@ var app = (function (win) {
         }
     }
     
-    function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
-        var result = { width: 0, height: 0, fScaleToTargetWidth: true };
-
-        if ((srcwidth <= 0) || (srcheight <= 0) || (targetwidth <= 0) || (targetheight <= 0)) {
-            return result;
-        }
-
-        // scale to the target width
-        var scaleX1 = targetwidth;
-        var scaleY1 = (srcheight * targetwidth) / srcwidth;
-
-        // scale to the target height
-        var scaleX2 = (srcwidth * targetheight) / srcheight;
-        var scaleY2 = targetheight;
-
-        // now figure out which one we should use
-        var fScaleOnWidth = (scaleX2 > targetwidth);
-        if (fScaleOnWidth) {
-            fScaleOnWidth = fLetterBox;
-        } else {
-            fScaleOnWidth = !fLetterBox;
-        }
-
-        if (fScaleOnWidth) {
-            result.width = Math.floor(scaleX1);
-            result.height = Math.floor(scaleY1);
-            result.fScaleToTargetWidth = true;
-        } else {
-            result.width = Math.floor(scaleX2);
-            result.height = Math.floor(scaleY2);
-            result.fScaleToTargetWidth = false;
-        }
-        result.targetleft = Math.floor((targetwidth - result.width) / 2);
-        result.targettop = Math.floor((targetheight - result.height) / 2);
-
-        return result;
-    };
-
+    
     var gobackTOCalendar = function() {
         app.mobileApp.navigate('#eventCalendar');
     }
     
-    var convertTimeSpan = function(timeSpanVal) {
-        var date = new Date(timeSpanVal * 1000);                    
-               
-        var hours = date.getHours();
-        // minutes part from the timestamp
-        
-        var minutes = "0" + date.getMinutes();
-        // seconds part from the timestamp
-        var seconds = "0" + date.getSeconds();
-        // will display time in 10:30:23 format
-        var formattedTime = hours + ':' + minutes.substr(minutes.length - 2) + ':' + seconds.substr(seconds.length - 2);                 
-        //alert(formattedTime);
-    }
     
     function timeConverter(UNIX_timestamp) {
         var a = new Date(UNIX_timestamp * 1000);
@@ -1463,13 +1319,6 @@ var app = (function (win) {
          app.mobileApp.navigate(href);  
      }  
   }
-
-    //purple
-  // demo for hooking the Android backbutton to the slide 'right'
-
-    /*document.addEventListener('backbutton', function() {
-        slide('right', 'green');
-    }, false);*/
     
     
     
@@ -1584,11 +1433,11 @@ var app = (function (win) {
                }else {
                     app.showAlert(app.NO_GROUP_AVAILABLE);  
                }
-        }
+        };
     
     
     
-         var shareMessageAndURLViaTwitter=function () {
+        var shareMessageAndURLViaTwitter=function () {
            var shareImg = localStorage.getItem("shareImg");
            var shareMsg = localStorage.getItem("shareMsg");
            var shareTitle = localStorage.getItem("shareTitle");
@@ -1610,7 +1459,7 @@ var app = (function (win) {
                 app.shareError);
              }    
            }
-        }
+        };
 
         var shareImagesViaFacebook =function () {
 
@@ -1635,7 +1484,7 @@ var app = (function (win) {
                 app.shareError);
              }    
             }
-        }
+        };
 
         var shareMessageViaWhatsApp = function () {
             var shareImg = localStorage.getItem("shareImg");
@@ -1657,7 +1506,7 @@ var app = (function (win) {
                 app.shareSuccess, app.shareError);
              }    
             }         
-        }
+        };
 
         var shareMessageViaSMS = function () {
             var shareImg = localStorage.getItem("shareImg");
@@ -1681,7 +1530,7 @@ var app = (function (win) {
                 };
 
                 sms.send('', shareMsg, options, app.shareSuccess, app.shareMessageError);
-        }
+        };
         
         var shareViaEmail = function (e){
             var shareImg = localStorage.getItem("shareImg");
@@ -1711,7 +1560,7 @@ var app = (function (win) {
                );
              }    
             }
-        }
+        };
     
     
         var socialShare = function(){
@@ -1727,7 +1576,7 @@ var app = (function (win) {
     
         var shareSuccess = function(){
              //console.log('success');
-        }
+        };
     
         var shareError = function(errormsg){               
             if(errormsg!=="URL_NOT_SUPPORTED" && errormsg!=="not available"){
@@ -1735,24 +1584,22 @@ var app = (function (win) {
             }else if('errormsg==="not available"'){
                  window.plugins.toast.showShortBottom(app.SOCIAL_SHARE_ERROR_MSG);
             }   
-        }
+        };
     
         var shareMessageError = function(){              
                
-        }
+        };
     
         var getMonthData = function (dateString) {
             var month = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
             var today = new Date(dateString);
             return kendo.toString(month[today.getMonth()]);
-        }
+        };
     
     
      var getDeviceID = function(){
         app.deviceId_Not_Receive = 1;                
-        //alert('getDevice_ID');
         var pushNotification = window.plugins.pushNotification;   
-        //console.log(window.plugins);        
                         
         if (device.platform === "iOS") {            
             localStorage.setItem("DEVICE_TYPE", "AP");
@@ -1769,17 +1616,35 @@ var app = (function (win) {
         } else if (device.platform === 'android' || device.platform === 'Android') {
             localStorage.setItem("DEVICE_TYPE", "AN");            
             
-            pushNotification.register(successHandler, errorHandler, {"senderID":"995203039585","ecb":"window.onNotificationGCM"});
+            pushNotification.register(successHandler, errorHandler, {"senderID":"477270485762","ecb":"window.onNotificationGCM"});
                         
         }
-    }
+    };
+        
+    var getFileExtension = function(filename)
+          {
+                var ext = /^.+\.([^.]+)$/.exec(filename);
+                return ext === null ? "" : ext[1];
+          };
+    
+    var refreshBtn = function(){  
+        $("#refreshLoader").show();
+        app.onLoad();       
+        setTimeout(function(){
+            $("#refreshLoader").hide();  
+             $("#popover-drawer").data("kendoMobilePopOver").close();
+        },200);
+    };
     
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
+        SD_NAME:SD_NAME,
         showAlert: showAlert,
         showError: showError,
         serverUrl:serverUrl,
+        getFileExtension:getFileExtension,
+        refreshBtn:refreshBtn,
         shareMessageViaWhatsApp:shareMessageViaWhatsApp,
         shareImagesViaFacebook:shareImagesViaFacebook,
         shareMessageAndURLViaTwitter:shareMessageAndURLViaTwitter,
@@ -1796,9 +1661,7 @@ var app = (function (win) {
         callOrganisationLogin:callOrganisationLogin,
         callAdminOrganisationList:callAdminOrganisationList,
         replyUser:replyUser,
-        convertTimeSpan:convertTimeSpan,
         timeConverter:timeConverter,
-        ScaleImage:ScaleImage,
         getMonthData:getMonthData,
         toTitleCase:toTitleCase,
         checkIfFileExists:checkIfFileExists,

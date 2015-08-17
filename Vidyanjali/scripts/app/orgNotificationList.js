@@ -18,23 +18,15 @@ app.orgListView = (function () {
         };
 
         var adminNotificationShow = function(e) {
-
             $("#showMoreEventBtnOrg").hide();                           
-
             $("#progressAdminNoti").show();
             $("#admin-noti-listview").hide();
-            
             page=0;
             dataReceived=0;
             totalListView=0;
-            
             organisationID = localStorage.getItem("orgSelectAdmin");
-            account_Id = localStorage.getItem("ACCOUNT_ID");
-            
-            groupDataShow=[];
-            
-            //console.log(organisationID+'||'+account_Id);
-            
+            account_Id = localStorage.getItem("ACCOUNT_ID");            
+            groupDataShow=[];                        
             getLiveData();
 
         };
@@ -61,7 +53,6 @@ app.orgListView = (function () {
                 },
                  
                                                                               error: function (e) {
-                                                                                  //console.log(JSON.stringify(e));                                                                                  
                                                                                   $("#progressAdminNoti").hide();  
 
                                                                                   if (!app.checkConnection()) {

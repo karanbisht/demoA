@@ -1,8 +1,6 @@
-
 var app = app || {};
-
 app.eventCalender = (function () {
-         'use strict';
+   'use strict';
     var calendarEventModel = (function () {
         var eventOrgId;
         var account_Id;
@@ -13,29 +11,27 @@ app.eventCalender = (function () {
         var totalListView=0;
         var dataReceived=0;
         var device_type; 
-        var imageSourceOrg;
+        //var imageSourceOrg;
         var orgin;
+        var sdcardPath;
+        var evtImgFileName;
 
         var init = function() {
-        }
+        };
     
         var show = function(e) {
-
-            device_type = localStorage.getItem("DEVICE_TYPE"); 
-
-            $("#showMoreEventBtn").hide();
             $(".km-scroll-container").css("-webkit-transform", ""); 
+            device_type = localStorage.getItem("DEVICE_TYPE"); 
+            $("#showMoreEventBtn").hide();
             tasks = [];
             multipleEventArray = [];
-            $("#CalProcess").show();                         
-            
+            $("#CalProcess").show();                                     
             account_Id = localStorage.getItem("ACCOUNT_ID");
             eventOrgId = localStorage.getItem("selectedOrgId");            
-            imageSourceOrg = localStorage.getItem("selectedOrgLogo");
+            //imageSourceOrg = localStorage.getItem("selectedOrgLogo");
+            sdcardPath = localStorage.getItem("sdCardPath");
             orgin = e.view.params.orgin;
-
-
-             if(orgin===1 || orgin==='1' ){
+            if(orgin===1 || orgin==='1' ){
                 $("#idBackHome").show();
                 $("#idBackOrg").hide();
             }else{
@@ -48,14 +44,21 @@ app.eventCalender = (function () {
             totalListView=0;
             groupAllEvent = [];
             
-            getLiveData();
-        }
-        
+          if (!app.checkConnection()) {
+            if (!app.checkSimulator()) {                                                                     
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+            }else {              
+                app.showAlert(app.INTERNET_ERROR , 'Offline');                   
+            }              
+            getLocalData();  
+          }else{
+            getLiveData();  
+          }            
+        };
         
         
         var getLiveData = function(){
-
-            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id,"page":page}
+            var jsonDataLogin = {"org_id":eventOrgId,"account_id":account_Id,"page":page};
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
                     read: {
@@ -64,17 +67,14 @@ app.eventCalender = (function () {
                                                                             dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                                                                             data: jsonDataLogin
                                                                         }
-                },
+                    },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    //console.log(JSON.stringify(e));               
-                                                                    $("#CalProcess").hide();
-                                                                    
+                                                                   $("#CalProcess").hide();                                                                    
                                                                    if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -89,192 +89,168 @@ app.eventCalender = (function () {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }              
+                                                                                        }   
+                                                                    getLocalData();
                                                                 }                              
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-                var data = this.data();
-                                              
+                    var data = this.data();                                          
                     if (data[0]['status'][0].Msg==='No Event list') {
                         tasks = [];
                         groupAllEvent = [];
+                        eventListFirstShow();
                     }else if (data[0]['status'][0].Msg==='Success') {
-                        tasks = [];
-                             
+                         tasks = [];                             
                         totalListView = data[0]['status'][0].Total;
                         var orgNameToShow = localStorage.getItem("selectedOrgName");
-
                         if (data[0].status[0].eventData.length!==0) {
-                            var eventListLength = data[0].status[0].eventData.length;
-                              //console.log(loginData.status[0].eventData);    
-                            for (var i = 0 ; i < eventListLength ;i++) {
-                                
-                                 //alert(data[0].status[0].eventData[i].event_date);                                
-                                 var eventDaya = data[0].status[0].eventData[i].event_date;                                
-                                 var eventDateString = data[0].status[0].eventData[i].event_date;
-                                 var eventTimeString = data[0].status[0].eventData[i].event_time;
+                          $
+			              .each(
+					      data[0].status[0].eventData,
+			              function(i, eventData) {  
+                                 var eventDaya = eventData.event_date;                                
+                                 var eventDateString = eventData.event_date;
+                                 var eventTimeString = eventData.event_time;                                 
                                  var eventDate = app.formatDate(eventDateString);
                                  var eventTime = app.formatTime(eventTimeString);   
-                               
-                                //var aboveDay = app.getDateDays(eventDateString);   
-                                //alert(aboveDay);
-                                var belowData = app.getMonthData(eventDateString);
-                                //alert(belowData);
-                                
-                                var values = eventDaya.split('-');
-                                var year = values[0]; // globle variable
-                                var month = values[1];
-                                var day = values[2];
-                                  
-                                
-                                //console.log('------------------date=---------------------');
-                                //console.log(year + "||" + month + "||" + day);
-                                  
-                                //tasks[+new Date(year + "/" + month + "/" + day)] = "ob-done-date";
-                                  
-                                //console.log(tasks);
-                                  
-                                //tasks[+new Date(2014, 11, 8)] = "ob-done-date";
-                                 
-                                if (day < 10) {
+                                 var belowData = app.getMonthData(eventDateString);                                
+                                 var values = eventDaya.split('-');
+                                 var year = values[0]; 
+                                 var month = values[1];
+                                 var day = values[2];                                  
+                                 if (day < 10) {
                                     day = day.replace(/^0+/, '');                                     
+                                 }                              
+                                var saveData = month + "/" + day + "/" + year;                                 
+                                var Filename;
+                                var fp;
+                                var downloadedImg;                                  
+                                var attachedData = eventData.event_image;  
+                             if (attachedData!== null && attachedData!=='' && attachedData!=="0"){     
+                                Filename = attachedData.replace(/^.*[\\\/]/, '');
+                                var ext = app.getFileExtension(Filename);
+                                if (ext==='') {
+                                    Filename = Filename + '.jpg'; 
                                 }
-                                var saveData = month + "/" + day + "/" + year;
-                                                               
-                                    groupAllEvent.push({
-                                                       id: data[0].status[0].eventData[i].id,
-                                                       add_date: data[0].status[0].eventData[i].add_date,
+                                fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + Filename;                                                                 
+                                window.resolveLocalFileSystemURL(fp, 
+                                function(entry)
+                                {
+                                      console.log('sdcard');
+                                      downloadedImg = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + Filename;                        
+                                      pushDataInArray(eventData,saveData,day,orgNameToShow,eventDate,belowData,eventDaya,eventTimeString,eventTime,i,downloadedImg);  
+                                },function(error)
+                                {
+                                      console.log('not in sdcard');  
+                                      downloadedImg = eventData.event_image;
+                                      pushDataInArray(eventData,saveData,day,orgNameToShow,eventDate,belowData,eventDaya,eventTimeString,eventTime,i,downloadedImg);  
+                                });
+                             }else{
+                                      downloadedImg = '';
+                                      pushDataInArray(eventData,saveData,day,orgNameToShow,eventDate,belowData,eventDaya,eventTimeString,eventTime,i,downloadedImg);
+                             }                                                             
+                          });
+                        }else{
+                            groupAllEvent = [];
+                            eventListFirstShow();
+                        } 
+                    }                                  
+                    //eventListFirstShow();
+                });
+
+        }
+        
+        
+        function pushDataInArray(eventData,saveData,day,orgNameToShow,eventDate,belowData,eventDaya,eventTimeString,eventTime,i,downloadedImg){             
+            var indexVal; 
+            if(page!==0){
+                indexVal= parseInt(page+'0')+i+1;
+            }else{
+                indexVal=i+1;
+            }            
+            var locationToShow = eventData.location;
+                if(locationToShow==="0" || locationToShow===0){
+                      locationToShow='';
+                }
+            
+                                                  groupAllEvent.push({
+                                                       id: eventData.id,
+                                                       add_date: eventData.add_date,
                                                        event_date: saveData,
                                                        event_show_day:day,
                                                        org_name_to_show:orgNameToShow,
-                                                       //preDateVal:preDateVal,
-                                                       //event_above_day:aboveDay,
                                                        event_date_To_Show:eventDate,
                                                        event_below_day:belowData,
                                                        calandar_Date:eventDaya,
                                                        calandar_Time:eventTimeString,
-                                                       location:data[0].status[0].eventData[i].location,
-                                                       upload_type:data[0].status[0].eventData[i].upload_type,
-                                                       event_desc: data[0].status[0].eventData[i].event_desc,                                                                                 										  
-                                                       event_name: data[0].status[0].eventData[i].event_name, 
-                                                       event_image : data[0].status[0].eventData[i].event_image,
+                                                       location:locationToShow,
+                                                       upload_type:eventData.upload_type,
+                                                       event_desc: eventData.event_desc,                                                                                 										  
+                                                       event_name: eventData.event_name, 
+                                                       event_image : eventData.event_image,
+                                                       event_image_show : downloadedImg,
                                                        event_time: eventTime,                                                                              										  
-                                                       mod_date: data[0].status[0].eventData[i].mod_date,                                     
-                                                       org_id: data[0].status[0].eventData[i].org_id
-                                                   });
-                             
-                            }
-                        } 
-                    }                
-                   
-                    eventListFirstShow();
-                });
-
+                                                       mod_date: eventData.mod_date,                                     
+                                                       org_id: eventData.org_id,
+                                                       index:indexVal
+                                                   });            
+      
+           // console.log(totalListView+"||"+indexVal);                           
+            if(totalListView===indexVal){
+                     eventListFirstShow(); 
+                     setTimeout(function(){
+                         callEventSaving();
+                     },100);    
+            }else if(indexVal % 10 ===0){                     
+                     eventListFirstShow();
+                     setTimeout(function(){     
+                        callEventSaving();
+                     },100);     
+            }                       
+        }               
+        
+        function callEventSaving(){
+            var db = app.getDb();
+            db.transaction(saveEventOffline, app.errorCB, app.successCB); 
         }
-        /*function showEventInCalendar() {
-            //console.log(tasks);
-            
-            multipleEventArray = [];            
-
-            //document.getElementById("calendar").innerHTML = "";
-            
-            $("#calendar").kendoCalendar({
-                                             value:new Date(),
-                                             dates:tasks,
-                 month:{
-                    content:'# if (typeof data.dates[+data.date] === "string") { #' +
-                            '<div style="color:rgb(53,152,219);"><u>' +
-                            '#= data.value #' +
-                            '</u></div>' +
-                            '# } else { #' +
-                            '#= data.value #' +
-                            '# } #'
-                },
-                                             //footer: false,
-                                             change: selectedDataByUser,              
-              
-                                             navigate:function () {
-                                                 $(".ob-done-date", "#calendar").parent().addClass("ob-done-date-style k-state-hover k-state");
-                                                 $(".ob-not-done-date", "#calendar").parent().addClass("ob-not-done-date-style k-state-hover k-state");
-                                             }
-                                         }).data("kendoCalendar");            
-
-            $("#CalProcess").hide();
-        }*/
-
-        //var date2;
-
-        /*function selectedDataByUser() {
-            console.log("Change :: " + kendo.toString(this.value(), 'd'));
-            var date = kendo.toString(this.value(), 'd');                 
-            
-            var date2 = kendo.toString(this.value(), 'd'); 
-
-            $("#eventDetailDiv").hide();
- 
-            multipleEventArray = [];
-            document.getElementById("eventTitle").innerHTML = "";
-
-            //console.log(groupAllEvent);
-            
-            var dateExist = 0;
-            
-            for (var i = 0;i < groupAllEvent.length;i++) {
-                var dateFmLive = groupAllEvent[i].event_date;                
-                var values = dateFmLive.split('/');
-                var monthShow = values[0]; // globle variable
-                var dayShow = values[1];
-                var yearShow = values[2];
                 
-                if (monthShow < 10) {
-                    monthShow = monthShow.replace(/^0+/, '');                                                         
-                }
-                
-                var dateToCom = monthShow + '/' + dayShow + '/' + yearShow;
-
-                if (date===dateToCom) {
-                    $("#eventDate").html(date);
-                    document.getElementById("eventTitle").innerHTML += '<ul><li style="color:rgb(147,147,147);">' + groupAllEvent[i].event_name + ' at ' + groupAllEvent[i].event_time + '</li></ul>'                     
-                                                                                        
-                    multipleEventArray.push({
-                                                id: groupAllEvent[i].id,
-                                                add_date: groupAllEvent[i].add_date,
-                                                event_date: groupAllEvent[i].event_date,
-                                                event_desc: groupAllEvent[i].event_desc,                                                                                 										  
-                                                event_name: groupAllEvent[i].event_name,
-                                                event_show_date:groupAllEvent[i].event_show_date,
-                                                event_image:groupAllEvent[i].event_image,
-                                                upload_type:groupAllEvent[i].upload_type,
-                                                event_time: groupAllEvent[i].event_time,                                                                                  										  
-                                                mod_date: groupAllEvent[i].mod_date,                                     
-                                                org_id: groupAllEvent[i].org_id
-                                            });
-
-                    //$("#eventTitle").html(groupAllEvent[i].event_name);
-                    //$("#eventTime").html(groupAllEvent[i].event_time);
-                    dateExist = 1;
-                    $("#eventDetailDiv").show();
-                }   
-            }
+        function saveEventOffline(tx){
+              var length = groupAllEvent.length;      
+              //console.log(groupAllEvent);
+              var queryDelete = "DELETE FROM ORG_EVENT";
+              app.deleteQuery(tx, queryDelete);               
+              if(length!==null && length!=='null' && length!==0 && length!=='0'){                                    
+                  for(var i=0;i<length;i++){
+                      /*console.log(groupAllEvent[i].id+"||"+groupAllEvent[i].org_id+"||"+groupAllEvent[i].event_name+"||"+groupAllEvent[i].event_desc+"||"+groupAllEvent[i].event_image_show+"||"+
+                      groupAllEvent[i].upload_type+"||"+groupAllEvent[i].calandar_Date+"||"+groupAllEvent[i].calandar_Time+"||"+groupAllEvent[i].location);*/
+                      
+                      var query = 'INSERT INTO ORG_EVENT(id,org_id,event_name,event_desc,event_image,event_image_DB,upload_type,event_date,event_time,location) VALUES ("'
+                                    + groupAllEvent[i].id
+                                    + '","'
+                                    + groupAllEvent[i].org_id
+                                    + '","'
+                                    + groupAllEvent[i].event_name
+                                    + '","'
+                                    + groupAllEvent[i].event_desc
+                                    + '","'
+                                    + groupAllEvent[i].event_image
+                                    + '","'
+                                    + groupAllEvent[i].event_image_show
+                                    + '","'
+                                    + groupAllEvent[i].upload_type
+                                    + '","'
+                                    + groupAllEvent[i].calandar_Date
+                                    + '","'
+                                    + groupAllEvent[i].calandar_Time
+                                    + '","'
+                                    + groupAllEvent[i].location                                    
+                                    + '")';                                      
+                                    app.insertQuery(tx, query);
+                  }                                                                        
+              }    
+        }       
             
-            if (dateExist!==0) {                
-                //$("#eventDetailDiv").show();
-                eventMoreDetailClick();
-                //$("#eventCalendarFirstAllList").hide();
-            }else {
-                $("#eventCalendarFirstAllList").show();
-                //$("#eventDetailDiv").hide();
-            }
-        }*/
-        
-        /*var eventMoreDetailClick = function() {
-
-            app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
-
-            app.mobileApp.navigate('#eventCalendarDetail');
-        }*/
-        
         var gobackToCalendar = function() {
             app.mobileApp.navigate('#eventCalendar');
         }
@@ -282,8 +258,7 @@ app.eventCalender = (function () {
         var detailShow = function() {
                       
             $("#popover-usereventAction").removeClass("km-widget km-popup");
-            $('.km-popup-arrow').addClass("removeArrow");
-            
+            $('.km-popup-arrow').addClass("removeArrow");            
             $(".km-scroll-container").css("-webkit-transform", "");            
             $("#detailEventData").html("Event On " + multipleEventArray[0].event_date);
             
@@ -296,45 +271,38 @@ app.eventCalender = (function () {
                          dataSource: organisationListDataSource
             });                
             $('#eventCalendarList').data('kendoMobileListView').refresh();
-        }
+            
+            if(multipleEventArray[0].event_image!=='null' && multipleEventArray[0].event_image!==null && multipleEventArray[0].event_image!==''){
+                evtImgFileName = multipleEventArray[0].event_image.replace(/^.*[\\\/]/, '');          
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_'+evtImgFileName; 
+                window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);
+            }
+        };
+        
+        var imagePathExist = function() {
+             console.log('Event Image already exist');
+        };
+        
+        var imagePathNotExist = function() {
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + evtImgFileName;             	
+            var fileTransfer = new FileTransfer();              
+            fileTransfer.download(multipleEventArray[0].event_image, fp, 
+                                  function(entry) {
+                                      console.log('Event image downloaded');
+                                  },
+    
+                                  function(error) {
+                                      console.log('error in Event image downloaded');
+                                  }
+                );                
+        };
         
         var upcommingEventList = function() {
             app.mobileApp.navigate('#CustomerEventList');
-        }
+        };
         
-        /*var eventListShow = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            
-            var allEventLength = groupAllEvent.length;
-            
-            if (allEventLength===0) {
-                groupAllEvent.push({
-                                       id:0 ,
-                                       add_date:'',
-                                       event_date:'',
-                                       event_desc: 'This Organization has no event.',                                                                                 										  
-                                       event_name: 'No Event',                                                                                  										  
-                                       event_time: '', 
-                                       event_image:'',
-                                       mod_date: '',                                     
-                                       org_id: ''
-                                   });
-            }
- 
-            var organisationListDataSource = new kendo.data.DataSource({
-                                                                           data: groupAllEvent
-                                                                       });           
-                
-            $("#eventCalendarAllList").kendoMobileListView({
-                                                               template: kendo.template($("#calendarEventListTemplate").html()),    		
-                                                               dataSource: organisationListDataSource
-                                                           });
-                
-            $('#eventCalendarAllList').data('kendoMobileListView').refresh();
-        }*/
         
         var eventListFirstShow = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");           
             var allEventLength = groupAllEvent.length;            
             if (allEventLength===0) {
                 groupAllEvent.push({
@@ -350,6 +318,11 @@ app.eventCalender = (function () {
                                        org_id: ''
                                    });
             }
+           
+          setTimeout(function(){            
+            groupAllEvent = groupAllEvent.sort(function(a, b) {
+                  return parseInt(a.index) - parseInt(b.index);
+            });
  
             var organisationListDataSourceFirst = new kendo.data.DataSource({
                                                                                data: groupAllEvent
@@ -368,6 +341,7 @@ app.eventCalender = (function () {
             }else{
                 $("#showMoreEventBtn").hide();
             }
+          },300);     
         }
         
 
@@ -383,24 +357,22 @@ app.eventCalender = (function () {
                                                 event_desc: e.data.event_desc,
                                                 event_show_day:e.data.event_show_day,
                                                 event_name: e.data.event_name,
-                                                org_name_to_show:e.data.org_name_to_show,
                                                 upload_type:e.data.upload_type,
+                                                location:e.data.location,
                                                 calandar_Date:e.data.calandar_Date,
                                                 calandar_Time:e.data.calandar_Time,
-                                                location:e.data.location,
+                                                org_name_to_show:e.data.org_name_to_show,
                                                 //event_above_day:e.data.event_above_day,
                                                 event_below_day:e.data.event_below_day,
                                                 event_image:e.data.event_image,
+                                                event_image_show : e.data.event_image_show,
                                                 event_time: e.data.event_time,                                                                                  										  
                                                 mod_date: e.data.mod_date,
-                                                imageSourceOrg:imageSourceOrg,
                                                 org_id: e.data.org_id
-                                            });
-            //console.log(multipleEventArray);
-            
+                                            });            
             setTimeout(function(){
                 app.mobileApp.navigate('#eventCalendarDetail');            
-            },100);  
+            },100);   
         }
         
         var gobackOrgPage = function(){
@@ -413,144 +385,94 @@ app.eventCalender = (function () {
         
         var videoDownlaodClick = function(e){            
             var data = e.button.data();
-            //console.log(data);            
             videoFile = data.someattribute;  
-            //console.log(videoFile);            
             notiFi = data.notiid;
-            //alert(notiFi);
             attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
             var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_video_' + attachedFilename;             
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_video_' + attachedFilename;             
             window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
         }
         
         var videoPathExist = function() {                      
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_video_' + attachedFilename;
-
-            /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
-            vid.attr('src', fp);
-            vid.appendTo('#video_Div_'+notiFi);*/
-            
-
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_video_' + attachedFilename;
             if(device_type==="AP"){
                   window.open(fp, "_blank" ,'EnableViewPortScale=yes');
             }else{
                   window.plugins.fileOpener.open(fp);
-            }
-            
+            }            
         }
         
         var videoPathNotExist = function() {
             $("#video_Div_Event_"+notiFi).show();
-            //$("videoToDownloadEvent_"+notiFi).text('Downloading..');
             var attachedVid = videoFile;                        
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_video_' + attachedFilename;
-            
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_video_' + attachedFilename;            
             var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedVid, fp, 
                                   function(entry) {
-                                      
-
                                       if(device_type==="AP"){
                                           window.open(fp, "_blank",'EnableViewPortScale=yes');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
-
                                       $("#video_Div_Event_"+notiFi).hide();
-                                      //$("videoToDownloadEvent_"+notiFi).text('View');
-
-                                  },
-    
+                                  },    
                                   function(error) {
                                       $("#video_Div_Event_"+notiFi).hide();
-                                      //$("videoToDownloadEvent_"+notiFi).text('View');
-                                      //$("#progressChat").hide();
                                   }
                 );                
         }
         
-
         var attachedImgFilename;
         var imgFile;
         var imgNotiFi;
 
         var imageDownlaodClick = function(e){
             var data = e.button.data();            
-            //console.log(data);            
             imgFile = data.imgpath;  
-            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
-            attachedImgFilename=attachedImgFilename+'.jpg';
-            var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;             
-            //console.log(vidPathData);
-            //console.log(fp);
+            var ext = app.getFileExtension(attachedImgFilename);
+            if (ext==='') {
+                attachedImgFilename = attachedImgFilename + '.jpg'; 
+            }
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;             
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
-            //$("#img_Div_"+imgNotiFi).show();
-            
-            //alert("#img_Div_"+imgNotiFi);
-            
-            //alert('click');
-            //console.log(JSON.stringify(window.plugins));
-            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
         }
-        
                 
         var imgPathExist = function() {                    
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;   
-            //fp=fp+'.jpg';
-            //console.log(fp);
-            
+               var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;               
                                       if(device_type==="AP"){
-                                          //alert('Show');
-                                          //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
+                                         window.open(fp, '_blank','location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
                                       }
-
         }
         
         var imgPathNotExist = function() {
-
-            $("#img_Div_Event_"+imgNotiFi).show();
-            //$("#imgToDownloadEvent_"+imgNotiFi).text('Downloading..');
-            
+          if (!app.checkConnection()) {
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+          }else{
+            $("#img_Div_Event_"+imgNotiFi).show();            
             var attachedImg = imgFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;
-                        //console.log(fp);
-
-
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;
             var fileTransfer = new FileTransfer();              
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
-
-                                      //$("#imgToDownloadEvent_"+imgNotiFi).text('View');
                                       $("#img_Div_Event_"+imgNotiFi).hide();
-
-
                                       if(device_type==="AP"){
-                                          //alert('1');
                                           window.open(fp, "_blank",'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
-                                      }
-                                      
-                                  },
-    
+                                      }                                      
+                                  },    
                                   function(error) {
-                                      //$("#imgToDownloadEvent_"+imgNotiFi).text('View');
                                       $("#img_Div_Event_"+imgNotiFi).hide();
                                   }
                 );                
-        }
-        
+          }   
+        }        
         
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {
@@ -572,11 +494,11 @@ app.eventCalender = (function () {
         
          var iFrameLocUrl = function(){    
             $("#userIFrameLoader").show();
-            var mapUrl = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBNTSIiae6uNUtrZlpxVdGVsDxQ65xZ2O4&q="+mapLocationShow;
+            var mapUrl = app.GEO_MAP_API+mapLocationShow;
             document.getElementById("setIFrame_UserSide").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width;this.height=screen.height"></iframe>';             
             setTimeout(function(){
                 $("#userIFrameLoader").hide();
-            },5000);             
+            },7000);             
         }
         
         
@@ -702,11 +624,63 @@ app.eventCalender = (function () {
         var error = function(message) {
 
         };
+
+        function getLocalData(){
+            var db = app.getDb();
+            db.transaction(getDatafromDB, app.errorCB, eventListFirstShow);         
+        }
+        
+        function getDatafromDB(tx){
+            var query = "SELECT * FROM ORG_EVENT";
+            app.selectQuery(tx, query, dataFromEventDB);
+        }
+        
+        function dataFromEventDB(tx, results){
+            var count = results.rows.length;
+             console.log(count);
+               if (count !== 0) {
+                     var orgNameToShow = localStorage.getItem("selectedOrgName");
+                     for(var i=0;i<count;i++){
+                                 var eventDaya = results.rows.item(i).event_date;                                
+                                 var eventDateString = results.rows.item(i).event_date;
+                                 var eventTimeString = results.rows.item(i).event_time;                                 
+                                 var eventDate = app.formatDate(eventDateString);
+                                 var eventTime = app.formatTime(eventTimeString);   
+                                 var belowData = app.getMonthData(eventDateString);                                
+                                 var values = eventDaya.split('-');
+                                 var year = values[0]; 
+                                 var month = values[1];
+                                 var day = values[2];                                  
+                                 if (day < 10) {
+                                    day = day.replace(/^0+/, '');                                     
+                                 }
+                                 var saveData = month + "/" + day + "/" + year;
+                         
+                                 groupAllEvent.push({
+                                                       id: results.rows.item(i).id,
+                                                       event_date: saveData,
+                                                       event_show_day:day,
+                                                       org_name_to_show:orgNameToShow,
+                                                       event_date_To_Show:eventDate,
+                                                       event_below_day:belowData,
+                                                       calandar_Date:eventDaya,
+                                                       calandar_Time:eventTimeString,
+                                                       location:results.rows.item(i).location,
+                                                       upload_type:results.rows.item(i).upload_type,
+                                                       event_desc: results.rows.item(i).event_desc,                                                                                 										  
+                                                       event_name: results.rows.item(i).event_name, 
+                                                       event_image : results.rows.item(i).event_image,
+                                                       event_image_show : results.rows.item(i).event_image_DB,
+                                                       event_time: eventTime,                                                                              										  
+                                                       org_id: results.rows.item(i).org_id                                                       
+                                                   });
+                     }
+              } 
+        }
         
         return {
             init: init,
             show: show,
-            //eventListShow:eventListShow,
             eventSelected:eventSelected,
             DeleteEventFromCalendar:DeleteEventFromCalendar,
             AddEventToCalender:AddEventToCalender,
@@ -718,7 +692,6 @@ app.eventCalender = (function () {
             showMoreButtonPress:showMoreButtonPress,
             upcommingEventList:upcommingEventList,
             getLiveData:getLiveData,
-            //eventMoreDetailClick:eventMoreDetailClick,
             imageDownlaodClick:imageDownlaodClick,
             videoDownlaodClick:videoDownlaodClick,
             detailShow:detailShow

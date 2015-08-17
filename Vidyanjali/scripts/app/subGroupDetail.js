@@ -85,23 +85,25 @@ app.subGroupDetail = (function () {
                 },
                                                                  error: function (e) {
                                                                      //console.log(JSON.stringify(e));
-                                                                     app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));                                                                                         
-                                                                     var showNotiTypes = [
-                                                                         { message: "Please Check Your Internet Connection"}
-                                                                     ];
-                        
-                                                                     var dataSource = new kendo.data.DataSource({
-                                                                                                                    data: showNotiTypes
-                                                                                                                });
-                    
-                                                                     $("#subGroupMember-listview").kendoMobileListView({
-                                                                                                                           template: kendo.template($("#errorTemplate").html()),
-                                                                                                                           dataSource: dataSource  
-                                                                                                                       });
-                                                                     
+                                                                                                                                          
                                                                       $("#memberSGLoader").hide();
                                                                       $("#subGroupMember-listview").show();
 
+                                                                     if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }
                                                                  }
 	        
                                                              });         

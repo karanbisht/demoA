@@ -1,13 +1,9 @@
 var app = app || {};
-
-
 app.OragnisationList = (function () {
-    'use strict'
- 
+    'use strict'; 
     var account_Id;
     var groupDataShow = [];   
     var UserOrgInformation;
-    //var JoinedOrganisationYN = 1;
     var orgLogoName;
     var imgPathData;
     var checkForImg=0;
@@ -17,16 +13,12 @@ app.OragnisationList = (function () {
         var init = function() {
         };
                       
-        var show = function() {
-                      
+        var show = function() {                      
             $(".km-scroll-container").css("-webkit-transform", "");
-
             $("#moreOption").hide();
-            $("#goToAdmin").hide();
-             
+            $("#goToAdmin").hide();             
             localStorage.setItem("loginStatusCheck", 1);
-            account_Id = localStorage.getItem("ACCOUNT_ID");
-                        
+            account_Id = localStorage.getItem("ACCOUNT_ID");                        
             var db = app.getDb();
             db.transaction(getDataOrg, app.errorCB, showLiveData);   
         }
@@ -35,11 +27,11 @@ app.OragnisationList = (function () {
             var query = "SELECT * FROM JOINED_ORG";
             app.selectQuery(tx, query, getDataSuccess);
             
-            var query = "SELECT * FROM JOINED_ORG_ADMIN";
-            app.selectQuery(tx, query, getAdminDataSuccess);
+            var query1 = "SELECT * FROM JOINED_ORG_ADMIN";
+            app.selectQuery(tx, query1, getAdminDataSuccess);
             
-            var query = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
-            app.updateQuery(tx, query);
+            var query2 = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
+            app.updateQuery(tx, query2);
         }; 
         
         var getDataOrgDB = [];
@@ -67,12 +59,12 @@ app.OragnisationList = (function () {
                     if(org_Logi_Image!=='null' && org_Logi_Image!==null){
                         orgLogoName = org_Logi_Image.replace(/^.*[\\\/]/, '');                        
                         imgPathData = app.getfbValue();                    
-                        fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+orgLogoName;                         
+                        fp = imgPathData + app.SD_NAME+"/" + 'Zaffio_orgLogo_'+orgLogoName;                         
                         window.resolveLocalFileSystemURL(fp, 
                         function(entry)
                         {
                            //alert('local');
-                          orgImage=imgPathData + "Zaffio/"+'Zaffio_orgLogo_'+orgLogoName; 
+                          orgImage=imgPathData + app.SD_NAME+"/"+'Zaffio_orgLogo_'+orgLogoName; 
                            //checkForImg=1; 
                         },function(error)
                         {
@@ -1075,7 +1067,8 @@ app.OragnisationList = (function () {
                         tempArray.push(results.rows.item(x).org_id);								                    
                         document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 
                     }
-                }             
+                }  
+                adminOrg = 0;
             }else {
                 tempArray = [];                    
                 adminOrg = 1;
@@ -1223,13 +1216,6 @@ app.OragnisationList = (function () {
             }
         }
         
-        var appVersion = function() {
-            $("#appVersionDiv").show();
-            $('#contentDiv').css('background-color', '#636363');
-            $("#settingOptionDiv").hide();
-            var value = localStorage.getItem("AppVersion");
-            $("#appVersion").html(value);
-        }
         
         var showAboutUs = function() {
         }
@@ -1340,31 +1326,29 @@ app.OragnisationList = (function () {
         }
         
         var showCalendar = function() {
-            if (!app.checkConnection()) {
+            /*if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
-            }else {
+            }else {*/
                 app.analyticsService.viewModel.trackFeature("User navigate to Calendar List Page");            
-
                 app.mobileApp.navigate('views/eventCalendar.html'); 
-            }
+            //}
         }
         
         var showOrgNews = function() {
-            if (!app.checkConnection()) {
+            /*if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
                 }else {
                     app.showAlert('Network unavailable . Please try again later' , 'Offline');  
                 } 
-            }else {
+            }else {*/
                 app.analyticsService.viewModel.trackFeature("User navigate to News List Page");            
-
                 app.mobileApp.navigate('views/organizationNews.html?orgManageID=' + orgManageID);
-            }            
+            //}            
         }
         
         var syncCalendar = function() {
@@ -1670,7 +1654,7 @@ app.OragnisationList = (function () {
         
         var takeProfilePhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
-                                            quality: 50,
+                                            quality: 20,
                                             targetWidth: 300,
                                             targetHeight: 300,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
@@ -1724,15 +1708,24 @@ app.OragnisationList = (function () {
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
         }
+        
+        var openPopoverDrawer = function(){
+            app.mobileApp.navigate('#versionView');            
+        }
+        
+        var appVersion = function() {
+            var value = localStorage.getItem("AppVersion");
+            $("#appVersionPop").html(value);
+            $("#appNameBarId").html(app.APP_NAME);
+        }
 
         return {
-            //activities: activitiesModel.activities,
-            //groupData:GroupsModel.groupData,
-            //userData:UsersModel.userData,
             organisationSelected: organisationSelected,
             takeProfilePhoto:takeProfilePhoto,
             selectProfilePhoto:selectProfilePhoto,            
             resetProfilePhoto:resetProfilePhoto,
+            openPopoverDrawer:openPopoverDrawer,
+            appVersion:appVersion,
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
             settingShow:settingShow,
@@ -1745,7 +1738,6 @@ app.OragnisationList = (function () {
             manageGroup:manageGroup,
             about:about,
             setting:setting,
-            appVersion:appVersion,
             inAppBrowser:inAppBrowser,  
             makeCall:makeCall,
             OnImageLoad:OnImageLoad,

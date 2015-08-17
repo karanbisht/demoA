@@ -12,7 +12,7 @@
                       <div class="ball"></div>
             </div>
 
-    <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate"   data-bind="source: activities"></span>    
+    <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate" data-bind="source: activities"></span>    
     <div id="showMoreNewsBtn" class="showMore" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
 
      <ul data-role="actionsheet" id="newsShareAction">
@@ -50,8 +50,7 @@
                         <span></span>
                     </div>           
                      <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-5px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#newsShareAction"></a>                         
-                    <br/>
-            
+                    <br/>            
                 <a id="activityTemplateMessage" class="orgContentMsg">#= news_desc #</a>            			                        
                   #if (news_image!=='' && news_image!==0 && upload_type==="image") {#
                     <br/>                    
@@ -62,7 +61,7 @@
                                     <div class="ballIV"></div>                   
                                 </div>                            
                          </div>                                                           
-                         <img src= ${news_image} style="width:100%;"/>    
+                         <img src= ${news_image_show} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>    
                      </a>                     
                      <br/>
  
@@ -73,22 +72,14 @@
                        <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">
                             <div>
                                 <div id="video_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
-                                    <!--<div class="loaderIV">
-                                        <div class="ballIV"></div>                   
-                                    </div>-->                     
                                  <div class="videoDownload">
                                   <div class="innervideoDownload">
-                                    <!--<div id="profileCompletenessNews" class="downloadBar">-->
-                                       <progress id="downloadPerNews_${id}"  value="0" max="100" class="downloadBar"></progress>
-                                    <!--</div>-->                                    
-                                    <div class="progressValueClass"><span id="progressValueNews_${id}">0</span>%</div>
-                            
-                                    <!--<div class="clear"></div>
-                                    <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>-->
+                                    <progress id="downloadPerNews_${id}"  value="0" max="100" class="downloadBar"></progress>
+                                    <div class="progressValueClass"><span id="progressValueNews_${id}">0</span>%</div>                            
                                   </div>
                                  </div>
                                 </div>                                
-                               <img src="styles/images/video.png" style="width:100%;"/>                    
+                               <img src="styles/images/video.png"  style="width:100%;"/>                    
                             </div>
                        </a>   
                         

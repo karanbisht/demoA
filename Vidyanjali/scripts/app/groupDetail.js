@@ -390,20 +390,7 @@ app.groupDetail = (function () {
                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                         }
 
-                                                                     var showNotiTypes = [
-                                                                         { message: "Please Check Your Internet Connection"}
-                                                                     ];
-                       
-                                                                     var dataSource = new kendo.data.DataSource({
-                                                                                                                    data: showNotiTypes
-                                                                                                                });
-                    
-                                                                     $("#groupMember-listview").kendoMobileListView({
-                                                                                                                        template: kendo.template($("#errorTemplate").html()),
-                                                                                                                        dataSource: dataSource  
-                                                                                                                    });
-                    
-                                                                     $("#progressAdminOrgMem").hide();
+                                                                        $("#progressAdminOrgMem").hide();
                                                                      $("#groupMember-listview").show();
                                                                  }
 	        

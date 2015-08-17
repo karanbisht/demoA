@@ -325,7 +325,7 @@ app.adminEventCalender = (function () {
             document.getElementById("setIFrame").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width-20;this.height=screen.height"></iframe>';             
             setTimeout(function(){
                 $("#admIFrameLoader").hide();
-            },5000);
+            },7000);
         }
         
         var detailShow = function() {
@@ -356,13 +356,11 @@ app.adminEventCalender = (function () {
             
             $("#sendEventLoader").show();       
             device_type = localStorage.getItem("DEVICE_TYPE");
-            //$(".km-scroll-container").css("-webkit-transform", "");
             $(".km-native-scroller").scrollTop(0);
 
             $("#addEventName").val('');
             $("#addEventDesc").val('');
             $("#placeValue").val('');
-            //console.log(date2);
             groupDataShow = [];
             
             $("#attachedImgEvent").hide();
@@ -373,15 +371,9 @@ app.adminEventCalender = (function () {
 
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
-            
-            //$("#adddatePickerEvent").parent().css('width', "160px");
-            //$("#adddateTimePickerEvent").parent().css('width', "160px");
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
 
-            //document.getElementById('groupInAddEvent').style.display="none";            
-            //$('#groupInAddEvent').find('input[type=checkbox]:checked').removeAttr('checked');
-            
              $('#addEventDesc').css('height', '40px');
 
             var txt = $('#addEventDesc'),
@@ -450,34 +442,14 @@ app.adminEventCalender = (function () {
                                                              interval: 15,
                                                              format: "h:mm tt",
                                                              timeFormat: "HH:mm", 
-                                                             /*open: function(e) {
-                                                             e.preventDefault(); //prevent popup opening
-                                                             },*/
                 
                                                              change: function() {
                                                                  var value = this.value();
-                                                                 //console.log(value); //value is the selected date in the timepicker
                                                              }                
                                                          });
-
-            //var addEventDatePicker = $("#adddatePickerEvent").data("kendoDatePicker");            
-            
-            //$(".k-datepicker input").prop("readonly", true);
-            
-            /* $('#adddatePickerEvent').attr("readonly","readonly");
-
-            $('#adddateTimePickerEvent').attr("readonly","readonly");
-
-            */
             
             $('#adddatePickerEvent').attr('disabled', 'disabled');
             $('#adddateTimePickerEvent').attr('disabled', 'disabled');
-            /*var addEventTimePicker = $("#adddateTimePickerEvent").data("kendoTimePicker"); 
-            addEventTimePicker.input.focus(function() {
-            //$( "#orgforNotification" ).blur();
-            addEventTimePicker.input.blur();
-            });  */ 
-            
             getGroupToShowInCombo();
         }
         
@@ -501,19 +473,21 @@ app.adminEventCalender = (function () {
                                                                          error: function (e) {
                                                                              //console.log(JSON.stringify(e));
                                                                              $("#sendEventLoader").hide();
-                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                             var showNotiTypes = [
-                                                                                 { message: "Please Check Your Internet Connection"}
-                                                                             ];
-                       
-                                                                             var dataSource = new kendo.data.DataSource({
-                                                                                                                            data: showNotiTypes
-                                                                                                                        });
-                    
-                                                                             $("#group-Name-listview").kendoMobileListView({
-                                                                                                                               template: kendo.template($("#errorTemplate").html()),
-                                                                                                                               dataSource: dataSource  
-                                                                                                                           });
+                                                                             if (!app.checkConnection()) {
+                                                                                             if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                             }else {
+                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                             } 
+                                                                                        }else {
+                                                                              
+                                                                                            if (!app.checkSimulator()) {
+                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                            }else {
+                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                            }
+                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                        }                                                                             
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
                                                                      });
@@ -524,12 +498,7 @@ app.adminEventCalender = (function () {
                                             
                 if (data[0]['status'][0].Msg==='No Group list') {
                     groupDataShow=[];
-                                            /*groupDataShow.push({
-                                               group_name: 'No Group Found , To Add Event First Add Group',
-                                               pid:'0'
-                                           });*/
                     app.noGroupAvailable();
-
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     if (!app.checkSimulator()) {
                         window.plugins.toast.showShortBottom(app.NO_ACCESS);  
@@ -544,10 +513,7 @@ app.adminEventCalender = (function () {
                     var orgLength = data[0].status[0].groupData.length;
                     for (var j = 0;j < orgLength;j++) {
                         groupDataShow.push({
-                                               //group_desc: data[0].status[0].groupData[j].group_desc,
                                                group_name: data[0].status[0].groupData[j].group_name,
-                                               //group_status:data[0].status[0].groupData[j].group_status,
-                                               //org_id:data[0].status[0].groupData[j].org_id,
                                                pid:data[0].status[0].groupData[j].pid
                                            });
                     }
@@ -559,10 +525,7 @@ app.adminEventCalender = (function () {
         };
         
         var showGroupDataInTemplate = function() {
-            //alert('hello');
-            //console.log(groupDataShow);
-            $("#sendEventLoader").hide();
-            
+            $("#sendEventLoader").hide();            
             $(".km-scroll-container").css("-webkit-transform", "");
            
             /*var comboGroupListDataSource = new kendo.data.DataSource({
@@ -595,24 +558,11 @@ app.adminEventCalender = (function () {
         var eventUploadType;
         
         var editEvent = function(e) {
-            //console.log(e.data.uid);
-            //console.log(e.data);
-            /*eventNameEdit = e.data.event_name;
-            eventDescEdit = e.data.event_desc;
-            eventDateEdit = e.data.event_date;
-            eventTimeEdit = e.data.event_time;
-            eventImageEdit = e.data.event_image;
-            eventUploadType = e.data.upload_type;
-            eventPid = e.data.id;
-            pageToGo = e.data.page;*/
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
         
         var deleteEvent = function(e) {
-            //console.log(e.data.uid);
-            //console.log(e.data);
-            //var eventPid = e.data.id;
             
           navigator.notification.confirm(app.DELETE_CONFIRM, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
@@ -789,7 +739,6 @@ app.adminEventCalender = (function () {
                 //var loginDataView = dataSourceMemberDetail.data();   
                 var data = this.data();                        
 
-                    //console.log(addGroupData);
                     if (data[0]['status'][0].Msg==='Success') {
                         EditGroupArrayMember = [];
                         adminAllGroupArray = [];
@@ -1374,7 +1323,7 @@ app.adminEventCalender = (function () {
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
             attachedImgFilename=attachedImgFilename+'.jpg';
             var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;             
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;             
             //console.log(vidPathData);
             //console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
@@ -1390,7 +1339,7 @@ app.adminEventCalender = (function () {
                 
         var imgPathExist = function() {                    
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;   
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;   
             //fp=fp+'.jpg';
             //console.log(fp);
             
@@ -1412,7 +1361,7 @@ app.adminEventCalender = (function () {
             
             var attachedImg = imgFile;                        
             var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_event_img_' + attachedImgFilename;
+            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_event_img_' + attachedImgFilename;
                         //console.log(fp);
 
 
@@ -1776,9 +1725,7 @@ app.adminEventCalender = (function () {
                         return [data];
                     }
                 },
-                                                                error: function (e) {
-                                                                    //console.log(JSON.stringify(e));
-                                                                    
+                                                                error: function (e) {                                                                    
                                                                     $("#adminEventListLoader").hide();
                                                                     $("#eventCalendarAllList").show();
 
@@ -1798,19 +1745,7 @@ app.adminEventCalender = (function () {
                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                         }
                          
-                                                                    var showNotiTypes = [
-                                                                        { message: "Please Check Your Internet Connection"}
-                                                                    ];
-                       
-                                                                    var dataSource = new kendo.data.DataSource({
-                                                                                                                   data: showNotiTypes
-                                                                                                               });
-                    
-                                                                    $("#eventCalendarAllList").kendoMobileListView({
-                                                                                                                       template: kendo.template($("#errorTemplate").html()),
-                                                                                                                       dataSource: dataSource  
-                                                                                                                   });
-                                                                }               
+                                                                 }               
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
@@ -1877,7 +1812,11 @@ app.adminEventCalender = (function () {
                                 day = day.replace(/^0+/, '');                                     
                             }
                             var saveData = month + "/" + day + "/" + year;
-
+                            var locationToShow = data[0].status[0].eventData[i].location;
+                            if(locationToShow==="0" || locationToShow===0){
+                                locationToShow='';
+                            }
+                            
                             groupAllEvent.push({
                                                    id: data[0].status[0].eventData[i].id,
                                                    add_date: data[0].status[0].eventData[i].add_date,
@@ -1886,7 +1825,7 @@ app.adminEventCalender = (function () {
                                                    preDateVal:preDateVal,
                                                    //event_above_day:aboveDay,
                                                    event_date_To_Show:eventDate,
-                                                   location:data[0].status[0].eventData[i].location,
+                                                   location:locationToShow,
                                                    event_below_day:belowData,
                                                    event_desc: data[0].status[0].eventData[i].event_desc,
                                                    upload_type: data[0].status[0].eventData[i].upload_type,

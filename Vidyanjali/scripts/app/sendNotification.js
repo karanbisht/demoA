@@ -851,19 +851,6 @@ app.sendNotification = (function () {
                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                                         }
                                                                      
-                                                                     /*var showNotiTypes = [
-                                                                         { message: "Please Check Your Internet Connection"}
-                                                                     ];
-                       
-                                                                     var dataSource = new kendo.data.DataSource({
-                                                                                                                    data: showNotiTypes
-                                                                                                                });
-                    
-                                                                     $("#customer-Name-listview").kendoMobileListView({
-                                                                                                                          template: kendo.template($("#errorTemplate").html()),
-                                                                                                                          dataSource: dataSource  
-                                                                                                                      });
-                                                                     */
                                                                  }	        
                                                              });         
             

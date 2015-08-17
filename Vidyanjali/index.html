@@ -14,7 +14,7 @@
         <script src="kendo/js/kendo.all.min.js"></script>
     </head>
     
-    <body id="Aptifi" onload=app.onLoad();>
+    <body id="Aptifi" onload="app.onLoad()";>
         <div data-role="layout" data-id="default" class="AptifiBackImage">
         </div>
         <div data-role="layout" data-id="innerPages">
@@ -26,6 +26,7 @@
                     <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
+                    <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-drawer" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a>
                 </div>
             </div>
         </div>
@@ -152,6 +153,15 @@
                         <div class="ball"></div>                   
         </div>
 
+        <div data-role="view" id="firstScreen" data-id="innerActivity" data-layout="default" class="welcome-scrn form-view">                       
+            <div data-role="content" id="appNameDiv" style="   
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                -ms-background-size: cover;
+                 background-size: cover;background-color:#ffffff;">                                
+            </div>
+        </div>
 
       
         <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>
@@ -270,7 +280,7 @@
             </div>
         </div>
 
-        <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
+        <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="form-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
             <div id="tabstrip-profile">
                 <ul data-role="listview" data-style="inset" data-type="group">
                 
@@ -282,24 +292,25 @@
                     
                     <li style="margin-top:-20px;">
                         <ul>
-                            <li style="text-align:center;">                                
+                            <li style="text-align:center;background-color:#f3f3f3;">                                
                                 <h2>
                                     <span id="userfname"></span>
                                 </h2>
-                                <h2>
+                                <h2 style="margin-right:-40px;">
                                     <span id="userlname"></span>
-                                </h2>
-                                
-                            </li>
+                                </h2>  
+                                <a style="background:transparent; border:none; float:right;margin-top:10px;" data-align="right" data-role="button" data-click="app.OragnisationList.editProfilePage"><img src="styles/images/edit.png"/></a>
+                            </li>    
+                            
                         </ul>
                     </li>
 
                     <li>
-                        <ul>
-                            <li id="emailToShow">
+                        <ul >
+                            <li id="emailToShow" style="background-color:#f3f3f3;">
                                 Email <span class="sales-up" id="userEmailId"></span>
                             </li>
-                            <li>
+                            <li style="background-color:#f3f3f3;">
                                 Mobile No <span class="sales-up" id="userMobileNo"></span>
                             </li>
                         </ul>
@@ -307,13 +318,11 @@
 
                     <li>
                         <ul>
-                            <li style="text-align:center;font-weight:bold;color:#1B205E">Organization</li>
-                            <li id="orgData"></li>
+                            <li style="text-align:center;font-weight:bold;color:#1B205E;background-color:#f3f3f3;">Organization</li>
+                            <li id="orgData" style="background-color:#f3f3f3;"></li>
                         </ul>
                     </li>
-
-                </ul>
-                
+                </ul>                
                 <ul data-role="actionsheet" id="profilePicUpload">
                     <li class="km-actionsheet-title"></li>
                     <li>
@@ -328,16 +337,9 @@
                 </ul>
             </div>
 
-               <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfilePage }">
+               <!--<li class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfilePage }">
                            Edit Profile   
-               </li> 
-            
-            <!--<div data-role="footer">
-                <div id="editProfileFooter" data-role="tabstrip" data-selected-index="2">
-                    <a id="" data-icon="compose" data-role="button" data-bind="click: editProfilePage" >Edit Profile</a>
-                </div>
-            </div>-->
-
+               </li>-->             
         </div>
 
         <style scoped>
@@ -485,8 +487,10 @@
             #}#
         </script>
         
-<!--,'#infoDiv'-->
-
+        <div class="loader" id="refreshLoader" style="display:none;">
+                        <div class="ball"></div>                   
+        </div>
+        
         <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','userOrgManage','profileDiv','views/organisationLogin.html']">
             <header data-role="header">
                 <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
@@ -499,20 +503,20 @@
                     <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-5px;height:2.6em;margin-left:-5px;"/>
                 </li>
                 <li style="border-color:#43495c">
-                    <a id="side-noti-icon"  href="#view-all-activities" data-transition="none"></a>
+                    <a href="#view-all-activities" data-transition="none"><div id="side-noti-icon"></div></a>
                 </li>
                 <li style="border-color:#43495c">
-                    <a id="side-org-news-icon" href="views/organizationNews.html?orgin=1"  data-transition="none"></a>
+                    <a href="views/organizationNews.html?orgin=1"  data-transition="none"><div id="side-org-news-icon"></div></a>
                 </li>
                 <li style="border-color:#43495c">
-                    <a id="side-org-event-icon" href="views/eventCalendar.html?orgin=1"  data-transition="none"></a>
+                    <a href="views/eventCalendar.html?orgin=1"  data-transition="none"><div id="side-org-event-icon"></div></a>
                 </li>
 
                 <li style="border-color:#43495c">
-                    <a id="side-org-icon" href="#userOrgManage" data-transition="none"></a>
+                    <a href="#userOrgManage" data-transition="none"><div id="side-org-icon"></div></a>
                 </li>
                 <li style="border-color:#43495c">
-                    <a id="side-profile-icon" href="#profileDiv"  data-transition="none"></a>
+                    <a href="#profileDiv"  data-transition="none"><div id="side-profile-icon"></div></a>
                 </li>
                 <!--<li >
                     <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
@@ -524,9 +528,18 @@
                     <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
                 </li>-->
                 <li id="goToAdmin" style="border-color:#43495c">
-                    <a id="side-admin-icon"  href="views/organisationLogin.html" data-transition="none"></a>
+                    <a href="views/organisationLogin.html" data-transition="none"><div id="side-admin-icon"></div></a>
                 </li>
             </ul>
+            
+            <div data-role="popover" id="popover-drawer" data-popup='{"width": "180"}' style="margin-right:-10px;margin-top:-14px;border-radius:3px;">
+                <div data-role="view">
+                    <ul data-role="listview" style="margin:0px;background-color:#E6E6E6;z-index:1;">
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.refreshBtn"><label style="float:left;padding:10px;">Refresh</label></a>
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.OragnisationList.openPopoverDrawer"><label style="float:left;padding:10px;">About</label></a>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
@@ -535,13 +548,31 @@
             <div data-role="header" >
                 <div data-role="navbar" style="border-bottom: 1px solid #ffffff;text-align:center;">
                     <span data-role="view-title" class="navBarClass"></span>
-
                     <a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer1" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
-
                 </div>
-
+            </div>
+        </div>
+        
+        <div data-role="view" id="versionView" class="activities-view" data-model="app.OragnisationList"  data-show="app.OragnisationList.appVersion">
+            <div data-role="header">
+              <div data-role="navbar">
+                    <span id="appNameBarId" class="inner_navBarClass">Version</span>
+                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+                    <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>                     
+              </div>
+            </div>
+            <div data-role="content">
+                <div class="loader" id="loaderVersion" style="display:none;">
+                    <div class="ball"></div>
+                </div>                
+                <div>
+                   <div class="regLogoImg" style="margin-top:100px;">
+                       <img id="logo" src="styles/images/Vidyanjali_Logo.png"  style="width:100%;"/>                   
+                   </div> 
+                   <div style="margin-top:20px;color:rgb(127,191,77);width:100%;font-size:30px;text-align:center;">Version : <span id="appVersionPop" style="color:rgb(127,191,77);"></span></div>  
+                </div>
             </div>
         </div>
         
@@ -559,11 +590,8 @@
                     <div id="show-admin-member-icon"></div>
                     Manage Members
                 </td>
-
             </tr>
-
             <tr style="height:5px;"></tr>
-
             <tr>
                 <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showOrgGroupView }">
                     <div id="show-admin-group-icon"></div>
@@ -574,12 +602,8 @@
                     <div id="show-admin-event-icon"></div>
                     Manage Event
                 </td>
-
-            </tr>
-            
+            </tr>            
             <tr style="height:5px;"></tr>
-
-            
             <tr>
                 <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showOrgNews }">
                     <div id="show-admin-news-icon"></div>
@@ -591,11 +615,8 @@
                     Attendance Management
                 </td>
             </tr>
-
-            
         </table>
       </div>
-
   </div>
 
 
@@ -842,20 +863,20 @@
                     <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()"><span id="setOrgName">Organization</span><br/><span style="color:#AEB5D3;font-size:14px;text-align: center;">Select Organization</span></a>
                 </li>-->
                 
-                <li class="clickEffect" style="border-color:#43495c">
-                    <a id="side-admin-manageOrg-icon" href="#view-all-activities-GroupDetail" data-transition="none"><span></span></a>
+                <li style="border-color:#43495c">
+                    <a data-transition="none" href="#view-all-activities-GroupDetail"><div id="side-admin-manageOrg-icon"></div></a>
+                </li>
+                
+                <li style="border-color:#43495c">
+                    <a href="#subGroupMemberReplyShow" data-transition="none"><div id="side-admin-message-icon"><div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;">0</div></div></a>                          
+                </li>
+                
+                <li style="border-color:#43495c">
+                    <a href="#sendNotificationDiv" data-transition="none"><div id="side-admin-notification-icon"></div></a>
                 </li>
                 
                 <li class="clickEffect" style="border-color:#43495c">
-                    <div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;margin-right:40px;padding-top:5px;">0</div>
-                    <a id="side-admin-message-icon"  href="#subGroupMemberReplyShow" data-transition="none"></a>                              
-                </li>
-                
-                <li class="clickEffect" style="border-color:#43495c">
-                    <a id="side-admin-notification-icon"  href="#sendNotificationDiv" data-transition="none"></a>
-                </li>
-                <li class="clickEffect" style="border-color:#43495c">
-                    <a id="side-admin-user-icon"  onclick="Logout()"  data-transition="none" ></a>
+                    <a onclick="Logout()"  data-transition="none" > <div id="side-admin-user-icon"></div></a>
                 </li>
             </ul>
         </div>
@@ -1224,19 +1245,19 @@
                     <br/>
                     <div style="overflow:hidden;">
                      <br/>       
-                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
+                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attached} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
                             <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">
                                     <div class="ballIV"></div>                   
                                 </div>                            
                             </div>       
-                            <img src= ${attachedImg} style="width:100%;"/>  
+                            <img src= ${attachedImg} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>  
                         </a>                                                        
                     </div>
             #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
                      <br/>        
                      <br/> 
-                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attachedImg} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
+                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attached} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
                       <div>                        
                         <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <!--<div class="loaderIV">
@@ -1282,14 +1303,6 @@
         </div>  
     #}# 
 </script>
-
-        <script type="text/x-kendo-template" id="errorTemplate">    		
-            <div class="cf" style="margin-top:50%">
-                <div style="border-radius:12px;margin-left:10%;margin-right:10%;background-color:rgb(27,43,89);padding-top:.5px;padding-bottom:.5px;" >
-                    <h5 style="color:rgb(255,255,255);" >${message}</h5>
-                </div>
-            </div>
-        </script>
                
         
         <script src="scripts/app/app.js" type="text/javascript"></script>

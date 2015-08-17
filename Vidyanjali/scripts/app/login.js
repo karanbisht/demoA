@@ -1,13 +1,7 @@
-/**
- * Login view model
- */
 var app = app || {};
-
 app.Login = (function () {
     'use strict';
-
     var loginViewModel = (function () {
-        //var isInMistSimulator = (location.host.indexOf('icenium.com') > -1);
         var username;
         var varifiCode;
         var userType = [];
@@ -15,8 +9,6 @@ app.Login = (function () {
         var account_Id;
         var organizationID;
         
-        //var isAnalytics = analytics.isAnalytics();
-               
         var init = function () {            
 
         };
@@ -543,7 +535,7 @@ app.Login = (function () {
             genRand:genRand,
             checkEnterCode:checkEnterCode,
             doneVerification:doneVerification,
-            clickforRegenerateRegenerateCode : clickforRegenerateCode
+            clickforRegenerateCode : clickforRegenerateCode
         };
     }());
 

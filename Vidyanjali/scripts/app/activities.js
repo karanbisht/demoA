@@ -9,33 +9,37 @@ app.Activities = (function () {
     var UserOrgInformation;
     var orgName;
     var orgLogo;
-    var logoFileName;
     var totalOrgNotification = 0;    
     var StartDbCount = 0;
     var EndDbCount = 10;
     var checkVal=0;
     var noDatainDB=0;
     var device_type; 
-    var imgPathData;
     var countVal=0;
+    var sdcardPath;
+    var clickOnShowMore = 0;
     
     var activitiesViewModel = (function () {
     
         var init = function() {
                     
-        }   
+        };   
         
-        var show = function(e) {                                
-            
+        var show = function(e) {                                            
             $(".km-scroll-container").css("-webkit-transform", "");  
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
+            localStorage.setItem("gotNotification", 0);
+
             StartDbCount = 0;
             checkVal=0;
             EndDbCount = 10;
             totalOrgNotification = 0;
             groupDataShow = [];
             $("#showMoreButton").hide();
+            $("#popover-drawer").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow");       
+            sdcardPath = localStorage.getItem("sdCardPath");
             app.mobileApp.pane.loader.hide();
             
             organisationID = localStorage.getItem("selectedOrgId");
@@ -49,41 +53,13 @@ app.Activities = (function () {
                     OrgDisplayName = orgName.substr(0, 25) + '..';
             }else {
                     OrgDisplayName = orgName;                
-            }
-            
+            }            
             $("#navBarHeader").html(OrgDisplayName);                          
-            getDataFromDB();            
-            
-            /*if(orgLogo!=='null' && orgLogo!==null){
-                logoFileName = orgLogo.replace(/^.*[\\\/]/, '');          
-                imgPathData = app.getfbValue();                    
-                //var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_'+logoFileName; 
-                //window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);
-            }*/
-            
+            getDataFromDB();                        
             countVal=0;
-        };
-        
-        /*var imagePathExist = function() {
-             //alert('already exist');
-        }
-        
-        var imagePathNotExist = function() {
-            var attachedImg = logoFileName;                        
-            var fp = imgPathData + "Zaffio/" + 'Zaffio_orgLogo_' + attachedImg;
-             	
-            var fileTransfer = new FileTransfer();              
-            fileTransfer.download(orgLogo, fp, 
-                                  function(entry) {
-                                      //alert('success');
-                                  },
-    
-                                  function(error) {
-                                      //alert('errro');
-                                  }
-                );                
-        }*/
-        
+            clickOnShowMore = 0;
+        };        
+            
         var getDataFromDB = function(){
             groupDataShow = [];
             var db = app.getDb();
@@ -111,7 +87,7 @@ app.Activities = (function () {
                                                                                        read: {
                                                                                                  url: app.serverUrl() + "notification/getCustomerNotification/" + organisationID + "/" + account_Id + "/" + lastNotificationPID,
                                                                                                  type:"POST",
-                                                                                                 dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                                 dataType: "json"                 
                                                                                              }
                     },
                                                                                      schema: {
@@ -121,7 +97,6 @@ app.Activities = (function () {
                     },
                                            
                                                                                 error: function (e) {
-
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -225,8 +200,8 @@ app.Activities = (function () {
             app.updateQuery(tx, query);
         }
         
-        function showDBNotification() {
-            
+        function showDBNotification(){
+            clickOnShowMore++;   
             var db = app.getDb();
             db.transaction(getDataOrgNoti, app.errorCB, showLiveData);         
         }
@@ -240,8 +215,7 @@ app.Activities = (function () {
             app.selectQuery(tx, query, getOrgTotalNotiData);
         };    
         
-        function getOrgTotalNotiData(tx, results){
-            
+        function getOrgTotalNotiData(tx, results){            
             totalOrgNotification = results.rows.item(0).TOTAL_DATA;               
             
             if (totalOrgNotification > StartDbCount) {
@@ -251,10 +225,11 @@ app.Activities = (function () {
             }
         }
         
-        
-
-        var showLiveDataDB = function() {
-            
+        var showLiveDataDB = function() {          
+          setTimeout(function(){
+            groupDataShow = groupDataShow.sort(function(a, b) {
+                  return parseInt(a.index) - parseInt(b.index);
+            }); 
             var organisationALLListDataSource = new kendo.data.DataSource({
                                                                               data: groupDataShow
                                                                          });
@@ -266,8 +241,6 @@ app.Activities = (function () {
             
             $('#activities-listview').data('kendoMobileListView').refresh();          
             $("#progressNotification").hide();
-            
-            
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
@@ -278,6 +251,7 @@ app.Activities = (function () {
                 var db = app.getDb();
                 db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
             }
+          },100);     
         };
                 
         
@@ -397,8 +371,8 @@ app.Activities = (function () {
             var query = 'SELECT org_id FROM JOINED_ORG';
             app.selectQuery(tx, query, getOrgDataSuccess);   
 
-            var query = 'SELECT org_id FROM JOINED_ORG_ADMIN';
-            app.selectQuery(tx, query, getOrgAdminDataSuccess);   
+            var query1 = 'SELECT org_id FROM JOINED_ORG_ADMIN';
+            app.selectQuery(tx, query1, getOrgAdminDataSuccess);   
         } 
                 
         function getOrgDataSuccess(tx, results) {
@@ -427,17 +401,13 @@ app.Activities = (function () {
         } 
                
         var userLiveOrgIdArray = [];
-        var userOrgIdArray = [];  
         
         function insertOrgInfo(tx) {
-            //console.log(profileOrgData);
-            //console.log(profileAdminOrgData);
             var dataLength = profileOrgData.length;
             userLiveOrgIdArray = [];            
 
             for (var i = 0;i < dataLength;i++) {                             
                 userLiveOrgIdArray.push(parseInt(profileOrgData[i].organisationID));           
-                //console.log(profileOrgData[i]); 
                 profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);           
                 var LastNotificationMsg;           
                 if (profileAdminOrgData[i].total!==0) {
@@ -448,15 +418,11 @@ app.Activities = (function () {
                 LastNotificationMsg = app.urlEncode(LastNotificationMsg);
                 var orgNameEncode = app.urlEncode(profileOrgData[i].org_name);
                 var orgDescEncode = app.urlEncode(profileOrgData[i].org_desc);
-
                 var pos = $.inArray(parseInt(profileOrgData[i].organisationID), joinOrgID);           
-
                 if (pos === -1) {
                     joinOrgID.push(profileOrgData[i].organisationID);     
                     var first_login = localStorage.getItem("FIRST_LOGIN");
-
                     if (first_login===0) {
-                        //alert('New Data');               
                         var query = 'INSERT INTO JOINED_ORG(org_id,org_name,imageSource,joinedDate,orgDesc,lastNoti,count) VALUES ("'
                                     + profileOrgData[i].organisationID
                                     + '","'
@@ -475,7 +441,7 @@ app.Activities = (function () {
                         app.insertQuery(tx, query);
                     }else {
                         localStorage.setItem("FIRST_LOGIN", 0); 
-                        var query = 'INSERT INTO JOINED_ORG(org_id,org_name,imageSource,joinedDate,orgDesc,lastNoti,count,bagCount) VALUES ("'
+                        var query1 = 'INSERT INTO JOINED_ORG(org_id,org_name,imageSource,joinedDate,orgDesc,lastNoti,count,bagCount) VALUES ("'
                                     + profileOrgData[i].organisationID
                                     + '","'
                                     + orgNameEncode
@@ -492,7 +458,7 @@ app.Activities = (function () {
                                     + '","'
                                     + profileAdminOrgData[i].total
                                     + '")';              
-                        app.insertQuery(tx, query);
+                        app.insertQuery(tx, query1);
                     }
                 }else {                    
                     var queryUpdate = "UPDATE JOINED_ORG SET org_name='" + orgNameEncode + "',orgDesc='" + orgDescEncode + "',imageSource='" + profileOrgData[i].org_logo + "',joinedDate='" + profileOrgData[i].joinedON + "',lastNoti='" + LastNotificationMsg + "',count='" + profileAdminOrgData[i].total + "' where org_id=" + profileOrgData[i].organisationID;
@@ -508,14 +474,9 @@ app.Activities = (function () {
             var dbIdLength;
             
             liveIdLength = userLiveOrgIdArray.length;
-            dbIdLength = joinOrgID.length;
-            
-            //alert(JSON.stringify(userLiveOrgIdArray));
-            
+            dbIdLength = joinOrgID.length;                       
             for (var i = 0;i < dbIdLength;i++) {
-                //alert(JSON.stringify(joinOrgID[i]));
                 var dataVal = userLiveOrgIdArray.indexOf(joinOrgID[i]);
-
                 if (dataVal===-1) {
                     orgIdToDel = joinOrgID[i];
                     var db = app.getDb();
@@ -528,13 +489,12 @@ app.Activities = (function () {
             var query = "DELETE FROM JOINED_ORG where org_id=" + orgIdToDel;
             app.deleteQuery(tx, query);
              
-            var query = "DELETE FROM ORG_NOTIFICATION where org_id=" + orgIdToDel;
-            app.deleteQuery(tx, query);
+            var query1 = "DELETE FROM ORG_NOTIFICATION where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query1);
         }  
         
 
-        var loginSuccessForManageOrg = function() {
-                        
+        var loginSuccessForManageOrg = function() {                        
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            transport: {
                     read: {
@@ -545,14 +505,10 @@ app.Activities = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               //console.log(e);
-                                                                               //console.log(JSON.stringify(e));
-                                                                                        
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -574,28 +530,18 @@ app.Activities = (function () {
             organisationListDataSource.fetch(function() {                
                 
                             var data = this.data();
-                            var anay_UserName = localStorage.getItem("username");         
-  
+                            var anay_UserName = localStorage.getItem("username");           
                             if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
-                                $("#goToAdmin").hide();
-                                
-                                localStorage.setItem("usernameAnalytic", anay_UserName);
-                             
+                                $("#goToAdmin").hide();                                
+                                localStorage.setItem("usernameAnalytic", anay_UserName);                             
                                 var db = app.getDb();
                                 db.transaction(delAdminOrgDataDB, app.errorCB, app.successCB);                          
-    
-                                //showLiveDataUpdated();  
                             }else if (data[0]['status'][0].Msg==='Success') {
                                 $("#moreOption").hide();
                                 $("#goToAdmin").show();
-                                
                                 anay_UserName = anay_UserName+' A';                
                                 localStorage.setItem("usernameAnalytic", anay_UserName);
-
-                                //var adminOrgInformation = data[0]['status'][0].orgData;
-                                //var adminIncomMsg = data[0]['status'][0].last;
-                                //saveAdminOrgInfo(adminOrgInformation , adminIncomMsg); 
                             }
                         });
         }
@@ -609,103 +555,82 @@ app.Activities = (function () {
         
                
         function getOrgNotiDataSuccess(tx, results) {
-            var count = results.rows.length;             
-            if(checkVal===0){
-                StartDbCount = count+1;
-            }else{
-                StartDbCount=StartDbCount+count;
-            }    
-            checkVal++;
-            var previousDate = '';            
-            if (count !== 0) {
-                //groupDataShow=[];
-                for (var i = 0 ; i < count ; i++) {                    
-                    var dateString = results.rows.item(i).send_date;                    
-                    var notiTitleDecode = app.urldecode(results.rows.item(i).title);
-                    var notiMessageDecode = app.urldecode(results.rows.item(i).message);
-
-                    var notiDate = app.timeConverter(dateString);
-                    
-
-                    var attachedData=results.rows.item(i).attached;
-                    var uplaodData=results.rows.item(i).upload_type;
-                    var downloadedImg;
-
-                    if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="other"){        
-
-                        /*var vidPathData = app.getfbValue();    
-                        var Filename = attachedData.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;             
-
-                        downloadedImg = results.rows.item(i).attached;
-                        
-                        window.resolveLocalFileSystemURL(fp, 
-                        function(entry)
-                        {
-                          //alert('got');
-                          downloadedImg = vidPathData + "Zaffio/" + 'Zaffio_img_' + Filename;
-                          //downlaod=1;   
-                        },function(error)
-                        {
-                          //alert('not');
-                          //downlaod=0;  
-                          downloadedImg = results.rows.item(i).attached;
-                        });*/                                    
-                        
-                        //alert(downloadedImg);
-                        
-                    }else if(attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video"){ 
-                        /*var vidPathData = app.getfbValue();    
-                        var Filename = attachedData.replace(/^.*[\\\/]/, '');
-                        var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + Filename;             
-
-                        downloadedImg = results.rows.item(i).attached;
-                        
-                        window.resolveLocalFileSystemURL(fp, 
-                        function(entry)
-                        {
-                          //alert('got');
-                          downloadedImg = vidPathData + "Zaffio/" + 'Zaffio_Video_' + Filename;
-                          //downlaod=1;   
-                        },function(error)
-                        {
-                          //alert('not');
-                          //downlaod=0;  
-                          downloadedImg = results.rows.item(i).attached;
-                        });*/
-                    }
-                    
-                    groupDataShow.push({
-                                           message: notiMessageDecode,
-                                           org_id: results.rows.item(i).org_id,
-                                           date:notiDate,
-                                           title:notiTitleDecode,
-                                           pid :results.rows.item(i).pid ,
-                                           comment_allow:results.rows.item(i).comment_allow ,
-                                           bagCount : 'C',
-                                           comment_count :results.rows.item(i).adminReply , 
-                                           upload_type:results.rows.item(i).upload_type,
-                                           attached :results.rows.item(i).attached,
-                                           previousDate:previousDate,
-                                           //inLocal:downlaod,
-                                           attachedImg :results.rows.item(i).attached
-                                       });                    
-                    
-                    previousDate = notiDate;                    
-                    lastNotificationPID = results.rows.item(i).pid;
-                }    
+            var count = results.rows.length;
+            //console.log('Count value----'+count);
+            var arrayDB=[];
+            for(var i=0;i<count;i++){
+                arrayDB.push(results.rows.item(i));
+            }              
+            if (checkVal===0) {
+                StartDbCount = count + 1;
             }else {
-                
+                StartDbCount = StartDbCount + count;
+            }                  
+            checkVal++;
+            //console.log(arrayDB);
+            var previousDate = '';            
+            if (count !== 0) {                
+             $.each(arrayDB,function(i, msgData) {
+                    var dateString = msgData.send_date;                    
+                    var notiTitleDecode = app.urldecode(msgData.title);
+                    var notiMessageDecode = app.urldecode(msgData.message);
+                    var notiDate = app.timeConverter(dateString);
+                    var attachedData = msgData.attached;
+                    var uplaodData = msgData.upload_type;                    
+                    var downloadedImg;
+                    var Filename;
+                    var fp;                                        
+                    if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="other") {
+                        Filename = attachedData.replace(/^.*[\\\/]/, '');
+                        var ext = app.getFileExtension(Filename);
+                        if (ext==='') {
+                            Filename = Filename + '.jpg'; 
+                        }
+                        fp = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;  
+                        window.resolveLocalFileSystemURL(fp, 
+                        function(entry)
+                        {
+                          console.log('sdcard');
+                          downloadedImg = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;                        
+                          pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i);  
+                        },function(error)
+                        {
+                          console.log('not in sdcard');  
+                          downloadedImg = msgData.attached;
+                          pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i);  
+                        });                    
+                    /*}else if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video") { 
+                        Filename = attachedData.replace(/^.*[\\\/]/, '');
+                        fp = sdcardPath + "Zaffio/" + 'Zaffio_Video_' + Filename;             
+                        downloadedImg = msgData.attached;
+                        window.resolveLocalFileSystemURL(fp, 
+                        function(entry)
+                        {
+                          console.log('sdcard');
+                          downloadedImg = sdcardPath + "Zaffio/" + 'Zaffio_Video_' + Filename;
+                          pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i);  
+                        },function(error)
+                        {
+                           console.log('not in sdcard');
+                           downloadedImg = msgData.attached;
+                           pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i); 
+                        });*/
+                    }else{
+                        downloadedImg='';
+                        pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i);
+                    }                                                         
+                    previousDate = notiDate;                    
+                    lastNotificationPID = msgData.pid;                    
+                });                
+            }else {
                 lastNotificationPID = 0;
                 $("#showMoreButton").hide();                    
-
-                if(checkVal===0){
-                    noDatainDB=1;                                                                  
-                }else{
-                    noDatainDB=0;
+                if (checkVal===0) {
+                    noDatainDB = 1;                                                                  
+                }else {
+                    noDatainDB = 0;
                 }
-                
-                groupDataShow=[];
+                groupDataShow = [];                
                 groupDataShow.push({
                                        title: ' No Message ',
                                        message: 'No messages from this organization',
@@ -716,9 +641,35 @@ app.Activities = (function () {
                                        bagCount : '',
                                        attachedImg :'',  
                                        attached:''  
-                                   });                   
+               });                   
             }                       
         };       
+                
+        function pushDataInArray(msgData,previousDate,downloadedImg,notiDate,notiMessageDecode,notiTitleDecode,i){  
+            //alert('call');
+            var indexVal; 
+            if(clickOnShowMore!==0){
+                indexVal= parseInt(clickOnShowMore+'0')+i+1;
+            }else{
+                indexVal=i+1;
+            }
+                               
+            groupDataShow.push({
+                                           message: notiMessageDecode,
+                                           org_id: msgData.org_id,
+                                           date:notiDate,
+                                           title:notiTitleDecode,
+                                           pid :msgData.pid ,
+                                           comment_allow:msgData.comment_allow ,
+                                           bagCount : 'C',
+                                           comment_count :msgData.adminReply , 
+                                           upload_type:msgData.upload_type,
+                                           attached :msgData.attached,
+                                           previousDate:previousDate,
+                                           attachedImg :downloadedImg,
+                                           index:indexVal
+                                       }); 
+        }           
         
         var showMoreButtonPress = function() {
             //StartDbCount = StartDbCount + 10;
@@ -737,39 +688,25 @@ app.Activities = (function () {
         };   
             
         var showLiveData = function() {
-            var organisationALLListDataSource = new kendo.data.DataSource({
-                                                                              data: groupDataShow                                                                          });
-             
-                        $("#activities-listview").kendoMobileListView({
-                                                              template: kendo.template($("#activityTemplate").html()),    		
-                                                              dataSource: organisationALLListDataSource
-                                                          });
+           setTimeout(function(){ 
+            groupDataShow = groupDataShow.sort(function(a, b) {
+                  return parseInt(a.index) - parseInt(b.index);
+            });
+                var organisationALLListDataSource = new kendo.data.DataSource({
+                                                               data: groupDataShow                                                                          });
+                $("#activities-listview").kendoMobileListView({
+                                                        template: kendo.template($("#activityTemplate").html()),    		
+                                                        dataSource: organisationALLListDataSource
+                                                        });
             
-            $('#activities-listview').data('kendoMobileListView').refresh();          
-             
+                $('#activities-listview').data('kendoMobileListView').refresh();          
+           },100);   
         };
-              
-            
-        var activitySelected = function (e) {
-            /*var message = e.data.message;
-            var title = e.data.title;
-            var org_id = e.data.org_id;
-            var notiId = e.data.pid;
-            var comment_allow = e.data.comment_allow; //"1"
-            var attached = e.data.attached;
-            var type = e.data.type;
-            //var upload_type = e.data.upload_type;                            
-            var messageVal = app.urlEncode(message); 
-            var titleVal = app.urlEncode(title);
-            app.mobileApp.navigate('views/activityView.html?message=' + messageVal + '&title=' + titleVal + '&org_id=' + org_id + '&notiId=' + notiId + '&account_Id=' + account_Id + '&comment_allow=' + comment_allow + '&attached=' + attached + '&type=' + type + '&date=' + e.data.date + '&upload_type=' + e.data.upload_type);            
-            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");*/            
-            
+                          
+        var activitySelected = function (e) {            
             app.mobileApp.navigate('views/activityView.html');
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
-
-
         };
-      
                
         var goToAppFirstView =  function(){
              app.mobileApp.navigate('#view-all-activities');
@@ -778,178 +715,137 @@ app.Activities = (function () {
         var attachedFilename;
         var videoFile;
         var notiFi;
+        var fpVid;
         
-        var videoDownlaodClick = function(e){            
+        var videoDownlaodClick = function(e) {            
             var data = e.button.data();
-            videoFile = data.someattribute;  
-            
+            videoFile = data.someattribute;              
             notiFi = data.notiid;
             attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
-            var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;             
-            window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);                        
+            fpVid = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_Video_' + attachedFilename;             
+            window.resolveLocalFileSystemURL(fpVid, videoPathExist, videoPathNotExist);                        
         }
         
         var videoPathExist = function() {          
-            
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
-
-            /*var vid = $('<video  width="300" height="300" controls><source></source></video>'); //Equivalent: $(document.createElement('img'))
-            vid.attr('src', fp);
-            vid.appendTo('#video_Div_'+notiFi);*/            
-
-            if(device_type==="AP"){
-                  window.open(fp, "_blank",'EnableViewPortScale=yes');
-            }else{
-                  window.plugins.fileOpener.open(fp);
+            fpVid = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_Video_' + attachedFilename;
+            if (device_type==="AP") {
+                window.open(fpVid, "_blank", 'EnableViewPortScale=yes');
+            }else {
+                window.plugins.fileOpener.open(fpVid);
             }
-            
         }
         
-        var videoPathNotExist = function() {            
-            
-          if(countVal!==0){
+        var videoPathNotExist = function() { 
+          if (!app.checkConnection()) {                                                                             
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                               
+          }else{  
+            if (countVal!==0) {
                 if (!app.checkSimulator()) {                                                                                               
                     window.plugins.toast.showShortBottom(app.VIDEO_ALY_DOWNLOAD);                                                                                           
                 }else {                                                                                                
                     app.showAlert(app.VIDEO_ALY_DOWNLOAD , 'Error');                                                                                             
                 }                                
-        
-          }else{      
-            var newNotiFi = notiFi;
-                
-            $("#video_Div_"+newNotiFi).show();
-            //$("videoToDownload_"+notiFi).text('Downloading..');
-            var attachedVid = videoFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_Video_' + attachedFilename;
+            }else {      
+                var newNotiFi = notiFi;                
+                $("#video_Div_" + newNotiFi).show();
+                var attachedVid = videoFile;                        
+                fpVid = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_Video_' + attachedFilename;
+                var fileTransfer = new FileTransfer(); 
             
-            var fileTransfer = new FileTransfer(); 
+                fileTransfer.onprogress = function(progressEvent) {
+                    if (progressEvent.lengthComputable) {
+                        var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
+                        //pbNews.value(perc); 
+                        countVal = perc;
+                        document.getElementById("downloadPer_" + newNotiFi).value = countVal;
+                        document.getElementById("progressValue_" + newNotiFi).innerHTML = countVal;                                                                                     
+                    }else {
+                        //pbNews.value('');
+                        document.getElementById("progressValue_" + newNotiFi).innerHTML = 0;
+                        countVal = 0;
+                    }
+                };
             
-            fileTransfer.onprogress = function(progressEvent) {
-                        if (progressEvent.lengthComputable) {
-                            var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);                                                                             
-                            //pbNews.value(perc); 
-                            countVal=perc;
-                            document.getElementById("downloadPer_"+newNotiFi).value = countVal;
-                            document.getElementById("progressValue_"+newNotiFi).innerHTML = countVal;                                                                                     
-                        }else {
-                            //pbNews.value('');
-                            document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;
-                            countVal=0;
-                        }
-                    };
-            
-            fileTransfer.download(attachedVid, fp, 
-                                  function(entry) {
-                                      
-                                      if(device_type==="AP"){
-                                          window.open(fp, "_blank",'EnableViewPortScale=yes');
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-                                      
-                                      $("#video_Div_"+newNotiFi).hide();
-                                      $("#downloadPer_"+newNotiFi).hide();   
-                                      countVal=0;
-                                      document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;
-
-                                  },
+                fileTransfer.download(attachedVid, fpVid, 
+                                      function(entry) {                                      
+                                          if (device_type==="AP") {
+                                              //window.open(fpVid, "_blank", 'EnableViewPortScale=yes');
+                                          }else {
+                                              //window.plugins.fileOpener.open(fpVid);
+                                          }                                      
+                                          $("#video_Div_" + newNotiFi).hide();
+                                          $("#downloadPer_" + newNotiFi).hide();   
+                                          countVal = 0;
+                                          document.getElementById("progressValue_" + newNotiFi).innerHTML = 0;
+                                      },
     
-                                  function(error) {
-                                      countVal=0;
-                                      $("#video_Div_"+newNotiFi).hide();
-                                      $("#downloadPer_"+newNotiFi).hide();
-                                      document.getElementById("progressValue_"+newNotiFi).innerHTML = 0;                                      
-                                  }
-                );   
-          }
+                                      function(error) {
+                                          countVal = 0;
+                                          $("#video_Div_" + newNotiFi).hide();
+                                          $("#downloadPer_" + newNotiFi).hide();
+                                          document.getElementById("progressValue_" + newNotiFi).innerHTML = 0;                                      
+                                      }
+                    );   
+            }
+          }    
         }
-        
 
         var attachedImgFilename;
         var imgFile;
         var imgNotiFi;
+        var fpImg;
 
-        var imageDownlaodClick = function(e){
-            //alert('imgclick');
+        var imageDownlaodClick = function(e) {
             var data = e.button.data();
-            //console.log(data);            
             imgFile = data.imgpath;  
-            //console.log(imgFile);            
             imgNotiFi = data.notiid;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
-            attachedImgFilename=attachedImgFilename+'.jpg';
-            var vidPathData = app.getfbValue();                    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;             
-            //console.log(vidPathData);
-            //console.log(fp);
-            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                    
-            //$("#img_Div_"+imgNotiFi).show();
+            var ext = app.getFileExtension(attachedImgFilename);
+            if (ext==='') {
+                attachedImgFilename = attachedImgFilename + '.jpg'; 
+            }
+            //var vidPathData = app.getfbValue();                    
             
-            //alert("#img_Div_"+imgNotiFi);
-            
-            //alert('click');
-            //console.log(JSON.stringify(window.plugins));
-            //window.plugins.fileOpener.open("file:///storage/emulated/0/Aptifi/Aptifi_74.jpg");
+            fpImg = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + attachedImgFilename;             
+            window.resolveLocalFileSystemURL(fpImg, imgPathExist, imgPathNotExist);                                    
         }
-        
                 
         var imgPathExist = function() {                    
-            //alert('img_exixt');
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;   
-            //fp=fp+'.jpg';
-            //console.log(fp);
-            
-                                      if(device_type==="AP"){
-                                          //alert('Show');
-                                          //window.open("www.google.com", "_system");
-                                          window.open(fp, '_blank' , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
-
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
-                                      }
-
+            fpImg = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + attachedImgFilename;   
+            if (device_type==="AP") {
+                window.open(fpImg, '_blank' , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
+            }else {
+                window.plugins.fileOpener.open(fpImg);
+            }
         }
         
         var imgPathNotExist = function() {
-            //alert('img_not_exixt');
-
-            $("#img_Div_"+imgNotiFi).show();
-            //$("#imgToDownload_"+imgNotiFi).text('Downloading..');
-            
+          if (!app.checkConnection()) {
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+          }else{
+            $("#img_Div_" + imgNotiFi).show();            
             var attachedImg = imgFile;                        
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + "Zaffio/" + 'Zaffio_img_' + attachedImgFilename;
-                        //console.log(fp);
-
+            fpImg = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + attachedImgFilename;
 
             var fileTransfer = new FileTransfer();              
-            fileTransfer.download(attachedImg, fp, 
+            fileTransfer.download(attachedImg, fpImg, 
                                   function(entry) {
-                                      //$("#imgToDownload_"+imgNotiFi).text('View');
-
-                                      $("#img_Div_"+imgNotiFi).hide();
-
-                                      if(device_type==="AP"){
-                                          //alert('1');
-                                          window.open(fp, "_blank" , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
-                                      }else{
-                                          window.plugins.fileOpener.open(fp);
+                                      $("#img_Div_" + imgNotiFi).hide();
+                                      if (device_type==="AP") {
+                                          window.open(fpImg, "_blank" , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
+                                      }else {
+                                          window.plugins.fileOpener.open(fpImg);
                                       }
-                                      
-                                  },
-    
+                                  },    
                                   function(error) {
-                                      //$("#imgToDownload_"+imgNotiFi).text('View');
-                                      $("#img_Div_"+imgNotiFi).hide();
+                                      $("#img_Div_" + imgNotiFi).hide();
                                   }
                 );                
+          }    
         }
         
-         var getDataToPost = function(e){
+         
+        var getDataToPost = function(e){
             //console.log(e.data);
             var message = e.data.message;
             var title = e.data.title;
