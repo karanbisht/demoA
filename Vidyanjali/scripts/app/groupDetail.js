@@ -1077,17 +1077,12 @@ app.groupDetail = (function () {
             
             var groupEdit = [];
             
-            /*$(':checkbox:checked').each(function(i) {
-                groupEdit[i] = $(this).val();
-            });*/         
-            
-             $('#groupInEditMember input:checked').each(function() {
-                groupEdit.push($(this).val());
+            $('#groupInEditMember :selected').each(function(i, selected) { 
+                groupEdit[i] = $(selected).val(); 
             });
             
             groupEdit = String(groupEdit);             
-            //console.log(groupEdit);
-            
+                        
             var organisationID = localStorage.getItem("orgSelectAdmin");
             
             if (fname === "First Name" || fname === "") {

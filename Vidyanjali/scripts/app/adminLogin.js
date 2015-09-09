@@ -3,10 +3,8 @@
  */
 
 var app = app || {};
-
 app.adminLogin = (function () {
     'use strict';
-
     var adminLoginViewModel = (function () {
         var usernameMob;
         var password;
@@ -20,8 +18,7 @@ app.adminLogin = (function () {
             var userMobileNo = localStorage.getItem("username");
             $("#loginMob").val(userMobileNo);            
             document.getElementById("loginMob").readOnly = true;
-            $('#loginPassword').val('');
-            
+            $('#loginPassword').val('');            
         };
         
         var checkEnter = function (e) {
@@ -50,7 +47,7 @@ app.adminLogin = (function () {
                     app.showAlert("Please enter your Password.", "Validation Error");
                 }else {           
                     $("#progress1").show();
-                    document.getElementById('OrgLogin').style.pointerEvents = 'none';
+                    //document.getElementById('OrgLogin').style.pointerEvents = 'none';
              						
                     password = app.urlEncode(password);
                     var jsonDataLogin = {"username":usernameMob ,"password":password}       
@@ -73,7 +70,7 @@ app.adminLogin = (function () {
                                                                             //console.log(JSON.stringify(e));
                                                                             $("#progress1").hide();
 
-                                                                            document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                            //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                                                             if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -102,7 +99,7 @@ app.adminLogin = (function () {
                                 getAdminOrgData();
                             }else {
                                 $("#progress1").hide();
-                                document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                 app.showAlert(data[0]['status'][0].Msg, "Notification");
                             }
                         });
@@ -184,7 +181,7 @@ app.adminLogin = (function () {
                 },
                                                                            error: function (e) {
                                                                                $("#progress1").hide();  
-                                                                               document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                               //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
     
                                                                                if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
@@ -246,7 +243,7 @@ app.adminLogin = (function () {
                 },
                                                                 error: function (e) {
                                                                     //console.log(JSON.stringify(e));
-                                                                    
+                                                                    $("#progress1").hide();
                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -368,9 +365,9 @@ app.adminLogin = (function () {
                     },
                  
                                                                                   error: function (e) {
-                                                                                      e.preventDefault();
+                                                                                      //e.preventDefault();
                                                                                       $("#progress1").hide();  
-                                                                                      document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                                      //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
                                                                                       
                                                                                       if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
@@ -485,11 +482,11 @@ app.adminLogin = (function () {
                     },
                  
                                                                                 error: function (e) {
-                                                                                    e.preventDefault();
+                                                                                    //e.preventDefault();
                                                                                     //apps.hideLoading();
                    
                                                                                     $("#progress1").hide();
-                                                                                    document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+                                                                                    //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
 
                                                                                     if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
@@ -548,7 +545,7 @@ app.adminLogin = (function () {
         var goToAdminDashboard = function() {            
             //app.mobileApp.pane.loader.hide();
             $("#progress1").hide();
-            document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
+            //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 
             //app.mobileApp.navigate('#view-all-activities-admin'); 
             localStorage.setItem("open", 5);
             localStorage.setItem("loginStatusCheck", 2);                        

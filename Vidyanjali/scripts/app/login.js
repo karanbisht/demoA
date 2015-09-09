@@ -54,14 +54,13 @@ app.Login = (function () {
             }
                          
             //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            var device_id = localStorage.getItem("deviceTokenID");          
-               
+            var device_id = localStorage.getItem("deviceTokenID");                         
             username = $("#loginUsername").val();
             
             if (username === "Mobile Number" || username === "") {
-                app.showAlert("Please enter your Mobile No.", "Validation Error");
+                app.showAlert("Please enter your Mobile No.", app.APP_NAME);
             } else if (!validateMobile(username)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");            
+                app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);            
             } else {         
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
@@ -134,7 +133,7 @@ app.Login = (function () {
                                 clickforRegenerateCode();                              
                             }else {
                                 $("#progress").hide();
-                                app.showAlert(data[0]['status'][0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, app.APP_NAME);
                             }                            
                         });
                 }
@@ -381,7 +380,7 @@ app.Login = (function () {
             var validationCodeId = $("#validationCodeId").val();
             
             if (validationCodeId==='Verification Code' || validationCodeId==='') {            
-                app.showAlert("Please Enter Verification Code", "Notification");
+                app.showAlert("Please Enter Verification Code", app.APP_NAME);
             }else {
                 $("#progressRandomCode").show();
                 if (varifiCode===validationCodeId) {
@@ -456,11 +455,11 @@ app.Login = (function () {
                             }else {
                                 //app.mobileApp.pane.loader.hide();
                                 $("#progressRandomCode").hide();
-                                app.showAlert(data[0]['status'][0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, app.APP_NAME);
                             }      
                     });
                 }else {
-                    app.showAlert(app.ENTER_CORRECT_V_CODE, "Notification");
+                    app.showAlert(app.ENTER_CORRECT_V_CODE, app.APP_NAME);
                     $("#progressRandomCode").hide();
                 }
             }

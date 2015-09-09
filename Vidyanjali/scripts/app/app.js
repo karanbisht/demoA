@@ -1,12 +1,12 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.1.2
-  VersionCode = 13
+  CurrentVersion = 1.1.4
+  VersionCode = 15
 
 IOS
   PackageID = io.zaff.vidyanjali
-  CurrentVersion = 1.0.2
+  CurrentVersion = 1.0.5
   VersionCode = 1
 */
 
@@ -367,7 +367,11 @@ var app = (function (win) {
                  app.onLoad();
              }else{
                app.mobileApp.navigate('#view-all-activities');  
-             }    
+             }
+        }else if (app.mobileApp.view()['element']['0']['id']==='attendancePageGroupList') {
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');    
+        }else if (app.mobileApp.view()['element']['0']['id']==='OrgLogin') {
+            app.mobileApp.navigate('#view-all-activities');
         }else {
             app.mobileApp.navigate("#:back");    
         }
@@ -510,7 +514,6 @@ var app = (function (win) {
     
     var onResume = function(){
         var loginStatus = localStorage.getItem("loginStatusCheck");    
-        //alert(loginStatus);
         if(loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null')
         {            
             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
@@ -693,7 +696,6 @@ var app = (function (win) {
                                       
                                   }
                         );
-
                     }
                         
             //send_DateDB= getPresentDateTime();

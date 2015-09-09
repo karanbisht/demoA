@@ -45,13 +45,13 @@ app.registration = (function () {
             var email = $regEmail.val();
             
             if (fname === "First Name" || fname === "") {
-                app.showAlert("Please enter your First Name.", "Validation Error");
+                app.showAlert("Please enter your First Name.", app.APP_NAME);
             }else if (lname === "Last Name" || lname === "") {
-                app.showAlert("Please enter your Last Name.", "Validation Error");
+                app.showAlert("Please enter your Last Name.", app.APP_NAME);
             /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");*/
             } else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");
+                app.showAlert("Please enter a valid Email.", app.APP_NAME);
             } else {   
                 //app.mobileApp.navigate('views/selectOrganisationView.html');                     
                 //console.log(fname + "||" + lname + "||" + email + "||" + username);
@@ -291,7 +291,7 @@ app.registration = (function () {
             //varifiCode='123456';
             var validationCodeId = $("#validationCodeIdR").val();
             if (validationCodeId==='Verification Code' || validationCodeId==='') {            
-                app.showAlert("Please Enter Verification Code", "Notification");  
+                app.showAlert("Please Enter Verification Code", app.APP_NAME);  
             }else {
                 if (varifiCode===validationCodeId) {
                     //app.mobileApp.navigate('views/getOrganisationList.html');  
@@ -383,11 +383,11 @@ app.registration = (function () {
                                 saveProfileInfo(UserProfileInformation);                          
                             }else {
                                 app.mobileApp.pane.loader.hide();
-                                app.showAlert(data[0]['status'][0].Msg, "Notification");
+                                app.showAlert(data[0]['status'][0].Msg, app.APP_NAME);
                             }      
                         });
                 }else {
-                    app.showAlert(ENTER_CORRECT_V_CODE, "Notification");    
+                    app.showAlert(ENTER_CORRECT_V_CODE, app.APP_NAME);    
                     $("#progressRandomCode").hide();
                 }
             }

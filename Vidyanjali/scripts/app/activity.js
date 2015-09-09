@@ -85,7 +85,7 @@ app.Activity = (function () {
                 attachedImgFilename = attached.replace(/^.*[\\\/]/, '');
                 var ext = app.getFileExtension(attachedImgFilename);
                 if (ext==='') {
-                   Filename = attachedImgFilename + '.jpg'; 
+                   attachedImgFilename = attachedImgFilename + '.jpg'; 
                 }
                 var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_img_'+attachedImgFilename; 
                 window.resolveLocalFileSystemURL(fp, imagePathExist, imagePathNotExist);                
@@ -168,8 +168,7 @@ app.Activity = (function () {
         
         var storeImageClick = function(){
 
-            var vidPathData = app.getfbValue();    
-            var fp = vidPathData + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;   
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_img_' + attachedImgFilename;   
             
                                       if(device_type==="AP"){
                                           window.open(fp, '_blank' , 'EnableViewPortScale=yes');

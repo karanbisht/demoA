@@ -211,15 +211,16 @@ app.Activities = (function () {
             var query = "SELECT * FROM ORG_NOTIFICATION where org_id='" + organisationID + "' ORDER BY pid DESC limit'" + StartDbCount + "','" + EndDbCount + "'" ;
             app.selectQuery(tx, query, getOrgNotiDataSuccess);
             
-            var query = "SELECT count(pid) as TOTAL_DATA from ORG_NOTIFICATION where org_id=" + organisationID;
-            app.selectQuery(tx, query, getOrgTotalNotiData);
+            var query1 = "SELECT count(pid) as TOTAL_DATA from ORG_NOTIFICATION where org_id=" + organisationID;
+            app.selectQuery(tx, query1, getOrgTotalNotiData);
         };    
         
         function getOrgTotalNotiData(tx, results){            
-            totalOrgNotification = results.rows.item(0).TOTAL_DATA;               
-            
+            totalOrgNotification = results.rows.item(0).TOTAL_DATA;                           
             if (totalOrgNotification > StartDbCount) {
-                $("#showMoreButton").show();
+                setTimeout(function(){
+                    $("#showMoreButton").show();
+                },200);                
             }else {                                
                 $("#showMoreButton").hide();
             }

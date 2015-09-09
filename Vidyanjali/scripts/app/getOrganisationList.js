@@ -1242,14 +1242,14 @@ app.OragnisationList = (function () {
             //console.log(account_Id + "||" + fname + "||" + lname + "||" + email);
             
             if (fname === "First Name" || fname === "") {
-                app.showAlert("Please enter your First Name.", "Validation Error");
+                app.showAlert("Please enter your First Name.", app.APP_NAME);
             }else if (lname === "Last Name" || lname === "") {
-                app.showAlert("Please enter your Last Name.", "Validation Error");
+                app.showAlert("Please enter your Last Name.", app.APP_NAME);
             }/*else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", "Validation Error");
-            } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");
-            }*/else {    
+            }*/else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
+                app.showAlert("Please enter a valid Email.", app.APP_NAME);
+            }else {    
                 //console.log(fname+"||"+lname+"||"+email+"||"+mobile+"||"+organisationID);  
                 var jsonDataRegister;
                           

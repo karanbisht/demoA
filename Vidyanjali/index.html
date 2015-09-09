@@ -166,7 +166,7 @@
       
         <!-----------------------------------------------ORGANISATION LIST PAGE ------------------------------>
         
-       <div data-role="view" id="view-all-activities"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow">
+       <div data-role="view" id="view-all-activities"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" data-use-native-scrolling="true">
             <div class="loader" id="progressNotification" style="display:none;">
                 <div class="ball"></div>
             </div>
@@ -351,10 +351,7 @@
             }
             #tabstrip-profile h2 span
             {
-                display: block;
-                clear: both;
                 font-size: 1.3em;
-                margin: .1em 0 0 0;
             }
             #tabstrip-profile img
             {
@@ -1212,9 +1209,6 @@
                 </label>
             </li>
         </script>
-        
-        
-        
         
         <script type="text/x-kendo-template" id="activityTemplate">            
         #if (org_id!=='0') {#

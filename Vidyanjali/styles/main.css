@@ -605,7 +605,7 @@ input:focus, textarea:focus {
 }
 
 .empty-notiList-content-new{
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
     background-color:#f3f3f3;
     border-radius:6px;
@@ -1030,9 +1030,9 @@ input:focus, textarea:focus {
 }
 
 .notiList-content-new{
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
-    text-align: justify;
+    /*text-align: justify;*/
     background-color:#f3f3f3;
     border-radius:6px 6px 0px 0px;
     padding:10px;
@@ -1046,9 +1046,9 @@ input:focus, textarea:focus {
 
 
 .no-notiList-content-new{
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
-    text-align: justify;
+    /*text-align: justify;*/
     background-color:#f3f3f3;
     border-radius:6px;
     padding:10px;
@@ -1089,7 +1089,7 @@ input:focus, textarea:focus {
 
 
 .notiListbelow-List{
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
     text-align: justify;
     padding:10px;
@@ -1113,18 +1113,18 @@ input:focus, textarea:focus {
 
 .calendarEvent-content
 {
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
-    text-align: justify;
+    /*text-align: justify;*/
     background-color:#F3F3F3;
     border:none;
 }
 
 .calendarEvent-List
 {
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
-    text-align: justify;
+    /*text-align: justify;*/
     padding:10px;
     background-color:#F3F3F3;
     border-radius:6px 6px 6px 6px;
@@ -1884,6 +1884,21 @@ background: #fff none;
 }
 
 
+/*.CalenderdateValue
+{
+    display: inline-block;
+    font-size: 1.9rem; 
+    color: #FFFFFF;
+    font-weight: 600;
+    width:110px;
+    left:0;
+    right:0;
+    zoom:1;
+    position: absolute;
+    top:50px;
+}*/
+
+
 .CalenderdateValue
 {
     display: inline-block;
@@ -1891,6 +1906,8 @@ background: #fff none;
     color: #FFFFFF;
     font-weight: 600;
     width:110px;
+    margin-left:10px;
+    margin-top:12px;
     left:0;
     right:0;
     zoom:1;
@@ -1929,7 +1946,7 @@ background: #fff none;
 }   
 
 
-.calMonthClass
+/*.calMonthClass
 {
     position: absolute;
      top:20px;
@@ -1940,10 +1957,25 @@ background: #fff none;
      width:110px;
      left:0;
      right:0;
+}*/
+
+.calMonthClass
+{
+     top:20px;
+     color: #FFFFFF;
+     font-size: 1.9rem;  
+     font-weight: 300; 
+     zoom:1;
+     width:110px;
+     position: absolute;
+     right:0px;
+     left:0px;
+     margin-top:12px;
+     margin-left:10px;
 }
 
 
-.nocalMonthClass
+/*.nocalMonthClass
 {
     color: #FFFFFF;
     font-size: .8rem;  
@@ -1952,8 +1984,20 @@ background: #fff none;
     padding-left:5px;
     -webkit-text-stroke-width: .5px;
     -webkit-text-stroke-color: #212121;
-}
+}*/
 
+.nocalMonthClass
+{
+     margin-top:10px;
+     color: #FFFFFF;
+     font-size: 1.5rem;  
+     font-weight: 300; 
+     zoom:1;
+     /*float:left;
+     padding-left:5px;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: #212121;*/
+}
 
 .orgContentMsg
 {
@@ -2822,6 +2866,18 @@ float:right;
     margin-left: 0px;
 }
 
+/*#side-noti-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/notification-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
+
+
 #side-org-icon
 {
     background-color: #2D344B; 
@@ -2832,6 +2888,17 @@ float:right;
     width: 75px;
     margin-left: 0px;
 }
+
+/*#side-org-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/organization-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
 
 
 
@@ -2847,6 +2914,17 @@ float:right;
 }
 
 
+/*#side-org-news-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/news-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
+
 
 
 #side-org-event-icon
@@ -2860,6 +2938,17 @@ float:right;
     margin-left: 0px;
 }
 
+/*#side-org-event-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/event-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
+
 #side-profile-icon
 {
     background-color: #2D344B; 
@@ -2870,6 +2959,17 @@ float:right;
     width: 75px;
     margin-left: 0px;
 }
+
+/*#side-profile-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/profile-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
 
 #side-setting-icon
 {
@@ -2917,6 +3017,18 @@ float:right;
     margin-left: 0px;
 }
 
+/*#side-admin-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/admin-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}*/
+
+
 #show-news-icon
 {
     background-color: #2D344B; 
@@ -2950,6 +3062,8 @@ float:right;
     height: 50px; 
     width: 50px;
 }
+
+
 
 #show-admin-member-icon
 {
@@ -3020,6 +3134,17 @@ float:right;
     margin-left: 15px;
 }
 
+/*#side-admin-manageOrg-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/manage-org-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 15px;
+}*/
+
 #side-admin-message-icon
 {
     background-color: #2D344B; 
@@ -3030,6 +3155,18 @@ float:right;
     width: 75px;
     margin-left: 15px;
 }
+
+/*#side-admin-message-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/incoming-msg-1-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 15px;
+}*/
+
 
 #side-admin-notification-icon
 {
@@ -3042,6 +3179,17 @@ float:right;
     margin-left: 15px;
 }
 
+/*#side-admin-notification-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/send-notification.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 15px;
+}*/
+
 #side-admin-user-icon
 {
     background-color: #2D344B; 
@@ -3053,6 +3201,16 @@ float:right;
     margin-left: 15px;
 }
 
+/*#side-admin-user-icon:active
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/user-back-h.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 15px;
+}*/
 
 #sendToGroupicon
 {
