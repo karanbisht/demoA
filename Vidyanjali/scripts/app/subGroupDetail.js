@@ -127,8 +127,6 @@ app.subGroupDetail = (function () {
                     $("#deleteGroupMemberBtn").hide();  
                     $("#addGroupMemberBtn").css('width','100%');
                     
-                    
-                    
                     groupMemberData = groupDataShow ;
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     //app.showAlert(app.SESSION_EXPIRE , 'Notification');
@@ -147,6 +145,7 @@ app.subGroupDetail = (function () {
                                                full_name:data[0].status[0].customerInfo[i].first_name+" "+data[0].status[0].customerInfo[i].last_name,
                                                customerID:data[0].status[0].customerInfo[i].customerID,
                                                mobile:data[0].status[0].customerInfo[i].mobile,
+                                               photo:data[0].status[0].customerInfo[i].photo,
                                                orgID:data[0].status[0].customerInfo[i].orgID
                                            });
                     }     
@@ -261,9 +260,9 @@ app.subGroupDetail = (function () {
             var group_description = $("#editGroupDesc").val();
                          
             if (group_name === "Enter New Group Name" || group_name === "") {
-                app.showAlert("Please enter Group Name.", "Validation Error");
-            }else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
-                app.showAlert("Please enter Group Description.", "Validation Error");
+                app.showAlert("Please enter Group Name.", app.APP_NAME);
+            /*}else if (group_description === "Write Group description here (Optional) ?" || group_description === "") {
+                app.showAlert("Please enter Group Description.", app.APP_NAME);*/
             }else {
                 $("#updateSGLoader").show();
                 var jsonDataSaveGroup = {"org_id":organisationID ,"txtGrpName":group_name,"txtGrpDesc":group_description,"pid":groupID , "group_status":group_status}

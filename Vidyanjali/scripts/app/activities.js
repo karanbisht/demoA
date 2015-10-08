@@ -252,6 +252,8 @@ app.Activities = (function () {
                 var db = app.getDb();
                 db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
             }
+               activeImgClick();
+               activeVidClick(); 
           },100);     
         };
                 
@@ -701,6 +703,8 @@ app.Activities = (function () {
                                                         });
             
                 $('#activities-listview').data('kendoMobileListView').refresh();          
+                activeImgClick();
+                activeVidClick();
            },100);   
         };
                           
@@ -876,6 +880,43 @@ app.Activities = (function () {
             localStorage.setItem("shareType", type);
          }
 
+        function activeImgClick(){
+               $('.activityImgClick').click(function(event){
+                  console.log(event.target.alt);
+
+                  var imgData = event.target.alt.split('-----');
+                      
+                   imgFile = imgData[0];
+                   imgNotiFi = imgData[1];
+                   
+                    attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+                    var ext = app.getFileExtension(attachedImgFilename);
+                    if (ext==='') {
+                        attachedImgFilename = attachedImgFilename + '.jpg'; 
+                    }
+            
+                    fpImg = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_img_' + attachedImgFilename;             
+                    window.resolveLocalFileSystemURL(fpImg, imgPathExist, imgPathNotExist); 
+
+                   
+               });
+        }
+        
+        function activeVidClick(){
+
+            $('.activityVidClick').click(function(event){
+                  console.log(event.target.alt) 
+                  var imgData = event.target.alt.split('-----');
+                      
+                    videoFile = imgData[0];
+                    notiFi = imgData[1];
+                   
+                    attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
+                    fpVid = sdcardPath + app.SD_NAME+"/"+ 'Zaffio_Video_' + attachedFilename;             
+                    window.resolveLocalFileSystemURL(fpVid, videoPathExist, videoPathNotExist);                                   
+               });
+            
+        }
 
         return {
             activitySelected: activitySelected,

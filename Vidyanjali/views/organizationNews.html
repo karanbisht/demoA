@@ -1,4 +1,4 @@
-<div data-role="view" id="newsList" data-id="innerActivity" data-layout="default" data-reload="true" class="activities-view-info" data-model="app.orgNews" data-show ="app.orgNews.show">
+<div data-role="view" id="newsList" data-id="innerActivity" data-layout="default" data-reload="true" class="activities-view-info" data-model="app.orgNews" data-show ="app.orgNews.show" data-use-native-scrolling="true">
     <div data-role="header">         
               <div data-role="navbar">     
                  <span>Organization News</span>
@@ -55,21 +55,20 @@
                   #if (news_image!=='' && news_image!==0 && upload_type==="image") {#
                     <br/>                    
                     <br/>                     
-                     <a data-role="button" data-click="app.orgNews.imageDownlaodClick" data-imgPath=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">                       
+                     <a class="newsImgClick" style="width:100%;padding:0px;background:transparent;border:none;">                       
                          <div id="img_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">
                                     <div class="ballIV"></div>                   
                                 </div>                            
                          </div>                                                           
-                         <img src= ${news_image_show} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>    
+                         <img src= ${news_image_show} alt=${news_image}-----${id} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>    
                      </a>                     
                      <br/>
  
                   #}else if (news_image!=='' && news_image!=='0' && upload_type==="video"){#          
                      <br/>
-                     <br/>
-                     
-                       <a data-role="button" data-click="app.orgNews.videoDownlaodClick" data-someAttribute=${news_image} data-notiid=${id} style="width:100%;padding:0px;background:transparent;border:none;">
+                     <br/>                     
+                       <a class="newsVidClick" style="width:100%;padding:0px;background:transparent;border:none;">
                             <div>
                                 <div id="video_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                  <div class="videoDownload">
@@ -79,14 +78,11 @@
                                   </div>
                                  </div>
                                 </div>                                
-                               <img src="styles/images/video.png"  style="width:100%;"/>                    
+                               <img src="styles/images/video.png" alt=${news_image}-----${id} style="width:100%;"/>                    
                             </div>
                        </a>   
-                        
-
                    #}#            
                 #}else{#   
-
 	                     <div>
                            <div id="activityTemplateTitle" class="HeadingClass" >${news_name}</div> 
               		     <span  id="activityTemplateMessage"  style="color:rgb(147,147,147);padding-right:10px;text-align:justify;" >${news_desc}</span>            			                 

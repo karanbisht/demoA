@@ -5,6 +5,7 @@ app.groupDetail = (function () {
     var selectedGroupId;
     var orgDesc;
     var alternateNumInfo = [];
+    var memberSelectedPhoto;
 
     //var orgId = localStorage.getItem("UserOrgID");
     
@@ -349,8 +350,7 @@ app.groupDetail = (function () {
             $("#groupMember-listview").hide();
             $("#progressAdminOrgMem").show();
             $("#orgMemFooter").hide();
-                               
-                        
+            
             app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
@@ -360,9 +360,8 @@ app.groupDetail = (function () {
                                                                              dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
                   
                                                                          }
-                },
-                                                                 schema: {
-                
+                          },
+                                                                 schema: {               
                 
                     data: function(data) {
                         //console.log(data);                                             
@@ -371,31 +370,27 @@ app.groupDetail = (function () {
 
                 },
                                                                  error: function (e) {
-
-                                                                     //console.log(JSON.stringify(e));
-                                                                     
+                                                                     //console.log(JSON.stringify(e));                                                                     
                                                                      if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                              }else {
                                                                                                 app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                                                                                              } 
-                                                                                        }else {
+                                                                      }else {
                                                                               
                                                                                             if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
+                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                      }
 
                                                                         $("#progressAdminOrgMem").hide();
-                                                                     $("#groupMember-listview").show();
-                                                                 }
-	        
+                                                                        $("#groupMember-listview").show();
+                                                                 }	        
                                                              });         
-            
             MemberDataSource.fetch(function() {
                 var data = this.data();                        
                 groupDataShow = [];
@@ -424,6 +419,7 @@ app.groupDetail = (function () {
                                                full_name:data[0]['status'][0].allCustomer[i].user_fname+" "+data[0]['status'][0].allCustomer[i].user_lname,
                                                customerID:data[0]['status'][0].allCustomer[i].custID,
                                                account_id:data[0]['status'][0].allCustomer[i].account_id,
+                                               photo:data[0]['status'][0].allCustomer[i].photo,
                                                orgID:data[0]['status'][0].allCustomer[i].orgID
                                            });
                     }     
@@ -724,7 +720,9 @@ app.groupDetail = (function () {
          
         var clickOnOrgMember = function(e) {
             memberSelectedOrgID = e.data.orgID;
-            memberSelectedCustID = e.data.customerID;  
+            memberSelectedCustID = e.data.customerID;
+            memberSelectedPhoto = e.data.photo;
+            
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -738,19 +736,61 @@ app.groupDetail = (function () {
             }
             
         };
+        
+        var takeMemberProfilePhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 40,
+                                            targetWidth: 150,
+                                            targetHeight: 150,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true                                           
+                                        });
+        };
+        
+        var selectMemberProfilePhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 40,
+                                            targetWidth: 150,
+                                            targetHeight: 150,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
+                                        });
+        };
+        
+         var resetMemberProfilePhoto = function() {
+            var largeImage = document.getElementById('editMemberPhoto');
+            largeImage.src = "styles/images/profile-img.png";
+            memberSelectedPhoto = "";   
+        }
+        
+        function onFail(e){
+            console.log(e);
+        }
+        
+        function onProfilePhotoURISuccess(imageURI) {            
+            var largeImage = document.getElementById('editMemberPhoto');
+            largeImage.src = imageURI;
+            memberSelectedPhoto = imageURI;   
+        }
 
         var alernateMobileVal;
-
         var adminAllGroupArray = [];
         var customerGroupArray = [];
         var EditGroupArrayMember = [];
 
         var editMemberShow = function(e) {
-            e.preventDefault();
             
             $(".km-scroll-container").css("-webkit-transform", "");  
             $("#adminEditCustomer").show();            
             $("#editOrgMemberContent").hide();
+            var largeImage = document.getElementById('editMemberPhoto');
+            if(memberSelectedPhoto===""){
+                largeImage.src="styles/images/profile-img.png";    
+            }else{
+                largeImage.src=memberSelectedPhoto;
+            }
             
             alernateMobileVal = 0;
             countMobile = 0;
@@ -1068,7 +1108,7 @@ app.groupDetail = (function () {
             countMobile = 1;  
         }
                       
-        var editProfileFunc = function() {
+var editProfileFunc = function() {
             var fname = $("#editFirstNameAdmin").val();
             var lname = $("#editLastNameAdmin").val();
             var email = $("#editEmailAdmin").val();
@@ -1076,66 +1116,62 @@ app.groupDetail = (function () {
             var alterEditMob = $("#editMobileAlterPage").val();
             
             var groupEdit = [];
-            
+                                       
             $('#groupInEditMember :selected').each(function(i, selected) { 
                 groupEdit[i] = $(selected).val(); 
             });
             
             groupEdit = String(groupEdit);             
-                        
+            //console.log(groupEdit);
+            
             var organisationID = localStorage.getItem("orgSelectAdmin");
             
             if (fname === "First Name" || fname === "") {
-                app.showAlert("Please enter your First Name.", "Validation Error");
+                app.showAlert("Please enter your First Name.", app.APP_NAME);
             }else if (lname === "Last Name" || lname === "") {
-                app.showAlert("Please enter your Last Name.", "Validation Error");
-            /*}else if (email === "Email" || email === "") {
-                app.showAlert("Please enter your Email.", "Validation Error");
-            } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");*/
+                app.showAlert("Please enter your Last Name.", app.APP_NAME);
+                /*}else if (email === "Email" || email === "") {
+                app.showAlert("Please enter your Email.", app.APP_NAME);
+                } else if (!app.validateEmail(email)) {
+                app.showAlert("Please enter a valid Email.", app.APP_NAME);*/
             } else if (mobile === "Mobile Number" || mobile === "") {
-                app.showAlert("Please enter your Mobile Number.", "Validation Error");
+                app.showAlert("Please enter your Mobile Number.", app.APP_NAME);
             } else if (!app.validateMobile(mobile)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
+                app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);    
             }else if (groupEdit.length===0 || groupEdit.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", app.APP_NAME);    
             }else if (countMobile!==0) {  
                 if (alterEditMob=== "Mobile Number" || alterEditMob === "") {
-                    app.showAlert("Please enter your Mobile Number.", "Validation Error");
+                    app.showAlert("Please enter your Mobile Number.", app.APP_NAME);
                 } else if (!app.validateMobile(alterEditMob)) {
-                    app.showAlert("Please enter a valid Mobile Number.", "Validation Error");    
+                    app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);    
                 }else {                    
                     $("#adminEditCustomer").show();
                     
                     mobileArray = [];
                     //mobileArray.push(mobile);
-                    mobileArray.push(alterEditMob);    
-                    var count = 0;
-                             
+                    mobileArray.push(alterEditMob);                    
+                    var count = 0;                             
                     for (var i = 1;i <= addMoreEditMobile;i++) {
                         var newMobile = $("#editMobileMoreNo" + i).val(); 
                         if (newMobile === "Mobile Number" || newMobile === "") {
                             count++;                        
                         }else if (!app.validateMobile(newMobile)) {
-                            app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                                                  
+                            app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);                                                  
                         }else {
                             count++;
                             mobileArray.push(newMobile);
                         } 
-                    }             
+                    }                                 
+                    mobileArray = String(mobileArray);
 
                     if (count===addMoreEditMobile) {
-                        //alert('inside');
-                        //console.log(mobileArray);
-
+                        
+                        //alert("org_id"+"||"+organisationID+"||"+"cust_id"+"||"+memberSelectedCustID+"||"+"txtMobile"+"||"+mobileArray+"||"+"user_email"+"||"+email+"||"+"user_fname"+"||"+fname+"||"+"user_lname"+"||"+lname+"||"+"cmbGroup"+"||"+groupEdit);
+                        
                         var jsonDataRegister;
-                        //alert(localStorage.getItem("orgSelectAdmin"));
-                        //alert(organisationID);
-                        
-                        jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname,"cmbGroup":groupEdit} 
-       
-                        //console.log(jsonDataRegister);
-                        
+                        jsonDataRegister = {"org_id":organisationID,"cust_id":memberSelectedCustID,"txtMobile":mobileArray,"user_email":email,"user_fname":fname,"user_lname":lname,"cmbGroup":groupEdit};
+                              
                         var dataSourceRegister = new kendo.data.DataSource({
                                                                                transport: {
                                 read: {
@@ -1148,29 +1184,28 @@ app.groupDetail = (function () {
                             },
                                                                                schema: {
                                 data: function(data) {
-                                    //console.log(data);
+                                    console.log(JSON.stringify(data));
                                     return [data];
                                 }
                             },
                                                                                error: function (e) {
                                                                                    $("#adminEditCustomer").hide();
-                                                                                   //console.log(JSON.stringify(e));           
-
+                                                                                   console.log(JSON.stringify(e));           
+                                                                                   
                                                                                    if (!app.checkConnection()) {
-                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                             }else {
-                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                             } 
-                                                                                        }else {
-                                                                              
-                                                                                            if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                            }else {
-                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                            }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
+                                                                                       if (!app.checkSimulator()) {
+                                                                                           window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                       }else {
+                                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                       } 
+                                                                                   }else {
+                                                                                       if (!app.checkSimulator()) {
+                                                                                           window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                       }else {
+                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                       }
+                                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   }  
                                                                                }               
                                                                            });  
              
@@ -1188,11 +1223,10 @@ app.groupDetail = (function () {
                                     }
                                     
                                     app.mobileApp.navigate('#groupMemberShow');
-                                }else if(loginData.status[0].Msg==="Session Expired"){
+                                }else if (loginData.status[0].Msg==="Session Expired") {
                                     //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin(); 
-                                
-                                }else if (loginData.status[0].Msg==="You don't have access") {                    
+                                }else if (loginData.status[0].Msg==="You don't have access") {
                                     if (!app.checkSimulator()) {
                                         window.plugins.toast.showShortBottom(app.NO_ACCESS);  
                                     }else {
@@ -1200,7 +1234,6 @@ app.groupDetail = (function () {
                                     }
                                               
                                     app.mobileApp.navigate('views/orgMemberPage.html');
-      
                                 }else {
                                     $("#adminEditCustomer").hide();
                                     app.showAlert(loginData.status[0].Msg , 'Notification'); 
@@ -1213,10 +1246,10 @@ app.groupDetail = (function () {
                 $("#adminEditCustomer").show();
                 mobileArray = [];                    
                 mobileArray.push(mobile);
+                mobileArray = String(mobileArray);
                 
-                //var jsonDataRegister;
-
-                jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID,"cmbGroup":groupEdit} 
+            if(memberSelectedPhoto===""){
+                jsonDataRegister = {"org_id":organisationID,"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"cust_id":memberSelectedCustID,"cmbGroup":groupEdit,"profile_pic":memberSelectedPhoto};
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {
@@ -1230,36 +1263,35 @@ app.groupDetail = (function () {
                     },
                                                                        schema: {
                         data: function(data) {
-                            //console.log(data);
+                            console.log(data);
                             return [data];
                         }
                     },
                                                                        error: function (e) {
+                                                                           
+                                                                           console.log(JSON.stringify(e));
                                                                            $("#adminEditCustomer").hide();
 
-                                                                           //console.log(JSON.stringify(e));           
-                                                                         
                                                                            if (!app.checkConnection()) {
-                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                             }else {
-                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                             } 
-                                                                                        }else {
-                                                                              
-                                                                                            if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                            }else {
-                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                            }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                               }else {
+                                                                                   app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                               } 
+                                                                           }else {
+                                                                               if (!app.checkSimulator()) {
+                                                                                   window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                               }else {
+                                                                                   app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                               }
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                           }
                                                                        }               
                                                                    });  
              
                 dataSourceRegister.fetch(function() {
                     var loginDataView = dataSourceRegister.data();
-                    //console.log(loginDataView);       
+                    console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
                         //console.log(loginData.status[0].Msg);
                         if (loginData.status[0].Msg==='Customer detatil updated successfully') {
@@ -1268,31 +1300,80 @@ app.groupDetail = (function () {
                                 window.plugins.toast.showShortBottom(app.MEMBER_DETAIL_UPDATED_MSG);   
                             }else {
                                 app.showAlert(app.MEMBER_DETAIL_UPDATED_MSG, "Notification");  
-                            }
-                            
+                            }                            
                             app.mobileApp.navigate('#groupMemberShow');
-                        }else if(loginData.status[0].Msg==="Session Expired"){
+                        }else if (loginData.status[0].Msg==="Session Expired") {
                             //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                             app.LogoutFromAdmin(); 
-                                
                         }else if (loginData.status[0].Msg==="You don't have access") {
-                    
-                                if (!app.checkSimulator()) {
-                                    window.plugins.toast.showShortBottom(app.NO_ACCESS);  
-                                }else {
-                                    app.showAlert(app.NO_ACCESS , 'Offline');  
-                                }
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
+                            }else {
+                                app.showAlert(app.NO_ACCESS , 'Offline');  
+                            }
                                               
-                                app.mobileApp.navigate('views/orgMemberPage.html');
-  
+                            app.mobileApp.navigate('views/orgMemberPage.html');
                         }else {
                             app.showAlert(loginData.status[0].Msg , 'Notification'); 
                             $("#adminEditCustomer").hide();
                         }
                     });
-                });
-            }
+                });                  
+          }else{
+              
+                    if(memberSelectedPhoto.substring(0, 21)==="content://com.android"){
+                        var photo_split = memberSelectedPhoto.split("%3A");
+                        memberSelectedPhoto = "content://media/external/images/media/" + photo_split[1];
+                    }   
+              
+                    var filename = memberSelectedPhoto.substr(memberSelectedPhoto.lastIndexOf('/') + 1);                                                
+                        if (filename.indexOf('.') === -1) {
+                            filename = filename + '.jpg';
+                        }                
+                    
+
+                    var params = new Object();
+                    params.org_id = organisationID;  //you can send additional info with the file
+                    params.txtFName = fname;
+                    params.txtLName = lname;
+                    params.txtEmail = email;
+                    params.txtMobile = mobileArray;
+                    params.cust_id = memberSelectedCustID;
+                    params.cmbGroup = groupEdit;
+                    ft = new FileTransfer();
+                    var options = new FileUploadOptions();          
+                    options.fileKey = "profile_pic";
+                    options.fileName = filename;  
+                    options.mimeType = "image/jpeg";
+                    options.params = params;
+                    options.chunkedMode = false;
+                    options.headers = {
+                        Connection: "close"
+                    };     
+              
+                    //alert(filename+"||"+memberSelectedPhoto);
+                    ft.upload(memberSelectedPhoto, app.serverUrl() + "customer/edit", memberWin, memberFail, options , true); 
+          }
+         }      
         };
+        
+        
+        function memberWin(r) {
+            console.log('success');
+            $("#adminEditCustomer").hide();  
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom(app.MEMBER_DETAIL_UPDATED_MSG);   
+                            }else {
+                                app.showAlert(app.MEMBER_DETAIL_UPDATED_MSG, "Notification");  
+                            }                            
+                            app.mobileApp.navigate('#groupMemberShow');
+        }
+
+        function memberFail(e){
+            console.log('fail');
+            console.log(JSON.stringify(e));            
+            $("#adminEditCustomer").hide(); 
+        }
         
         var attendance = function(){
             
@@ -1304,8 +1385,20 @@ app.groupDetail = (function () {
                 } 
             }else{                
                    app.mobileApp.navigate('views/adminAttendance.html');
-            }
+            }            
+        }
+        
+        var timeTableManage = function(){
             
+            if (!app.checkConnection()) {
+                if (!app.checkSimulator()) {
+                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
+                }else {
+                    app.showAlert(app.INTERNET_ERROR , 'Offline');  
+                } 
+            }else{                
+                   app.mobileApp.navigate('views/adminTimeTable.html');
+            }            
         }
         
         return {
@@ -1316,6 +1409,7 @@ app.groupDetail = (function () {
             editProfileFunc:editProfileFunc,
             addAlternateNo:addAlternateNo,
             attendance:attendance,
+            timeTableManage:timeTableManage,
             clickOnOrgMember:clickOnOrgMember,     
             sendNotification:sendNotification,    
             removeMemberClick:removeMemberClick,
@@ -1327,6 +1421,9 @@ app.groupDetail = (function () {
             addNemMember:addNemMember,
             addMoreMobileNoFunc:addMoreMobileNoFunc,
             addMoreMobileNoPage:addMoreMobileNoPage,
+            takeMemberProfilePhoto:takeMemberProfilePhoto,
+            selectMemberProfilePhoto:selectMemberProfilePhoto,
+            resetMemberProfilePhoto:resetMemberProfilePhoto,
             //addMemberToGroupFunc:addMemberToGroupFunc,
             removeMemberFromGroup:removeMemberFromGroup,    
             showGroupNotification:showGroupNotification,

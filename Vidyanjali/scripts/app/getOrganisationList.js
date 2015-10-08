@@ -976,27 +976,115 @@ app.OragnisationList = (function () {
         }
            
         var userProfileInt = function () {       
+            
         };
         
         var userProfileShow = function() {
-            document.getElementById("orgData").innerHTML = "";
-            tempArray = [];
-            $(".km-scroll-container").css("-webkit-transform", "");
-
-            
-            var db = app.getDb();
-            db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);
+          document.getElementById("orgData").innerHTML = "";
+          tempArray = [];
+          $(".km-scroll-container").css("-webkit-transform", "");
+          if (!app.checkConnection()) {
+            if (!app.checkSimulator()) {                                                                     
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+            }else {              
+                app.showAlert(app.INTERNET_ERROR , 'Offline');                   
+            }              
+            getProfileDataFromDB();  
+          }else{
+            getProfileImageFromLive();  
+          } 
         };
+            
+        function getProfileDataFromDB(){
+            var db = app.getDb();
+            db.transaction(getProfileInfoDB, app.errorCB, getProfileDBSuccess);    
+        }
+                
+        function getProfileImageFromLive(){
+            $("#liveProfileLoader").show();
+            $("#profileContent").hide();
+            account_Id = localStorage.getItem("ACCOUNT_ID");            
+            var dataSourceLogin = new kendo.data.DataSource({
+                                                                transport: {
+                    read: {
+                                                                            url: app.serverUrl() + "customer/userProfile/" + account_Id,
+                                                                            type:"POST",
+                                                                            dataType: "json"
+                                                                        }
+                    },
+                                                                schema: {
+                    data: function(data) {
+                        console.log(data);
+                        return [data];
+                    }
+                },
+                                                                error: function (e) {
+                                                                    console.log(JSON.stringify(e));
+                                                                    $("#liveProfileLoader").hide(); 
+                                                                    $("#profileContent").show();
+                                                                    getProfileDataFromDB();
+                                                                }               
+                                                            });  
+	            
+            dataSourceLogin.fetch(function() {
+                var data = this.data();                                		                                  
+                if (data[0]['status'][0].Msg==='Success') {
+                            var UserProfileInformation=data[0]['status'][0].ProfileInfo[0];
+                            saveProfileInfo(UserProfileInformation); 
+                }    
+            }); 
+        }
+        
+        var profileInfoData;
+        function saveProfileInfo(data) {
+            profileInfoData = data; 
+            var db = app.getDb();
+            db.transaction(insertProfileInfo, app.errorCB, getProfileDataFromDB);            
+        };
+                                       
+        var userAccountID;        
+        function insertProfileInfo(tx) {
+            var query = "DELETE FROM PROFILE_INFO";
+            app.deleteQuery(tx, query);  
+            
+            var username = localStorage.getItem("username");           
+            userAccountID = profileInfoData.account_id;            
+            
+            var query1 = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , profile_image , login_status) VALUES ("'
+                        + profileInfoData.account_id
+                        + '","'
+                        + profileInfoData.id
+                        + '","'
+                        + profileInfoData.email
+                        + '","'
+                        + profileInfoData.first_name
+                        + '","'
+                        + profileInfoData.last_name
+                        + '","'
+                        + username
+                        + '","'
+                        + profileInfoData.add_date
+                        + '" ,"'
+                        + profileInfoData.mod_date
+                        + '" ,"'
+                        + profileInfoData.photo
+                        + '" ,"' + 1 + '")';              
+            app.insertQuery(tx, query1);       
+        }
+        
+        
             
         function getProfileInfoDB(tx) {
             var query = 'SELECT first_name , last_name , email , mobile , profile_image FROM PROFILE_INFO';
             app.selectQuery(tx, query, profileDataSuccess);
              
-            var query = 'SELECT org_id , org_name , role FROM JOINED_ORG';
-            app.selectQuery(tx, query, orgDataSuccess);
+            var query1 = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+            app.selectQuery(tx, query1, orgDataSuccess);
              
-            var query = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
-            app.selectQuery(tx, query, orgAdminDataSuccess);
+            var query2 = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
+            app.selectQuery(tx, query2, orgAdminDataSuccess);
+            $("#liveProfileLoader").hide();
+            $("#profileContent").show();
         }
 
         var fname;
@@ -1011,9 +1099,7 @@ app.OragnisationList = (function () {
             if (count !== 0) {
                 fname = results.rows.item(0).first_name;
                 lname = results.rows.item(0).last_name;
-
                 lnameVal = results.rows.item(0).last_name;
-
                 email = results.rows.item(0).email;
                             
                 if(email===null || email==="null" || email===''){
@@ -1026,7 +1112,8 @@ app.OragnisationList = (function () {
                 profileImage = results.rows.item(0).profile_image; 
 
                 var largeImage = document.getElementById('profilePhoto');                
-                //console.log(JSON.stringify(profileImage));
+                largeImage.src = "styles/images/profile-img.png";
+                
                 if (profileImage!==null && profileImage!=='' && profileImage!=='null') {
                     largeImage.src = profileImage;
                 }else {
@@ -1246,7 +1333,7 @@ app.OragnisationList = (function () {
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
             }/*else if (email === "Email" || email === "") {
-                app.showAlert("Please enter your Email.", "Validation Error");
+                app.showAlert("Please enter your Email.", app.APP_NAME);
             }*/else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
                 app.showAlert("Please enter a valid Email.", app.APP_NAME);
             }else {    
@@ -1643,8 +1730,7 @@ app.OragnisationList = (function () {
         }
         
         function showAlertToComplete() {
-            $("#savingDeviceCalenderLoader").hide();
-                        
+            $("#savingDeviceCalenderLoader").hide();                        
             if (!app.checkSimulator()) {
                 window.plugins.toast.showShortBottom('Successfully synchronized with device calendar');           
             }else {
@@ -1654,36 +1740,151 @@ app.OragnisationList = (function () {
         
         var takeProfilePhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
-                                            quality: 20,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
+                                            quality: 40,
+                                            targetWidth: 150,
+                                            targetHeight: 150,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
-                                            correctOrientation: true,
-                                            saveToPhotoAlbum:true
+                                            correctOrientation: true
                                         });
         };
         
         var selectProfilePhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
-                                            quality: 50,
-                                            targetWidth: 300,
-                                            targetHeight: 300,
+                                            quality: 40,
+                                            targetWidth: 150,
+                                            targetHeight: 150,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
                                         });
         };
 
-        var profileImagePath;
-        
+        var profileImagePath;        
         function onProfilePhotoURISuccess(imageURI) {
             var largeImage = document.getElementById('profilePhoto');
             largeImage.src = imageURI;
             profileImagePath = imageURI;
                
-            var db = app.getDb();
-            db.transaction(updateProfilePic, app.errorCB, app.successCB);   
+            
+            sendImageToServer(imageURI);
+            
+            //var db = app.getDb();
+            //db.transaction(updateProfilePic, app.errorCB, app.successCB);   
         }
+        
+        
+        function sendImageToServer(imageURI){                
+              if(imageURI===''){
+                var jsonDataRegister;                              
+                jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email,"profile_pic":imageURI}; 
+       
+                var dataSourceRegister = new kendo.data.DataSource({
+                                                                       transport: {
+                        read: {
+                                                                                   url: app.serverUrl() + "customer/editprofile",
+                                                                                   type:"POST",
+                                                                                   dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                   data: jsonDataRegister
+                                                                               }
+                    },
+                                                                       schema: {
+                        data: function(data) {
+                            console.log(data);
+                            return [data];
+                        }
+                    },
+                                                                       error: function (e) {
+                                                                           if (!app.checkConnection()) {
+                                                                                 if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                 }else {
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                 } 
+                                                                          }else {
+                                                                              if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                              }else {
+                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                              }
+                                                                              app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                          }
+                                                                                                                                                                    
+                                                                       }               
+                                                                   });  
+             
+                dataSourceRegister.fetch(function() {
+                    var loginDataView = dataSourceRegister.data();
+                    $.each(loginDataView, function(i, loginData) {
+                        //console.log(loginData.status[0].Msg);      
+                        if (loginData.status[0].Msg==='Profile Updated') {
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom('Your profile image was updated successfully');  
+                            }else {
+                                app.showAlert('Your profile image was updated successfully' , 'Notification');  
+                            }
+                            var db = app.getDb();
+                            db.transaction(updateProfilePic, app.errorCB, app.successCB);                               
+                        }else {
+                            app.showAlert(loginData.status[0].Msg , 'Notification'); 
+                        }
+                    });
+                });
+              }else{
+                   $("#liveProfileLoader").show();
+                   if(imageURI.substring(0, 21)==="content://com.android"){
+                        var photo_split = imageURI.split("%3A");
+                        imageURI = "content://media/external/images/media/" + photo_split[1];
+                    }   
+              
+                    var filename = imageURI.substr(imageURI.lastIndexOf('/') + 1);                                                
+                        if (filename.indexOf('.') === -1) {
+                            filename = filename + '.jpg';
+                        }                
+
+                    var params = new Object();
+                    params.account_id = account_Id;  //you can send additional info with the file
+                    params.first_name = fname;
+                    params.last_name = lname;
+                    params.email = email;
+                   
+                    var ft = new FileTransfer();
+                    var options = new FileUploadOptions();          
+                    options.fileKey = "profile_pic";
+                    options.fileName = filename;  
+                    options.mimeType = "image/jpeg";
+                    options.params = params;
+                    options.chunkedMode = false;
+                    options.headers = {
+                        Connection: "close"
+                    };     
+              
+                    //alert(filename+"||"+memberSelectedPhoto);
+                    ft.upload(imageURI, app.serverUrl() + "customer/editprofile", profilePicWin, profilePicFail, options , true);
+              }  
+        }
+
+        function profilePicWin(r){                      
+            if (!app.checkSimulator()) {
+                 window.plugins.toast.showShortBottom('Your profile image was updated successfully.');  
+            }else {
+                 app.showAlert('Your profile image was updated successfully.' , 'Notification');  
+            }
+
+            var db = app.getDb();
+            db.transaction(updateProfilePic, app.errorCB, app.successCB);
+            $("#liveProfileLoader").hide();
+        }
+        
+        function profilePicFail(e){
+            $("#liveProfileLoader").hide();
+            if (!app.checkSimulator()) {
+                 window.plugins.toast.showShortBottom('Operation Failed. Please try again.');  
+            }else {
+                 app.showAlert('Operation Failed. Please try again.' , 'Notification');  
+            }
+        }
+        
         
         function updateProfilePic(tx) {       
             var query = "UPDATE PROFILE_INFO SET profile_image='" + profileImagePath + "'";
@@ -1693,9 +1894,10 @@ app.OragnisationList = (function () {
         var resetProfilePhoto = function() {
             var largeImage = document.getElementById('profilePhoto');
             largeImage.src = "styles/images/profile-img.png";
-               
+            profileImagePath='';                           
+            sendImageToServer(profileImagePath);            
             var db = app.getDb();
-            db.transaction(resetProfilePic, app.errorCB, app.successCB);   
+            db.transaction(resetProfilePic, app.errorCB, app.successCB);    
         }
         
         function resetProfilePic(tx) {       

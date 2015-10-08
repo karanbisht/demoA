@@ -40,11 +40,11 @@ app.adminLogin = (function () {
                 password = $("#loginPassword").val();
                 //console.log(usernameMob + "||" + password);
                 if (usernameMob === "Mobile Number" || usernameMob === "") {
-                    app.showAlert("Please enter your Mobile No.", "Validation Error");
+                    app.showAlert("Please enter your Mobile No.", app.APP_NAME);
                 } else if (!validateMobile(usernameMob)) {
-                    app.showAlert("Please enter a valid Mobile Number.", "Validation Error");  
+                    app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);  
                 } else if (password === "Password" || password === "") {
-                    app.showAlert("Please enter your Password.", "Validation Error");
+                    app.showAlert("Please enter your Password.", app.APP_NAME);
                 }else {           
                     $("#progress1").show();
                     //document.getElementById('OrgLogin').style.pointerEvents = 'none';
@@ -648,7 +648,7 @@ app.adminLogin = (function () {
             var jsonDataOTP = {"otp":otp_input}       
             
             if (otp_input === "Code" || otp_input === "") {
-                app.showAlert("Please enter your Code to change password.", "Validation Error");
+                app.showAlert("Please enter your Code to change password.", app.APP_NAME);
             }else{            
                     
                           $("#forgetPassLoader").show();
@@ -738,7 +738,7 @@ app.adminLogin = (function () {
             }else if (reNewPass === "Confirm password" || reNewPass === "") {
                 app.showAlert("Please enter confirm password.", "");
             } else if (newPass!==reNewPass){
-                app.showAlert("Passwords do not match", "Validation Error");    
+                app.showAlert("Passwords do not match", app.APP_NAME);    
             }else{
                 
                 

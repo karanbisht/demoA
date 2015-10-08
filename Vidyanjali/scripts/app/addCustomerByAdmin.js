@@ -12,6 +12,7 @@ app.addCustomerByAdmin = (function () {
         var countMobile;
         var mobileArray = [];
         var firstTime;
+        var memberAddPhoto;
 
         var groupDataShow=[];      
 
@@ -27,7 +28,6 @@ app.addCustomerByAdmin = (function () {
         // Navigate to activityView When some activity is selected
         
         var addNewRegistration = function (e) {
-
             $('#groupInAddCustomer').find('input[type=checkbox]:checked').removeAttr('checked');
             app.userPosition = false;
             $regFirstName.val('');
@@ -35,7 +35,13 @@ app.addCustomerByAdmin = (function () {
             $regEmail.val('');
             $regMobile.val('');
             organisationID = e.view.params.organisationID;
-                        
+            memberAddPhoto="";
+            
+            $("#addMemberUl").empty();
+            
+             var largeImage = document.getElementById('addMemberPhoto');
+             largeImage.src="styles/images/profile-img.png"; 
+            
             addMoreMobile=0;
             countMobile=0;
             firstTime=0;
@@ -228,17 +234,55 @@ app.addCustomerByAdmin = (function () {
             //console.log(multiSelect);*/
        };       
         
+       var takeMemberPhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 40,
+                                            targetWidth: 100,
+                                            targetHeight: 100,
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.CAMERA,
+                                            correctOrientation: true                                           
+                                        });
+        };
+        
+        var selectMemberPhoto = function() {
+            navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
+                                            quality: 40,
+                                            targetWidth: 100,
+                                            targetHeight: 100,                            
+                                            destinationType: navigator.camera.DestinationType.FILE_URI,
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
+                                            correctOrientation: true
+                                        });
+        };
+        
+        var resetMemberPhoto = function() {
+            var largeImage = document.getElementById('addMemberPhoto');
+            largeImage.src = "styles/images/profile-img.png";
+            memberAddPhoto = "";   
+        }
+        
+        function onFail(e){
+            console.log(e);
+        }
+        
+        function onProfilePhotoURISuccess(imageURI) {            
+            var largeImage = document.getElementById('addMemberPhoto');
+            largeImage.src = imageURI;
+            memberAddPhoto = imageURI;   
+        } 
+        
               
-        var registerR = function() {            
+var registerR = function() {            
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
             var email = $regEmail.val();
             var mobile = $regMobile.val();
 
             if(firstTime===0){
-            countMobile=addMoreMobile;
+                countMobile=addMoreMobile;
             }else{
-              firstTime++;  
+                firstTime++;  
             }
                
             var group = [];		    
@@ -248,48 +292,36 @@ app.addCustomerByAdmin = (function () {
             
             /*$('#groupInAddCustomer input:checked').each(function() {
                 group.push($(this).val());
-            });*/
+            });
+            */
             
-             $('#groupInAddCustomer :selected').each(function(i, selected){ 
+            $('#groupInAddCustomer :selected').each(function(i, selected){ 
                   group[i] = $(selected).val(); 
             });
             
-            group = String(group);       
-            
-            //console.log(group);
-               
+            group = String(group);            
+            //alert(group);
 
-            /*var multiSelect = $('#multiSelectGroupName').data('kendoMultiSelect').dataItems();
-            //console.log(multiSelect.length);
-            
-            for(var i=0;i<multiSelect.length;i++){
-               //console.log(multiSelect[i].pid);
-               group.push(multiSelect[i].pid); 
-            }
-               
-            group = String(group);               
-            console.log(group);
-            */  
    
                
             if (fname === "First Name" || fname === "") {
-                app.showAlert("Please enter your First Name.", "Validation Error");
+                app.showAlert("Please enter your First Name.", app.APP_NAME);
             }else if (lname === "Last Name" || lname === "") {
-                app.showAlert("Please enter your Last Name.", "Validation Error");
+                app.showAlert("Please enter your Last Name.", app.APP_NAME);
             /*}else if (email === "Email" || email === "") {
-                app.showAlert("Please enter your Email.", "Validation Error");
+                app.showAlert("Please enter your Email.", app.APP_NAME);
             } else if (!app.validateEmail(email)) {
-                app.showAlert("Please enter a valid Email.", "Validation Error");*/
+                app.showAlert("Please enter a valid Email.", app.APP_NAME);*/
             } else if (mobile === "Mobile Number" || mobile === "") {
-                app.showAlert("Please enter your Mobile Number.", "Validation Error");
+                app.showAlert("Please enter your Mobile Number.", app.APP_NAME);
             } else if (!app.validateMobile(mobile)) {
-                app.showAlert("Please enter a valid Mobile Number.", "Validation Error");
+                app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);
             }else if(group.length===0 || group.length==='0'){
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", app.APP_NAME);    
             }else if(countMobile!==0){
                 $("#saveMemberLoader").show();
                 mobileArray=[];
-                mobileArray.push(mobile);
+                mobileArray.push(mobile);                
                 var count=0;
                                
                 for(var i=1;i<=countMobile;i++){
@@ -297,20 +329,22 @@ app.addCustomerByAdmin = (function () {
                     if(newMobile === "Mobile Number" || newMobile === ""){
                         count++;                        
                     }else if (!app.validateMobile(newMobile)) {
-                        app.showAlert("Please enter a valid Mobile Number.", "Validation Error");                                                  
+                        app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);                                                  
                     }else{
                         count++;
                         mobileArray.push(newMobile);
                     } 
                 }             
+                
+                mobileArray = String(mobileArray);
 
-                if(count===countMobile){
+              if(count===countMobile){
                     //alert('inside');
-                    var jsonDataRegister;
-                          
-                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group} 
+              if(memberAddPhoto===""){
+                    var jsonDataRegister;                          
+                    jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group,"profile_pic":memberAddPhoto}; 
        
-                var dataSourceRegister = new kendo.data.DataSource({
+                    var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {
                         read: {
                                                                                    url: app.serverUrl() + "customer/add",
@@ -326,24 +360,15 @@ app.addCustomerByAdmin = (function () {
                         }
                     },
                                                                        error: function (e) {
-                                                                            $("#saveMemberLoader").hide();
+                                                                           $("#saveMemberLoader").hide();
                                                                             //console.log(JSON.stringify(e));           
                                                                             
-                                                                            if (!app.checkConnection()) {
-                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                             }else {
-                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                             } 
-                                                                                        }else {
-                                                                              
-                                                                                            if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                            }else {
-                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                            }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                            if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                            }else {
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification"); 
+                                                                            }
            
                                                                        }               
                                                                    });  
@@ -390,31 +415,64 @@ app.addCustomerByAdmin = (function () {
                     });
                 });
             
+               }else{
+                  
+                  if(memberAddPhoto.substring(0, 21)==="content://com.android"){
+                        var photo_split = memberAddPhoto.split("%3A");
+                        memberAddPhoto = "content://media/external/images/media/" + photo_split[1];
+                  }   
+              
+                   var filename = memberAddPhoto.substr(memberAddPhoto.lastIndexOf('/') + 1);                                                
+                   if (filename.indexOf('.') === -1) {
+                       filename = filename + '.jpg';
+                   }                    
+                        
+ 
 
-                } 
+                    var params = new Object();
+                    params.org_id = organisationID;  //you can send additional info with the file
+                    params.txtFName = fname;
+                    params.txtLName = lname;
+                    params.txtEmail = email;
+                    params.txtMobile = mobileArray;
+                    params.cmbGroup = group;
+                    var ft = new FileTransfer();
+                    var options = new FileUploadOptions();          
+                    options.fileKey = "profile_pic";
+                    options.fileName = filename;  
+                    options.mimeType = "image/jpeg";
+                    options.params = params;
+                    options.chunkedMode = false;
+                    options.headers = {
+                        Connection: "close"
+                    };     
+              
+                    //alert(filename+"||"+memberSelectedPhoto);
+                    ft.upload(memberAddPhoto, app.serverUrl() + "customer/add", memberWin, memberFail, options , true); 
+                   
+               }   
+
+              } 
             }else{    
-
-                $("#saveMemberLoader").show();
-                mobileArray=[];
                 
+                $("#saveMemberLoader").show();
+                mobileArray=[];                
                 if(addMoreMobile===0){
                     mobileArray.push(mobile);
-                }
-                
-                
-                //console.log(mobileArray);
-                //console.log(fname + "||" + lname + "||" + email + "||" + mobile + "||" + organisationID);
-                var jsonDataRegister;
-                          
-                jsonDataRegister = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group} 
+                }               
+                mobileArray = String(mobileArray);
        
-                var dataSourceRegister = new kendo.data.DataSource({
+          if(memberAddPhoto===""){
+                var jsonDataReg;                          
+                jsonDataReg = {"txtFName":fname,"txtLName":lname,"txtEmail":email,"txtMobile":mobileArray,"org_id":organisationID,"cmbGroup":group,"profile_pic":memberAddPhoto}; 
+       
+                var dataSourceReg = new kendo.data.DataSource({
                                                                        transport: {
                         read: {
                                                                                    url: app.serverUrl() + "customer/add",
                                                                                    type:"POST",
                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                   data: jsonDataRegister
+                                                                                   data: jsonDataReg
                                                                                }
                     },
                                                                        schema: {
@@ -426,29 +484,19 @@ app.addCustomerByAdmin = (function () {
                                                                        error: function (e) {
                                                                            $("#saveMemberLoader").hide();
                                                                            //console.log(e);
-                                                                           //console.log(JSON.stringify(e));           
-           
-                                                                           if (!app.checkConnection()) {
-                                                                                             if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                             }else {
-                                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                             } 
-                                                                                        }else {
-                                                                              
-                                                                                            if (!app.checkSimulator()) {
-                                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                            }else {
-                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                            }
-                                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
-                                                                                        }
-                                                                         
+                                                                           //console.log(JSON.stringify(e));                        
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                           //app.mobileApp.pane.loader.hide();                                                                         
+                                                                           if (!app.checkSimulator()) {
+                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                            }else {
+                                                                            app.showAlert(app.INTERNET_ERROR, "Notification");
+                                                                            }
                                                                        }               
                                                                    });  
              
-                dataSourceRegister.fetch(function() {
-                    var loginDataView = dataSourceRegister.data();
+                dataSourceReg.fetch(function() {
+                    var loginDataView = dataSourceReg.data();
                     //console.log(loginDataView);       
                     $.each(loginDataView, function(i, loginData) {
                         //console.log(loginData.status[0].Msg);
@@ -488,10 +536,63 @@ app.addCustomerByAdmin = (function () {
                             $("#saveMemberLoader").hide();
                         }
                     });
-                });
-            }
+                });            
+          }else{
+                           
+              if(memberAddPhoto.substring(0, 21)==="content://com.android"){
+                        var photo_split1 = memberAddPhoto.split("%3A");
+                        memberAddPhoto = "content://media/external/images/media/" + photo_split1[1];
+              }   
+              
+               var filename1 = memberAddPhoto.substr(memberAddPhoto.lastIndexOf('/') + 1);                                                
+               if (filename1.indexOf('.') === -1) {
+                   filename1 = filename1 + '.jpg';
+               }                
+                        
+ 
+
+                    var params1 = new Object();
+                    params1.org_id = organisationID;  //you can send additional info with the file
+                    params1.txtFName = fname;
+                    params1.txtLName = lname;
+                    params1.txtEmail = email;
+                    params1.txtMobile = mobileArray;
+                    params1.cmbGroup = group;
+                    var ft1 = new FileTransfer();
+                    var options1 = new FileUploadOptions();          
+                    options1.fileKey = "profile_pic";
+                    options1.fileName = filename;  
+                    options1.mimeType = "image/jpeg";
+                    options1.params = params1;
+                    options1.chunkedMode = false;
+                    options1.headers = {
+                        Connection: "close"
+                    };     
+              
+                    //alert(filename+"||"+memberSelectedPhoto);
+                    ft1.upload(memberAddPhoto, app.serverUrl() + "customer/add", memberWin, memberFail, options1 , true); 
+          }
+         }      
         };
         
+        
+        function memberWin(r) {
+            console.log('success');
+                            if (!app.checkSimulator()) {
+                                window.plugins.toast.showShortBottom(app.MEMBER_ADDED_MSG);   
+                            }else {
+                                app.showAlert(app.MEMBER_ADDED_MSG, "Notification"); 
+                            }                            
+                            $("#saveMemberLoader").hide();
+                            app.mobileApp.navigate('views/orgMemberPage.html');
+
+        }
+
+        function memberFail(e){
+            console.log('fail');
+            console.log(JSON.stringify(e));            
+            $("#saveMemberLoader").hide();
+        }        
         function refreshOrgMember() {  
             //console.log('go to member');
             app.groupDetail.showGroupMembers();
@@ -537,6 +638,9 @@ app.addCustomerByAdmin = (function () {
             addMoreMobileNo:addMoreMobileNo,
             clickToSelectGroup:clickToSelectGroup,
             selectAllCheckBox:selectAllCheckBox,
+            takeMemberPhoto:takeMemberPhoto,
+            selectMemberPhoto:selectMemberPhoto,
+            resetMemberPhoto:resetMemberPhoto,
             checkClick:checkClick,
             registerR: registerR
         };

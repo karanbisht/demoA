@@ -539,6 +539,88 @@ input:focus, textarea:focus {
     font-size: 1.15rem;
 }
 
+#Aptifi .pdf-img-show
+{
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/manageOrg/pdf.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+
+#Aptifi .titletable-img-show
+{
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/adminImg/manage_timetable.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+.attachfileImgShow
+{
+    position:relative;
+    height:160px;       
+    max-width:250px;
+    overflow: hidden;
+    margin-top:20px;
+    right:0;
+    left:0;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center center;   
+    border: 5px solid #cccccc;
+}
+
+#Aptifi .img-img-show
+{
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/manageOrg/image.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+#timeTableFirstAllList > li
+{
+    border-top: none;
+    box-shadow:none;
+    margin-bottom:5px;
+}
+
+#timeTableFirstAllList > li:first-child
+{
+  margin-top:-10px;
+}
+
+#timeTableFirstAllList > li:last-child
+{
+    border:none;
+}
+
 #login-form .username,
 #login-form .password
 {
@@ -1012,7 +1094,7 @@ input:focus, textarea:focus {
     padding-top:5px;
     padding-left: 6em;
     font-size: .85rem;
-    text-align: justify;    
+    /*text-align: justify;*/    
 }
 
 .displayContentAboutUS
@@ -1073,9 +1155,9 @@ input:focus, textarea:focus {
 }
 
 .newsList-content-new{
-    position: relative;
+    /*position: relative;*/
     font-size: .85rem;
-    text-align: justify;
+    /*text-align: justify;*/
     background-color:#f3f3f3;
     border-radius:6px;
     padding:10px;
@@ -1635,6 +1717,24 @@ white-space: nowrap;
     max-height: 200px !important;
     height: 200px !important; 
 }
+
+
+#TimeTableAllList > li
+{
+    border-top: none;
+    box-shadow:none;
+}
+
+#TimeTableAllList > li:first-child
+{
+    margin-top:-10px;
+}
+
+#TimeTableAllList > li:last-child
+{
+    border:none;
+}
+
 
 .textareaClass textarea
 {
@@ -2257,7 +2357,7 @@ input.largerCheckboxSelectAll{
     border-radius: 3px;
     text-align: center;
     left:45%;
-    top: 45%;
+    top: 35%;
     padding-top:5px;
     padding-left:5px;
 }
@@ -2938,6 +3038,17 @@ float:right;
     margin-left: 0px;
 }
 
+#side-org-timeTable-icon
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/time_table.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}
+
 /*#side-org-event-icon:active
 {
     background-color: #2D344B; 
@@ -3122,6 +3233,18 @@ float:right;
     height: 50px; 
     width: 50px;
 }
+
+#show-admin-timeTable-icon
+{
+    background-color: #2D344B; 
+    background: url("images/adminImg/manage_timetable.png");
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    margin: 5px auto;
+    height: 50px; 
+    width: 50px;
+}
+
 
 #side-admin-manageOrg-icon
 {
@@ -3501,6 +3624,44 @@ float:right;
 }
 
 
+#Aptifi .user-avatar-img
+{
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle; 
+}
+
+#Aptifi .actScrollView .km-content,
+#Aptifi .actScrollView .km-listview
+{
+    background-color: #fff;
+    /*overflow-y: hidden;*/
+}
+
+#Aptifi .actScrollView .km-list > li
+{
+    overflow: visible;
+    border-width: 0 0 1px;
+    border-color: #eaeced;
+    background-color: #fff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #34495e;
+}
+
+#Aptifi .actScrollView .km-list > li:first-child   /* Height of first child from TOP by karan*/
+{
+    padding-top: .15em;
+}
+
 #Aptifi .group-img-show
 {
     float: left;
@@ -3720,7 +3881,7 @@ float:right;
     vertical-align: middle; 
 }
 
-.videoDownload{position:absolute;width:100%;z-index: 999;text-align:center;left:0;right:0;top:45%;}
+.videoDownload{position:absolute;width:100%;z-index: 999;text-align:center;left:0;right:0;top:35%;}
 .innervideoDownload{position:absolute; width:90%;border-radius:3px;height:25px;z-index: 999;left:0;right:0;background: rgba(0,0,0,0.4);margin:auto;}
 .downloadBar{width:80%; height:5px;text-align:left;background-color:white;margin:10px 5px 5px 30px;}
 .progressValueClass{margin-top:-13px;color:#ffffff;font-weight:bold;width:25px;margin-left:5px;}
@@ -3734,7 +3895,31 @@ float:right;
 #tabstrip-download-file.modal-mess-Popup, #event-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
 #tabstrip-download-file.modal-mess-Popup, #sendNotifcation-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
 
+#timeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
+#admTimeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
 
+
+.Folder {background-image: url(images/folder.png); background-repeat:no-repeat; background-size:80%; background-position:center;}
+
+.PDF{background-image: url(images/manageOrg/pdf.png); background-repeat:no-repeat; background-size:60%; background-position:center;}
+
+.IMAGE{background-image: url(images/manageOrg/image.png); background-repeat:no-repeat; background-size:60%; background-position:center;}
+
+.fotrText { background:#fff; padding:5px 10px; border-top:2px solid #a6ce39; }
+.fotrText p {float:left;display:inline-block; font-size:1.5em; line-height:1.5em; color:#333;font-family:"opensans_reg",Arial,Helvetica,sans-serif !important;}
+.fotrText p:last-child {float:right;}
+.fotrText p a {border:0;box-shadow: inset 2px 2px 23px -11px #ABABAB;
+    -webkit-box-shadow: inset 2px 2px 23px -11px #ABABAB;
+    -moz-box-shadow: inset 2px 2px 23px -11px #ABABAB;
+    -o-box-shadow: inset 2px 2px 23px -11px #ABABAB; background:#a5cd38!important;text-transform:uppercase;border:0; color:#fff; font-size:1em; text-align:center;display:inline-block; cursor:pointer; padding:3px 5px !important; 
+}
+
+.clearfix:after {clear:both; content:" "; display: block;font-size: 0;height: 0;visibility: hidden;}
+
+
+
+.documentContent a.inner-docs-back {overflow: hidden;font-size: 2.250em;color: #343434;font-family:"opensans_bld",Arial,Helvetica,sans-serif !important;padding:20px 0px 15px 10px; display:block; margin-right:10px;}
+.documentContent a.inner-docs-back span.docs { white-space: nowrap;}
 
 
 .selectGroupClass{

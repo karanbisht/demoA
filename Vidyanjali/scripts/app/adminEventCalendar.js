@@ -984,23 +984,54 @@ app.adminEventCalender = (function () {
             var currentDate = app.getCurrentDateTime();
             var values = currentDate.split('||');            
             var compareDate = values[0];        
-            var compareTime = values[1];            
-
-            //alert(event_Date+"||"+event_Time+"||"+currentDate);
+            var compareTime = values[1];
             
-            /*if(event_Date===compareDate){
-                alert('yes');  
-            }else{
-                alert('no');
+            var compTimeVal = compareTime.split(' ');
+            var compTime = compTimeVal[0];
+            var compAP = compTimeVal[1];
+            
+            
+            var eventTimeVal = event_Time.split(' ');
+            var evtTime = eventTimeVal[0];
+            var evtAP = eventTimeVal[1];
+            
+            var checkConTime = compTime;
+            var checkEvtTime = evtTime;
+            
+            //alert(compAP+'||'+evtAP);
+            var compVal = compTime.split(':'); 
+            var cPart1 = compVal[0];
+            var cPart2 = compVal[1];
+            if(compAP==='PM'){                
+                if(cPart1!=='12'){
+                    cPart1 = parseInt(cPart1) + 12 ;
+                    checkConTime = cPart1 +':'+ cPart2; 
+                }    
+            }else if(compAP==='AM'){
+                if(cPart1==='12'){
+                    cPart1 = parseInt(cPart1) - 12 ;
+                    checkConTime = cPart1 +':'+ cPart2; 
+                }
             }
             
-            if(event_Time>compareTime){
-              alert('greater');  
-            }else{
-                alert('small');                
-            }*/
-            
-            //console.log(event_Date +"||"+ compareDate +"||"+  event_Time +"||"+compareTime);            
+            var evtVal = evtTime.split(':'); 
+            var ePart1 = evtVal[0];
+            var ePart2 = evtVal[1];            
+            if(evtAP==='PM'){
+                if(ePart1!=='12'){
+                    ePart1 = parseInt(ePart1) + 12 ;
+                    checkEvtTime = ePart1 +':'+ ePart2;                
+                }    
+            }else if(evtAP==='AM'){
+                if(ePart1==='12'){
+                    ePart1 = parseInt(ePart1) - 12 ;
+                    checkEvtTime = ePart1 +':'+ ePart2;                
+                }
+            }
+
+            alert(checkEvtTime +"||"+ checkConTime);
+            alert(ePart1 +"||"+ cPart1);
+            alert(ePart2 +"||"+ cPart2);
             var group = [];
             
             /*$('#groupInAddEvent input:checked').each(function() {
@@ -1019,13 +1050,15 @@ app.adminEventCalender = (function () {
             //console.log(group);
             
             if (event_name === "Enter New Event Name" || event_name === "") {
-                app.showAlert("Please enter Event Name.", "Validation Error");
+                app.showAlert("Please enter Event Name.", app.APP_NAME);
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
-                app.showAlert("Please enter Event Description.", "Validation Error");
+                app.showAlert("Please enter Event Description.", app.APP_NAME);
             }else if (group.length===0 || group.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");
-            }else if((event_Date===compareDate) && (event_Time<compareTime)){
-                app.showAlert("Event Can not be add in back time.", "Validation Error");                
+                app.showAlert("Please select Group.", app.APP_NAME);
+            }else if((event_Date===compareDate) && (ePart1<cPart1)){
+                app.showAlert("Event Can not be add in back time.", app.APP_NAME);                
+            }else if((event_Date===compareDate) && (ePart1===cPart1) && (ePart2<cPart2)){
+                app.showAlert("Event Can not be add in back time.", app.APP_NAME);                
             }else {
                 
                 var values = event_Date.split('/');            
@@ -1420,11 +1453,11 @@ app.adminEventCalender = (function () {
 
             
             if (event_name === "Enter New Event Name" || event_name === "") {
-                app.showAlert("Please enter Event Name.", "Validation Error");
+                app.showAlert("Please enter Event Name.", app.APP_NAME);
             }else if (event_description === "Write Event description here (Optional) ?" || event_description === "") {
-                app.showAlert("Please enter Event Description.", "Validation Error");
+                app.showAlert("Please enter Event Description.", app.APP_NAME);
             }else if (groupEdit.length===0 || groupEdit.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", app.APP_NAME);    
             }else {    
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            

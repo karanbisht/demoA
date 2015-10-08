@@ -10,6 +10,11 @@
     <div class="loader" id="saveMemberLoader" style="display:none;">
         <div class="ball"></div>
     </div>
+    <div style="vertical-align:middle; text-align:center;border:none;margin-top:10px;">
+                        <a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >
+                            <img id="addMemberPhoto" src="" height="100" width="100" style="border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/>
+                        </a>
+    </div>
     <div>
             <ul data-role="listview" data-style="inset">
                 <li class="username">
@@ -35,10 +40,21 @@
                </li>
     
     </div>
-    
-    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
+     <ul data-role="actionsheet" id="adminAddMemberprofilePic">
+                    <li class="km-actionsheet-title"></li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: takeMemberPhoto">Take Photo</a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: selectMemberPhoto">Album</a>
+                    </li>
+                    <!--<li>
+                        <a href="#" data-role="button" data-bind="click: resetMemberPhoto">Reset</a>
+                    </li>-->
+     </ul>
+     <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
         Save
-    </li>
+     </li>
 </div> 
 
 
@@ -55,13 +71,3 @@
            #}#                    
         </script>
 
-<script>
-
-  /*$(document).ready(function () {            
-    $('#groupInAddCustomer :checkbox').on('click', function (event) {
-        event.stopPropagation();
-        alert('clicked checkbox');
-    });    
-  });*/
-    
-</script>

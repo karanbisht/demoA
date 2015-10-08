@@ -279,7 +279,43 @@ app.orgNews = (function () {
             }
             
             countValNews=0;
+            newsImgClickFun();
+            newsVidClickFun();                
           }, 300);  
+        }
+        
+         function newsImgClickFun(){
+             $('.newsImgClick').click(function(event){
+                  console.log(event.target.alt)
+
+                  var imgData = event.target.alt.split('-----');
+                      
+                   imgFile = imgData[0];
+                   imgNotiFi = imgData[1];
+                 
+               attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
+               var ext = app.getFileExtension(attachedImgFilename);
+               if (ext==='') {
+                 attachedImgFilename = attachedImgFilename + '.jpg'; 
+               }
+               var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;             
+               window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                                
+ 
+             }); 
+
+        }
+        
+        function newsVidClickFun(){
+            $('.newsVidClick').click(function(event){
+                console.log(event.target.alt)
+                var imgData = event.target.alt.split('-----');                      
+                videoFile = imgData[0];
+                notiFi = imgData[1];
+
+                attachedFilename = videoFile.replace(/^.*[\\\/]/, '');
+                var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_video_' + attachedFilename;             
+                window.resolveLocalFileSystemURL(fp, videoPathExist, videoPathNotExist);
+             });            
         }
         
         var gobackOrgPage = function() {
@@ -372,7 +408,8 @@ app.orgNews = (function () {
             if (ext==='') {
                 attachedImgFilename = attachedImgFilename + '.jpg'; 
             }
-            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;             
+            var fp = sdcardPath + app.SD_NAME+"/" + 'Zaffio_news_img_' + attachedImgFilename;            
+            console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                                
         }
                         

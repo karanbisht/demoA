@@ -1192,6 +1192,12 @@ app.sendNotification = (function () {
             document.getElementById("scheduleButton").value = "Schedule";
             $("#scheduleButton").css("width", "100");  
         }
+        
+        var onBackClsPicker = function(){                             
+                $("#scheduleTimePicker").data("kendoDatePicker").close();
+                $("#scheduleDatePicker").data("kendoTimePicker").close();           
+        }
+        
          
         return {
             init: init,
@@ -1208,6 +1214,7 @@ app.sendNotification = (function () {
             NextToCustomerType:NextToCustomerType,
             NextToSeletType:NextToSeletType,
             groupCheckData:groupCheckData,
+            onBackClsPicker:onBackClsPicker,
             goBackToGroupCustomer:goBackToGroupCustomer,
             onChangeNotiGroup:onChangeNotiGroup,
             transferFileAbort:transferFileAbort,

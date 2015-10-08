@@ -1,20 +1,18 @@
- <div data-role="view" id="groupNotificationShow" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.orgListView" data-show="app.orgListView.adminNotificationShow">
+ <div data-role="view" id="groupNotificationShow" data-id="innerActivity" data-layout="innerPages" class="activities-view-info"  data-model="app.orgListView" data-show="app.orgListView.adminNotificationShow" data-use-native-scrolling="true">
       <div data-role="header">        
            <div data-role="navbar">      
                Sent Messages
                <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
                <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
     	   </div>
-	  </div>     
-     
-         <div class="loader" id="progressAdminNoti" style="display:none;">
+	  </div>          
+      <div class="loader" id="progressAdminNoti" style="display:none;">
                 <div class="ball"></div>
-         </div>
-     
-	 <div>
-    	<ul id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></ul>
-     </div>      
-     <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>     
+      </div>     
+	  <div>
+    	<span id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></span>
+      </div>      
+      <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>     
     
      <ul data-role="actionsheet" id="notiShareAction">
                     <li class="km-actionsheet-title">Share</li>

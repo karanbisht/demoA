@@ -1,0 +1,40 @@
+<div data-role="view" id="timeTable" data-id="innerActivity" data-layout="default" data-reload="true" class="activities-view-info" data-model="app.timeTable" data-show ="app.timeTable.show" data-use-native-scrolling="true">
+    <div data-role="header">         
+              <div data-role="navbar">     
+                 <span>Timetable</span>                
+                 <a id="idBackHometimeTable" style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.callUserLogin"></a>
+                 <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
+              </div>                                          
+    </div>    
+    <div class="loader" id="CalProcesstimeTable" style="display:none;margin">
+                      <div class="ball"></div>
+    </div>        
+    <span id="timeTableFirstAllList" data-style="inset" data-role="listview"  data-template="timeTableListTemplate" data-bind="source: activities"></span>     
+    <div id="showMoretimeTableBtn" class="showMore" style="display:none;" data-role="button" data-click="app.timeTable.showMoreButtonPress">LOAD MORE</div>
+</div>
+
+<div id="timeTable-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.timeTable">
+    <div class="docsUpload">
+        <div id="profileCompletenesstimeTable" class="uploadBar" style="width:90%; height:15px;"></div>
+        <div class="clear"></div>
+        <div id="uploadProcesstimeTable" class="cancelUpld" data-bind="click:timeTableFileAbort">Cancel</div>
+    </div>
+</div>
+
+		<script type="text/x-kendo-template" id="timeTableListTemplate">     
+           #if(id!=='0' && id!==0){# 
+             <div class="cf" data-role="touch"  data-bind="events: { tap: timeTableSelected }"> 
+               <div class="titletable-img-show"></div>
+               <div class="activity-content">
+                    <h2 id="" class="person-name" style="margin-top:10px;">${timetable_group}</h2>                    
+               </div> 
+ 		    </div>   
+          #}else{#              	
+                  <div>
+                       <div class="titletable-img-show"></div>
+                       <div class="activity-content">
+                            <h2 id="" class="person-name">${timetable_group}</h2>
+                       </div> 
+                  </div>                   
+          #}#
+		</script>

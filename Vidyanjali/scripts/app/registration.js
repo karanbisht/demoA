@@ -49,7 +49,7 @@ app.registration = (function () {
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
             /*}else if (email === "Email" || email === "") {
-                app.showAlert("Please enter your Email.", "Validation Error");*/
+                app.showAlert("Please enter your Email.", app.APP_NAME);*/
             } else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
                 app.showAlert("Please enter a valid Email.", app.APP_NAME);
             } else {   

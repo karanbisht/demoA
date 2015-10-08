@@ -203,13 +203,18 @@
     
 <script type="text/x-kendo-template" id="subGroupMemberTemplate">
     <div data-role="touch" class="cf">
-        <div class="user-avatar-img-show"></div>    
         #if(orgID!==0){#
+            #if(photo!==""){#
+              <img src=${photo} class="user-avatar-img" onerror="this.onerror=null;this.src='styles/images/avatar1.png';"/>
+           #}else{#
+              <div class="user-avatar-img-show"></div>
+           #}#
             <div class="activity-content" >
                 <h2 id="" class="person-name">${first_name} ${last_name}</h2>
                 <a id="activityTemplateMessage" class="user-share-txt">${mobile}</a>
             </div>
         #}else{#
+            <div class="user-avatar-img-show"></div>       
             <div class="activity-content" >
                 <h2 id="" class="person-name">${first_name} ${last_name}</h2>
                 <a id="activityTemplateMessage" class="user-share-txt">${email}</a>

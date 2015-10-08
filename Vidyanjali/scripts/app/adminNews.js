@@ -1011,9 +1011,9 @@ app.adminNews = (function () {
             //console.log(group);
             
             if (event_description === "Please Enter News Here" || event_description === "") {
-                app.showAlert("Please enter News.", "Validation Error");
+                app.showAlert("Please enter News.", app.APP_NAME);
             }else if (group.length===0 || group.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", app.APP_NAME);    
             }else {
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            
@@ -1314,9 +1314,9 @@ app.adminNews = (function () {
             //console.log(groupEdit);
             
             if (event_description === "Please Enter News Here" || event_description === "") {
-                app.showAlert("Please Enter News .", "Validation Error");
+                app.showAlert("Please Enter News .", app.APP_NAME);
             }else if (groupEdit.length===0 || groupEdit.length==='0') {
-                app.showAlert("Please select Group.", "Validation Error");    
+                app.showAlert("Please select Group.", app.APP_NAME);    
             }else {                    
                 var values = event_Date.split('/');            
                 var month = values[0]; // globle variable            

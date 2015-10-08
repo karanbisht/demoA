@@ -58,7 +58,7 @@ app.Login = (function () {
             username = $("#loginUsername").val();
             
             if (username === "Mobile Number" || username === "") {
-                app.showAlert("Please enter your Mobile No.", app.APP_NAME);
+                app.showAlert("Please enter your mobile no.", app.APP_NAME);
             } else if (!validateMobile(username)) {
                 app.showAlert("Please enter a valid Mobile Number.", app.APP_NAME);            
             } else {         
@@ -158,7 +158,7 @@ app.Login = (function () {
             var query = "DELETE FROM PROFILE_INFO";
             app.deleteQuery(tx, query);       	
             
-            var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date , login_status ) VALUES ("'
+            var query = 'INSERT INTO PROFILE_INFO(account_id , id  , email ,first_name ,last_name , mobile, add_date , mod_date ,profile_image , login_status ) VALUES ("'
                         + profileInfoData.account_id
                         + '","'
                         + profileInfoData.id
@@ -174,6 +174,8 @@ app.Login = (function () {
                         + profileInfoData.add_date
                         + '" ,"'
                         + profileInfoData.mod_date
+                        + '" ,"'
+                        + profileInfoData.photo
                         + '" ,"' + 1 + '")';              
             app.insertQuery(tx, query);       
         }

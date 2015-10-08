@@ -1,8 +1,8 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.1.4
-  VersionCode = 15
+  CurrentVersion = 1.1.5
+  VersionCode = 16
 
 IOS
   PackageID = io.zaff.vidyanjali
@@ -46,16 +46,21 @@ var app = (function (win) {
     var NOTIFICATION_MSG_SENT="Message sent successfully";    
     var NOTIFICATION_MSG_SCHEDULED="Message scheduled successfully";
     var NEWS_ADDED_MSG="News added successfully";
+    var TIMETABLE_ADDED_MSG="Timetable added successfully";
     var NEWS_UPDATED_MSG="News updated successfully";
+    var TIMETABLE_UPDATED_MSG = "Timetable updated successfully";
     var NEWS_EVENT_FAIL="Operation Failed. Please try again.";
+    var TIMETABLE_EVENT_FAIL="Operation Failed. Please try again.";
     var CANNOT_CANCEL="Operation cannot be cancelled , Data sent.";
     var NEWS_DELETED_MSG="News deleted successfully";
+    var TIMETABLE_DELETED_MSG="Timetable deleted successfully";
     var EVENT_ADDED_MSG="Event added successfully";
     var EVENT_UPDATED_MSG="Event updated successfully";
     var EVENT_DELETED_MSG="Event deleted successfully";
     var GROUP_UPDATED_MSG="Group updated successfully";
     var MEMBER_DELETED_MSG="Member deleted successfully";
     var SELECT_MEMBER_TO_DELETE="Please select member to delete";
+    var DOWNLOAD_COMPLETED = "Download Completed."
     var MEMBER_DETAIL_UPDATED_MSG="Member detail updated successfully";
     var MEMBER_ADDED_MSG="Member added successfully";
     var NO_GROUP_AVAILABLE="No Group Available , Please Add Group."
@@ -179,6 +184,8 @@ var app = (function (win) {
 
         tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NEWS(id INTEGER , org_id INTEGER , news_name TEXT, news_desc TEXT, news_image TEXT, news_image_DB TEXT, upload_type TEXT, news_date TEXT,news_time TEXT)');
 
+        tx.executeSql('CREATE TABLE IF NOT EXISTS TIME_TABLE(org_id INTEGER, id INTEGER ,group_name TEXT, timetable TEXT,group_id INTEGER, added_by INTEGER)');
+
     };	
     
     var checkForLoginStatus = function () {
@@ -212,10 +219,10 @@ var app = (function (win) {
         }
     };
     
-    var loginStatusQuerySuccess = function() {
-        
+    var loginStatusQuerySuccess = function() {        
         var gotNoti = localStorage.getItem("gotNotification");
         if(gotNoti!==1 && gotNoti!=='1'){
+            //loginStatusDBValue=0;
             if (loginStatusDBValue===1 && adminLoginStatusDBValue!==1) {
                 app.mobileApp.navigate('#view-all-activities');
                 localStorage.setItem("loginStatusCheck", 1);
@@ -347,7 +354,9 @@ var app = (function (win) {
             app.adminEventCalender.onBackClsPicker('add');
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEditEventCalendar') {
             app.mobileApp.navigate('#adminEventList');   
-            app.adminEventCalender.onBackClsPicker('edit');
+            app.adminEventCalender.onBackClsPicker('edit');            
+        }else if (app.mobileApp.view()['element']['0']['id']==='adminTimeTableList') {
+            app.mobileApp.navigate('#view-all-activities-GroupDetail');    
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventList') {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');  
         }else if (app.mobileApp.view()['element']['0']['id']==='adminOrgNewsList') {
@@ -372,6 +381,8 @@ var app = (function (win) {
             app.mobileApp.navigate('#view-all-activities-GroupDetail');    
         }else if (app.mobileApp.view()['element']['0']['id']==='OrgLogin') {
             app.mobileApp.navigate('#view-all-activities');
+        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-reg') {
+            app.mobileApp.navigate('#welcome');
         }else {
             app.mobileApp.navigate("#:back");    
         }
@@ -1702,13 +1713,18 @@ var app = (function (win) {
         NOTIFICATION_MSG_SENT:NOTIFICATION_MSG_SENT,
         NOTIFICATION_MSG_SCHEDULED:NOTIFICATION_MSG_SCHEDULED,
         NEWS_ADDED_MSG:NEWS_ADDED_MSG,
+        TIMETABLE_ADDED_MSG:TIMETABLE_ADDED_MSG,
         NEWS_EVENT_FAIL:NEWS_EVENT_FAIL,
+        TIMETABLE_EVENT_FAIL:TIMETABLE_EVENT_FAIL,
         NEWS_UPDATED_MSG:NEWS_UPDATED_MSG,
+        TIMETABLE_UPDATED_MSG:TIMETABLE_UPDATED_MSG,
         NEWS_DELETED_MSG:NEWS_DELETED_MSG,
+        TIMETABLE_DELETED_MSG:TIMETABLE_DELETED_MSG,
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
         CANNOT_CANCEL:CANNOT_CANCEL,
         EXIT_APP:EXIT_APP,
         GEO_PLACE_API:GEO_PLACE_API,
+        DOWNLOAD_COMPLETED:DOWNLOAD_COMPLETED,
         GEO_MAP_API:GEO_MAP_API,
         DELETE_CONFIRM:DELETE_CONFIRM,
         SOCIAL_SHARE_ERROR_MSG:SOCIAL_SHARE_ERROR_MSG,

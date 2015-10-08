@@ -2,13 +2,11 @@
 <html>
     <head>
         <title></title>
-        <meta charset="utf-8" />
-        
+        <meta charset="utf-8" />        
         <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
-        <link href="styles/main.css" rel="stylesheet" />
-        
+        <link href="styles/main.css" rel="stylesheet" />        
         <script src="cordova.js"></script>
         <script src="kendo/js/jquery.min.js"></script>
         <script src="kendo/js/kendo.all.min.js"></script>
@@ -32,7 +30,7 @@
         </div>
 
 
-        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show" data-use-native-scrolling="true">            
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show" data-use-native-scrolling="true">
             <div class="loader" id="progress" style="display:none;">
                 <div class="ball"></div>
             </div>
@@ -268,9 +266,7 @@
                     <a id="" data-icon="mostviewed" data-role="button" data-bind="click: inAppBrowser">Website</a>
                 </div>
             </div>
-
         </div>
-
         <div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
             <div>
                 <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities"></ul>
@@ -282,14 +278,15 @@
 
         <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Profile" class="form-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow">
             <div id="tabstrip-profile">
-                <ul data-role="listview" data-style="inset" data-type="group">
-                
+                 <div class="loader" id="liveProfileLoader" style="display:none;">
+                        <div class="ball"></div>                   
+                </div>                
+                <ul data-role="listview" id="profileContent" data-style="inset" data-type="group">                
                     <div style="vertical-align:middle; text-align:center">
                         <a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#profilePicUpload" >
-                            <img id="profilePhoto" src="" height="100" width="100" style="border-radius:6px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/>
+                            <img id="profilePhoto" src="" height="100" width="100" style="border-radius:6px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror=null;this.src='styles/images/profile-img.png';"/>
                         </a>
-                    </div>
-                    
+                    </div>                    
                     <li style="margin-top:-20px;">
                         <ul>
                             <li style="text-align:center;background-color:#f3f3f3;">                                
@@ -300,11 +297,9 @@
                                     <span id="userlname"></span>
                                 </h2>  
                                 <a style="background:transparent; border:none; float:right;margin-top:10px;" data-align="right" data-role="button" data-click="app.OragnisationList.editProfilePage"><img src="styles/images/edit.png"/></a>
-                            </li>    
-                            
+                            </li>                                
                         </ul>
                     </li>
-
                     <li>
                         <ul >
                             <li id="emailToShow" style="background-color:#f3f3f3;">
@@ -331,9 +326,9 @@
                     <li>
                         <a href="#" data-role="button" data-bind="click: selectProfilePhoto">Album</a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a href="#" data-role="button" data-bind="click: resetProfilePhoto">Reset</a>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
 
@@ -508,7 +503,9 @@
                 <li style="border-color:#43495c">
                     <a href="views/eventCalendar.html?orgin=1"  data-transition="none"><div id="side-org-event-icon"></div></a>
                 </li>
-
+                 <li style="border-color:#43495c">
+                    <a href="views/timeTable.html"  data-transition="none"><div id="side-org-timeTable-icon"></div></a>
+                </li>
                 <li style="border-color:#43495c">
                     <a href="#userOrgManage" data-transition="none"><div id="side-org-icon"></div></a>
                 </li>
@@ -612,6 +609,16 @@
                     Attendance Management
                 </td>
             </tr>
+            
+            <tr style="height:5px;"></tr>
+            <tr>
+                <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: timeTableManage }">
+                    <div id="show-admin-timeTable-icon"></div>
+                    Manage Timetable
+                </td>
+                <td style="width:5px;"></td>
+            </tr>
+
         </table>
       </div>
   </div>
@@ -1235,19 +1242,19 @@
                     <br/>
                     <div style="overflow:hidden;">
                      <br/>       
-                        <a data-role="button" data-click="app.Activities.imageDownlaodClick"  data-imgPath=${attached} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
+                        <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
                             <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">
                                     <div class="ballIV"></div>                   
                                 </div>                            
                             </div>       
-                            <img src= ${attachedImg} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>  
+                            <img src=${attachedImg} alt=${attached}-----${pid} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>  
                         </a>                                                        
                     </div>
             #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
                      <br/>        
                      <br/> 
-                    <a data-role="button" data-click="app.Activities.videoDownlaodClick" data-someAttribute=${attached} data-notiid=${pid} style="width:100%;padding:0px;background:transparent;border:none;">
+                    <a class="activityVidClick" style="width:100%;padding:0px;background:transparent;border:none;">
                       <div>                        
                         <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <!--<div class="loaderIV">
@@ -1265,7 +1272,7 @@
                                   </div>
                                 </div>
                         </div>                             
-                        <img src="styles/images/video.png" style="width:100%"/>                   
+                        <img src="styles/images/video.png" alt=${attached}-----${pid} style="width:100%"/>                   
                       </div>
                     </a>                                
             #}#                    
@@ -1318,6 +1325,8 @@
         <script src="scripts/app/userNotificationCustomer.js" type="text/javascript"></script>
         <script src="scripts/app/eventCalendar.js" type="text/javascript"></script>
         <script src="scripts/app/orgNews.js" type="text/javascript"></script>
-        <script src="scripts/app/adminNews.js" type="text/javascript"></script>           
+        <script src="scripts/app/timeTable.js" type="text/javascript"></script>
+        <script src="scripts/app/adminTimeTable.js" type="text/javascript"></script>
+        <script src="scripts/app/adminNews.js" type="text/javascript"></script>         
     </body>
 </html>
