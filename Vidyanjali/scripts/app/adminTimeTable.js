@@ -270,7 +270,7 @@ app.adminTimeTable = (function () {
             TimeTableDataToSend='';
             sysFilePage=0;
                           
-            pbTimeTable = $("#profileCompleteness").kendoProgressBar({
+            pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
@@ -384,8 +384,7 @@ app.adminTimeTable = (function () {
         }
                       
         var addNewTimeTableFunction = function() {            
-            console.log('click on save');
- 
+            //console.log('click on save');
             var group = [];            
             $('#groupInAddTimeTable :selected').each(function(i, selected){ 
                   group[i] = $(selected).val(); 
@@ -401,11 +400,10 @@ app.adminTimeTable = (function () {
                     countVal=0;
                     console.log(TimeTableDataToSend);
                 
-                    /*if ((TimeTableDataToSend.substring(0, 21)==="content://com.android") && (upload_type==="image")) {
+                    if ((TimeTableDataToSend.substring(0, 21)==="content://com.android")) {
                         photo_split = TimeTableDataToSend.split("%3A");
                         TimeTableDataToSend = "content://media/external/images/media/" + photo_split[1];
-                        vidFmAndroid = 1;  
-                    }*/
+                    }
                                         
                     var mimeTypeVal;
                     /*if (upload_type==="image") {
@@ -416,9 +414,16 @@ app.adminTimeTable = (function () {
                     
                     var filename = TimeTableDataToSend.substr(TimeTableDataToSend.lastIndexOf('/') + 1);
                     var ext = app.getFileExtension(filename);
+                    var ranNum = app.genRandNumber();
                     if(ext===''){
-                       filename=filename+'.jpg'; 
+                       //filename=filename+'.jpg';
+                       filename = 'img_'+ranNum+'.jpg';  
+                    }else if(ext==='pdf'){
+                      filename = 'pdf_'+ranNum+'.pdf'; 
+                    }else{
+                      filename = 'img_'+ranNum+'.'+ext;  
                     }
+                    
                 
                     $("#admTimeTable-upload-file").data("kendoMobileModalView").open();                    
                     /*if (upload_type==="image" && vidFmAndroid===1) {
@@ -529,11 +534,13 @@ app.adminTimeTable = (function () {
             app.analyticsService.viewModel.trackFeature("TimeTable Add or Update fail"+JSON.stringify(error));            
         }
 
+
         var attachedImgFilename;
         var imgFile;
         var imgNotiFi;
         var fp;
         var downloadName;
+        
         var imageDownlaodClick = function(e){
             var data = e.button.data();           
             imgFile = data.imgpath;  
@@ -550,7 +557,7 @@ app.adminTimeTable = (function () {
                 downloadName = downloadName+ '.jpg';
             }
             
-            fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + downloadName;     
+            fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + attachedImgFilename;     
             console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);
         }
@@ -619,12 +626,10 @@ app.adminTimeTable = (function () {
                 app.showAlert("Please attach file.", app.APP_NAME);
             }else{    
                 
-                
-                    /*if ((TimeTableDataToSend.substring(0, 21)==="content://com.android") && (upload_type_edit==="image")) {
+                    if ((TimeTableDataToSend.substring(0, 21)==="content://com.android")) {
                         photo_split = TimeTableDataToSend.split("%3A");
                         TimeTableDataToSend = "content://media/external/images/media/" + photo_split[1];
-                        vidFmAndroidEdit = 1;  
-                    }*/
+                    }
 
                     /*var mimeTypeVal;
                     if (upload_type_edit==="image") {
@@ -635,10 +640,17 @@ app.adminTimeTable = (function () {
 
                     var filename = TimeTableDataToSend.substr(TimeTableDataToSend.lastIndexOf('/') + 1);    
                     var ext = app.getFileExtension(filename);
+                    var ranNum = app.genRandNumber();
+                                    
                     if(ext===''){
-                       filename=filename+'.jpg'; 
+                       //filename=filename+'.jpg';
+                       filename = 'img_'+ranNum+'.jpg';  
+                    }else if(ext==='pdf'){
+                      filename = 'pdf_'+ranNum+'.pdf'; 
+                    }else{
+                      filename = 'img_'+ranNum+'.'+ext;  
                     }
-                    
+                
                     /*if (upload_type_edit==="image" && vidFmAndroidEdit===1) {
                         if (filename.indexOf('.') === -1) {
                             filename = filename + '.jpg';
@@ -751,7 +763,7 @@ app.adminTimeTable = (function () {
             tasks = [];
             groupAllTimeTable = [];
             organisationID = localStorage.getItem("orgSelectAdmin");            
-            pbTimeTable = $("#profileCompleteness").kendoProgressBar({
+            pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
@@ -1267,12 +1279,12 @@ app.adminTimeTable = (function () {
             navigator.camera.getPicture(onPhotoURISuccessData, onFail, { 
                                             quality: 50,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
-                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
-                                            correctOrientation: true
+                                            sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
                                         });
         };
         
         function onPhotoURISuccessData(imageURI) {            
+            console.log('karan bisht ------'+imageURI);
             var largeImage = document.getElementById('attachedPdfTimeTableImage');            
             largeImage.style.display = 'block';            
             largeImage.src = imageURI;

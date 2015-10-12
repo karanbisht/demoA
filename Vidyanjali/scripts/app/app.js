@@ -31,10 +31,11 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
     var SD_NAME="Vidyanjali";
+    var ILLEGAL_CHARS = /\W/; // allow letters, numbers, and underscores      
     var INTERNET_ERROR = "Network problem. Please try again.";
     var ERROR_MESSAGE = "Network problem. Please try again."; //"Unable to reach server. Please try again.";
     var NO_ACCESS = "You don't have access.";
-    var EXIT_APP ="Press again to exit.";
+    var EXIT_APP ="Are you sure you want to exit ?"; //"Press again to exit.";
     var SESSION_EXPIRE = "Your session has expired. Please re-login in Admin Panel";
     var VERIFICATION_CODE_SEND = "Verification code not sent. Please click on Regenerate Code";
     var VERIFICATION_CODE_NOT_SEND = "Verification code not sent. Please click on Regenerate Code";
@@ -97,7 +98,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        //console.log(message, 'Error');
+        console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e,'Error in Aptifi App -:'+ message);
         return true;
     });
@@ -294,9 +295,8 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
             e.preventDefault();            
             navigator.app.exitApp();
-        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities') {     
-            
-            if(backButtonClickCount===0){
+        }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities') {                 
+            /*if(backButtonClickCount===0){
                 window.plugins.toast.showShortBottom(app.EXIT_APP);                  
             }
             var current = new Date().getTime();
@@ -313,16 +313,16 @@ var app = (function (win) {
                 }else{
                    window.plugins.toast.showShortBottom(app.EXIT_APP); 
                 }                
-        	}
+        	}*/
             
-            /*navigator.notification.confirm(app.EXIT_APP, function (confirmed) {           
+            navigator.notification.confirm(app.EXIT_APP, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         e.preventDefault();            
                         navigator.app.exitApp();
                     }else {
 
                     }
-                }, app.APP_NAME, ['Yes', 'No']);*/
+                }, app.APP_NAME, ['Yes', 'No']);
             
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
         
@@ -1628,12 +1628,17 @@ var app = (function (win) {
         },200);
     };
     
+    var genRandNumber = function() {      	
+            return Math.floor(Math.random()*899999999 + 100000000);		   
+    };
+    
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
         SD_NAME:SD_NAME,
         showAlert: showAlert,
         showError: showError,
+        genRandNumber:genRandNumber,
         serverUrl:serverUrl,
         getFileExtension:getFileExtension,
         refreshBtn:refreshBtn,
@@ -1701,6 +1706,7 @@ var app = (function (win) {
         INTERNET_ERROR:INTERNET_ERROR,
         ERROR_MESSAGE:ERROR_MESSAGE,
         NO_ACCESS:NO_ACCESS,
+        ILLEGAL_CHARS:ILLEGAL_CHARS,
         SESSION_EXPIRE:SESSION_EXPIRE,
         VERIFICATION_CODE_SEND:VERIFICATION_CODE_SEND,
         VERIFICATION_CODE_NOT_SEND:VERIFICATION_CODE_NOT_SEND,

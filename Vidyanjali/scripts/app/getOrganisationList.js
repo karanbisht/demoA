@@ -898,10 +898,8 @@ app.OragnisationList = (function () {
         
         var editProfileShow = function() {
             $("#editFirstName").val(fname);
-            $("#editLastName").val(lnameVal);
-            
-            $("#editEmail").val(email);
-                      
+            $("#editLastName").val(lnameVal);            
+            $("#editEmail").val(email);                      
         }
         
         var unsubscribeOrg = function() {                         
@@ -1316,10 +1314,9 @@ app.OragnisationList = (function () {
         var newFName;
         var newLName;
         var newEmail;
-
+      
         var editProfileFunc = function() {
-            var account_Id = localStorage.getItem("ACCOUNT_ID");
-            
+            var account_Id = localStorage.getItem("ACCOUNT_ID");            
             var fname = $("#editFirstName").val();
             newFName = fname;
             var lname = $("#editLastName").val();
@@ -1330,8 +1327,12 @@ app.OragnisationList = (function () {
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(fname)) {
+                app.showAlert("First Name contains illegal characters.", app.APP_NAME);*/ 
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(lname)) {
+                app.showAlert("Last Name contains illegal characters.", app.APP_NAME);*/    
             }/*else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", app.APP_NAME);
             }*/else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
@@ -1340,7 +1341,7 @@ app.OragnisationList = (function () {
                 //console.log(fname+"||"+lname+"||"+email+"||"+mobile+"||"+organisationID);  
                 var jsonDataRegister;
                           
-                jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email} 
+                jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email}; 
        
                 var dataSourceRegister = new kendo.data.DataSource({
                                                                        transport: {

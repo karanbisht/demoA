@@ -237,8 +237,8 @@ app.addCustomerByAdmin = (function () {
        var takeMemberPhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
                                             quality: 40,
-                                            targetWidth: 100,
-                                            targetHeight: 100,
+                                            targetWidth: 150,
+                                            targetHeight: 150,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.CAMERA,
                                             correctOrientation: true                                           
@@ -248,8 +248,8 @@ app.addCustomerByAdmin = (function () {
         var selectMemberPhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
                                             quality: 40,
-                                            targetWidth: 100,
-                                            targetHeight: 100,                            
+                                            targetWidth: 150,
+                                            targetHeight: 150,                            
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
                                             correctOrientation: true
@@ -273,7 +273,7 @@ app.addCustomerByAdmin = (function () {
         } 
         
               
-var registerR = function() {            
+        var registerR = function() {            
             var fname = $regFirstName.val();
             var lname = $regLastName.val();
             var email = $regEmail.val();
@@ -306,8 +306,12 @@ var registerR = function() {
                
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(fname)) {
+                app.showAlert("First Name contains illegal characters.", app.APP_NAME);*/     
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(lname)) {
+                app.showAlert("Last Name contains illegal characters.", app.APP_NAME);     
             /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", app.APP_NAME);
             } else if (!app.validateEmail(email)) {

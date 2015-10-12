@@ -1029,9 +1029,6 @@ app.adminEventCalender = (function () {
                 }
             }
 
-            alert(checkEvtTime +"||"+ checkConTime);
-            alert(ePart1 +"||"+ cPart1);
-            alert(ePart2 +"||"+ cPart2);
             var group = [];
             
             /*$('#groupInAddEvent input:checked').each(function() {

@@ -105,7 +105,7 @@ app.Activity = (function () {
                 $("#commentPanel").css("z-index", "-1");
                 $("#commentPanel").css("opacity", .4);	
                 $("#newComment").val('');
-                $("#newComment").attr("placeholder", "Reply not allow.");
+                $("#newComment").attr("placeholder", "Reply not allowed.");
             }
             
             $("#personName").html(title);

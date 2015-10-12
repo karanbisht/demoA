@@ -1627,7 +1627,8 @@ app.adminNews = (function () {
             navigator.notification.alert(msg, null, 'Uh oh!');
         }
                 
-        function onPhotoURISuccessData(imageURI) {            
+        function onPhotoURISuccessData(imageURI) {        
+           console.log('news image selected---'+imageURI);
             var videoAttached = document.getElementById('attachedVidNews');
             videoAttached.src = '';    
             $("#attachedVidNews").hide();

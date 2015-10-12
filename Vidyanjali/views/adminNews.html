@@ -1,4 +1,4 @@
-<div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminNews" data-show ="app.adminNews.show" >
+<div data-role="view" id="adminOrgNewsList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminNews" data-show ="app.adminNews.show" data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
             <span> News </span>
@@ -6,13 +6,10 @@
             <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>
         </div>
     </div>
-
     <div class="loader" id="adminNewsListLoader" style="display:none;">
         <div class="ball"></div>
     </div>
-
-    <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate" data-bind="source: activities"></span>
-    
+    <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate" data-bind="source: activities"></span>    
     <div id="showMoreEventBtnNews" class="showMore" data-role="button" data-click="app.adminNews.showMoreButtonPress">LOAD MORE</div>
     
     <ul data-role="actionsheet" id="newsShareAction">

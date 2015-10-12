@@ -173,7 +173,7 @@ app.timeTable = (function () {
                 downloadName = downloadName+ '.jpg';
             }
             
-            fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + downloadName;           
+            fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + Filename;           
             window.resolveLocalFileSystemURL(fp, pdfExist, pdfNotExist);            
         };        
         

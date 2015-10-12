@@ -1108,7 +1108,7 @@ app.groupDetail = (function () {
             countMobile = 1;  
         }
                       
-var editProfileFunc = function() {
+        var editProfileFunc = function() {
             var fname = $("#editFirstNameAdmin").val();
             var lname = $("#editLastNameAdmin").val();
             var email = $("#editEmailAdmin").val();
@@ -1128,8 +1128,12 @@ var editProfileFunc = function() {
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(fname)) {
+                app.showAlert("First Name contains illegal characters.", app.APP_NAME);*/            
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
+            /*} else if (app.ILLEGAL_CHARS.test(lname)) {
+                app.showAlert("Last Name contains illegal characters.", app.APP_NAME);*/          
                 /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", app.APP_NAME);
                 } else if (!app.validateEmail(email)) {
