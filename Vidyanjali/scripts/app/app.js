@@ -6,7 +6,7 @@ ANDROID
 
 IOS
   PackageID = io.zaff.vidyanjali
-  CurrentVersion = 1.0.5
+  CurrentVersion = 1.0.6
   VersionCode = 1
 */
 
@@ -31,6 +31,7 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015020051";
     var APP_NAME="Vidyanjali";
     var SD_NAME="Vidyanjali";
+    var BASE_COLOR = "#7FBF4D";
     var ILLEGAL_CHARS = /\W/; // allow letters, numbers, and underscores      
     var INTERNET_ERROR = "Network problem. Please try again.";
     var ERROR_MESSAGE = "Network problem. Please try again."; //"Unable to reach server. Please try again.";
@@ -649,7 +650,7 @@ var app = (function (win) {
             var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
             var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             var today = new Date(dateString);
-            return kendo.toString(days[today.getDay()] + ',' + today.getDate() + ' ' + month[today.getMonth()]);
+            return kendo.toString(days[today.getDay()] + ', ' + today.getDate() + ' ' + month[today.getMonth()]);
             //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
         },
         
@@ -1140,7 +1141,7 @@ var app = (function (win) {
         var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var today = new Date(dateString);
-        return kendo.toString(days[today.getDay()] + ',' + today.getDate() + ' ' + month[today.getMonth()] + ' ' + today.getFullYear());
+        return kendo.toString(days[today.getDay()] + ', ' + today.getDate() + ' ' + month[today.getMonth()] + ' ' + today.getFullYear());
         //return kendo.toString(new Date(dateString), 'MMM d, yyyy');
     }
     
@@ -1706,6 +1707,7 @@ var app = (function (win) {
         INTERNET_ERROR:INTERNET_ERROR,
         ERROR_MESSAGE:ERROR_MESSAGE,
         NO_ACCESS:NO_ACCESS,
+        BASE_COLOR:BASE_COLOR,
         ILLEGAL_CHARS:ILLEGAL_CHARS,
         SESSION_EXPIRE:SESSION_EXPIRE,
         VERIFICATION_CODE_SEND:VERIFICATION_CODE_SEND,

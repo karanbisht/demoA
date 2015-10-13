@@ -38,7 +38,7 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "3.5.0",
-  "BundleVersion": "1.1.5",
+  "BundleVersion": "1.0.6",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
