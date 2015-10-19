@@ -42,7 +42,7 @@ var app = (function (win) {
     var VERIFICATION_CODE_NOT_SEND = "Verification code not sent. Please click on Regenerate Code";
     var ENTER_CORRECT_V_CODE="Incorrect Verification Code";
     var No_MEMBER_TO_ADD ="No member to add in group"; 
-    var LOGIN_ANOTHER_DEVICE = "Your have logged in from another device, Please re-login.";
+    var LOGIN_ANOTHER_DEVICE = "You have logged in from another device, Please re-login.";
     var COMMENT_REPLY="Message sent successfully";
     var NOTIFICATION_MSG_NOT_SENT="Operation Failed. Please try again.";
     var NOTIFICATION_MSG_SENT="Message sent successfully";    
@@ -62,13 +62,14 @@ var app = (function (win) {
     var GROUP_UPDATED_MSG="Group updated successfully";
     var MEMBER_DELETED_MSG="Member deleted successfully";
     var SELECT_MEMBER_TO_DELETE="Please select member to delete";
-    var DOWNLOAD_COMPLETED = "Download Completed."
+    var DOWNLOAD_COMPLETED = "Download completed."
+    var DOWNLOAD_NOT_COMPLETE = "Download not completed.";
     var MEMBER_DETAIL_UPDATED_MSG="Member detail updated successfully";
     var MEMBER_ADDED_MSG="Member added successfully";
     var NO_GROUP_AVAILABLE="No Group Available , Please Add Group."
     var FORGET_PASSWORD_CODE_SEND="Code sent at your registered number.";
     var DELETE_CONFIRM="Are you sure you want to delete this.";
-    var VIDEO_ALY_DOWNLOAD="Please wait until the previous download processing is complete before attempting to downlaod new video."
+    var VIDEO_ALY_DOWNLOAD="Please wait until the previous download processing is complete before attempting to download new video."
     var SOCIAL_SHARE_ERROR_MSG ="Application not installed on your device , you need to install it first to use this feature."
     var GEO_PLACE_API ="https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&sensor=false&key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&input=";    
     var GEO_MAP_API="https://www.google.com/maps/embed/v1/place?key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&q=";
@@ -689,7 +690,7 @@ var app = (function (win) {
             notificationMsg = messageSplitVal[7];
             uploadTypeNoti = messageSplitVal[8];
             
-                    if(attachedDB!==0 || attachedDB!=="0"){                       
+                    /*if(attachedDB!==0 || attachedDB!=="0"){                       
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedDB.replace(/^.*[\\\/]/, '');
                         var fp = vidPathData + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;  
@@ -708,7 +709,7 @@ var app = (function (win) {
                                       
                                   }
                         );
-                    }
+                    }*/
                         
             //send_DateDB= getPresentDateTime();
             send_DateDB = getPresntTimeStamp();   
@@ -716,7 +717,8 @@ var app = (function (win) {
           
             /*& typeDB!=='Attendance'*/
             
-            if (typeDB!=='Add Customer') {
+            if (typeDB!=='Add Customer' && typeDB!=='News' && typeDB!=='Event') {
+
                 if (commentAllowDB==='') {
                     commentAllowDB = 0;
                 }
@@ -749,7 +751,22 @@ var app = (function (win) {
                                 db.transaction(insertCommentCount, app.errorCB, app.successCB);            
                             }
                     }
-                }, 'Notification', ['View', 'Close']);        
+                }, 'Notification', ['View', 'Close']);   
+            }else if(typeDB==='News'){
+                        if (e.foreground) {
+                          
+                        }else{
+                            goToAppNewsPage();    
+                        }    
+                        
+            }else if(typeDB==='Event'){
+                        if (e.foreground) {
+                         
+                        }else{
+                           goToAppEventPage(); 
+                        }    
+                        
+                  
             }else {
                 showAlert(messageDB , "Notification");
             } 
@@ -777,6 +794,8 @@ var app = (function (win) {
                 case 'message':             
                     account_IdDB = localStorage.getItem("ACCOUNT_ID");                         
                     var messageSplitVal = e.payload.default.split('#####');
+                
+                   console.log(e.payload.default);
                                                
                     messageDB = messageSplitVal[0];
                     orgIdDB = messageSplitVal[1];
@@ -792,7 +811,7 @@ var app = (function (win) {
                     send_DateDB = getPresntTimeStamp();          
                     sendDateInside = timeConverter(send_DateDB);
                 
-                    if(attachedDB!==0 || attachedDB!=="0"){                       
+                    /*if(attachedDB!==0 || attachedDB!=="0"){                       
                         var vidPathData = app.getfbValue();    
                         var Filename = attachedDB.replace(/^.*[\\\/]/, '');
                         var fp = vidPathData + app.SD_NAME+"/"+ 'Zaffio_img_' + Filename;  
@@ -811,9 +830,9 @@ var app = (function (win) {
 
                                   }
                         );
-                    }
+                    }*/
                             
-                    if (typeDB!=='Add Customer' && typeDB!=='Attendance') {
+                    if (typeDB!=='Add Customer' && typeDB!=='Attendance' && typeDB!=='News' && typeDB!=='Event') {
                         
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';
@@ -840,7 +859,21 @@ var app = (function (win) {
                                 goToAppPage();                                
                             }    
                         }
-                    } 
+                    }else if(typeDB==='News'){
+                        if (e.foreground) {
+                          
+                        }else{
+                            goToAppNewsPage();    
+                        }    
+                        
+                    }else if(typeDB==='Event'){
+                        if (e.foreground) {
+                         
+                        }else{
+                           goToAppEventPage(); 
+                        }    
+                        
+                    }    
                     break;
                 case 'error':
                         app.analyticsService.viewModel.trackException(e,"Error in GCM PUSH Registration : " + e.msg);
@@ -963,6 +996,14 @@ var app = (function (win) {
          localStorage.setItem("gotNotification", 1);
         
         app.mobileApp.navigate('views/activityView.html');
+    }
+    
+    function goToAppNewsPage() {                                 
+        app.mobileApp.navigate('views/organizationNews.html?orgin=1');
+    }
+    
+    function goToAppEventPage() {                                 
+        app.mobileApp.navigate('views/eventCalendar.html?orgin=1');
     }
     
     function updatebagCount(tx) {
@@ -1633,6 +1674,21 @@ var app = (function (win) {
             return Math.floor(Math.random()*899999999 + 100000000);		   
     };
     
+    
+    var triggerDrawer1 = function(){        
+						$("#left-drawer").data("kendoMobileDrawer").show();
+						$(".km-scroll-container").css("-webkit-transform", "");            
+
+						return false;		
+					};
+    
+    var triggerDrawer2 = function(){        
+						$("#left-drawer1").data("kendoMobileDrawer").show();
+						$(".km-scroll-container").css("-webkit-transform", "");            
+
+						return false;		
+					};
+    
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
@@ -1643,6 +1699,8 @@ var app = (function (win) {
         serverUrl:serverUrl,
         getFileExtension:getFileExtension,
         refreshBtn:refreshBtn,
+        triggerDrawer2:triggerDrawer2,
+        triggerDrawer1:triggerDrawer1,
         shareMessageViaWhatsApp:shareMessageViaWhatsApp,
         shareImagesViaFacebook:shareImagesViaFacebook,
         shareMessageAndURLViaTwitter:shareMessageAndURLViaTwitter,
@@ -1741,6 +1799,7 @@ var app = (function (win) {
         EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
+        DOWNLOAD_NOT_COMPLETE:DOWNLOAD_NOT_COMPLETE,
         VIDEO_ALY_DOWNLOAD:VIDEO_ALY_DOWNLOAD,
         MEMBER_DELETED_MSG:MEMBER_DELETED_MSG,
         SELECT_MEMBER_TO_DELETE:SELECT_MEMBER_TO_DELETE,

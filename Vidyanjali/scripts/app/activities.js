@@ -77,6 +77,15 @@ app.Activities = (function () {
         function getOrgLastNotiDataSuccess(tx, results) {
             var count = results.rows.length;
             
+            var deviceName = app.devicePlatform();
+            var device_type;             
+            if (deviceName==='Android'){
+                device_type = 'AN';
+            }else if (deviceName==='iOS') {
+                device_type = 'AP';
+            }            
+            var device_id = localStorage.getItem("deviceTokenID");
+            
             var lastNotificationPID = results.rows.item(0).pid;
             if (lastNotificationPID===null) {
                 lastNotificationPID = 0;
@@ -85,18 +94,20 @@ app.Activities = (function () {
             var organisationALLNewListDataSource = new kendo.data.DataSource({
                                                                                      transport: {
                                                                                        read: {
-                                                                                                 url: app.serverUrl() + "notification/getCustomerNotification/" + organisationID + "/" + account_Id + "/" + lastNotificationPID,
+                                                                                                 url: app.serverUrl() + "notification/getCustomerNotification/" + organisationID + "/" + account_Id + "/" + lastNotificationPID +"/"+1+"/"+device_id+"/"+device_type+"/"+app.CLIENT_APP_ID ,
                                                                                                  type:"POST",
                                                                                                  dataType: "json"                 
                                                                                              }
                     },
                                                                                      schema: {
-                        data: function(data) {                            
+                        data: function(data) {     
+                            console.log(JSON.stringify(data));
                             return [data];                       
                         }                       
                     },
                                            
                                                                                 error: function (e) {
+                                                                                        console.log(JSON.stringify(e));
                                                                                         if (!app.checkConnection()) {
                                                                                              if (!app.checkSimulator()) {
                                                                                                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);

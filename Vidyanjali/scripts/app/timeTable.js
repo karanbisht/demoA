@@ -10,6 +10,7 @@ app.timeTable = (function () {
         var dataReceived = 0;
         var device_type; 
         var pbUsertimeTable;
+        var circleLoader;
         var countVal = 0;
         var fileTransfer;
         var sdcardPath;
@@ -32,14 +33,23 @@ app.timeTable = (function () {
             totalListView = 0;
             groupAlltimeTable = [];
             countVal = 0;
+            
+            document.getElementById("imgDownloaderTT").innerHTML = "";
+            
+            circleLoader = new ProgressBar.Circle('#imgDownloaderTT', {
+                   color: '#7FBF4D',
+                   strokeWidth: 8,
+                   fill: '#f3f3f3'
+            });
 
-            pbUsertimeTable = $("#profileCompletenesstimeTable").kendoProgressBar({
-                                                                                    type: "chunk",
+            /*pbUsertimeTable = $("#profileCompletenesstimeTable").kendoProgressBar({
+                                                                                    type: "percent",
                                                                                     chunkCount: 100,
                                                                                     min: 0,
                                                                                     max: 100,
                                                                                     value: 0
                                                                                 }).data("kendoProgressBar");    
+            */
      
           if (!app.checkConnection()) {
               if (!app.checkSimulator()) {                                                                     
@@ -147,6 +157,8 @@ app.timeTable = (function () {
                 getLiveData();            
             }
         };
+        
+        
        
         var pdfToDownload;
         var Filename;
@@ -155,8 +167,7 @@ app.timeTable = (function () {
         var downloadName;
 
         var timeTableSelected = function(e) {
-            //console.log(e);                   
-            pbUsertimeTable.value(0);
+            //console.log(e);                                         
             countVal = 0;
             pdfToDownload = e.data.timetable_url;
             timetableId = e.data.id;
@@ -172,9 +183,10 @@ app.timeTable = (function () {
             }else{
                 downloadName = downloadName+ '.jpg';
             }
-            
+          
             fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + Filename;           
-            window.resolveLocalFileSystemURL(fp, pdfExist, pdfNotExist);            
+            window.resolveLocalFileSystemURL(fp, pdfExist, pdfNotExist);  
+                         
         };        
         
         var pdfExist = function() {     
@@ -192,23 +204,24 @@ app.timeTable = (function () {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                                                                           
             }else {
                 fileTransfer = new FileTransfer();   
-                $("#timeTable-upload-file").data("kendoMobileModalView").open();
-                pbUsertimeTable.value(0);
-               
+                $("#timeTable-upload-file").data("kendoMobileModalView").open();                
                 fileTransfer.onprogress = function(progresstimeTable) {
                     if (progresstimeTable.lengthComputable) {
                         var perc = Math.floor(progresstimeTable.loaded / progresstimeTable.total * 100);
-                        pbUsertimeTable.value(perc);
                         countVal = perc;
+                        var j = countVal/100;                        
+                        circleLoader.animate(j, function() {
+                                circleLoader.animate(j);
+                        });
                     }else {
-                        pbUsertimeTable.value('');
+                        circleLoader.animate(0);
                         countVal = 0;
                     }
                 };
   
-                fileTransfer.download(pdfToDownload, fp, 
-                                      function(entry) {                                                                            
-                                          pbUsertimeTable.value(0);
+                fileTransfer.download(pdfToDownload, fp,
+                                      function(entry) {        
+                                          circleLoader.animate(0);
                                           countVal = 0;
                                           $("#timeTable-upload-file").data("kendoMobileModalView").close();
                                           if (device_type==="AN") {                                      
@@ -220,9 +233,9 @@ app.timeTable = (function () {
                                           window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                       }, 
                                       function(error) {
-                                          //console.log(error);
-                                          pbUsertimeTable.value(0);
                                           countVal = 0;
+                                          circleLoader.animate(0);
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                           $("#timeTable-upload-file").data("kendoMobileModalView").close();                                   
                                       }
                     );                          
@@ -232,7 +245,7 @@ app.timeTable = (function () {
         var timeTableFileAbort = function() {  
             if (countVal < 90) {                
                 countVal=0;
-                pbUsertimeTable.value(0);
+                circleLoader.animate(0);
                 fileTransfer.abort(); 
                 $("#timeTable-upload-file").data("kendoMobileModalView").close();
             }else {           

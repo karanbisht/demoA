@@ -270,13 +270,23 @@ app.adminTimeTable = (function () {
             TimeTableDataToSend='';
             sysFilePage=0;
                           
-            pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
+            /*pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
                                                                 max: 100,
                                                                 value: 0
-                                                            }).data("kendoProgressBar");
+                                                            }).data("kendoProgressBar");*/
+              
+
+              document.getElementById("imgDownloaderATT").innerHTML = "";
+            
+              pbTimeTable = new ProgressBar.Circle('#imgDownloaderATT', {
+                    color: '#7FBF4D',
+                    strokeWidth: 8,
+                    fill: '#f3f3f3'
+              });
+  
             
             $("#sendEditTimeTableLoader").show();
             $("#wrapp_content_admTimeTable").hide();  
@@ -396,7 +406,8 @@ app.adminTimeTable = (function () {
             }else if(TimeTableDataToSend=== undefined || TimeTableDataToSend==="undefined" || TimeTableDataToSend==='') { 
                 app.showAlert("Please attach file.", app.APP_NAME); 
             }else{   
-                    pbTimeTable.value(0);
+                    //pbTimeTable.value(0);
+                    pbTimeTable.animate(0);
                     countVal=0;
                     console.log(TimeTableDataToSend);
                 
@@ -460,10 +471,16 @@ app.adminTimeTable = (function () {
                     ft.onprogress = function(progressTimeTable) {
                         if (progressTimeTable.lengthComputable) {
                             var perc = Math.floor(progressTimeTable.loaded / progressTimeTable.total * 100);
-                            pbTimeTable.value(perc);   
+                            //pbTimeTable.value(perc);   
                             countVal=perc;
+                             var j = countVal/100;                        
+                                pbTimeTable.animate(j, function() {
+                                    pbTimeTable.animate(j);
+                                });
+
                         }else {
-                            pbTimeTable.value('');     
+                            //pbTimeTable.value('');
+                            pbTimeTable.animate(0);
                             countVal=0;
                         }
                     };                                     
@@ -475,7 +492,8 @@ app.adminTimeTable = (function () {
           console.log('click on cancel ud');           
           if(countVal < 90){
             countVal = 0; 
-            pbTimeTable.value(0);
+            //pbTimeTable.value(0);
+             pbTimeTable.animate(0); 
             $("#sendTimeTableLoader").hide();
             $("#sendEditTimeTableLoader").hide();
             ft.abort(); 
@@ -498,7 +516,8 @@ app.adminTimeTable = (function () {
                     app.showAlert(app.TIMETABLE_ADDED_MSG , 'Notification');  
                 }            
          
-            pbTimeTable.value(0);
+            //pbTimeTable.value(0);
+            pbTimeTable.animate(0);
             countVal=0;
             
             $("#admTimeTable-upload-file").data("kendoMobileModalView").close();              
@@ -511,7 +530,8 @@ app.adminTimeTable = (function () {
         function fail(error) {
             console.log(error);
             console.log(JSON.stringify(error));
-            pbTimeTable.value(0);
+            //pbTimeTable.value(0);
+            pbTimeTable.animate(0);
             countVal=0;
             $("#admTimeTable-upload-file").data("kendoMobileModalView").close();
              
@@ -582,21 +602,28 @@ app.adminTimeTable = (function () {
                 countVal=0;  
                 var fileTransfer = new FileTransfer();  
                 $("#admTimeTable-upload-file").data("kendoMobileModalView").open();
-                pbTimeTable.value(0);               
+                //pbTimeTable.value(0);
+                  pbTimeTable.animate(0);
                 fileTransfer.onprogress = function(progresstimeTable) {
                     if (progresstimeTable.lengthComputable) {
                         var perc = Math.floor(progresstimeTable.loaded / progresstimeTable.total * 100);
-                        pbTimeTable.value(perc);
+                        //pbTimeTable.value(perc);
                         countVal = perc;
+                          var j = countVal/100;                        
+                                pbTimeTable.animate(j, function() {
+                                    pbTimeTable.animate(j);
+                                });
                     }else {
-                        pbTimeTable.value('');
+                        pbTimeTable.animate(0);
+                        //pbTimeTable.value('');
                         countVal = 0;
                     }
                 };
               
                             fileTransfer.download(attachedImg, fp, 
                                       function(entry) {                                                                            
-                                          pbTimeTable.value(0);
+                                          //pbTimeTable.value(0);
+                                           pbTimeTable.animate(0);
                                           countVal = 0;
                                           $("#admTimeTable-upload-file").data("kendoMobileModalView").close();
                                           if (device_type==="AN") {                                      
@@ -609,7 +636,9 @@ app.adminTimeTable = (function () {
                                       }, 
                                       function(error) {
                                           //console.log(error);
-                                          pbTimeTable.value(0);
+                                          //pbTimeTable.value(0);
+                                          
+                                          pbTimeTable.animate(0);
                                           countVal = 0;
                                           $("#admTimeTable-upload-file").data("kendoMobileModalView").close();                                   
                                       }
@@ -663,7 +692,8 @@ app.adminTimeTable = (function () {
                    
                     var path = TimeTableDataToSend;
                     //console.log(path);
-                    pbTimeTable.value(0);      
+                    //pbTimeTable.value(0);
+                    pbTimeTable.animate(0);
                     countVal=0;
 
                     $("#admTimeTable-upload-file").data("kendoMobileModalView").open();
@@ -690,11 +720,15 @@ app.adminTimeTable = (function () {
                     ft.onprogress = function(progressTimeTable) {
                         if (progressTimeTable.lengthComputable) {
                             var perc = Math.floor(progressTimeTable.loaded / progressTimeTable.total * 100);
-                            pbTimeTable.value(perc);
-                                        countVal=perc;
-
+                            //pbTimeTable.value(perc);
+                                countVal=perc;                            
+                                var j = countVal/100;                        
+                                pbTimeTable.animate(j, function() {
+                                    pbTimeTable.animate(j);
+                                });
                         }else {
-                            pbTimeTable.value('');  
+                            //pbTimeTable.value(''); 
+                            pbTimeTable.animate(0);
                                         countVal=0;
 
                         }
@@ -709,7 +743,8 @@ app.adminTimeTable = (function () {
         function winEdit(r) {
 
             $("#sendEditTimeTableLoader").hide();
-            pbTimeTable.value(0);
+            //pbTimeTable.value(0);
+            pbTimeTable.animate(0);
             countVal=0;
             $("#admTimeTable-upload-file").data("kendoMobileModalView").close();              
                 if (!app.checkSimulator()) {
@@ -763,13 +798,23 @@ app.adminTimeTable = (function () {
             tasks = [];
             groupAllTimeTable = [];
             organisationID = localStorage.getItem("orgSelectAdmin");            
-            pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
+            /*pbTimeTable = $("#timetableCompleteness").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
                                                                 max: 100,
                                                                 value: 0
-                                                            }).data("kendoProgressBar");
+                                                            }).data("kendoProgressBar");*/
+            
+            
+            document.getElementById("imgDownloaderATT").innerHTML = "";
+            
+            pbTimeTable = new ProgressBar.Circle('#imgDownloaderATT', {
+                   color: '#7FBF4D',
+                   strokeWidth: 8,
+                   fill: '#f3f3f3'
+            });
+            
             
              
            getLiveData();

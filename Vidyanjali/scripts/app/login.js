@@ -80,7 +80,7 @@ app.Login = (function () {
                     localStorage.setItem("usernameAnalytic", username);
                     
                     //console.log('--------static server URL-----' + app.serverUrl());
-                    var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "APP_ID":app.CLIENT_APP_ID}
+                    var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "APP_ID":app.CLIENT_APP_ID ,"updated":1 , "appID":app.CLIENT_APP_ID};
                     var dataSourceLogin = new kendo.data.DataSource({
                                                                         transport: {
                             read: {

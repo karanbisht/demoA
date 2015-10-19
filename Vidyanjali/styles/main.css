@@ -1,4 +1,3 @@
-
 /* iOS */
 /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
@@ -318,7 +317,7 @@ input:focus, textarea:focus {
     position: static;
     width: 100%;
     height: 30px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     -webkit-appearance: none;
     -moz-appearance: none;
     box-shadow: none !important;
@@ -360,7 +359,7 @@ input:focus, textarea:focus {
     padding: .6em 0;
     border: 0 none;
     background-color: #3598db;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 #Aptifi .disabled .btn
@@ -939,6 +938,7 @@ input:focus, textarea:focus {
 {
     padding-top: .15em;
 }
+
 #Aptifi .form-view .person-name
 {
     overflow: hidden;
@@ -1315,7 +1315,7 @@ input:focus, textarea:focus {
 #Aptifi .add-comment-view .person-name,
 #Aptifi .activity-content .time-span
 {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 #Aptifi .add-activity-view .person-name,
@@ -1325,7 +1325,7 @@ input:focus, textarea:focus {
     display: block;
     margin: 0 0 .5em;
     color: #7FBF4D;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .deleteGroupShow
@@ -1333,7 +1333,7 @@ input:focus, textarea:focus {
     display: block;
     margin: 5px 5px 5px 5px;
     color: #676767;
-    font-size: 1.3rem;
+    font-size: 1rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1342,7 +1342,7 @@ input:focus, textarea:focus {
     display: block;
     margin: 5px 5px 5px 5px;
     color: #343434;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1369,7 +1369,7 @@ input:focus, textarea:focus {
     display: block;
     margin: 5px 5px 5px 5px;
     color: #343434;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-bottom: 1px solid #f5f7f8;
 }
 
@@ -1387,7 +1387,7 @@ input:focus, textarea:focus {
     display: block;
     margin: 5px 10px;
     color: #676767;
-    font-size: 1.1rem; 
+    font-size: 1rem; 
     padding-left: 5px;
 }
 
@@ -1454,13 +1454,13 @@ white-space: nowrap;
 #Aptifi .user-share-txt
 {
     color: #34495e;
-    font-size: 1.1rem;
+    font-size: 1rem;
     white-space: pre-line;
 }
 
 #Aptifi .activity-content .comment-content .user-share-txt
 {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 #Aptifi .activity-view .person-name,
@@ -1863,7 +1863,7 @@ background: #fff none;
     margin-top: -10px;
     margin-right: 10px;
     color: #3598db;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .commentContent
@@ -1876,7 +1876,7 @@ background: #fff none;
 
 .commentContent .person-name
 {
-    font-weight: 600;
+    /*font-weight: 600;*/
 }
 
 .commentContent .person-name
@@ -1884,7 +1884,7 @@ background: #fff none;
     display: block;
     margin: 0 0 .5em;
     color: #7FBF4D;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .commentContent .time-span
@@ -1900,7 +1900,7 @@ background: #fff none;
 
 .commentContent .user-share-txt
 {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .orgNameList
@@ -1908,7 +1908,7 @@ background: #fff none;
     display: block;
     margin: .1em 0 .5em;
     color: #57A70C;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     overflow: hidden;
     width: 70%;
     text-overflow: ellipsis;
@@ -1921,7 +1921,7 @@ background: #fff none;
     display: block;
     margin: .1em 0 .5em;
     color: #57A70C;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     overflow: hidden;
     width: 100%;
     text-overflow: ellipsis;
@@ -1944,11 +1944,11 @@ background: #fff none;
     display: block;
     margin: .5em 0 .5em;
     color: #57A70C;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     overflow: hidden;
     /*text-overflow: ellipsis;*/
     /*white-space: nowrap;*/ 
-    font-weight: 600; 
+    font-weight: 400; 
 }
 
 
@@ -1957,11 +1957,11 @@ background: #fff none;
     display: block;
     margin: .0em 0 .3em ;
     color: #696969;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
-    font-weight: 700; 
+    font-weight: 600; 
 }
 
 .calanderTimeClass{
@@ -2100,14 +2100,14 @@ background: #fff none;
 .orgContentMsg
 {
     color: #939393;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     white-space: pre-line;
 }
 
 .orgContentMsgFirst
 {
     color: #939393;
-    font-size: 1.2rem; 
+    font-size: 1rem; 
     display:block;
     text-overflow:ellipsis;
     overflow:hidden;
@@ -2830,7 +2830,7 @@ float:right;
     color: #52554F;
     border-radius: 3px;
     text-align: center;
-    font-size:1.3rem;
+    font-size:1rem;
 }
 
 
@@ -2866,7 +2866,7 @@ float:right;
     display: block;
     margin: 5px 5px 5px 5px;
     color: #676767;
-    font-size: 1.3rem;
+    font-size: 1rem;
     border-bottom: 1px solid #f5f7f8;
     background-color:#f3f3f3;
 }
@@ -3537,7 +3537,7 @@ float:right;
     padding: .6em 0;
     border: 0 none;
     
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 /*.defineSaveButton:active { 
@@ -3771,6 +3771,23 @@ float:right;
     fill-opacity:0.9;
 }
 
+.profilePicBack
+{ 
+    width:100px;
+    position:absolute;
+    font-size: .9rem; 
+    overflow: hidden;
+    font-weight: 400;    
+    zoom:1;
+    padding-bottom:5px;
+    padding-top:3px;
+    bottom:12px;
+    background-color: rgba(0,0,0,0.4);
+    color: rgba(255, 255, 255, 1);
+    fill-opacity:0.9;
+    border-radius:0px 0px 3px 3px;
+}
+
  .inner-event-img-show
 {
     margin-top:10px;
@@ -3885,16 +3902,19 @@ float:right;
 .progressValueClass{margin-top:-13px;color:#ffffff;font-weight:bold;width:25px;margin-left:5px;}
 
 
-.docsUpload {position:absolute; width:100%;border-radius:3px;height:100%; background: rgba(0,0,0,0.4); text-align:center;}
+/*.docsUpload {position:absolute; width:100%;border-radius:3px;height:100%; background: rgba(0,0,0,0.4); text-align:center;}
 .uploadBar {margin:3% 3% 5% 4%; text-align:left;}
 .clear{ clear:both}
-.cancelUpld {background:#303645;border:1px solid #303645;color:#ffffff; font-size:1em; -moz-box-shadow: inset 0px 0px 1px #7a9e0e;-webkit-box-shadow: inset 0px -1px 1px #7a9e0e;box-shadow: inset 0px 0px 1px #7a9e0e; border-radius:3px; padding:0.72em 2em; border:1px solid #808080; z-index:1000; margin:0; display:inline-block;}
-#tabstrip-download-file.modal-mess-Popup, #tabstrip-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
-#tabstrip-download-file.modal-mess-Popup, #event-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
-#tabstrip-download-file.modal-mess-Popup, #sendNotifcation-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
+.cancelUpld {background:#303645;border:1px solid #303645;color:#ffffff; font-size:1em; -moz-box-shadow: inset 0px 0px 1px #7a9e0e;-webkit-box-shadow: inset 0px -1px 1px #7a9e0e;box-shadow: inset 0px 0px 1px #7a9e0e; border-radius:3px; padding:0.72em 2em; border:1px solid #808080; z-index:1000; margin:0; display:inline-block;}*/
+/*#tabstrip-download-file.modal-mess-Popup, #tabstrip-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}*/
+/*#tabstrip-download-file.modal-mess-Popup, #event-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}*/
+/*#tabstrip-download-file.modal-mess-Popup, #sendNotifcation-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}*/
+/*#admTimeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}*/
 
-#timeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
-#admTimeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}
+
+#timeTable-upload-file.modal-mess-Popup ,#tabstrip-upload-file.modal-mess-Popup , #event-upload-file.modal-mess-Popup , #sendNotifcation-upload-file.modal-mess-Popup ,#admTimeTable-upload-file.modal-mess-Popup {padding:10;width:100%;border-radius:3px;margin:auto;height:100px;text-align:center;}
+.km-flat #timeTable-upload-file .km-content , .km-flat #tabstrip-upload-file .km-content , .km-flat #event-upload-file .km-content , .km-flat #sendNotifcation-upload-file .km-content , .km-flat #admTimeTable-upload-file .km-content {color: #ffffff;background-color:transparent;}
+
 
 
 .Folder {background-image: url(images/folder.png); background-repeat:no-repeat; background-size:80%; background-position:center;}
@@ -3960,7 +3980,7 @@ float:right;
 
 
 .dropdown-header {
-                    font-size: 1.2em;
+                    font-size: 1em;
                 }
 
                 .dropdown-header > span {
@@ -4041,7 +4061,7 @@ float:right;
                     border-radius: 50%;
                 }
                 html.k-material #customers-list h3 {
-                    font-size: 1.2em;                                      
+                    font-size: 1em;                                      
                     line-height: 1em;
                     margin-top: .5em;
                 }

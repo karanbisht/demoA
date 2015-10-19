@@ -978,10 +978,12 @@ app.OragnisationList = (function () {
         };
         
         var userProfileShow = function() {
+          $(".km-scroll-container").css("-webkit-transform", "");  
           document.getElementById("orgData").innerHTML = "";
           tempArray = [];
-          $(".km-scroll-container").css("-webkit-transform", "");
-          if (!app.checkConnection()) {
+          getProfileDataFromDB();
+            
+          /*if (!app.checkConnection()) {
             if (!app.checkSimulator()) {                                                                     
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
             }else {              
@@ -990,7 +992,7 @@ app.OragnisationList = (function () {
             getProfileDataFromDB();  
           }else{
             getProfileImageFromLive();  
-          } 
+          }*/ 
         };
             
         function getProfileDataFromDB(){
@@ -999,8 +1001,8 @@ app.OragnisationList = (function () {
         }
                 
         function getProfileImageFromLive(){
-            $("#liveProfileLoader").show();
-            $("#profileContent").hide();
+            //$("#liveProfileLoader").show();
+            //$("#profileContent").hide();
             account_Id = localStorage.getItem("ACCOUNT_ID");            
             var dataSourceLogin = new kendo.data.DataSource({
                                                                 transport: {
@@ -1018,9 +1020,9 @@ app.OragnisationList = (function () {
                 },
                                                                 error: function (e) {
                                                                     console.log(JSON.stringify(e));
-                                                                    $("#liveProfileLoader").hide(); 
-                                                                    $("#profileContent").show();
-                                                                    getProfileDataFromDB();
+                                                                    //$("#liveProfileLoader").hide(); 
+                                                                    //$("#profileContent").show();
+                                                                    //getProfileDataFromDB();
                                                                 }               
                                                             });  
 	            
@@ -1037,7 +1039,7 @@ app.OragnisationList = (function () {
         function saveProfileInfo(data) {
             profileInfoData = data; 
             var db = app.getDb();
-            db.transaction(insertProfileInfo, app.errorCB, getProfileDataFromDB);            
+            db.transaction(insertProfileInfo, app.errorCB, app.successCB);            
         };
                                        
         var userAccountID;        
@@ -1068,6 +1070,9 @@ app.OragnisationList = (function () {
                         + profileInfoData.photo
                         + '" ,"' + 1 + '")';              
             app.insertQuery(tx, query1);       
+            
+            var db = app.getDb();
+            db.transaction(getProfileInfoDB, app.errorCB, app.successCB);
         }
         
         
@@ -1076,11 +1081,12 @@ app.OragnisationList = (function () {
             var query = 'SELECT first_name , last_name , email , mobile , profile_image FROM PROFILE_INFO';
             app.selectQuery(tx, query, profileDataSuccess);
              
-            var query1 = 'SELECT org_id , org_name , role FROM JOINED_ORG';
+            var query1 = 'SELECT org_id , org_name , role , joinedDate FROM JOINED_ORG';
             app.selectQuery(tx, query1, orgDataSuccess);
              
             var query2 = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
             app.selectQuery(tx, query2, orgAdminDataSuccess);
+
             $("#liveProfileLoader").hide();
             $("#profileContent").show();
         }
@@ -1091,6 +1097,7 @@ app.OragnisationList = (function () {
         var mobile;
         var lnameVal;
         var profileImage;
+        var joinedOrgData;
         
         function profileDataSuccess(tx, results) {
             var count = results.rows.length;
@@ -1110,12 +1117,12 @@ app.OragnisationList = (function () {
                 profileImage = results.rows.item(0).profile_image; 
 
                 var largeImage = document.getElementById('profilePhoto');                
-                largeImage.src = "styles/images/profile-img.png";
+                largeImage.src = "styles/images/profile-img1.png";
                 
                 if (profileImage!==null && profileImage!=='' && profileImage!=='null') {
                     largeImage.src = profileImage;
                 }else {
-                    largeImage.src = "styles/images/profile-img.png"; 
+                    largeImage.src = "styles/images/profile-img1.png"; 
                 }
                 
                 var fnameLen = fname.length;
@@ -1136,21 +1143,22 @@ app.OragnisationList = (function () {
         
         var tempArray = [];
         var adminOrg = 0; 
-        function orgDataSuccess(tx, results) {    
-            var count = results.rows.length;              	
-            //alert(count);	
-            document.getElementById("orgData").innerHTML = "";                    
 
+        function orgDataSuccess(tx, results) {    
+            tempArray = [];
+            var count = results.rows.length;        
+            document.getElementById("orgData").innerHTML = "";                    
             if (count !== 0) {                    
                 document.getElementById("orgData").innerHTML = "";                    
                 for (var x = 0; x < count;x++) {
                     //alert(JSON.stringify(tempArray));
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                     //console.log(pos);
-                    var orgName = app.urldecode(results.rows.item(x).org_name); 
+                    var orgName = app.urldecode(results.rows.item(x).org_name);
+                    joinedOrgData = app.formatDate(results.rows.item(x).joinedDate);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 
+                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:50px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">'+'Joined On '+joinedOrgData+ '</span></td></tr></table>' 
                     }
                 }  
                 adminOrg = 0;
@@ -1183,6 +1191,7 @@ app.OragnisationList = (function () {
 
         function getProfileDBSuccess() {
             app.mobileApp.pane.loader.hide();
+            getProfileImageFromLive();
         }
             
         function OnImageLoad(evt) {
@@ -1766,8 +1775,7 @@ app.OragnisationList = (function () {
             var largeImage = document.getElementById('profilePhoto');
             largeImage.src = imageURI;
             profileImagePath = imageURI;
-               
-            
+                           
             sendImageToServer(imageURI);
             
             //var db = app.getDb();
@@ -1894,7 +1902,7 @@ app.OragnisationList = (function () {
         
         var resetProfilePhoto = function() {
             var largeImage = document.getElementById('profilePhoto');
-            largeImage.src = "styles/images/profile-img.png";
+            largeImage.src = "styles/images/profile-img1.png";
             profileImagePath='';                           
             sendImageToServer(profileImagePath);            
             var db = app.getDb();

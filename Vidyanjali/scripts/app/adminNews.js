@@ -50,13 +50,22 @@ app.adminNews = (function () {
             dataReceived=0;
             totalListView=0;
 
-            pbNews = $("#profileCompletenessNews").kendoProgressBar({
+            /*pbNews = $("#profileCompletenessNews").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
                                                                 max: 100,
                                                                 value: 0
-                                                            }).data("kendoProgressBar");    
+                                                            }).data("kendoProgressBar"); */
+            
+            document.getElementById("imgDownloaderNews").innerHTML = "";
+            
+            pbNews = new ProgressBar.Circle('#imgDownloaderNews', {
+                   color: '#7FBF4D',
+                   strokeWidth: 8,
+                   fill: '#f3f3f3'
+            });
+            
             
             getLiveData();
         }
@@ -321,8 +330,8 @@ app.adminNews = (function () {
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
             
-            $("#adddatePickerNews").parent().css('width', "160px");
-            $("#adddateTimePickerNews").parent().css('width', "160px");
+            //$("#adddatePickerNews").parent().css('width', "160px");
+            //$("#adddateTimePickerNews").parent().css('width', "160px");
             $("#adddatePickerNews").removeClass("k-input");
             $("#adddateTimePickerNews").removeClass("k-input");            
             
@@ -670,13 +679,21 @@ app.adminNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");                                    
             $('#editNewsDesc').css('height', '80px');
             
-            pbNews = $("#profileCompletenessNews").kendoProgressBar({
+            /*pbNews = $("#profileCompletenessNews").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
                                                                 max: 100,
                                                                 value: 0
-                                                            }).data("kendoProgressBar");
+                                                            }).data("kendoProgressBar");*/
+            
+            document.getElementById("imgDownloaderNews").innerHTML = "";
+            
+            pbNews = new ProgressBar.Circle('#imgDownloaderNews', {
+                   color: '#7FBF4D',
+                   strokeWidth: 8,
+                   fill: '#f3f3f3'
+            });
             
 
             $("#groupInEditNews option:selected").removeAttr("selected");
@@ -692,10 +709,13 @@ app.adminNews = (function () {
             
             $("#editdatePickerNews").removeAttr('disabled');
             $("#editdateTimePickerNews").removeAttr('disabled');
-            $("#editdatePickerNews").parent().css('width', "160px");
-            $("#editdateTimePickerNews").parent().css('width', "160px");
+
+            //$("#editdatePickerNews").parent().css('width', "160px");
+            //$("#editdateTimePickerNews").parent().css('width', "160px");
+            
             $("#editdatePickerNews").removeClass("k-input");
             $("#editdateTimePickerNews").removeClass("k-input");        
+            
             $('body').append(hiddenDiv);            
             $("#sendEditNewsLoader").show();
             $("#wrappe_news").hide();
@@ -1051,7 +1071,8 @@ app.adminNews = (function () {
                 
                 var vidFmAndroid = 0;
                 if (newsDataToSend!==undefined && newsDataToSend!=="undefined" && newsDataToSend!=='') { 
-                    pbNews.value(0);
+                    //pbNews.value(0);
+                    pbNews.animate(0);
                     countVal=0;
                     if ((newsDataToSend.substring(0, 21)==="content://com.android") && (upload_type==="image")) {
                         //alert('1');
@@ -1120,10 +1141,15 @@ app.adminNews = (function () {
                     ft.onprogress = function(progressEvent) {
                         if (progressEvent.lengthComputable) {
                             var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                            pbNews.value(perc); 
+                            //pbNews.value(perc); 
                             countVal=perc;
+                            var j = countVal/100;                        
+                            pbNews.animate(j, function() {
+                                pbNews.animate(j);
+                            });
                         }else {
-                            pbNews.value('');                            
+                            pbNews.animate(0);
+                            //pbNews.value('');                            
                             countVal=0;
                         }
                     };
@@ -1153,13 +1179,13 @@ app.adminNews = (function () {
                                                                            schema: {
                             data: function(data) {
                                 //console.log(data);
-                                //console.log(JSON.stringify(data))
+                                console.log(JSON.stringify(data))
                                 return [data];
                             }
                         },
                                                                            error: function (e) {
                                                                                //apps.hideLoading();
-                                                                               //console.log(JSON.stringify(e));
+                                                                               console.log(JSON.stringify(e));
                                                                                $("#sendNewsLoader").hide();
                                                                             
                                                                                if (!app.checkConnection()) {
@@ -1217,7 +1243,8 @@ app.adminNews = (function () {
         var transferFileAbort = function() {    
             //console.log(countVal +"||"+pbNews.value());            
             if(countVal < 90){
-                pbNews.value(0);
+                //pbNews.value(0);
+                pbNews.animate(0);
                 $("#sendNewsLoader").hide();
                 $("#sendEditNewsLoader").hide();              
                 ft.abort(); 
@@ -1232,7 +1259,8 @@ app.adminNews = (function () {
         }
         
         function win(r) {
-            pbNews.value(0);
+            //pbNews.value(0);
+            pbNews.animate(0);
             countVal=0;
             $("#tabstrip-upload-file").data("kendoMobileModalView").close();
             //console.log('win');
@@ -1262,7 +1290,8 @@ app.adminNews = (function () {
         }
                 
         function fail(error) {
-            pbNews.value(0);
+            //pbNews.value(0);
+            pbNews.animate(0);
             countVal=0;            
             //console.log(error);          
             console.log(JSON.stringify(error));           
@@ -1363,7 +1392,8 @@ app.adminNews = (function () {
                    
                     var path = newsDataToSend;
 
-                    pbNews.value(0);
+                    //pbNews.value(0);
+                    pbNews.animate(0);
                     countVal=0;
                      
                     var params = new Object();
@@ -1394,10 +1424,15 @@ app.adminNews = (function () {
                     ft.onprogress = function(progressEvent) {
                         if (progressEvent.lengthComputable) {
                             var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                            pbNews.value(perc);
+                            //pbNews.value(perc);
                             countVal=perc;
+                            var j = countVal/100;                        
+                                pbNews.animate(j, function() {
+                                    pbNews.animate(j);
+                                });
                         }else {
-                            pbNews.value('');
+                            //pbNews.value('');
+                            pbNews.animate(0);
                             countVal=0;
                         }
                     };
@@ -1483,7 +1518,8 @@ app.adminNews = (function () {
         }
         
         function winEdit(r) {
-            pbNews.value(0)
+            //pbNews.value(0)
+            pbNews.animate(0);
             countVal=0;
             $("#tabstrip-upload-file").data("kendoMobileModalView").close();
             

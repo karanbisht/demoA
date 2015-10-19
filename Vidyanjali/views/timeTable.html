@@ -13,12 +13,14 @@
     <div id="showMoretimeTableBtn" class="showMore" style="display:none;" data-role="button" data-click="app.timeTable.showMoreButtonPress">LOAD MORE</div>
 </div>
 
-<div id="timeTable-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.timeTable">
-    <div class="docsUpload">
+<div id="timeTable-upload-file" class="modal-mess-Popup" data-role="modalview"  data-model="app.timeTable">
+    <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:timeTableFileAbort">X</span>
+    <div id="imgDownloaderTT" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
+    <!--<div class="docsUpload">
         <div id="profileCompletenesstimeTable" class="uploadBar" style="width:90%; height:15px;"></div>
         <div class="clear"></div>
         <div id="uploadProcesstimeTable" class="cancelUpld" data-bind="click:timeTableFileAbort">Cancel</div>
-    </div>
+    </div>-->
 </div>
 
 		<script type="text/x-kendo-template" id="timeTableListTemplate">     

@@ -166,12 +166,15 @@
     </div>
 </div>
 
-<div id="tabstrip-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.adminNews">
-    <div class="docsUpload">
+<div id="tabstrip-upload-file" class="modal-mess-Popup" data-role="modalview" data-model="app.adminNews">
+    <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferFileAbort">X</span>
+    <div id="imgDownloaderNews" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
+
+    <!--<div class="docsUpload">
         <div id="profileCompletenessNews" class="uploadBar" style="width:90%; height:15px;"></div>
         <div class="clear"></div>
         <div id="uploadProcess" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
-    </div>
+    </div>-->
 </div>
 
 <div data-role="view" id="adminEditNews" data-id="innerActivity" data-layout="default" class="form-view"  data-model="app.adminNews" data-show ="app.adminNews.editNewsshow" data-use-native-scrolling="true">

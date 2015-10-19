@@ -6,16 +6,13 @@
                  <a id="idBackHomeNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.callUserLogin"></a> 
                  <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>-->
               </div>                                          
+    </div>    
+    <div class="loader" id="newsLoader" style="display:none;">
+        <div class="ball"></div>
     </div>
-    
-            <div class="loader" id="newsLoader" style="display:none;">
-                      <div class="ball"></div>
-            </div>
-
     <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate" data-bind="source: activities"></span>    
     <div id="showMoreNewsBtn" class="showMore" data-role="button" data-click="app.orgNews.showMoreButtonPress">LOAD MORE</div>
-
-     <ul data-role="actionsheet" id="newsShareAction">
+    <ul data-role="actionsheet" id="newsShareAction">
                     <li class="km-actionsheet-title">Share</li>
                     <!--<li>
                         <a href="#" data-role="button" data-click="app.socialShare">share More</a>
