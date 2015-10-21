@@ -3,13 +3,15 @@
         <div data-role="navbar">
             Members
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.groupDetail.backToOrgDetail"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+            
+            <a id="progressAdminOrgMem" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>
         </div>
     </div>
     <div>
-        <div class="loader" id="progressAdminOrgMem" style="display:block;">
+        <!--<div class="loader" id="progressAdminOrgMem" style="display:block;">
             <div class="ball"></div>
-        </div>
+        </div>-->
         <ul id="groupMember-listview" data-role="listview" data-template="groupMemberTemplate" data-bind="source: activities"></ul>
     </div>
     

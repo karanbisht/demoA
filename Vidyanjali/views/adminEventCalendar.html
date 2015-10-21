@@ -3,12 +3,13 @@
               <div data-role="navbar">     
                  <span>Events</span>
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminEventCalender.goToManageOrgPage"></a>    
+                 <a id="adminEventListLoader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a> 
                  <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminEventCalender.addEventByAdmin"></a>
               </div>                                          
     </div>    
-    <div class="loader" id="adminEventListLoader" style="display:none;">
+    <!--<div class="loader" id="adminEventListLoader" style="display:none;">
                       <div class="ball"></div>
-    </div>    
+    </div>-->    
     <span id="eventCalendarAllList" data-style="inset" data-role="listview" data-template="calendarAdminEventListTemplate" data-bind="source: activities"></span>        
     <div id="showMoreEventBtnEvent" class="showMore" data-role="button" data-click="app.adminEventCalender.showMoreButtonPress">LOAD MORE</div>
 </div>

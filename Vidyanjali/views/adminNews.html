@@ -3,12 +3,14 @@
         <div data-role="navbar">
             <span> News </span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminNews.goToManageOrgPage"></a>
-            <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>
+            <a id="adminNewsListLoader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>
+            <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminNews.goToAddNewsPage"></a>            
         </div>
     </div>
-    <div class="loader" id="adminNewsListLoader" style="display:none;">
+    <!--<div class="loader" id="adminNewsListLoader" style="display:none;">
         <div class="ball"></div>
-    </div>
+    </div>-->
+    
     <span id="orgAllNewsList" data-style="inset" data-role="listview" data-template="newsListTemplate" data-bind="source: activities"></span>    
     <div id="showMoreEventBtnNews" class="showMore" data-role="button" data-click="app.adminNews.showMoreButtonPress">LOAD MORE</div>
     

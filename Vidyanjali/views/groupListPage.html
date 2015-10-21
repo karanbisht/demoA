@@ -3,14 +3,17 @@
         <div data-role="navbar">
             Groups
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.GroupList.backToOrgDetail"></a>
-            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+            
+            <a id="admin-groupList-loader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>
+ 
         </div>
     </div>
     <div>
 
-        <div class="loader" id="admin-groupList-loader" style="display:none;">
+        <!--<div class="loader" id="admin-groupList-loader" style="display:none;">
             <div class="ball"></div>
-        </div>
+        </div>-->
 
         <span id="group-listview" data-style="inset" data-role="listview" data-template="groupTemplate"  data-bind="source:groupListData"></span>
         <p id="no-notification-span" hidden="hidden" class="no-items-msg">

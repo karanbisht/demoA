@@ -738,7 +738,7 @@ app.adminTimeTable = (function () {
             sysFilePage=0;
             $("#showMoreBrochurBtn").hide();
             $("#adminTimeTableListLoader").show();
-            $("#TimeTableAllList").hide();
+            //$("#TimeTableAllList").hide();
             $(".km-scroll-container").css("-webkit-transform", "");            
             
             sdcardPath = localStorage.getItem("sdCardPath");     

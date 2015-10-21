@@ -3,12 +3,14 @@
               <div data-role="navbar">     
                  <span>Timetable</span>
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminTimeTable.goToManageOrgPage"></a>    
-                 <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminTimeTable.addTimeTableByAdmin"></a>
+                 <!--<a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminTimeTable.addTimeTableByAdmin"></a>-->
+                  
+                 <a id="adminTimeTableListLoader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>
               </div>                                          
     </div>    
-    <div class="loader" id="adminTimeTableListLoader" style="display:none;">
+    <!--<div class="loader" id="adminTimeTableListLoader" style="display:none;">
               <div class="ball"></div>
-    </div>        
+    </div>-->        
     <span id="TimeTableAllList" data-style="inset" data-role="listview" data-template="adminTimeTableListTemplate" data-bind="source: activities"></span>            
     <div id="showMoreBrochurBtn" class="showMore" data-role="button" data-click="app.adminTimeTable.showMoreButtonPress">LOAD MORE</div>
 </div>

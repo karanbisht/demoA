@@ -3,12 +3,15 @@
            <div data-role="navbar">      
                Sent Messages
                <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
-               <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>    
-    	   </div>
-	  </div>          
-      <div class="loader" id="progressAdminNoti" style="display:none;">
+               <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
+
+               <a id="progressAdminNoti" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>               
+           </div>
+	  </div>     
+     
+      <!--<div class="loader" id="progressAdminNoti" style="display:none;">
                 <div class="ball"></div>
-      </div>     
+      </div>-->     
 	  <div>
     	<span id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></span>
       </div>      

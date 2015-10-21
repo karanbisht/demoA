@@ -31,7 +31,7 @@ app.adminNews = (function () {
             $("#showMoreEventBtnNews").hide();
 
             $("#adminNewsListLoader").show();
-            $("#orgAllNewsList").hide();            
+            //$("#orgAllNewsList").hide();            
             $(".km-scroll-container").css("-webkit-transform", "");            
             organisationID = localStorage.getItem("orgSelectAdmin");
             

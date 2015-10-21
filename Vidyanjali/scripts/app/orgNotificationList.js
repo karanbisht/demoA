@@ -20,7 +20,7 @@ app.orgListView = (function () {
         var adminNotificationShow = function(e) {
             $("#showMoreEventBtnOrg").hide();                           
             $("#progressAdminNoti").show();
-            $("#admin-noti-listview").hide();
+            //$("#admin-noti-listview").hide();
             page=0;
             dataReceived=0;
             totalListView=0;
@@ -260,7 +260,7 @@ app.orgListView = (function () {
 
             $('#admin-noti-listview').data('kendoMobileListView').refresh();                          
             $("#progressAdminNoti").hide();
-            $("#admin-noti-listview").show();
+            //$("#admin-noti-listview").show();
             
 
             if((totalListView > 10) && (totalListView >=dataReceived+10)){

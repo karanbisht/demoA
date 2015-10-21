@@ -1480,7 +1480,7 @@ app.adminEventCalender = (function () {
             app.ADMIN_IFRAME_OPEN=0;
             $("#showMoreEventBtnEvent").hide();
             $("#adminEventListLoader").show();
-            $("#eventCalendarAllList").hide();
+            //$("#eventCalendarAllList").hide();
             $(".km-scroll-container").css("-webkit-transform", "");            
             
                         
