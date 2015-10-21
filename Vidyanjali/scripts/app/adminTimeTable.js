@@ -5,17 +5,11 @@ app.adminTimeTable = (function () {
         var organisationID;
         //var account_Id;
         var TimeTableDataToSend;
-        var upload_type;
         var groupAllTimeTable = [];
-        var tasks = [];
         var device_type;
         var groupDataShow = [];
         var pbTimeTable;
-        var disabledDaysBefore=[];
         var ft;
-        var EditGroupArrayMember = [];
-        var adminAllGroupArray = [];
-        var customerGroupArray = [];
         var photo_split;
         var countVal=0;
         var page=0;
@@ -25,6 +19,7 @@ app.adminTimeTable = (function () {
         var exportInnerPage=false;
         var historyPath=[];
         var parentDir;
+        var fileTransfer;
         var sdcardPath;
         
         var init = function() {
@@ -61,8 +56,7 @@ app.adminTimeTable = (function () {
             
             $("#groupInAddTimeTable option:selected").removeAttr("selected");
             $('#groupInAddTimeTable').empty();
-            
-            
+                        
             getGroupToShowInCombo();
           }     
         }
@@ -416,12 +410,6 @@ app.adminTimeTable = (function () {
                         TimeTableDataToSend = "content://media/external/images/media/" + photo_split[1];
                     }
                                         
-                    var mimeTypeVal;
-                    /*if (upload_type==="image") {
-                        mimeTypeVal = "image/jpeg"
-                    }else {
-                        mimeTypeVal = "video/mpeg"
-                    }*/
                     
                     var filename = TimeTableDataToSend.substr(TimeTableDataToSend.lastIndexOf('/') + 1);
                     var ext = app.getFileExtension(filename);
@@ -437,19 +425,11 @@ app.adminTimeTable = (function () {
                     
                 
                     $("#admTimeTable-upload-file").data("kendoMobileModalView").open();                    
-                    /*if (upload_type==="image" && vidFmAndroid===1) {
-                        if (filename.indexOf('.') === -1) {
-                            filename = filename + '.jpg';
-                        }                
-                    }else if (upload_type==="video" && vidFmAndroid===1) {
-                        if (filename.indexOf('.') === -1) {
-                            filename = filename + '.mp4';
-                        }
-                    }*/
+                
 
-                    console.log(group);
-                    console.log(organisationID);
-                    console.log(filename+"||"+TimeTableDataToSend);
+                    //console.log(group);
+                    //console.log(organisationID);
+                    //console.log(filename+"||"+TimeTableDataToSend);
                 
                     var path = TimeTableDataToSend;
                     //console.log(path);
@@ -461,7 +441,6 @@ app.adminTimeTable = (function () {
                     var options = new FileUploadOptions();
                     options.fileKey = "upload_file";
                     options.fileName = filename;
-                    //options.mimeType = mimeTypeVal;
                     options.chunkedMode = false;
                     options.params = params;
                     options.headers = {
@@ -493,10 +472,10 @@ app.adminTimeTable = (function () {
           if(countVal < 90){
             countVal = 0; 
             //pbTimeTable.value(0);
-             pbTimeTable.animate(0); 
+            pbTimeTable.animate(0); 
             $("#sendTimeTableLoader").hide();
             $("#sendEditTimeTableLoader").hide();
-            ft.abort(); 
+            fileTransfer.abort(); 
             $("#admTimeTable-upload-file").data("kendoMobileModalView").close();                        
           }else{
                 if (!app.checkSimulator()) {
@@ -568,6 +547,7 @@ app.adminTimeTable = (function () {
             downloadName = 'timetable_'+imgNotiFi;
             attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
             var ext = app.getFileExtension(attachedImgFilename);
+            
             if (ext==='') {                
                 attachedImgFilename = attachedImgFilename + '.jpg'; 
                 downloadName = downloadName+ '.jpg'; 
@@ -576,14 +556,13 @@ app.adminTimeTable = (function () {
             }else{
                 downloadName = downloadName+ '.jpg';
             }
-            
+          
             fp = sdcardPath + app.SD_NAME+"/" + 'timeTable/' + attachedImgFilename;     
-            console.log(fp);
             window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);
         }
                         
         var imgPathExist = function() { 
-            console.log('exist');
+            //console.log('exist');
             console.log(device_type);
             if (device_type==="AN") {                                      
                 window.plugins.fileOpener.open(fp);
@@ -593,26 +572,26 @@ app.adminTimeTable = (function () {
         }
         
         var imgPathNotExist = function() {
-          console.log('Not exist');  
+          //console.log('Not exist');  
           if (!app.checkConnection()) {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                                                                           
           }else {
                 var attachedImg = imgFile;
-                console.log(attachedImg +"||"+ fp);
+                //console.log(attachedImg +"||"+ fp);
                 countVal=0;  
-                var fileTransfer = new FileTransfer();  
+                fileTransfer = new FileTransfer();  
                 $("#admTimeTable-upload-file").data("kendoMobileModalView").open();
-                //pbTimeTable.value(0);
-                  pbTimeTable.animate(0);
+
                 fileTransfer.onprogress = function(progresstimeTable) {
                     if (progresstimeTable.lengthComputable) {
                         var perc = Math.floor(progresstimeTable.loaded / progresstimeTable.total * 100);
                         //pbTimeTable.value(perc);
-                        countVal = perc;
+                        countVal = perc;                        
                           var j = countVal/100;                        
                                 pbTimeTable.animate(j, function() {
                                     pbTimeTable.animate(j);
                                 });
+                        //console.log(j);
                     }else {
                         pbTimeTable.animate(0);
                         //pbTimeTable.value('');
@@ -620,24 +599,22 @@ app.adminTimeTable = (function () {
                     }
                 };
               
-                            fileTransfer.download(attachedImg, fp, 
-                                      function(entry) {                                                                            
-                                          //pbTimeTable.value(0);
-                                           pbTimeTable.animate(0);
-                                          countVal = 0;
+                        fileTransfer.download(attachedImg, fp, 
+                                      function(entry) {                                                                                                                      
+                                          countVal = 0;                                               
                                           $("#admTimeTable-upload-file").data("kendoMobileModalView").close();
-                                          if (device_type==="AN") {                                      
+                                          pbTimeTable.animate(0);
+                                          //if (device_type==="AN") {                                      
                                               //window.open(fp, "_system", 'location=yes');
                                               //window.plugins.fileOpener.open(fp);
-                                          }else {
+                                          //}else {
                                               //window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');                                   
-                                          }
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
+                                          //}
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);                                               
                                       }, 
                                       function(error) {
                                           //console.log(error);
-                                          //pbTimeTable.value(0);
-                                          
+                                          //pbTimeTable.value(0);                                          
                                           pbTimeTable.animate(0);
                                           countVal = 0;
                                           $("#admTimeTable-upload-file").data("kendoMobileModalView").close();                                   
@@ -660,12 +637,6 @@ app.adminTimeTable = (function () {
                         TimeTableDataToSend = "content://media/external/images/media/" + photo_split[1];
                     }
 
-                    /*var mimeTypeVal;
-                    if (upload_type_edit==="image") {
-                        mimeTypeVal = "image/jpeg"
-                    }else {
-                        mimeTypeVal = "video/mpeg"
-                    }*/
 
                     var filename = TimeTableDataToSend.substr(TimeTableDataToSend.lastIndexOf('/') + 1);    
                     var ext = app.getFileExtension(filename);
@@ -680,16 +651,6 @@ app.adminTimeTable = (function () {
                       filename = 'img_'+ranNum+'.'+ext;  
                     }
                 
-                    /*if (upload_type_edit==="image" && vidFmAndroidEdit===1) {
-                        if (filename.indexOf('.') === -1) {
-                            filename = filename + '.jpg';
-                        }                
-                    }else if (upload_type_edit==="video" && vidFmAndroidEdit===1) {
-                        if (filename.indexOf('.') === -1) {
-                            filename = filename + '.mp4';
-                        }
-                    }*/
-                   
                     var path = TimeTableDataToSend;
                     //console.log(path);
                     //pbTimeTable.value(0);
@@ -704,12 +665,7 @@ app.adminTimeTable = (function () {
                     
                     var options = new FileUploadOptions();
                     options.fileKey = "upload_file";
-                    options.fileName = filename;
-              
-                    //console.log("-------------------------------------------");
-                    //console.log(options.fileName);
-              
-                    //options.mimeType = mimeTypeVal;
+                    options.fileName = filename;              
                     options.params = params;
                     options.headers = {
                         Connection: "close"
@@ -789,13 +745,11 @@ app.adminTimeTable = (function () {
             device_type = localStorage.getItem("DEVICE_TYPE");
             countVal=0;
             TimeTableDataToSend = '';
-            upload_type = '';
             
             
             page=0;
             dataReceived=0;
             totalListView=0;
-            tasks = [];
             groupAllTimeTable = [];
             organisationID = localStorage.getItem("orgSelectAdmin");            
             /*pbTimeTable = $("#timetableCompleteness").kendoProgressBar({

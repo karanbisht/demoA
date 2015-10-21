@@ -40,7 +40,7 @@ app.addCustomerByAdmin = (function () {
             $("#addMemberUl").empty();
             
              var largeImage = document.getElementById('addMemberPhoto');
-             largeImage.src="styles/images/profile-img.png"; 
+             largeImage.src="styles/images/profile-img1.png"; 
             
             addMoreMobile=0;
             countMobile=0;
@@ -100,21 +100,18 @@ app.addCustomerByAdmin = (function () {
                                                                          sort: { field: 'add', dir: 'desc' }    	     
                                                                      });
                           
-
             
             comboGroupListDataSource.fetch(function(){                                                       
                 groupDataShow = [];
-                 var data = this.data();                
+                var data = this.data();                
                                             
                             if (data[0]['status'][0].Msg==='No Group list') {
                                          
-                                /*groupDataShow.push({
-                                                          
+                                                       /*groupDataShow.push({                                                         
                                                            group_name: 'No Group Available , To Add Member First Add Group',
                                                            pid:'0'
                                                        });*/
-                                 app.noGroupAvailable();
-                                
+                                app.noGroupAvailable();                                
                             }else if(data[0]['status'][0].Msg==="Session Expired"){
                                    //app.showAlert(app.SESSION_EXPIRE , 'Notification');
                                     app.LogoutFromAdmin();                                 
@@ -258,7 +255,7 @@ app.addCustomerByAdmin = (function () {
         
         var resetMemberPhoto = function() {
             var largeImage = document.getElementById('addMemberPhoto');
-            largeImage.src = "styles/images/profile-img.png";
+            largeImage.src = "styles/images/profile-img1.png";
             memberAddPhoto = "";   
         }
         

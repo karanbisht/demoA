@@ -350,7 +350,8 @@ app.groupDetail = (function () {
             $("#groupMember-listview").hide();
             $("#progressAdminOrgMem").show();
             $("#orgMemFooter").hide();
-            
+            $(".km-filter-form").hide();                        
+
             app.mobileApp.pane.loader.hide();
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
@@ -444,16 +445,33 @@ app.groupDetail = (function () {
             $("#groupMember-listview").show();
             $("#orgMemFooter").show();
             
+            //$("#groupMember-listview").removeClass("km-list");
+            $(".km-filter-form").hide();
+
             $("#groupMember-listview").kendoMobileListView({
+                            dataSource: data,                                        
+                            template: kendo.template($("#groupMemberTemplate").html()),
+                            filterable: {
+                field: "full_name",
+                operator: "contains",
+                },
+            });
+            
+            $('#groupMember-listview').data('kendoMobileListView').refresh();          
+            //$("#groupMember-listview").removeClass("km-list");
+
+            
+            
+            
+            /*$("#groupMember-listview").kendoMobileListView({
                                                                dataSource: data,
                                                                template: kendo.template($("#groupMemberTemplate").html())
                                                            });
 
-            $('#groupMember-listview').data('kendoMobileListView').refresh(); 
+            $('#groupMember-listview').data('kendoMobileListView').refresh();*/ 
         }
         
-        var showGroupToDelete = function() {
-            
+        var showGroupToDelete = function() {            
             
              $(".km-scroll-container").css("-webkit-transform", "");
              $("#deleteMemberData").removeClass("km-list");
@@ -761,7 +779,7 @@ app.groupDetail = (function () {
         
          var resetMemberProfilePhoto = function() {
             var largeImage = document.getElementById('editMemberPhoto');
-            largeImage.src = "styles/images/profile-img.png";
+            largeImage.src = "styles/images/profile-img1.png";
             memberSelectedPhoto = "";   
         }
         
@@ -787,7 +805,7 @@ app.groupDetail = (function () {
             $("#editOrgMemberContent").hide();
             var largeImage = document.getElementById('editMemberPhoto');
             if(memberSelectedPhoto===""){
-                largeImage.src="styles/images/profile-img.png";    
+                largeImage.src="styles/images/profile-img1.png";    
             }else{
                 largeImage.src=memberSelectedPhoto;
             }
@@ -881,7 +899,7 @@ app.groupDetail = (function () {
                             $("#showAlternateList").hide();
                         }  
                         
-                    if(data[0]['status'][0].AdminGroup!==false){
+                     if(data[0]['status'][0].AdminGroup!==false){
                         if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined){
                             adminAllGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].AdminGroup.length;i++) {
@@ -890,11 +908,9 @@ app.groupDetail = (function () {
                                                             pid: data[0]['status'][0].AdminGroup[i].pid
                                                         });
                             }
-                        }
-                        
+                        }                        
 
-                        if(data[0]['status'][0].customerGroup !== null){
-                                                                            
+                       if(data[0]['status'][0].customerGroup !== null){                                                                            
                         if (data[0]['status'][0].customerGroup.groupID.length!==0 && data[0]['status'][0].customerGroup.groupID.length!==undefined ) {
                             customerGroupArray = [];
                             for (var i = 0 ; i < data[0]['status'][0].customerGroup.groupID.length;i++) {
@@ -904,10 +920,10 @@ app.groupDetail = (function () {
                             }
                         }
                         
-                        var allGroupLength = adminAllGroupArray.length;
-                        var allCustomerLength = customerGroupArray.length;    
+                         var allGroupLength = adminAllGroupArray.length;
+                         var allCustomerLength = customerGroupArray.length;    
                         
-                        for (var i = 0;i < allGroupLength;i++) {       
+                         for (var i = 0;i < allGroupLength;i++) {       
                         
                             adminAllGroupArray[i].pid = parseInt(adminAllGroupArray[i].pid);
                             var check = ''; 
@@ -931,11 +947,10 @@ app.groupDetail = (function () {
                                                                   check:check
                                                               });
                             
-                        }
+                         }
                          
    
-                          $.each(EditGroupArrayMember, function (index, value) {
-                            
+                          $.each(EditGroupArrayMember, function (index, value) {                            
                             if(value.check===''){
                                 $('#groupInEditMember').append($('<option/>', { 
                                     value: value.pid,
@@ -950,16 +965,24 @@ app.groupDetail = (function () {
    
                             }                                
                           });
-                       }else{                        
-                        var allGroupLength = adminAllGroupArray.length;                         
-                        for (var i = 0;i < allGroupLength;i++) {                                                    
+                       }else{
+                           
+                        var allGroupLength1 = adminAllGroupArray.length;                         
+                        for (var k = 0; k < allGroupLength1;k++) {                                                    
                             EditGroupArrayMember.push({
-                                                                  group_name: adminAllGroupArray[i].group_name,
-                                                                  pid: adminAllGroupArray[i].pid,
+                                                                  group_name: adminAllGroupArray[k].group_name,
+                                                                  pid: adminAllGroupArray[k].pid,
                                                                   check:''
                                                               });
+                        }                             
+                        $.each(EditGroupArrayMember, function (index, value) {                            
                             
-                        }  
+                                $('#groupInEditMember').append($('<option/>', { 
+                                    value: value.pid,
+                                    text : value.group_name                                   
+                                }));   
+                            
+                        });
                        } 
                      }else{
                          /*EditGroupArrayMember.push({
@@ -1363,7 +1386,7 @@ app.groupDetail = (function () {
         
         
         function memberWin(r) {
-            console.log('success');
+            //console.log('success');
             $("#adminEditCustomer").hide();  
                             if (!app.checkSimulator()) {
                                 window.plugins.toast.showShortBottom(app.MEMBER_DETAIL_UPDATED_MSG);   
@@ -1374,14 +1397,14 @@ app.groupDetail = (function () {
         }
 
         function memberFail(e){
-            console.log('fail');
-            console.log(JSON.stringify(e));            
+            //console.log('fail');
+            //console.log(JSON.stringify(e));            
             $("#adminEditCustomer").hide(); 
         }
         
         var attendance = function(){
             
-               if (!app.checkConnection()) {
+            if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {

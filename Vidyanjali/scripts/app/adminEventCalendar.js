@@ -35,6 +35,7 @@ app.adminEventCalender = (function () {
             //alert(e.data.event_name);
             eventPid = e.data.id;
             mapLocationShow = e.data.location;
+            app.ADMIN_IFRAME_OPEN=0;
             multipleEventArrayAdmin.push({
                                         id: e.data.id,
                                         add_date: e.data.add_date,
@@ -60,13 +61,23 @@ app.adminEventCalender = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
         }
         
-        var iFrameLocUrl = function(){     
+        var iFrameLocUrl = function(){ 
+          if (!app.checkConnection()) {
+            if (!app.checkSimulator()) {                                                                     
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+            }else {              
+                app.showAlert(app.INTERNET_ERROR , 'Offline');                   
+            }              
+          }else{ 
+        
+            app.ADMIN_IFRAME_OPEN=1;
             $("#admIFrameLoader").show();
             var mapUrl = app.GEO_MAP_API+mapLocationShow;
             document.getElementById("setIFrame").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width-20;this.height=screen.height"></iframe>';             
-            setTimeout(function(){
+            /*setTimeout(function(){
                 $("#admIFrameLoader").hide();
-            },7000);
+            },7000);*/
+          }    
         }
         
         var detailShow = function() {
@@ -133,8 +144,7 @@ app.adminEventCalender = (function () {
                 hiddenDiv.html(content + '<br class="lbr">');
     
                 $(this).css('height', hiddenDiv.height());
-            });
-            
+            });            
             
             $("#groupInAddEvent option:selected").removeAttr("selected");
             $('#groupInAddEvent').empty();
@@ -379,8 +389,7 @@ app.adminEventCalender = (function () {
             
         }
 
-        var upload_type_edit;
-        
+        var upload_type_edit;        
         var editEventshow = function() {              
             eventDataToSend='';
             $(".km-scroll-container").css("-webkit-transform", "");
@@ -1468,8 +1477,8 @@ app.adminEventCalender = (function () {
         
         var eventListShow = function() {
 
+            app.ADMIN_IFRAME_OPEN=0;
             $("#showMoreEventBtnEvent").hide();
-
             $("#adminEventListLoader").show();
             $("#eventCalendarAllList").hide();
             $(".km-scroll-container").css("-webkit-transform", "");            
@@ -2108,6 +2117,7 @@ app.adminEventCalender = (function () {
         }
         
          var closeLocationMap = function() {
+            app.ADMIN_IFRAME_OPEN=0;
             $("#location_Map").kendoMobileModalView("close");
         }
                       

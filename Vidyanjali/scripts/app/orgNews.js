@@ -374,22 +374,24 @@ app.orgNews = (function () {
                         
                 fileTransfer.download(attachedVid, fp, 
                                       function(entry) {                                                                            
-                                          if (device_type==="AP") {
+                                          //if (device_type==="AP") {
                                               //window.open(fp, "_blank",'EnableViewPortScale=yes');
-                                          }else {
+                                          //}else {
                                               //window.plugins.fileOpener.open(fp);
-                                          }                                      
+                                          //}                                      
                                           $("#video_Div_Image_" + newNotiFi).hide();
                                           $("#downloadPerNews_" + newNotiFi).hide();   
                                           countValNews = 0;
                                           document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                       },
     
                                       function(error) {
                                           countValNews = 0;
                                           $("#video_Div_Image_" + newNotiFi).hide();
                                           $("#downloadPerNews_" + newNotiFi).hide();
-                                          document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;                                   
+                                          document.getElementById("progressValueNews_" + newNotiFi).innerHTML = 0;  
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                       }
                     );                
             }   
@@ -433,15 +435,17 @@ app.orgNews = (function () {
                 fileTransfer.download(attachedImg, fp, 
                                       function(entry) {
                                           $("#img_Div_Image_" + imgNotiFi).hide();
-                                          if (device_type==="AP") {
+                                          /*if (device_type==="AP") {
                                               window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                           }else {
                                               window.plugins.fileOpener.open(fp);
-                                          }                                      
+                                          }*/                                  
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                       },
     
                                       function(error) {
                                           $("#img_Div_Image_" + imgNotiFi).hide();
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                       }
                     );                
             }

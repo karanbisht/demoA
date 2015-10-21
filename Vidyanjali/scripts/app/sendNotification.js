@@ -123,16 +123,30 @@ app.sendNotification = (function () {
             });
             
             
-                        pb = $("#profileCompletenessNotification").kendoProgressBar({
+                        /*pb = $("#profileCompletenessNotification").kendoProgressBar({
                                                                 type: "chunk",
                                                                 chunkCount: 100,
                                                                 min: 0,
                                                                 max: 100,
                                                                 value: 0
-                                                            }).data("kendoProgressBar");
+                                                            }).data("kendoProgressBar");*/
+            
 
             
-            pb.value(0);
+            
+            document.getElementById("imgDownloaderSendNoti").innerHTML = "";
+            
+            pb = new ProgressBar.Circle('#imgDownloaderSendNoti', {
+                   color: '#7FBF4D',
+                   strokeWidth: 8,
+                   fill: '#f3f3f3'
+            });
+
+            
+
+            
+            //pb.value(0);
+            pb.animate(0);
             dataCheckVal=0;
             noGroup = 0;
             noCustomer = 0;
@@ -392,7 +406,7 @@ app.sendNotification = (function () {
                     var photo_split;
                     //alert(upload_type);
                     if ((dataToSend!==undefined && dataToSend!=="undefined" && dataToSend!=='')) { 
-                        pb.value(0);
+                        pb.animate(0);
                         dataCheckVal=0;
                         if ((dataToSend.substring(0, 21)==="content://com.android") && (upload_type==="other")) {
                             photo_split = dataToSend.split("%3A");
@@ -458,10 +472,13 @@ app.sendNotification = (function () {
                        ft.onprogress = function(progressEvent) {
                          if (progressEvent.lengthComputable) {
                             var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                            pb.value(perc);  
-                             dataCheckVal=perc;
+                            dataCheckVal=perc;
+                            var j = perc/100;                        
+                            pb.animate(j, function() {
+                                pb.animate(j);
+                            }); 
                          }else {
-                            pb.value('');  
+                             pb.animate(0);
                              dataCheckVal=0;
                          }
                        };
@@ -578,7 +595,7 @@ app.sendNotification = (function () {
         
         var transferFileAbort = function() {     
            if(dataCheckVal!==100){
-                pb.value(0);
+                pb.animate(0);
                 dataCheckVal=0; 
                 ft.abort(); 
                 $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
@@ -600,8 +617,7 @@ app.sendNotification = (function () {
                     app.showAlert(app.NOTIFICATION_MSG_SENT , 'Notification');  
                 }
               
-            
-            pb.value(0);
+            pb.animate(0);
             dataCheckVal=0;
             $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
             
@@ -624,8 +640,7 @@ app.sendNotification = (function () {
             $("#progressSendNotification").hide();            
             //console.log(error);          
             //console.log(JSON.stringify(error));
-            
-            pb.value(0);
+            pb.animate(0);
             dataCheckVal=0;
             $("#sendNotifcation-upload-file").data("kendoMobileModalView").close();
  

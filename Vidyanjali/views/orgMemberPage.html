@@ -10,8 +10,9 @@
         <div class="loader" id="progressAdminOrgMem" style="display:block;">
             <div class="ball"></div>
         </div>
-        <span id="groupMember-listview" data-style="inset" data-role="listview" data-template="groupMemberTemplate" data-bind="source: activities"></span>
+        <ul id="groupMember-listview" data-role="listview" data-template="groupMemberTemplate" data-bind="source: activities"></ul>
     </div>
+    
     <!--<div data-role="footer">
         <div id="orgAddMemberTabStrip" data-role="tabstrip" data-selected-index="2">
             <a id="" data-icon="add" data-role="button" data-bind="click: addMemberToGroup" >Add Members</a>
@@ -75,7 +76,7 @@
                 <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
             </div>
          </div>        
-        #}#
+   #}#
 </script>
 
 
@@ -121,9 +122,16 @@
    </div>
     
    <div id="editOrgMemberContent">
-        <div style="vertical-align:middle; text-align:center;border:none;margin-top:10px;">
-                        <a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload">
+        <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
+                        <!--<a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload">
                             <img id="editMemberPhoto" src="" height="100" width="100" style="border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/>
+                        </a>-->
+            
+                        <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload" >                            
+                            <img id="editMemberPhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror=null;this.src='styles/images/profile-img1.png';"/>                                                         
+                            <div class="profilePicBack">
+                                 <span style="z-index:1;text-align:center;">Change</span>
+                            </div>
                         </a>
         </div>
         <form>

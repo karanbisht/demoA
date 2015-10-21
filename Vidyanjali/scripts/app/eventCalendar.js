@@ -21,6 +21,7 @@ app.eventCalender = (function () {
     
         var show = function(e) {
             $(".km-scroll-container").css("-webkit-transform", ""); 
+            app.USER_IFRAME_OPEN=0;
             device_type = localStorage.getItem("DEVICE_TYPE"); 
             $("#showMoreEventBtn").hide();
             tasks = [];
@@ -256,7 +257,7 @@ app.eventCalender = (function () {
         }
     
         var detailShow = function() {
-                      
+            app.USER_IFRAME_OPEN=0;                      
             $("#popover-usereventAction").removeClass("km-widget km-popup");
             $('.km-popup-arrow').addClass("removeArrow");            
             $(".km-scroll-container").css("-webkit-transform", "");            
@@ -461,14 +462,16 @@ app.eventCalender = (function () {
             fileTransfer.download(attachedImg, fp, 
                                   function(entry) {
                                       $("#img_Div_Event_"+imgNotiFi).hide();
-                                      if(device_type==="AP"){
+                                      /*if(device_type==="AP"){
                                           window.open(fp, "_blank",'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else{
                                           window.plugins.fileOpener.open(fp);
-                                      }                                      
+                                      }*/              
+                                      window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                   },    
                                   function(error) {
                                       $("#img_Div_Event_"+imgNotiFi).hide();
+                                      window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                   }
                 );                
           }   
@@ -490,15 +493,25 @@ app.eventCalender = (function () {
         
         var closeLocationMap = function() {
             $("#location_Map_UserSide").kendoMobileModalView("close");
+            app.USER_IFRAME_OPEN=0;
         }
         
-         var iFrameLocUrl = function(){    
-            $("#userIFrameLoader").show();
+        var iFrameLocUrl = function(){  
+          if (!app.checkConnection()) {
+            if (!app.checkSimulator()) {                                                                     
+                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
+            }else {              
+                app.showAlert(app.INTERNET_ERROR , 'Offline');                   
+            }              
+          }else{ 
+            app.USER_IFRAME_OPEN=1;  
+            $("#userIFrameLoader").show();          
             var mapUrl = app.GEO_MAP_API+mapLocationShow;
             document.getElementById("setIFrame_UserSide").innerHTML='<iframe id="mapIframe" frameborder="0" style="border:0;margin-top:-150px;" src="'+mapUrl+'" onload="this.width=screen.width;this.height=screen.height"></iframe>';             
-            setTimeout(function(){
+            /*setTimeout(function(){
                 $("#userIFrameLoader").hide();
-            },7000);             
+            },7000);*/ 
+          }    
         }
         
         

@@ -57,13 +57,13 @@
                 <form id="login-form" data-bind="events: { keydown: checkEnter }" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
                         <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
-                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.6rem;margin-left:25px;height:53px;">
+                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.4rem;margin-left:25px;height:53px;">
                         </li>
                     </ul>
                     <ol class="group-wrp" style="margin-top:20px;">
                         <li>
                             <span id="login" data-role="touch" data-bind="events: { tap: login }">
-                                <a data-role="button" class="btn btn-login" style="font-size: 1.6rem;">Next</a>
+                                <a data-role="button" class="btn btn-login" style="font-size: 1.4rem;">Next</a>
                             </span>
                         </li>
                     </ol>
@@ -720,7 +720,7 @@
                         <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
                     </li>
                 </ul>
-            </div>
+          </div>
 
             <div id="selectGroupFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
@@ -759,12 +759,16 @@
             </div>
         </div>
         
-     <div id="sendNotifcation-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview"  data-width="100%" data-height="90%" data-model="app.sendNotification">
-       <div class="docsUpload">
+     <div id="sendNotifcation-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview" data-model="app.sendNotification">
+
+         <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferFileAbort">X</span>
+         <div id="imgDownloaderSendNoti" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
+
+       <!--<div class="docsUpload">
         <div id="profileCompletenessNotification" class="uploadBar" style="width:90%; height:15px;"></div>
         <div class="clear"></div>
         <div id="uploadProcessNotification" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
-       </div>
+       </div>-->
      </div>
 
         <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-views="['view-all-activities-GroupDetail','subGroupMemberReplyShow','sendNotificationDiv','view-all-activities']">
@@ -889,21 +893,15 @@
                                                                 }               
                                                             });  
 	            
-            dataSourceLogin.fetch(function() {
-             	
-                var data = this.data();
-                                         
+            dataSourceLogin.fetch(function() {         	
+                    var data = this.data();
                     if (data[0]['status'][0].Msg==='Success') {
-                
                         selectOrgFmDrawer(value);
-                        
                     }else if (data[0]['status'][0].Msg==='Fail') {
                         
                         
                     } 
-
                 });
-
             }
                             
                 function selectOrgFmDrawer(data){
@@ -1171,8 +1169,7 @@
             <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
             #if(attached!=='' && attached!=='0' && attached!==0 && upload_type==="other"){#
                     <br/>
-                    <div style="overflow:hidden;">
-                     <br/>       
+                    <br/>       
                         <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
                             <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">
@@ -1181,7 +1178,6 @@
                             </div>       
                             <img src=${attachedImg} alt=${attached}-----${pid} onerror="this.onerror=null;this.src='styles/images/no-image.png';" style="width:100%;"/>  
                         </a>                                                        
-                    </div>
             #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video"){#          
                      <br/>        
                      <br/> 

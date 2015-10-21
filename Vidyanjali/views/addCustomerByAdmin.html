@@ -1,7 +1,7 @@
 <div data-role="view" id="addAdminCustomer" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin" data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
-            Add Members
+            Add Member
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
         </div>
@@ -10,9 +10,16 @@
     <div class="loader" id="saveMemberLoader" style="display:none;">
         <div class="ball"></div>
     </div>
-    <div style="vertical-align:middle; text-align:center;border:none;margin-top:10px;">
-                        <a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >
+    <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
+                        <!--a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >
                             <img id="addMemberPhoto" src="" height="100" width="100" style="border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/>
+                        </a>-->
+        
+                        <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >                            
+                            <img id="addMemberPhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror=null;this.src='styles/images/profile-img1.png';"/>                                                         
+                            <div class="profilePicBack">
+                                 <span style="z-index:1;text-align:center;">Change</span>
+                            </div>
                         </a>
     </div>
     <div>

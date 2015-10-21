@@ -13,8 +13,7 @@
     <div id="showMoreEventBtnEvent" class="showMore" data-role="button" data-click="app.adminEventCalender.showMoreButtonPress">LOAD MORE</div>
 </div>
 
-                                 <!--<div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>-->
-
+        <!--<div id="activityTemplateDate" class="calDayClass">${event_above_day}</div>-->
 
 		<script type="text/x-kendo-template" id="calendarAdminEventListTemplate">
           #if(id!== 0 && id!== '0'){#  
@@ -213,11 +212,11 @@
                         <div data-role="header" style="background-color:rgb(204,204,204);height:35px;">
                             <div style="margin:5px 10px 10px 10px;width:100px;float:left;font-size:20px;color:rgb(255,255,255)"> Location </div>
                             <a data-click="app.adminEventCalender.closeLocationMap" data-role="button" data-align="right" style="float:right;color:rgb(255,255,255);border:none;" >Close</a>
-                        </div>
-                        <div class="loader" id="admIFrameLoader" style="display:none;">
-                              <div class="ball"></div>
                         </div> 
                         <div id="setIFrame"></div>    
+                        <div class="loader" id="admIFrameLoader" style="display:none;">
+                              <div class="ball"></div>
+                        </div>
         </div>
 
 

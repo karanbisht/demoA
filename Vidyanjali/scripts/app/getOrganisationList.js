@@ -1084,7 +1084,7 @@ app.OragnisationList = (function () {
             var query1 = 'SELECT org_id , org_name , role , joinedDate FROM JOINED_ORG';
             app.selectQuery(tx, query1, orgDataSuccess);
              
-            var query2 = 'SELECT org_id , org_name , role FROM JOINED_ORG_ADMIN';
+            var query2 = 'SELECT org_id , org_name , role , joinedDate FROM JOINED_ORG_ADMIN';
             app.selectQuery(tx, query2, orgAdminDataSuccess);
 
             $("#liveProfileLoader").hide();
@@ -1146,9 +1146,11 @@ app.OragnisationList = (function () {
 
         function orgDataSuccess(tx, results) {    
             tempArray = [];
+            $("#orgData").show();
             var count = results.rows.length;        
             document.getElementById("orgData").innerHTML = "";                    
-            if (count !== 0) {                    
+            if (count !== 0) { 
+                
                 document.getElementById("orgData").innerHTML = "";                    
                 for (var x = 0; x < count;x++) {
                     //alert(JSON.stringify(tempArray));
@@ -1170,21 +1172,23 @@ app.OragnisationList = (function () {
         
         function orgAdminDataSuccess(tx, results) {    
             var count = results.rows.length;      	
-            if (count !== 0) {                                        
+            $("#orgData").show();
+
+            if (count !== 0) {
                 for (var x = 0; x < count;x++) {
                     var pos = $.inArray(results.rows.item(x).org_id, tempArray);
                     //console.log(pos);
-
-                    var orgName = app.urldecode(results.rows.item(x).org_name); 
-
+                    var orgName = app.urldecode(results.rows.item(x).org_name);
+                    var joinedAdOrgData = app.formatDate(results.rows.item(x).joinedDate);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<ul><li>' + orgName + '</li></ul>' 
+                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:50px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">'+'Joined On '+joinedAdOrgData+ '</span></td></tr></table>' 
                     }
                 }             
             }else {
                 if (adminOrg===1) {
-                    document.getElementById("orgData").innerHTML += '<ul><li>No Organization Added You</li></ul>'   
+                    $("#orgData").hide();
+                    //document.getElementById("orgData").innerHTML += '<ul><li>No Organization Added You</li></ul>'   
                 }
             }        
         }

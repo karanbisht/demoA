@@ -633,7 +633,7 @@ input:focus, textarea:focus {
     display: block;
     margin-top: -.5em;
     width: 1em;
-    height: 1em;
+    height: 1.2em;
     background-color: transparent;
     background-position: 0 0;
     background-repeat: no-repeat;
@@ -2584,6 +2584,22 @@ opacity:0.5;
     -webkit-animation: spin .5s infinite linear;
 }
 
+
+.upperball
+{
+    margin:0px;
+    background-color:transparent;
+    border: 5px solid rgba(127, 191, 77, 0.8);
+    opacity: .7;
+    border-top: 5px solid;
+    border-left: 5px solid;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    -moz-animation: spin .5s infinite linear;
+    -webkit-animation: spin .5s infinite linear;
+}
+
 .ball1
 {
     background-color: rgba(0, 0, 0, 0);
@@ -3897,7 +3913,7 @@ float:right;
 }
 
 .videoDownload{position:absolute;width:100%;z-index: 999;text-align:center;left:0;right:0;top:35%;}
-.innervideoDownload{position:absolute; width:90%;border-radius:3px;height:25px;z-index: 999;left:0;right:0;background: rgba(0,0,0,0.4);margin:auto;}
+.innervideoDownload{position:absolute; width:85%;border-radius:3px;height:25px;z-index: 999;left:0;right:0;background: rgba(0,0,0,0.4);margin:auto;}
 .downloadBar{width:80%; height:5px;text-align:left;background-color:white;margin:10px 5px 5px 30px;}
 .progressValueClass{margin-top:-13px;color:#ffffff;font-weight:bold;width:25px;margin-left:5px;}
 

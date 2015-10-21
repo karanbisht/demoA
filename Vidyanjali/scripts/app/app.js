@@ -73,7 +73,8 @@ var app = (function (win) {
     var SOCIAL_SHARE_ERROR_MSG ="Application not installed on your device , you need to install it first to use this feature."
     var GEO_PLACE_API ="https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&sensor=false&key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&input=";    
     var GEO_MAP_API="https://www.google.com/maps/embed/v1/place?key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&q=";
-
+    var USER_IFRAME_OPEN = 0;
+    var ADMIN_IFRAME_OPEN= 0;
     
     var serverUrl = function() {        
         return 'https://app.Zaff.io/webservice/';        
@@ -82,8 +83,8 @@ var app = (function (win) {
 
     var showAppVersion = function() {
         cordova.getAppVersion(function(version) {           
-            //showAlert("Current App Version: " + version , "App Version");
-                             localStorage.setItem("AppVersion", version);
+                //showAlert("Current App Version: " + version , "App Version");
+                localStorage.setItem("AppVersion", version);
         });
         //alert(versionData);
     }
@@ -330,7 +331,14 @@ var app = (function (win) {
         
         }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv' || app.mobileApp.view()['element']['0']['id']==='eventCalendar'){
             //app.mobileApp.navigate("#organisationNotiList");
-            app.mobileApp.navigate("#view-all-activities");            
+            app.mobileApp.navigate("#view-all-activities");               
+        }else if (app.mobileApp.view()['element']['0']['id']==='eventCalendarDetail'){
+            if(app.USER_IFRAME_OPEN===1){
+               app.USER_IFRAME_OPEN=0; 
+               $("#location_Map_UserSide").kendoMobileModalView("close");
+            }else{
+               app.mobileApp.navigate("#eventCalendar");   
+            }
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
             //app.mobileApp.navigate("#organisationNotiList");  
             app.mobileApp.navigate("#view-all-activities");
@@ -350,7 +358,13 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendar') {
             app.mobileApp.navigate('#adminEventList');     
         }else if (app.mobileApp.view()['element']['0']['id']==='adminEventCalendarDetail'){
-            app.mobileApp.navigate('#adminEventList'); 
+            //app.mobileApp.navigate('#adminEventList'); 
+            if(app.ADMIN_IFRAME_OPEN===1){
+               app.ADMIN_IFRAME_OPEN=0; 
+               $("#location_Map").kendoMobileModalView("close");
+            }else{
+               app.mobileApp.navigate('#adminEventList');   
+            }
         }else if( app.mobileApp.view()['element']['0']['id']==='adminAddEventCalendar'){
             app.mobileApp.navigate('#adminEventList'); 
             app.adminEventCalender.onBackClsPicker('add');
@@ -448,8 +462,13 @@ var app = (function (win) {
     }    
     
     var Keyboardisoff = function() {       
-      $(".km-scroll-container").css("-webkit-transform", "");  
+      $(".km-scroll-container").css("-webkit-transform", "");
+          $("#orgMemFooter").show();
     };
+    
+    var Keyboardison = function(){
+          $("#orgMemFooter").hide();           
+    }
     
     var onDeviceReady = function() {       
         app.deviceId_Not_Receive=0;
@@ -461,6 +480,7 @@ var app = (function (win) {
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
+        document.addEventListener("showkeyboard", Keyboardison, false);
 
                 
          if (!app.checkSimulator()) {
@@ -753,20 +773,22 @@ var app = (function (win) {
                     }
                 }, 'Notification', ['View', 'Close']);   
             }else if(typeDB==='News'){
-                        if (e.foreground) {
-                          
-                        }else{
-                            goToAppNewsPage();    
-                        }    
-                        
+                            navigator.notification.confirm(titleDB, function (confirmed) {           
+                                if (confirmed === true || confirmed === 1) {
+                                       goToAppNewsPage();
+                                }else {
+  
+                                }
+                            }, 'News', ['View', 'Close']);  
+                                
             }else if(typeDB==='Event'){
-                        if (e.foreground) {
-                         
-                        }else{
-                           goToAppEventPage(); 
-                        }    
-                        
-                  
+                            navigator.notification.confirm(titleDB, function (confirmed) {           
+                                if (confirmed === true || confirmed === 1) {
+                                       goToAppEventPage();
+                                }else {
+  
+                                }
+                            }, 'Event', ['View', 'Close']);                    
             }else {
                 showAlert(messageDB , "Notification");
             } 
@@ -1792,6 +1814,8 @@ var app = (function (win) {
         GEO_PLACE_API:GEO_PLACE_API,
         DOWNLOAD_COMPLETED:DOWNLOAD_COMPLETED,
         GEO_MAP_API:GEO_MAP_API,
+        ADMIN_IFRAME_OPEN:ADMIN_IFRAME_OPEN,
+        USER_IFRAME_OPEN:USER_IFRAME_OPEN,
         DELETE_CONFIRM:DELETE_CONFIRM,
         SOCIAL_SHARE_ERROR_MSG:SOCIAL_SHARE_ERROR_MSG,
         getSendNotiDateTime:getSendNotiDateTime,

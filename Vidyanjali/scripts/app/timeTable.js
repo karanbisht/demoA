@@ -98,13 +98,15 @@ app.timeTable = (function () {
                                                             });  
 	            
             dataSourceLogin.fetch(function() {
-              var data = this.data();                                              
+              var data = this.data();
+                console.log(data[0]['status'][0].Msg);
               if (data[0]['status'][0].Msg==='Success') {
                      if(data[0]['status'][0].Timetable === false) {
                             groupAlltimeTable.push({
                                                   id:0,
                                                   timetable_group: 'No Timetable from this Organization.'
                                                 });
+                            timeTableListFirstShow();
                      }else{
                         
                         var TimeTableListLength = data[0].status[0].Timetable.length;
@@ -117,11 +119,16 @@ app.timeTable = (function () {
                                                    timetable_groupID: data[0].status[0].Timetable[i].group_id,
                                                    org_id: data[0].status[0].Timetable[i].org_id
                                                });        
-                        }                          
-                     }     
-                  
+                        } 
+                          timeTableListFirstShow();
+                          callOfflineSaving();  
+                     }                     
+              }else if(data[0]['status'][0].Msg==='Unauthorise Access'){
+                groupAlltimeTable.push({
+                    id:0,
+                    timetable_group: 'No Timetable from this Organization.'
+                });                  
                 timeTableListFirstShow();
-                callOfflineSaving();
               }         
             });
         }
@@ -204,7 +211,7 @@ app.timeTable = (function () {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                                                                           
             }else {
                 fileTransfer = new FileTransfer();   
-                $("#timeTable-upload-file").data("kendoMobileModalView").open();                
+                $("#timeTable-upload-file").data("kendoMobileModalView").open();
                 fileTransfer.onprogress = function(progresstimeTable) {
                     if (progresstimeTable.lengthComputable) {
                         var perc = Math.floor(progresstimeTable.loaded / progresstimeTable.total * 100);
@@ -221,15 +228,15 @@ app.timeTable = (function () {
   
                 fileTransfer.download(pdfToDownload, fp,
                                       function(entry) {        
-                                          circleLoader.animate(0);
-                                          countVal = 0;
+                                          countVal = 0;                                          
                                           $("#timeTable-upload-file").data("kendoMobileModalView").close();
-                                          if (device_type==="AN") {                                      
+                                          circleLoader.animate(0);
+                                          //if (device_type==="AN") {                                      
                                               //window.open(fp, "_system", 'location=yes');
                                               //window.plugins.fileOpener.open(fp);
-                                          }else {
+                                          //}else {
                                               //window.open(fp, "_blank", 'location=no,enableViewportScale=yes,closebuttoncaption=Close');                                   
-                                          }
+                                          //}
                                           window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                       }, 
                                       function(error) {
@@ -243,9 +250,9 @@ app.timeTable = (function () {
         };
         
         var timeTableFileAbort = function() {  
+            circleLoader.animate(0);
             if (countVal < 90) {                
-                countVal=0;
-                circleLoader.animate(0);
+                countVal=0;            
                 fileTransfer.abort(); 
                 $("#timeTable-upload-file").data("kendoMobileModalView").close();
             }else {           

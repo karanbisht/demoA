@@ -26,10 +26,20 @@ app.Activities = (function () {
         };   
         
         var show = function(e) {                                            
-            $(".km-scroll-container").css("-webkit-transform", "");  
+        
+            $(".km-scroll-container").css("-webkit-transform", "");
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
             localStorage.setItem("gotNotification", 0);
+            
+            var ADMIN_USER = localStorage.getItem("ADMIN_USER");
+            console.log(ADMIN_USER);            
+            
+            if(ADMIN_USER===1 || ADMIN_USER==='1'){
+                $("#goToAdmin").show();
+            }else{
+                $("#goToAdmin").hide();
+            }
 
             StartDbCount = 0;
             checkVal=0;
@@ -58,6 +68,7 @@ app.Activities = (function () {
             getDataFromDB();                        
             countVal=0;
             clickOnShowMore = 0;
+            
         };        
             
         var getDataFromDB = function(){
@@ -547,13 +558,15 @@ app.Activities = (function () {
                             var anay_UserName = localStorage.getItem("username");           
                             if (data[0]['status'][0].Msg ==='No Orgnisation to manage') {     
                                 $("#moreOption").show();
-                                $("#goToAdmin").hide();                                
+                                $("#goToAdmin").hide();
+                                localStorage.setItem("ADMIN_USER",0);
                                 localStorage.setItem("usernameAnalytic", anay_UserName);                             
                                 var db = app.getDb();
                                 db.transaction(delAdminOrgDataDB, app.errorCB, app.successCB);                          
                             }else if (data[0]['status'][0].Msg==='Success') {
                                 $("#moreOption").hide();
                                 $("#goToAdmin").show();
+                                localStorage.setItem("ADMIN_USER",1);
                                 anay_UserName = anay_UserName+' A';                
                                 localStorage.setItem("usernameAnalytic", anay_UserName);
                             }
@@ -784,22 +797,24 @@ app.Activities = (function () {
             
                 fileTransfer.download(attachedVid, fpVid, 
                                       function(entry) {                                      
-                                          if (device_type==="AP") {
+                                          //if (device_type==="AP") {
                                               //window.open(fpVid, "_blank", 'EnableViewPortScale=yes');
-                                          }else {
+                                          //}else {
                                               //window.plugins.fileOpener.open(fpVid);
-                                          }                                      
+                                          //}                                      
                                           $("#video_Div_" + newNotiFi).hide();
                                           $("#downloadPer_" + newNotiFi).hide();   
                                           countVal = 0;
                                           document.getElementById("progressValue_" + newNotiFi).innerHTML = 0;
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                       },
     
                                       function(error) {
                                           countVal = 0;
                                           $("#video_Div_" + newNotiFi).hide();
                                           $("#downloadPer_" + newNotiFi).hide();
-                                          document.getElementById("progressValue_" + newNotiFi).innerHTML = 0;                                      
+                                          document.getElementById("progressValue_" + newNotiFi).innerHTML = 0; 
+                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                       }
                     );   
             }
@@ -847,14 +862,16 @@ app.Activities = (function () {
             fileTransfer.download(attachedImg, fpImg, 
                                   function(entry) {
                                       $("#img_Div_" + imgNotiFi).hide();
-                                      if (device_type==="AP") {
+                                      /*if (device_type==="AP") {
                                           window.open(fpImg, "_blank" , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
                                       }else {
                                           window.plugins.fileOpener.open(fpImg);
-                                      }
+                                      }*/
+                                      window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                   },    
                                   function(error) {
                                       $("#img_Div_" + imgNotiFi).hide();
+                                      window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
                                   }
                 );                
           }    
