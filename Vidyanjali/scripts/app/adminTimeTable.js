@@ -19,7 +19,7 @@ app.adminTimeTable = (function () {
         var exportInnerPage=false;
         var historyPath=[];
         var parentDir;
-        var fileTransfer;
+        //var fileTransfer;
         var sdcardPath;
         
         var init = function() {
@@ -475,7 +475,7 @@ app.adminTimeTable = (function () {
             pbTimeTable.animate(0); 
             $("#sendTimeTableLoader").hide();
             $("#sendEditTimeTableLoader").hide();
-            fileTransfer.abort(); 
+            ft.abort(); 
             $("#admTimeTable-upload-file").data("kendoMobileModalView").close();                        
           }else{
                 if (!app.checkSimulator()) {
@@ -579,10 +579,10 @@ app.adminTimeTable = (function () {
                 var attachedImg = imgFile;
                 //console.log(attachedImg +"||"+ fp);
                 countVal=0;  
-                fileTransfer = new FileTransfer();  
+                ft = new FileTransfer();  
                 $("#admTimeTable-upload-file").data("kendoMobileModalView").open();
 
-                fileTransfer.onprogress = function(progresstimeTable) {
+                ft.onprogress = function(progresstimeTable) {
                     if (progresstimeTable.lengthComputable) {
                         var perc = Math.floor(progresstimeTable.loaded / progresstimeTable.total * 100);
                         //pbTimeTable.value(perc);
@@ -599,7 +599,7 @@ app.adminTimeTable = (function () {
                     }
                 };
               
-                        fileTransfer.download(attachedImg, fp, 
+                        ft.download(attachedImg, fp, 
                                       function(entry) {                                                                                                                      
                                           countVal = 0;                                               
                                           $("#admTimeTable-upload-file").data("kendoMobileModalView").close();
