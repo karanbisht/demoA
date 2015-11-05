@@ -346,6 +346,8 @@ app.groupDetail = (function () {
         
         var orgMemberShow = function(e) {
             $(".km-scroll-container").css("-webkit-transform", "");              
+            $("#popover-orgMember").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow"); 
             var organisationID = localStorage.getItem("orgSelectAdmin");         
             $("#groupMember-listview").hide();
             $("#progressAdminOrgMem").show();
@@ -474,7 +476,7 @@ app.groupDetail = (function () {
         var showGroupToDelete = function() {            
             
              $(".km-scroll-container").css("-webkit-transform", "");
-             $("#deleteMemberData").removeClass("km-list");
+             //$("#deleteMemberData").removeClass("km-list");
              $(".km-filter-form").hide();
             
             
@@ -489,7 +491,7 @@ app.groupDetail = (function () {
             });
             
             $('#deleteMemberData').data('kendoMobileListView').refresh();          
-            $("#deleteMemberData").removeClass("km-list");
+            //$("#deleteMemberData").removeClass("km-list");
             
             //console.log("---------------------GROUP DATA----------------");
             /*$("#deleteMemberData").kendoListView({
@@ -691,9 +693,10 @@ app.groupDetail = (function () {
                             }else {
                                 app.showAlert(app.MEMBER_DELETED_MSG, "Notification");  
                             }                               
-                            $("#deleteMemberLoader").hide();                            
-                            app.mobileApp.navigate('#groupMemberShow');
-                            refreshOrgMember();
+                            $("#deleteMemberLoader").hide();  
+                            app.mobileApp.navigate('views/orgMemberPage.html');
+                            //app.mobileApp.navigate('#groupMemberShow');
+                            //refreshOrgMember();
                         }else if (deleteGroupData.status[0].Msg==="You don't have access") {                                                        
                             if (!app.checkSimulator()) {
                                 window.plugins.toast.showShortBottom(app.NO_ACCESS);  
@@ -801,6 +804,8 @@ app.groupDetail = (function () {
         var editMemberShow = function(e) {
             
             $(".km-scroll-container").css("-webkit-transform", "");  
+            $('.km-popup-arrow').addClass("removeArrow");
+
             $("#adminEditCustomer").show();            
             $("#editOrgMemberContent").hide();
             var largeImage = document.getElementById('editMemberPhoto');

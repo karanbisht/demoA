@@ -1,4 +1,4 @@
- <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="default" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow" data-transition="slide"> 
+ <div data-role="view" id="profileDiv"  data-id="innerActivity" data-layout="default" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.userProfileInt" data-show="app.OragnisationList.userProfileShow"> 
                 <div data-role="header">         
                       <div data-role="navbar">     
                          <span>Profile</span>
@@ -12,7 +12,7 @@
                 </div>                
                 <ul data-role="listview" id="profileContent" data-style="inset" data-type="group">                
                     <div style="vertical-align:middle; text-align:left;background-color:#f3f3f3;border-radius:3px 3px 0px 0px;">
-                        <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#profilePicUpload" >                            
+                        <a style="background:transparent; border:none;margin:0px;" data-role="button" data-align="center" href="#profilePicUpload" data-rel="actionsheet">                         
                             <img id="profilePhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror=null;this.src='styles/images/profile-img1.png';"/>                                                         
                             <div class="profilePicBack" id="changePImgDiv">
                                  <span style="z-index:1;text-align:center;">Change</span>
@@ -41,16 +41,13 @@
                     <div id="orgData" style="background-color:#f3f3f3;padding:10px;border-radius:3px;"> </div>
                 </ul>                
                 <ul data-role="actionsheet" id="profilePicUpload">
-                    <li class="km-actionsheet-title"></li>
+                    <li class="km-actionsheet-title">Choose an action</li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: takeProfilePhoto">Take Photo</a>
+                        <a href="#" data-role="button" data-bind="click: takeProfilePhoto" style="text-align:left;"><span class="act_photo"></span><span style="margin-top:-20px;">Photo</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: selectProfilePhoto">Album</a>
-                    </li>
-                    <!--<li>
-                        <a href="#" data-role="button" data-bind="click: resetProfilePhoto">Reset</a>
-                    </li>-->
+                        <a href="#" data-role="button" data-bind="click: selectProfilePhoto" style="text-align:left;"><span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span></a>
+                    </li>                    
                 </ul>
      </div>
  </div>

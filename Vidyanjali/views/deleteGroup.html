@@ -3,42 +3,28 @@
         <div data-role="navbar">
             Delete Groups
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.GroupList.goToGroupList"></a>
-            <!--<a style="background:transparent; border:none;" data-icon="delete" data-align="right" data-role="button" data-click="app.GroupList.deleteGroupFunc"></a>-->                    
-
             <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-click="app.GroupList.deleteGroupFunc"><img src="styles/images/delete.png" style="background-position: .65em 50%;width:100%;height:90%"/></a>
         </div>
     </div>    
     <div class="loader" id="deleteGroupLoader" style="display:none;">
             <div class="ball"></div>
     </div>
-
-    <!--<div id="example">
-        <ul id="deleteGroupData" data-template="Group-Delete-template" style="border:none;padding:10px;" ></ul>
-    </div>-->    
-      <ul  id="deleteGroupData" class="ulClassCheck" data-role="listview" data-bind="source: GroupList" style="border:none;"></ul>
-    <!--<li class="defineSaveButton" data-role="touch" data-bind="events: { tap: deleteGroupFunc }">
-        Delete Group
-    </li>-->
+    
+    <ul data-type="group" id="deleteGroupData" data-role="listview" data-bind="source: GroupList" style="margin:10px;"></ul>
 </div>
 
-<!--<script type="text/x-kendo-template" id="Group-Delete-template">   
-  #$(".ulClassCheck").removeClass("km-list");#        
-    <li class="deleteGroupShow">
-        <label>
-            <input type="checkbox" class="largerCheckbox" value="${groupID}"data-bind="checked:check" />#:groupName#
-         </label>
-    </li>
-</script>-->
-
-
   <script type="text/x-kendo-template" id="Group-Delete-template"> 
-    #$(".ulClassCheck").removeClass("km-list");#        
-     #if(groupID!==''){#  
-        <div class="deleteGroupShow">
+    #if(groupID!==''){#  
+        <label class="km-listview-label">
+               <input type="checkbox" value="${groupID}" class="km-widget km-icon km-check" data-bind="checked:check" />
+                #:groupName#
+        </label>
+     
+        <!--<div class="deleteGroupShow">
             <label>
                 <input type="checkbox" class="largerCheckbox" value="${groupID}" data-bind="checked:check"/> #:groupName#
             </label>
-        </div> 
+        </div>--> 
    #}else{#    
        <div class="cf" style="margin:10px;">
             <div class="user-avatar-img-show"></div>

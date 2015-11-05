@@ -54,6 +54,9 @@ app.GroupList = (function () {
             $("#groupFooter").hide();
                   
             $(".km-scroll-container").css("-webkit-transform", "");
+            $("#popover-orgGroup").removeClass("km-widget km-popup");
+            $('.km-popup-arrow').addClass("removeArrow");
+            
             //var tabStrip = $("#addGroupTabStrip").data("kendoMobileTabStrip");
             //tabStrip.clear();
   
@@ -538,7 +541,7 @@ app.GroupList = (function () {
                                                 });*/
             
              $(".km-scroll-container").css("-webkit-transform", "");
-             $("#deleteGroupData").removeClass("km-list");
+             //$("#deleteGroupData").removeClass("km-list");
              $(".km-filter-form").hide();
             
                
@@ -553,7 +556,7 @@ app.GroupList = (function () {
             
             
             $('#deleteGroupData').data('kendoMobileListView').refresh();          
-            $("#deleteGroupData").removeClass("km-list");
+            //$("#deleteGroupData").removeClass("km-list");
             
         }
                 

@@ -106,11 +106,11 @@
     clear: both;
 }
 .cf-clickEffect:active { 
-  background: #D4D4D4;   
+  background: #E0E0E0;   
 }
 
 .li_clickEffect:active { 
-  background: #D4D4D4;   
+  background: #E0E0E0;   
 }
 
 .km-flat .km-tabstrip,
@@ -138,6 +138,14 @@
     /*background: #3598db;*/
     background: #7FBF4D;
 }
+
+
+.km-flat .km-actionsheet{background-color:#ffffff;color:#2A3144;}
+.km-flat .km-actionsheet>li>a {background: #ffffff;color:#2A3144;margin-top:0px;}
+.km-actionsheet-cancel{text-align:center;}
+.km-tablet .km-flat .km-actionsheet-wrapper {background-color: #ffffff;color:#2A3144;box-shadow: 1px 1px 10px 1px #D1D1D1;}
+
+
 
 /*#Aptifi.km-flat,*/
 #Aptifi.km-flat .km-navbar
@@ -338,6 +346,8 @@ input:focus, textarea:focus {
     font-size: 1rem;
     border-radius:3px;    
     margin: 10px auto 10px auto; 
+    padding-right:8px;
+    padding-left:8px;
     border: solid 1px #E5E5E5;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -375,7 +385,7 @@ input:focus, textarea:focus {
 }
 
 .clickEffect:active { 
-    background: #D4D4D4;    
+    background: #E0E0E0;    
 }
 
 
@@ -549,6 +559,104 @@ input:focus, textarea:focus {
     display: inline-block;
     text-align: center;
     border:none;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+
+#Aptifi .act_photo
+{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/act_photo.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin-right:10px;
+    margin-top:-5px;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+#Aptifi .act_gallery
+{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/act_gallery.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin-right:10px;
+    margin-top:-5px;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+
+#Aptifi .act_close
+{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/close.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin-right:10px;
+    margin-top:-5px;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+#Aptifi .act_video
+{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/act_video.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin-right:10px;
+    margin-top:-5px;
+    border-width:0px;
+    vertical-align: middle; 
+}
+
+
+#Aptifi .act_attach
+{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background-size: cover; 
+    background-position: center center; 
+    background-repeat: no-repeat; 
+    background-image: url('images/folder.png');
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+    border:none;
+    margin-right:10px;
+    margin-top:-5px;
     border-width:0px;
     vertical-align: middle; 
 }
@@ -1180,7 +1288,7 @@ input:focus, textarea:focus {
 }
 
 .notiListbelow-List:active { 
-    background: #D4D4D4;    
+    background: #E0E0E0;    
 }
 
 .eventImgClass
@@ -1217,7 +1325,7 @@ input:focus, textarea:focus {
 }
 
 .calendarEvent-List:active {
-    background: #D4D4D4;
+    background: #E0E0E0;
 }
 
 
@@ -1298,9 +1406,7 @@ input:focus, textarea:focus {
     margin-left:0px;
     margin-bottom:5px;
     color:rgb(122,184,77);
-    font-size: 1.5em;
-    font-weight:bold;
-    
+    font-size: 1rem;    
 }
 
 #Aptifi .orgList-content
@@ -1537,8 +1643,6 @@ white-space: nowrap;
     text-overflow: ellipsis;
     white-space: pre-line;
 }
-
-
 .user-comment-List
 {
     text-align:right;
@@ -1550,8 +1654,6 @@ white-space: nowrap;
     background-repeat: no-repeat;
 
 }
-
-
 .admin-comment-content
 { 
     background-color: rgb(242, 242, 242);
@@ -1562,11 +1664,75 @@ white-space: nowrap;
     text-overflow: ellipsis;
     white-space: pre-line;
 }
-
-
-
-
 .admin-comment-List
+{
+    position: relative;
+    padding-right: 3em;
+    font-size: .85rem; 
+    background-image: url('images/arrow.png');
+    background-position:left;
+    background-repeat: no-repeat;
+}
+
+
+
+
+.user-oneTone-content
+{
+    text-align:left;
+    background-color: rgb(217, 244, 195);
+    padding: 0px 10px 10px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: pre-line;
+}
+
+
+.user-oneTone-Imgcontent
+{
+    background-color: rgb(217, 244, 195);
+    padding: 10px 10px 10px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+
+
+.user-oneTone-List
+{
+    text-align:right;
+    padding-left: 3em;
+    padding-right: 10px;
+    font-size: .85rem;
+    background-image: url('images/arrowR.png');
+    background-position:right;
+    background-repeat: no-repeat;
+}
+
+
+.admin-oneTone-content
+{ 
+    background-color: rgb(242, 242, 242);
+    margin-left:10px;
+    padding: 0px 10px 10px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: pre-line;
+}
+
+.admin-oneTone-Imgcontent
+{ 
+    background-color: rgb(242, 242, 242);
+    margin-left:10px;
+    padding: 10px 10px 10px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+
+.admin-oneTone-List
 {
     position: relative;
     padding-right: 3em;
@@ -2140,9 +2306,16 @@ background: #fff none;
 
 .dateValue
 {
-    width: 90%;
+    width: 70%;
     float: left;
-    font-size:.8rem;
+    font-size:.8rem;    
+}
+
+.shareDataValue{
+    width: 30px;
+    float: right;
+    margin:-10px 0px 0px 0px;
+    font-size:.8rem;    
 }
 
 
@@ -2174,6 +2347,13 @@ background: #fff none;
     float:right;*/
 }
 
+#oneToOneChat-listview > li
+{
+    border: none; 
+    /*display: inline-block;
+    float:right;*/
+}
+
 #activities-listview > li
 {
     border: none;
@@ -2185,6 +2365,11 @@ background: #fff none;
 #activities-listview > li:first-child
 {
   margin-top:-5px;
+}
+
+#groupAdmin-listview > li:first-child
+{
+    margin-top:-5px;    
 }
 
 #eventCalendarList > li 
@@ -2826,13 +3011,13 @@ float:right;
 }
 
 .manageOrgDiv:active { 
-    background: #D4D4D4;    
+    background: #E0E0E0;    
 }
 
 
-.manageOrgDivAdmin:active { 
-    background: #D4D4D4;    
-}
+/*.manageOrgDivAdmin:active { 
+    background: #E0E0E0;    
+}*/
 
 
 
@@ -2866,7 +3051,7 @@ float:right;
 }
 
 .sendNotiSubMenu:active { 
-    background: #D4D4D4;    
+    background: #E0E0E0;    
 }
 
 .removeArrow{
@@ -2906,8 +3091,11 @@ float:right;
 /*.k-datepicker .k-header html .km-pane-wrapper .k-header{ background-color: #7FBF4D; }*/
  
 .k-calendar .k-footer { background-color: #7FBF4D; }
+.k-calendar .k-footer .k-link.k-nav-today{color: #7FBF4D;}
+
 .k-calendar .k-header { background-color: #7FBF4D; }
-.k-calendar .k-header .k-link.k-nav-prev, .k-calendar .k-header .k-link.k-nav-next,.k-calendar .k-header .k-link .k-nav-fast {background:transparent}
+
+.k-calendar .k-header .k-link.k-nav-prev, .k-calendar .k-header .k-link.k-nav-next,.k-calendar .k-header .k-link .k-nav-fast {background:transparent; color: #7FBF4D;}
 
 .k-datepicker{border-radius:3px;vertical-align: middle;width:48%!important;-webkit-appearance: none;-moz-appearance: none;box-shadow: none !important;}
 .k-timepicker{border-radius:3px;vertical-align: middle;width:48%!important;-webkit-appearance: none;-moz-appearance: none;box-shadow: none !important;}
@@ -3002,6 +3190,19 @@ float:right;
     width: 75px;
     margin-left: 0px;
 }
+
+
+#side-connectUs-icon
+{
+    background-color: #2D344B; 
+    background: url("images/sideMenu/connect2us.png");
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+    height: 75px;
+    width: 75px;
+    margin-left: 0px;
+}
+
 
 /*#side-org-icon:active
 {
@@ -3465,7 +3666,7 @@ float:right;
     overflow: hidden;    
     border-radius: 3px;
     border-color: #E5E5E5;
-    padding:5px 5px 0px 5px;
+    padding:5px 8px 0px 8px;
     margin-top:10px;
     margin-bottom:10px;
 }
@@ -3480,7 +3681,7 @@ float:right;
     overflow: hidden;    
     border-radius: 3px;
     border-color: #E5E5E5;
-    padding:5px 5px 0px 5px;
+    padding:5px 8px 0px 8px;
     margin-top:10px;
     margin-bottom:10px;
 
@@ -3495,8 +3696,7 @@ float:right;
     min-height: 50px;
     border-radius: 3px;
     border-color: #E5E5E5;
-    overflow: hidden;
-    
+    overflow: hidden;    
     /*background-color:rgb(217,244,195);*/
     font-size: 15px;
 }
@@ -3511,7 +3711,7 @@ float:right;
     -webkit-appearance: none;
     -moz-appearance: none;
     box-shadow: none !important;
-
+    font-size:14px;
 }
 
 
@@ -3557,7 +3757,7 @@ float:right;
 }
 
 /*.defineSaveButton:active { 
-    background: #D4D4D4;    
+    background: #E0E0E0;    
 }*/
 
 
@@ -3928,8 +4128,8 @@ float:right;
 /*#admTimeTable-upload-file.modal-mess-Popup { padding: 0;width: 98%;border-radius:3px;margin: 0 0 0 1.3%;height:20%;}*/
 
 
-#timeTable-upload-file.modal-mess-Popup ,#tabstrip-upload-file.modal-mess-Popup , #event-upload-file.modal-mess-Popup , #sendNotifcation-upload-file.modal-mess-Popup ,#admTimeTable-upload-file.modal-mess-Popup {padding:10;width:100%;border-radius:3px;margin:auto;height:100px;text-align:center;}
-.km-flat #timeTable-upload-file .km-content , .km-flat #tabstrip-upload-file .km-content , .km-flat #event-upload-file .km-content , .km-flat #sendNotifcation-upload-file .km-content , .km-flat #admTimeTable-upload-file .km-content {color: #ffffff;background-color:transparent;}
+#connect-upload-file.modal-mess-Popup ,#timeTable-upload-file.modal-mess-Popup ,#tabstrip-upload-file.modal-mess-Popup , #event-upload-file.modal-mess-Popup , #sendNotifcation-upload-file.modal-mess-Popup ,#admTimeTable-upload-file.modal-mess-Popup {padding:10;width:100%;border-radius:3px;margin:auto;height:100px;text-align:center;}
+.km-flat #connect-upload-file .km-content ,.km-flat #timeTable-upload-file .km-content , .km-flat #tabstrip-upload-file .km-content , .km-flat #event-upload-file .km-content , .km-flat #sendNotifcation-upload-file .km-content , .km-flat #admTimeTable-upload-file .km-content {color: #ffffff;background-color:transparent;}
 
 
 

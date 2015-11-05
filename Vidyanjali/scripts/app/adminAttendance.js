@@ -142,7 +142,7 @@ app.attendance = (function () {
                 },
             });                
              $('#attendance-listview').data('kendoMobileListView').refresh();          
-             $("#attendance-listview").removeClass("km-list");            
+             //$("#attendance-listview").removeClass("km-list");            
         };
                        
         var showNoGroupDataInTemplate = function(){           
@@ -159,7 +159,7 @@ app.attendance = (function () {
                             dataSource: comboGroupListDataSourceNo,                                        
                             template: kendo.template($("#attendanceTemplate").html())
             });                            
-            $("#attendance-listview").removeClass("km-list");            
+            //$("#attendance-listview").removeClass("km-list");            
         };
                  
         var backToOrgDetail = function() {

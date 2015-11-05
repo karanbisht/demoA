@@ -33,17 +33,13 @@ app.subGroupDetail = (function () {
         };
            
         var showSubGroupNotification = function() {
-
             app.analyticsService.viewModel.trackFeature("User navigate to Group Notification in Admin");            
-
             app.mobileApp.navigate('views/subGroupNotificationList.html?organisationID=' + organisationID + '&group_ID=' + groupID);
             //app.mobileApp.navigate('#groupNotificationShow');
         };   
                 
-        var groupMemberData = [];
-        
-         var showSubGroupMembers = function() {
-            
+        var groupMemberData = [];        
+         var showSubGroupMembers = function() {            
              if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
@@ -226,7 +222,7 @@ app.subGroupDetail = (function () {
                                                         dataSource: groupMemberData 
                                                     });*/           
              $(".km-scroll-container").css("-webkit-transform", "");
-             $("#deleteSubMemberData").removeClass("km-list");
+             //$("#deleteSubMemberData").removeClass("km-list");
              $(".km-filter-form").hide();
             
                
@@ -241,7 +237,7 @@ app.subGroupDetail = (function () {
             
             
             $('#deleteSubMemberData').data('kendoMobileListView').refresh();          
-            $("#deleteSubMemberData").removeClass("km-list");
+            //$("#deleteSubMemberData").removeClass("km-list");
         }
         
         var manageGroup = function() {
@@ -347,7 +343,7 @@ app.subGroupDetail = (function () {
             //$("#groupAddMember").hide();
             
             $("#addMemberData-listview").hide();
-            $("#addMemberData-listview").removeClass("km-list");
+            //$("#addMemberData-listview").removeClass("km-list");
             $(".km-filter-form").hide();
             
             
@@ -485,7 +481,7 @@ app.subGroupDetail = (function () {
 
              $("#addMemberData-listview").show();
              $('#addMemberData-listview').data('kendoMobileListView').refresh();          
-             $("#addMemberData-listview").removeClass("km-list");
+             //$("#addMemberData-listview").removeClass("km-list");
                         
         };
         

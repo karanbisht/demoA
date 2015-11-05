@@ -83,12 +83,13 @@ app.registration = (function () {
                                                                        schema: {
                         data: function(data) {
                             //console.log(data);
-                            //console.log(JSON.stringify(data));
+                            console.log(JSON.stringify(data));
                             return [data];
                         }
                     },
                                                                        error: function (e) {
                                                                            //apps.hideLoading();
+                                                                           console.log(JSON.stringify(e));
                                                                            $("#progressRegister").hide();
                                                                            //console.log(JSON.stringify(e));
                                                                            
@@ -148,13 +149,13 @@ app.registration = (function () {
                                                                                 schema: {
                                     data: function(data) {
                                         //console.log(data);
-                                        //console.log(JSON.stringify(data));
+                                        console.log(JSON.stringify(data));
                                         return [data];
                                     }
                                 },
                                                                                 error: function (e) {
                                                                                     //apps.hideLoading(); 
-                                                                                    //console.log(JSON.stringify(e));                                                                                    
+                                                                                    console.log(JSON.stringify(e));                                                                                    
                                                                                     $("#progressRegister").hide();
                                                                                     app.mobileApp.pane.loader.hide();
                                                                               
@@ -186,7 +187,37 @@ app.registration = (function () {
                                         $("#progressRegister").hide();
 
                                         clickforRegenerateCodeR();   
-                                    }
+                                    }else if(data[0]['status'][0].Msg==='Success'){
+                                        account_Id = data[0]['status'][0].ProfileInfo[0].account_id;                                  
+                                        localStorage.setItem("selectedOrgId", data[0]['status'][0].JoinedOrg.org_id[0]);
+                                        localStorage.setItem("ACCOUNT_ID", account_Id);
+                                        localStorage.setItem("orgBagCount", 0);
+                                        localStorage.setItem("selectedOrgName", data[0]['status'][0].JoinedOrg.org_name[0]);
+                                        localStorage.setItem("selectedOrgLogo", data[0]['status'][0].JoinedOrg.org_logo[0]);                                
+                                        localStorage.setItem("selectedOrgDesc", data[0]['status'][0].JoinedOrg.org_desc[0]);
+                                        localStorage.setItem("selectedOrgRole", data[0]['status'][0].JoinedOrg.role[0]);
+                                        localStorage.setItem("selectedOrgDOJ", data[0]['status'][0].JoinedOrg.joined_on[0]);
+                                
+                                
+                                        if (data[0]['status'][0].JoinedOrg.length!==0) {
+                                            var roleLength = data[0]['status'][0].JoinedOrg.role.length;
+                                            for (var i = 0;i < roleLength;i++) {
+                                                userType.push(data[0]['status'][0].JoinedOrg.role[i]); 
+                                            }
+                                        }else {
+                                            JoinedOrganisationYN = 0;
+                                        } 
+                          
+                                        if (data[0]['status'][0].JoinedOrg.length!==0) {
+                                            //saveOrgInfo(UserOrgInformation);  
+                                        }
+                     
+                                            UserProfileInformation = data[0]['status'][0].ProfileInfo[0];
+                          
+                                            //db = app.getDb();
+                                            //db.transaction(deletePrevData, app.errorCB,PrevsDataDeleteSuccess);
+                                            saveProfileInfo(UserProfileInformation);                        
+                               }
                             });            
                         }
                     });

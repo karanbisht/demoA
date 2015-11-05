@@ -77,30 +77,13 @@ app.sendNotification = (function () {
         };
                                        
         var show = function(e) {
-              
-            /*$("#notificationType").kendoComboBox({
-                                                     dataTextField: "text",
-                                                     dataValueField: "value",
-                                                     dataSource: [
-                    { text: "Promotion", value: "P" },
-                    { text: "Invitation", value: "V" },
-                    { text: "Information", value: "I" },
-                    { text: "Reminder", value: "R" },
-                    { text: "Alert", value: "A" }
-                ],
-                                                     filter: "contains",
-                                                     placeholder: "Select Type",
-                                                     suggest: true
-                                                 });
-            
-             var input = $("#notificationType").data("kendoComboBox").input;
-             input.attr("readonly", "readonly");*/
             
             $(".km-scroll-container").css("-webkit-transform", "");
+            $('.km-popup-arrow').addClass("removeArrow");
             $('#notificationDesc').css('height', '40px');
             $("#notificationType option:selected").removeAttr("selected");
-            $("#scheduleDatePicker").parent().css('width', "160px");
-            $("#scheduleTimePicker").parent().css('width', "160px");
+            //$("#scheduleDatePicker").parent().css('width', "160px");
+            //$("#scheduleTimePicker").parent().css('width', "160px");
             $("#scheduleDatePicker").removeClass("k-input");
             $("#scheduleTimePicker").removeClass("k-input");
 

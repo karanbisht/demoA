@@ -9,22 +9,24 @@
 
     <div>
         <ul id="allAdminManageList" data-role="listview" style="padding:0px 10px 10px 10px;">
-
             <li id="adminOrgNoti-icon" style="padding-top:10px;">
                 <div data-role="touch" data-bind="events: { tap: showSubGroupNotification }">
                     <span class="adminLiText">Group Messages</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
                 </div>
             </li>
 
             <li id="adminOrgMem-icon">
                 <div data-role="touch" data-bind="events: {tap: showSubGroupMembers}">
                     <span class="adminLiText">Group Members</span>
+                    <span class="km-icon km-details" style="float:right;"></span>  
                 </div>
             </li>
 
             <li id="adminOrgUpd-icon">
                 <div data-role="touch" data-bind="events: {tap: showUpdateSubGroupView}">
                     <span class="adminLiText">Update Group</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
                 </div>
             </li>
 
@@ -105,22 +107,13 @@
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
             <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.subGroupDetail.addMemberToGroupFunc"></a>
         </div>
-    </div>    
-    
+    </div>        
     <div class="loader" id="addSGMemberLoader" style="display:none;">
             <div class="ball"></div>
-    </div>
-
-    <!--<div id="groupAddMemberList">
-        <ul id="addMemberData-listview" data-template="Sub-Member-Add-template" style="border:none;padding:10px;"></ul>
-    </div>-->
-    
-    <ul  id="addMemberData-listview" class="ulClassCheck" data-role="listview" data-bind="source: subGroupDetail" style="border:none;"></ul>
-
-    <!--<li id="groupAddMember" class="defineSaveButton" data-role="touch" data-bind="events: { tap: addMemberToGroupFunc }">
-        Add
-    </li>-->
+    </div>    
+    <ul  id="addMemberData-listview" data-type="group" data-role="listview" data-bind="source: subGroupDetail" style="margin:10px;"></ul>
 </div>
+
 
 <div data-role="view" id="removeMemberFromSubGroup" data-id="innerActivity"  data-layout="innerPages" class="activities-view" data-model="app.subGroupDetail" data-show="app.subGroupDetail.showDeleteGroupMember">
     <div data-role="header">
@@ -135,42 +128,22 @@
     <div class="loader" id="deleteSGMemberLoader" style="display:none;">
             <div class="ball"></div>
     </div>
-
-    <!--<div id="example">
-        <div id="deleteSubMemberData" style="border:none;padding:10px;" data-template="sub-Member-Delete-template"></div>
-    </div>-->    
-    <ul  id="deleteSubMemberData" class="ulClassCheck" data-role="listview" data-bind="source: subGroupDetail" style="border:none;"></ul>
-
-    <!--<li class="defineSaveButton" data-role="touch" data-bind="events: { tap: removeMemberClick}">
-        Delete
-    </li>-->
+    <ul  id="deleteSubMemberData"  data-role="listview" data-type="group" data-bind="source: subGroupDetail" style="margin:10px;"></ul>
 </div>
 
-<!--<script  type="text/x-kendo-template" id="sub-Member-Delete-template">
-    <div class="deleteGroupShow">
-        <label >
-            <input type="checkbox" class="largerCheckbox" value="${customerID}" />${first_name} ${last_name}
-        </label>
-    </div>
-</script>
-    
-<script id="Sub-Member-Add-template" type="text/x-kendo-template">
-    <li class="deleteGroupShow">
-        <label >
-            <input type="checkbox" class="largerCheckbox" value="${customerID}" />${first_name} ${last_name}
-        </label>
-    </li>	       
-</script>-->
 
-  <script type="text/x-kendo-template" id="sub-Member-Delete-template"> 
-    #$(".ulClassCheck").removeClass("km-list");#  
-      
-     #if(orgID!=='0'){#  
-        <div class="deleteGroupShow">
+  <script type="text/x-kendo-template" id="sub-Member-Delete-template">       
+     #if(orgID!=='0'){#
+
+        <label class="km-listview-label">
+               <input type="checkbox" value="${customerID}" class="km-widget km-icon km-check" data-bind="checked:check" />
+                #:first_name#  #:last_name#
+        </label>
+        <!--<div class="deleteGroupShow">
             <label>
                 <input type="checkbox" class="largerCheckbox" value="${customerID}" data-bind="checked:check"/> #:first_name#  #:last_name#
             </label>
-        </div> 
+        </div>--> 
    #}else{#    
        <div class="cf" style="margin:10px;">
             <div class="user-avatar-img-show"></div>
@@ -183,14 +156,18 @@
 
 
   <script type="text/x-kendo-template" id="Sub-Member-Add-template"> 
-    #$(".ulClassCheck").removeClass("km-list");#  
-      
      #if(orgID!=='0'){#  
-        <div class="deleteGroupShow">
+
+        <label class="km-listview-label">
+               <input type="checkbox" value="${customerID}" class="km-widget km-icon km-check" data-bind="checked:check" />
+                #:first_name#  #:last_name#
+        </label>
+
+        <!--<div class="deleteGroupShow">
             <label>
                 <input type="checkbox" class="largerCheckbox" value="${customerID}" data-bind="checked:check"/> #:first_name#  #:last_name#
             </label>
-        </div> 
+        </div>--> 
    #}else{#    
        <div class="cf" style="margin:10px;">
             <div class="user-avatar-img-show"></div>

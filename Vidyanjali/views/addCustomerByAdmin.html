@@ -13,8 +13,7 @@
     <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
                         <!--a style="background:transparent; border:none;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >
                             <img id="addMemberPhoto" src="" height="100" width="100" style="border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;"/>
-                        </a>-->
-        
+                        </a>-->        
                         <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >                            
                             <img id="addMemberPhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror=null;this.src='styles/images/profile-img1.png';"/>                                                         
                             <div class="profilePicBack">
@@ -48,12 +47,12 @@
     
     </div>
      <ul data-role="actionsheet" id="adminAddMemberprofilePic">
-                    <li class="km-actionsheet-title"></li>
+                    <li class="km-actionsheet-title">Choose an action</li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: takeMemberPhoto">Take Photo</a>
+                        <a href="#" data-role="button" data-bind="click: takeMemberPhoto" style="text-align:left;"><span class="act_photo"></span><span style="margin-top:-20px;">Photo</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: selectMemberPhoto">Album</a>
+                        <a href="#" data-role="button" data-bind="click: selectMemberPhoto" style="text-align:left;"><span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span></a>
                     </li>
                     <!--<li>
                         <a href="#" data-role="button" data-bind="click: resetMemberPhoto">Reset</a>

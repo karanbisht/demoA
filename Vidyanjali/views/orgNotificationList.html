@@ -3,41 +3,28 @@
            <div data-role="navbar">      
                Sent Messages
                <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a> 
-               <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
-
                <a id="progressAdminNoti" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>               
            </div>
-	  </div>     
-     
-      <!--<div class="loader" id="progressAdminNoti" style="display:none;">
-                <div class="ball"></div>
-      </div>-->     
+	  </div>          
 	  <div>
-    	<span id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate"></span>
+    	<span id="admin-noti-listview" data-style="inset" data-role="listview" data-template="adminNotiTemplate" data-bind="source: orgListView"></span>
       </div>      
-      <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>     
-    
-     <ul data-role="actionsheet" id="adminNotiShareAction">
+      <div id="showMoreEventBtnOrg" class="showMore" data-role="button" data-click="app.orgListView.showMoreButtonPress">LOAD MORE</div>         
+      <!--<ul data-role="actionsheet" id="adminNotiShareAction">
                     <li class="km-actionsheet-title">Share</li>
-                    <!--<li>
-                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
-                    </li>-->
                     <li> 
                         <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
                     </li>
                     <li>
                         <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
                     </li>
-                    <!--<li>
-                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
-                    </li>-->                     
                     <li> 
                         <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
                     </li>
                     <li>
                         <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
                     </li>
-     </ul>
+      </ul>-->
  </div>
 
 	<script type="text/x-kendo-template" id="adminNotiTemplate" >
@@ -47,9 +34,9 @@
                     #if(date!==0 && date!=='0' ){#
                         <div class="dateDisplay">                  
                               <span id="activityTemplateDate" class="dateValue">${date}</span> 
-                              <span></span>
+                              <span class="shareDataValue"><a style="background:transparent; border:none;float:right;right:0;margin-right:0px;" data-align="right" data-role="button" data-click="app.shareMsgContent"><img src="styles/images/share.png"/></a></span>
                         </div>
-                        <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#adminNotiShareAction"></a>
+                        <!--<a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#adminNotiShareAction"></a>-->
                         <br/>
                    #}#
        		    

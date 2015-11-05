@@ -48,7 +48,6 @@ app.adminLogin = (function () {
                 }else {           
                     $("#progress1").show();
                     //document.getElementById('OrgLogin').style.pointerEvents = 'none';
-             						
                     password = app.urlEncode(password);
                     var jsonDataLogin = {"username":usernameMob ,"password":password}       
                     var dataSourceLogin = new kendo.data.DataSource({
@@ -62,12 +61,12 @@ app.adminLogin = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                //console.log(data);
+                                console.log(JSON.stringify(data));
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            //console.log(JSON.stringify(e));
+                                                                            console.log(JSON.stringify(e));
                                                                             $("#progress1").hide();
 
                                                                             //document.getElementById('OrgLogin').style.pointerEvents = 'auto'; 

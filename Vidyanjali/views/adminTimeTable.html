@@ -7,9 +7,6 @@
                  <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminTimeTable.addTimeTableByAdmin"></a>
               </div>                                          
     </div>    
-    <!--<div class="loader" id="adminTimeTableListLoader" style="display:none;">
-              <div class="ball"></div>
-    </div>-->        
     <span id="TimeTableAllList" data-style="inset" data-role="listview" data-template="adminTimeTableListTemplate" data-bind="source: activities"></span>            
     <div id="showMoreBrochurBtn" class="showMore" data-role="button" data-click="app.adminTimeTable.showMoreButtonPress">LOAD MORE</div>
 </div>
@@ -68,13 +65,13 @@
                 <ul data-role="actionsheet" id="TimeTableImgSelect">
                     <li class="km-actionsheet-title"></li>                       
                     <li>
-                        <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal" style="text-align:left;"><span class="act_photo"></span><span style="margin-top:-20px;">Photo</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="add" actionFrom="1">Attach PDF file</a>
+                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="add" actionFrom="1" style="text-align:left;"><span class="act_attach"></span><span style="margin-top:-20px;">Attach file</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
+                        <a href="#" data-role="button" data-bind="click: removeImage" style="text-align:left;"><span class="act_close"></span><span style="margin-top:-20px;">Remove</span></a>
                     </li>
                 </ul>
         </div>                
@@ -85,12 +82,6 @@
 <div id="admTimeTable-upload-file" class="modal-mess-Popup" data-role="modalview" data-model="app.adminTimeTable">
    <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferAdmTimeTableAbort">X</span>
    <div id="imgDownloaderATT" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
-
-    <!--<div class="docsUpload">
-        <div id="timetableCompleteness" class="uploadBar" style="width:90%; height:15px;"></div>
-        <div class="clear"></div>
-        <div id="uploadTimetableProcess" class="cancelUpld" data-bind="click:transferAdmTimeTableAbort">Cancel</div>
-    </div>-->
 </div>
 
 
@@ -99,7 +90,6 @@
               <div data-role="navbar">     
                  <span> Edit Timetable </span>                 
                  <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminTimeTable.goToTimeTableListPage"></a>    
-                 <!--<a style="background:transparent; border:none;font-weight:800;margin-top:-1px;" data-align="right" data-role="button" data-click="app.adminTimeTable.saveEditTimeTableData">Save</a>-->
                  <a style="width: 3.4em;height:2.8em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-editTimeTable" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a> 
               </div>                                          
     </div>        
@@ -128,13 +118,13 @@
                 <ul data-role="actionsheet" id="editTimeTableImgSelect">
                     <li class="km-actionsheet-title"></li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: getPhotoValEdit">Album</a>
+                        <a href="#" data-role="button" data-bind="click: getPhotoValEdit" style="text-align:left;"><span class="act_photo"></span><span style="margin-top:-20px;">Photo</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="edit" actionFrom="2">Attach File</a>
+                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="edit" actionFrom="2" style="text-align:left;"><span class="act_attach"></span><span style="margin-top:-20px;">Attach file</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: removeTimeTableEdit">Remove</a>
+                        <a href="#" data-role="button" data-bind="click: removeTimeTableEdit" style="text-align:left;"><span class="act_close"></span><span style="margin-top:-20px;">Remove</span></a>
                     </li>
                 </ul>
             </div>   
@@ -149,9 +139,9 @@
             </div>
          </div>-->
         
-        <div data-role="popover" id="popover-editTimeTable" data-popup='{"width": "180"}' style="margin-right:-10px;margin-top:-12px;border-radius:3px;">
+        <div data-role="popover" id="popover-editTimeTable" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-11px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 1px 1px 10px 1px #D1D1D1;">
           <div data-role="view">
-            <ul data-role="listview" style="margin:0px;background-color:#E6E6E6;z-index:1;">
+            <ul data-role="listview" style="margin:0px;background-color:#ffffff;z-index:1;">
                 <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.adminTimeTable.saveEditTimeTableData"><label style="float:left;padding:10px;">Save Timetable</label></a>
                 <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.adminTimeTable.deleteTimeTable"><label style="float:left;padding:10px;">Delete Timetable</label></a>
             </ul>

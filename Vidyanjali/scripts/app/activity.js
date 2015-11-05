@@ -472,24 +472,16 @@ app.Activity = (function () {
         
         
         var saveComment = function () {    
-  
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
                 }else {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
-            }else {  
-                
-                var comment = $("#newComment").val();
-                
-
- 
-                if (comment!=='' && comment!=='Reply') {
-                
-                    $("#progressChat").show();
-                    
-                    
+            }else {                  
+                var comment = $("#newComment").val(); 
+                if(comment!=='' && comment!=='Reply') {                
+                    $("#progressChat").show();                    
                     $("#comments-listview").append('<li id="tryingComment"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>'+comment+'</a><br/><span class="user-time-span"> Sending.. </span></div></div></li>');                                
                     $('#newComment').css('height', '35px');
                     $("#newComment").val('');

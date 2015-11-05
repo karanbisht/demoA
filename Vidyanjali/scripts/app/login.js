@@ -53,8 +53,8 @@ app.Login = (function () {
                 device_type = 'AP';
             }
                          
-            //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            var device_id = localStorage.getItem("deviceTokenID");                         
+            var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+            //var device_id = localStorage.getItem("deviceTokenID");                         
             username = $("#loginUsername").val();
             
             if (username === "Mobile Number" || username === "") {
@@ -279,13 +279,10 @@ app.Login = (function () {
             $("#progress").hide();            
             $(".km-scroll-container").css("-webkit-transform", "");  
             $("#regenerateDiv").show();
-            $("#selectionDiv").hide();
-            
+            $("#selectionDiv").hide();            
             $("#logo").hide();
-
             $("#validationRow").hide(); 
-            $("#userRegMobNum").html('+91' + username);    
-            
+            $("#userRegMobNum").html('+91' + username);                
             $("#registrationNext").hide();
             $("#selectionDiv").css("z-index", "-1");
             $("#selectionDiv").css("opacity", .1);	
@@ -394,8 +391,8 @@ app.Login = (function () {
                         device_type = 'AP';
                     }
 
-                    //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-                    var device_id = localStorage.getItem("deviceTokenID");                          
+                    var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+                    //var device_id = localStorage.getItem("deviceTokenID");                          
                     
                     var jsonDataLogin = {"username":username ,"device_id":device_id, "device_type":device_type , "authenticate":'1', "APP_ID":app.CLIENT_APP_ID}
                     var dataSourceLogin = new kendo.data.DataSource({

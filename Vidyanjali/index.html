@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>html {font-family: Arial, Helvetica, sans-serif; }</style>
         <title></title>
         <meta charset="utf-8" />        
         <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
         <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.common-material.min.css" rel="stylesheet"/>
+        <link href="kendo/styles/kendo.material.min.css" rel="stylesheet"/>
         <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
         <link href="styles/main.css" rel="stylesheet" />        
         <script src="cordova.js"></script>
         <script src="kendo/js/jquery.min.js"></script>
-        <script src="kendo/js/kendo.all.min.js"></script>
+        <script src="kendo/js/kendo.ui.core.min.js"></script>        
         <script src="scripts/app/progressbar.min.js" type="text/javascript"></script>
     </head>
     
-    <body id="Aptifi" onload="app.onLoad()";>
+    <body id="Aptifi" onload="app.onLoad()">
         <div data-role="layout" data-id="default" class="AptifiBackImage">
         </div>
         <div data-role="layout" data-id="innerPages">
@@ -22,9 +25,6 @@
             <div data-role="header">
                 <div data-role="navbar">
                     <span data-role="view-title"></span>
-                    <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer" data-align="left" data-role="button">
-                        <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
-                    </a>-->
                     <a style="width:3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-click="app.triggerDrawer1" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
@@ -175,27 +175,6 @@
             <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-bind="source: activities"></span>
             <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
          
-            <ul data-role="actionsheet" id="notiShareAction">
-                    <li class="km-actionsheet-title">Share</li>
-                    <!--<li>
-                        <a href="#" data-role="button" data-click="app.socialShare">share More</a>
-                    </li>-->
-                    <li> 
-                        <a href="#" data-role="button" data-click="app.shareMessageViaWhatsApp">Share via WhatsApp</a> 
-                    </li>
-                    <li>
-                        <a href="#" data-role="button" data-click="app.shareMessageAndURLViaTwitter">Share via Twitter</a>
-                    </li>
-                    <!--<li>
-                        <a href="#" data-role="button" data-click="app.shareImagesViaFacebook">Share via Facebook</a>
-                    </li>-->                     
-                    <li> 
-                        <a data-role="button" data-click="app.shareMessageViaSMS">Share via SMS</a>
-                    </li>
-                    <li>
-                        <a data-role="button" data-click="app.shareViaEmail">Share via Email</a>
-                    </li>
-            </ul>          
        </div>
         
                 
@@ -381,11 +360,11 @@
             </div>
             #}else {#
                 <div class="cf" >
-                       <div class="org-img-show"></div>
+                 <div class="org-img-show"></div>
                  <div class="activity-content">
-                        <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
-                        <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>
-                    </div>
+                     <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                     <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>
+                 </div>
                 </div>
             #}#
         </script>
@@ -394,7 +373,7 @@
                         <div class="ball"></div>                   
         </div>
         
-        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','userOrgManage','views/profile.html','views/organisationLogin.html']">
+        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','userOrgManage','views/connectToUS.html','views/profile.html','views/organisationLogin.html']">
             <header data-role="header">
                 <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
@@ -402,9 +381,6 @@
             </header>
 
             <ul data-role="listview" style="overflow:hidden;">
-                <!--<li style="height:3.2em;border-color:#43495c">
-                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-5px;height:2.6em;margin-left:-5px;"/>
-                </li>-->
                 <li style="height:3.2em;border-color:#43495c" data-role="button" data-click="goToMainPage">
                     <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-7px;margin-left:-10px;height:45px;width:100%;"/>
                 </li>
@@ -423,31 +399,26 @@
                 <li style="border-color:#43495c">
                     <a href="#userOrgManage" data-transition="none"><div id="side-org-icon"></div></a>
                 </li>
+                <!--<li style="border-color:#43495c">
+                    <a href="#views/connectToUS.html" data-transition="none"><div id="side-connectUs-icon"></div></a>
+                </li>-->
                 <li style="border-color:#43495c">
                     <a href="views/profile.html"  data-transition="none"><div id="side-profile-icon"></div></a>
                 </li>
-                <!--<li >
-                    <a id="side-setting-icon" href="#settingDiv"  data-transition="none"></a>
-                </li>
-                <li style="border-color:#2e2e2e">
-                    <a id="side-poweredBy-icon" data-transition="none"></a>
-                </li>
-                <!--<li >
-                    <a id="side-about-icon"   href="#infoDiv"  data-transition="none"></a>
-                </li>-->
                 <li id="goToAdmin" style="border-color:#43495c">
                     <a href="views/organisationLogin.html" data-transition="none"><div id="side-admin-icon"></div></a>
                 </li>
             </ul>
             
-            <div data-role="popover" id="popover-drawer" data-popup='{"width": "180"}' style="margin-right:-10px;margin-top:-14px;border-radius:3px;">
+            <div data-role="popover" id="popover-drawer" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-14px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 1px 1px 10px 1px #D1D1D1;">
                 <div data-role="view">
-                    <ul data-role="listview" style="margin:0px;background-color:#E6E6E6;z-index:1;">
+                    <ul data-role="listview" style="margin:0px;background-color:#ffffff;z-index:1;">
                         <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.refreshBtn"><label style="float:left;padding:10px;">Refresh</label></a>
                         <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.OragnisationList.openPopoverDrawer"><label style="float:left;padding:10px;">About</label></a>
                     </ul>
                 </div>
             </div>
+            
         </div>
 
         <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
@@ -546,7 +517,8 @@
                 <div class="loader" id="progressAdmin" style="display:none;">
                     <div class="ball"></div>
                 </div>
-                <ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
+                <ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganis
+                    ationTemplate"  data-bind="source: activities"></ul>
             </div>
         </div>
         
@@ -562,22 +534,23 @@
         </div>           
      </div>
 
- <script type="text/x-kendo-template" id="replyCustomerTemplate">
-        
+ <script type="text/x-kendo-template" id="replyCustomerTemplate">        
     #if (customerID!==0) {#
-        <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: customerSelected }">
-        
-            <div class="user-avatar-img-show"></div>
-        
+        <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: customerSelected }">        
+             #if(photo!==""){#
+                <img src=${photo} class="user-avatar-img" onerror="this.onerror=null;this.src='styles/images/avatar1.png';"/>
+            #}else{#
+                <div class="user-avatar-img-show"></div>
+            #}#        
             <div class="activity-content" style="margin-left:5px">
-                <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>       
+                <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>  
+                <span class="km-icon km-details" style="float:right;margin-top:-10px;"></span>
                 <div id=""  style="color:rgb(188,188,188);overflow:hidden;white-space: nowrap;text-overflow: ellipsis;" >${comment}</div>
             </div>
         </div>
     #}else {#
         <div class="cf" data-role="touch">
             <div class="user-avatar-img-show"></div>
-
             <div class="activity-content" style="margin-left:5px">
                 <h2 id="" class="person-name">${user_fname} ${user_lname}</h2>
                 <a id=""  style="color:rgb(188,188,188);" >${comment}</a>
@@ -615,29 +588,18 @@
                 </div>
                                 
                                                                
-                <div  id="selectGroupDiv" style=" display:none;margin:10px 10px 10px 10px; border:none;background-color:#f3f3f3">
-                    <p style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;">Select group to send message. </p>
-                    <div id="group-Name-listview" style="border:none;background-color:#f3f3f3;"> </div>
+                <div id="selectGroupDiv" style=" display:none;border:none;background-color:#f3f3f3">
+                    <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select group to send message. </div>
+                    <div id="group-Name-listview" class="addkmClass" data-type="group" style="margin:10px;background-color:#f3f3f3;border:none;"> </div>
                 </div>
 
-                <div  id="selectCustomerToSend" style="display:none;margin:10px 10px 10px 10px;border:none;background-color:#f3f3f3">
-                    <p style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;">Select member to send message.</p>
-                    <div id="customer-Name-listview"  style="border:none;background-color:#f3f3f3;"> </div>
+                <div  id="selectCustomerToSend" style="display:none;border:none;background-color:#f3f3f3">
+                    <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select member to send message.</div>
+                    <div id="customer-Name-listview" class="addkmClass" data-type="group" style="margin:10px;background-color:#f3f3f3;border:none;"> </div>
                 </div>
 
 
                 <div id="sendNotificationDivMsg" style="display:none;overflow:hidden;margin:10px;">
-
-                    <!--<span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Message Title :</span>
-                    <br/>
-                    <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title" autofocus />
-                    <br/>
-                    <span id="activityTemplateDate"  style="padding-right:2px;color:rgb(127,191,77)">Message Detail :</span>
-                    <br/>
-                    <br/>
-                    <textarea  id="notificationDesc" placeholder="Write Message to Send ?" class="common"></textarea>
-                    <br/>
-                    <br/>-->
                     
                     <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Title</span>
                     <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title"/>
@@ -645,19 +607,6 @@
                     <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Detail</span>
                     <textarea  id="notificationDesc" placeholder="Write Message to Send ?" class="common"></textarea>
 
-
-                    <!--<div>
-                            <span style="color:rgb(127,191,77);margin-right:10px;">Message Type</span>               
-                            <span><input id="notificationType" onkeydown="return false;" style="width:180px;"/></span>
-                    </div>-->
-                    <!--class="largerCheckbox"                    
-                       <br/>
-
-                    <li style="color:#1B205E;list-style-type: none;">
-                        <span> <span style="color:rgb(127,191,77)" >Comment Allow</span>
-                            <input type="checkbox" id="comment_allow" value="" /> </span>
-                    </li>-->
-                    
                     
                     <span style="color:rgb(127,191,77);">Message Type</span>                                   
                     <label>
@@ -708,16 +657,16 @@
                 <ul data-role="actionsheet" id="inboxActions">
                     <li class="km-actionsheet-title"></li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: getTakePhoto">Take Photo</a>
+                        <a href="#" data-role="button" data-bind="click: getTakePhoto" style="text-align:left;"><span class="act_photo"></span><span style="margin-top:-20px;">Photo</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: getPhotoVal">Album</a>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal" style="text-align:left;"><span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: getVideoValNoti">Video</a>
+                        <a href="#" data-role="button" data-bind="click: getVideoValNoti" style="text-align:left;"><span class="act_video"></span><span style="margin-top:-20px;">Video</span></a>
                     </li>
                     <li>
-                        <a href="#" data-role="button" data-bind="click: removeImage">Remove</a>
+                        <a href="#" data-role="button" data-bind="click: removeImage" style="text-align:left;"><span class="act_close"></span><span style="margin-top:-20px;">Remove</span></a>                                            
                     </li>
                 </ul>
           </div>
@@ -725,8 +674,8 @@
             <div id="selectGroupFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
                     <li style="width:100%">
-                        <span id="registration"  class="clickEffect" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
-                        <span id="registration" class="clickEffect" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
+                        <span id="registration"  class="clickEffect" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
+                        <span id="registration" class="clickEffect" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
                     </li>
                 </ol>
             </div>
@@ -734,8 +683,8 @@
             <div id="selectCustomerFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
                 <ol class="reg-group-wrp" >
                     <li style="width:100%">
-                        <span id="customerNextButton" class="clickEffect" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;margin-right:10px;width:45%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
-                        <span id="customerBackButton" class="clickEffect" data-role="touch" data-bind="events: { tap: goBackToGroup }"  style="float:left;margin-left:10px;height:40px;padding-top:10px;width:45%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
+                        <span id="customerNextButton" class="clickEffect" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Next </span>
+                        <span id="customerBackButton" class="clickEffect" data-role="touch" data-bind="events: { tap: goBackToGroup }"  style="float:left;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
                     </li>
                 </ol>
             </div>
@@ -760,15 +709,8 @@
         </div>
         
      <div id="sendNotifcation-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview" data-model="app.sendNotification">
-
          <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferFileAbort">X</span>
          <div id="imgDownloaderSendNoti" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
-
-       <!--<div class="docsUpload">
-        <div id="profileCompletenessNotification" class="uploadBar" style="width:90%; height:15px;"></div>
-        <div class="clear"></div>
-        <div id="uploadProcessNotification" class="cancelUpld" data-bind="click:transferFileAbort">Cancel</div>
-       </div>-->
      </div>
 
         <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-views="['view-all-activities-GroupDetail','subGroupMemberReplyShow','sendNotificationDiv','view-all-activities']">
@@ -779,26 +721,18 @@
                 </div>
             </header>
 
-            <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
-                <!--<li style="height:3.2em;border-color:#43495c;">
-                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-7px;height:2.8em;margin-left:15px;"/>
-                </li>-->
-                
+            <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">                
                 <li style="height:3.2em;border-color:#43495c;" data-role="button" data-click="goToMainPageAdmin"> 
                     <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-7px;height:45px;width:80px;margin-left:-10px;"/>
                 </li>
-
-                <!--<li class="clickEffect" style="border-color:#43495c">
-                    <a id="selectOrganization" data-transition="none" onclick="clickSelectOrg()"><span id="setOrgName">Organization</span><br/><span style="color:#AEB5D3;font-size:14px;text-align: center;">Select Organization</span></a>
-                </li>-->
                 
                 <li style="border-color:#43495c">
                     <a data-transition="none" href="#view-all-activities-GroupDetail"><div id="side-admin-manageOrg-icon"></div></a>
                 </li>
                 
                 <li style="border-color:#43495c">
-                    <a href="#subGroupMemberReplyShow" data-transition="none"><div id="side-admin-message-icon"><div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;">0</div></div></a>                          
-                </li>
+                    <a href="#subGroupMemberReplyShow" data-transition="none"><div id="side-admin-message-icon"><div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;">0</div></div></a>
+                </li>              
                 
                 <li style="border-color:#43495c">
                     <a href="#sendNotificationDiv" data-transition="none"><div id="side-admin-notification-icon"></div></a>
@@ -1050,21 +984,36 @@
         </script>
 
         <script type="text/x-kendo-template" id="groupNameTemplate"> 
-
-            <li class="admSentNotideleteGroupShow">
+            #$(".addkmClass").addClass("km-list");#  
+            <li style="background-color:rgb(243,243,243);">
+                <label class="km-listview-label" style="background-color:rgb(243,243,243);">
+                        <input type="checkbox" value="${pid}" class="km-widget km-icon km-check" data-bind="checked:check" />
+                        #:group_name#
+                </label>
+            </li>
+            
+            <!--<li class="admSentNotideleteGroupShow">
                 <label>
                     <input type="checkbox" class="largerCheckbox" value="${pid}" />
                     <span class="firstName">#:group_name#</span>
                 </label>
-            </li>
+            </li>-->
         </script>
 
-        <script type="text/x-kendo-template" id="customerNameTemplate">            
-            <li class="admSentNotideleteGroupShow">
+        <script type="text/x-kendo-template" id="customerNameTemplate"> 
+            #$(".addkmClass").addClass("km-list");#  
+            <li style="background-color:rgb(243,243,243);">
+                <label class="km-listview-label" style="background-color:rgb(243,243,243);">
+                        <input type="checkbox" value="${customerID}" class="km-widget km-icon km-check" data-bind="checked:check" />
+                        #:first_name# #:last_name#
+                </label>
+            </li>
+
+            <!--<li class="admSentNotideleteGroupShow">
                 <span>
                     <label><input type="checkbox" class="largerCheckbox" value="${customerID}" /> <span class="firstName">#:first_name# #:last_name#</span></label>
                 </span>
-            </li>
+            </li>-->
         </script>
 
         
@@ -1146,15 +1095,14 @@
             </li>
         </script>
         
-        <script type="text/x-kendo-template" id="activityTemplate">            
+      <script type="text/x-kendo-template" id="activityTemplate">            
         #if (org_id!=='0') {#
         <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">
             <div class="notiList-content-new">
                 <div class="dateDisplay">
                     <span id="activityTemplateDate" class="dateValue">${date}</span>
-                    <span></span>
+                    <span class="shareDataValue"><a style="background:transparent; border:none;float:right;right:0;margin-right:0px;" data-align="right" data-role="button" data-click="app.shareMsgContent"><img src="styles/images/share.png"/></a></span>
                 </div>
-             <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;margin-top:-10px;" data-align="right" data-icon="share" data-role="button" data-rel="actionsheet" href="\#notiShareAction"></a>
             <br/>
             #if (title!=='' && title!=='null' && title!==null) {#
                 <span class="notiNameList" style="margin-left:0px;">${title}</span>               
@@ -1206,8 +1154,8 @@
         </div>
 
         <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">    
-                  <div class="notiCommentIcon"></div>
-                  <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
+             <div class="notiCommentIcon"></div>
+             <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
              #if(comment_count!=='' && comment_count!=='null' && comment_count!==null && comment_count!==0){#
                 #if(comment_count==='1' || comment_count===1){#
                 <span class="user-comment-count">${comment_count} Reply</span>
@@ -1238,6 +1186,8 @@
         <script src="scripts/app/groupListView.js" type="text/javascript"></script>
         <script src="scripts/app/activity.js" type="text/javascript"></script>
         <script src="scripts/app/activities.js" type="text/javascript"></script>
+        <script src="scripts/app/connectToUS.js" type="text/javascript"></script>
+        <script src="scripts/app/connectToUsWindow.js" type="text/javascript"></script>
         <script src="scripts/app/adminEventCalendar.js" type="text/javascript"></script>
         <script src="scripts/app/adminAttendance.js" type="text/javascript"></script>
         <script src="scripts/app/sendNotification.js" type="text/javascript"></script>

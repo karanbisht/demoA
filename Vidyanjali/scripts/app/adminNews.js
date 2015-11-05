@@ -319,19 +319,18 @@ app.adminNews = (function () {
 
         }
         
-        var addNewsshow = function() {
-                        
+        var addNewsshow = function() {                        
             $(".km-scroll-container").css("-webkit-transform", "");           
             groupDataShow = [];
                         
+            $('.km-popup-arrow').addClass("removeArrow");
+
             $("#adddatePickerNews").removeAttr('disabled');           
             $("#adddateTimePickerNews").removeAttr('disabled');
 
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
             
-            //$("#adddatePickerNews").parent().css('width', "160px");
-            //$("#adddateTimePickerNews").parent().css('width', "160px");
             $("#adddatePickerNews").removeClass("k-input");
             $("#adddateTimePickerNews").removeClass("k-input");            
             
@@ -343,8 +342,6 @@ app.adminNews = (function () {
     
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
-
-            //document.getElementById('groupInAddNews').style.display="none";
             
             var largeImage = document.getElementById('attachedImgNews');
             largeImage.src = '';
@@ -387,6 +384,13 @@ app.adminNews = (function () {
                             '#= data.value #' +
                             '# } #'
                 },
+                
+                position: "bottom left",
+                                                                     animation: {
+                                open: {
+                                                                                 effects: "slideIn:up"
+                                                                             }                
+                            },
                   
                                                         open: function(e) {
                                                             $(".disabledDay").parent().removeClass("k-link")
@@ -401,29 +405,18 @@ app.adminNews = (function () {
                                                                 $('#adddatePickerNews').data("kendoDatePicker").value(todayDate);
                                                             }
                                                             
-                                                            //console.log(value); 
-                                                            /*if(new Date(value) < new Date(currentDate)){                   
-                                                            if(!app.checkSimulator()){
-                                                            window.plugins.toast.showShortBottom('You Cannot Add Event on Back Date');  
-                                                            }else{
-                                                            app.showAlert('You Cannot Add Event on Back Date',"Event");  
-                                                            }                                
-                                                            }*/    
                                                         }
                                                     }).data("kendoDatePicker");
-                         
-                                 $("#adddateTimePickerNews").kendoTimePicker({
+
+            
+            
+            $("#adddateTimePickerNews").kendoTimePicker({
                                                             value:"10:00 AM",
                                                             interval: 15,
                                                             format: "h:mm tt",
-                                                            timeFormat: "HH:mm", 
-                                                            /*open: function(e) {
-                                                            e.preventDefault(); //prevent popup opening
-                                                            },*/
-                
+                                                            timeFormat: "HH:mm",
                                                             change: function() {
                                                                 var value = this.value();
-                                                                //console.log(value); //value is the selected date in the timepicker
                                                             }                
                                                         });
             
@@ -658,7 +651,6 @@ app.adminNews = (function () {
            }else {
 
            }
-
           }, app.APP_NAME, ['Yes', 'No']);
         }
         
@@ -679,16 +671,8 @@ app.adminNews = (function () {
             $(".km-scroll-container").css("-webkit-transform", "");                                    
             $('#editNewsDesc').css('height', '80px');
             
-            /*pbNews = $("#profileCompletenessNews").kendoProgressBar({
-                                                                type: "chunk",
-                                                                chunkCount: 100,
-                                                                min: 0,
-                                                                max: 100,
-                                                                value: 0
-                                                            }).data("kendoProgressBar");*/
             
-            document.getElementById("imgDownloaderNews").innerHTML = "";
-            
+            document.getElementById("imgDownloaderNews").innerHTML = "";            
             pbNews = new ProgressBar.Circle('#imgDownloaderNews', {
                    color: '#7FBF4D',
                    strokeWidth: 8,
@@ -709,9 +693,6 @@ app.adminNews = (function () {
             
             $("#editdatePickerNews").removeAttr('disabled');
             $("#editdateTimePickerNews").removeAttr('disabled');
-
-            //$("#editdatePickerNews").parent().css('width', "160px");
-            //$("#editdateTimePickerNews").parent().css('width', "160px");
             
             $("#editdatePickerNews").removeClass("k-input");
             $("#editdateTimePickerNews").removeClass("k-input");        
@@ -730,16 +711,8 @@ app.adminNews = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
 
-            /*newsDescEdit = e.data.news_desc;
-            newsDateEdit = e.data.news_date;
-            newsTimeEdit = e.data.news_time;
-            newsImageEdit = e.data.news_image;
-            newsUploadType = e.data.upload_type;
-            newsPid = e.data.id;*/
 
             var org_id = localStorage.getItem("orgSelectAdmin");
-            
-            //alert(org_id+"||"+newsPid);
             
             var dataSourceMemberDetail = new kendo.data.DataSource({
                                                                        transport: {

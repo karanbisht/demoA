@@ -29,6 +29,8 @@ app.addCustomerByAdmin = (function () {
         
         var addNewRegistration = function (e) {
             $('#groupInAddCustomer').find('input[type=checkbox]:checked').removeAttr('checked');
+            $('.km-popup-arrow').addClass("removeArrow");
+
             app.userPosition = false;
             $regFirstName.val('');
             $regLastName.val('');
@@ -362,7 +364,7 @@ app.addCustomerByAdmin = (function () {
                     },
                                                                        error: function (e) {
                                                                            $("#saveMemberLoader").hide();
-                                                                            //console.log(JSON.stringify(e));           
+                                                                            console.log(JSON.stringify(e));           
                                                                             
                                                                             app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                             if (!app.checkSimulator()) {
@@ -485,7 +487,7 @@ app.addCustomerByAdmin = (function () {
                                                                        error: function (e) {
                                                                            $("#saveMemberLoader").hide();
                                                                            //console.log(e);
-                                                                           //console.log(JSON.stringify(e));                        
+                                                                           console.log(JSON.stringify(e));                        
                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                            //app.mobileApp.pane.loader.hide();                                                                         
                                                                            if (!app.checkSimulator()) {

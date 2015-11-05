@@ -103,6 +103,7 @@ app.replyedCustomer = (function () {
                                                user_lname : data[0].status[0].customerList[i].user_lname,
                                                customerID:data[0].status[0].customerList[i].customerID,
                                                user_type:data[0].status[0].customerList[i].user_type,
+                                               photo:data[0].status[0].customerList[i].photo,
                                                //orgID:orgVal.customerList[i].orgID,
                                                comment:data[0].status[0].customerList[i].title,
                                                notification_id:data[0].status[0].customerList[i].notification_id,

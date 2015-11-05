@@ -108,7 +108,7 @@ app.adminEventCalender = (function () {
             
             $("#sendEventLoader").show();       
             device_type = localStorage.getItem("DEVICE_TYPE");
-            $(".km-native-scroller").scrollTop(0);
+            //$(".km-native-scroller").scrollTop(0);
 
             $("#addEventName").val('');
             $("#addEventDesc").val('');
@@ -120,13 +120,14 @@ app.adminEventCalender = (function () {
             
             $("#adddatePickerEvent").removeAttr('disabled');
             $("#adddateTimePickerEvent").removeAttr('disabled');
+            $('.km-popup-arrow').addClass("removeArrow");
 
             var largeImage = document.getElementById('attachedImgEvent');
             largeImage.src = '';
             $("#adddatePickerEvent").removeClass("k-input");
             $("#adddateTimePickerEvent").removeClass("k-input");            
 
-             $('#addEventDesc').css('height', '40px');
+            $('#addEventDesc').css('height', '40px');
 
             var txt = $('#addEventDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -154,6 +155,7 @@ app.adminEventCalender = (function () {
                 +new Date(currentDate)
             ];
             
+            
             $("#adddatePickerEvent").kendoDatePicker({
                                                          value: new Date(),
                                                          dates: disabledDaysBefore,    
@@ -176,18 +178,17 @@ app.adminEventCalender = (function () {
                                                              $(".disabledDay").parent().removeClass("k-link")
                                                              $(".disabledDay").parent().removeAttr("href")
                                                          },
-
                  
                                                          change: function() {
-                                                             var value = this.value();
-                                                             
+                                                             var value = this.value();                                                             
                                                              if(new Date(value) < new Date(currentDate)){                   
                                                                     var todayDate = new Date();
                                                                     $('#adddatePickerEvent').data("kendoDatePicker").value(todayDate);                                       
-                                                                 }    
+                                                             }    
                                                          }
                                                      }).data("kendoDatePicker");
                          
+
             $("#adddateTimePickerEvent").kendoTimePicker({
                                                              value:"10:00 AM",
                                                              interval: 15,
@@ -393,6 +394,7 @@ app.adminEventCalender = (function () {
         var editEventshow = function() {              
             eventDataToSend='';
             $(".km-scroll-container").css("-webkit-transform", "");
+            $('.km-popup-arrow').addClass("removeArrow");
             $('#editEventDesc').css('height', '80px');
             var txt = $('#editEventDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -1663,6 +1665,8 @@ app.adminEventCalender = (function () {
             $("#adminEventListLoader").hide();
             $("#eventCalendarAllList").show();
             
+            $("#adddatePickerEvent").removeAttr('disabled');
+            $("#adddateTimePickerEvent").removeAttr('disabled');
             $(".km-scroll-container").css("-webkit-transform", "");
              
             var organisationListDataSource = new kendo.data.DataSource({
@@ -1675,15 +1679,9 @@ app.adminEventCalender = (function () {
                                                            });
                 
             $('#eventCalendarAllList').data('kendoMobileListView').refresh();
-            
-              //console.log(totalListView+'||'+dataReceived);
-            
             if((totalListView > 10) && (totalListView >=dataReceived+10)){
-                //console.log('show');
                 $("#showMoreEventBtnEvent").show();
-            }else{
- 
-                //console.log('hide');
+            }else{ 
                 $("#showMoreEventBtnEvent").hide();
             }
         }
@@ -1732,9 +1730,6 @@ app.adminEventCalender = (function () {
             $("#removeEventAttachment").show(); 
             $("#attachedVidEvent").show();
 
-            //alert(imageURI);
-            //console.log(videoURI);
-            //newsDataToSend = imageURI;
         }
         
         function onPhotoURISuccessData(imageURI) {
@@ -1755,13 +1750,9 @@ app.adminEventCalender = (function () {
             $("#removeEventAttachment").show(); 
             $("#attachedImgEvent").show();
 
-            //alert(imageURI);
-            //console.log(imageURI);
-            //eventDataToSend = imageURI;
         }
          
         function onFail(message) {
-            //console.log('Failed because: ' + message);
             $("#removeEventAttachment").hide(); 
             $("#attachedImgEvent").hide();
         }

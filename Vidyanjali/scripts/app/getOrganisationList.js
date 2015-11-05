@@ -2,7 +2,7 @@ var app = app || {};
 app.OragnisationList = (function () {
     'use strict'; 
     var account_Id;
-    var groupDataShow = [];   
+    var groupDataShow = [];
     var UserOrgInformation;
     var orgLogoName;
     var imgPathData;
@@ -978,7 +978,10 @@ app.OragnisationList = (function () {
         };
         
         var userProfileShow = function() {
-          $(".km-scroll-container").css("-webkit-transform", "");  
+          $(".km-scroll-container").css("-webkit-transform", "");          
+          $('.km-popup-arrow').addClass("removeArrow");
+
+         
           document.getElementById("orgData").innerHTML = "";
           tempArray = [];
           getProfileDataFromDB();
@@ -1754,7 +1757,7 @@ app.OragnisationList = (function () {
         
         var takeProfilePhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 
-                                            quality: 40,
+                                            quality: 50,
                                             targetWidth: 150,
                                             targetHeight: 150,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
@@ -1768,6 +1771,7 @@ app.OragnisationList = (function () {
                                             quality: 40,
                                             targetWidth: 150,
                                             targetHeight: 150,
+                                            allowEdit : true,
                                             destinationType: navigator.camera.DestinationType.FILE_URI,
                                             sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM,
                                             correctOrientation: true

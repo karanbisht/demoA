@@ -1,12 +1,12 @@
 /*  
 ANDROID
   PackageID = io.zaffio.vidyanjali
-  CurrentVersion = 1.1.5
-  VersionCode = 16
+  CurrentVersion = 1.1.6
+  VersionCode = 17
 
 IOS
   PackageID = io.zaff.vidyanjali
-  CurrentVersion = 1.0.6
+  CurrentVersion = 1.0.7
   VersionCode = 1
 */
 
@@ -75,9 +75,11 @@ var app = (function (win) {
     var GEO_MAP_API="https://www.google.com/maps/embed/v1/place?key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&q=";
     var USER_IFRAME_OPEN = 0;
     var ADMIN_IFRAME_OPEN= 0;
+    var NO_GROUP_AVAILABLE_OTO="No Group Admin Available."
     
     var serverUrl = function() {        
-        return 'https://app.Zaff.io/webservice/';        
+        //return 'https://app.Zaff.io/webservice/';  
+        return 'http://sandbox.zaff.io/webservice/';
         //return 'http://54.86.57.141/webservice/';
     }
 
@@ -189,6 +191,8 @@ var app = (function (win) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NEWS(id INTEGER , org_id INTEGER , news_name TEXT, news_desc TEXT, news_image TEXT, news_image_DB TEXT, upload_type TEXT, news_date TEXT,news_time TEXT)');
 
         tx.executeSql('CREATE TABLE IF NOT EXISTS TIME_TABLE(org_id INTEGER, id INTEGER ,group_name TEXT, timetable TEXT,group_id INTEGER, added_by INTEGER)');
+        
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ONE_TO_ONE(org_id INTEGER, id INTEGER , message TEXT, add_date TEXT , receiver INTEGER , sender INTEGER )');
 
     };	
     
@@ -269,8 +273,8 @@ var app = (function (win) {
     };
     
     var checkConnection = function() {
-    if(typeof navigator.connection.type !== "undefined")
-    {
+      if(typeof navigator.connection.type !== "undefined")
+      {
         var networkState = navigator.connection.type;
         var states = {};
         states[Connection.UNKNOWN] = 'Unknown connection';
@@ -280,18 +284,18 @@ var app = (function (win) {
         states[Connection.CELL_3G] = 'Cell 3G connection';
         states[Connection.CELL_4G] = 'Cell 4G connection';
         states[Connection.NONE] = 'No network connection';		
-
         if (states[networkState] === 'No network connection') {
             return false;    
-        }
-        
-    }
+        }        
+      }
             return true;
     };
 
     var lastClickTime11 = 0;
     var backButtonClickCount=0;
+    
     var onBackKeyDown = function(e) { 
+        console.log(e);                    
         if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
              e.preventDefault();           
              navigator.app.exitApp();            
@@ -400,6 +404,7 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-reg') {
             app.mobileApp.navigate('#welcome');
         }else {
+            console.log('backPress');
             app.mobileApp.navigate("#:back");    
         }
     };
@@ -463,11 +468,11 @@ var app = (function (win) {
     
     var Keyboardisoff = function() {       
       $(".km-scroll-container").css("-webkit-transform", "");
-          $("#orgMemFooter").show();
+          //$("#orgMemFooter").show();
     };
     
     var Keyboardison = function(){
-          $("#orgMemFooter").hide();           
+          //$("#orgMemFooter").hide();           
     }
     
     var onDeviceReady = function() {       
@@ -481,13 +486,12 @@ var app = (function (win) {
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
         document.addEventListener("showkeyboard", Keyboardison, false);
-
                 
-         if (!app.checkSimulator()) {
+        if (!app.checkSimulator()) {
               app.showAppVersion();
-         }else {
+        }else {
              localStorage.setItem("AppVersion", '9.9.9');
-         }    
+        }    
 
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);                
         var pushNotification = window.plugins.pushNotification;   
@@ -520,9 +524,12 @@ var app = (function (win) {
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
         
+        
+        //checkForceUpdate();
+
+        
     };    
     
-
     function successHandler (result) {
         app.deviceId_Not_Receive = 0;
         localStorage.setItem("deviceTokenID", result);
@@ -531,7 +538,6 @@ var app = (function (win) {
     function errorHandler (error) {
         //console.log(error);
     }
-    
     
     var oncallback = function(position)
     {
@@ -560,7 +566,7 @@ var app = (function (win) {
             var account_Id = localStorage.getItem("ACCOUNT_ID");
         
         
-                var jsonDataLogin = {"APP_ID":app.CLIENT_APP_ID}
+                var jsonDataLogin = {"APP_ID":app.CLIENT_APP_ID};
                 var dataSourceLogin = new kendo.data.DataSource({
                     transport: {
                     read: {
@@ -591,7 +597,10 @@ var app = (function (win) {
                         db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
                         updateLoginStatusSuccess();                 
                     }                    
-               });            
+               });      
+                        
+                //checkForceUpdate();
+            
         }
         else
         {
@@ -602,16 +611,38 @@ var app = (function (win) {
     };
     
     
-    /*function successHandler (result) {
-        //alert('result = ' + result);
+    function checkForceUpdate(){
+                var serverV = '1.1.7';
+                var serverVersion = [];
+                var systemVersion =[];
+            
+                serverVersion = serverV.split(".");
+				console.log("serverVersion", serverVersion[0]);
+				console.log("serverVersion", serverVersion[1]);
+				console.log("serverVersion", serverVersion[2]);
+
+				var value = localStorage.getItem("AppVersion");
+				systemVersion = value.split(".");
+				console.log("systemversion", systemVersion[0]);
+				console.log("systemversion", systemVersion[1]);
+				console.log("systemversion", systemVersion[2]);
+            
+    			if ((parseInt(systemVersion[0]) < parseInt(serverVersion[0])) || (parseInt(systemVersion[1]) < parseInt(serverVersion[1]))) {                    
+                     navigator.notification.alert("You are running an outdated version of "+app.APP_NAME+" . Please use the latest version available.", goToStore, app.APP_NAME, 'Ok');                    
+				} 
+    
     }
     
-    function errorHandler (error) {
-        //alert('error = ' + error);
-    }*/
-       
-    // Handle "deviceready" event
     
+    function goToStore(){
+
+        var device_type = localStorage.getItem("DEVICE_TYPE");                                             
+             if(device_type==='AN'){  
+                 window.open('https://play.google.com/store/apps/details?id=io.zaffio.vidyanjali','_system');                          
+             }else{
+                 window.open('https://itunes.apple.com/in/app/vidyanjali-preschool/id981397548?mt=8');
+             }    
+    }    
     
     var onLoad = function(){
       document.addEventListener('deviceready',onDeviceReady, false);      
@@ -854,7 +885,7 @@ var app = (function (win) {
                         );
                     }*/
                             
-                    if (typeDB!=='Add Customer' && typeDB!=='Attendance' && typeDB!=='News' && typeDB!=='Event') {
+                    if (typeDB!=='Add Customer' && typeDB!=='Attendance' && typeDB!=='News' && typeDB!=='Event' && typeDB!=='One2One') {
                         
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';
@@ -893,6 +924,15 @@ var app = (function (win) {
                          
                         }else{
                            goToAppEventPage(); 
+                        }    
+                        
+                    }else if(typeDB==='One2One'){
+                        if (e.foreground) {
+                         
+                        }else{                
+                            localStorage.setItem("selAdmFulName", commentAllowDB);
+                            localStorage.setItem("selAdmAccId", attachedDB); 
+                            goToAppOneToOnePage(); 
                         }    
                         
                     }    
@@ -1028,6 +1068,10 @@ var app = (function (win) {
         app.mobileApp.navigate('views/eventCalendar.html?orgin=1');
     }
     
+    function goToAppOneToOnePage(){
+          app.mobileApp.navigate('views/connectToUsWindow.html');    
+    }
+    
     function updatebagCount(tx) {
         var queryUpdate = "UPDATE JOINED_ORG SET bagCount=bagCount+1 where org_id=" + orgIdDB;
         app.updateQuery(tx, queryUpdate);          
@@ -1076,17 +1120,20 @@ var app = (function (win) {
     if (loginStatusCheck==='0' || loginStatusCheck===null) {    
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#welcome",
-                                                     skin: 'flat'                                                       
+                                                     skin: 'flat',
+                                                     transition:'fade'
                                                  });
     }else if (loginStatusCheck==='1') {
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#firstScreen",
-                                                     skin: 'flat'
+                                                     skin: 'flat',
+                                                     transition:'fade'
                                                  });
     }else if (loginStatusCheck==='2') {
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#firstScreen",
-                                                     skin: 'flat'
+                                                     skin: 'flat',
+                                                     transition:'fade'
                                                  });       
     }
     
@@ -1309,81 +1356,13 @@ var app = (function (win) {
 
     }
     
-    function slide(direction, color, slowdownfactor, hrf) {
-        if (!hrf) {
-            setTimeout(function () {
-                // update the page inside this timeout
-                document.querySelector("#title").innerHTML = direction;
-                document.querySelector("html").style.background = color;
-            }, 20);
-        }
-        // not passing in options makes the plugin fall back to the defaults defined in the JS API
-        var theOptions = {
-            'direction': direction,
-            'duration': 700,
-            'slowdownfactor' : slowdownfactor,
-            'iosdelay'       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
-            'androiddelay'   :  150,   
-            'href': hrf
-        };
-        
-        if(!checkSimulator()){
-        
-           window.plugins.nativepagetransitions.slide(
-            theOptions,
-            function () {
-                //console.log('------------------- slide transition finished');
-            },
-            function (msg) {
-
-                app.mobileApp.navigate(hrf);  
-                //alert('error: ' + msg);
-            });
-            
-        }else{
-            
-             app.mobileApp.navigate(hrf);  
-        }    
-    }
-    
-    
-      function flip(direction, color, href) {
-    setTimeout(function () {
-      // update the page inside this timeout
-      document.querySelector("#title").innerHTML = direction;
-      document.querySelector("html").style.background = color;
-    }, 10);
-          
-   if(!checkSimulator()){
-       
-    window.plugins.nativepagetransitions.flip({
-          'direction': direction,
-          'duration': 700,
-          'iosdelay': 20,
-          'href': href
-        },
-        function () {
-          //console.log('------------------- flip transition finished');
-        },
-        function (msg) {
-          //alert('error: ' + msg);
-          app.mobileApp.navigate(href);  
-
-        });
-       
-     }else{
-         app.mobileApp.navigate(href);  
-     }  
-  }
-    
-    
     
     function htmlDecode(value) {
-	if (value) {
-		return $('<div />').html(value).text();
-	} else {
-		return '';
-	}
+  	if (value) {
+ 		return $('<div />').html(value).text();
+  	} else {
+	 	return '';
+	  }
     }
     
     
@@ -1405,8 +1384,7 @@ var app = (function (win) {
     
 
     
-       function LogoutFromAdmin(){
-                
+       function LogoutFromAdmin(){                
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
@@ -1491,6 +1469,13 @@ var app = (function (win) {
                }
         };
     
+        var noGroupAvailableOTO = function(){
+               if (!app.checkSimulator()) {
+                     window.plugins.toast.showShortBottom(app.NO_GROUP_AVAILABLE_OTO);   
+               }else {
+                    app.showAlert(app.NO_GROUP_AVAILABLE_OTO);  
+               }
+        };
     
     
         var shareMessageAndURLViaTwitter=function () {
@@ -1577,7 +1562,9 @@ var app = (function (win) {
                 app.shareError);
             }*/            
             
-            //CONFIGURATION
+           var device_type = localStorage.getItem("DEVICE_TYPE");                                             
+             if(device_type==='AN'){  
+
                 var options = {
                     android: {
                         intent: 'INTENT'  // send SMS with the native android SMS messaging
@@ -1586,6 +1573,13 @@ var app = (function (win) {
                 };
 
                 sms.send('', shareMsg, options, app.shareSuccess, app.shareMessageError);
+             }else{
+                window.plugins.socialsharing.shareViaSMS (
+                shareMsg, 
+                null,
+                app.shareSuccess, 
+                app.shareError);
+             }     
         };
         
         var shareViaEmail = function (e){
@@ -1617,8 +1611,7 @@ var app = (function (win) {
              }    
             }
         };
-    
-    
+        
         var socialShare = function(){
             window.plugins.socialsharing.share(
               'message',
@@ -1641,7 +1634,7 @@ var app = (function (win) {
                  window.plugins.toast.showShortBottom(app.SOCIAL_SHARE_ERROR_MSG);
             }   
         };
-    
+        
         var shareMessageError = function(){              
                
         };
@@ -1698,22 +1691,187 @@ var app = (function (win) {
     
     
     var triggerDrawer1 = function(){        
-						$("#left-drawer").data("kendoMobileDrawer").show();
-						$(".km-scroll-container").css("-webkit-transform", "");            
-
-						return false;		
+						 $("#left-drawer").data("kendoMobileDrawer").show();
+						 $(".km-scroll-container").css("-webkit-transform", "");            
+                         //app.drawer("open","#left-drawer123");
+	 					return false;		
 					};
     
     var triggerDrawer2 = function(){        
 						$("#left-drawer1").data("kendoMobileDrawer").show();
 						$(".km-scroll-container").css("-webkit-transform", "");            
-
-						return false;		
+						return false;	
 					};
+    
+    var shareMsgContent = function () {
+            app.showActionSheet({
+                'androidTheme' : window.plugins.actionsheet.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+                'title': 'Choose an action',
+                'buttonLabels': ['Share via WhatsApp', 'Share via Twitter','Share via SMS' ,'Share via Email'],
+                'addCancelButtonWithLabel': 'Cancel',
+                'androidEnableCancelButton' : true, // default false
+                'winphoneEnableCancelButton' : true // default false
+                //'addDestructiveButtonWithLabel' : 'Delete it'                
+            });
+    };
+    
+    var showActionSheet = function (options) {
+            if (!app.checkSimulator()) {
+                window.plugins.actionsheet.show(
+                    options,
+                    function (buttonIndex) {
+                        // wrapping in a timeout so the dialog doesn't freeze the app                        
+                        if(buttonIndex===1){
+                            app.shareMessageViaWhatsApp();
+                        }else if(buttonIndex===2){
+                            app.shareMessageAndURLViaTwitter();
+                        }else if(buttonIndex===3){
+                            app.shareMessageViaSMS();  
+                        }else if(buttonIndex===4){
+                            app.shareViaEmail();
+                        }else if(buttonIndex===5){
+                            window.plugins.actionsheet.hide();
+                        }    
+                        /*setTimeout(function() {
+                            alert('button index clicked: ' + buttonIndex);
+                        }, 0);*/
+                    }
+                );
+            }
+      };
+    
+    
+   /*var testLogoutSheet = function() {
+      var options = {
+        'buttonLabels': ['Log out'],
+        'androidEnableCancelButton' : true,
+        'winphoneEnableCancelButton' : true,
+        'addCancelButtonWithLabel': 'Cancel'
+      };
+      window.plugins.actionsheet.show(options, callback);
+   };*/
+        
+    /*var slide = function(direction , color, slowdownfactor, hrf) {
+      if (!hrf) {
+            setTimeout(function () {
+                // update the page inside this timeout
+                document.querySelector("#title").innerHTML = direction;
+                document.querySelector("html").style.background = color;
+            }, 20);
+        }
+        
+      if (!app.checkSimulator()) {        
+        var options = {
+          "direction" : direction,
+          "duration"  : 500,
+          "slowdownfactor" : slowdownfactor,
+          "iosdelay"     : 100,
+          "androiddelay" : 150,
+          "winphonedelay": 250,
+          "href" : hrf,
+          "fixedPixelsTop": 0,
+          "fixedPixelsBottom": 60
+        };
+        window.plugins.nativepagetransitions.slide(
+          options,
+          function (msg) {console.log("SUCCESS: " + JSON.stringify(msg))},
+          function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+        );
+      }else{
+          app.mobileApp.navigate(hrf);  
+      }
+    };*/
+    
+    
+    /*var drawer = function (action , href) {
+      if (!app.checkSimulator()) {        
+        var options = {
+          "action" : action,
+          "origin" : "left",
+          "duration"  :300 ,
+          "iosdelay"     : 0,
+          "androiddelay" : 0,
+          "winphonedelay": 0,
+          "href" : href
+        };
+        window.plugins.nativepagetransitions.drawer(
+          options,
+          function (msg) {console.log("SUCCESS: " + JSON.stringify(msg))},
+          function (msg) {alert("ERROR: "   + JSON.stringify(msg))}
+        );
+      }
+    };*/
+    
+    
+    /*function slide(direction, color, slowdownfactor, hrf) {
+        if (!hrf) {
+            setTimeout(function () {
+                // update the page inside this timeout
+                document.querySelector("#title").innerHTML = direction;
+                document.querySelector("html").style.background = color;
+            }, 20);
+        }
+        // not passing in options makes the plugin fall back to the defaults defined in the JS API
+        var theOptions = {
+            'direction': direction,
+            'duration': 700,
+            'slowdownfactor' : slowdownfactor,
+            'iosdelay'       :  100, // ms to wait for the iOS webview to update before animation kicks in, default 50
+            'androiddelay'   :  150,   
+            'href': hrf
+        };        
+        if(!checkSimulator()){
+        
+           window.plugins.nativepagetransitions.slide(
+            theOptions,
+            function () {
+                //console.log('------------------- slide transition finished');
+            },
+            function (msg) {
+
+                app.mobileApp.navigate(hrf);  
+                //alert('error: ' + msg);
+            });            
+        }else{            
+            app.mobileApp.navigate(hrf);  
+        }    
+    }
+    
+    
+   function flip(direction, color, href) {
+        setTimeout(function () {
+              // update the page inside this timeout
+              document.querySelector("#title").innerHTML = direction;
+              document.querySelector("html").style.background = color;
+        }, 10);
+          
+     if(!checkSimulator()){
+       
+          window.plugins.nativepagetransitions.flip({
+          'direction': direction,
+          'duration': 700,
+          'iosdelay': 20,
+          'href': href
+        },
+        function () {
+          //console.log('------------------- flip transition finished');
+        },
+        function (msg) {
+          //alert('error: ' + msg);
+          app.mobileApp.navigate(href);  
+
+        });
+       
+     }else{
+         app.mobileApp.navigate(href);  
+     }  
+   }*/
     
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
+        shareMsgContent:shareMsgContent,
+        showActionSheet:showActionSheet,
         SD_NAME:SD_NAME,
         showAlert: showAlert,
         showError: showError,
@@ -1735,6 +1893,7 @@ var app = (function (win) {
         shareError:shareError,
         showAppVersion:showAppVersion,
         noGroupAvailable:noGroupAvailable,
+        noGroupAvailableOTO:noGroupAvailableOTO,
         callUserLogin:callUserLogin,
         callOrganisationLogin:callOrganisationLogin,
         callAdminOrganisationList:callAdminOrganisationList,
@@ -1778,8 +1937,10 @@ var app = (function (win) {
         gobackTOCalendar:gobackTOCalendar,
         getPresntTimeStamp:getPresntTimeStamp,
         htmlDecode:htmlDecode,
-        slide:slide,
-        flip:flip,
+        //slide:slide,
+        //flip:flip,
+        //testLogoutSheet:testLogoutSheet,
+        //drawer:drawer,
         getDateMonth:getDateMonth,
         getDateDays:getDateDays,
         getYear: getYear,
@@ -1824,6 +1985,7 @@ var app = (function (win) {
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
         DOWNLOAD_NOT_COMPLETE:DOWNLOAD_NOT_COMPLETE,
+        NO_GROUP_AVAILABLE_OTO:NO_GROUP_AVAILABLE_OTO,
         VIDEO_ALY_DOWNLOAD:VIDEO_ALY_DOWNLOAD,
         MEMBER_DELETED_MSG:MEMBER_DELETED_MSG,
         SELECT_MEMBER_TO_DELETE:SELECT_MEMBER_TO_DELETE,

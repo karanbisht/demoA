@@ -3,39 +3,35 @@
         <div data-role="navbar">
             Groups
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.GroupList.backToOrgDetail"></a>
-            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->
-            
+            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->            
             <a id="admin-groupList-loader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>
+            <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-orgGroup" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a>
  
         </div>
     </div>
     <div>
-
-        <!--<div class="loader" id="admin-groupList-loader" style="display:none;">
-            <div class="ball"></div>
-        </div>-->
-
         <span id="group-listview" data-style="inset" data-role="listview" data-template="groupTemplate"  data-bind="source:groupListData"></span>
         <p id="no-notification-span" hidden="hidden" class="no-items-msg">
             <b>You have no Notification yet.</b>
         </p>
     </div> 
+    <div data-role="popover" id="popover-orgGroup" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-14px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 1px 1px 10px 1px #D1D1D1;">
+                <div data-role="view">
+                    <ul data-role="listview" style="margin:0px;background-color:#ffffff;">
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.GroupList.addGroup"><label style="float:left;padding:10px;">Add Group</label></a>
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.GroupList.deleteGroup"><label style="float:left;padding:10px;">Remove Group</label></a>
+                    </ul>
+                </div>
+    </div>
     
-    <!--<div data-role="footer">
-        <div id="addGroupTabStrip" data-role="tabstrip" data-selected-index="2">
-            <a id="tabAddGroup" data-icon="add" data-role="button" data-bind="click: addGroup" >Add Group</a>
-            <a id="tabDeleteGroup" data-icon="trash" data-role="button" data-bind="click: deleteGroup" >Delete Group</a>
-        </div>
-    </div>-->
-    
-    <div id="groupFooter" data-role="footer" style="padding-bottom:10px;background:#ffffff">
+    <!--<div id="groupFooter" data-role="footer" style="padding-bottom:10px;background:#ffffff">
                 <ol class="reg-group-wrp" style="margin-top:10px">
                     <li style="width:100%">
                         <span id="tabAddGroup" class="clickEffect" data-role="touch" data-bind="events: { tap: addGroup }" style="float:left;margin;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;border-radius:3px;" > Add Group </span>
                         <span id="tabDeleteGroup" class="clickEffect" data-role="touch" data-bind="events: { tap: deleteGroup }"  style="float:right;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" >Delete Group</span>
                     </li>
                 </ol>
-   </div>
+    </div>-->
 
 </div>
 
@@ -45,9 +41,7 @@
     <div class="group-img-show"></div>
     <div class="activity-content">
         <h2 id="" class="person-name">${groupName}</h2>
-        #if (addDate!==0) {#
-            <span id="" class="time-span" ></span>
-        #}#
+        <span class="km-icon km-details" style="float:right;margin-top:-10px;"></span>
         <a id="activityTemplateMessage" class="user-share-txt">${groupDesc}</a>
     </div>
 </div>

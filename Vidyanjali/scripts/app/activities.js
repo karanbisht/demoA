@@ -733,7 +733,8 @@ app.Activities = (function () {
         };
                           
         var activitySelected = function (e) {            
-            app.mobileApp.navigate('views/activityView.html');
+            app.mobileApp.navigate('views/activityView.html');            
+            //app.slide('left', 'green' , '3' , 'views/activityView.html');
             app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
         };
                

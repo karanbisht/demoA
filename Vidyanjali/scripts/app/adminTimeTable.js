@@ -35,7 +35,8 @@ app.adminTimeTable = (function () {
         
         
         var addTimeTableshow = function() {
-          $(".km-scroll-container").css("-webkit-transform", "");           
+          $(".km-scroll-container").css("-webkit-transform", "");  
+          $('.km-popup-arrow').addClass("removeArrow");  
           exportInnerPage=false;            
           if(sysFilePage!==1){
             $("#sendTimeTableLoader").show();       
