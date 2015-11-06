@@ -25,10 +25,7 @@ app.attendance = (function () {
             selectedStudentArray=[];
                          
             $("#attendance-listview").removeClass("km-list");
-             //$("#attendance-listview").removeClass("km-listinset");
-             //$('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');            
             $(".km-filter-form").hide();
-             //$("#attendance-listview").data("kendoMobileListView").destroy();            
             getGroupToShowInCombo();                                            
         };
         
@@ -52,7 +49,6 @@ app.attendance = (function () {
                     }
                 },
                                                                  error: function (e) {
-                                                                     //console.log(JSON.stringify(e));                                                                    
                                                                      $("#progressAdminAttendance").hide();
                                                                      $("#attendance-listview").show();
                                                                      if (!app.checkConnection()) {
@@ -98,6 +94,7 @@ app.attendance = (function () {
                                                mobile: data[0]['status'][0].customerInfo[i].mobile,
                                                first_name: data[0]['status'][0].customerInfo[i].first_name,
                                                email:data[0]['status'][0].customerInfo[i].email,  
+                                               photo:data[0]['status'][0].customerInfo[i].photo,
                                                last_name : data[0]['status'][0].customerInfo[i].last_name,
                                                customerID:data[0]['status'][0].customerInfo[i].customerID,
                                                full_name:data[0]['status'][0].customerInfo[i].first_name+" "+data[0]['status'][0].customerInfo[i].last_name, 

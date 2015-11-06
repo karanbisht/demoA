@@ -56,8 +56,8 @@
             <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;display:none;max-width:600px;margin-bottom:15px;background:#ffffff;">                
                 <form id="login-form" data-bind="events: { keydown: checkEnter }" style="background:#ffffff;">
                     <ul data-role="listview" data-style="inset" style="height:53px;">
-                        <li class="username" style="padding-left:10px;padding-top:20px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
-                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.4rem;margin-left:25px;height:53px;">
+                        <li class="username" style="padding-left:10px;padding-top:18px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
+                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size:20px;margin-left:25px;height:53px;">
                         </li>
                     </ul>
                     <ol class="group-wrp" style="margin-top:20px;">
@@ -72,7 +72,7 @@
             </div>
 
 
-            <div  data-role="view" id="regenerateDiv" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px; padding:10% 10px 10% 10px; border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
+            <div  data-role="view" id="regenerateDiv" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px; padding:10% 10px 10% 10px; box-shadow: 1px 1px 10px 1px #D1D1D1;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
                <script>
                 if (screen.width>screen.height){
                     $("#regenerateDiv").css("margin","8% auto 10px auto"); 
@@ -106,7 +106,7 @@
             </div>
 
             
-          <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#F3F3F3;display:none;border-radius:3px;border: 2px solid #E9E9E9;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
+          <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#F3F3F3;display:none;border-radius:3px;box-shadow: 1px 1px 10px 1px #D1D1D1;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
               <script>
                 if (screen.width>screen.height){
                       $("#validationRow").css("margin","8% auto 10px auto");
@@ -537,7 +537,7 @@
  <script type="text/x-kendo-template" id="replyCustomerTemplate">        
     #if (customerID!==0) {#
         <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: customerSelected }">        
-             #if(photo!==""){#
+            #if(photo!==""){#
                 <img src=${photo} class="user-avatar-img" onerror="this.onerror=null;this.src='styles/images/avatar1.png';"/>
             #}else{#
                 <div class="user-avatar-img-show"></div>
@@ -590,12 +590,12 @@
                                                                
                 <div id="selectGroupDiv" style=" display:none;border:none;background-color:#f3f3f3">
                     <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select group to send message. </div>
-                    <div id="group-Name-listview" class="addkmClass" data-type="group" style="margin:10px;background-color:#f3f3f3;border:none;"> </div>
+                    <div id="group-Name-listview" class="addkmClass" data-type="group" style="margin:0px 10px 0px 10px;background-color:#f3f3f3;border:none;"> </div>
                 </div>
 
                 <div  id="selectCustomerToSend" style="display:none;border:none;background-color:#f3f3f3">
                     <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select member to send message.</div>
-                    <div id="customer-Name-listview" class="addkmClass" data-type="group" style="margin:10px;background-color:#f3f3f3;border:none;"> </div>
+                    <div id="customer-Name-listview" class="addkmClass" data-type="group" style="margin:0px 10px 0px 10px;background-color:#f3f3f3;border:none;"> </div>
                 </div>
 
 

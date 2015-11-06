@@ -739,9 +739,9 @@ input:focus, textarea:focus {
     top: 50%;
     left: .75em;
     display: block;
-    margin-top: -.5em;
+    margin-top: -9px;
     width: 1em;
-    height: 1.2em;
+    height: 20px;
     background-color: transparent;
     background-position: 0 0;
     background-repeat: no-repeat;
