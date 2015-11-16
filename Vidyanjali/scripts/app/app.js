@@ -78,8 +78,8 @@ var app = (function (win) {
     var NO_GROUP_AVAILABLE_OTO="No Group Admin Available."
     
     var serverUrl = function() {        
-        //return 'https://app.Zaff.io/webservice/';  
-        return 'http://sandbox.zaff.io/webservice/';
+        return 'https://app.Zaff.io/webservice/';  
+        //return 'http://sandbox.zaff.io/webservice/';
         //return 'http://54.86.57.141/webservice/';
     }
 
