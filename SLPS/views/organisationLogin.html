@@ -1,0 +1,37 @@
+<!--8CAC7B with e7613e -->
+<div data-role="view" id="OrgLogin" data-layout="mobile-tabstrip" data-title="SLPS" class="welcome-scrn" data-model="app.adminLogin" data-init="app.adminLogin.init" data-show="app.adminLogin.show" data-use-native-scrolling="true">
+    <div id="adminLoginTitle">
+        <script>
+            if (screen.width > screen.height) {
+                $("#adminLoginTitle").css("margin", "10% 0px 10% 15px"); 
+            }else {
+                $("#adminLoginTitle").css("margin", "25% 0px 15% 15px");
+            }    
+        </script>
+        <span style="color:#82879A;font-size:35px;font-weight:normal;">Organization</span><br/><br/><span style="color:#FBFFFF;font-size:25px;margin-top:30px;font-weight:normal;">Login</span>
+    </div>
+
+    <form id="login-form" data-bind="events: { keyup: checkEnter }" style="left:0px; right:0px;margin-right:auto; margin-left:auto;max-width:600px;margin-bottom:15px;">
+        <ul data-role="listview" data-style="inset" style="background:transparent;">
+            <li class="username" style="padding:5px 10px 5px 10px;border-radius:3px;border:1px solid #373D4D;box-shadow:none;background-color:#303645;color:#ffffff;margin-bottom:10px;">
+                <input type="number" pattern="[0-9]*" step="0.01" id="loginMob"  placeholder="Mobile Number" maxlength=10; style="border:none;margin-left:25px;height:35px;margin-top:3px;color:#A1A4AF;"/>
+            </li>
+            <li class="password" style="padding:5px 10px 5px 10px; border-radius:3px;border:1px solid #373D4D;box-shadow:none;background-color:#303645;color:#ffffff;margin-bottom:10px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="border:none;margin-left:25px;height:35px;margin-top:3px;color:#A1A4AF;" />
+            </li>
+        </ul>
+
+        <span style="color:#e7613e;margin:15px;" data-bind="click: forgetPass">
+            <u class="clickEffect">Forgot Password?</u>
+        </span>
+
+        <ol class="group-wrp"style="margin-top:15px;">
+            <li>
+                <span  class="clickEffect" id="login" data-role="touch" data-bind="events: { tap: login }">
+                    <a data-role="button" class="btn btn-login">Login</a>
+                </span>
+            </li>
+        </ol>
+
+    </form>
+</div>

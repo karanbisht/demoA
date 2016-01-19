@@ -1,0 +1,212 @@
+<div data-role="view" id="adminTimeTableList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminTimeTable" data-show ="app.adminTimeTable.TimeTableListShow" data-use-native-scrolling="true">
+    <div data-role="header">         
+              <div data-role="navbar">     
+                 <span>Timetable</span>
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminTimeTable.goToManageOrgPage"></a>    
+                 <!--<a id="adminTimeTableListLoader" style="background:transparent; border:none;" data-align="right"><div class="upperball"></div></a>-->
+                 <a style="background:transparent; border:none;" data-icon="add" data-align="right" data-role="button" data-click="app.adminTimeTable.addTimeTableByAdmin"></a>
+              </div>                                          
+    </div>    
+    <span id="TimeTableAllList" data-style="inset" data-role="listview" data-template="adminTimeTableListTemplate" data-bind="source: activities"></span>            
+    <div id="showMoreBrochurBtn" class="showMore" data-role="button" data-click="app.adminTimeTable.showMoreButtonPress">LOAD MORE</div>
+</div>
+
+		<script type="text/x-kendo-template" id="adminTimeTableListTemplate">            
+          #if(id!=='0' && id!==0){# 
+             <div class="cf">                            
+               <div data-role="touch"> 
+                   <div class="titletable-img-show"></div>
+                   <div class="activity-content">
+                        <h2 id="" class="person-name">${timetable_group}</h2>
+                        <a data-role="button" data-align="right" style="float:right;width:60px;color:white;background-color:rgb(127,191,77);" data-imgPath=${timetable_url} data-timetableid=${id} data-click="app.adminTimeTable.imageDownlaodClick">View</a>
+                        <a data-role="button" data-align="right" style="float:right;width:60px;color:white;margin-right:10px;background-color:rgb(48,54,69);" data-imgPath=${timetable_url} data-timetableid=${id} data-click="app.adminTimeTable.TimeTableEditShow">Edit</a>
+                   </div>
+               </div>
+               
+ 		    </div>   
+          #}else{#
+              <div class="cf" data-role="touch" >
+                <div class="titletable-img-show"></div>
+                <div class="activity-content">
+                    <h2 id="" class="person-name">${timetable_group}</h2>
+                </div>                       		
+	  	    </div>
+          #}#              
+		</script>
+
+<div data-role="view" id="adminAddTimeTable" data-id="innerActivity" data-layout="default" class="form-view"  data-model="app.adminTimeTable" data-show ="app.adminTimeTable.addTimeTableshow" data-use-native-scrolling="true">
+    <div data-role="header">         
+              <div data-role="navbar">     
+                 <span> Add Timetable </span>
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminTimeTable.goToTimeTableListPage"></a>    
+                 <a style="background:transparent; border:none;font-weight:800;" data-align="right" data-role="button" data-click="app.adminTimeTable.addNewTimeTableFunction">Save</a>
+              </div>                                          
+    </div>            
+    <!--<div class="loader" id="sendTimeTableLoader" style="display:none;">
+          <div class="ball"></div>
+    </div>-->    	   
+    <div data-role="content" >
+        <div id="enterNotification" class="textWithTextArea" >                                                
+            <label style="margin:10px 0px 10px 0px;color:rgb(127,191,77);">
+                   <span>Select Group to Add Timetable</span>
+        		   <select id="groupInAddTimeTable" ></select>
+            </label>           
+            <br/>            
+            <a style="width:3em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#TimeTableImgSelect"><img src="styles/images/attachments.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+            <em style="color:rgb(127,191,77)">(attach .pdf, .png, .jpg file only)</em>
+        </div>                 
+        <div id="TimeTableAttachment" style="margin-left:10px;">
+                <div>                                        
+                    <img id="attachedPdfTimeTable" class="pdf-img-show" style="display:none"/><br/>
+                    <img id="attachedPdfTimeTableImage" class="attachfileImgShow" style="display:none"/><br/>
+                    <br/>
+                    <div id="attachedPdfName" style="color:rgb(127,191,77);margin-top:10px;"></div>                                      
+                </div>                                        
+                <ul data-role="actionsheet" id="TimeTableImgSelect">
+                    <li class="km-actionsheet-title"></li>                       
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal" style="text-align:left;"><span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span></a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="add" actionFrom="1" style="text-align:left;"><span class="act_attach"></span><span style="margin-top:-20px;">Attach file</span></a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImage" style="text-align:left;"><span class="act_close"></span><span style="margin-top:-20px;">Remove</span></a>
+                    </li>
+                </ul>
+        </div>                
+    </div> 
+</div>
+
+
+<div id="admTimeTable-upload-file" class="modal-mess-Popup" data-role="modalview" data-model="app.adminTimeTable">
+   <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferAdmTimeTableAbort">X</span>
+   <div id="imgDownloaderATT" style="margin:5px;width:60px;height:60px;margin:10px;"></div>    
+</div>
+
+
+<div data-role="view" id="adminEditTimeTable" data-id="innerActivity" data-layout="default" class="form-view"  data-model="app.adminTimeTable" data-show="app.adminTimeTable.editTimeTableshow" data-use-native-scrolling="true">
+    <div data-role="header">         
+              <div data-role="navbar">     
+                 <span> Edit Timetable </span>                 
+                 <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.adminTimeTable.goToTimeTableListPage"></a>    
+                 <a style="width: 3.4em;height:2.8em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-editTimeTable" data-rel="popover"><img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/></a> 
+              </div>                                          
+    </div>        
+    <!--<div class="loader" id="sendEditTimeTableLoader" style="display:none;">
+          <div class="ball"></div>
+    </div>-->    
+    <div data-role="content" id="wrapp_content_admTimeTable">
+    	<div id="enterNotification" class="textWithTextArea" >                                   
+
+           <span id="activityTemplateDate"  class="defineTitleText">Group Name</span> 
+           <input type="text"  id="timeTableGroup" class="defineTextBox" readonly/>                                                                         
+         
+            <a style="width:3em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" data-rel="actionsheet" href="#editTimeTableImgSelect"><img src="styles/images/attachments.png" style="background-position: .65em 50%;width:90%;height:90%"/></a>
+            <em style="color:rgb(127,191,77)">(attach .pdf, .png, .jpg file only)</em>            
+        </div>         
+            
+           <div id="editTimeTableAttachment" style="margin-left:10px;">
+                <div>                                                            
+                    <img id="attachedImgEditTimeTable" class="pdf-img-show" style="display:none"/><br/>
+                    <img id="attachedImgEditTimeTableImage" class="attachfileImgShow" style="display:none"/><br/>
+                </div>      
+                <br/>
+                <div id="editAttachedPdfName" style="color:rgb(127,191,77);margin-top:10px;"></div>                                      
+
+                
+                <ul data-role="actionsheet" id="editTimeTableImgSelect">
+                    <li class="km-actionsheet-title"></li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getPhotoValEdit" style="text-align:left;"><span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span></a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-click="app.adminTimeTable.getPdfFile" actionType="edit" actionFrom="2" style="text-align:left;"><span class="act_attach"></span><span style="margin-top:-20px;">Attach file</span></a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeTimeTableEdit" style="text-align:left;"><span class="act_close"></span><span style="margin-top:-20px;">Remove</span></a>
+                    </li>
+                </ul>
+            </div>   
+        
+                
+         <!--<div data-role="popover" id="popover-editTimeTable" data-popup='{"width": "180"}' style="margin-right:-20px;">
+            <div data-role="view">
+                <ul data-role="listview">                              
+                     <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminTimeTable.saveEditTimeTableData"><label>Save TimeTable</label></a>
+                     <a style="width:100%;background:transparent;" data-role="button" data-click="app.adminTimeTable.deleteTimeTable"><label>Delete TimeTable</label></a>
+                </ul>
+            </div>
+         </div>-->
+        
+        <div data-role="popover" id="popover-editTimeTable" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-11px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 1px 1px 10px 1px #D1D1D1;">
+          <div data-role="view">
+            <ul data-role="listview" style="margin:0px;background-color:#ffffff;z-index:1;">
+                <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.adminTimeTable.saveEditTimeTableData"><label style="float:left;padding:10px;">Save Timetable</label></a>
+                <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.adminTimeTable.deleteTimeTable"><label style="float:left;padding:10px;">Delete Timetable</label></a>
+            </ul>
+          </div>
+        </div>
+
+    </div>      
+</div>
+
+<div data-role="view" id="systemPDFList" data-id="innerActivity" data-layout="default" class="activities-view-info"  data-model="app.adminTimeTable" data-show ="app.adminTimeTable.systemPDFshow" data-use-native-scrolling="true">
+    <div class="documentContent" data-role="content">                
+                <a id="movePageback" class="inner-docs-back" data-bind="click:gobackFileExportPage">&nbsp;&nbsp;&lt;&nbsp;&nbsp;<span class="exportDocs">Back</span></a>
+            	<div class="km-listview-wrapper">
+                    <ul id="dirContentUpload" class="dirContentUpload export"></ul>                     
+                </div>
+    </div>            
+     <div data-role="footer">
+                <div class="fotrText clearfix">
+                    <p data-align="center">Tap on file to select</p><p><a data-role="button" data-bind="click:jumpBackToTimeTable">Cancel</a></p>
+            	</div>
+     </div>
+</div>
+
+        <script type="text/x-kendo-template" id="docs-upload-template">
+                #if(isDirectory === true){#
+                  <table cellpadding="0" cellspacing="0" width="100%" style="table-layout:fixed;" align="left">
+                    <tr style="height:40px;">
+                        <td class="Folder" style="width:70px;" data-id="folder" data-name="#: name #"></td>
+                        <td data-id="folder" data-name="#: name #"> #: name #</td>
+                        <td data-id="folder" data-name="#: name #"></td>
+                    </tr>
+                  </table>  
+                #}else{#
+                # var ext = getFileExtension(name) #
+                    <table cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" align="left">
+                      <tr style="height:40px;">
+                       #if(ext==="pdf"){#
+                            <td class="PDF" style="width:70px;" data-id="files" data-url="#: nativeURL #" data-bind="click:getAttachedFile"></td>
+                       #}else{#
+                            <td class="IMAGE" style="width:70px;" data-id="files" data-url="#: nativeURL #" data-bind="click:getAttachedFile"></td>            
+                       #}#                        
+                        <td data-id="files" data-url="#: nativeURL #" data-bind="click:getAttachedFile"> #: name #</td>
+                        <td data-id="files" data-url="#: nativeURL #" data-bind="click:getAttachedFile"></td>
+                      </tr>
+                    </table>
+                #}#
+            
+            #function getFileExtension(filename)
+            {
+                var ext = /^.+\.([^.]+)$/.exec(filename);
+                return ext === null ? "" : ext[1];
+            }#
+        </script>
+
+
+
+        <script type="text/x-kendo-template" id="groupNameShowTemplateTimeTable"> 
+           #if(pid !=='0'){#
+                <li class="getGroupCombo">
+                    <label>
+                        <input type="checkbox" class="largerCheckbox" value="${pid}" onclick="app.adminTimeTable.checkClick()"/>
+                        <span class="groupName_Select">#:group_name#</span>
+                    </label>
+                </li>
+           #}else{#
+                 <li class="emptyGetGroupCombo">#:group_name#</li>                  
+           #}#                    
+        </script>

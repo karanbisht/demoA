@@ -1,0 +1,68 @@
+{
+  "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "AppIdentifier": "com.postifi.slps",
+  "ProjectName": "SLPS",
+  "IsRunnable": "true",
+  "AndroidPermissions": [
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.CAMERA",
+    "android.permission.INTERNET",
+    "android.permission.MANAGE_ACCOUNTS",
+    "android.permission.READ_PHONE_STATE",
+    "android.permission.VIBRATE",
+    "android.permission.WRITE_EXTERNAL_STORAGE"
+  ],
+  "CorePlugins": [
+    "com.telerik.plugin.eqatecanalytics",
+    "org.apache.cordova.camera",
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.device-motion",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer",
+    "org.apache.cordova.geolocation",
+    "org.apache.cordova.globalization",
+    "org.apache.cordova.inappbrowser",
+    "org.apache.cordova.media",
+    "org.apache.cordova.media-capture",
+    "org.apache.cordova.network-information",
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar"
+  ],
+  "DeviceOrientations": [
+    "Portrait"
+  ],
+  "iOSStatusBarStyle": "BlackTranslucent",
+  "AndroidHardwareAcceleration": "true",
+  "FrameworkVersion": "3.8.0",
+  "BundleVersion": "1.0.6",
+  "iOSDisplayName": "",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "AndroidVersionCode": "7",
+  "DisplayName": "SLPS",
+  "Author": "karan",
+  "Description": "SPLS Mobile Application",
+  "WP8TileTitle": "Zaffio",
+  "WP8ProductID": "{003f5d01-c32e-4f2f-8a44-f2e7b1f00008}",
+  "WP8PublisherID": "{b6e0580a-d18c-47b9-b482-6e009726ed8c}",
+  "WP8Publisher": "karan",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ],
+  "WP8Capabilities": [],
+  "WP8Requirements": [],
+  "Framework": "Cordova",
+  "projectVersion": "1",
+  "WPSdk": "8.0",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8PackageIdentityName": "1234Telerik.io.zaffio.vidyanjali",
+  "iOSDeploymentTarget": "6.0"
+}
