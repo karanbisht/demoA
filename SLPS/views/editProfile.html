@@ -11,7 +11,7 @@
         </div>
     </div>
     <div>
-        <form>
+        <!--<form>
             <ul data-role="listview" data-style="inset">
                 <li class="username">
                     <input type="text"  id="editFirstName" placeholder="First Name" />
@@ -23,7 +23,25 @@
                     <input type="email" id="editEmail" placeholder="Email" />
                 </li>
             </ul>
+        </form>-->
+        
+        <form>
+                    <div class="inputContainer">
+                        <input id="editFirstName" required type="text">
+                        <label alt="First Name" placeholder="First Name" data-info="First Name"></label>
+                    </div>
+                    
+                    <div class="inputContainer">
+                        <input id="editLastName" required type="text">
+                        <label alt="Last Name" placeholder="Last Name" data-info="Last Name"></label>
+                    </div>
+                    
+                    <div class="inputContainer">
+                        <input id="editEmail" required type="text">
+                        <label alt="Email" placeholder="Email" data-info="Email"></label>
+                    </div>
         </form>
+        
     </div>
 
     <!--<li id="registrationNextR" class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfileFunc }">

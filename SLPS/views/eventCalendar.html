@@ -37,11 +37,12 @@
             <div data-role="touch" >            
                  #if (event_image!=='' && event_image!=='0' && upload_type==="image"){# 
                      <a data-role="button" data-click="app.eventCalender.imageDownlaodClick"  data-imgPath=${event_image} data-notiid=${id} style="width:100%;margin:0px;padding:0px;background:transparent;border:none;">
-                            <div id="img_Div_Event_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                            <!--<div id="img_Div_Event_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                                 <div class="loaderIV">            
                                     <div class="ballIV"></div>                   
                                 </div>                            
-                            </div>                                                                  
+                            </div>-->
+                           <div class="rotating progress" id="img_Div_Event_${id}" style="display:none;"></div>
                        <div class="backgroundImgShow" style="background-image: url(${event_image_show});">            
                             <div id="activityTemplateTitle" class="eventNameListDetail">                             
                                  <span style="z-index:1;float:left;">${event_name}</span>                              

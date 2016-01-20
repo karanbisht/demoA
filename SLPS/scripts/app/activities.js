@@ -782,7 +782,7 @@ app.Activities = (function () {
         var imgNotiFi;
         var fpImg;
 
-        var imageDownlaodClick = function(e) {
+        /*var imageDownlaodClick = function(e) {
             var data = e.button.data();
             imgFile = data.imgpath;  
             imgNotiFi = data.notiid;
@@ -793,10 +793,11 @@ app.Activities = (function () {
             }            
             fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;             
             window.resolveLocalFileSystemURL(fpImg, imgPathExist, imgPathNotExist);                                    
-        }
+        }*/
                 
         var imgPathExist = function() {                    
-            fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;   
+            fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;
+            $("#img_Div_" + imgNotiFi).hide();
             if (device_type==="AP") {
                 window.open(fpImg, '_blank' , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
             }else {
@@ -804,11 +805,40 @@ app.Activities = (function () {
             }
         }
         
+        var imgClickIdArray=[]; 
         var imgPathNotExist = function() {
             if (!app.checkConnection()) {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
             }else {
-                $("#img_Div_" + imgNotiFi).show();            
+              var pos = $.inArray(imgNotiFi, imgClickIdArray);                    
+              if (pos === -1) {
+                imgClickIdArray.push(imgNotiFi);
+                var circle = new ProgressBar.Circle("#img_Div_" + imgNotiFi, {
+                                                        color: '#e7613e',
+                                                        trailColor: '#eee',
+                                                        strokeWidth: 10,
+                                                        duration: 2500,
+                                                        easing: 'easeInOut'
+                                                    });
+
+                circle.set(0.05);
+                setTimeout(function() {
+                    circle.animate(0.3);
+                }, 1000);
+                setTimeout(function() {
+                    circle.animate(0.4);
+                }, 3500);
+                setTimeout(function() {
+                    circle.animate(0.6);
+                }, 5500);
+                setTimeout(function() {
+                    circle.animate(0.8);
+                }, 8000);
+                setTimeout(function() {
+                    circle.animate(.9);
+                }, 10000);                
+                $("#img_Div_" + imgNotiFi).show();
+                
                 var attachedImg = imgFile;                        
                 fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;
 
@@ -816,18 +846,24 @@ app.Activities = (function () {
                 fileTransfer.download(attachedImg, fpImg, 
                                       function(entry) {
                                           $("#img_Div_" + imgNotiFi).hide();
-                                          /*if (device_type==="AP") {
-                                          window.open(fpImg, "_blank" , 'location=no,enableViewportScale=yes,closebuttoncaption=Close');
-                                          }else {
-                                          window.plugins.fileOpener.open(fpImg);
-                                          }*/
                                           window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
+                                           var index = imgClickIdArray.indexOf(imgNotiFi);
+                                           if (index > -1) {
+                                                imgClickIdArray.splice(index, 1);
+                                           }                                          
+                                          console.log(JSON.stringify(imgClickIdArray));
                                       }, 
                                       function(error) {
                                           $("#img_Div_" + imgNotiFi).hide();
                                           window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
+                                           var index = imgClickIdArray.indexOf(imgNotiFi);
+                                           if (index > -1) {
+                                                imgClickIdArray.splice(index, 1);
+                                           }
+                                          console.log(JSON.stringify(imgClickIdArray));
                                       }
-                    );                
+                    );
+               }   
             }    
         }
          
@@ -863,8 +899,7 @@ app.Activities = (function () {
         function activeImgClick() {
             $('.activityImgClick').click(function(event) {
 
-                var imgData = event.target.alt.split('-----');
-                      
+                var imgData = event.target.id.split('-----');
                 imgFile = imgData[0];
                 imgNotiFi = imgData[1];
                    
@@ -899,7 +934,7 @@ app.Activities = (function () {
             videoDownlaodClick:videoDownlaodClick,
             goToAppFirstView:goToAppFirstView,
             show:show,
-            imageDownlaodClick:imageDownlaodClick,
+            //imageDownlaodClick:imageDownlaodClick,
             afterShow:afterShow,
             showMoreButtonPress:showMoreButtonPress,
         };

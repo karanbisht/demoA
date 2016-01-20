@@ -119,11 +119,16 @@
                             <br/>
                             In case multiple Verification Code are generated, use latest Verification Code.
 
-                            <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
+                            <!--<ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
                                 <li class="username" style="padding-top:15px;border:1px solid #E9E9E9;border-radius:3px;" >
                                     <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;height:35px;"/>
                                 </li>
-                            </ul>
+                            </ul>-->
+                            
+                            <div class="inputContainer">
+                                <input id="validationCodeId" required type="text">
+                                <label alt="Verification Code" placeholder="Verification Code" data-info="Verification Code"></label>
+                            </div>
                         </div>
                         <ol class="reg-group-wrp" style="margin-bottom:25px;">
                             <li style="width:100%">
@@ -1017,12 +1022,14 @@
                    <br/>
                    <div class="imageViewContainer">
                     <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
-                        <div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                        <!--<div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                             <div class="loaderIV">
                                 <div class="ballIV"></div>
                             </div>
-                        </div>
-                        <img src=${attachedImg} alt=${attached}-----${pid} onerror="this.onerror=null;this.src='styles/images/no-image.png';" class="imageViewClass"/>
+                        </div>-->
+                
+                        <div class="rotating progress" id="img_Div_${pid}" style="display:none;"></div>
+                        <img src=${attachedImg} id=${attached}-----${pid} onerror="this.onerror=null;this.src='';" class="imageViewClass"/>
                     </a>
                    </div>
                 #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video") {#          

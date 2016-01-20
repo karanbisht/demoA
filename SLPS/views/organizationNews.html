@@ -29,12 +29,13 @@
                     <br/>
                     <div class="imageViewContainer">
                      <a class="newsImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
-                        <div id="img_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                        <!--<div id="img_Div_Image_${id}" style="position:absolute;right:0;height:100%;left:0;display:none;">
                             <div class="loaderIV">
                                 <div class="ballIV"></div>
                             </div>
-                        </div>
-                        <img src= ${news_image_show} alt=${news_image}-----${id} onerror="this.onerror=null;this.src='styles/images/no-image.png';" class="imageViewClass"/>
+                        </div>-->
+                        <div class="rotating progress" id="img_Div_Image_${id}" style="display:none;"></div>
+                        <img src= ${news_image_show} id=${news_image}-----${id} onerror="this.onerror=null;this.src='';" class="imageViewClass"/>
                      </a>
                     </div>
                 #}else if (news_image!=='' && news_image!=='0' && upload_type==="video") {#          

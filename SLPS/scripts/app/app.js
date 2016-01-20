@@ -99,7 +99,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        //console.log(message, 'Error');
+        console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e, 'Error in Aptifi App -:' + message);
         return true;
     });
