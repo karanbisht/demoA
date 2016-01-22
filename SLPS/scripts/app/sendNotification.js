@@ -6,8 +6,8 @@ app.sendNotification = (function () {
     var noGroup = 0;
     var noCustomer = 0;
     var schedule = 0 ; 
-    var scheduleDate;
-    var scheduleTime;
+    //var scheduleDate;
+    //var scheduleTime;
     var sending_option = 'now';
     var pb;
     var ft;
@@ -21,63 +21,12 @@ app.sendNotification = (function () {
     var sendNotificationViewModel = (function () {
         var init = function () {				                 
         };
-         
-        /*var beforeShow = function() {
-            var db = app.getDb();
-            db.transaction(getDataOrg, app.errorCB, showLiveData);   
-        };
-    
-        var getDataOrg = function(tx) {
-            var query = "SELECT * FROM ADMIN_ORG";
-            app.selectQuery(tx, query, getDataSuccess);
-        };
-            
-        var groupDataShowOffline = [];
-            
-        function getDataSuccess(tx, results) {                        
-            groupDataShowOffline = [];
-            
-            var count = results.rows.length;                    			
-            if (count !== 0) {                
-                for (var i = 0 ; i < count ; i++) {                
-                    groupDataShowOffline.push({
-                                                  org_name: results.rows.item(i).org_name,
-                                                  orgDesc: results.rows.item(i).orgDesc,
-                                                  org_id:results.rows.item(i).org_id,
-                                                  bagCount : 'C'					
-                                              });
-                }
-            }else {
-                groupDataShowOffline.push({
-                                              org_name: 'No Notification',
-                                              orgDesc: 'You are not a customer of any organisation',
-                                              org_id:'0',
-                                              bagCount : 'D'    
-                                          });          
-            }
-        };
-         
-        var showLiveData = function() {
-            var organisationListDataSource = new kendo.data.DataSource({
-                                                                           data: groupDataShowOffline
-                                                                       });                           
-             
-            $("#organisation-Name-listview").kendoMobileListView({
-                                                                     template: kendo.template($("#orgNameTemplate").html()),    		
-                                                                     dataSource: organisationListDataSource
-                                                                 });                
-          
-            $('#organisation-Name-listview').data('kendoMobileListView').refresh();                
-            $("#selectOrgDiv").show();
-        };*/
                                        
         var show = function(e) {
             $(".km-scroll-container").css("-webkit-transform", "");
             $('.km-popup-arrow').addClass("removeArrow");
             $('#notificationDesc').css('height', '40px');
             $("#notificationType option:selected").removeAttr("selected");
-            //$("#scheduleDatePicker").removeClass("k-input");
-            //$("#scheduleTimePicker").removeClass("k-input");
 
             var txt = $('#notificationDesc'),
                 hiddenDiv = $(document.createElement('div')),
@@ -102,7 +51,6 @@ app.sendNotification = (function () {
 
             $("#memberInSendMsg option:selected").removeAttr("selected");
             $('#memberInSendMsg').empty();
-
             
             document.getElementById("imgDownloaderSendNoti").innerHTML = "";
             
@@ -117,8 +65,8 @@ app.sendNotification = (function () {
             noGroup = 0;
             noCustomer = 0;
             schedule = 0;
-            scheduleDate = '';
-            scheduleTime = '';
+            //scheduleDate = '';
+            //scheduleTime = '';
             sending_option = 'now';
             
             $("#removeAttachment").hide(); 
@@ -129,9 +77,6 @@ app.sendNotification = (function () {
             dataToSend = '';
            
             closeSchedule();
-
-            //localStorage.setItem("SELECTED_GROUP", '');
-            //localStorage.setItem("SELECTED_CUSTOMER", '');
             
             $("#notificationTitleValue").val('');            
             $("#notificationDesc").val('');
@@ -140,80 +85,11 @@ app.sendNotification = (function () {
             largeImage.src = '';
             document.getElementById('comment_allow').checked = false;
             
-            //$("#selectGroupDiv").hide();
-            //$("#selectGroupFooter").hide();
-            //$("#sendNotificationDivMsg").hide();
-            //$("#sendNotiDiv").hide();
-            //$("#selectCustomerToSend").hide();
-            //$("#selectCustomerFooter").hide();
-
             document.getElementById('scheduleDatePicker').valueAsDate = new Date();
             
-            
-            /*var currentDate = app.getPresentDate();            
-            var disabledDaysBefore = [
-                +new Date(currentDate)
-            ];
-
-            $("#scheduleDatePicker").kendoDatePicker({
-                                                         value: new Date(),
-                                                         dates: disabledDaysBefore,    
-                                                         month:{
-                    content:'# if (data.date < data.dates) { #' + 
-                            '<div class="disabledDay">' +
-                            '#= data.value #' +
-                            '</div>' +
-                            '# } else { #' +
-                            '#= data.value #' +
-                            '# } #'
-                },
-                                                         position: "bottom left",
-                                                         animation: {
-                    open: {
-                                                                     effects: "slideIn:up"
-                                                                 }                
-                },
-                                                         open: function(e) {
-                                                             $(".disabledDay").parent().removeClass("k-link")
-                                                             $(".disabledDay").parent().removeAttr("href")
-                                                         },
-
-                 
-                                                         change: function() {
-                                                             var value = this.value();
-                                                             if (new Date(value) < new Date(currentDate)) {                   
-                                                                 var todayDate = new Date();
-                                                                 $('#scheduleDatePicker').data("kendoDatePicker").value(todayDate);                                       
-                                                                 scheduleDate = todayDate;
-                                                             }else {
-                                                                 scheduleDate = value;
-                                                             } 
-                                                         }
-                                                     }).data("kendoDatePicker");
-            
-            $("#scheduleTimePicker").kendoTimePicker({
-                                                         value:"10:00 AM",
-                                                         interval: 15,
-                                                         format: "h:mm tt",
-                                                         timeFormat: "HH:mm", 
-                
-                                                         change: function() {
-                                                             var value = this.value();
-                                                             scheduleTime = value;
-                                                         }                
-                                                     });  
-            
-            $('#scheduleDatePicker').attr('disabled', 'disabled');
-            $('#scheduleTimePicker').attr('disabled', 'disabled');*/
             sendNotificationOrg();
         };    
-                              
-        /*var onChangeNotiGroup = function() {
-            var selectDataNoti = $("#groupforNotification").data("kendoComboBox");    
-            var groupSelectedNoti = selectDataNoti.value();
-            return groupSelectedNoti;
-        };*/
-         
+        
         var getPhotoVal = function() {
             navigator.camera.getPicture(onPhotoURISuccess, onFail, { 
                                             quality: 50,                                            
@@ -257,12 +133,6 @@ app.sendNotification = (function () {
                 } 
             }else {     
                 var org_id = localStorage.getItem("SELECTED_ORG");    
-         
-                /*var cmbGroup = localStorage.getItem("SELECTED_GROUP");
-                cmbGroup = String(cmbGroup);
-             
-                var cmbCust = localStorage.getItem("SELECTED_CUSTOMER");
-                cmbCust = String(cmbCust);*/
                 
                 var cmbGroup = [];
                 var cmbCust = [];
@@ -275,8 +145,6 @@ app.sendNotification = (function () {
                 cmbGroup = String(cmbGroup);
                 cmbCust = String(cmbCust);
                
-                //console.log(cmbGroup+"------------"+cmbCust);
-                          
                 var type = selectedType;
              
                 var cmmt_allow ;
@@ -304,17 +172,7 @@ app.sendNotification = (function () {
                     var valueTime = schedule_Time.split(':');            
                     var Hour = valueTime[0]; // globle variable            
                     var Min = valueTime[1];        
-            
-                    /*var valueTimeMin = Min.split(' '); 
-                    var minute = valueTimeMin[0];
-                    var AmPm = valueTimeMin[1];
-            
-                    if (AmPm==='PM') {
-                        if (Hour!=='12' && Hour!==12) {
-                            Hour = parseInt(Hour) + 12;
-                        }
-                    }*/
-            
+                     
                     schedule_Time = Hour + ":" + Min + ":00";               
                     var second = "00";                                                 
                     tasks = +new Date(year + "/" + month + "/" + day + " " + Hour + ":" + Min + ":" + second);
@@ -591,9 +449,6 @@ app.sendNotification = (function () {
                 },
                                                                          error: function (e) {
                                                                              app.hideAppLoader();
-                                                                             //$("#selectOrgDiv").hide();
-                                                                             //$("#whatToDo").show();
-                                                                             //$("#selectGroupLI").show();                                                                             
                                                                              if (!app.checkConnection()) {
                                                                                  if (!app.checkSimulator()) {
                                                                                      window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -603,7 +458,7 @@ app.sendNotification = (function () {
                                                                              }else {
                                                                                  if (!app.checkSimulator()) {
                                                                                      window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                 }else {
+                                                                                 }else {roup
                                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                  }
                                                                                  app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
@@ -614,16 +469,13 @@ app.sendNotification = (function () {
             
             comboGroupListDataSource.fetch(function() {                                                       
                 groupDataShow = [];
-                var data = this.data();                
-                                            
+                var data = this.data();                                                            
                 if (data[0]['status'][0].Msg==='No Group list') {
-                    //$("#selectGroupDiv").hide();
-                    //$("#selectGroupFooter").hide();
-                    //$("#selectOrgDiv").hide();
-                    //noGroup = 1;      
-                    //$("#whatToDo").show();
-                                         
-                    //localStorage.setItem("SELECTED_GROUP", 0); 
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom(app.NO_GROUP_AVAILABLE);  
+                    }else {
+                        app.showAlert(app.NO_GROUP_AVAILABLE , 'Offline');  
+                    }                    
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.LogoutFromAdmin();                                 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
@@ -644,11 +496,6 @@ app.sendNotification = (function () {
                                                pid:data[0].status[0].groupData[j].pid
                                            });
                     }
-                                                               
-                    //noGroup = 0;
-                    //$("#selectOrgDiv").hide();
-                    //$("#whatToDo").show();
-                    //$("#selectGroupLI").show();
                 }  
                 
                 showDataInTemplate();
@@ -700,20 +547,11 @@ app.sendNotification = (function () {
         }
         
         var showDataInTemplate = function() {
-            /*var comboGroupListDataSource1 = new kendo.data.DataSource({
-                                                                          data: groupDataShow
-                                                                      });      
-            
-            $("#group-Name-listview").kendoListView({
-                                                        dataSource: comboGroupListDataSource1,                                        
-                                                        template: kendo.template($("#groupNameTemplate").html())    		
-                                                    });*/
-                         
             $.each(groupDataShow, function (index, value) {
                 $('#groupInSendMsg').append($('<option/>', { 
-                                                   value: value.pid,
-                                                   text : value.group_name 
-                                               }));
+                                                  value: value.pid,
+                                                  text : value.group_name 
+                                              }));
             });
             
             getCustomerForOrg();
@@ -722,7 +560,6 @@ app.sendNotification = (function () {
         var groupDataShowCustomer = [];        
         
         var getCustomerForOrg = function() {
-
             app.showAppLoader(true);
 
             var org = localStorage.getItem("orgSelectAdmin");
@@ -798,163 +635,15 @@ app.sendNotification = (function () {
         var showCustomerInTemplate = function() {
             $(".km-scroll-container").css("-webkit-transform", "");
            
-            /*var MemberDataSource = new kendo.data.DataSource({
-                                                                 data: groupDataShowCustomer
-                                                             });           
-
-            $("#customer-Name-listview").kendoListView({
-                                                           dataSource: MemberDataSource,
-                                                           template: kendo.template($("#customerNameTemplate").html())
-                                                       });*/
             $.each(groupDataShowCustomer, function (index, value) {
                 $('#memberInSendMsg').append($('<option/>', { 
                                                    value: value.customerID,
-                                                   text : value.first_name+' '+value. last_name
+                                                   text : value.first_name + ' ' + value. last_name
                                                }));
             });
             
             app.hideAppLoader();
         }
-         
-        /*var skipToSeletType = function() {
-            $("#selectCustomerToSend").hide();
-            $("#selectCustomerFooter").hide();
-            escapeGroupClick();
-        };*/
-         
-        /*var goBackToGroup = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-
-            $("#whatToDo").show();            
-            $("#selectCustomerToSend").hide();
-            $("#selectCustomerFooter").hide();
-            localStorage.setItem("SELECTED_CUSTOMER", '');
-        }*/
-        
-        /*var NextToSeletType = function() {
-            var customer = [];
-		    
-            $('#customer-Name-listview input:checked').each(function() {
-                customer.push($(this).val());
-            });
-            
-            customer = String(customer);        
-                        
-            if (customer.length!==0 && customer.length!=='0') {
-                $("#selectCustomerToSend").hide();
-                $("#selectCustomerFooter").hide();
-
-                $("#sendNotificationDivMsg").show();
-                $("#sendNotiDiv").show();   
-                $(".km-scroll-container").css("-webkit-transform", "");
-                localStorage.setItem("SELECTED_CUSTOMER", customer); 
-                localStorage.setItem("SELECTED_GROUP", '');
-            }else {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('Select customer to send message.');   
-                }else {
-                    app.showAlert("Select customer to send message.", "Notification");  
-                }
-            }   
-        };*/
-         
-        /*var skipToCustomerType = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
-            localStorage.setItem("SELECTED_GROUP", '');
-            $("#whatToDo").show();            
-        };*/
-         
-        /*var NextToCustomerType = function() {
-            var group = [];		                
-            
-            $('#group-Name-listview input:checked').each(function() {
-                group.push($(this).val());
-            });
-
-            group = String(group);        
-              
-            if (group.length!==0 && group.length!=='0') {
-                $("#selectGroupDiv").hide();
-                $("#selectGroupFooter").hide();                
-                localStorage.setItem("SELECTED_GROUP", group);
-                localStorage.setItem("SELECTED_CUSTOMER", '');
-                $("#sendNotificationDivMsg").show();
-                $("#sendNotiDiv").show();   
-                $(".km-scroll-container").css("-webkit-transform", "");
-            }else {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('Select group to send message.');   
-                }else {
-                    app.showAlert("Select group to send message.", "Notification");  
-                }
-            }    
-        };*/
-         
-        /*var sendNotificationGroup = function(e) {
-            $(".km-scroll-container").css("-webkit-transform", "");
-            var group = e.data.pid;
-            //localStorage.setItem("SELECTED_GROUP", group);
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
-
-            $("#selectCustomerToSend").show();
-            $("#selectCustomerFooter").show();
-            app.mobileApp.pane.loader.hide();              
-        };*/
-                  
-        /*var escapeGroupClick = function() {                 
-            $(".km-scroll-container").css("-webkit-transform", "");
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
-
-            $("#selectCustomerToSend").hide();
-            $("#selectCustomerFooter").hide();
-             
-            if (noGroup===1 && noCustomer===1) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('No Group and Member to Send Notification');   
-                }else {
-                    app.showAlert("No Group and Member to Send Notification", "Notification");  
-                }
-                app.mobileApp.navigate('#view-all-activities-GroupDetail');
-            }else if (noGroup===0 && noCustomer===1) {
-                if (!app.checkSimulator()) {
-                    window.plugins.toast.showShortBottom('No Member to Send Notification');   
-                }else {
-                    app.showAlert("No Member to Send Notification", "Notification");  
-                }
-                app.mobileApp.navigate('#view-all-activities-GroupDetail');    
-            }else {
-                $("#sendNotificationDivMsg").show();
-                $("#sendNotiDiv").show();   
-                $(".km-scroll-container").css("-webkit-transform", "");
-            }
-             
-            $(".km-scroll-container").css("-webkit-transform", "");
-            app.mobileApp.pane.loader.hide();    
-        };*/
-         
-        /*var escapeGroupGoCustClick = function() {                 
-            $(".km-scroll-container").css("-webkit-transform", "");
-            $("#customerBackButton").hide();
-            $("#customerNextButton").css("width", "90%");
-            $("#selectGroupDiv").hide();
-            $("#selectGroupFooter").hide();
-
-            $("#selectCustomerToSend").show();
-            $("#selectCustomerFooter").show();
-            app.hideAppLoader();
-            app.mobileApp.pane.loader.hide();    
-        };*/
-        
-        /*var goBackToGroupCustomer = function() {
-            $(".km-scroll-container").css("-webkit-transform", "");                        
-            $("#whatToDo").show();
-            $("#sendNotificationDivMsg").hide();
-            $("#sendNotiDiv").hide(); 
-        }*/
 
         var groupCheckData = function() {
             $(':checkbox:checked').each(function(i) {
@@ -1031,8 +720,8 @@ app.sendNotification = (function () {
         var closeSchedule = function() {
             scheduleDiv = 0;
             schedule = 0;
-            scheduleDate = '';
-            scheduleTime = '';
+            //scheduleDate = '';
+            //scheduleTime = '';
             tasks = '';
             tasks1 = '';
             sending_option = 'now';
@@ -1041,30 +730,14 @@ app.sendNotification = (function () {
             document.getElementById("scheduleButton").value = "Schedule";
             $("#scheduleButton").css("width", "100");  
         }
-        
-        /*var onBackClsPicker = function() {                             
-            $("#scheduleTimePicker").data("kendoDatePicker").close();
-            $("#scheduleDatePicker").data("kendoTimePicker").close();           
-        }*/
-         
+                 
         return {
             init: init,
             show: show,
             closeSchedule:closeSchedule,
             scheduleNotification:scheduleNotification,
-            //beforeShow:beforeShow,
-            //skipToSeletType:skipToSeletType,
-            //goBackToGroup:goBackToGroup,
             sendNotificationOrg:sendNotificationOrg,
-            //sendNotificationGroup:sendNotificationGroup,
-            //escapeGroupClick:escapeGroupClick,
-            //skipToCustomerType:skipToCustomerType,
-            //NextToCustomerType:NextToCustomerType,
-            //NextToSeletType:NextToSeletType,
             groupCheckData:groupCheckData,
-            //onBackClsPicker:onBackClsPicker,
-            //goBackToGroupCustomer:goBackToGroupCustomer,
-            //onChangeNotiGroup:onChangeNotiGroup,
             transferFileAbort:transferFileAbort,
             clickOnSelectGroup:clickOnSelectGroup,
             clickOnSelectCustomer:clickOnSelectCustomer,

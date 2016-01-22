@@ -9,7 +9,6 @@ app.Activities = (function () {
     var lastNotificationPID;
     var UserOrgInformation;
     var orgName;
-    var orgLogo;
     var totalOrgNotification = 0;    
     var StartDbCount = 0;
     var EndDbCount = 10;
@@ -53,7 +52,6 @@ app.Activities = (function () {
             account_Id = localStorage.getItem("ACCOUNT_ID");
             bagCount = localStorage.getItem("orgBagCount");
             orgName = localStorage.getItem("selectedOrgName");
-            orgLogo = localStorage.getItem("selectedOrgLogo");
             
             var OrgDisplayName;
             if (orgName.length > 25) {
@@ -495,7 +493,7 @@ app.Activities = (function () {
                     read: {
                                                                                        url: app.serverUrl() + "organisation/managableOrg/" + account_Id + "/" + app.CLIENT_APP_ID,
                                                                                        type:"POST",
-                                                                                       dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                 
+                                                                                       dataType: "json"                 
                                                                                    }
                 },
                                                                            schema: {                                
@@ -753,11 +751,6 @@ app.Activities = (function () {
             
                     fileTransfer.download(attachedVid, fpVid, 
                                           function(entry) {                                      
-                                              //if (device_type==="AP") {
-                                              //window.open(fpVid, "_blank", 'EnableViewPortScale=yes');
-                                              //}else {
-                                              //window.plugins.fileOpener.open(fpVid);
-                                              //}                                      
                                               $("#video_Div_" + newNotiFi).hide();
                                               $("#downloadPer_" + newNotiFi).hide();   
                                               countVal = 0;
@@ -781,19 +774,6 @@ app.Activities = (function () {
         var imgFile;
         var imgNotiFi;
         var fpImg;
-
-        /*var imageDownlaodClick = function(e) {
-            var data = e.button.data();
-            imgFile = data.imgpath;  
-            imgNotiFi = data.notiid;
-            attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
-            var ext = app.getFileExtension(attachedImgFilename);
-            if (ext==='') {
-                attachedImgFilename = attachedImgFilename + '.jpg'; 
-            }            
-            fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;             
-            window.resolveLocalFileSystemURL(fpImg, imgPathExist, imgPathNotExist);                                    
-        }*/
                 
         var imgPathExist = function() {                    
             fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;
@@ -805,65 +785,65 @@ app.Activities = (function () {
             }
         }
         
-        var imgClickIdArray=[]; 
+        var imgClickIdArray = []; 
         var imgPathNotExist = function() {
             if (!app.checkConnection()) {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
             }else {
-              var pos = $.inArray(imgNotiFi, imgClickIdArray);                    
-              if (pos === -1) {
-                imgClickIdArray.push(imgNotiFi);
-                var circle = new ProgressBar.Circle("#img_Div_" + imgNotiFi, {
-                                                        color: '#e7613e',
-                                                        trailColor: '#eee',
-                                                        strokeWidth: 10,
-                                                        duration: 2500,
-                                                        easing: 'easeInOut'
-                                                    });
+                var pos = $.inArray(imgNotiFi, imgClickIdArray);                    
+                if (pos === -1) {
+                    imgClickIdArray.push(imgNotiFi);
+                    var circle = new ProgressBar.Circle("#img_Div_" + imgNotiFi, {
+                                                            color: '#e7613e',
+                                                            trailColor: '#eee',
+                                                            strokeWidth: 10,
+                                                            duration: 2500,
+                                                            easing: 'easeInOut'
+                                                        });
 
-                circle.set(0.05);
-                setTimeout(function() {
-                    circle.animate(0.3);
-                }, 1000);
-                setTimeout(function() {
-                    circle.animate(0.4);
-                }, 3500);
-                setTimeout(function() {
-                    circle.animate(0.6);
-                }, 5500);
-                setTimeout(function() {
-                    circle.animate(0.8);
-                }, 8000);
-                setTimeout(function() {
-                    circle.animate(.9);
-                }, 10000);                
-                $("#img_Div_" + imgNotiFi).show();
+                    circle.set(0.05);
+                    setTimeout(function() {
+                        circle.animate(0.3);
+                    }, 1000);
+                    setTimeout(function() {
+                        circle.animate(0.4);
+                    }, 3500);
+                    setTimeout(function() {
+                        circle.animate(0.6);
+                    }, 5500);
+                    setTimeout(function() {
+                        circle.animate(0.8);
+                    }, 8000);
+                    setTimeout(function() {
+                        circle.animate(.9);
+                    }, 10000);                
+                    $("#img_Div_" + imgNotiFi).show();
                 
-                var attachedImg = imgFile;                        
-                fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;
+                    var attachedImg = imgFile;                        
+                    fpImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;
 
-                var fileTransfer = new FileTransfer();              
-                fileTransfer.download(attachedImg, fpImg, 
-                                      function(entry) {
-                                          $("#img_Div_" + imgNotiFi).hide();
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
-                                           var index = imgClickIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                imgClickIdArray.splice(index, 1);
-                                           }                                          
-                                          console.log(JSON.stringify(imgClickIdArray));
-                                      }, 
-                                      function(error) {
-                                          $("#img_Div_" + imgNotiFi).hide();
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
-                                           var index = imgClickIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                imgClickIdArray.splice(index, 1);
-                                           }
-                                          console.log(JSON.stringify(imgClickIdArray));
-                                      }
-                    );
-               }   
+                    var fileTransfer = new FileTransfer();              
+                    fileTransfer.download(attachedImg, fpImg, 
+                                          function(entry) {
+                                              $("#img_Div_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
+                                              var index = imgClickIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  imgClickIdArray.splice(index, 1);
+                                              }                                          
+                                              console.log(JSON.stringify(imgClickIdArray));
+                                          }, 
+                                          function(error) {
+                                              $("#img_Div_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
+                                              var index = imgClickIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  imgClickIdArray.splice(index, 1);
+                                              }
+                                              console.log(JSON.stringify(imgClickIdArray));
+                                          }
+                        );
+                }   
             }    
         }
          
@@ -898,7 +878,6 @@ app.Activities = (function () {
 
         function activeImgClick() {
             $('.activityImgClick').click(function(event) {
-
                 var imgData = event.target.id.split('-----');
                 imgFile = imgData[0];
                 imgNotiFi = imgData[1];
@@ -934,7 +913,6 @@ app.Activities = (function () {
             videoDownlaodClick:videoDownlaodClick,
             goToAppFirstView:goToAppFirstView,
             show:show,
-            //imageDownlaodClick:imageDownlaodClick,
             afterShow:afterShow,
             showMoreButtonPress:showMoreButtonPress,
         };

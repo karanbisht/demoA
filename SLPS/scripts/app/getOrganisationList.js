@@ -96,7 +96,7 @@ app.OragnisationList = (function () {
                     lastNotifi = app.urldecode(lastNotifi);
 
                     var orgNameDecode = app.urldecode(results.rows.item(i).org_name);
-                    var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
+                    //var orgDescDecode = app.urldecode(results.rows.item(i).orgDesc);
                     
                     var pos = $.inArray(results.rows.item(i).org_id, tempArray);
                     if (pos === -1) {
@@ -267,14 +267,11 @@ app.OragnisationList = (function () {
         var userOrgIdArray = [];  
         
         function insertOrgInfo(tx) {
-            //console.log(profileOrgData);
-            //console.log(profileAdminOrgData);
             var dataLength = profileOrgData.length;
             userLiveOrgIdArray = [];            
 
             for (var i = 0;i < dataLength;i++) {                             
                 userLiveOrgIdArray.push(parseInt(profileOrgData[i].organisationID));           
-                //console.log(profileOrgData[i]); 
                 profileOrgData[i].organisationID = parseInt(profileOrgData[i].organisationID);           
                 var LastNotificationMsg;           
                 if (profileAdminOrgData[i].total!==0) {
@@ -345,10 +342,7 @@ app.OragnisationList = (function () {
             
             dbIdLength = joinOrgID.length;
             
-            //alert(JSON.stringify(userLiveOrgIdArray));
-            
             for (var i = 0;i < dbIdLength;i++) {
-                //alert(JSON.stringify(joinOrgID[i]));
                 var dataVal = userLiveOrgIdArray.indexOf(joinOrgID[i]);
 
                 if (dataVal===-1) {
@@ -378,12 +372,10 @@ app.OragnisationList = (function () {
                 },
                                                                            schema: {                                
                     data: function(data) {	
-                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }                                                            
                 },
                                                                            error: function (e) {
-                                                                               //console.log(e);
                                                                                showLiveDataUpdated();  
                                                                                if (!app.checkConnection()) {
                                                                                    if (!app.checkSimulator()) {
@@ -512,7 +504,6 @@ app.OragnisationList = (function () {
                                                                 template: kendo.template($("#organisationTemplate").html()),    		
                                                                 dataSource: organisationListDataSource
                                                             });
-                
             
             $('#organisation-listview').data('kendoMobileListView').refresh();
                 
@@ -528,7 +519,6 @@ app.OragnisationList = (function () {
         };
         
         var showLiveDataNew = function() {
-                            
             var organisationListDataSource = new kendo.data.DataSource({
                                                                            data: groupDataShow
                                                                        });           
@@ -564,13 +554,11 @@ app.OragnisationList = (function () {
         var groupSelected = function (e) {
             app.mobileApp.navigate('views/groupDetailView.html?uid=' + e.data.uid);
         };
-         
         
         var notificationSelected = function (e) {
             //alert(e.data.uid);
             app.mobileApp.navigate('views/notificationView.html?uid=' + e.data.uid);
         };
-
         
         var replyUser = function() {
             app.mobileApp.navigate('views/userReplyView.html');                         
@@ -596,7 +584,7 @@ app.OragnisationList = (function () {
             tempArray = [];
  
             $("#organisation-listview1").html("");
-            var showMore = localStorage.getItem("ShowMore");
+            //var showMore = localStorage.getItem("ShowMore");
                                      
             var db = app.getDb();
             db.transaction(getOrgInfoDB, app.errorCB, getOrgDBSuccess);       
@@ -753,7 +741,6 @@ app.OragnisationList = (function () {
             var imageSourceOrg = localStorage.getItem("selectedOrgLogo");
             var imgData = localStorage.getItem("selectedOrgLogo");
             var account_Id = localStorage.getItem("ACCOUNT_ID");
-            
             
             $("#orgDescList").css("background-color", "#ffffff");
             $("#manageOrgDesc").css("background-color", "#ffffff");
@@ -1169,12 +1156,8 @@ app.OragnisationList = (function () {
             
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", app.APP_NAME);
-                /*} else if (app.ILLEGAL_CHARS.test(fname)) {
-                app.showAlert("First Name contains illegal characters.", app.APP_NAME);*/ 
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
-                /*} else if (app.ILLEGAL_CHARS.test(lname)) {
-                app.showAlert("Last Name contains illegal characters.", app.APP_NAME);*/    
             } else if (email !== "Email" && email !== "" && !app.validateEmail(email)) {
                 app.showAlert("Please enter a valid Email.", app.APP_NAME);
             }else {    
@@ -1252,7 +1235,6 @@ app.OragnisationList = (function () {
             app.analyticsService.viewModel.trackFeature("User navigate to News List Page");            
             app.mobileApp.navigate('views/organizationNews.html?orgManageID=' + orgManageID);
         }
-                
          
         var takeProfilePhoto = function() {
             navigator.camera.getPicture(onProfilePhotoURISuccess, onFail, { 

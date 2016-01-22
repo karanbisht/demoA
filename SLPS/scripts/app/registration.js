@@ -14,15 +14,13 @@ app.registration = (function () {
         var userType = [];
         var UserProfileInformation;
         var varifiCode;
-        var JoinedOrganisationYN = 1;
+        //var JoinedOrganisationYN = 1;
         
         var regInit = function () {
             $regFirstName = $('#regFirstName');
             $regLastName = $('#regLastName');
             $regEmail = $('#regEmail');
         };
-        
-        // Navigate to activityView When some activity is selected
 
         var addNewRegistration = function (e) {
             $regFirstName.val('');
@@ -172,7 +170,7 @@ app.registration = (function () {
                                         userType.push(data[0]['status'][0].JoinedOrg.role[i]); 
                                     }
                                 }else {
-                                    JoinedOrganisationYN = 0;
+                                    //JoinedOrganisationYN = 0;
                                 } 
                           
                                 if (data[0]['status'][0].JoinedOrg.length!==0) {
@@ -343,7 +341,7 @@ app.registration = (function () {
                                     userType.push(data[0]['status'][0].JoinedOrg.role[i]); 
                                 }
                             }else {
-                                JoinedOrganisationYN = 0;
+                                //JoinedOrganisationYN = 0;
                             } 
                           
                             if (data[0]['status'][0].JoinedOrg.length!==0) {

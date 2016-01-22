@@ -18,7 +18,6 @@
             </ul>
         </div>
     </div>
-
     <div>
         <span id="memberGroup-listview" data-style="inset" data-role="listview" data-template="memberGroupTemplate"  data-bind="source:groupListData"></span>
     </div>
@@ -26,7 +25,7 @@
 
 <div data-role="view" id="groupMemberShow" data-id="innerActivity" data-layout="innerPages"  class="actScrollView"  data-model="app.groupDetail" data-show ="app.groupDetail.orgMemberShow" data-use-native-scrolling="true">
     <div data-role="header">
-        <div data-role="navbar">            
+        <div data-role="navbar">
             <span id="adminMembHeader" class="inner_navBarClass">Members</span>
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.groupDetail.backToOrgGrpDetail"></a>
             <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-orgMember" data-rel="popover">
@@ -100,12 +99,12 @@
         </div>
     </div>
     #}else {#
-       <div class="cf" style="margin:10px;">
+        <div class="cf" style="margin:10px;">
             <div class="user-avatar-img-show"></div>
-                <div class="no-activity-content">
-                    <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
-                </div>        
-       </div>        
+            <div class="no-activity-content">
+                <a id="activityTemplateMessage" class="user-share-txt">${email}</a>
+            </div>
+        </div>        
     #}#
 </script>
 
@@ -127,7 +126,7 @@
 
     #
 </script>
-    
+
 <div data-role="view" id="editMemberInAdmin" data-layout="default" class="activities-view" data-model="app.groupDetail" data-show="app.groupDetail.editMemberShow" data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
@@ -136,10 +135,10 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
         </div>
     </div>
-        
+
     <div id="editOrgMemberContent">
         <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
-                
+
             <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload" >
                 <img id="editMemberPhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror = null;this.src = 'styles/images/profile-img1.png';"/>
                 <div class="profilePicBack">
@@ -191,7 +190,7 @@
     </div>
 
 </div>
-    
+
 <script>
     function removeAlternateNo(num) {
         var li_Count = num + 1;        
@@ -253,7 +252,7 @@
         });
     }
 </script>
-    
+
 <div data-role="view" id="addAlternateNumber" data-layout="default" class="activities-view" data-model="app.groupDetail"
      data-show="app.groupDetail.addAlternateNo">
 
@@ -264,7 +263,7 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callUserLogin"></a>
         </div>
     </div>
-        
+
     <div>
         <form>
             <ul data-role="listview" data-style="inset">
@@ -276,9 +275,9 @@
             <a style="padding-left:10px;margin-top:-10px;color:#e7613e" data-role="touch" data-bind="events: { tap: addMoreMobileNoFunc }">Add More</a>
         </form>
     </div>
-        
+
     <li id="registrationNextR" class="defineSaveButton" data-role="touch" data-bind="events: { tap: editProfileFunc }">
         Save
     </li>
-        
+
 </div>

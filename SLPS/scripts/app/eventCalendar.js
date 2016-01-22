@@ -28,7 +28,8 @@ app.eventCalender = (function () {
             account_Id = localStorage.getItem("ACCOUNT_ID");
             eventOrgId = localStorage.getItem("selectedOrgId");            
             sdcardPath = localStorage.getItem("sdCardPath");
-            orgin = e.view.params.orgin;
+            //orgin = e.view.params.orgin;
+            orgin=1;
             if (orgin===1 || orgin==='1') {
                 $("#idBackHome").show();
                 $("#idBackOrg").hide();
@@ -67,12 +68,10 @@ app.eventCalender = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(data);
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    //console.log(JSON.stringify(e));
                                                                     app.hideAppLoader();
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
@@ -428,68 +427,67 @@ app.eventCalender = (function () {
             }
         }
         
-        var eventImgIdArray=[];
+        var eventImgIdArray = [];
         var imgPathNotExist = function() {
             if (!app.checkConnection()) {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
             }else {
-              var pos = $.inArray(imgNotiFi, eventImgIdArray);                                
-              if (pos === -1) {
-                eventImgIdArray.push(imgNotiFi);                
-                $("#img_Div_Event_" + imgNotiFi).show();            
-                var attachedImg = imgFile;                        
-                var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_event_img_' + attachedImgFilename;
-                var fileTransfer = new FileTransfer();              
+                var pos = $.inArray(imgNotiFi, eventImgIdArray);                                
+                if (pos === -1) {
+                    eventImgIdArray.push(imgNotiFi);                
+                    $("#img_Div_Event_" + imgNotiFi).show();            
+                    var attachedImg = imgFile;                        
+                    var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_event_img_' + attachedImgFilename;
+                    var fileTransfer = new FileTransfer();              
                   
-                   var circle = new ProgressBar.Circle("#img_Div_Event_" + imgNotiFi, {
-                                                        color: '#e7613e',
-                                                        trailColor: '#eee',
-                                                        strokeWidth: 10,
-                                                        duration: 2500,
-                                                        easing: 'easeInOut'
-                                                    });
+                    var circle = new ProgressBar.Circle("#img_Div_Event_" + imgNotiFi, {
+                                                            color: '#e7613e',
+                                                            trailColor: '#eee',
+                                                            strokeWidth: 10,
+                                                            duration: 2500,
+                                                            easing: 'easeInOut'
+                                                        });
 
-                circle.set(0.05);
-                setTimeout(function() {
-                    circle.animate(0.3);
-                }, 1000);
-                setTimeout(function() {
-                    circle.animate(0.4);
-                }, 3500);
-                setTimeout(function() {
-                    circle.animate(0.6);
-                }, 5500);
-                setTimeout(function() {
-                    circle.animate(0.8);
-                }, 8000);
-                setTimeout(function() {
-                    circle.animate(.9);
-                }, 10000);                
-                $("#img_Div_Event_" + imgNotiFi).show();
+                    circle.set(0.05);
+                    setTimeout(function() {
+                        circle.animate(0.3);
+                    }, 1000);
+                    setTimeout(function() {
+                        circle.animate(0.4);
+                    }, 3500);
+                    setTimeout(function() {
+                        circle.animate(0.6);
+                    }, 5500);
+                    setTimeout(function() {
+                        circle.animate(0.8);
+                    }, 8000);
+                    setTimeout(function() {
+                        circle.animate(.9);
+                    }, 10000);                
+                    $("#img_Div_Event_" + imgNotiFi).show();
                   
-                  
-                fileTransfer.download(attachedImg, fp, 
-                                      function(entry) {
-                                          $("#img_Div_Event_" + imgNotiFi).hide();
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
+                    fileTransfer.download(attachedImg, fp, 
+                                          function(entry) {
+                                              $("#img_Div_Event_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
                                           
-                                          var index = eventImgIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                eventImgIdArray.splice(index, 1);
-                                           }
-                                      }, 
-                                      function(error) {
-                                         $("#img_Div_Event_" + imgNotiFi).hide();
-                                         window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
-                                         var index = eventImgIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                eventImgIdArray.splice(index, 1);
-                                           }
-                                      }
-                    );                
-            }   
-         }        
-       }
+                                              var index = eventImgIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  eventImgIdArray.splice(index, 1);
+                                              }
+                                          }, 
+                                          function(error) {
+                                              $("#img_Div_Event_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
+                                              var index = eventImgIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  eventImgIdArray.splice(index, 1);
+                                              }
+                                          }
+                        );                
+                }   
+            }        
+        }
         
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {

@@ -4,7 +4,6 @@ app.replyedCustomer = (function () {
     var replyedCustomerView = (function () {
         var org_id;
         var userCount;
-
         var groupDataShow = [];
 
         var init = function () {
@@ -165,7 +164,6 @@ app.replyedCustomer = (function () {
                      
         var customerSelected = function(e) {
             app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
-
             app.mobileApp.navigate('views/userNotificationComment.html?org_id=' + org_id + '&customerID=' + e.data.customerID + '&userName=' + e.data.user_fname + ' ' + e.data.user_lname + '&notification_id=' + e.data.notification_id + '&date=' + e.data.add_date);
         };
        

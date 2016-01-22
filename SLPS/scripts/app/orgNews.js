@@ -25,7 +25,8 @@ app.orgNews = (function () {
             eventOrgId = localStorage.getItem("selectedOrgId");
             account_Id = localStorage.getItem("ACCOUNT_ID");
             sdcardPath = localStorage.getItem("sdCardPath");
-            orgin = e.view.params.orgin;
+            //orgin = e.view.params.orgin;
+            orgin=1;
             page = 0;
             dataReceived = 0;
             totalListView = 0;
@@ -64,12 +65,10 @@ app.orgNews = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {       
-                                                                    //console.log(JSON.stringify(e));
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
                                                                             window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -122,7 +121,6 @@ app.orgNews = (function () {
                                         var downloadedImg;                                  
                                         var attachedData = newsData.news_image;  
                                         var uplaodData = newsData.upload_type;
-                                        //console.log(uplaodData);
                                         if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="image") {     
                                             Filename = attachedData.replace(/^.*[\\\/]/, '');
                                             var ext = app.getFileExtension(Filename);
@@ -283,8 +281,6 @@ app.orgNews = (function () {
         
         function newsImgClickFun() {
             $('.newsImgClick').click(function(event) {
-                //console.log(event.target.id)
-
                 var imgData = event.target.id.split('-----');
                       
                 imgFile = imgData[0];
@@ -302,7 +298,6 @@ app.orgNews = (function () {
         
         function newsVidClickFun() {
             $('.newsVidClick').click(function(event) {
-                //console.log(event.target.alt)
                 var imgData = event.target.alt.split('-----');                      
                 videoFile = imgData[0];
                 notiFi = imgData[1];
@@ -367,11 +362,6 @@ app.orgNews = (function () {
                         
                 fileTransfer.download(attachedVid, fp, 
                                       function(entry) {                                                                            
-                                          //if (device_type==="AP") {
-                                          //window.open(fp, "_blank",'EnableViewPortScale=yes');
-                                          //}else {
-                                          //window.plugins.fileOpener.open(fp);
-                                          //}                                      
                                           $("#video_Div_Image_" + newNotiFi).hide();
                                           $("#downloadPerNews_" + newNotiFi).hide();   
                                           countValNews = 0;
@@ -393,20 +383,6 @@ app.orgNews = (function () {
         var attachedImgFilename;
         var imgFile;
         var imgNotiFi;
-
-        /*var imageDownlaodClick = function(e) {
-            var data = e.button.data();
-            imgFile = data.imgpath;  
-            imgNotiFi = data.notiid;
-            attachedImgFilename = imgFile.replace(/^.*[\\\/]/, '');
-            var ext = app.getFileExtension(attachedImgFilename);
-            if (ext==='') {
-                attachedImgFilename = attachedImgFilename + '.jpg'; 
-            }
-            var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_news_img_' + attachedImgFilename;            
-            //console.log(fp);
-            window.resolveLocalFileSystemURL(fp, imgPathExist, imgPathNotExist);                                                
-        }*/
                         
         var imgPathExist = function() {                    
             var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_news_img_' + attachedImgFilename; 
@@ -418,69 +394,68 @@ app.orgNews = (function () {
             }
         }
         
-        var newsImgIdArray=[]; 
+        var newsImgIdArray = []; 
         var imgPathNotExist = function() {
             if (!app.checkConnection()) {
                 window.plugins.toast.showShortBottom(app.INTERNET_ERROR);                  
             }else {
-              var pos = $.inArray(imgNotiFi, newsImgIdArray);                                
-              if (pos === -1) {
-                newsImgIdArray.push(imgNotiFi);
+                var pos = $.inArray(imgNotiFi, newsImgIdArray);                                
+                if (pos === -1) {
+                    newsImgIdArray.push(imgNotiFi);
                     
-                $("#img_Div_Image_" + imgNotiFi).show();            
-                var attachedImg = imgFile;                           
-                var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_news_img_' + attachedImgFilename;
-                var fileTransfer = new FileTransfer();   
+                    $("#img_Div_Image_" + imgNotiFi).show();            
+                    var attachedImg = imgFile;                           
+                    var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_news_img_' + attachedImgFilename;
+                    var fileTransfer = new FileTransfer();   
                
-                   var circle = new ProgressBar.Circle("#img_Div_Image_" + imgNotiFi, {
-                                                        color: '#e7613e',
-                                                        trailColor: '#eee',
-                                                        strokeWidth: 10,
-                                                        duration: 2500,
-                                                        easing: 'easeInOut'
-                                                    });
+                    var circle = new ProgressBar.Circle("#img_Div_Image_" + imgNotiFi, {
+                                                            color: '#e7613e',
+                                                            trailColor: '#eee',
+                                                            strokeWidth: 10,
+                                                            duration: 2500,
+                                                            easing: 'easeInOut'
+                                                        });
 
-                circle.set(0.05);
-                setTimeout(function() {
-                    circle.animate(0.3);
-                }, 1000);
-                setTimeout(function() {
-                    circle.animate(0.4);
-                }, 3500);
-                setTimeout(function() {
-                    circle.animate(0.6);
-                }, 5500);
-                setTimeout(function() {
-                    circle.animate(0.8);
-                }, 8000);
-                setTimeout(function() {
-                    circle.animate(.9);
-                }, 10000);                
-                $("#img_Div_Image_" + imgNotiFi).show();            
+                    circle.set(0.05);
+                    setTimeout(function() {
+                        circle.animate(0.3);
+                    }, 1000);
+                    setTimeout(function() {
+                        circle.animate(0.4);
+                    }, 3500);
+                    setTimeout(function() {
+                        circle.animate(0.6);
+                    }, 5500);
+                    setTimeout(function() {
+                        circle.animate(0.8);
+                    }, 8000);
+                    setTimeout(function() {
+                        circle.animate(.9);
+                    }, 10000);                
+                    $("#img_Div_Image_" + imgNotiFi).show();            
                   
-                fileTransfer.download(attachedImg, fp, 
-                                      function(entry) {
-                                          $("#img_Div_Image_" + imgNotiFi).hide();
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
-                                          var index = newsImgIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                newsImgIdArray.splice(index, 1);
-                                           }
-                                      },
+                    fileTransfer.download(attachedImg, fp, 
+                                          function(entry) {
+                                              $("#img_Div_Image_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_COMPLETED);
+                                              var index = newsImgIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  newsImgIdArray.splice(index, 1);
+                                              }
+                                          },
     
-                                      function(error) {
-                                      
-                                          $("#img_Div_Image_" + imgNotiFi).hide();
-                                          window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
-                                          var index = newsImgIdArray.indexOf(imgNotiFi);
-                                           if (index > -1) {
-                                                newsImgIdArray.splice(index, 1);
-                                           }
-                                      }
-                    );                
+                                          function(error) {
+                                              $("#img_Div_Image_" + imgNotiFi).hide();
+                                              window.plugins.toast.showShortBottom(app.DOWNLOAD_NOT_COMPLETE);
+                                              var index = newsImgIdArray.indexOf(imgNotiFi);
+                                              if (index > -1) {
+                                                  newsImgIdArray.splice(index, 1);
+                                              }
+                                          }
+                        );                
+                }
             }
         }
-      }
         var showMoreButtonPress = function() {
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -549,8 +524,7 @@ app.orgNews = (function () {
             getDataToPost:getDataToPost,
             getLiveData:getLiveData,
             showInListView:showInListView,
-            videoDownlaodClick:videoDownlaodClick,
-            //imageDownlaodClick:imageDownlaodClick            
+            videoDownlaodClick:videoDownlaodClick
         };
     }());
         

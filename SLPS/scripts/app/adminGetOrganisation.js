@@ -29,7 +29,7 @@ app.adminOragnisationList = (function () {
         var bagCount = 0;
         var bagCount1 = 0;
             
-        var ShowBagCount = 0;    
+        //var ShowBagCount = 0;    
         
         function getDataSuccess(tx, results) {                        
             groupDataShow = [];
@@ -53,8 +53,7 @@ app.adminOragnisationList = (function () {
                                            count:results.rows.item(i).count					
                                        });
                 }
-                   
-                ShowBagCount = totalCount - bagCount;
+                //ShowBagCount = totalCount - bagCount;
                 //tabstrip1.badge(1, ShowBagCount);
             }else {
                 totalCount = 0;

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -52,7 +53,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 					if (PushPlugin.isInForeground()) {
 						extras.putBoolean("foreground", true);
 						PushPlugin.sendExtras(extras);
-                            createNotification(context, extras);
+                        createNotification(context, extras);
 					} else {
 						extras.putBoolean("foreground", false);
 
@@ -69,11 +70,10 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 	}
 
 	public void createNotification(Context context, Bundle extras) {
-
 		/*int notId = 0;
 
 		try {
-			notId = Integer.parseInt(extras.getString("notId", "0"));
+			notId = Integer.parseInt(extras.getString("notId"));
 		} catch (NumberFormatException e) {
 			Log.e(TAG, "Number format exception - Error parsing Notification ID: " + e.getMessage());
 		} catch (Exception e) {
@@ -95,14 +95,14 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		notificationIntent.putExtra("pushBundle", extras);
 
-		//PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent contentIntent = PendingIntent.getActivity(context, notId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		int defaults = Notification.DEFAULT_ALL;
 
 		if (extras.getString("defaults") != null) {
 			try {
 				defaults = Integer.parseInt(extras.getString("defaults"));
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException ignore) {
 			}
 		}
 
@@ -118,9 +118,9 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
         String attachedDB=messageSplitVal[5];
         String commentAllowDB=messageSplitVal[6];
         String notificationMsg = messageSplitVal[7];
-
+        
         int notId = 0;
-		
+
 		try {
 			//Random rand = new Random();
 			//notId = Integer.parseInt(extras.getString("notId",rand.nextInt(1000)));
@@ -136,16 +136,20 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, notId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
+
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(context)
 						.setDefaults(defaults)
-						.setSmallIcon(context.getApplicationInfo().icon)
+						.setSmallIcon(getSmallIcon(context, extras))
 						.setWhen(System.currentTimeMillis())
 						.setContentTitle(titleDB)
 						.setTicker(titleDB)
 						.setContentIntent(contentIntent)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageDB))
+                        .setColor(getColor(extras))
 						.setAutoCancel(true);
+
+
 
 		//String message = extras.getString("message");
 		if (message != null) {
@@ -169,7 +173,13 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			mBuilder.setDefaults(defaults);
 		}
 
-		mNotificationManager.notify(appName, notId, mBuilder.build());
+		final Notification notification = mBuilder.build();
+		final int largeIcon = getLargeIcon(context, extras);
+		if (largeIcon > -1) {
+			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
+		}
+
+		mNotificationManager.notify(appName, notId, notification);
 	}
 
 	private static String getAppName(Context context) {
@@ -179,5 +189,70 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 						.getApplicationLabel(context.getApplicationInfo());
 
 		return (String) appName;
+	}
+
+  private int getColor(Bundle extras) {
+    int theColor = 0; // default, transparent
+    final String passedColor = extras.getString("color"); // something like "#FFFF0000", or "red"
+    if (passedColor != null) {
+      try {
+        theColor = Color.parseColor(passedColor);
+      } catch (IllegalArgumentException ignore) {}
+    }
+    return theColor;
+  }
+
+	private int getSmallIcon(Context context, Bundle extras) {
+
+		int icon = -1;
+
+		// first try an iconname possible passed in the server payload
+		final String iconNameFromServer = extras.getString("smallIcon");
+		if (iconNameFromServer != null) {
+			icon = getIconValue(context.getPackageName(), iconNameFromServer);
+		}
+
+		// try a custom included icon in our bundle named ic_stat_notify(.png)
+		if (icon == -1) {
+			icon = getIconValue(context.getPackageName(), "ic_stat_notify");
+		}
+
+		// fall back to the regular app icon
+		if (icon == -1) {
+			icon = context.getApplicationInfo().icon;
+		}
+
+		return icon;
+	}
+
+	private int getLargeIcon(Context context, Bundle extras) {
+
+		int icon = -1;
+
+		// first try an iconname possible passed in the server payload
+		final String iconNameFromServer = extras.getString("largeIcon");
+		if (iconNameFromServer != null) {
+			icon = getIconValue(context.getPackageName(), iconNameFromServer);
+		}
+
+		// try a custom included icon in our bundle named ic_stat_notify(.png)
+		if (icon == -1) {
+			icon = getIconValue(context.getPackageName(), "ic_notify");
+		}
+
+		// fall back to the regular app icon
+		if (icon == -1) {
+			icon = context.getApplicationInfo().icon;
+		}
+
+		return icon;
+	}
+
+	private int getIconValue(String className, String iconName) {
+		try {
+			Class<?> clazz  = Class.forName(className + ".R$drawable");
+			return (Integer) clazz.getDeclaredField(iconName).get(Integer.class);
+		} catch (Exception ignore) {}
+		return -1;
 	}
 }

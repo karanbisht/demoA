@@ -2,9 +2,9 @@ var app = app || {};
 
 app.GroupList = (function () {
     var organisationID;  
-    var account_Id;
-    var orgName;
-    var orgDesc;
+    //var account_Id;
+    //var orgName;
+    //var orgDesc;
     
     var activityListViewModel = (function () {
         var init = function () {
@@ -47,9 +47,9 @@ app.GroupList = (function () {
             $('.km-popup-arrow').addClass("removeArrow");
               
             organisationID = localStorage.getItem("orgSelectAdmin");
-            account_Id = localStorage.getItem("ACCOUNT_ID");
-            orgName = localStorage.getItem("orgNameAdmin");
-            orgDesc = localStorage.getItem("orgDescAdmin");
+            //account_Id = localStorage.getItem("ACCOUNT_ID");
+            //orgName = localStorage.getItem("orgNameAdmin");
+            //orgDesc = localStorage.getItem("orgDescAdmin");
                   
             $('#newGroup').val('');
             groupDataShow = [];      

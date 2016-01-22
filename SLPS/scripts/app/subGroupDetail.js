@@ -503,71 +503,70 @@ app.subGroupDetail = (function () {
             });            
             customer = String(customer);                                            
             if (customer.length!==0 && customer.length!=='0') {
-              navigator.notification.confirm(app.DELETE_CONFIRM, function (confirmed) {           
-              if (confirmed === true || confirmed === 1) {              
-                app.showAppLoader();            
-                var jsonDataDeleteMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID};            
-                var dataSourceDeleteMember = new kendo.data.DataSource({
-                                                                           transport: {
-                        read: {
-                                                                                       url: app.serverUrl() + "group/removeUser",
-                                                                                       type:"POST",
-                                                                                       dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                       data: jsonDataDeleteMember
-                                                                                   }
-                    },
-                                                                           schema: {
-                        data: function(data) {
-                            return [data];
-                        }
-                    },
-                                                                           error: function (e) {
-                                                                               app.hideAppLoader();
-                                                                               if (!app.checkConnection()) {
-                                                                                   if (!app.checkSimulator()) {
-                                                                                       window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                   }else {
-                                                                                       app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                   } 
-                                                                               }else {
-                                                                                   if (!app.checkSimulator()) {
-                                                                                       window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                   }else {
-                                                                                       app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                   }
-                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
-                                                                               }
-                                                                           }               
+                navigator.notification.confirm(app.DELETE_CONFIRM, function (confirmed) {           
+                    if (confirmed === true || confirmed === 1) {              
+                        app.showAppLoader();            
+                        var jsonDataDeleteMember = {"customer_id":customer ,"group_id":groupID,"org_id":organisationID};            
+                        var dataSourceDeleteMember = new kendo.data.DataSource({
+                                                                                   transport: {
+                                read: {
+                                                                                               url: app.serverUrl() + "group/removeUser",
+                                                                                               type:"POST",
+                                                                                               dataType: "json",// "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                               data: jsonDataDeleteMember
+                                                                                           }
+                            },
+                                                                                   schema: {
+                                data: function(data) {
+                                    return [data];
+                                }
+                            },
+                                                                                   error: function (e) {
+                                                                                       app.hideAppLoader();
+                                                                                       if (!app.checkConnection()) {
+                                                                                           if (!app.checkSimulator()) {
+                                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                           }else {
+                                                                                               app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                           } 
+                                                                                       }else {
+                                                                                           if (!app.checkSimulator()) {
+                                                                                               window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                           }else {
+                                                                                               app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                           }
+                                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                       }
+                                                                                   }               
           
-                                                                       });  
+                                                                               });  
 	            
-                dataSourceDeleteMember.fetch(function() {
-                    var loginDataView = dataSourceDeleteMember.data();
-                    $.each(loginDataView, function(i, deleteGroupData) {
-                        if (deleteGroupData.status[0].Msg==='User removed successfully') { 
-                            app.hideAppLoader();
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom('Member Deleted Successfully');   
-                            }else {
-                                app.showAlert("Member Deleted Successfully", "Notification");  
-                            }
-                            showSubGroupMembers();
-                        }else if (deleteGroupData.status[0].Msg==="You don't have access") {
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
-                            }else {
-                                app.showAlert(app.NO_ACCESS , 'Offline');  
-                            }                     
-                            showSubGroupMembers();
-                        }else {
-                            app.hideAppLoader();
-                            app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
-                        }
-                    });
-                });
-               }
-              }, app.APP_NAME, ['Yes', 'No']);
-    
+                        dataSourceDeleteMember.fetch(function() {
+                            var loginDataView = dataSourceDeleteMember.data();
+                            $.each(loginDataView, function(i, deleteGroupData) {
+                                if (deleteGroupData.status[0].Msg==='User removed successfully') { 
+                                    app.hideAppLoader();
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom('Member Deleted Successfully');   
+                                    }else {
+                                        app.showAlert("Member Deleted Successfully", "Notification");  
+                                    }
+                                    showSubGroupMembers();
+                                }else if (deleteGroupData.status[0].Msg==="You don't have access") {
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }                     
+                                    showSubGroupMembers();
+                                }else {
+                                    app.hideAppLoader();
+                                    app.showAlert(deleteGroupData.status[0].Msg , 'Notification'); 
+                                }
+                            });
+                        });
+                    }
+                }, app.APP_NAME, ['Yes', 'No']);
             }else {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom('Please Select Member To Delete.');   

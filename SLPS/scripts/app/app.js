@@ -1,12 +1,12 @@
 /*  
 ANDROID
-  PackageID = com.postifi.slps
-  CurrentVersion = 1.0.6
-  VersionCode = 7
+PackageID = com.postifi.slps
+CurrentVersion = 1.0.6
+VersionCode = 7
 IOS
-  PackageID = com.postifi.slps
-  CurrentVersion = 1.0.6
-  VersionCode = 1
+PackageID = com.postifi.slps
+CurrentVersion = 1.0.6
+VersionCode = 1
 */
 
 $(document).ready(function() {
@@ -28,8 +28,8 @@ var app = (function (win) {
     var deviceId_Not_Receive = 0;
     
     var CLIENT_APP_ID = "2015091076";
-    var APP_NAME="SLPS";
-    var SD_NAME="SLPS";
+    var APP_NAME = "SLPS";
+    var SD_NAME = "SLPS";
     var BASE_COLOR = "#7FBF4D";
     var ILLEGAL_CHARS = /\W/; // allow letters, numbers, and underscores      
     var INTERNET_ERROR = "Network problem. Please try again.";
@@ -99,7 +99,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        console.log(message, 'Error');
+        //console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e, 'Error in Aptifi App -:' + message);
         return true;
     });
@@ -312,7 +312,6 @@ var app = (function (win) {
             }, app.APP_NAME, ['Yes', 'No']);
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-GroupDetail') {
         }else if (app.mobileApp.view()['element']['0']['id']==='profileDiv' || app.mobileApp.view()['element']['0']['id']==='eventCalendar') {
-            //app.mobileApp.navigate("#organisationNotiList");
             app.mobileApp.navigate("#view-all-activities");               
         }else if (app.mobileApp.view()['element']['0']['id']==='eventCalendarDetail') {
             if (app.USER_IFRAME_OPEN===1) {
@@ -322,7 +321,6 @@ var app = (function (win) {
                 app.mobileApp.navigate("#eventCalendar");   
             }
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
-            //app.mobileApp.navigate("#organisationNotiList");  
             app.mobileApp.navigate("#view-all-activities");
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-userReply') {
             app.mobileApp.navigate("#view-all-activities-admin");          
@@ -384,7 +382,6 @@ var app = (function (win) {
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-reg') {
             app.mobileApp.navigate('#welcome');
         }else {
-            console.log('backPress');
             app.mobileApp.navigate("#:back");    
         }
     };
@@ -666,7 +663,7 @@ var app = (function (win) {
     var typeDB;
     var titleDB;
     var attachedDB;
-    var account_IdDB;
+    //var account_IdDB;
     var commentAllowDB;
     var send_DateDB;
     var notificationMsg;
@@ -675,7 +672,7 @@ var app = (function (win) {
         
     window.onNotificationAPN = function(event) {
         if (event.id) {                   
-            account_IdDB = localStorage.getItem("ACCOUNT_ID");
+            //account_IdDB = localStorage.getItem("ACCOUNT_ID");
             var messageSplitVal = event.id.split('#####');
                       
             messageDB = messageSplitVal[0];
@@ -719,7 +716,7 @@ var app = (function (win) {
                 if (commentAllowDB==='') {
                     commentAllowDB = 0;
                 }
-                                    
+                
                 navigator.notification.confirm(titleDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         if (typeDB!=='Reply') {
@@ -738,18 +735,19 @@ var app = (function (win) {
                         //db.transaction(insertOrgNotiData, app.errorCB, app.successCB);  
                         if (typeDB!=='Reply') {
                             var db = app.getDb();
-                            db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                            db.transaction(insertOrgNotiData, app.errorCB, refreshMsgList);
                         }else {   
                             var db = app.getDb();
                             db.transaction(insertCommentCount, app.errorCB, app.successCB);            
                         }
                     }
-                }, 'Notification', ['View', 'Close']);   
+                }, 'Message', ['View', 'Close']);   
             }else if (typeDB==='News') {
                 navigator.notification.confirm(titleDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         goToAppNewsPage();
                     }else {
+                       app.orgNews.show(); 
                     }
                 }, 'News', ['View', 'Close']);  
             }else if (typeDB==='Event') {
@@ -757,10 +755,11 @@ var app = (function (win) {
                     if (confirmed === true || confirmed === 1) {
                         goToAppEventPage();
                     }else {
+                        app.eventCalender.show();
                     }
                 }, 'Event', ['View', 'Close']);                    
             }else {
-                showAlert(messageDB , "Notification");
+                showAlert(messageDB , "Message");
             } 
             
             if (app.deviceId_Not_Receive===1) {
@@ -778,7 +777,7 @@ var app = (function (win) {
                     }
                     break;
                 case 'message':             
-                    account_IdDB = localStorage.getItem("ACCOUNT_ID");                         
+                    //account_IdDB = localStorage.getItem("ACCOUNT_ID");                         
                     var messageSplitVal = e.payload.default.split('#####');
                                                               
                     messageDB = messageSplitVal[0];
@@ -814,8 +813,9 @@ var app = (function (win) {
                     }
                     );
                     }*/
-                            
-                    if (typeDB!=='Add Customer' && typeDB!=='Attendance' && typeDB!=='News' && typeDB!=='Event' && typeDB!=='One2One') {
+                    
+                    //&& typeDB!=='Attendance'
+                    if (typeDB!=='Add Customer' && typeDB!=='News' && typeDB!=='Event' && typeDB!=='One2One') {
                         if (attachedDB=== 0 || attachedDB=== "0") {
                             attachedDB = '';
                         }
@@ -823,7 +823,7 @@ var app = (function (win) {
                         if (e.foreground) {
                             if (typeDB!=='Reply') {
                                 var db = app.getDb();
-                                db.transaction(insertOrgNotiData, app.errorCB, app.successCB);
+                                db.transaction(insertOrgNotiData, app.errorCB, refreshMsgList);
                             }else {   
                                 var db = app.getDb();
                                 db.transaction(insertCommentCount, app.errorCB, app.successCB);            
@@ -843,11 +843,13 @@ var app = (function (win) {
                         }
                     }else if (typeDB==='News') {
                         if (e.foreground) {
+                            app.orgNews.show();
                         }else {
                             goToAppNewsPage();    
                         }    
                     }else if (typeDB==='Event') {
                         if (e.foreground) {
+                            app.eventCalender.show();
                         }else {
                             goToAppEventPage(); 
                         }    
@@ -876,6 +878,12 @@ var app = (function (win) {
         finally {    
         }   
     };  
+    
+    
+    
+    function refreshMsgList(){
+        app.Activities.show();
+    }
 
     function insertCommentCount(tx) {
         var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 where org_id='" + orgIdDB + "' and pid='" + notiIdDB + "'";
@@ -950,8 +958,8 @@ var app = (function (win) {
         var db = app.getDb();
         db.transaction(updatebagCount, app.errorCB, app.successCB);
 
-        var messageDBVal = app.urlEncode(messageDB); 
-        var titleDBVal = app.urlEncode(titleDB);
+        //var messageDBVal = app.urlEncode(messageDB); 
+        //var titleDBVal = app.urlEncode(titleDB);
         
         if (attachedDB!== null && attachedDB!=='' && attachedDB!=="0") {
             localStorage.setItem("shareImg", attachedDB);
@@ -1099,35 +1107,29 @@ var app = (function (win) {
         var totalTime = CurDateVal + '||' + time;
         return totalTime;
     }
-    
 
     var newGetCurrentDateTime = function() {
         var currentDate = new Date();
         var month = currentDate.getMonth() + 1;
         var day = currentDate.getDate();
         var year = currentDate.getFullYear();
-        if(day < 10){
-            day='0' + day;
+        if (day < 10) {
+            day = '0' + day;
         }        
-        if(month < 10){
+        if (month < 10) {
             month = '0' + month; 
         }         
         var CurDateVal = year + '-' + month + '-' + day ;
         var hours = currentDate.getHours();
         var minutes = currentDate.getMinutes();
 
-        if(hours < 10){
+        if (hours < 10) {
             hours = '0' + hours;    
         }        
         if (minutes < 10) {
             minutes = '0' + minutes;
         }
-        
-        //var dayNight = hours < 12 ? ' AM' : ' PM';         
-        /*if (hours > 12) {
-            hours = hours - 12;
-        }*/
-        
+                
         var time = hours + ":" + minutes;            
         var totalTime = CurDateVal + '||' + time;
         return totalTime;
@@ -1353,7 +1355,7 @@ var app = (function (win) {
         }
     }
     
-    var generateMoniterForAdmin = function(){
+    var generateMoniterForAdmin = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(oncallback);
         } else {
@@ -1380,7 +1382,7 @@ var app = (function (win) {
     var shareMessageAndURLViaTwitter = function () {
         var shareImg = localStorage.getItem("shareImg");
         var shareMsg = localStorage.getItem("shareMsg");
-        var shareTitle = localStorage.getItem("shareTitle");
+        //var shareTitle = localStorage.getItem("shareTitle");
            
         if (!app.checkSimulator()) { 
             if (shareImg!== null && shareImg!=='' && shareImg!=="0" && shareImg!=="null") {
@@ -1404,7 +1406,7 @@ var app = (function (win) {
     var shareImagesViaFacebook = function () {
         var shareImg = localStorage.getItem("shareImg");
         var shareMsg = localStorage.getItem("shareMsg");
-        var shareTitle = localStorage.getItem("shareTitle");
+        //var shareTitle = localStorage.getItem("shareTitle");
             
         if (!app.checkSimulator()) {
             if (shareImg!== null && shareImg!=='' && shareImg!=="0" && shareImg!=="null") {
@@ -1428,7 +1430,7 @@ var app = (function (win) {
     var shareMessageViaWhatsApp = function () {
         var shareImg = localStorage.getItem("shareImg");
         var shareMsg = localStorage.getItem("shareMsg");
-        var shareTitle = localStorage.getItem("shareTitle");
+        //var shareTitle = localStorage.getItem("shareTitle");
                         
         if (!app.checkSimulator()) {
             if (shareImg!==null && shareImg!=='' && shareImg!=="0" && shareImg!=="null") {
@@ -1448,9 +1450,9 @@ var app = (function (win) {
     };
 
     var shareMessageViaSMS = function () {
-        var shareImg = localStorage.getItem("shareImg");
+        //var shareImg = localStorage.getItem("shareImg");
         var shareMsg = localStorage.getItem("shareMsg");
-        var shareTitle = localStorage.getItem("shareTitle");
+        //var shareTitle = localStorage.getItem("shareTitle");
             
         var device_type = localStorage.getItem("DEVICE_TYPE");                                             
         if (device_type==='AN') {  

@@ -32,56 +32,56 @@ app.orgsubGroupListView = (function () {
             getLiveData();
         };
         
-        var getDataOrgNoti = function(tx) {
-            var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='" + organisationID + "'and group_id=='" + group_ID + "'";
-            app.selectQuery(tx, query, getOrgNotiDataSuccess);
-        };    
+        /*var getDataOrgNoti = function(tx) {
+        var query = "SELECT * FROM ADMIN_ORG_NOTIFICATION where org_id='" + organisationID + "'and group_id=='" + group_ID + "'";
+        app.selectQuery(tx, query, getOrgNotiDataSuccess);
+        };*/    
                         
         var groupDataShow = [];
         
-        function getOrgNotiDataSuccess(tx, results) {
-            groupDataShow = [];
+        /*function getOrgNotiDataSuccess(tx, results) {
+        groupDataShow = [];
             
-            var count = results.rows.length;
+        var count = results.rows.length;
             
-            DBGETDATAVALUE = count;           
-            if (count !== 0) {
-                groupDataShow = [];
-                for (var i = 0 ; i < count ; i++) {    
-                    var dateString = results.rows.item(i).send_date;
-                    var notiDate = app.timeConverter(dateString);
+        DBGETDATAVALUE = count;           
+        if (count !== 0) {
+        groupDataShow = [];
+        for (var i = 0 ; i < count ; i++) {    
+        var dateString = results.rows.item(i).send_date;
+        var notiDate = app.timeConverter(dateString);
 
-                    groupDataShow.push({
+        groupDataShow.push({
 
-                                           message: results.rows.item(i).message,
-                                           org_id: results.rows.item(i).org_id,
-                                           date:notiDate,
-                                           title:results.rows.item(i).title,
-                                           pid :results.rows.item(i).pid ,
-                                           comment_allow:results.rows.item(i).comment_allow ,
-                                           bagCount : 'C',
-                                           attached :results.rows.item(i).attached,
-                                           attachedImg :results.rows.item(i).attached
-                                       });
+        message: results.rows.item(i).message,
+        org_id: results.rows.item(i).org_id,
+        date:notiDate,
+        title:results.rows.item(i).title,
+        pid :results.rows.item(i).pid ,
+        comment_allow:results.rows.item(i).comment_allow ,
+        bagCount : 'C',
+        attached :results.rows.item(i).attached,
+        attachedImg :results.rows.item(i).attached
+        });
                     
-                    lastNotificationPID = results.rows.item(i).pid;
-                }    
-            }else {
-                lastNotificationPID = 0;
+        lastNotificationPID = results.rows.item(i).pid;
+        }    
+        }else {
+        lastNotificationPID = 0;
 
-                groupDataShow.push({
-                                       title: ' No Message ',
-                                       message: 'No messages in this group',
-                                       date:'0',  
-                                       comment_allow : 'Y',
-                                       org_id:'0', 
-                                       pid:'',
-                                       bagCount : '',
-                                       attachedImg :'',  
-                                       attached:''  
-                                   });                   
-            }                       
-        };     
+        groupDataShow.push({
+        title: ' No Message ',
+        message: 'No messages in this group',
+        date:'0',  
+        comment_allow : 'Y',
+        org_id:'0', 
+        pid:'',
+        bagCount : '',
+        attachedImg :'',  
+        attached:''  
+        });                   
+        }                       
+        };*/     
         
         var getLiveData = function() {
             var jsonDataLogin = {"group_id":group_ID,"page":page}                        

@@ -1,8 +1,7 @@
 var app = app || {};
 
 app.Activity = (function () {
-    'use strict';
-    
+    'use strict';    
     var $commentsContainer;    
     var org_id;
     var notiId;
@@ -15,7 +14,6 @@ app.Activity = (function () {
     var groupDataShow = [];
     var lastNotiCommentID;
     var orgLogoToShow;
-    var type;
     var date;
     var upload_type;
     var attachedImgFilename;
@@ -62,7 +60,7 @@ app.Activity = (function () {
             account_Id = localStorage.getItem("ACCOUNT_ID");
             comment_allow = localStorage.getItem("shareComAllow");
             attached = localStorage.getItem("shareImg");
-            type = localStorage.getItem("shareType");
+            //type = localStorage.getItem("shareType");
             date = localStorage.getItem("shareDate");
             upload_type = localStorage.getItem("shareUploadType");
             
@@ -171,7 +169,7 @@ app.Activity = (function () {
                     read: {
                                                                            url: app.serverUrl() + "notification/getNotificationComment/" + org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID,
                                                                            type:"POST",
-                                                                           dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                            
+                                                                           dataType: "json"                                                                                           
                                                                        }
                 },
                                                                schema: {
@@ -317,7 +315,6 @@ app.Activity = (function () {
         }
         
         function getOrgLogoDataSuccess(tx, results) {
-            var count = results.rows.length;    
             orgLogoToShow = results.rows.item(0).imageSource
         }  
       

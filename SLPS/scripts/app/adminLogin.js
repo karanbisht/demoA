@@ -57,12 +57,10 @@ app.adminLogin = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
-                                //console.log(JSON.stringify(data));
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            //console.log(JSON.stringify(e));
                                                                             app.hideAppLoader();
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
@@ -82,8 +80,7 @@ app.adminLogin = (function () {
                                                                     });  
 	            
                     dataSourceLogin.fetch(function() {               
-                        var data = this.data();
-                        
+                        var data = this.data();                        
                         if (data[0]['status'][0].Msg==='You have been successfully logged in.') {
                             getAdminOrgData();
                         }else {
@@ -114,11 +111,6 @@ app.adminLogin = (function () {
                                           
                                                                                
                     data: function(data) {	
-
-                        //console.log(JSON.stringify(data));
- 
-                        var datacheck = 0;
-                        var allData = 0;
                         var adminOrgInfo = [];
                        
                         $.each(data, function(i, groupValue) {
@@ -156,8 +148,6 @@ app.adminLogin = (function () {
                     }                                                            
                 },
                                                                            error: function (e) {
-
-                                                                               //console.log(JSON.stringify(e));
                                                                                app.hideAppLoader();
     
                                                                                if (!app.checkConnection()) {
@@ -197,15 +187,10 @@ app.adminLogin = (function () {
                 },
                                                                 schema: {
                     data: function(data) {	
-
-                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-
-                                                                    //console.log(JSON.stringify(e));
-   
                                                                     app.hideAppLoader();
                                                                     if (!app.checkConnection()) {
                                                                         if (!app.checkSimulator()) {
@@ -280,9 +265,6 @@ app.adminLogin = (function () {
                  
                                                                                   schema: {
                         data: function(data) {
-
-                            //console.log(JSON.stringify(data));
-   
                             var datacheck = 0;
                             var allData = 0;
                        
@@ -307,9 +289,6 @@ app.adminLogin = (function () {
                     },
                  
                                                                                   error: function (e) {
-
-                                                                                      //console.log(JSON.stringify(e));
- 
                                                                                       app.hideAppLoader();
                                                                                       
                                                                                       if (!app.checkConnection()) {
@@ -383,9 +362,6 @@ app.adminLogin = (function () {
                  
                                                                                 schema: {
                         data: function(data) {	
-
-                            //console.log(JSON.stringify(data));
-  
                             var datacheck = 0;
                             var allData = 0;
                        
@@ -412,9 +388,6 @@ app.adminLogin = (function () {
                     },
                  
                                                                                 error: function (e) {
-
-                                                                                    //console.log(JSON.stringify(e));
-
                                                                                     app.hideAppLoader();
 
                                                                                     if (!app.checkConnection()) {

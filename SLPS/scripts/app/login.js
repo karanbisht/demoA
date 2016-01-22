@@ -52,7 +52,8 @@ app.Login = (function () {
             //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
             var device_id = localStorage.getItem("deviceTokenID");                         
             username = $("#loginUsername").val();
-            
+
+            //console.log("--------------------");
             //console.log(device_id);
             if (username === "Mobile Number" || username === "") {
                 app.showAlert("Please enter your mobile no.", app.APP_NAME);
@@ -86,12 +87,12 @@ app.Login = (function () {
                         },
                                                                         schema: {
                             data: function(data) {
+                                //console.log(JSON.stringify(data));
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
-                                                                            app.hideAppLoader();
-                         
+                                                                            //console.log(JSON.stringify(e));              
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
                                                                                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -106,6 +107,8 @@ app.Login = (function () {
                                                                                 }
                                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
+                                                                            
+                                                                            app.hideAppLoader();
                                                                         }               
                                                                     });  
 	            

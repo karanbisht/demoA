@@ -4,7 +4,6 @@ app.attendance = (function () {
     'use strict';
     var attendanceViewModel = (function () {      
         var groupDataShow = [];      
-        var selectedStudentArray = [];
         var check = '';
         var comboGroupListDataSource;
         
@@ -12,17 +11,14 @@ app.attendance = (function () {
         };
         
         var attendanceShow = function (e) {        
-            
             app.showAppLoader(true);
             $("#popover-markAttend").removeClass("km-widget km-popup");
             $('.km-popup-arrow').addClass("removeArrow");
-
             
             $("#attendance-listview").hide();
             $("#attendanceFooter").hide();
                         
             groupDataShow = [];
-            selectedStudentArray = [];
 
             $("#attendance-listview").removeClass("km-list");
             $(".km-filter-form").hide();
@@ -86,18 +82,18 @@ app.attendance = (function () {
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.LogoutFromAdmin();                     
                 }else if (data[0]['status'][0].Msg==='Success') {  
-                     groupDataShow.push({
-                                               mobile:'' ,
-                                               first_name:'SELECT' ,
-                                               email:'',  
-                                               photo:'',
-                                               last_name :'ALL',
-                                               customerID:'000',
-                                               full_name:'SELECT' + " " + 'ALL', 
-                                               inputID:'AMSL',
-                                               check:check,
-                                               orgID:''
-                                           });
+                    groupDataShow.push({
+                                           mobile:'' ,
+                                           first_name:'SELECT' ,
+                                           email:'',  
+                                           photo:'',
+                                           last_name :'ALL',
+                                           customerID:'000',
+                                           full_name:'SELECT' + " " + 'ALL', 
+                                           inputID:'AMSL',
+                                           check:check,
+                                           orgID:''
+                                       });
                     
                     for (var i = 0;i < data[0]['status'][0].customerInfo.length;i++) {                                                        
                         groupDataShow.push({
@@ -108,7 +104,7 @@ app.attendance = (function () {
                                                last_name : data[0]['status'][0].customerInfo[i].last_name,
                                                customerID:data[0]['status'][0].customerInfo[i].customerID,
                                                full_name:data[0]['status'][0].customerInfo[i].first_name + " " + data[0]['status'][0].customerInfo[i].last_name, 
-                                               inputID:'AM'+i,
+                                               inputID:'AM' + i,
                                                check:check,                                               
                                                orgID:data[0]['status'][0].customerInfo[i].orgID
                                            });
@@ -127,7 +123,6 @@ app.attendance = (function () {
         };
 
         var showGroupDataInTemplate = function() {     
-            
             $(".km-scroll-container").css("-webkit-transform", "");
             app.hideAppLoader();
             $("#attendance-listview").show();
@@ -146,7 +141,6 @@ app.attendance = (function () {
                 },
                                                           });        
             $('#attendance-listview').data('kendoMobileListView').refresh(); 
-            
         };
                        
         var showNoGroupDataInTemplate = function() {           
@@ -163,30 +157,21 @@ app.attendance = (function () {
                                                         template: kendo.template($("#attendanceTemplate").html())
                                                     });                            
         };
-                
 
-        $(document).on("click", "#attendance-listview li input" ,function (event) {   
+        $(document).on("click", "#attendance-listview li input" , function (event) {   
             var memberIndex = $(this).attr('id');
-                 if(memberIndex==='AMSL'){
-                    if ($("#AMSL").prop('checked')===false){                      
-                         $('#attendance-listview input').prop('checked', false);                         
-                    }else{
-                         $('#attendance-listview input').prop('checked', true);                         
-                    }    
-                    $('#attendance-listview input').change();
-                 }else{
-                     $('#AMSL').prop('checked', false);
-                     $('#attendance-listview input').change();
-                 }            
+            if (memberIndex==='AMSL') {
+                if ($("#AMSL").prop('checked')===false) {                      
+                    $('#attendance-listview input').prop('checked', false);                         
+                }else {
+                    $('#attendance-listview input').prop('checked', true);                         
+                }    
+                $('#attendance-listview input').change();
+            }else {
+                $('#AMSL').prop('checked', false);
+                $('#attendance-listview input').change();
+            }            
         }); 
-      
-                
-        /*$( document ).ready(function() {
-          alert($("input:checkbox:not(:checked)"));
-        });*/
-        
-        
-                
                  
         var backToOrgDetail = function() {
             app.mobileApp.navigate("#view-all-activities-GroupDetail");
@@ -200,12 +185,11 @@ app.attendance = (function () {
             var organisationID = localStorage.getItem("orgSelectAdmin");                         
             var group = [];		            
             $('#attendance-listview input:checked').each(function() {
-               if($(this).val()!=='000'){
+                if ($(this).val()!=='000') {
                     group.push($(this).val());
-               }    
+                }    
             });            
             group = String(group);                         
-            //console.log(group);
             
             if (group.length!==0 && group.length!=='0') {
                 if (!app.checkConnection()) {
@@ -264,7 +248,6 @@ app.attendance = (function () {
                                 app.showAlert("User marked as Absent", "Notification");  
                             }     
                             app.hideAppLoader();                                                
-                            selectedStudentArray = [];
                             $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
                         }else if (data[0]['status'][0].Msg==="You don't have access") {
                             if (!app.checkSimulator()) {
@@ -294,12 +277,11 @@ app.attendance = (function () {
             var organisationID = localStorage.getItem("orgSelectAdmin");                         
             var group = [];		                
             $('#attendance-listview input:checked').each(function() {
-                if($(this).val()!=='000'){ 
-                  group.push($(this).val());
+                if ($(this).val()!=='000') { 
+                    group.push($(this).val());
                 }    
             });            
             group = String(group);                   
-            //console.log(group);
             if (group.length!==0 && group.length!=='0') {
                 if (!app.checkConnection()) {
                     if (!app.checkSimulator()) {
@@ -357,7 +339,6 @@ app.attendance = (function () {
                                 app.showAlert("User marked as Present", "Notification");  
                             }     
                             app.hideAppLoader();
-                            selectedStudentArray = [];
                             $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
                         }else if (data[0]['status'][0].Msg==="You don't have access") {
                             if (!app.checkSimulator()) {
@@ -382,30 +363,6 @@ app.attendance = (function () {
                 }
             }                            
         };
-
-        /*var checkClick = function(val) {
-            var arrayLength = groupDataShow.length;
-            
-            for (var i = 0; i < arrayLength;i++) {               
-                if (parseInt(groupDataShow[i].customerID) === parseInt(val)) {
-                    check = 'checked';                                                                      
-                    groupDataShow[i].check = check;
-                }  
-            }                        
-            comboGroupListDataSource = new kendo.data.DataSource({
-                                                                     data: groupDataShow
-                                                                 });  
-            
-            var pos = $.inArray(val, selectedStudentArray);
-            if (pos === -1) {
-                selectedStudentArray.push(val);								                    
-            }else {
-                var j = selectedStudentArray.indexOf(val);               
-                if (j !== -1) {
-                    selectedStudentArray.splice(j, 1);
-                }
-            }
-        };*/
         
         var attendanceGroupDataShow = [];
         var showGroup = function(e) {
@@ -463,7 +420,6 @@ app.attendance = (function () {
                                                      groupDesc:'No Group in this Organization',
                                                      addDate:''  
                                                  });                       
-                    //showLiveData();
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.LogoutFromAdmin(); 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {                                    
@@ -485,7 +441,6 @@ app.attendance = (function () {
                                                          addDate:data[0]['status'][0].groupData[i].add  
                                                      }); 
                     }                                       
-                    //saveOrgGroupNotification(orgNotificationData);                                                                                                                                                                      
                 }
                 showLiveData();
             });                                
@@ -523,7 +478,6 @@ app.attendance = (function () {
             attendanceShow: attendanceShow,
             showGroup:showGroup,
             attendanceGroupSelected:attendanceGroupSelected,
-            //checkClick:checkClick,
             markAsPresent:markAsPresent,
             backToOrgDetail:backToOrgDetail,
             backToSelectGroup:backToSelectGroup,

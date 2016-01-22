@@ -3705,7 +3705,7 @@ float:right;
     font-size: 1rem;     
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     overflow: hidden;
-    max-height:250px;
+    max-height:150px;
 }
 
 .txtstuff
@@ -4148,7 +4148,7 @@ input:focus, textarea:focus, select:focus {
 
 /* Taken from http://blog.circleci.com/adaptive-placeholders/ */
 
-.inputContainer input[type="password"],.inputContainer input[type="text"] {
+.inputContainer input[type="password"],.inputContainer input[type="text"],.inputContainer input[type="number"] {
     width: 100%;
     height: 100%;
     margin: 0 0 1em;
@@ -4165,29 +4165,29 @@ input:focus, textarea:focus, select:focus {
     box-shadow: none !important;
 }
 
-.inputContainer input[type="password"][required]:focus,.inputContainer input[type="text"][required]:focus {
+.inputContainer input[type="password"][required]:focus,.inputContainer input[type="text"][required]:focus,.inputContainer input[type="number"][required]:focus {
     border-color: #e7613e;
 }
 
-.inputContainer input[type="password"][required]:focus + label[placeholder]:before,.inputContainer input[type="text"][required]:focus + label[placeholder]:before,
-.inputContainer input[type="password"][required]:valid + label[placeholder]:before,.inputContainer input[type="text"][required]:valid + label[placeholder]:before {
+.inputContainer input[type="password"][required]:focus + label[placeholder]:before,.inputContainer input[type="text"][required]:focus + label[placeholder]:before,.inputContainer input[type="number"][required]:focus + label[placeholder]:before,
+.inputContainer input[type="password"][required]:valid + label[placeholder]:before,.inputContainer input[type="text"][required]:valid + label[placeholder]:before,.inputContainer input[type="number"][required]:valid + label[placeholder]:before {
     -webkit-transition-duration: .2s;
     transition-duration: .2s;
     -webkit-transform: translate(0, -1.5em) scale(0.9, 0.9);
     -ms-transform: translate(0, -1.5em) scale(0.9, 0.9);
     transform: translate(0, -1.5em) scale(0.9, 0.9);
 }
-.inputContainer input[type="password"][required]:invalid + label[placeholder][alt]:before,.inputContainer input[type="text"][required]:invalid + label[placeholder][alt]:before {
+.inputContainer input[type="password"][required]:invalid + label[placeholder][alt]:before,.inputContainer input[type="text"][required]:invalid + label[placeholder][alt]:before,.inputContainer input[type="number"][required]:invalid + label[placeholder][alt]:before {
     content: attr(alt);
 }
-.inputContainer input[type="password"][required] + label[placeholder],.inputContainer input[type="text"][required] + label[placeholder] {
+.inputContainer input[type="password"][required] + label[placeholder],.inputContainer input[type="text"][required] + label[placeholder],.inputContainer input[type="number"][required] + label[placeholder] {
     display: block;
     pointer-events: none;
     /*line-height: 1em;*/
     margin-top: calc(-3.2em - 1px);
     margin-bottom: calc(3em - 1em) + 2px;
 }
-.inputContainer input[type="password"][required] + label[placeholder]:before,.inputContainer input[type="text"][required] + label[placeholder]:before {
+.inputContainer input[type="password"][required] + label[placeholder]:before,.inputContainer input[type="text"][required] + label[placeholder]:before,.inputContainer input[type="number"][required] + label[placeholder]:before {
     content: attr(data-info);
     display: inline-block;
     margin: 0 calc(1em + 1px);

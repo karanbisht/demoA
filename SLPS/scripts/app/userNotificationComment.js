@@ -6,9 +6,7 @@ app.userNotiComment = (function () {
     
     var $commentsContainer,
         listScroller;
-    var userActivityViewModel = (function () {
-        var activityUid, activity;
-        // $activityPicture;
+    var userActivityViewModel = (function () {      
         var org_id;
         var notiId;  
         var customerID;
@@ -18,7 +16,7 @@ app.userNotiComment = (function () {
         var title;
         var attached;
         var comment_allow;
-        var pid;
+        //var pid;
         var upload_type;
         var attachedImgFilename;
         var date;
@@ -28,21 +26,11 @@ app.userNotiComment = (function () {
                 
         var data;          
         
-        var replyButton = function() {
-            if (app.checkConnection()) {
-                var notificationId = activity.notification_id;             
-                app.mobileApp.navigate('views/addCommentView.html?notificationId=' + notificationId);                         
-            } else {
-                app.showAlert("You are currently offline, can't reply to post " , "Offline Mode");
-            }
-        };
-
+       
         var show = function (e) {
             app.showAppLoader(true);
             $("#status-container-adminComment").hide();
-
             $('#newAdminComment').val('');
-
             app.mobileApp.pane.loader.hide();
             title = ''
             message = '';
@@ -118,7 +106,7 @@ app.userNotiComment = (function () {
                         attached = loginData.status[0].notificationList[0].attached;
                         comment_allow = loginData.status[0].notificationList[0].comment_allow;
                         message = loginData.status[0].notificationList[0].message;
-                        pid = loginData.status[0].notificationList[0].pid;
+                        //pid = loginData.status[0].notificationList[0].pid;
                         title = loginData.status[0].notificationList[0].title;
                         upload_type = loginData.status[0].notificationList[0].upload_type; 
                         moreDataToLoad();            
@@ -132,9 +120,7 @@ app.userNotiComment = (function () {
             });
         };
         
-        var moreDataToLoad = function() {
-            var attachedImg = attached;
-            
+        var moreDataToLoad = function() {           
             document.getElementById("notiAdminImage").innerHTML = "";            
             $("#notiAdminDetailVid").hide();
             $("#notiAdminImage").hide();
@@ -409,8 +395,7 @@ app.userNotiComment = (function () {
             init: init,
             show: show,
             adminComment:adminComment,
-            saveAdminComment:saveAdminComment, 
-            replyButton:replyButton
+            saveAdminComment:saveAdminComment
         };
     }());
     

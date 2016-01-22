@@ -10,7 +10,6 @@ app.adminNews = (function () {
         var upload_type;
         var groupDataShow = [];
         var pbNews;
-        var disabledDaysBefore = [];
         var ft;
         var photo_split;
         var countVal = 0;
@@ -173,15 +172,8 @@ app.adminNews = (function () {
             groupDataShow = [];                        
             $('.km-popup-arrow').addClass("removeArrow");
 
-            /*$("#adddatePickerNews").removeAttr('disabled');           
-            $("#adddateTimePickerNews").removeAttr('disabled');
-            $("#adddatePickerNews").removeClass("k-input");
-            $("#adddateTimePickerNews").removeClass("k-input");*/            
-
-
             $("#addNewsName").val('');
             $("#addNewsDesc").val('');
-            
             
             $('#addNewsDesc').css('height', '40px');
 
@@ -212,52 +204,6 @@ app.adminNews = (function () {
             $('#groupInAddNews').empty();
             
             document.getElementById('adddatePickerNews').valueAsDate = new Date();
-
-            /*var currentDate = app.getPresentDate();
-            
-            disabledDaysBefore = [
-                +new Date(currentDate)
-            ];
-            
-            $("#adddatePickerNews").kendoDatePicker({
-                                                        value: new Date(),
-                                                        dates: disabledDaysBefore,    
-                                                        month:{
-                    content:'# if (data.date > data.dates) { #' + 
-                            '<div class="disabledDay">' +
-                            '#= data.value #' +
-                            '</div>' +
-                            '# } else { #' +
-                            '#= data.value #' +
-                            '# } #'
-                },                
-                  
-                                                        open: function(e) {
-                                                            $(".disabledDay").parent().removeClass("k-link")
-                                                            $(".disabledDay").parent().removeAttr("href")
-                                                        },
-
-                 
-                                                        change: function() {
-                                                            var value = this.value();
-                                                            if (new Date(value) > new Date(currentDate)) {                   
-                                                                var todayDate = new Date();
-                                                                $('#adddatePickerNews').data("kendoDatePicker").value(todayDate);
-                                                            }
-                                                        }
-                                                    }).data("kendoDatePicker");
-            
-            $("#adddateTimePickerNews").kendoTimePicker({
-                                                            value:"10:00 AM",
-                                                            interval: 15,
-                                                            format: "h:mm tt",
-                                                            timeFormat: "HH:mm",
-                                                            change: function() {
-                                                            }                
-                                                        });
-            
-            $('#adddatePickerNews').attr('disabled', 'disabled');
-            $('#adddateTimePickerNews').attr('disabled', 'disabled');*/
 
             getGroupToShowInCombo();
         }
@@ -475,12 +421,6 @@ app.adminNews = (function () {
             txt.addClass('txtstuff');
             hiddenDiv.addClass('hiddendiv common');
             
-            /*$("#editdatePickerNews").removeAttr('disabled');
-            $("#editdateTimePickerNews").removeAttr('disabled');
-            
-            $("#editdatePickerNews").removeClass("k-input");
-            $("#editdateTimePickerNews").removeClass("k-input");*/       
-            
             $('body').append(hiddenDiv);            
             app.showAppLoader(true);
             $("#wrappe_news").hide();
@@ -542,13 +482,6 @@ app.adminNews = (function () {
                     newsUploadType = data[0]['status'][0].newsDetail[0].upload_type;
                     newsPid = data[0]['status'][0].newsDetail[0].id;
 
-                    /*var values = newsDateEdit.split('-');            
-                    var year = values[0]; // globle variable            
-                    var month = values[1];            
-                    var day = values[2];                                
-                    newsDateEdit = month + "/" + day + "/" + year;*/
-
-
                     document.getElementById('editdatePickerNews').value = newsDateEdit;
                     document.getElementById('editdateTimePickerNews').value = newsTimeEdit;
 
@@ -584,47 +517,6 @@ app.adminNews = (function () {
                         newsDataToSend = '';
                         upload_type_Edit = '';
                     }
-            
-                    /*var currentDate = app.getPresentDate();
-            
-                    disabledDaysBefore = [
-                        +new Date(currentDate)
-                    ];
-
-                    $("#editdatePickerNews").kendoDatePicker({                
-                                                                 value: newsDateEdit,
-                                                                 dates: disabledDaysBefore,    
-                                                                 month:{
-                            content:'# if (data.date > data.dates) { #' + 
-                                    '<div class="disabledDay">' +
-                                    '#= data.value #' +
-                                    '</div>' +
-                                    '# } else { #' +
-                                    '#= data.value #' +
-                                    '# } #'
-                        },
-                    },
-                                                                 /*open: function(e) {
-                                                                     $(".disabledDay").parent().removeClass("k-link")
-                                                                     $(".disabledDay").parent().removeAttr("href")
-                                                                 },
-
-                 
-                                                                 change: function() {
-                                                                 }
-                                                             }).data("kendoDatePicker");
-                         
-                    $("#editdateTimePickerNews").kendoTimePicker({
-                                                                     value:newsTimeEdit,
-                                                                     interval: 15,
-                                                                     format: "h:mm tt",
-                                                                     timeFormat: "HH:mm", 
-                
-                                                                     change: function() {
-                                                                     }                
-                                                                 });
-                    $('#editdatePickerNews').attr('disabled', 'disabled');
-                    $('#editdateTimePickerNews').attr('disabled', 'disabled');*/
                                    
                     if (data[0]['status'][0].AdminGroup!==false) {
                         if (data[0]['status'][0].AdminGroup.length!==0 && data[0]['status'][0].AdminGroup.length!==undefined) {
@@ -720,13 +612,11 @@ app.adminNews = (function () {
             });
             
             group = String(group);   
-            
 
             var currentDate = app.newGetCurrentDateTime();
             var values = currentDate.split('||');            
             var newsCompareDate = values[0];
             var newsCompareTime = values[1];
-
             
             if (event_description === "Please Enter News Here" || event_description === "") {
                 app.showAlert("Please enter News.", app.APP_NAME);
@@ -745,23 +635,10 @@ app.adminNews = (function () {
                 var year = values[0]; // globle variable            
                 var month = values[1];            
                 var day = values[2];
-             
-                /*if (day < 10) {
-                    day = "0" + day;
-                }*/
             
                 var valueTime = event_Time.split(':');            
                 var Hour = valueTime[0]; // globle variable            
                 var Min = valueTime[1];        
-            
-                /*var valueTimeMin = Min.split(' '); 
-                var minute = valueTimeMin[0];
-                var AmPm = valueTimeMin[1];
-                if (AmPm==='PM') {
-                    if (Hour!=='12' && Hour!==12) {
-                        Hour = parseInt(Hour) + 12;
-                    }
-                }*/
             
                 var eventTimeSend = Hour + ":" + Min + ":00";
              
@@ -992,14 +869,10 @@ app.adminNews = (function () {
             }else if ((event_Time ==="")) {
                 app.showAlert("Please enter News time.", app.APP_NAME);
             }else {                    
-                var values = event_Date.split('/');            
+                var values = event_Date.split('-');            
                 var year = values[0]; // globle variable            
                 var month = values[1];            
                 var day = values[2];
-             
-                /*if (day < 10) {
-                    day = "0" + day;
-                }*/
             
                 event_Date = year + "-" + month + "-" + day;
                 
@@ -1179,9 +1052,6 @@ app.adminNews = (function () {
         
         var orgAllNewsList = function() {
             app.mobileApp.navigate('#adminOrgNewsList');
-             
-            //$("#adddatePickerNews").removeAttr('disabled');
-            //$("#adddateTimePickerNews").removeAttr('disabled');
 
             app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
         }
@@ -1425,16 +1295,6 @@ app.adminNews = (function () {
             localStorage.setItem("shareTitle", title);            
         }
         
-        /*var onBackClsPicker = function(dataForm) {                             
-            if (dataForm==='add') {
-                //$("#adddatePickerNews").data("kendoDatePicker").close();
-                //$("#adddateTimePickerNews").data("kendoTimePicker").close();
-            }else {
-                //$("#editdatePickerNews").data("kendoDatePicker").close();
-                //$("#editdateTimePickerNews").data("kendoTimePicker").close();
-            }
-        }*/     
-        
         return {
             init: init,
             show: show,
@@ -1447,7 +1307,6 @@ app.adminNews = (function () {
             getTakePhotoEdit:getTakePhotoEdit,
             getPhotoVal:getPhotoVal,
             getVideoVal:getVideoVal,
-            //onBackClsPicker:onBackClsPicker,
             getDataToPost:getDataToPost,
             removeImage:removeImage,
             removeImageEdit:removeImageEdit,

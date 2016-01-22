@@ -16,7 +16,6 @@
         <div data-role="navbar">
             Mark Attendance
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.attendance.backToSelectGroup"></a>
-            <!--<a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>-->            
             <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-markAttend" data-rel="popover">
                 <img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/>
             </a>
@@ -25,15 +24,7 @@
     <div>
         <ul  id="attendance-listview" data-type="group" data-role="listview" data-bind="source: attendance" style="margin:10px;border:none;"></ul>
     </div>
-    <!--<div id="attendanceFooter" data-role="footer" style="padding-bottom:10px;background:#ffffff;display:none;">
-        <ol class="reg-group-wrp" style="margin-top:10px">
-            <li style="width:100%">
-                <span id="adminAddMember" class="clickEffect" data-role="touch" data-bind="events: { tap: markAsAbsent }" style="float:left;margin;width:46%;padding-top:10px;height:40px;background-color:#e7613e;color:#ffffff;border-radius:3px;" > Mark As Absent </span>
-                <span id="adminRemoveMember" class="clickEffect" data-role="touch" data-bind="events: { tap: markAsPresent }"  style="float:right;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" >Mark As Present</span>
-            </li>
-        </ol>
-    </div>-->
-        
+
     <div data-role="popover" id="popover-markAttend" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-14px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 0px 4px 10px 1px #D1D1D1;">
         <div data-role="view">
             <ul data-role="listview" style="margin:0px;background-color:#ffffff;z-index:1;">

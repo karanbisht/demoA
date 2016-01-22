@@ -60,7 +60,7 @@ app.addCustomerByAdmin = (function () {
                     read: {
                                                                                      url: app.serverUrl() + "group/adminGroup/" + org + "/A",
                                                                                      type:"POST",
-                                                                                     dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                                                                                                      
+                                                                                     dataType: "json"    
                                                                                  }
                 },
                                                                          schema: {               
@@ -192,12 +192,8 @@ app.addCustomerByAdmin = (function () {
                
             if (fname === "First Name" || fname === "") {
                 app.showAlert("Please enter your First Name.", app.APP_NAME);
-                /*} else if (app.ILLEGAL_CHARS.test(fname)) {
-                app.showAlert("First Name contains illegal characters.", app.APP_NAME);*/     
             }else if (lname === "Last Name" || lname === "") {
                 app.showAlert("Please enter your Last Name.", app.APP_NAME);
-                /*} else if (app.ILLEGAL_CHARS.test(lname)) {
-                app.showAlert("Last Name contains illegal characters.", app.APP_NAME);     
                 /*}else if (email === "Email" || email === "") {
                 app.showAlert("Please enter your Email.", app.APP_NAME);
                 } else if (!app.validateEmail(email)) {
@@ -238,7 +234,7 @@ app.addCustomerByAdmin = (function () {
                                 read: {
                                                                                            url: app.serverUrl() + "customer/add",
                                                                                            type:"POST",
-                                                                                           dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                           dataType: "json", 
                                                                                            data: jsonDataRegister
                                                                                        }
                             },
@@ -303,7 +299,7 @@ app.addCustomerByAdmin = (function () {
                         }                    
 
                         var params = new Object();
-                        params.org_id = organisationID;  //you can send additional info with the file
+                        params.org_id = organisationID;  
                         params.txtFName = fname;
                         params.txtLName = lname;
                         params.txtEmail = email;
@@ -340,7 +336,7 @@ app.addCustomerByAdmin = (function () {
                             read: {
                                                                                   url: app.serverUrl() + "customer/add",
                                                                                   type:"POST",
-                                                                                  dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                  dataType: "json", 
                                                                                   data: jsonDataReg
                                                                               }
                         },
@@ -405,7 +401,7 @@ app.addCustomerByAdmin = (function () {
                     }                
 
                     var params1 = new Object();
-                    params1.org_id = organisationID;  //you can send additional info with the file
+                    params1.org_id = organisationID;  
                     params1.txtFName = fname;
                     params1.txtLName = lname;
                     params1.txtEmail = email;

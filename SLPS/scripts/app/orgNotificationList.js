@@ -4,7 +4,7 @@ app.orgListView = (function () {
     'use strict';
     
     var organisationID;
-    var account_Id;
+    //var account_Id;
     var groupDataShow = [];   
     var page = 0;
     var totalListView = 0;
@@ -21,7 +21,7 @@ app.orgListView = (function () {
             dataReceived = 0;
             totalListView = 0;
             organisationID = localStorage.getItem("orgSelectAdmin");
-            account_Id = localStorage.getItem("ACCOUNT_ID");            
+            //account_Id = localStorage.getItem("ACCOUNT_ID");            
             groupDataShow = [];                        
             getLiveData();
         };

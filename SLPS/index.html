@@ -17,10 +17,8 @@
     </head>
 
     <body id="Aptifi" onload="app.onLoad()">
-        <div data-role="layout" data-id="default" class="AptifiBackImage">
-        </div>
-        <div data-role="layout" data-id="innerPages">
-        </div>
+        <div data-role="layout" data-id="default" class="AptifiBackImage"></div>
+        <div data-role="layout" data-id="innerPages"></div>
         <div data-role="layout" data-id="mobile-tabstrip">
             <div data-role="header">
                 <div data-role="navbar">
@@ -34,11 +32,9 @@
                 </div>
             </div>
         </div>
-
         <div class="loader" id="appLoader" style="display:none;">
             <div class="ball"></div>
         </div>
-
         <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show" data-use-native-scrolling="true">
             <div data-role="content" style="background-color:#ffffff">
                 <div class="logoImg" id="contentOuterDiv" style="margin-top:5%;">
@@ -118,13 +114,6 @@
                             Verification Code sent to your registered Mobile Number. Please use this Verification Code to continue with the Registration.<br/>
                             <br/>
                             In case multiple Verification Code are generated, use latest Verification Code.
-
-                            <!--<ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
-                                <li class="username" style="padding-top:15px;border:1px solid #E9E9E9;border-radius:3px;" >
-                                    <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;height:35px;"/>
-                                </li>
-                            </ul>-->
-                            
                             <div class="inputContainer">
                                 <input id="validationCodeId" required type="text">
                                 <label alt="Verification Code" placeholder="Verification Code" data-info="Verification Code"></label>
@@ -145,7 +134,6 @@
                 </div>
             </div>
         </div>
-
 
         <div data-role="view" id="firstScreen" data-id="innerActivity" data-layout="default" class="welcome-scrn form-view">
             <div data-role="content" id="appNameDiv" style="   
@@ -197,38 +185,6 @@
             </li>
         </div>
 
-        <!--<div data-role="view" id="organisationNotiList" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view" data-model="app.OragnisationList" data-init="app.OragnisationList.init" data-show="app.OragnisationList.show" data-use-native-scrolling="true">
-            <div class="loader" id="progress2" style="display:none;">
-                <div class="ball"></div>
-            </div>
-
-            <div id="organisationListView">
-                <ul id="organisation-listview" data-style="inset" data-role="listview" data-template="organisationTemplate" data-bind="source: activities"></ul>
-            </div>
-        </div>-->
-
-        <div data-role="view" id="infoDiv" class="activities-view" data-model="app.OragnisationList">
-            <div data-role="header" style="border-bottom:2px solid #F0F0F0">
-                <div data-role="navbar">
-                    Sakshay
-                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.OragnisationList.gobackOrgMainPage" ></a>
-                </div>
-            </div>
-
-            <div data-role="content" >
-                <ul data-role="listview" class="displayContentAboutUS">
-                    <h3>WHAT WE DO</h3>
-                    <p style="text-align: justify;">When it comes to web design and development services in Delhi/NCR, India, we happen to be the leading players in that sphere. Our dedicated efforts towards providing you with the finest tech advanced IT solutions, helps you grow your online business exponentially. Our wide range of IT services has yielded us a number of reputed web based projects. We have backed some great online market places for business over various web development platforms like Joomla, Wordpress, Magento E-Commerce, Drupal and more. Take a look at our portfolio to get a glimpse of work we have done for our prestigious clients over the years.</p>
-                </ul>
-            </div>
-
-            <div data-role="footer">
-                <div id="appInfoTabStrip" data-role="tabstrip" data-selected-index="2">
-                    <a id="" data-icon="phone" data-role="button" data-bind="click: makeCall">Call Us</a>
-                    <a id="" data-icon="mostviewed" data-role="button" data-bind="click: inAppBrowser">Website</a>
-                </div>
-            </div>
-        </div>
         <div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
             <div>
                 <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities"></ul>
@@ -237,39 +193,6 @@
                 </p>
             </div>
         </div>
-
-        <!--<script type="text/x-kendo-template" id="organisationTemplate">
-            #if (organisationID!==0 && organisationID!=='0') {# 
-            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">                    
-                #if (org_logo===null || org_logo==='null') {#   
-                    <div class="org-img-show"></div>
-                #}else {#                    
-                    <div class="user-avatar" style="background-image: url(${imageSource});">
-                    </div>
-                #}#                        
-                <div class="orgList-content">
-                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:0px;">${orgName}</h2>
-                    #if (countData!==0) {#
-                        <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${countData}</div>            
-                    #}# 
-                    #if (orgDesc.length > 60) {#
-                        #orgDescVal = orgDesc.substr(0, 60) + '..';#
-                    #}else {#
-                        #orgDescVal = orgDesc;#  
-                    #}#
-                    <a id="activityTemplateMessage" class="orgContentMsg">${orgDescVal}</a>
-                </div>
-            </div>                
-            #}else {#     
-                <div class="cf">
-                    <div class="org-img-show"></div>
-                    <div class="orgList-content">
-                        <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:-3px;">${orgName}</h2>
-                        <a id="activityTemplateMessage" class="orgContentMsg">${orgDesc}</a>
-                    </div>
-                </div>
-            #}#
-        </script>-->
 
         <script type="text/x-kendo-template" id="orgTemplate"> 
                     
@@ -327,19 +250,11 @@
                         <div id="side-org-event-icon"></div>
                     </a>
                 </li>
-                <!--<li style="border-color:#43495c">
-                    <a href="views/timeTable.html"  data-transition="none">
-                        <div id="side-org-timeTable-icon"></div>
-                    </a>
-                </li>-->
                 <li style="border-color:#43495c">
                     <a href="#userOrgManage" data-transition="none">
                         <div id="side-org-icon"></div>
                     </a>
                 </li>
-                <!--<li style="border-color:#43495c">
-                <a href="#views/connectToUS.html" data-transition="none"><div id="side-connectUs-icon"></div></a>
-                </li>-->
                 <li style="border-color:#43495c">
                     <a href="views/profile.html"  data-transition="none">
                         <div id="side-profile-icon"></div>
@@ -361,9 +276,9 @@
                         <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.OragnisationList.openPopoverDrawer">
                             <label style="float:left;padding:10px;">About</label>
                         </a>
-                        <!--<a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.rateUs">
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.rateUs">
                             <label style="float:left;padding:10px;">Rate Us</label>
-                        </a>-->
+                        </a>
                     </ul>
                 </div>
             </div>
@@ -376,9 +291,6 @@
             <div data-role="header" >
                 <div data-role="navbar" style="border-bottom: 1px solid #ffffff;text-align:center;">
                     <span data-role="view-title" class="navBarClass"></span>
-                    <!--<a style="width: 3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-rel="drawer" href="#left-drawer1" data-align="left" data-role="button">
-                    <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
-                    </a>-->
                     <a style="width:3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-click="app.triggerDrawer2" data-align="left" data-role="button">
                         <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
                     </a>
@@ -453,7 +365,7 @@
         </div>
 
         <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
-            <div>               
+            <div>
                 <ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
             </div>
         </div>
@@ -491,47 +403,19 @@
 
         <div data-role="view" id="sendNotificationDiv" class="form-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-use-native-scrolling="true">
             <div data-role="content">
-                <!--<div  id="whatToDo">
-                    <table style="margin:23% auto auto auto">
-                        <tr id="selectGroupLI">
-                            <td class="sendNotiSubMenu"  data-bind="click:clickOnSelectGroup">
-                                <div id="sendToGroupicon"></div>
-                                Send to group
-                            </td>
-                        </tr>
-                        <tr style="height:40px;"></tr>
-                        <tr id="selectCustomerLI">
-                            <td class="sendNotiSubMenu" data-bind="click:clickOnSelectCustomer">
-                                <div id="sendToIndicon"></div>
-                                Send to individual
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div id="selectGroupDiv" style=" display:none;border:none;background-color:#f3f3f3">
-                    <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select group to send message. </div>
-                    <div id="group-Name-listview" class="addkmClass" data-type="group" style="margin:0px 10px 0px 10px;background-color:#f3f3f3;border:none;"> </div>
-                </div>
-
-                <div  id="selectCustomerToSend" style="display:none;border:none;background-color:#f3f3f3">
-                    <div style="color:#343434;font-size:1.2rem;padding-top:10px;padding-bottom:10px;padding-left:10px;">Select member to send message.</div>
-                    <div id="customer-Name-listview" class="addkmClass" data-type="group" style="margin:0px 10px 0px 10px;background-color:#f3f3f3;border:none;"> </div>
-                </div>-->
-
-                <div id="sendNotificationDivMsg" style="overflow:hidden;margin:10px;">                    
+                <div id="sendNotificationDivMsg" style="overflow:hidden;margin:10px;">
                     <label style="margin:10px 0px 10px 0px;color:#e7613e">
                         <span>Select Group</span>
                         <select id="groupInSendMsg"  multiple ></select>
                     </label>
                     <br/>
-                    
+
                     <label style="margin:10px 0px 10px 0px;color:#e7613e">
                         <span>Select Member</span>
                         <select id="memberInSendMsg"  multiple ></select>
                     </label>
                     <br/>
-                    
+
                     <span id="activityTemplateDate"  style="padding-right:2px;color:#e7613e;">Message Title</span>
                     <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title"/>
 
@@ -548,20 +432,20 @@
                             <option value="A">Alert</option>
                         </select>
                     </label>
-                    
+
                     <label class="checkbox">
                         <input type="checkbox" id="comment_allow" name="giftwrap" data-cost="8">
                         <em style="color:rgb(231,97,62)">Allow Comment</em>
                     </label>
-                    
+
                     <div id="selectScheduleDT" style="margin-top:10px;border-radius:6px;border:1px solid #e7613e;padding:10px;display:none;">
                         <a style="float:right" data-icon="sounds" data-align="right" data-role="button" data-bind="click: closeSchedule"></a>
 
                         <span style="color:#e7613e;text-align:center;">Select date and time to schedule message</span>
-                        <br/>                        
+                        <br/>
+                        <br/>
                         <div style="padding:10px,10px;">
-                            <!--<input id="scheduleDatePicker" onkeydown="return false;"/>-->
-                            <input id="scheduleDatePicker" type="date"  name="evt_date" style="float:left;" class="dataTimeCls"/> 
+                            <input id="scheduleDatePicker" type="date"  name="evt_date" style="float:left;" class="dataTimeCls"/>
                             <input id="scheduleTimePicker" type="time" value="10:00" name="evt_time" style="float:right;" class="dataTimeCls"/>
 
                         </div>
@@ -574,8 +458,6 @@
                     <br/>
                     <br/>
                     <br/>
-
-                    <!--<a style="background:transparent;color:rgb(231,97,62);border:none;text-align:center" data-role="button" data-bind="click:goBackToGroupCustomer">Click here to change selected Group or customer</a>-->
 
                     <span id="fileAttached" style="background-color: transparent;border:none;display:none;color:#ffffff"></span>
 
@@ -605,24 +487,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!--<div id="selectGroupFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
-                <ol class="reg-group-wrp" >
-                    <li style="width:100%">
-                        <span id="registration"  class="clickEffect" data-role="touch" data-bind="events: { tap: NextToCustomerType }" style="float:right;width:46%;padding-top:10px;height:40px;background-color:#e7613e;color:#ffffff;border-radius:3px;" > Next </span>
-                        <span id="registration" class="clickEffect" data-role="touch" data-bind="events: { tap: skipToCustomerType }"  style="float:left;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
-                    </li>
-                </ol>
-            </div>
-
-            <div id="selectCustomerFooter" data-role="footer" style="background:#F3F3F3;padding-bottom:10px; display:none;">
-                <ol class="reg-group-wrp" >
-                    <li style="width:100%">
-                        <span id="customerNextButton" class="clickEffect" data-role="touch" data-bind="events: { tap: NextToSeletType }" style="float:right;width:46%;padding-top:10px;height:40px;background-color:#e7613e;color:#ffffff;border-radius:3px;" > Next </span>
-                        <span id="customerBackButton" class="clickEffect" data-role="touch" data-bind="events: { tap: goBackToGroup }"  style="float:left;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" > Back </span>
-                    </li>
-                </ol>
-            </div>-->
 
             <div id="sendNotiDiv" data-role="footer" style="background-color: #2e2e2e;padding:5px;padding-bottom:3px; ">
                 <div style="display:inline;padding:3px;">
@@ -738,7 +602,7 @@
                         read: {
                                                                                 url: app.serverUrl() + "customer/changeOrg/" + orgId + "/" + account_Id,
                                                                                 type:"POST",
-                                                                                dataType: "json"// "jsonp" is required for cross-domain requests; use "json" for same-domain requests                       
+                                                                                dataType: "json"
                                                                             }
                     },
                                                                     schema: {
@@ -850,7 +714,7 @@
                             read: {
                                                                                     url: app.serverUrl() + "organisation/orgAdminLogout",
                                                                                     type:"POST",
-                                                                                    dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                    dataType: "json"
                                                                                 }
                         },
                                                                         schema: {
@@ -896,26 +760,6 @@
         <script type="text/x-kendo-template" id="orgNameTemplate"> 
             <span class="deleteGroupShow1" data-role="touch" data-bind="events: { tap: sendNotificationOrg }"> ${org_name} </span>            
         </script>
-
-        <!--<script type="text/x-kendo-template" id="groupNameTemplate"> 
-            #$(".addkmClass").addClass("km-list");#  
-            <li style="background-color:rgb(243,243,243);">
-                <label class="km-listview-label" style="background-color:rgb(243,243,243);">
-                    <input type="checkbox" value="${pid}" class="km-widget km-icon km-check" data-bind="checked:check" />
-                    #:group_name#
-                </label>
-            </li>
-        </script>
-
-        <script type="text/x-kendo-template" id="customerNameTemplate"> 
-            #$(".addkmClass").addClass("km-list");#  
-            <li style="background-color:rgb(243,243,243);">
-                <label class="km-listview-label" style="background-color:rgb(243,243,243);">
-                    <input type="checkbox" value="${customerID}" class="km-widget km-icon km-check" data-bind="checked:check" />
-                    #:first_name# #:last_name#
-                </label>
-            </li>
-        </script>-->
 
         <script type="text/x-kendo-template" id="typeNameTemplate">                        	
             <div class="sendNotiText">
@@ -971,28 +815,6 @@
             </div>
         </script>
 
-        <!--<script type="text/x-kendo-template" id="groupNameShowTemplate"> 
-        #if(pid !=='0'){#
-        <li class="getGroupCombo">
-        <label>
-        <input type="checkbox" class="largerCheckbox" value="${pid} "/>
-        <span class="groupName_Select">#:group_name#</span>
-        </label>
-        </li>
-        #}else{#
-        <li class="emptyGetGroupCombo">#:group_name#</li>                  
-        #}#
-        </script>-->
-
-        <script type="text/x-kendo-template" id="groupNameEditShowTemplate"> 
-            <li class="getGroupCombo">
-                <label>
-                    <input type="checkbox" class="largerCheckbox" value="${pid} " ${check} />
-                    <span class="firstName">#:group_name#</span>
-                </label>
-            </li>
-        </script>
-
         <script type="text/x-kendo-template" id="activityTemplate">            
             #if (org_id!=='0') {#
         <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">
@@ -1018,20 +840,14 @@
                         
                 <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
                 #if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="other") {#
-                   <br/>
-                   <br/>
-                   <div class="imageViewContainer">
-                    <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
-                        <!--<div id="img_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
-                            <div class="loaderIV">
-                                <div class="ballIV"></div>
-                            </div>
-                        </div>-->
-                
-                        <div class="rotating progress" id="img_Div_${pid}" style="display:none;"></div>
-                        <img src=${attachedImg} id=${attached}-----${pid} onerror="this.onerror=null;this.src='';" class="imageViewClass"/>
-                    </a>
-                   </div>
+                    <br/>
+                    <br/>
+                    <div class="imageViewContainer">
+                        <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
+                            <div class="rotating progress" id="img_Div_${pid}" style="display:none;"></div>
+                            <img src=${attachedImg} id=${attached}-----${pid} onerror="this.onerror=null;this.src='';" class="imageViewClass"/>
+                        </a>
+                    </div>
                 #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video") {#          
                     <br/>
                     <br/>
@@ -1052,7 +868,7 @@
                     </a>                                
                 #}#                    
             </div>
-
+                
             <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">
                 <div class="notiCommentIcon"></div>
                 <a id="activityTemplateMessage" class="notiListComment">Reply</a>            			            
@@ -1074,9 +890,9 @@
                 </div>  
             #}# 
         </script>
-
+        
         <script src="scripts/app/app.js" type="text/javascript"></script>
-        <script src="Plugins/PushNotification-2.5.3/www/PushNotification.js"></script>
+        <script src="Plugins/PushNotification-master/www/PushNotification.js"></script>
         <script src="scripts/app/analytics.js"></script>
         <script src="scripts/app/login.js" type="text/javascript"></script>
         <script src="scripts/app/registration.js" type="text/javascript"></script>
@@ -1100,14 +916,10 @@
         <script src="scripts/app/userNotificationCustomer.js" type="text/javascript"></script>
         <script src="scripts/app/eventCalendar.js" type="text/javascript"></script>
         <script src="scripts/app/orgNews.js" type="text/javascript"></script>
-        <script src="scripts/app/timeTable.js" type="text/javascript"></script>
-        <script src="scripts/app/adminTimeTable.js" type="text/javascript"></script>
         <script src="scripts/app/adminNews.js" type="text/javascript"></script>
     </body>
 </html>
 
-<!--rgb(127,191,77) with  rgb(231,97,62) --> 
+<!--rgb(127,191,77) with  rgb(231,97,62) -->
 <!--B0D695 with e7613e-->
 <!--7FBF4D 61B85C with e7613e-->
-
-        

@@ -6,7 +6,6 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
         </div>
     </div>
-
     <div id="example">
         <ul id="addMemberData" data-template="Member-Add-template" style="border:none;padding:10px;" ></ul>
     </div>
@@ -16,17 +15,13 @@
     </li>
 </div>
 
-
-
 <script id="Member-Add-template" type="text/x-kendo-template">
     <li class="deleteGroupShow">
         <label >
             <input type="checkbox" class="largerCheckbox" value="${customerID}" />${first_name} ${last_name}
         </label>
-    </li>	       
+    </li>
 </script>
-
-
 
 <div data-role="view" id="updateGroupInfo" data-id="innerActivity" data-layout="innerPages" class="activities-view" data-model="app.groupDetail" >
     <div data-role="header">
@@ -39,14 +34,12 @@
 
     <div id="enterNotification" class="textWithTextArea">
 
-
         <input type="text"  id="editOrgName" class="defineTextBox"  placeholder="Enter New Organization Name" />
-            <br/>
-            <br/>
-                   <textarea  id="editOrgDesc" placeholder="Write Organization description here (Optional) ?" class="common"></textarea> 
-            <br/>
-            <br/>
-
+        <br/>
+        <br/>
+        <textarea  id="editOrgDesc" placeholder="Write Organization description here (Optional) ?" class="common"></textarea>
+        <br/>
+        <br/>
 
     </div>
 
@@ -54,4 +47,3 @@
         Save
     </li>
 </div>
-
