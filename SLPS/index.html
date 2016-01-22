@@ -114,10 +114,15 @@
                             Verification Code sent to your registered Mobile Number. Please use this Verification Code to continue with the Registration.<br/>
                             <br/>
                             In case multiple Verification Code are generated, use latest Verification Code.
-                            <div class="inputContainer">
+                            <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
+                                <li class="username" style="padding-top:15px;border:1px solid #E9E9E9;border-radius:3px;" >
+                                    <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;"/>
+                                </li>
+                            </ul>
+                            <!--<div class="inputContainer">
                                 <input id="validationCodeId" required type="text">
                                 <label alt="Verification Code" placeholder="Verification Code" data-info="Verification Code"></label>
-                            </div>
+                            </div>-->
                         </div>
                         <ol class="reg-group-wrp" style="margin-bottom:25px;">
                             <li style="width:100%">

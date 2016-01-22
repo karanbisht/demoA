@@ -1,5 +1,4 @@
 var app = app || {};
-
 app.attendance = (function () {
     'use strict';
     var attendanceViewModel = (function () {      
@@ -70,6 +69,7 @@ app.attendance = (function () {
                                            first_name: '',
                                            email:'No member in this group',  
                                            last_name : '',
+                                           full_name:'', 
                                            full_name:'', 
                                            customerID:'0',
                                            account_id:'0',
@@ -198,71 +198,75 @@ app.attendance = (function () {
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
-                }else {                           
-                    app.showAppLoader(true);
+                }else {
+                    navigator.notification.confirm(app.ABSENT_CONFIRM, function (confirmed) {           
+                        if (confirmed === true || confirmed === 1) {
+                            app.showAppLoader(true);
 
-                    var typeVal = "A";
-                    var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal};            
-                    var dataSourceLogin = new kendo.data.DataSource({
-                                                                        transport: {
-                            read: {
-                                                                                    url: app.serverUrl() + "notification/attendance",
-                                                                                    type:"POST",
-                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                    data: jsonDataLogin
-                                                                                }
-                        },
-                                                                        schema: {
-                            data: function(data) {	
-                                return [data];
-                            }
-                        },
-                                                                        error: function (e) {
-                                                                            app.hideAppLoader();
+                            var typeVal = "A";
+                            var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal};            
+                            var dataSourceLogin = new kendo.data.DataSource({
+                                                                                transport: {
+                                    read: {
+                                                                                            url: app.serverUrl() + "notification/attendance",
+                                                                                            type:"POST",
+                                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                            data: jsonDataLogin
+                                                                                        }
+                                },
+                                                                                schema: {
+                                    data: function(data) {	
+                                        return [data];
+                                    }
+                                },
+                                                                                error: function (e) {
+                                                                                    app.hideAppLoader();
                                                                     
-                                                                            if (!app.checkConnection()) {
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                }else {
-                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                } 
-                                                                            }else {
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                }else {
-                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
-                                                                            }
-                                                                        }               
-                                                                    });  
+                                                                                    if (!app.checkConnection()) {
+                                                                                        if (!app.checkSimulator()) {
+                                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                        }else {
+                                                                                            app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                        } 
+                                                                                    }else {
+                                                                                        if (!app.checkSimulator()) {
+                                                                                            window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                        }else {
+                                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                        }
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    }
+                                                                                }               
+                                                                            });  
 	            
-                    dataSourceLogin.fetch(function() {
-                        var data = this.data();                                               
-                        if (data[0]['status'][0].Msg==="Session Expired") {
-                            app.LogoutFromAdmin(); 
-                        }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom("User marked as Absent");  
-                            }else {
-                                app.showAlert("User marked as Absent", "Notification");  
-                            }     
-                            app.hideAppLoader();                                                
-                            $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
-                        }else if (data[0]['status'][0].Msg==="You don't have access") {
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
-                            }else {
-                                app.showAlert(app.NO_ACCESS , 'Offline');  
-                            }
-                            backToOrgDetail();                          
-                        }else {                       
-                            app.showAlert(data[0]['status'][0].Msg , 'Notification'); 
-                            app.hideAppLoader();
-                        }
+                            dataSourceLogin.fetch(function() {
+                                var data = this.data();                                               
+                                if (data[0]['status'][0].Msg==="Session Expired") {
+                                    app.LogoutFromAdmin(); 
+                                }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom("User marked as Absent");  
+                                    }else {
+                                        app.showAlert("User marked as Absent", "Notification");  
+                                    }     
+                                    app.hideAppLoader();                                                
+                                    $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
+                                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }
+                                    backToOrgDetail();                          
+                                }else {                       
+                                    app.showAlert(data[0]['status'][0].Msg , 'Notification'); 
+                                    app.hideAppLoader();
+                                }
 
-                        app.hideAppLoader();
-                    });
+                                app.hideAppLoader();
+                            });
+                        }
+                    }, app.APP_NAME, ['Yes', 'No']);
                 }        
             }else {
                 if (!app.checkSimulator()) {
@@ -290,71 +294,75 @@ app.attendance = (function () {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
                 }else {     
-                    app.showAppLoader(true);
+                    navigator.notification.confirm(app.PRESENT_CONFIRM, function (confirmed) {           
+                        if (confirmed === true || confirmed === 1) {
+                            app.showAppLoader(true);
 
-                    var typeVal = "P";
-                    var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal};            
-                    var dataSourceLogin = new kendo.data.DataSource({
-                                                                        transport: {
-                            read: {
-                                                                                    url: app.serverUrl() + "notification/attendance",
-                                                                                    type:"POST",
-                                                                                    dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                                                                                    data: jsonDataLogin
-                                                                                }
-                        },
-                                                                        schema: {
-                            data: function(data) {	
-                                return [data];
-                            }
-                        },
-                                                                        error: function (e) {
-                                                                            app.hideAppLoader();
+                            var typeVal = "P";
+                            var jsonDataLogin = {"org_id":organisationID,"cust_id":group,"type":typeVal};            
+                            var dataSourceLogin = new kendo.data.DataSource({
+                                                                                transport: {
+                                    read: {
+                                                                                            url: app.serverUrl() + "notification/attendance",
+                                                                                            type:"POST",
+                                                                                            dataType: "json", // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+                                                                                            data: jsonDataLogin
+                                                                                        }
+                                },
+                                                                                schema: {
+                                    data: function(data) {	
+                                        return [data];
+                                    }
+                                },
+                                                                                error: function (e) {
+                                                                                    app.hideAppLoader();
                                                                     
-                                                                            if (!app.checkConnection()) {
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
-                                                                                }else {
-                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
-                                                                                } 
-                                                                            }else {
-                                                                                if (!app.checkSimulator()) {
-                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
-                                                                                }else {
-                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
-                                                                                }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
-                                                                            }
-                                                                        }               
-                                                                    });  
+                                                                                    if (!app.checkConnection()) {
+                                                                                        if (!app.checkSimulator()) {
+                                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                        }else {
+                                                                                            app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                        } 
+                                                                                    }else {
+                                                                                        if (!app.checkSimulator()) {
+                                                                                            window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                        }else {
+                                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                        }
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    }
+                                                                                }               
+                                                                            });  
 	            
-                    dataSourceLogin.fetch(function() {
-                        var data = this.data();                                               
-                        if (data[0]['status'][0].Msg==="Session Expired") {
-                            app.LogoutFromAdmin(); 
-                        }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom("User marked as Present");  
-                            }else {
-                                app.showAlert("User marked as Present", "Notification");  
-                            }     
-                            app.hideAppLoader();
-                            $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
-                        }else if (data[0]['status'][0].Msg==="You don't have access") {
-                            if (!app.checkSimulator()) {
-                                window.plugins.toast.showShortBottom(app.NO_ACCESS);  
-                            }else {
-                                app.showAlert(app.NO_ACCESS , 'Offline');  
-                            }
-                            backToOrgDetail();                          
-                        }else {                       
-                            app.showAlert(data[0]['status'][0].Msg , 'Notification'); 
-                            app.hideAppLoader();
-                        }
+                            dataSourceLogin.fetch(function() {
+                                var data = this.data();                                               
+                                if (data[0]['status'][0].Msg==="Session Expired") {
+                                    app.LogoutFromAdmin(); 
+                                }else if (data[0]['status'][0].Msg==='Notification Sent') {                     
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom("User marked as Present");  
+                                    }else {
+                                        app.showAlert("User marked as Present", "Notification");  
+                                    }     
+                                    app.hideAppLoader();
+                                    $('#attendance-listview').find('input[type=checkbox]:checked').removeAttr('checked');
+                                }else if (data[0]['status'][0].Msg==="You don't have access") {
+                                    if (!app.checkSimulator()) {
+                                        window.plugins.toast.showShortBottom(app.NO_ACCESS);  
+                                    }else {
+                                        app.showAlert(app.NO_ACCESS , 'Offline');  
+                                    }
+                                    backToOrgDetail();                          
+                                }else {                       
+                                    app.showAlert(data[0]['status'][0].Msg , 'Notification'); 
+                                    app.hideAppLoader();
+                                }
 
-                        app.hideAppLoader();
-                    });
-                }        
+                                app.hideAppLoader();
+                            });
+                        }
+                    }, app.APP_NAME, ['Yes', 'No']);
+                } 
             }else {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom('Select student to mark as present.');   

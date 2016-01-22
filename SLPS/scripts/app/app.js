@@ -68,6 +68,8 @@ var app = (function (win) {
     var NO_GROUP_AVAILABLE = "No Group Available , Please Add Group."
     var FORGET_PASSWORD_CODE_SEND = "Code sent at your registered number.";
     var DELETE_CONFIRM = "Are you sure you want to delete this.";
+    var PRESENT_CONFIRM = "Are you sure you want to marked as Present.";
+    var ABSENT_CONFIRM = "Are you sure you want to marked as Absent.";
     var VIDEO_ALY_DOWNLOAD = "Please wait until the previous download processing is complete before attempting to download new video."
     var SOCIAL_SHARE_ERROR_MSG = "Application not installed on your device , you need to install it first to use this feature."
     var GEO_PLACE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&sensor=false&key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&input=";    
@@ -100,7 +102,7 @@ var app = (function (win) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
         //console.log(message, 'Error');
-        app.analyticsService.viewModel.trackException(e, 'Error in Aptifi App -:' + message);
+        app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
     
@@ -386,44 +388,6 @@ var app = (function (win) {
         }
     };
         
-    function updateLoginStatus(tx) {                
-        var query = "DELETE FROM PROFILE_INFO";
-        app.deleteQuery(tx, query);
-
-        var query = "DELETE FROM JOINED_ORG";
-        app.deleteQuery(tx, query);
-
-        var query = "DELETE FROM JOINED_ORG_ADMIN";
-        app.deleteQuery(tx, query);
-                
-        var query = "DELETE FROM ORG_NOTIFICATION";
-        app.deleteQuery(tx, query);
-                
-        var query = "DELETE FROM ORG_NOTI_COMMENT";
-        app.deleteQuery(tx, query);
-                
-        var query = "DELETE FROM ADMIN_ORG";
-        app.deleteQuery(tx, query);
-
-        var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
-        app.deleteQuery(tx, query);
-
-        var query = "DELETE FROM ADMIN_ORG_GROUP";
-        app.deleteQuery(tx, query);
-
-        var query = 'UPDATE PROFILE_INFO SET login_status=0';
-        app.updateQuery(tx, query);
-    }
-
-    function updateLoginStatusSuccess() {
-        localStorage.setItem("loginStatusCheck", 0);
-        window.location.href = "index.html";
-    }
-
-    function updateLoginStatusError(err) {
-        //console.log(err);
-    }
-    
     function updateAdminLoginStatus(tx) {
         /*var query = "DELETE FROM ADMIN_ORG";
         app.deleteQuery(tx, query);
@@ -519,6 +483,7 @@ var app = (function (win) {
     
     var onResume = function() {
         var loginStatus = localStorage.getItem("loginStatusCheck");    
+        console.log(loginStatus);
         if (loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null') {            
             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
 
@@ -541,11 +506,13 @@ var app = (function (win) {
                                                                         }
                 },
                                                                 schema: {
-                    data: function(data) {	
+                    data: function(data) {
+                        console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {
+                                                                    console.log(JSON.stringify(e));
                                                                 }               
                                                             });  
 	            
@@ -557,9 +524,10 @@ var app = (function (win) {
                     }else {
                         app.showAlert(app.LOGIN_ANOTHER_DEVICE , 'Notification');  
                     }                        
-                    var db = app.getDb();
-                    db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
-                    updateLoginStatusSuccess();                 
+                  /*karan*/
+                    //var db = app.getDb();
+                    //db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
+                    logoutFromApp();
                 }                    
             });      
             //checkForceUpdate();
@@ -571,7 +539,7 @@ var app = (function (win) {
     };
     
     function checkForceUpdate() {
-        var serverV = '1.1.7';
+        var serverV = '1.0.6';
         var serverVersion = [];
         var systemVersion = [];
             
@@ -586,17 +554,19 @@ var app = (function (win) {
         console.log("systemversion", systemVersion[1]);
         console.log("systemversion", systemVersion[2]);
             
-        if ((parseInt(systemVersion[0]) < parseInt(serverVersion[0])) || (parseInt(systemVersion[1]) < parseInt(serverVersion[1]))) {                    
+        if ((parseInt(systemVersion[0]) < parseInt(serverVersion[0]))) {                    
             navigator.notification.alert("You are running an outdated version of " + app.APP_NAME + " . Please use the latest version available.", goToStore, app.APP_NAME, 'Ok');                    
+        }else if((parseInt(systemVersion[0]) === parseInt(serverVersion[0])) && (parseInt(systemVersion[1]) < parseInt(serverVersion[1]))){
+            navigator.notification.alert("You are running an outdated version of " + app.APP_NAME + " . Please use the latest version available.", goToStore, app.APP_NAME, 'Ok');
         } 
     }
     
     function goToStore() {
         var device_type = localStorage.getItem("DEVICE_TYPE");                                            
         if (device_type==='AN') {  
-            window.open('https://play.google.com/store/apps/details?id=io.zaffio.vidyanjali', '_system');                          
+            window.open('https://play.google.com/store/apps/details?id=com.postifi.slps', '_system');                          
         }else {
-            window.open('https://itunes.apple.com/in/app/vidyanjali-preschool/id981397548?mt=8');
+            window.open('https://itunes.apple.com/in/app/slps/id1041813405?mt=8');
         }    
     }    
     
@@ -650,10 +620,6 @@ var app = (function (win) {
             var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
             var today = new Date(dateString);
             return kendo.toString(days[today.getDay()] + ', ' + today.getDate() + ' ' + month[today.getMonth()]);
-        },
-
-        logout: function () {
-            window.location.href('index.html');
         }
     };
        
@@ -1668,6 +1634,57 @@ var app = (function (win) {
             }
         }   
     }
+    
+    function logoutFromApp(){             
+        var db = app.getDb();
+        db.transaction(updateAppTables, updateAppTablesError, updateAppTablesSuccess);
+    }
+    
+    function updateAppTables(tx) {
+            var query = "DELETE FROM PROFILE_INFO";
+            app.deleteQuery(tx, query);
+
+            var query = "DELETE FROM JOINED_ORG";
+            app.deleteQuery(tx, query);
+                
+            var query = "DELETE FROM JOINED_ORG_ADMIN";
+            app.deleteQuery(tx, query);
+
+            var query = "DELETE FROM ORG_NOTIFICATION";
+            app.deleteQuery(tx, query);
+                
+            var query = "DELETE FROM ORG_NOTI_COMMENT";
+            app.deleteQuery(tx, query);
+                
+            var query = "DELETE FROM ADMIN_ORG";
+            app.deleteQuery(tx, query);
+        
+            var query = "DELETE FROM ORG_EVENT";
+            app.deleteQuery(tx, query);
+        
+            var query = "DELETE FROM ORG_NEWS";
+            app.deleteQuery(tx, query);
+
+            var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
+            app.deleteQuery(tx, query);
+
+            var query = "DELETE FROM ADMIN_ORG_GROUP";
+            app.deleteQuery(tx, query);
+                
+            var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            app.updateQuery(tx, query);
+    }
+
+    function updateAppTablesSuccess() {
+            localStorage.setItem("loginStatusCheck", 0);
+            window.location.href = "index.html";
+    }
+
+    function updateAppTablesError(err) {
+            
+    }
+
+    
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
         APP_NAME:APP_NAME,
@@ -1785,6 +1802,8 @@ var app = (function (win) {
         EVENT_UPDATED_MSG:EVENT_UPDATED_MSG,
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
+        PRESENT_CONFIRM:PRESENT_CONFIRM,
+        ABSENT_CONFIRM:ABSENT_CONFIRM,
         DOWNLOAD_NOT_COMPLETE:DOWNLOAD_NOT_COMPLETE,
         NO_GROUP_AVAILABLE_OTO:NO_GROUP_AVAILABLE_OTO,
         VIDEO_ALY_DOWNLOAD:VIDEO_ALY_DOWNLOAD,

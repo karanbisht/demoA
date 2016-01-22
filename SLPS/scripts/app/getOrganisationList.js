@@ -797,7 +797,6 @@ app.OragnisationList = (function () {
         
         var editProfilePage = function() {        
             app.analyticsService.viewModel.trackFeature("User navigate to Edit Profile Page");            
-
             app.mobileApp.navigate('views/editProfile.html');       
         }
         
@@ -1085,61 +1084,6 @@ app.OragnisationList = (function () {
             app.mobileApp.navigate('views/organisationLogin.html?account_Id=' + account_Id);      
         };
     	         
-        // Logout user
-        var logout = function () {
-            navigator.notification.confirm('Are you sure to Logout ?', function (checkLogout) {
-                if (checkLogout === true || checkLogout === 1) {                    
-                    setTimeout(function() {
-                        var db = app.getDb();
-                        db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);
-                    }, 100);
-                }
-            }, 'Logout', ['OK', 'Cancel']);
-        };
-            
-        function updateLoginStatus(tx) {
-            var query = "DELETE FROM PROFILE_INFO";
-            app.deleteQuery(tx, query);
-
-            var query = "DELETE FROM JOINED_ORG";
-            app.deleteQuery(tx, query);
-                
-            var query = "DELETE FROM JOINED_ORG_ADMIN";
-            app.deleteQuery(tx, query);
-
-            var query = "DELETE FROM ORG_NOTIFICATION";
-            app.deleteQuery(tx, query);
-                
-            var query = "DELETE FROM ORG_NOTI_COMMENT";
-            app.deleteQuery(tx, query);
-                
-            var query = "DELETE FROM ADMIN_ORG";
-            app.deleteQuery(tx, query);
-
-            var query = "DELETE FROM ADMIN_ORG_NOTIFICATION";
-            app.deleteQuery(tx, query);
-
-            var query = "DELETE FROM ADMIN_ORG_GROUP";
-            app.deleteQuery(tx, query);
-                
-            var query = 'UPDATE PROFILE_INFO SET login_status=0';
-            app.updateQuery(tx, query);
-        }
-
-        function updateLoginStatusSuccess() {
-            localStorage.setItem("loginStatusCheck", 0);
-
-            window.location.href = "index.html";
-        }
-
-        function updateLoginStatusError(err) {
-        }
-        
-        var closeVersionPopUp = function() {
-            $("#settingOptionDiv").show();   
-            $("#appVersionDiv").hide();    
-            $('#contentDiv').css('background-color', '#ffffff');
-        }
         
         var newFName;
         var newLName;
@@ -1441,9 +1385,7 @@ app.OragnisationList = (function () {
             editProfileFunc:editProfileFunc,
             editProfilePage:editProfilePage,
             editProfileShow:editProfileShow,
-            closeVersionPopUp:closeVersionPopUp,
-            orgDescMainPage:orgDescMainPage,
-            logout: logout
+            orgDescMainPage:orgDescMainPage
         };
     }());
 
