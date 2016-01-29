@@ -14,6 +14,7 @@
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
+    "com.telerik.feedback@2.0.0",
     "com.telerik.plugin.eqatecanalytics",
     "org.apache.cordova.camera",
     "org.apache.cordova.console",
@@ -22,6 +23,7 @@
     "org.apache.cordova.file",
     "org.apache.cordova.file-transfer",
     "org.apache.cordova.geolocation",
+    "org.apache.cordova.inappbrowser",
     "org.apache.cordova.network-information",
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar"
@@ -59,5 +61,12 @@
   "WPSdk": "8.0",
   "WP8WindowsPublisherName": "CN=Telerik",
   "WP8PackageIdentityName": "1234Telerik.io.zaffio.vidyanjali",
-  "iOSDeploymentTarget": "6.0"
+  "iOSDeploymentTarget": "6.0",
+  "CordovaPluginVariables": {
+    "com.telerik.feedback": {
+      "API_KEY": "ee535990-56b4-11e5-8549-fbea17bda868",
+      "ENABLE_SHAKE": "True",
+      "API_URL": "https://platform.telerik.com/feedback/api/v1"
+    }
+  }
 }

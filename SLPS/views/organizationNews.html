@@ -2,8 +2,9 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>News</span>
-            <a id="idBackOrgNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.orgNews.gobackOrgPage"></a>
-            <a id="idBackHomeNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.callUserLogin"></a>
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <!--<a id="idBackOrgNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.orgNews.gobackOrgPage"></a>
+            <a id="idBackHomeNews" style="background:transparent; border:none;display:none;" data-icon="camera" data-align="left" data-role="button" data-click="app.callUserLogin"></a>-->
         </div>
     </div>
     <span id="orgNewsList" data-style="inset" data-role="listview" data-template="orgNewsTemplate" data-bind="source: activities"></span>

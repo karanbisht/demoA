@@ -30,13 +30,13 @@ app.eventCalender = (function () {
             sdcardPath = localStorage.getItem("sdCardPath");
             //orgin = e.view.params.orgin;
             orgin=1;
-            if (orgin===1 || orgin==='1') {
+            /*if (orgin===1 || orgin==='1') {
                 $("#idBackHome").show();
                 $("#idBackOrg").hide();
             }else {
                 $("#idBackHome").hide();
                 $("#idBackOrg").show();               
-            }
+            }*/
             
             page = 0;
             dataReceived = 0;

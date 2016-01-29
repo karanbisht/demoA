@@ -32,13 +32,13 @@ app.orgNews = (function () {
             totalListView = 0;
             groupAllEvent = [];
       
-            if (orgin===1 || orgin==='1') {
+            /*if (orgin===1 || orgin==='1') {
                 $("#idBackHomeNews").show();
                 $("#idBackOrgNews").hide();
             }else {
                 $("#idBackHomeNews").hide();
                 $("#idBackOrgNews").show();               
-            }
+            }*/
             
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {                                                                     

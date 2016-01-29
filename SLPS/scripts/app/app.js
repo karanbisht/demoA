@@ -30,6 +30,8 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015091076";
     var APP_NAME = "SLPS";
     var SD_NAME = "SLPS";
+    var SUPPORT_MAIL="karanbisht.karan@gmail.com";
+    var SUPPORT_NO="971-781-8898";
     var BASE_COLOR = "#7FBF4D";
     var ILLEGAL_CHARS = /\W/; // allow letters, numbers, and underscores      
     var INTERNET_ERROR = "Network problem. Please try again.";
@@ -417,7 +419,7 @@ var app = (function (win) {
     var onDeviceReady = function() {       
         app.deviceId_Not_Receive = 0;
         localStorage.setItem("gotNotification", 0);
-        //feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
+        feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
@@ -1683,7 +1685,37 @@ var app = (function (win) {
     function updateAppTablesError(err) {
             
     }
+    
+    var onSelectTabStrip = function(e){
+        if(e.item.text()==="Call us"){
+            makeCall();
+        }else{
+            mailTo();
+        }        
+    }
+    
+    var makeCall = function() {
+        console.log('call');
+        window.location.href = 'tel:+91-'+app.SUPPORT_NO;
+        //document.location.href = 'tel:+91-971-781-8898';
+    };
 
+    var mailTo = function(){
+        var platform;
+        var device_type = localStorage.getItem("DEVICE_TYPE");  
+        var appVersion = localStorage.getItem("AppVersion");
+        var phoneNo = localStorage.getItem("username");
+        var deviceName = device.model;
+        var deviceVersion = device.version;
+        
+        if (device_type==='AN') {                     
+            platform="Android";
+        }else{
+            platform="iOS";    
+        }
+        
+        window.location.href = "mailto:"+app.SUPPORT_MAIL+"?subject=Feedback on "+app.APP_NAME+" for "+platform+"&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A"+app.APP_NAME+" Version : "+appVersion+"%0D%0A Device Name : "+deviceName+" %0D%0A Android Version : "+deviceVersion+" %0D%0A Phone No :"+phoneNo;
+    }
     
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
@@ -1697,6 +1729,10 @@ var app = (function (win) {
         hideAppLoader:hideAppLoader,
         genRandNumber:genRandNumber,
         serverUrl:serverUrl,
+        makeCall:makeCall,
+        SUPPORT_MAIL:SUPPORT_MAIL,
+        SUPPORT_NO:SUPPORT_NO,
+        onSelectTabStrip:onSelectTabStrip,
         getFileExtension:getFileExtension,
         refreshBtn:refreshBtn,
         triggerDrawer2:triggerDrawer2,
@@ -1709,6 +1745,7 @@ var app = (function (win) {
         shareMessageViaSMS:shareMessageViaSMS,
         shareViaEmail:shareViaEmail,
         onLoad:onLoad,
+        mailTo:mailTo,
         shareMessageError:shareMessageError,
         shareError:shareError,
         showAppVersion:showAppVersion,

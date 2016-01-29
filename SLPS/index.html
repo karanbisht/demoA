@@ -279,11 +279,11 @@
                             <label style="float:left;padding:10px;">Refresh</label>
                         </a>
                         <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.OragnisationList.openPopoverDrawer">
-                            <label style="float:left;padding:10px;">About</label>
+                            <label style="float:left;padding:10px;">Support</label>
                         </a>
-                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.rateUs">
+                        <!--<a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.rateUs">
                             <label style="float:left;padding:10px;">Rate Us</label>
-                        </a>
+                        </a>-->
                     </ul>
                 </div>
             </div>
@@ -302,7 +302,39 @@
                 </div>
             </div>
         </div>
-
+        
+        <!--<div data-role="view" id="helpView" class="activities-view" data-model="app.OragnisationList"  data-show="app.OragnisationList.appHelp">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span id="appNameBarId" class="inner_navBarClass">Help</span>
+                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+                    <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
+                </div>
+            </div>
+            <div data-role="content">
+              <ul id="" data-role="listview" style="padding:0px 10px 10px 10px;">
+               <li style="padding-top:10px;" data-role="touch" data-bind="events: { tap: appAbout }">
+                <div>
+                    <span >About</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>  
+               <li data-role="touch" data-bind="events: { tap: app.makeCall }">
+                <div data-role="touch">
+                    <span>Call us</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>
+               <li data-role="touch" data-bind="events: {tap: app.mailTo}">
+                <div>
+                    <span>Contact us</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>
+              </ul>
+            </div>
+        </div>-->
+        
         <div data-role="view" id="versionView" class="activities-view" data-model="app.OragnisationList"  data-show="app.OragnisationList.appVersion">
             <div data-role="header">
                 <div data-role="navbar">
@@ -319,12 +351,29 @@
                     <div class="regLogoImg" style="margin-top:100px;">
                         <img id="logo" src="styles/images/Vidyanjali_Logo.png"  style="width:100%;"/>
                     </div>
-                    <div style="margin-top:20px;color:rgb(231,97,62);width:100%;font-size:30px;text-align:center;">
+                    <div style="margin-top:0px;color:rgb(231,97,62);width:100%;font-size:20px;text-align:center;">
                         Version : <span id="appVersionPop" style="color:rgb(231,97,62);"></span>
                     </div>
-                </div>
+                </div>    
+                
+                   <!--<div id="groupMemberFooter" data-role="footer" style="padding-bottom:10px;background:#ffffff">
+                    <ol class="reg-group-wrp" style="margin-top:10px">
+                        <li style="width:100%">
+                            <span id="addGroupMemberBtn" class="clickEffect" data-role="touch" data-bind="events: { tap: addMemberToGroup }" style="float:left;margin;width:46%;padding-top:10px;height:40px;background-color:#e7613e;color:#ffffff;border-radius:3px;" > Call us </span>
+                            <span id="deleteGroupMemberBtn" class="clickEffect" data-role="touch" data-bind="events: { tap: removeMemberFromGroup }"  style="float:right;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;border-radius:3px;" > Contact us</span>
+                        </li>
+                    </ol>
+                   </div>-->
+
+            </div>
+            <div data-role="footer">
+               <div data-role="tabstrip" data-select="app.onSelectTabStrip">
+                  <a  data-icon="phone" >Call us</a>
+                  <a  data-icon="contacts" >Contact us</a>
+               </div>
             </div>
         </div>
+        
 
         <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" >
             <div>

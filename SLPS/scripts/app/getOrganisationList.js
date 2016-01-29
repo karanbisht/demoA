@@ -1347,14 +1347,30 @@ app.OragnisationList = (function () {
         }
         
         var openPopoverDrawer = function() {
-            app.mobileApp.navigate('#versionView');            
+            app.mobileApp.navigate('#versionView');
+            //app.mobileApp.navigate('#helpView');            
         }
         
         var appVersion = function() {
             var value = localStorage.getItem("AppVersion");
             $("#appVersionPop").html(value);
             $("#appNameBarId").html(app.APP_NAME);
+            
+            var tabstrip = app.mobileApp.view().footer.find(".km-tabstrip").data("kendoMobileTabStrip");
+            tabstrip.clear();
         }
+        
+        
+         
+        var appHelp = function() {
+
+        }
+        
+        var appAbout = function(){
+            app.mobileApp.navigate('#versionView');
+        }
+        
+       
 
         return {
             organisationSelected: organisationSelected,
@@ -1363,6 +1379,8 @@ app.OragnisationList = (function () {
             resetProfilePhoto:resetProfilePhoto,
             openPopoverDrawer:openPopoverDrawer,
             appVersion:appVersion,
+            appHelp:appHelp,
+            appAbout:appAbout,
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
             showOrgInfoPage:showOrgInfoPage,

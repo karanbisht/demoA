@@ -1826,7 +1826,7 @@ white-space: nowrap;
     position:relative;
     right:0;
     left:0;
-    margin: 25px auto 25px auto;
+    margin: 25px auto 10px auto;
     color:#e7613e;
     width:30%; 
 }
@@ -2853,9 +2853,11 @@ float:right;
 .km-volume:before, .km-volume:after { content: "\e099"; }
 .km-toprated:before, .km-toprated:after { content: "\e084"; }
 .km-delete:before, .km-delete:after { content: "\e0ec"; }
+.km-tabStripIcon:before, .km-tabStripIcon:after { content: "\e0ae"; }
 .km-sounds:before, .km-sounds:after { content: "\e038"; }
 .km-share:before, .km-share:after { content: "\e314";color: #212121 !important;}
 .km-action:before, .km-action:after { content: "\e323";color: #FFF !important; }
+
 .arrowBTN{color:#FFF !important}
 
 #two-drawer-home h2
