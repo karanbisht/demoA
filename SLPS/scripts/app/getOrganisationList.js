@@ -1356,8 +1356,8 @@ app.OragnisationList = (function () {
             $("#appVersionPop").html(value);
             $("#appNameBarId").html(app.APP_NAME);
             
-            var tabstrip = app.mobileApp.view().footer.find(".km-tabstrip").data("kendoMobileTabStrip");
-            tabstrip.clear();
+            //var tabstrip = app.mobileApp.view().footer.find(".km-tabstrip").data("kendoMobileTabStrip");
+            //tabstrip.clear();
         }
         
         
@@ -1371,6 +1371,30 @@ app.OragnisationList = (function () {
         }
         
        
+      var makeCall = function() {
+        console.log('call');
+        window.location.href = 'tel:+91-'+app.SUPPORT_NO;
+        //document.location.href = 'tel:+91-971-781-8898';
+      };
+
+      var mailTo = function(){
+
+          console.log('mail');   
+        var platform;
+        var device_type = localStorage.getItem("DEVICE_TYPE");  
+        var appVersion = localStorage.getItem("AppVersion");
+        var phoneNo = localStorage.getItem("username");
+        var deviceName = device.model;
+        var deviceVersion = device.version;
+        
+        if (device_type==='AN') {                     
+            platform="Android";
+        }else{
+            platform="iOS";    
+        }
+        
+        window.location.href = "mailto:"+app.SUPPORT_MAIL+"?subject=Feedback on "+app.APP_NAME+" for "+platform+"&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A"+app.APP_NAME+" Version : "+appVersion+"%0D%0A Device Name : "+deviceName+" %0D%0A Android Version : "+deviceVersion+" %0D%0A Phone No :"+phoneNo;
+      }
 
         return {
             organisationSelected: organisationSelected,
@@ -1381,6 +1405,8 @@ app.OragnisationList = (function () {
             appVersion:appVersion,
             appHelp:appHelp,
             appAbout:appAbout,
+            makeCall:makeCall,
+            mailTo:mailTo,
             orgMoreInfoSelected:orgMoreInfoSelected,
             groupSelected:groupSelected,
             showOrgInfoPage:showOrgInfoPage,

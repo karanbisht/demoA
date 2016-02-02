@@ -103,7 +103,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        //console.log(message, 'Error');
+        console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
@@ -419,7 +419,7 @@ var app = (function (win) {
     var onDeviceReady = function() {       
         app.deviceId_Not_Receive = 0;
         localStorage.setItem("gotNotification", 0);
-        feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
+        //feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
         document.addEventListener('backbutton', onBackKeyDown, false);
