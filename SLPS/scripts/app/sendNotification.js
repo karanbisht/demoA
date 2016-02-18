@@ -185,17 +185,17 @@ app.sendNotification = (function () {
                 }  
                
                 if (org_id===null) {
-                    app.showAlert('Please select Organization', 'Validation Error');
+                    app.showAlert('Please select Organization', app.APP_NAME);
                 }else if (cmbGroup==='' && cmbCust==='') {
-                    app.showAlert('Please select Group or Member to send Message.', 'Validation Error');
+                    app.showAlert('Please select Group or Member to send Message.', app.APP_NAME);
                 }else if (titleValue==='') {
-                    app.showAlert('Please enter Message Title', 'Validation Error');    
+                    app.showAlert('Please enter Message Title', app.APP_NAME);    
                 }else if (notificationValue==='') {
-                    app.showAlert('Please enter Message', 'Validation Error');    
+                    app.showAlert('Please enter Message', app.APP_NAME);    
                 }else if (type==='') {
-                    app.showAlert('Please select Message Type', 'Validation Error');
+                    app.showAlert('Please select Message Type', app.APP_NAME);
                 }else if (tasks1 > tasks) {
-                    app.showAlert('Message Can not be schedule in back time', 'Validation Error');
+                    app.showAlert('Message Can not be schedule in back time', app.APP_NAME);
                 }else { 
                     var vidFmAndroid = 0; 
                     var photo_split;
@@ -310,7 +310,7 @@ app.sendNotification = (function () {
                                                                                                    }else {
                                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                                    }
-                                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                                }
                    
                                                                                                $("#notificationTitleValue").val('');            
@@ -461,7 +461,7 @@ app.sendNotification = (function () {
                                                                                  }else {roup
                                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                  }
-                                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                              }                         
                                                                          },       
                                                                          
@@ -591,7 +591,7 @@ app.sendNotification = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
                                                                  }	        
                                                              });         

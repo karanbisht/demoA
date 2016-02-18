@@ -15,26 +15,27 @@
   ],
   "CorePlugins": [
     "com.telerik.feedback@2.0.0",
-    "com.telerik.plugin.eqatecanalytics",
-    "org.apache.cordova.camera",
-    "org.apache.cordova.console",
-    "org.apache.cordova.device",
-    "org.apache.cordova.dialogs",
-    "org.apache.cordova.file",
-    "org.apache.cordova.file-transfer",
-    "org.apache.cordova.geolocation",
-    "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.network-information",
-    "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar"
+    "com.telerik.plugin.telerikanalytics@3.3.2",
+    "cordova-plugin-camera",
+    "cordova-plugin-console",
+    "cordova-plugin-device",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-network-information",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-whitelist"
   ],
   "DeviceOrientations": [
     "Portrait"
   ],
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
-  "FrameworkVersion": "3.8.0",
-  "BundleVersion": "1.0.6",
+  "FrameworkVersion": "4.0.0",
+  "BundleVersion": "1.0.7",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",
@@ -63,10 +64,15 @@
   "WP8PackageIdentityName": "1234Telerik.io.zaffio.vidyanjali",
   "iOSDeploymentTarget": "6.0",
   "CordovaPluginVariables": {
+    "com.telerik.plugin.telerikanalytics": {
+      "AUTO_TRACK_EXCEPTIONS": "True",
+      "AUTO_TRACK_KENDO_EVENTS": "True",
+      "PRODUCT_ID": "baac21f0a525479d93e6918592b7a8cf"
+    },
     "com.telerik.feedback": {
       "API_KEY": "ee535990-56b4-11e5-8549-fbea17bda868",
-      "ENABLE_SHAKE": "True",
-      "API_URL": "https://platform.telerik.com/feedback/api/v1"
+      "API_URL": "https://platform.telerik.com/feedback/api/v1",
+      "ENABLE_SHAKE": "True"
     }
   }
 }

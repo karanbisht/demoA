@@ -17,9 +17,11 @@ app.userNotiComment = (function () {
         var attached;
         var comment_allow;
         //var pid;
+        var type;
         var upload_type;
         var attachedImgFilename;
         var date;
+        var msgCount;
         
         var init = function () {
         };
@@ -60,11 +62,22 @@ app.userNotiComment = (function () {
                 $(this).css('height', hiddenDiv.height());
             });
             
-            org_id = e.view.params.org_id;
+            /*org_id = e.view.params.org_id;
             customerID = e.view.params.customerID;
             userName = e.view.params.userName;
             notiId = e.view.params.notification_id;
-            date = e.view.params.date;
+            date = e.view.params.date;*/
+            
+      
+            userName = localStorage.getItem("shareTitle");
+            org_id = localStorage.getItem("shareOrgId");
+            notiId = localStorage.getItem("shareNotiID");
+            type = localStorage.getItem("msgType");
+            date = localStorage.getItem("shareDate");
+            customerID = localStorage.getItem("shareReceiverID");
+            msgCount = localStorage.getItem("msgCount");
+      
+            
             
             var userCommentedNotification = new kendo.data.DataSource({
                                                                           transport: {
@@ -92,7 +105,7 @@ app.userNotiComment = (function () {
                                                                                   }else {
                                                                                       app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                   }
-                                                                                  app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                  //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                               }
                                                                           }
 	        
@@ -266,7 +279,7 @@ app.userNotiComment = (function () {
                                                                            }else {
                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                            }
-                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                        }
                                                                    }
 	        
@@ -282,6 +295,7 @@ app.userNotiComment = (function () {
                                                             });                                
 
             app.hideAppLoader();
+            saveUserCommentCount();
             $("#status-container-adminComment").show();
         }
         
@@ -322,11 +336,13 @@ app.userNotiComment = (function () {
                             },
                                                                                   schema: {
                                 data: function(data) {
+                                    console.log(JSON.stringify(data));
                                     return [data];
                                 }
                             },
                                                                                   error: function (e) {
                                                                                       app.hideAppLoader();
+                                                                                      console.log(JSON.stringify(e));
                                                                                       app.mobileApp.pane.loader.hide();
                                                                                       
                                                                                       if (!app.checkConnection()) {
@@ -341,7 +357,7 @@ app.userNotiComment = (function () {
                                                                                           }else {
                                                                                               app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                           }
-                                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                          //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                       }
                                                                                   }               
                                                                               });  
@@ -389,7 +405,38 @@ app.userNotiComment = (function () {
         
         function refreshComment() {
             app.userNotiComment.adminComment();
-        };
+        }
+        
+        function saveUserCommentCount(){
+            var db = app.getDb();
+            db.transaction(insertMemCount, app.errorCB, app.successCB); 
+        }
+        
+        function insertMemCount(tx){
+            var query = "SELECT id FROM ADMIN_MSG_MEM where org_id=" + org_id +" and id ="+notiId +" and customerID="+customerID;
+            app.selectQuery(tx, query, insertMebCountVal);    
+        }
+        
+        function insertMebCountVal(tx, results) {
+            var count = results.rows.length; 
+                if(count===0){
+                            var query = 'INSERT INTO ADMIN_MSG_MEM (org_id ,id , count ,customerID) VALUES ("'
+                            + org_id
+                            + '","'
+                            + notiId
+                            + '","'
+                            + msgCount 
+                            + '","'
+                            + customerID
+                            + '")';              
+                 app.insertQuery(tx, query);
+                }else{
+                    var query2 = "UPDATE ADMIN_MSG_MEM SET count='" + msgCount + "' where org_id='" + org_id + "' and id="+notiId+" and customerID="+customerID;
+                    app.updateQuery(tx, query2);
+                }
+
+        }
+
         
         return {
             init: init,

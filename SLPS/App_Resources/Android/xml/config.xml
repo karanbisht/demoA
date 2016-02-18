@@ -47,6 +47,10 @@
     <access origin="market:*" launch-external="yes"/>
 
     <preference name="loglevel" value="DEBUG" />
+
+    <feature name="App">
+        <param name="android-package" value="org.apache.cordova.App" />
+    </feature>
     <!--
       <preference name="splashscreen" value="splash" />
       <preference name="backgroundColor" value="0xFFF" />

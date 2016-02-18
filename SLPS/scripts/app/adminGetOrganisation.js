@@ -150,7 +150,7 @@ app.adminOragnisationList = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -284,7 +284,7 @@ app.adminOragnisationList = (function () {
             localStorage.setItem("orgNameAdmin", e.data.orgName);
             localStorage.setItem("orgDescAdmin", e.data.orgDesc);
 
-            app.analyticsService.viewModel.trackFeature("User navigate to Organization Detail View in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Organization Detail View in Admin");            
 
             app.mobileApp.navigate('views/groupDetailView.html');
         };

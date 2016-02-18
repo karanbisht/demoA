@@ -2359,6 +2359,11 @@ background: #fff none;
     float:right;*/
 }
 
+#uAcomments-listview > li
+{
+    border:none;
+}
+
 #oneToOneChat-listview > li
 {
     border: none; 
@@ -3589,6 +3594,20 @@ float:right;
     margin-bottom:10px;
 }
 
+.admSendcommon
+{   
+    width: 100%;
+    min-height:150px;
+    max-height:180px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;    
+    border-radius: 3px;
+    border-color: #E5E5E5;
+    padding:5px 8px 0px 8px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
 .commonEdit
 {   
     width: 100%;

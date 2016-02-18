@@ -23,7 +23,7 @@ app.subGroupDetail = (function () {
         };
            
         var showSubGroupNotification = function() {
-            app.analyticsService.viewModel.trackFeature("User navigate to Group Notification in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Group Notification in Admin");            
             app.mobileApp.navigate('views/subGroupNotificationList.html?organisationID=' + organisationID + '&group_ID=' + groupID);
         };   
                 
@@ -38,7 +38,7 @@ app.subGroupDetail = (function () {
             }else {                
                 app.mobileApp.pane.loader.hide();
                 app.mobileApp.navigate('#subGroupMemberShow');            
-                app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
+                //app.analyticsService.viewModel.trackFeature("User navigate to Group Member Page in Admin");            
             }
         }
         
@@ -80,7 +80,7 @@ app.subGroupDetail = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
                                                                  }
 	        
@@ -161,7 +161,7 @@ app.subGroupDetail = (function () {
         }
 
         var showUpdateSubGroupView = function() {
-            app.analyticsService.viewModel.trackFeature("User navigate to Edit Group Info Page in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Edit Group Info Page in Admin");            
 
             app.mobileApp.navigate('#updateSubGroupInfo');      
                
@@ -253,7 +253,7 @@ app.subGroupDetail = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -393,7 +393,7 @@ app.subGroupDetail = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }    
                                                                  }	        
                                                              });         
@@ -451,7 +451,7 @@ app.subGroupDetail = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
           
@@ -535,7 +535,7 @@ app.subGroupDetail = (function () {
                                                                                            }else {
                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                            }
-                                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                        }
                                                                                    }               
           

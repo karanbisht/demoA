@@ -84,7 +84,7 @@ app.GroupList = (function () {
                                                                                     }else {
                                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                     }
-                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                 }
                    
                                                                                 getGroupDataDB();
@@ -232,7 +232,7 @@ app.GroupList = (function () {
             localStorage.setItem("groupNameAdmin", e.data.groupName);
             localStorage.setItem("groupDescAdmin", e.data.groupDesc);
 
-            app.analyticsService.viewModel.trackFeature("User navigate to Group in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Group in Admin");            
              
             app.mobileApp.navigate('views/subGroupDetailView.html?groupID=' + e.data.groupID + '&orgID=' + e.data.orgID + '&groupName=' + e.data.groupName + '&groupDesc=' + e.data.groupDesc);
         };
@@ -246,7 +246,7 @@ app.GroupList = (function () {
                 } 
             }else {                
                 app.mobileApp.navigate('views/addGroup.html');  
-                app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
+                //app.analyticsService.viewModel.trackFeature("User navigate to Add Group in Admin");            
             }            
         };
         
@@ -259,12 +259,12 @@ app.GroupList = (function () {
                 } 
             }else {                
                 app.mobileApp.navigate('views/deleteGroup.html');
-                app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
+                //app.analyticsService.viewModel.trackFeature("User navigate to Delete Group in Admin");            
             }                       
         };
     
         var goToGroupList = function() {
-            app.analyticsService.viewModel.trackFeature("User navigate to Group List Page in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Group List Page in Admin");            
             app.mobileApp.navigate('views/groupListPage.html?organisationId=' + organisationID);                
         }
          
@@ -309,7 +309,7 @@ app.GroupList = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
           
@@ -390,7 +390,7 @@ app.GroupList = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }                         
                                                                        });  

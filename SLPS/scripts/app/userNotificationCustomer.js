@@ -3,7 +3,7 @@ var app = app || {};
 app.replyedCustomer = (function () {
     var replyedCustomerView = (function () {
         var org_id;
-        var userCount;
+        var noti_id;
         var groupDataShow = [];
 
         var init = function () {
@@ -13,32 +13,42 @@ app.replyedCustomer = (function () {
             groupDataShow = [];
             app.mobileApp.pane.loader.hide();
             app.showAppLoader(true);
-
-            $("#reply-customer-listview").hide();
-          
-            org_id = localStorage.getItem("orgSelectAdmin");
-            userCount = localStorage.getItem("incommingMsgCount"); 
-                    
+            
+           /*localStorage.setItem("shareMsg", message);
+           localStorage.setItem("shareTitle", title);
+           localStorage.setItem("shareOrgId",org_id);
+           localStorage.setItem("shareNotiID",pId);
+           localStorage.setItem("shareComAllow",commentAllow);
+           localStorage.setItem("msgType",msgType);
+           localStorage.setItem("shareDate",shareDate);
+           localStorage.setItem("shareUploadType",type);
+           localStorage.setItem("shareReceiverID",senderId)*/
+            
+            org_id = localStorage.getItem("shareOrgId");
+            noti_id = localStorage.getItem("shareNotiID");
+         
+            //alert(org_id+"----"+noti_id);
             $(".km-scroll-container").css("-webkit-transform", "");
           
             var MemberDataSource = new kendo.data.DataSource({
                                                                  transport: {
                     read: {
-                                                                             url: app.serverUrl() + "notification/replyListbyOrg/" + org_id,
+                                                                             url: app.serverUrl() + "notification/getReplycustomerList/"+org_id+"/"+noti_id,
                                                                              type:"POST",
-                                                                             dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-                  
+                                                                             dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests                  
                                                                          }
                 },
                                                                  schema: {
                                 
                     data: function(data) {
+                        console.log(JSON.stringify(data));
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
                                                                      app.hideAppLoader();
+                                                                     console.log(JSON.stringify(e));
 
                                                                      $("#reply-customer-listview").show();
                                                                    
@@ -54,7 +64,7 @@ app.replyedCustomer = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
                                                                  }
                                                              });         
@@ -97,7 +107,8 @@ app.replyedCustomer = (function () {
                                                customerID:data[0].status[0].customerList[i].customerID,
                                                user_type:data[0].status[0].customerList[i].user_type,
                                                photo:data[0].status[0].customerList[i].photo,
-                                               comment:data[0].status[0].customerList[i].title,
+                                               comment:data[0].status[0].customerList[i].comment,
+                                               totalCount: data[0].status[0].customerList[i].total,
                                                notification_id:data[0].status[0].customerList[i].notification_id,
                                                add_date:date_show,
                                                user_id:data[0].status[0].customerList[i].user_id
@@ -110,61 +121,31 @@ app.replyedCustomer = (function () {
         };
         
         var showMemberDataInTemp = function() {
-            app.mobileApp.pane.loader.hide();    	    
-            $(".km-scroll-container").css("-webkit-transform", "");             
+            $(".km-scroll-container").css("-webkit-transform", "");  
+            console.log(groupDataShow);
             var memberListDataSource = new kendo.data.DataSource({
                                                                      data: groupDataShow
-                                                                 });           
-            
+                                                                 });                       
             $("#reply-customer-listview").kendoMobileListView({
                                                                   dataSource: memberListDataSource,
                                                                   template: kendo.template($("#replyCustomerTemplate").html())       
-                                                              });
-            
+                                                              });            
             $("#reply-customer-listview").data('kendoMobileListView').refresh();
-
-            app.mobileApp.pane.loader.hide();
-
             app.hideAppLoader();
-            $("#reply-customer-listview").show();
-
-            var db = app.getDb();
-            db.transaction(updateBagCount, app.errorCB, app.successCB);   
+            
         }
        
-        var updateBagCount = function(tx) {
-            var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='" + userCount + "' where org_id=" + org_id;
-            app.updateQuery(tx, queryUpdate);                         
-            
-            var query = "SELECT * FROM ADMIN_ORG where org_id=" + org_id;
-            app.selectQuery(tx, query, getDataSuccessCust);
-        }                
-        
-        function getDataSuccessCust(tx, results) {                                                               
-            var count = results.rows.length;
-            if (count !== 0) { 
-                var bagCountData = results.rows.item(0).bagCount;                  
-                var countData = results.rows.item(0).count;
-                   
-                if (countData===null || countData==="null") {
-                    countData = 0; 
-                }
-                   
-                if (bagCountData===null || bagCountData==="null") {
-                    bagCountData = 0;
-                }
-                       
-                localStorage.setItem("incommingMsgCount", countData);                  
-                    
-                var showData = countData - bagCountData;
-                                
-                $("#countToShow").html(showData);            
-            }            
-        }
                      
         var customerSelected = function(e) {
-            app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
-            app.mobileApp.navigate('views/userNotificationComment.html?org_id=' + org_id + '&customerID=' + e.data.customerID + '&userName=' + e.data.user_fname + ' ' + e.data.user_lname + '&notification_id=' + e.data.notification_id + '&date=' + e.data.add_date);
+           //app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
+           localStorage.setItem("shareTitle", e.data.user_fname + ' ' + e.data.user_lname);
+           localStorage.setItem("shareOrgId",org_id);
+           localStorage.setItem("shareNotiID",e.data.notification_id);
+           localStorage.setItem("msgType",'C');
+           localStorage.setItem("shareDate",e.data.add_date);
+           localStorage.setItem("shareReceiverID",e.data.customerID);
+           localStorage.setItem("msgCount",e.data.totalCount);
+           app.mobileApp.navigate('views/userNotificationComment.html');
         };
        
         return {

@@ -78,11 +78,12 @@ var app = (function (win) {
     var GEO_MAP_API = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCf5YlSpGBRT2i5QRl3r5bD0c6JN-T0yF4&q=";
     var USER_IFRAME_OPEN = 0;
     var ADMIN_IFRAME_OPEN = 0;
-    var NO_GROUP_AVAILABLE_OTO = "No Group Admin Available."
+    var NO_GROUP_AVAILABLE_OTO = "No Group Available."
+    var NO_ADMIN_AVAILABLE_OTO = "No Group Admin Available."
     
     var serverUrl = function() {        
-        return 'https://app.postifi.com/webservice/';  
-        //return 'http://sandbox.zaff.io/webservice/';
+        //return 'https://app.postifi.com/webservice/';  
+        return 'http://sandbox.zaff.io/webservice/';
     }
 
     var showAppVersion = function() {
@@ -104,7 +105,7 @@ var app = (function (win) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
         console.log(message, 'Error');
-        app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
+        //app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
     
@@ -171,7 +172,7 @@ var app = (function (win) {
   
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , orgDesc TEXT)');
         
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER , upload_type TEXT)');  
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER , upload_type TEXT ,receiver_id INTEGER)');  
         
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , group_id INTEGER , customer_id INTEGER , upload_type TEXT)');
         
@@ -185,7 +186,15 @@ var app = (function (win) {
 
         tx.executeSql('CREATE TABLE IF NOT EXISTS TIME_TABLE(org_id INTEGER, id INTEGER ,group_name TEXT, timetable TEXT,group_id INTEGER, added_by INTEGER)');
         
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ONE_TO_ONE(org_id INTEGER, id INTEGER , message TEXT, add_date TEXT , receiver INTEGER , sender INTEGER )');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS USER_TO_ADM(org_id INTEGER, id INTEGER , message TEXT, add_date TEXT , receiver INTEGER , sender INTEGER , user_id INTEGER)');
+               
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_OTO(org_id INTEGER, id INTEGER , count INTEGER)');
+        
+        tx.executeSql('CREATE TABLE IF NOT EXISTS USER_OTO(org_id INTEGER, id INTEGER , count INTEGER)');
+        
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_MSG_RPY(org_id INTEGER, id INTEGER , count INTEGER)');
+        
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_MSG_MEM(org_id INTEGER, id INTEGER , count INTEGER , customerID INTEGER)');
     };	
     
     var checkForLoginStatus = function () {
@@ -255,7 +264,7 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {        
-        app.analyticsService.viewModel.trackException(err, "Error in Sqlite local Storage processing");
+        //app.analyticsService.viewModel.trackException(err, "Error in Sqlite local Storage processing");
     };
     
     var successCB = function() {
@@ -326,12 +335,30 @@ var app = (function (win) {
             }
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationDiv') {
             app.mobileApp.navigate("#view-all-activities");
+        }else if (app.mobileApp.view()['element']['0']['id']==='createAdmMsg') {
+            app.mobileApp.navigate("#view-all-activities");    
+            
+        }else if (app.mobileApp.view()['element']['0']['id']==='single-activity-admin') {
+            var gotNoti = localStorage.getItem("gotNotification");             
+            var type = localStorage.getItem("frmWhere");
+            if(type==='Admin'){
+                app.mobileApp.navigate('#replyUserNotification');  
+            }else{
+                if (gotNoti===1 || gotNoti==='1') {
+                    app.onLoad();
+                }else {
+                    app.mobileApp.navigate('#view-all-activities');  
+                }
+            }
+                        
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-userReply') {
             app.mobileApp.navigate("#view-all-activities-admin");          
         }else if (app.mobileApp.view()['element']['0']['id']==='groupMemberShow') {
             app.mobileApp.navigate("#memberPageGroupList");
-        }else if (app.mobileApp.view()['element']['0']['id']==='memberPageGroupList') {
+        }else if (app.mobileApp.view()['element']['0']['id']==='memberPageGroupList' || app.mobileApp.view()['element']['0']['id']==='replyUserNotification'){
             app.mobileApp.navigate("#view-all-activities-GroupDetail");    
+        }else if (app.mobileApp.view()['element']['0']['id']==='replyedCustomerDivId') {
+            app.mobileApp.navigate('#replyUserNotification');                        
         }else if (app.mobileApp.view()['element']['0']['id']==='subGroupMemberShow') {
             app.mobileApp.navigate('views/subGroupDetailView.html');
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities-Group') {
@@ -422,7 +449,7 @@ var app = (function (win) {
         //feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
-        document.addEventListener('backbutton', onBackKeyDown, false);
+        document.addEventListener("backbutton", onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
@@ -437,12 +464,12 @@ var app = (function (win) {
         window.requestFileSystem(window.PERSISTENT, 0, fileSystemSuccess, fileSystemFail);                
         var pushNotification = window.plugins.pushNotification;   
         
-        if (navigator.geolocation) {
+        /*if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(oncallback);
         } else {
-            app.analyticsService.viewModel.setAnalyticMonitor();
-        }
-                
+            //app.analyticsService.viewModel.setAnalyticMonitor();
+        }*/
+        
         if (device.platform === "iOS") {
             localStorage.setItem("DEVICE_TYPE", "AP");
             
@@ -462,6 +489,17 @@ var app = (function (win) {
         db.transaction(createDB, errorCB, checkForLoginStatus);
         //checkForceUpdate();
         //app.hideAppLoader();
+        
+        //cordova.plugins.notification.badge.get(function (count) {
+          // if there is no badge, the count will be 0
+          //alert("Current badge: " + count);
+        //});
+        
+        //cordova.plugins.notification.badge.configure({
+          // the next call to set() will add a badge which will be cleared when the app is launched
+          //autoClear: true
+        //});
+        
     };    
     
     function successHandler (result) {
@@ -473,21 +511,21 @@ var app = (function (win) {
     }
     
     var oncallback = function(position) {
-        var latitude = position.coords.latitude,
-            longitude = position.coords.longitude;
-        app.analyticsService.viewModel.setAnalyticMonitor(latitude, longitude);
+            //var latitude = position.coords.latitude,
+            //longitude = position.coords.longitude;
+            ////app.analyticsService.viewModel.setAnalyticMonitor(latitude, longitude);
     };
     
     var onPause = function(e) {
-        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
-        app.analyticsService.viewModel.monitorStop();
+        //app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
+        //app.analyticsService.viewModel.monitorStop();
     };
     
     var onResume = function() {
         var loginStatus = localStorage.getItem("loginStatusCheck");    
         console.log(loginStatus);
         if (loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null') {            
-            app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
+             //app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
 
             if (loginStatus==='1' || loginStatus===1) {
                 app.Activities.show();
@@ -526,7 +564,7 @@ var app = (function (win) {
                     }else {
                         app.showAlert(app.LOGIN_ANOTHER_DEVICE , 'Notification');  
                     }                        
-                  /*karan*/
+                    /*karan*/
                     //var db = app.getDb();
                     //db.transaction(updateLoginStatus, updateLoginStatusError, updateLoginStatusSuccess);  
                     logoutFromApp();
@@ -534,10 +572,10 @@ var app = (function (win) {
             });      
             //checkForceUpdate();
         } else {
-            app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
+             //app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
         }       
-        app.analyticsService.viewModel.monitorStart();
-        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
+        //app.analyticsService.viewModel.monitorStart();
+        //app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
     };
     
     function checkForceUpdate() {
@@ -738,6 +776,9 @@ var app = (function (win) {
 
     window.onNotificationGCM = function(e) {
         try {
+   
+            //alert(JSON.stringify(e));
+            console.log(JSON.stringify(e));
             switch (e.event) {
                 case 'registered':
                     if (e.regid.length > 0) {
@@ -823,15 +864,14 @@ var app = (function (win) {
                         }    
                     }else if (typeDB==='One2One') {
                         if (e.foreground) {
+                            
                         }else {                
-                            localStorage.setItem("selAdmFulName", commentAllowDB);
-                            localStorage.setItem("selAdmAccId", attachedDB); 
                             goToAppOneToOnePage(); 
                         }    
                     }    
                     break;
                 case 'error':
-                    app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + e.msg);
+                    //app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + e.msg);
                     break;
                 default:
                     break;
@@ -841,7 +881,7 @@ var app = (function (win) {
                 app.Login.login();
             }
         } catch (err) {
-            app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + err);
+            //app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + err);
         }
         finally {    
         }   
@@ -958,7 +998,26 @@ var app = (function (win) {
     }
     
     function goToAppOneToOnePage() {
-        app.mobileApp.navigate('views/connectToUsWindow.html');    
+
+        localStorage.setItem("shareMsg", messageDB);
+        localStorage.setItem("shareTitle", uploadTypeNoti);                         
+        localStorage.setItem("shareOrgId", orgIdDB);
+        localStorage.setItem("shareReceiverID", commentAllowDB);
+        localStorage.setItem("shareDate", sendDateInside);
+        if(attachedDB==='A'){
+            localStorage.setItem("frmWhere", 'Admin');
+        }else{
+            localStorage.setItem("frmWhere", 'User');
+        }
+        localStorage.setItem("shareImg", null);
+        localStorage.setItem("msgType", null);
+             
+        localStorage.setItem("shareImg", null);
+        localStorage.setItem("shareUploadType", null);
+        localStorage.setItem("shareComAllow", 1);
+        localStorage.setItem("shareNotiID", null);
+             
+        app.mobileApp.navigate('views/createAdmMsgLst.html');
     }
     
     function updatebagCount(tx) {
@@ -1305,7 +1364,7 @@ var app = (function (win) {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -1324,11 +1383,11 @@ var app = (function (win) {
     }
     
     var generateMoniterForAdmin = function() {
-        if (navigator.geolocation) {
+        /*if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(oncallback);
         } else {
-            app.analyticsService.viewModel.setAnalyticMonitor();
-        }        
+            //app.analyticsService.viewModel.setAnalyticMonitor();
+        }*/        
     };
     
     var noGroupAvailable = function() {
@@ -1344,6 +1403,14 @@ var app = (function (win) {
             window.plugins.toast.showShortBottom(app.NO_GROUP_AVAILABLE_OTO);   
         }else {
             app.showAlert(app.NO_GROUP_AVAILABLE_OTO);  
+        }
+    };
+    
+    var noAdminAvailableOTO = function() {
+        if (!app.checkSimulator()) {
+            window.plugins.toast.showShortBottom(app.NO_ADMIN_AVAILABLE_OTO);   
+        }else {
+            app.showAlert(app.NO_ADMIN_AVAILABLE_OTO);  
         }
     };
     
@@ -1599,7 +1666,7 @@ var app = (function (win) {
                 );
             setTimeout(function() {
                 window.plugins.spinnerDialog.hide();
-            }, 10000); 
+            }, 15000); 
         }else {
             $("#appLoader").show();
         }    
@@ -1692,7 +1759,7 @@ var app = (function (win) {
         }else{
             mailTo();
         }        
-    }
+    };
     
     var makeCall = function() {
         console.log('call');
@@ -1715,7 +1782,11 @@ var app = (function (win) {
         }
         
         window.location.href = "mailto:"+app.SUPPORT_MAIL+"?subject=Feedback on "+app.APP_NAME+" for "+platform+"&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A"+app.APP_NAME+" Version : "+appVersion+"%0D%0A Device Name : "+deviceName+" %0D%0A Android Version : "+deviceVersion+" %0D%0A Phone No :"+phoneNo;
-    }
+    };
+    
+    var createMsgTOAdm = function(){
+        app.mobileApp.navigate('views/createAdmMsg.html');
+    };
     
     return {
         CLIENT_APP_ID:CLIENT_APP_ID,
@@ -1730,6 +1801,7 @@ var app = (function (win) {
         genRandNumber:genRandNumber,
         serverUrl:serverUrl,
         makeCall:makeCall,
+        createMsgTOAdm:createMsgTOAdm,
         SUPPORT_MAIL:SUPPORT_MAIL,
         SUPPORT_NO:SUPPORT_NO,
         onSelectTabStrip:onSelectTabStrip,
@@ -1832,6 +1904,7 @@ var app = (function (win) {
         ADMIN_IFRAME_OPEN:ADMIN_IFRAME_OPEN,
         USER_IFRAME_OPEN:USER_IFRAME_OPEN,
         DELETE_CONFIRM:DELETE_CONFIRM,
+        noAdminAvailableOTO:noAdminAvailableOTO,
         SOCIAL_SHARE_ERROR_MSG:SOCIAL_SHARE_ERROR_MSG,
         getSendNotiDateTime:getSendNotiDateTime,
         getCurrentDateTime:getCurrentDateTime,
@@ -1842,6 +1915,7 @@ var app = (function (win) {
         PRESENT_CONFIRM:PRESENT_CONFIRM,
         ABSENT_CONFIRM:ABSENT_CONFIRM,
         DOWNLOAD_NOT_COMPLETE:DOWNLOAD_NOT_COMPLETE,
+        NO_ADMIN_AVAILABLE_OTO:NO_ADMIN_AVAILABLE_OTO,
         NO_GROUP_AVAILABLE_OTO:NO_GROUP_AVAILABLE_OTO,
         VIDEO_ALY_DOWNLOAD:VIDEO_ALY_DOWNLOAD,
         MEMBER_DELETED_MSG:MEMBER_DELETED_MSG,

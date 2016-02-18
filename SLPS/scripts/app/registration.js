@@ -53,7 +53,7 @@ app.registration = (function () {
                 var goToUrl;
              
                 if (comingFrom==='reg') {
-                    jsonDataRegister = {"username":username,"fname":fname,"lname":lname,"email":email, "APP_ID":app.CLIENT_APP_ID}  
+                    jsonDataRegister = {"username":username,"fname":fname,"lname":lname,"email":email, "APP_ID":app.CLIENT_APP_ID};  
                     goToUrl = app.serverUrl() + "customer/register"  
                 }else {
                     jsonDataRegister = {"account_id":account_Id,"first_name":fname,"last_name":lname,"email":email, "app_id":app.CLIENT_APP_ID} 
@@ -88,7 +88,7 @@ app.registration = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -141,7 +141,7 @@ app.registration = (function () {
                                                                                     }else {
                                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                     }
-                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                 }
                                                                             }               
                                                                         });  
@@ -222,7 +222,7 @@ app.registration = (function () {
                 },
                                                                      error: function (e) {
                                                                          //apps.hideLoading();
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
                                                                              window.plugins.toast.showShortBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
@@ -281,6 +281,9 @@ app.registration = (function () {
                         device_type = 'AP';
                     }
 
+                    app.showAppLoader();
+                    localStorage.setItem("alterTableYN", 1);
+
                     //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");
                     
@@ -304,6 +307,8 @@ app.registration = (function () {
                             }
                         },
                                                                         error: function (e) {
+                                                                            
+                                                                            app.hideAppLoader();
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
                                                                                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -316,7 +321,7 @@ app.registration = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -356,6 +361,7 @@ app.registration = (function () {
                         }else {
                             app.mobileApp.pane.loader.hide();
                             app.showAlert(data[0]['status'][0].Msg, app.APP_NAME);
+                            app.hideAppLoader();
                         }      
                     });
                 }else {
@@ -477,7 +483,7 @@ app.registration = (function () {
                         }                                                            
                     },
                                                                                   error: function (e) {
-                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }	        
                                                                               });         
             
@@ -526,9 +532,9 @@ app.registration = (function () {
         }
         
         var goToHomePage = function() {
-            app.mobileApp.pane.loader.hide(); 
             localStorage.setItem("ACCOUNT_ID", account_Id);
             app.mobileApp.navigate('#view-all-activities');
+            app.hideAppLoader();
         }
                  
         var GlobalDataOrgId;

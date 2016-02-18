@@ -24,10 +24,16 @@ app.Activities = (function () {
         };   
         
         var show = function(e) {                                            
+            $("#admMsgIcon").show();
             $(".km-scroll-container").css("-webkit-transform", "");
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
             localStorage.setItem("gotNotification", 0);
+            var alterTable = localStorage.getItem("alterTableYN");            
+            if(alterTable!=='1'){    
+                var db = app.getDb();
+                db.transaction(alterTableDB, app.errorCB, alterTableSuccess);
+            }
             
             var ADMIN_USER = localStorage.getItem("ADMIN_USER");
             
@@ -59,11 +65,21 @@ app.Activities = (function () {
             }else {
                 OrgDisplayName = orgName;                
             }            
-            $("#navBarHeader").html(OrgDisplayName);                          
+            $("#navBarHeader").html(OrgDisplayName);
+            getAdminSentMsg();
             getDataFromDB();                        
             countVal = 0;
             clickOnShowMore = 0;
         };        
+        
+
+        var alterTableDB = function(tx) {        
+             tx.executeSql('ALTER TABLE ORG_NOTIFICATION ADD receiver_id INTEGER');       
+        };
+        
+        function alterTableSuccess(){
+            localStorage.setItem("alterTableYN", 1);
+        }
             
         var getDataFromDB = function() {
             groupDataShow = [];
@@ -76,8 +92,53 @@ app.Activities = (function () {
             app.selectQuery(tx, query, getOrgLastNotiDataSuccess);
             
             var queryUp = 'UPDATE PROFILE_INFO SET Admin_login_status=0';
-            app.updateQuery(tx, queryUp);
+            app.updateQuery(tx, queryUp);            
         };    
+               
+        var getAdminSentMsg = function(){
+            organisationID = localStorage.getItem("selectedOrgId");
+            account_Id = localStorage.getItem("ACCOUNT_ID");
+ 
+            var admMsgDataSource = new kendo.data.DataSource({
+                                                                                 transport: {
+                    read: {
+                                                                                             url: app.serverUrl() + "notification/getCustomerSentMsg/" + account_Id + "/" + organisationID,
+                                                                                             type:"POST",
+                                                                                             dataType: "json"                 
+                                                                                         }
+                },
+                                                                                 schema: {
+                    data: function(data) {     
+                        console.log("-----------------KARAN------------------");
+                        console.log(JSON.stringify(data));
+                        return [data];          
+
+                    }                       
+                },
+
+                                                                                 error: function (e) {
+                                                                                     console.log("-----------------KARAN------------------");
+                                                                                     console.log(JSON.stringify(e));
+                                                                                     /*var db = app.getDb();
+                                                                                     db.transaction(getDataOrgNoti, app.errorCB, app.successCB);*/         
+                                                                                 }	        
+                                                                             });        
+ 
+            admMsgDataSource.fetch(function() {
+                var data = this.data();            
+                if (data[0]['status'][0].Msg ==='No Message') { 
+
+                }else if(data[0]['status'][0].Msg ===''){
+                    
+                }else if (data[0]['status'][0].Msg==='Success') {
+                    var admMsgLst = data[0]['status'][0].AllMessage;
+                    saveAdmMsg(admMsgLst);                                                                                   
+                }
+                //var db = app.getDb();
+                //db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
+            });
+        }
+        
                     
         function getOrgLastNotiDataSuccess(tx, results) {
             var count = results.rows.length;
@@ -105,12 +166,15 @@ app.Activities = (function () {
                                                                                          }
                 },
                                                                                  schema: {
-                    data: function(data) {     
+                    data: function(data) {
+                        console.log(JSON.stringify(data));
                         return [data];                       
                     }                       
                 },
                                            
-                                                                                 error: function (e) {
+                                                             
+                error: function (e) {
+                                                                                     console.log(JSON.stringify(e));
                                                                                      if (!app.checkConnection()) {
                                                                                          if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -123,7 +187,7 @@ app.Activities = (function () {
                                                                                          }else {
                                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                          }
-                                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                      }
                                                                                      /*var db = app.getDb();
                                                                                      db.transaction(getDataOrgNoti, app.errorCB, app.successCB);*/         
@@ -152,6 +216,99 @@ app.Activities = (function () {
             var db = app.getDb();
             db.transaction(insertOrgNotiData, app.errorCB, getDataFromDB);
         };
+
+        
+        var admRecvDataLive;
+        function saveAdmMsg(admVal){      
+            console.log('-----BISHT--------------');
+            admRecvDataLive=admVal;
+            var db = app.getDb();
+            db.transaction(getReceivIDData, app.errorCB, app.successCB);         
+        }        
+                    
+        var getReceivIDData = function(tx) {
+            var query = "SELECT receiver_id FROM ORG_NOTIFICATION where org_id=" + organisationID +" and receiver_id !=''";
+            app.selectQuery(tx, query, admRecDataSuc);
+        };
+        
+        var admCmmt = 1;
+        
+        function admRecDataSuc(tx, results) {
+          console.log('--------------------------DBCOUNT---------------------');  
+          var count = results.rows.length; 
+          console.log("DBCOUNT=------"+count);  
+          var admMsgDB = [];  
+          //alert(count);  
+          if(count!==0){              
+             for(var i=0;i<count;i++){
+               admMsgDB.push(parseInt(results.rows.item(i).receiver_id));                         
+             }
+          }      
+                    
+            if(count===0){
+                console.log('x');
+              var dataLength = admRecvDataLive.length;
+              for (var i = 0;i < dataLength;i++) {    
+                  
+                var notiTitleEncode = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
+                var notiMessageEncode = app.urlEncode(admRecvDataLive[i].message);
+
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                            + organisationID
+                            + '","'
+                            + admRecvDataLive[i].receiver_id
+                            + '","'
+                            + notiMessageEncode
+                            + '","'
+                            + notiTitleEncode
+                            + '","'
+                            + admRecvDataLive[i].date
+                            + '","'
+                            + admCmmt
+                            + '","'
+                            + 'OTO'                            
+                            + '")';              
+                 app.insertQuery(tx, query);
+              }   
+            }else{
+                console.log('a');
+                var dataLength1 = admRecvDataLive.length;
+                for (var i = 0;i < dataLength1;i++) {    
+          
+                   var notiTitleEncode1 = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
+                   var notiMessageEncode1 = app.urlEncode(admRecvDataLive[i].message);
+
+                      console.log(admMsgDB);
+                      console.log(admRecvDataLive[i].receiver_id);
+                      
+                   var pos = $.inArray(parseInt(admRecvDataLive[i].receiver_id), admMsgDB);                      
+                   if (pos === -1) {
+                       console.log('b');
+                     var query1 = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                            + organisationID
+                            + '","'
+                            + admRecvDataLive[i].receiver_id
+                            + '","'
+                            + notiMessageEncode1
+                            + '","'
+                            + notiTitleEncode1
+                            + '","'
+                            + admRecvDataLive[i].date               
+                            + '","'
+                            + admCmmt
+                            + '","'
+                            + 'OTO'                            
+                            + '")';              
+                      app.insertQuery(tx, query1);
+                  }else{
+                      
+                      console.log('c');
+                      var query2 = "UPDATE ORG_NOTIFICATION SET message='" + notiMessageEncode1 + "',title='" + notiTitleEncode1 + "', send_date='" + admRecvDataLive[i].date + "',comment_allow = 1 where org_id='" + organisationID + "' and receiver_id="+admRecvDataLive[i].receiver_id;
+                      app.updateQuery(tx, query2); 
+                  }   
+                }    
+            }
+        }
             
         function insertOrgNotiData(tx) {
             //var query = "DELETE FROM ORG_NOTIFICATION";
@@ -217,7 +374,7 @@ app.Activities = (function () {
         }
             
         var getDataOrgNoti = function(tx) {
-            var query = "SELECT * FROM ORG_NOTIFICATION where org_id='" + organisationID + "' ORDER BY pid DESC limit'" + StartDbCount + "','" + EndDbCount + "'" ;
+            var query = "SELECT * FROM ORG_NOTIFICATION where org_id='" + organisationID + "' ORDER BY send_date DESC limit'" + StartDbCount + "','" + EndDbCount + "'" ;
             app.selectQuery(tx, query, getOrgNotiDataSuccess);
             
             var query1 = "SELECT count(pid) as TOTAL_DATA from ORG_NOTIFICATION where org_id=" + organisationID;
@@ -240,6 +397,7 @@ app.Activities = (function () {
                 groupDataShow = groupDataShow.sort(function(a, b) {
                     return parseInt(a.index) - parseInt(b.index);
                 }); 
+                
                 var organisationALLListDataSource = new kendo.data.DataSource({
                                                                                   data: groupDataShow
                                                                               });
@@ -257,9 +415,12 @@ app.Activities = (function () {
                     }else {
                         app.showAlert(app.INTERNET_ERROR , 'Offline');  
                     } 
-                }else {                
+                }else {
+                    //getAdminSentMsg();
+
                     var db = app.getDb();
                     db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
+
                 }
                 activeImgClick();
                 activeVidClick(); 
@@ -284,7 +445,7 @@ app.Activities = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                 }               
                                                             });  
 	            
@@ -514,7 +675,7 @@ app.Activities = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -546,6 +707,7 @@ app.Activities = (function () {
                
         function getOrgNotiDataSuccess(tx, results) {
             var count = results.rows.length;
+            
             var arrayDB = [];
             for (var i = 0;i < count;i++) {
                 arrayDB.push(results.rows.item(i));
@@ -556,6 +718,8 @@ app.Activities = (function () {
                 StartDbCount = StartDbCount + count;
             }                  
             checkVal++;
+            
+            console.log(arrayDB);
             var previousDate = '';            
             if (count !== 0) {                
                 $.each(arrayDB, function(i, msgData) {
@@ -648,7 +812,9 @@ app.Activities = (function () {
                                    comment_count :msgData.adminReply , 
                                    upload_type:msgData.upload_type,
                                    attached :msgData.attached,
+                                   receiver_id : msgData.receiver_id,
                                    previousDate:previousDate,
+                                   type:msgData.type,
                                    attachedImg :downloadedImg,
                                    index:indexVal
                                }); 
@@ -674,6 +840,7 @@ app.Activities = (function () {
                 groupDataShow = groupDataShow.sort(function(a, b) {
                     return parseInt(a.index) - parseInt(b.index);
                 });
+                
                 var organisationALLListDataSource = new kendo.data.DataSource({
                                                                                   data: groupDataShow
                                                                               });
@@ -688,9 +855,14 @@ app.Activities = (function () {
             }, 100);   
         };
                           
-        var activitySelected = function (e) {            
-            app.mobileApp.navigate('views/activityView.html');            
-            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
+        var activitySelected = function (e) {  
+            var msgType = e.data.type;
+            if(msgType==='OTO'){
+                app.mobileApp.navigate('views/createAdmMsgLst.html');           
+            }else{
+                app.mobileApp.navigate('views/activityView.html');
+            }    
+            //app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
         };
                
         var goToAppFirstView = function() {
@@ -852,12 +1024,13 @@ app.Activities = (function () {
             var title = e.data.title;
             var attached = e.data.attached;
             var type = e.data.upload_type;            
-             
+            var msgType = e.data.type;
             var org_id = e.data.org_id;
             var notiId = e.data.pid;
             var comment_allow = e.data.comment_allow; //"1"
             var upload_type = e.data.upload_type;                            
             var date = e.data.date;
+            var receiver_id = e.data.receiver_id;
 
             if (attached!== null && attached!=='' && attached!=="0") {
                 localStorage.setItem("shareImg", attached);
@@ -866,14 +1039,16 @@ app.Activities = (function () {
             }
             
             localStorage.setItem("shareMsg", message);
-            localStorage.setItem("shareTitle", title);    
-             
+            localStorage.setItem("shareTitle", title);                 
             localStorage.setItem("shareOrgId", org_id);
             localStorage.setItem("shareNotiID", notiId);
             localStorage.setItem("shareComAllow", comment_allow);
             localStorage.setItem("shareUploadType", upload_type);
             localStorage.setItem("shareDate", date);
             localStorage.setItem("shareType", type);
+            localStorage.setItem("msgType", msgType);
+            localStorage.setItem("shareReceiverID", receiver_id);
+            localStorage.setItem("frmWhere",'User');
         }
 
         function activeImgClick() {
@@ -913,6 +1088,7 @@ app.Activities = (function () {
             videoDownlaodClick:videoDownlaodClick,
             goToAppFirstView:goToAppFirstView,
             show:show,
+            getAdminSentMsg:getAdminSentMsg,
             afterShow:afterShow,
             showMoreButtonPress:showMoreButtonPress,
         };

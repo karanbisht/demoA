@@ -174,13 +174,14 @@ app.Activity = (function () {
                 },
                                                                schema: {
                                 
-                    data: function(data) {               
+                    data: function(data) { 
+                        console.log(JSON.stringify(data));
                         return [data];
                     }                       
                 },
                                                                error: function (e) {
                                                                    app.hideAppLoader();
-                                                                              
+                                                                    console.log(JSON.stringify(e));                                                                              
                                                                    if (!app.checkConnection()) {
                                                                        if (!app.checkSimulator()) {
                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -193,7 +194,7 @@ app.Activity = (function () {
                                                                        }else {
                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                        }
-                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                       //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                    }                                                                  
                                                                }
 	        
@@ -404,7 +405,7 @@ app.Activity = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }
                                                                               }               
                                                                           });  

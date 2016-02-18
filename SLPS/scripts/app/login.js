@@ -1,5 +1,4 @@
 var app = app || {};
-
 app.Login = (function () {
     'use strict';
     var loginViewModel = (function () {
@@ -105,7 +104,7 @@ app.Login = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                             
                                                                             app.hideAppLoader();
@@ -179,9 +178,91 @@ app.Login = (function () {
             orgNotiDataVal = [];
             orgNotiDataVal = data;      
             var db = app.getDb();
-            db.transaction(insertOrgNotiData, app.errorCB, goToHomePage);
+            //db.transaction(insertOrgNotiData, app.errorCB, goToHomePage);
+            db.transaction(insertOrgNotiData, app.errorCB, getAdminSentMsg);
         };
+
+        
+    
+        var getAdminSentMsg = function(){
                         
+            var admMsgDataSource = new kendo.data.DataSource({
+                                                                                 transport: {
+                    read: {
+                                                                                             url: app.serverUrl() + "notification/getCustomerSentMsg/" + account_Id + "/" + organizationID,
+                                                                                             type:"POST",
+                                                                                             dataType: "json"                 
+                                                                                         }
+                },
+                                                                                 schema: {
+                    data: function(data) {     
+                        console.log("-----------------KARAN------------------");
+                        console.log(JSON.stringify(data));
+                        return [data];          
+
+                    }                       
+                },
+
+                                                                                 error: function (e) {                                                                                     
+                                                                                     goToHomePage();
+                                                                                     console.log("-----------------KARAN------------------");
+                                                                                     console.log(JSON.stringify(e));
+                                                                                 }	        
+                                                                             });        
+ 
+            admMsgDataSource.fetch(function() {
+                var data = this.data();            
+                if (data[0]['status'][0].Msg ==='No Message') { 
+                    goToHomePage();
+                }else if (data[0]['status'][0].Msg==='Success') {
+                    var admMsgLst = data[0]['status'][0].AllMessage;
+                    saveAdmMsg(admMsgLst);                                                                                   
+                }
+            });
+        };
+                            
+        var admRecvDataLive;
+        function saveAdmMsg(admVal){      
+            console.log('-----BISHT--------------');
+            admRecvDataLive=admVal;
+            var db = app.getDb();
+            db.transaction(admRecDataSuc, app.errorCB, goToHomePage);         
+        }        
+                            
+        var admCmmt = 1;
+        
+        function admRecDataSuc(tx) {
+            console.log('aasdasdasdasdasdasdasdasd');
+            var dataLength = admRecvDataLive.length;
+            console.log('aasdasdasdasdasdasdasdasd---'+dataLength);
+            admCmmt = 1
+            for (var i = 0;i < dataLength;i++) {    
+                  
+                var notiTitleEncode = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
+                var notiMessageEncode = app.urlEncode(admRecvDataLive[i].message);
+                
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                            + organizationID
+                            + '","'
+                            + admRecvDataLive[i].receiver_id
+                            + '","'
+                            + notiMessageEncode
+                            + '","'
+                            + notiTitleEncode
+                            + '","'
+                            + admRecvDataLive[i].date
+                            + '","'
+                            + admCmmt
+                            + '","'
+                            + 'OTO'                            
+                            + '")';              
+                 app.insertQuery(tx, query);
+              }   
+            
+            goToHomePage();
+        }
+        
+        
         function insertOrgNotiData(tx) {
             var query = "DELETE FROM ORG_NOTIFICATION";
             app.deleteQuery(tx, query);
@@ -245,9 +326,8 @@ app.Login = (function () {
             localStorage.setItem("ACCOUNT_ID", account_Id);
             localStorage.setItem("FIRST_LOGIN", 1); 
             localStorage.setItem("ADMIN_FIRST_LOGIN", 1); 
-
-            app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
-            app.analyticsService.viewModel.userLoginStatus();
+                //app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
+                //app.analyticsService.viewModel.userLoginStatus();
             app.mobileApp.navigate('#view-all-activities');
         }
                          
@@ -324,7 +404,7 @@ app.Login = (function () {
                 },
                                                                      error: function (e) {
                                                                          app.hideAppLoader();                                                                         
-                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
                                                                              window.plugins.toast.showShortBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
@@ -346,7 +426,6 @@ app.Login = (function () {
         var doneVerification = function() {
             $(".km-scroll-container").css("-webkit-transform", "");            
             var validationCodeId = $("#validationCodeId").val();
-            
             if (validationCodeId==='Verification Code' || validationCodeId==='') {            
                 app.showAlert("Please Enter Verification Code", app.APP_NAME);
             }else {
@@ -359,6 +438,8 @@ app.Login = (function () {
                     }else if (deviceName==='iOS') {
                         device_type = 'AP';
                     }
+
+                    localStorage.setItem("alterTableYN", 1);
 
                     //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");                          
@@ -393,7 +474,7 @@ app.Login = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -457,7 +538,7 @@ app.Login = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }                                                                                        
                                                                               }	        
                                                                           });        

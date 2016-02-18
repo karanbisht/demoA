@@ -9,14 +9,16 @@ app.adminLogin = (function () {
         var account_Id;
                
         var init = function () {         
+            $("#admMsgIcon").hide();
         };
 
         var show = function (e) {            
+            $("#admMsgIcon").hide();
             account_Id = localStorage.getItem("ACCOUNT_ID");
             var userMobileNo = localStorage.getItem("username");
             $("#loginMob").val(userMobileNo);            
             document.getElementById("loginMob").readOnly = true;
-            $('#loginPassword').val('');            
+            $('#loginPassword').val('');                       
         };
         
         var checkEnter = function (e) {
@@ -74,7 +76,7 @@ app.adminLogin = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -162,7 +164,7 @@ app.adminLogin = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -204,7 +206,7 @@ app.adminLogin = (function () {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -303,7 +305,7 @@ app.adminLogin = (function () {
                                                                                           }else {
                                                                                               app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                           }
-                                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                          //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                       }
                                                                                   }	        
                                                                               });         
@@ -402,7 +404,7 @@ app.adminLogin = (function () {
                                                                                         }else {
                                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                         }
-                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                     }
                                                                                 }	        
                                                                             });         
@@ -441,9 +443,10 @@ app.adminLogin = (function () {
         var goToAdminDashboard = function() {            
             app.hideAppLoader();
             localStorage.setItem("open", 5);
-            localStorage.setItem("loginStatusCheck", 2);                        
+            localStorage.setItem("loginStatusCheck", 2);   
+            localStorage.setItem("frmWhere",'Admin');
             app.generateMoniterForAdmin();
-            app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
+            //app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
         };
         
@@ -483,7 +486,7 @@ app.adminLogin = (function () {
                                                                  }else {
                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                  }
-                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                              }
                                                          }	        
                                                      });        
@@ -550,7 +553,7 @@ app.adminLogin = (function () {
                                                                     }else {
                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                     }
-                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                 }
                                                             }	        
                                                         });        
@@ -622,7 +625,7 @@ app.adminLogin = (function () {
                                                                            }else {
                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                            }
-                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                        }
                                                                    }	        
                                                                });        

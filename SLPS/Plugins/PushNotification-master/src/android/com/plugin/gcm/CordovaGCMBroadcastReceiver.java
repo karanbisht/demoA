@@ -110,6 +110,8 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
         String [] messageSplitVal ;
         messageSplitVal = message.toString().trim().split("#####");
 
+		Log.i("Message----------", message);
+
         String messageDB = messageSplitVal[0];
 		String orgIdDB = messageSplitVal[1];
 		String notiIdDB=messageSplitVal[2];
