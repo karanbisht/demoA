@@ -74,7 +74,8 @@ app.Activities = (function () {
         
 
         var alterTableDB = function(tx) {        
-             tx.executeSql('ALTER TABLE ORG_NOTIFICATION ADD receiver_id INTEGER');       
+              tx.executeSql('ALTER TABLE ORG_NOTIFICATION ADD COLUMN receiver_id INTEGER');
+              tx.executeSql('ALTER TABLE ORG_NOTIFICATION ADD COLUMN count INTEGER');
         };
         
         function alterTableSuccess(){
@@ -109,16 +110,16 @@ app.Activities = (function () {
                 },
                                                                                  schema: {
                     data: function(data) {     
-                        console.log("-----------------KARAN------------------");
-                        console.log(JSON.stringify(data));
+                        //console.log("-----------------KARAN------------------");
+                        //console.log(JSON.stringify(data));
                         return [data];          
 
                     }                       
                 },
 
                                                                                  error: function (e) {
-                                                                                     console.log("-----------------KARAN------------------");
-                                                                                     console.log(JSON.stringify(e));
+                                                                                     //console.log("-----------------KARAN------------------");
+                                                                                     //console.log(JSON.stringify(e));
                                                                                      /*var db = app.getDb();
                                                                                      db.transaction(getDataOrgNoti, app.errorCB, app.successCB);*/         
                                                                                  }	        
@@ -151,7 +152,8 @@ app.Activities = (function () {
                 device_type = 'AP';
             }            
             var device_id = localStorage.getItem("deviceTokenID");
-            
+            //device_id ='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
+
             var lastNotificationPID = results.rows.item(0).pid;
             if (lastNotificationPID===null) {
                 lastNotificationPID = 0;
@@ -167,14 +169,14 @@ app.Activities = (function () {
                 },
                                                                                  schema: {
                     data: function(data) {
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];                       
                     }                       
                 },
                                            
                                                              
                 error: function (e) {
-                                                                                     console.log(JSON.stringify(e));
+                                                                                     //console.log(JSON.stringify(e));
                                                                                      if (!app.checkConnection()) {
                                                                                          if (!app.checkSimulator()) {
                                                                                              window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -187,7 +189,7 @@ app.Activities = (function () {
                                                                                          }else {
                                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                          }
-                                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                      }
                                                                                      /*var db = app.getDb();
                                                                                      db.transaction(getDataOrgNoti, app.errorCB, app.successCB);*/         
@@ -220,7 +222,6 @@ app.Activities = (function () {
         
         var admRecvDataLive;
         function saveAdmMsg(admVal){      
-            console.log('-----BISHT--------------');
             admRecvDataLive=admVal;
             var db = app.getDb();
             db.transaction(getReceivIDData, app.errorCB, app.successCB);         
@@ -234,9 +235,8 @@ app.Activities = (function () {
         var admCmmt = 1;
         
         function admRecDataSuc(tx, results) {
-          console.log('--------------------------DBCOUNT---------------------');  
           var count = results.rows.length; 
-          console.log("DBCOUNT=------"+count);  
+          //console.log("DBCOUNT=------"+count);  
           var admMsgDB = [];  
           //alert(count);  
           if(count!==0){              
@@ -246,14 +246,13 @@ app.Activities = (function () {
           }      
                     
             if(count===0){
-                console.log('x');
               var dataLength = admRecvDataLive.length;
               for (var i = 0;i < dataLength;i++) {    
                   
                 var notiTitleEncode = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
                 var notiMessageEncode = app.urlEncode(admRecvDataLive[i].message);
 
-                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type,count) VALUES ("'
                             + organisationID
                             + '","'
                             + admRecvDataLive[i].receiver_id
@@ -266,25 +265,23 @@ app.Activities = (function () {
                             + '","'
                             + admCmmt
                             + '","'
-                            + 'OTO'                            
+                            + 'OTO'
+                            + '","'
+                            + admRecvDataLive[i].count
                             + '")';              
                  app.insertQuery(tx, query);
               }   
             }else{
-                console.log('a');
                 var dataLength1 = admRecvDataLive.length;
                 for (var i = 0;i < dataLength1;i++) {    
           
                    var notiTitleEncode1 = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
                    var notiMessageEncode1 = app.urlEncode(admRecvDataLive[i].message);
 
-                      console.log(admMsgDB);
-                      console.log(admRecvDataLive[i].receiver_id);
                       
                    var pos = $.inArray(parseInt(admRecvDataLive[i].receiver_id), admMsgDB);                      
                    if (pos === -1) {
-                       console.log('b');
-                     var query1 = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                     var query1 = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type,count) VALUES ("'
                             + organisationID
                             + '","'
                             + admRecvDataLive[i].receiver_id
@@ -297,13 +294,13 @@ app.Activities = (function () {
                             + '","'
                             + admCmmt
                             + '","'
-                            + 'OTO'                            
+                            + 'OTO'
+                            + '","'
+                            + admRecvDataLive[i].count
                             + '")';              
                       app.insertQuery(tx, query1);
-                  }else{
-                      
-                      console.log('c');
-                      var query2 = "UPDATE ORG_NOTIFICATION SET message='" + notiMessageEncode1 + "',title='" + notiTitleEncode1 + "', send_date='" + admRecvDataLive[i].date + "',comment_allow = 1 where org_id='" + organisationID + "' and receiver_id="+admRecvDataLive[i].receiver_id;
+                  }else{                      
+                      var query2 = "UPDATE ORG_NOTIFICATION SET message='" + notiMessageEncode1 + "',title='" + notiTitleEncode1 + "',count='"+admRecvDataLive[i].count+"', send_date='" + admRecvDataLive[i].date + "',comment_allow = 1 where org_id='" + organisationID + "' and receiver_id='"+admRecvDataLive[i].receiver_id+"'";
                       app.updateQuery(tx, query2); 
                   }   
                 }    
@@ -325,7 +322,7 @@ app.Activities = (function () {
                 var notiTitleEncode = app.urlEncode(orgNotiDataVal[i].title);
                 var notiMessageEncode = app.urlEncode(orgNotiDataVal[i].message);
 
-                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,upload_type) VALUES ("'
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,upload_type,count) VALUES ("'
                             + orgNotiDataVal[i].org_id
                             + '","'
                             + orgNotiDataVal[i].pid
@@ -343,6 +340,8 @@ app.Activities = (function () {
                             + orgNotiDataVal[i].type
                             + '","'
                             + orgNotiDataVal[i].upload_type
+                            + '","'
+                            + orgNotiDataVal[i].total
                             + '")';              
                 app.insertQuery(tx, query);
             }   
@@ -386,13 +385,93 @@ app.Activities = (function () {
             if (totalOrgNotification > StartDbCount) {
                 setTimeout(function() {
                     $("#showMoreButton").show();
-                }, 200);                
+                }, 500);                
             }else {                                
                 $("#showMoreButton").hide();
             }
         }
         
-        var showLiveDataDB = function() {          
+        var showLiveDataDB = function() {                      
+            getMoreDb(1);
+        };
+        
+        
+        function getMoreDb(goTOVal){
+             $.each( groupDataShow, function( i, Message ) {
+                var msgType = Message.type;
+                var totalCount = Message.totalCount;
+                var db = app.getDb();
+                if(msgType==='OTO'){
+                    var msgIdA = Message.receiver_id;    
+                    //db.transaction(getBagCountValOTO, app.errorCB, app.successCB);
+                    db.transaction( function(tx){ getBagCountAdmMsg(tx, i ,totalCount,msgIdA,goTOVal) }, app.errorCB, app.successCB );
+                }else{
+                    var msgIdM = Message.pid;                    
+                    //db.transaction(getBagCountValMsg, app.errorCB, app.successCB);
+                    db.transaction( function(tx){ getBagCountLocalMsg(tx, i ,totalCount,msgIdM,goTOVal) }, app.errorCB, app.successCB );
+                }
+             });   
+        }
+        
+        
+        
+        function getBagCountAdmMsg(tx,index,totalC,msgIdVal,goToData){
+              var query = "SELECT count FROM USER_OTO where org_id='" + organisationID +"'and id='"+msgIdVal+"'";
+              //app.selectQuery(tx, query, bagValOTOSuccess);    
+              tx.executeSql(query, [], function(tx, results){
+                  var count = results.rows.length;
+                  var result;
+                  if (count !== 0) { 
+                    result=parseInt(results.rows.item(0).count); 
+                  }else{
+                    result=0;
+                  }  
+                  totalC = totalC - result;
+                  groupDataShow[index].showCount = totalC;    
+                  
+                  if(index===groupDataShow.length-1){
+                     if(goToData===1){ 
+                          showDataInTemplate();
+                     }else{
+                          showInTemplateMoreButton();
+                     }    
+                  }
+              }, app.errorCB);
+        }
+        
+        function getBagCountLocalMsg(tx,index,totalC,msgIdVal,goToData){
+              var query = "SELECT count FROM ADMIN_MSG_RPY where org_id='" + organisationID +"'and id='"+msgIdVal+"'";
+              //app.selectQuery(tx, query, bagValMSGSuccess); 
+              tx.executeSql(query, [], function(tx, results){
+                  var count = results.rows.length;
+                  //console.log(count);
+                  var totalbagVal=0;
+                  if (count !== 0) { 
+                      for(var i=0;i<count;i++){                          
+                        var result=isNaN(parseInt(results.rows.item(i).count));                          
+                        if(result===null || result===true ){
+                            result=0;
+                        }else{
+                           result=parseInt(results.rows.item(i).count);  
+                        }
+                        totalbagVal=parseInt(totalbagVal)+result;   
+                      }
+                  }else{
+                        totalbagVal=0;
+                  }
+                  totalC = totalC - totalbagVal;
+                  groupDataShow[index].showCount = totalC;  
+                  if(index===groupDataShow.length-1){
+                     if(goToData===1){ 
+                          showDataInTemplate();
+                     }else{
+                          showInTemplateMoreButton();
+                     }    
+                  }
+              }, app.errorCB);
+        }
+        
+        function showDataInTemplate(){
             setTimeout(function() {
                 groupDataShow = groupDataShow.sort(function(a, b) {
                     return parseInt(a.index) - parseInt(b.index);
@@ -424,8 +503,8 @@ app.Activities = (function () {
                 }
                 activeImgClick();
                 activeVidClick(); 
-            }, 100);     
-        };
+            }, 100);
+        }
         
         var showUpdateLocalDB = function(e) {       
             account_Id = localStorage.getItem("ACCOUNT_ID");   
@@ -445,7 +524,7 @@ app.Activities = (function () {
                     }
                 },
                                                                 error: function (e) {
-                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                 }               
                                                             });  
 	            
@@ -675,7 +754,7 @@ app.Activities = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -719,7 +798,7 @@ app.Activities = (function () {
             }                  
             checkVal++;
             
-            console.log(arrayDB);
+            //console.log(arrayDB);
             var previousDate = '';            
             if (count !== 0) {                
                 $.each(arrayDB, function(i, msgData) {
@@ -742,11 +821,12 @@ app.Activities = (function () {
                         window.resolveLocalFileSystemURL(fp, 
                                                          function(entry) {
                                                              downloadedImg = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + Filename;                        
-                                                             pushDataInArray(msgData, previousDate, downloadedImg, notiDate, notiMessageDecode, notiTitleDecode, i);  
+                                                             pushDataInArray(msgData, previousDate, downloadedImg, notiDate, notiMessageDecode, notiTitleDecode, i);
                                                          }, function(error) {
                                                              downloadedImg = msgData.attached;
-                                                             pushDataInArray(msgData, previousDate, downloadedImg, notiDate, notiMessageDecode, notiTitleDecode, i);  
-                                                         });                    
+                                                             pushDataInArray(msgData, previousDate, downloadedImg, notiDate, notiMessageDecode, notiTitleDecode, i);
+                                                         });                
+                        
                         /*}else if (attachedData!== null && attachedData!=='' && attachedData!=="0" && uplaodData==="video") { 
                         Filename = attachedData.replace(/^.*[\\\/]/, '');
                         fp = sdcardPath + "Zaffio/" + 'Zaffio_Video_' + Filename;             
@@ -812,6 +892,7 @@ app.Activities = (function () {
                                    comment_count :msgData.adminReply , 
                                    upload_type:msgData.upload_type,
                                    attached :msgData.attached,
+                                   totalCount:msgData.count,
                                    receiver_id : msgData.receiver_id,
                                    previousDate:previousDate,
                                    type:msgData.type,
@@ -836,6 +917,10 @@ app.Activities = (function () {
         };   
             
         var showLiveData = function() {
+             getMoreDb(2);  
+        };
+        
+        function showInTemplateMoreButton(){
             setTimeout(function() { 
                 groupDataShow = groupDataShow.sort(function(a, b) {
                     return parseInt(a.index) - parseInt(b.index);
@@ -852,8 +937,8 @@ app.Activities = (function () {
                 $('#activities-listview').data('kendoMobileListView').refresh();          
                 activeImgClick();
                 activeVidClick();
-            }, 100);   
-        };
+            }, 100);
+        }
                           
         var activitySelected = function (e) {  
             var msgType = e.data.type;
@@ -862,7 +947,7 @@ app.Activities = (function () {
             }else{
                 app.mobileApp.navigate('views/activityView.html');
             }    
-            //app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Customer Notification Comment List");            
         };
                
         var goToAppFirstView = function() {
@@ -1012,7 +1097,6 @@ app.Activities = (function () {
                                               if (index > -1) {
                                                   imgClickIdArray.splice(index, 1);
                                               }
-                                              console.log(JSON.stringify(imgClickIdArray));
                                           }
                         );
                 }   
@@ -1047,6 +1131,7 @@ app.Activities = (function () {
             localStorage.setItem("shareDate", date);
             localStorage.setItem("shareType", type);
             localStorage.setItem("msgType", msgType);
+            localStorage.setItem("msgCount", e.data.totalCount);            
             localStorage.setItem("shareReceiverID", receiver_id);
             localStorage.setItem("frmWhere",'User');
         }

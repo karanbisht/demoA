@@ -82,7 +82,7 @@ app.adminNews = (function () {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -238,7 +238,7 @@ app.adminNews = (function () {
                                                                                  }else {
                                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                  }
-                                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                              }
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
@@ -314,7 +314,7 @@ app.adminNews = (function () {
             newsUploadType = e.data.upload_type;
             newsPid = e.data.id;
 
-            //app.analyticsService.viewModel.trackFeature("User navigate to Edit News in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit News in Admin");            
 
             app.mobileApp.navigate('#adminEditNews');
         }
@@ -354,7 +354,7 @@ app.adminNews = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }           
                                                                            }               
           
@@ -462,7 +462,7 @@ app.adminNews = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -751,7 +751,7 @@ app.adminNews = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }              
                                                                        });  
@@ -845,7 +845,7 @@ app.adminNews = (function () {
                     app.showAlert(app.NEWS_EVENT_FAIL , 'Notification');  
                 }
             }
-            //app.analyticsService.viewModel.trackFeature("News Add or Update fail" + JSON.stringify(error));            
+            app.analyticsService.viewModel.trackFeature("News Add or Update fail" + JSON.stringify(error));            
         }
 
         var saveEditNewsData = function() {
@@ -982,7 +982,7 @@ app.adminNews = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }               
           
@@ -1041,24 +1041,24 @@ app.adminNews = (function () {
         var goToAddNewsPage = function() {
             app.mobileApp.navigate('#adminAddNews');
 
-            //app.analyticsService.viewModel.trackFeature("User navigate to Add News in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Add News in Admin");            
         }
         
         var goToNewsListPage = function() {
             app.mobileApp.navigate('#adminOrgNewsList');
 
-            //app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
         }
         
         var orgAllNewsList = function() {
             app.mobileApp.navigate('#adminOrgNewsList');
 
-            //app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to News List in Admin");            
         }
         
         var addNewEvent = function() {
             app.mobileApp.navigate('#adminAddEventCalendar');
-            //app.analyticsService.viewModel.trackFeature("User navigate to Add Event in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Add Event in Admin");            
         }
         
         var upcommingEventList = function() {

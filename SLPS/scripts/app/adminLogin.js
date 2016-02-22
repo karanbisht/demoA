@@ -76,7 +76,7 @@ app.adminLogin = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -164,7 +164,7 @@ app.adminLogin = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -206,7 +206,7 @@ app.adminLogin = (function () {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -305,7 +305,7 @@ app.adminLogin = (function () {
                                                                                           }else {
                                                                                               app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                           }
-                                                                                          //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                       }
                                                                                   }	        
                                                                               });         
@@ -404,7 +404,7 @@ app.adminLogin = (function () {
                                                                                         }else {
                                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                         }
-                                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                     }
                                                                                 }	        
                                                                             });         
@@ -446,7 +446,7 @@ app.adminLogin = (function () {
             localStorage.setItem("loginStatusCheck", 2);   
             localStorage.setItem("frmWhere",'Admin');
             app.generateMoniterForAdmin();
-            //app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Organization List in Admin");            
             app.mobileApp.navigate('#view-all-activities-GroupDetail');
         };
         
@@ -486,7 +486,7 @@ app.adminLogin = (function () {
                                                                  }else {
                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                  }
-                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                              }
                                                          }	        
                                                      });        
@@ -553,7 +553,7 @@ app.adminLogin = (function () {
                                                                     }else {
                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                     }
-                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                 }
                                                             }	        
                                                         });        
@@ -625,7 +625,7 @@ app.adminLogin = (function () {
                                                                            }else {
                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                            }
-                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                        }
                                                                    }	        
                                                                });        

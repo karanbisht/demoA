@@ -13,13 +13,14 @@
  <script type="text/x-kendo-template" id="replyCustomerTemplate">        
        #if (customerID!==0) {#
                <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: customerSelected }">        
-                <div class="user-avatar-img-show" style="margin-top:5px;margin-left:5px;"></div>    
-                  <div class="activity-content" style="margin-left:0px;margin-top:-10px">
+                <div class="user-avatar-img-show" style="margin-top:5px;margin-left:5px;"></div>                           
+                    #if (showCount!==0) {#
+                        <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;margin-right:10px;">${showCount}</div>
+                    #}#
+                  <div class="activity-content" style="margin-left:0px;margin-top:-10px">                  
                     <h5 id="" class="person-name">${user_fname} ${user_lname}</h5>
-                    <span>${add_date}</span>
-                     <span>${totalCount}</span>
-                    <span class="km-icon km-details" style="float:right;margin-top:-15px;"></span>                    
                     <div id=""  style="color:rgb(188,188,188);overflow:hidden;white-space: nowrap;text-overflow: ellipsis;margin-top:-10px;" >${comment}</div>
+                    <span class="km-icon km-details" style="float:right;margin-top:-25px;"></span>                                        
                   </div>
                </div>
        #}else {#

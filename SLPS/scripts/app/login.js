@@ -66,7 +66,7 @@ app.Login = (function () {
                         app.showAlert(app.INTERNET_ERROR , 'Offline'); 
                     }
                 } else if (device_id===null || device_id==='null') {
-                    //app.onLoad();              
+                    //app.onLoad(); 
                     app.getDeviceID(); 
                 }else {
                     app.showAppLoader(true);
@@ -104,7 +104,7 @@ app.Login = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                             
                                                                             app.hideAppLoader();
@@ -241,7 +241,7 @@ app.Login = (function () {
                 var notiTitleEncode = app.urlEncode(admRecvDataLive[i].Name +' (Admin)');
                 var notiMessageEncode = app.urlEncode(admRecvDataLive[i].message);
                 
-                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type) VALUES ("'
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,receiver_id ,message ,title,send_date,comment_allow,type,count) VALUES ("'
                             + organizationID
                             + '","'
                             + admRecvDataLive[i].receiver_id
@@ -254,7 +254,9 @@ app.Login = (function () {
                             + '","'
                             + admCmmt
                             + '","'
-                            + 'OTO'                            
+                            + 'OTO' 
+                            + '","'
+                            + admRecvDataLive[i].count
                             + '")';              
                  app.insertQuery(tx, query);
               }   
@@ -278,7 +280,7 @@ app.Login = (function () {
                 var notiTitleEncode = app.urlEncode(orgNotiDataVal[i].title);
                 var notiMessageEncode = app.urlEncode(orgNotiDataVal[i].message);
 
-                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,upload_type) VALUES ("'
+                var query = 'INSERT INTO ORG_NOTIFICATION(org_id ,pid ,attached ,message ,title,comment_allow,send_date,type,upload_type,count) VALUES ("'
                             + orgNotiDataVal[i].org_id
                             + '","'
                             + orgNotiDataVal[i].pid
@@ -296,6 +298,8 @@ app.Login = (function () {
                             + orgNotiDataVal[i].type
                             + '","'
                             + orgNotiDataVal[i].upload_type
+                            + '","'
+                            + orgNotiDataVal[i].total
                             + '")';              
                 app.insertQuery(tx, query);
             }   
@@ -326,8 +330,8 @@ app.Login = (function () {
             localStorage.setItem("ACCOUNT_ID", account_Id);
             localStorage.setItem("FIRST_LOGIN", 1); 
             localStorage.setItem("ADMIN_FIRST_LOGIN", 1); 
-                //app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
-                //app.analyticsService.viewModel.userLoginStatus();
+                app.analyticsService.viewModel.trackFeature("User navigate to Customer Organisation List");            
+                app.analyticsService.viewModel.userLoginStatus();
             app.mobileApp.navigate('#view-all-activities');
         }
                          
@@ -404,7 +408,7 @@ app.Login = (function () {
                 },
                                                                      error: function (e) {
                                                                          app.hideAppLoader();                                                                         
-                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
                                                                              window.plugins.toast.showShortBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
@@ -474,7 +478,7 @@ app.Login = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -538,7 +542,7 @@ app.Login = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }                                                                                        
                                                                               }	        
                                                                           });        

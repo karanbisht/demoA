@@ -88,7 +88,7 @@ app.registration = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -141,7 +141,7 @@ app.registration = (function () {
                                                                                     }else {
                                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                     }
-                                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                 }
                                                                             }               
                                                                         });  
@@ -222,7 +222,7 @@ app.registration = (function () {
                 },
                                                                      error: function (e) {
                                                                          //apps.hideLoading();
-                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                          if (!app.checkSimulator()) {
                                                                              window.plugins.toast.showShortBottom(app.VERIFICATION_CODE_NOT_SEND);  
                                                                          }else {
@@ -321,7 +321,7 @@ app.registration = (function () {
                                                                                 }else {
                                                                                     app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                 }
-                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                             }
                                                                         }               
                                                                     });  
@@ -483,7 +483,7 @@ app.registration = (function () {
                         }                                                            
                     },
                                                                                   error: function (e) {
-                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }	        
                                                                               });         
             

@@ -9,6 +9,11 @@ app.groupDetail = (function () {
 
     var organisationID;
     var account_Id;
+
+    var totalReadMsg=0;
+    var totalSum1=0;
+    var totalSum2=0;
+
     
     var groupDetailViewModel = (function () {
         var init = function () {
@@ -16,7 +21,6 @@ app.groupDetail = (function () {
            
         var show = function (e) {
             app.mobileApp.pane.loader.hide();       
-            
             var adminOrgInfo = [];
             
             localStorage.setItem("open", 0);                  
@@ -73,7 +77,7 @@ app.groupDetail = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }	        
                                                                        });
@@ -110,32 +114,82 @@ app.groupDetail = (function () {
         
         function getListCountDB() {
             var db = app.getDb();
-            db.transaction(getDataOrgDB, app.errorCB, app.successCB);   
+            //db.transaction(getDataOrgDB, app.errorCB, app.successCB); 
+            db.transaction(updateBagCount, app.errorCB, setMsgCount);
         };
+        
+        var updateBagCount = function(tx) {
+
+              var org_id_db = localStorage.getItem("orgSelectAdmin"); 
+
+              var query = "SELECT count FROM ADMIN_OTO where org_id=" + org_id_db;
+              app.selectQuery(tx, query, adminOtoSuccess);
+            
+              var query1 = "SELECT count FROM ADMIN_MSG_MEM where org_id=" + org_id_db;
+              app.selectQuery(tx, query1, adminMsgSuccess);
+        };
+        
+
+        function adminOtoSuccess(tx, results) {                                                               
+            var count = results.rows.length;          
+            if (count !== 0) { 
+               for(var i=0;i<count;i++){
+                var result=parseInt(results.rows.item(i).count); 
+                totalSum1=parseInt(totalSum1)+result;   
+              }
+            }            
+        }
+        
+        
+        function adminMsgSuccess(tx, results) {                                                               
+            var count = results.rows.length;
+            if (count !== 0) { 
+              for(var i=0;i<count;i++){
+                var result=parseInt(results.rows.item(i).count); 
+                totalSum2=parseInt(totalSum2)+result;   
+              }
+            }            
+        }
+        
+        function setMsgCount(){
+            totalReadMsg = parseInt(totalSum1)+parseInt(totalSum2);  
+            var db = app.getDb();
+            db.transaction(updateBagCount2, app.errorCB, app.successCB);
+        }
+        
+        function updateBagCount2(tx){
+            var org_id_db = localStorage.getItem("orgSelectAdmin"); 
+
+            var queryUpdate = "UPDATE ADMIN_ORG SET bagCount='" + totalReadMsg + "' where org_id=" + org_id_db;
+            app.updateQuery(tx, queryUpdate);
+            
+            //var query = "SELECT * FROM ADMIN_ORG where org_id=" + organisationID;
+            //app.selectQuery(tx, query, getDataSuccessCust);            
+
+            var query = "SELECT * FROM ADMIN_ORG where org_id=" + org_id_db;
+            app.selectQuery(tx, query, getDataSuccessDB);
+        }
+        
     
-        function getDataOrgDB(tx) {
+        /*function getDataOrgDB(tx) {
             var org_id_db = localStorage.getItem("orgSelectAdmin"); 
             var query = "SELECT * FROM ADMIN_ORG where org_id=" + org_id_db;
             app.selectQuery(tx, query, getDataSuccessDB);
-        };
+        };*/
             
         function getDataSuccessDB(tx, results) {                                    
             var count = results.rows.length;
             if (count !== 0) { 
                 var bagCountData = results.rows.item(0).bagCount;                  
-                var countData = results.rows.item(0).count;
-                   
+                var countData = results.rows.item(0).count;                 
                 if (countData===null || countData==="null") {
                     countData = 0; 
-                }
-                   
+                }                   
                 if (bagCountData===null || bagCountData==="null") {
                     bagCountData = 0;
                 }
-    
                 localStorage.setItem("incommingMsgCount", countData);                                  
                 var showData = countData - bagCountData;
-
                 if (showData < 0) {
                     showData = 0;   
                 }                
@@ -262,8 +316,8 @@ app.groupDetail = (function () {
             var query = "DELETE FROM ADMIN_ORG where org_id=" + orgIdToDel;
             app.deleteQuery(tx, query);
              
-            var query = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id=" + orgIdToDel;
-            app.deleteQuery(tx, query);
+            var query1 = "DELETE FROM ADMIN_ORG_NOTIFICATION where org_id=" + orgIdToDel;
+            app.deleteQuery(tx, query1);
         } 
            
         var showGroupNotification = function() {
@@ -274,7 +328,7 @@ app.groupDetail = (function () {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else {                
-                //app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
+                app.analyticsService.viewModel.trackFeature("User navigate to Organization Notification in Admin");            
                 app.mobileApp.navigate('views/orgNotificationList.html?organisationID=' + organisationID + '&account_Id=' + account_Id);
             }
         };   
@@ -288,7 +342,7 @@ app.groupDetail = (function () {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else {                
-                //app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
+                app.analyticsService.viewModel.trackFeature("User navigate to Organization Member List in Admin");            
                 app.mobileApp.navigate('views/orgMemberPage.html');                              
             }
         };
@@ -335,7 +389,7 @@ app.groupDetail = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
 
                                                                      app.hideAppLoader();
@@ -447,7 +501,7 @@ app.groupDetail = (function () {
         };
         
         var manageGroup = function() {
-            //app.analyticsService.viewModel.trackFeature("User navigate to Group List in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Group List in Admin");            
             
             app.mobileApp.navigate("views/groupListPage.html");
         };
@@ -491,7 +545,7 @@ app.groupDetail = (function () {
                                                                            }else {
                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                            }
-                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                        }
                                                                    }               
                                                                });  
@@ -524,7 +578,7 @@ app.groupDetail = (function () {
                 } 
             }else {                
                 var organisationID = localStorage.getItem("orgSelectAdmin");
-                //app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");                        
+                app.analyticsService.viewModel.trackFeature("User navigate to Add Customer in Admin");                        
                 app.mobileApp.navigate('views/addCustomerByAdmin.html?organisationID=' + organisationID);
             }
         };
@@ -586,7 +640,7 @@ app.groupDetail = (function () {
                                                                                            }else {
                                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                            }
-                                                                                           //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                           app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                        }
                                                                                    }               
           
@@ -658,7 +712,7 @@ app.groupDetail = (function () {
                     app.showAlert(app.INTERNET_ERROR , 'Offline');  
                 } 
             }else {                
-                //app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
+                app.analyticsService.viewModel.trackFeature("User navigate to Edit Member in Admin");            
                 app.mobileApp.navigate('#editMemberInAdmin');       
             }
         };
@@ -760,7 +814,7 @@ app.groupDetail = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -1019,7 +1073,7 @@ app.groupDetail = (function () {
                                                                                        }else {
                                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                        }
-                                                                                       //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                    }  
                                                                                }               
                                                                            });  
@@ -1093,7 +1147,7 @@ app.groupDetail = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }               
                                                                        });  
@@ -1240,7 +1294,7 @@ app.groupDetail = (function () {
                                                                                     }else {
                                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                     }
-                                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                 }
                                                                                 //getGroupDataDB();
                                                                             }	        
@@ -1304,7 +1358,7 @@ app.groupDetail = (function () {
             localStorage.setItem("memberGroupId", e.data.groupID);  
             localStorage.setItem("memberGroupName", e.data.groupName);
             
-            //app.analyticsService.viewModel.trackFeature("User navigate to Member Module in Admin Member Page");                         
+            app.analyticsService.viewModel.trackFeature("User navigate to Member Module in Admin Member Page");                         
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  

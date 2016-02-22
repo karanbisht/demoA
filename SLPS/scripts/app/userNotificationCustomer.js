@@ -64,7 +64,7 @@ app.replyedCustomer = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
                                                                  }
                                                              });         
@@ -116,9 +116,48 @@ app.replyedCustomer = (function () {
                     }  
                 } 
                 
-                showMemberDataInTemp(); 
+                getBagCount(); 
             });
         };
+                
+                
+        function getBagCount(){
+            console.log(groupDataShow);                        
+            $.each( groupDataShow, function( i, MemberMsg ) {
+                
+                var notiIdDB = MemberMsg.notification_id;        
+                var custIdDB = MemberMsg.customerID;
+                var totalCount = MemberMsg.totalCount;
+                
+                var db = app.getDb();
+                //db.transaction(getBagMebCountValMsg, app.errorCB, app.successCB);
+                db.transaction( function(tx){ getBagMebCountValMsg(tx, i ,totalCount,notiIdDB,custIdDB) }, app.errorCB, app.successCB );
+             });
+        }
+        
+        function getBagMebCountValMsg(tx,index,totalC,notiVal,CustVal){
+              var query = "SELECT count FROM ADMIN_MSG_MEM where org_id='" + org_id +"'and id='"+notiVal+"' and customerID='"+CustVal+"'";
+              //app.selectQuery(tx, query, bagValMemMSGSuccess); 
+              tx.executeSql(query, [], function(tx, results){
+                  var count = results.rows.length;
+                  console.log(count);
+                  var totalbagVal=0;
+                  if (count !== 0) { 
+                      for(var i=0;i<count;i++){
+                        var result=parseInt(results.rows.item(i).count); 
+                        totalbagVal=parseInt(totalbagVal)+result;   
+                      }
+                  }else{
+                        totalbagVal=0;
+                  }
+                  console.log(totalbagVal);
+                  totalC = totalC - totalbagVal;
+                  groupDataShow[index].showCount = totalC;  
+                  if(index===groupDataShow.length-1){
+                      showMemberDataInTemp();
+                  }
+              }, app.errorCB);
+        }
         
         var showMemberDataInTemp = function() {
             $(".km-scroll-container").css("-webkit-transform", "");  
@@ -137,7 +176,7 @@ app.replyedCustomer = (function () {
        
                      
         var customerSelected = function(e) {
-           //app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
+           app.analyticsService.viewModel.trackFeature("User navigate to Reply page in Admin");            
            localStorage.setItem("shareTitle", e.data.user_fname + ' ' + e.data.user_lname);
            localStorage.setItem("shareOrgId",org_id);
            localStorage.setItem("shareNotiID",e.data.notification_id);

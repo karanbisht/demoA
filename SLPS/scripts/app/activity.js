@@ -19,6 +19,7 @@ app.Activity = (function () {
     var attachedImgFilename;
     var device_type;
     var sdcardPath;
+    var msgCount;
     
     var activityViewModel = (function () {
         var data;          
@@ -63,6 +64,7 @@ app.Activity = (function () {
             //type = localStorage.getItem("shareType");
             date = localStorage.getItem("shareDate");
             upload_type = localStorage.getItem("shareUploadType");
+            msgCount = localStorage.getItem("msgCount");
             
             message = app.proURIDecoder(message);
             title = app.proURIDecoder(title);
@@ -175,13 +177,13 @@ app.Activity = (function () {
                                                                schema: {
                                 
                     data: function(data) { 
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }                       
                 },
                                                                error: function (e) {
                                                                    app.hideAppLoader();
-                                                                    console.log(JSON.stringify(e));                                                                              
+                                                                   //console.log(JSON.stringify(e));                                                                              
                                                                    if (!app.checkConnection()) {
                                                                        if (!app.checkSimulator()) {
                                                                            window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -194,7 +196,7 @@ app.Activity = (function () {
                                                                        }else {
                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                        }
-                                                                       //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                    }                                                                  
                                                                }
 	        
@@ -289,6 +291,27 @@ app.Activity = (function () {
         function insertTotalCommentCount(tx) {
             var query = "UPDATE ORG_NOTIFICATION SET adminReply='" + totalComment + "' where org_id='" + org_id + "' and pid='" + notiId + "'";
             app.updateQuery(tx, query);
+            
+            var query1 = "SELECT id FROM ADMIN_MSG_RPY where org_id='" + org_id +"' and id ='"+notiId+"'";
+            app.selectQuery(tx, query1, commentCountVal);
+        }
+        
+         
+        function commentCountVal(tx, results) {
+            var count = results.rows.length; 
+                if(count===0){
+                            var query = 'INSERT INTO ADMIN_MSG_RPY(org_id ,id , count) VALUES ("'
+                            + org_id
+                            + '","'
+                            + notiId
+                            + '","'
+                            + msgCount                                                       
+                            + '")';              
+                 app.insertQuery(tx, query);
+                }else{
+                    var query2 = "UPDATE ADMIN_MSG_RPY SET count='" + msgCount + "' where org_id='" + org_id + "' and id='"+notiId+"'";
+                    app.updateQuery(tx, query2);
+                }
         }
         
         function insertOrgNotiCommentData(tx) {
@@ -405,7 +428,7 @@ app.Activity = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }
                                                                               }               
                                                                           });  

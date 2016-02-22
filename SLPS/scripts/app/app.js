@@ -30,8 +30,8 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015091076";
     var APP_NAME = "SLPS";
     var SD_NAME = "SLPS";
-    var SUPPORT_MAIL="karanbisht.karan@gmail.com";
-    var SUPPORT_NO="971-781-8898";
+    var SUPPORT_MAIL="support@postifi.com";
+    var SUPPORT_NO="991-015-9991";
     var BASE_COLOR = "#7FBF4D";
     var ILLEGAL_CHARS = /\W/; // allow letters, numbers, and underscores      
     var INTERNET_ERROR = "Network problem. Please try again.";
@@ -80,6 +80,8 @@ var app = (function (win) {
     var ADMIN_IFRAME_OPEN = 0;
     var NO_GROUP_AVAILABLE_OTO = "No Group Available."
     var NO_ADMIN_AVAILABLE_OTO = "No Group Admin Available."
+    var OFFLINE_ERROR = "Sorry, no Internet connectivity detected.Please reconnect and try again.";
+    var ONLINE_MSG ="Connected.";
     
     var serverUrl = function() {        
         //return 'https://app.postifi.com/webservice/';  
@@ -105,7 +107,7 @@ var app = (function (win) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
         console.log(message, 'Error');
-        //app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
+        app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
     
@@ -172,7 +174,7 @@ var app = (function (win) {
   
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG(org_id INTEGER, org_name TEXT, role TEXT , imageSource TEXT , bagCount INTEGER , count INTEGER , lastNoti TEXT , orgDesc TEXT)');
         
-        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER , upload_type TEXT ,receiver_id INTEGER)');  
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , adminReply INTEGER , upload_type TEXT ,receiver_id INTEGER ,count INTEGER )');  
         
         tx.executeSql('CREATE TABLE IF NOT EXISTS ADMIN_ORG_NOTIFICATION(org_id INTEGER,pid INTEGER, attached TEXT, message TEXT , title TEXT , comment_allow INTEGER , send_date TEXT , type TEXT , group_id INTEGER , customer_id INTEGER , upload_type TEXT)');
         
@@ -245,6 +247,7 @@ var app = (function (win) {
             }        
         }    
         navigator.splashscreen.hide();
+        app.hideAppLoader();
     };
     
     var selectQuery = function(tx, query, successFunction) {
@@ -264,7 +267,7 @@ var app = (function (win) {
     };  
     
     var errorCB = function(err) {        
-        //app.analyticsService.viewModel.trackException(err, "Error in Sqlite local Storage processing");
+        app.analyticsService.viewModel.trackException(err, "Error in Sqlite local Storage processing");
     };
     
     var successCB = function() {
@@ -441,7 +444,24 @@ var app = (function (win) {
     };
     
     var Keyboardison = function() {
-    }
+    };
+    
+    var onOffline = function() {                     
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom(app.OFFLINE_ERROR);
+                    }else {
+                        app.showAlert(app.OFFLINE_ERROR , 'Offline'); 
+                    }
+    };
+    
+    var onOnline = function() {
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom(app.ONLINE_MSG);
+                    }else {
+                        app.showAlert(app.ONLINE_MSG , 'Offline'); 
+                    }
+    };
+    
     
     var onDeviceReady = function() {       
         app.deviceId_Not_Receive = 0;
@@ -449,12 +469,15 @@ var app = (function (win) {
         //feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
+        
         document.addEventListener("backbutton", onBackKeyDown, false);
         document.addEventListener("pause", onPause, false);
         document.addEventListener("resume", onResume, false);
         document.addEventListener("hidekeyboard", Keyboardisoff, false);
-        document.addEventListener("showkeyboard", Keyboardison, false);
-                
+        document.addEventListener("showkeyboard", Keyboardison, false);                
+        document.addEventListener("offline", onOffline, false);
+        document.addEventListener("online", onOnline, false);
+
         if (!app.checkSimulator()) {
             app.showAppVersion();
         }else {
@@ -467,7 +490,7 @@ var app = (function (win) {
         /*if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(oncallback);
         } else {
-            //app.analyticsService.viewModel.setAnalyticMonitor();
+            app.analyticsService.viewModel.setAnalyticMonitor();
         }*/
         
         if (device.platform === "iOS") {
@@ -488,18 +511,7 @@ var app = (function (win) {
         var db = getDb();
         db.transaction(createDB, errorCB, checkForLoginStatus);
         //checkForceUpdate();
-        //app.hideAppLoader();
-        
-        //cordova.plugins.notification.badge.get(function (count) {
-          // if there is no badge, the count will be 0
-          //alert("Current badge: " + count);
-        //});
-        
-        //cordova.plugins.notification.badge.configure({
-          // the next call to set() will add a badge which will be cleared when the app is launched
-          //autoClear: true
-        //});
-        
+        //app.hideAppLoader();        
     };    
     
     function successHandler (result) {
@@ -513,19 +525,31 @@ var app = (function (win) {
     var oncallback = function(position) {
             //var latitude = position.coords.latitude,
             //longitude = position.coords.longitude;
-            ////app.analyticsService.viewModel.setAnalyticMonitor(latitude, longitude);
+            app.analyticsService.viewModel.setAnalyticMonitor(latitude, longitude);
     };
     
     var onPause = function(e) {
-        //app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
-        //app.analyticsService.viewModel.monitorStop();
+        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in background");
+        app.analyticsService.viewModel.monitorStop();
     };
+    
+    //var showBagCount = function(){
+        //cordova.plugins.notification.badge.get(function (count) {
+          // if there is no badge, the count will be 0
+          //alert("Current badge: " + count);
+        //});
+        
+        //cordova.plugins.notification.badge.configure({
+          // the next call to set() will add a badge which will be cleared when the app is launched
+          //autoClear: true
+        //});
+    //};
     
     var onResume = function() {
         var loginStatus = localStorage.getItem("loginStatusCheck");    
         console.log(loginStatus);
         if (loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null') {            
-             //app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
+             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
 
             if (loginStatus==='1' || loginStatus===1) {
                 app.Activities.show();
@@ -572,10 +596,10 @@ var app = (function (win) {
             });      
             //checkForceUpdate();
         } else {
-             //app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
+             app.analyticsService.viewModel.setInstallationInfo("Anonymous User");
         }       
-        //app.analyticsService.viewModel.monitorStart();
-        //app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
+        app.analyticsService.viewModel.monitorStart();
+        app.analyticsService.viewModel.trackFeature("Detect Status.App is running in foreground");
     };
     
     function checkForceUpdate() {
@@ -611,7 +635,7 @@ var app = (function (win) {
     }    
     
     var onLoad = function() {
-        document.addEventListener('deviceready', onDeviceReady, false);      
+        document.addEventListener('deviceready', onDeviceReady, false); 
     }
     
     document.addEventListener('orientationchange', fixViewResize);
@@ -718,7 +742,7 @@ var app = (function (win) {
           
             /*& typeDB!=='Attendance'*/
             
-            if (typeDB!=='Add Customer' && typeDB!=='News' && typeDB!=='Event') {
+            if (typeDB!=='Add Customer' && typeDB!=='News' && typeDB!=='Event' && typeDB!=='One2One') {
                 if (commentAllowDB==='') {
                     commentAllowDB = 0;
                 }
@@ -731,6 +755,7 @@ var app = (function (win) {
                         }else {
                             typeDB = "Reply";
                             var temp;
+                            
                             temp = messageDB;
                             messageDB = notificationMsg;
                             notificationMsg = temp;
@@ -744,7 +769,7 @@ var app = (function (win) {
                             db.transaction(insertOrgNotiData, app.errorCB, refreshMsgList);
                         }else {   
                             var db = app.getDb();
-                            db.transaction(insertCommentCount, app.errorCB, app.successCB);            
+                            db.transaction(insertCommentCount, app.errorCB, refreshMsgList);            
                         }
                     }
                 }, 'Message', ['View', 'Close']);   
@@ -763,7 +788,19 @@ var app = (function (win) {
                     }else {
                         app.eventCalender.show();
                     }
-                }, 'Event', ['View', 'Close']);                    
+                }, 'Event', ['View', 'Close']); 
+                        
+            }else if (typeDB==='One2One') {                
+                navigator.notification.confirm(messageDB, function (confirmed) {           
+                    if (confirmed === true || confirmed === 1) {
+                        goToAppOneToOnePage();
+                    }else {                                   
+                            app.Activities.show();
+                            setTimeout(function(){
+                                app.Activities.show();    
+                            },500);
+                    }
+                }, 'Message', ['View', 'Close']);                       
             }else {
                 showAlert(messageDB , "Message");
             } 
@@ -775,10 +812,9 @@ var app = (function (win) {
     };
 
     window.onNotificationGCM = function(e) {
-        try {
-   
+        try {   
             //alert(JSON.stringify(e));
-            console.log(JSON.stringify(e));
+            //console.log(JSON.stringify(e));
             switch (e.event) {
                 case 'registered':
                     if (e.regid.length > 0) {
@@ -835,7 +871,7 @@ var app = (function (win) {
                                 db.transaction(insertOrgNotiData, app.errorCB, refreshMsgList);
                             }else {   
                                 var db = app.getDb();
-                                db.transaction(insertCommentCount, app.errorCB, app.successCB);            
+                                db.transaction(insertCommentCount, app.errorCB, refreshMsgList);            
                             }
                         }else {
                             if (typeDB!=='Reply') {
@@ -864,6 +900,10 @@ var app = (function (win) {
                         }    
                     }else if (typeDB==='One2One') {
                         if (e.foreground) {
+                            app.Activities.show();
+                            setTimeout(function(){
+                                app.Activities.show();    
+                            },500);
                             
                         }else {                
                             goToAppOneToOnePage(); 
@@ -871,7 +911,7 @@ var app = (function (win) {
                     }    
                     break;
                 case 'error':
-                    //app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + e.msg);
+                    app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + e.msg);
                     break;
                 default:
                     break;
@@ -881,7 +921,7 @@ var app = (function (win) {
                 app.Login.login();
             }
         } catch (err) {
-            //app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + err);
+            app.analyticsService.viewModel.trackException(e, "Error in GCM PUSH Registration : " + err);
         }
         finally {    
         }   
@@ -894,7 +934,7 @@ var app = (function (win) {
     }
 
     function insertCommentCount(tx) {
-        var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 where org_id='" + orgIdDB + "' and pid='" + notiIdDB + "'";
+        var query = "UPDATE ORG_NOTIFICATION SET adminReply= adminReply+1 , count = count+1 where org_id='" + orgIdDB + "' and pid='" + notiIdDB + "'";
         app.updateQuery(tx, query);
     }
         
@@ -990,11 +1030,13 @@ var app = (function (win) {
     }
     
     function goToAppNewsPage() {                                 
-        app.mobileApp.navigate('views/organizationNews.html?orgin=1');
+        //app.mobileApp.navigate('views/organizationNews.html?orgin=1');
+        app.mobileApp.navigate('views/organizationNews.html');
     }
     
     function goToAppEventPage() {                                 
-        app.mobileApp.navigate('views/eventCalendar.html?orgin=1');
+        //app.mobileApp.navigate('views/eventCalendar.html?orgin=1');
+        app.mobileApp.navigate('views/eventCalendar.html');
     }
     
     function goToAppOneToOnePage() {
@@ -1364,7 +1406,7 @@ var app = (function (win) {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -1386,7 +1428,7 @@ var app = (function (win) {
         /*if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(oncallback);
         } else {
-            //app.analyticsService.viewModel.setAnalyticMonitor();
+            app.analyticsService.viewModel.setAnalyticMonitor();
         }*/        
     };
     
@@ -1572,11 +1614,9 @@ var app = (function (win) {
     
     var getDeviceID = function() {
         app.deviceId_Not_Receive = 1;                
-        var pushNotification = window.plugins.pushNotification;   
-                        
+        var pushNotification = window.plugins.pushNotification;                           
         if (device.platform === "iOS") {            
-            localStorage.setItem("DEVICE_TYPE", "AP");
-                       
+            localStorage.setItem("DEVICE_TYPE", "AP");                       
             pushNotification.register(successHandler,
                                       errorHandler, {
                                           "badge": "true",
@@ -1585,8 +1625,7 @@ var app = (function (win) {
                                           "ecb": "window.onNotificationAPN"
                                       });
         } else if (device.platform === 'android' || device.platform === 'Android') {
-            localStorage.setItem("DEVICE_TYPE", "AN");            
-            
+            localStorage.setItem("DEVICE_TYPE", "AN");                        
             pushNotification.register(successHandler, errorHandler, {"senderID":"707847265747","ecb":"window.onNotificationGCM"});
         }
     };
@@ -1801,6 +1840,7 @@ var app = (function (win) {
         genRandNumber:genRandNumber,
         serverUrl:serverUrl,
         makeCall:makeCall,
+        //showBagCount:showBagCount,
         createMsgTOAdm:createMsgTOAdm,
         SUPPORT_MAIL:SUPPORT_MAIL,
         SUPPORT_NO:SUPPORT_NO,
@@ -1882,6 +1922,7 @@ var app = (function (win) {
         No_MEMBER_TO_ADD:No_MEMBER_TO_ADD,
         LOGIN_ANOTHER_DEVICE:LOGIN_ANOTHER_DEVICE,
         COMMENT_REPLY:COMMENT_REPLY,
+        OFFLINE_ERROR:OFFLINE_ERROR,
         deviceId_Not_Receive:deviceId_Not_Receive,
         NOTIFICATION_MSG_NOT_SENT:NOTIFICATION_MSG_NOT_SENT,
         NOTIFICATION_MSG_SENT:NOTIFICATION_MSG_SENT,
@@ -1897,6 +1938,7 @@ var app = (function (win) {
         EVENT_ADDED_MSG:EVENT_ADDED_MSG,
         CANNOT_CANCEL:CANNOT_CANCEL,
         EXIT_APP:EXIT_APP,
+        ONLINE_MSG:ONLINE_MSG,
         rateUs:rateUs,
         GEO_PLACE_API:GEO_PLACE_API,
         DOWNLOAD_COMPLETED:DOWNLOAD_COMPLETED,

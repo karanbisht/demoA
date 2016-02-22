@@ -223,7 +223,7 @@ app.adminUserActivity = (function () {
                                                                        }else {
                                                                            app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                        }
-                                                                       //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                    }                                                                  
                                                                }
 	        
@@ -274,7 +274,7 @@ app.adminUserActivity = (function () {
             app.mobileApp.pane.loader.hide();
 
             $("#uAcomments-listview").kendoMobileListView({
-                                                            template: kendo.template($("#commentsTemplate").html()),    		
+                                                            template: kendo.template($("#commentsTemplateOTO").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
             app.mobileApp.pane.loader.hide();
@@ -289,7 +289,7 @@ app.adminUserActivity = (function () {
             app.mobileApp.pane.loader.hide();
 
             $("#uAcomments-listview").kendoMobileListView({
-                                                            template: kendo.template($("#commentsTemplate").html()),    		
+                                                            template: kendo.template($("#commentsTemplateOTO").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
             app.mobileApp.pane.loader.hide();
@@ -304,7 +304,7 @@ app.adminUserActivity = (function () {
             app.mobileApp.pane.loader.hide();
 
             $("#uAcomments-listview").kendoMobileListView({
-                                                            template: kendo.template($("#commentsTemplate").html()),    		
+                                                            template: kendo.template($("#commentsTemplateOTO").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
             app.mobileApp.pane.loader.hide();
@@ -327,11 +327,11 @@ app.adminUserActivity = (function () {
           var type = localStorage.getItem("frmWhere");
           if(type==='Admin'){  
             dbName='ADMIN_OTO';  
-            var query = "SELECT id FROM ADMIN_OTO where org_id=" + org_id +" and id ="+admReceiverID;
+            var query = "SELECT id FROM ADMIN_OTO where org_id='" + org_id +"' and id ='"+admReceiverID+"'";
             app.selectQuery(tx, query, insertCountVal);
           }else{
             dbName='USER_OTO';  
-            var query1 = "SELECT id FROM USER_OTO where org_id=" + org_id +" and id ="+admReceiverID;
+            var query1 = "SELECT id FROM USER_OTO where org_id='" + org_id +"' and id ='"+admReceiverID+"'";
             app.selectQuery(tx, query1, insertCountVal);  
           }  
             //var query = "UPDATE ORG_NOTIFICATION SET adminReply='" + totalComment + "' where org_id='" + org_id + "' and receiver_id='" + admReceiverID + "'";
@@ -479,7 +479,7 @@ app.adminUserActivity = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }
                                                                               }               
                                                                           });  

@@ -82,7 +82,7 @@ app.addCustomerByAdmin = (function () {
                                                                                  }else {
                                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                  }
-                                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                              }
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
@@ -245,7 +245,7 @@ app.addCustomerByAdmin = (function () {
                             },
                                                                                error: function (e) {
                                                                                    app.hideAppLoader();
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                    if (!app.checkSimulator()) {
                                                                                        window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                                    }else {
@@ -347,7 +347,7 @@ app.addCustomerByAdmin = (function () {
                         },
                                                                       error: function (e) {
                                                                           app.hideAppLoader();
-                                                                          //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                           if (!app.checkSimulator()) {
                                                                               window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
                                                                           }else {

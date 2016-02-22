@@ -49,7 +49,7 @@ app.adminEventCalender = (function () {
                 app.mobileApp.navigate('#adminEventCalendarDetail'); 
             }, 100);
             
-            //app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Event Detail in Admin");            
         }
         
         var iFrameLocUrl = function() { 
@@ -162,7 +162,7 @@ app.adminEventCalender = (function () {
                                                                                  }else {
                                                                                      app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                  }
-                                                                                 //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                 app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                              }                                                                             
                                                                          },       
                                                                          sort: { field: 'add', dir: 'desc' }    	     
@@ -220,7 +220,7 @@ app.adminEventCalender = (function () {
         var eventUploadType;
         
         var editEvent = function(e) {
-            //app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
+            app.analyticsService.viewModel.trackFeature("User navigate to Edit Event Detail in Admin");            
             app.mobileApp.navigate('#adminEditEventCalendar');
         }
         
@@ -257,7 +257,7 @@ app.adminEventCalender = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }               
           
@@ -359,7 +359,7 @@ app.adminEventCalender = (function () {
                                                                                }else {
                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                }
-                                                                               //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                               app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                            }
                                                                        }               
                                                                    });  
@@ -660,7 +660,7 @@ app.adminEventCalender = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }               
           
@@ -757,7 +757,7 @@ app.adminEventCalender = (function () {
             
             app.hideAppLoader();
             
-            //app.analyticsService.viewModel.trackFeature("Event Add or Update fail" + JSON.stringify(error));            
+            app.analyticsService.viewModel.trackFeature("Event Add or Update fail" + JSON.stringify(error));            
         }
 
         var attachedImgFilename;
@@ -958,7 +958,7 @@ app.adminEventCalender = (function () {
                                                                                    }else {
                                                                                        app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                    }
-                                                                                   //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                   app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                }
                                                                            }               
           
@@ -1091,7 +1091,7 @@ app.adminEventCalender = (function () {
                                                                         }else {
                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                         }
-                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                     }
                                                                 }               
                                                             });  
@@ -1442,7 +1442,7 @@ app.adminEventCalender = (function () {
                                                                             }else {
                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                             }
-                                                                            //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                         }
                                                                     }                                    
                                                                 });  
@@ -1514,7 +1514,7 @@ app.adminEventCalender = (function () {
                                                                             }else {
                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                             }
-                                                                            //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                            app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                         }
                                                                     }                                    
                                                                 });  

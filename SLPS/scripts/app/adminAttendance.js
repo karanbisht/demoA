@@ -56,7 +56,7 @@ app.attendance = (function () {
                                                                          }else {
                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                          }
-                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                      }
                                                                  }	        
                                                              });                     
@@ -234,7 +234,7 @@ app.attendance = (function () {
                                                                                         }else {
                                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                         }
-                                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                     }
                                                                                 }               
                                                                             });  
@@ -329,7 +329,7 @@ app.attendance = (function () {
                                                                                         }else {
                                                                                             app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                         }
-                                                                                        //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                     }
                                                                                 }               
                                                                             });  
@@ -411,7 +411,7 @@ app.attendance = (function () {
                                                                                     }else {
                                                                                         app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                     }
-                                                                                    //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                    app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                 }
                                                                                 //getGroupDataDB();
                                                                             }	        
@@ -469,7 +469,7 @@ app.attendance = (function () {
         
         var attendanceGroupSelected = function (e) {   
             localStorage.setItem("attendanceGroupId", e.data.groupID);                         
-            //app.analyticsService.viewModel.trackFeature("User navigate to Attendance Module in Admin Attendance Group Page");                         
+            app.analyticsService.viewModel.trackFeature("User navigate to Attendance Module in Admin Attendance Group Page");                         
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  

@@ -56,13 +56,13 @@ app.admNotiList = (function () {
                  
                                                                               schema: {
                     data: function(data) {
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data]; 
                     }                                                            
                 },
                  
                                                                               error: function (e) {
-                                                                                  console.log(JSON.stringify(e));
+                                                                                  //console.log(JSON.stringify(e));
                                                                                   app.hideAppLoader();
                                                                                   if (!app.checkConnection()) {
                                                                                       if (!app.checkSimulator()) {
@@ -76,7 +76,7 @@ app.admNotiList = (function () {
                                                                                       }else {
                                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                       }
-                                                                                      //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                      app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                   }
                                                                                   //showMoreDbData();
                                                                               }	        
@@ -138,6 +138,7 @@ app.admNotiList = (function () {
                 //showLiveData();
             });            
         }
+                
         
         function showUserAdmMsg(){
 
@@ -152,16 +153,14 @@ app.admNotiList = (function () {
                 },
                                                                                  schema: {
                     data: function(data) {     
-                        console.log("-----------------KARAN------------------");
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];          
 
                     }                       
                 },
 
                                                                                  error: function (e) {
-                                                                                     console.log("-----------------KARAN------------------");
-                                                                                     console.log(JSON.stringify(e));
+                                                                                     //console.log(JSON.stringify(e));
                                                                                  }	        
                                                                              });        
  
@@ -198,11 +197,72 @@ app.admNotiList = (function () {
                 showLiveData();
             });             
         }
-               
-        var showLiveData = function() {           
-            console.log('-----------------------111------------------------------');
-            console.log(groupDataShow);
-            
+        
+        var showLiveData = function(){           
+            $.each( groupDataShow, function( i, Message ) {
+                var msgType = Message.type;
+                var totalCount = Message.totalCount;
+                var db = app.getDb();
+                if(msgType==='OTO'){
+                    var msgIdA = Message.sender_id;    
+                    //db.transaction(getBagCountValOTO, app.errorCB, app.successCB);
+                    db.transaction( function(tx){ getBagCountValOTO(tx, i ,totalCount,msgIdA) }, app.errorCB, app.successCB );
+                }else{
+                    var msgIdM = Message.pid;                    
+                    //db.transaction(getBagCountValMsg, app.errorCB, app.successCB);
+                    db.transaction( function(tx){ getBagCountValMsg(tx, i ,totalCount,msgIdM) }, app.errorCB, app.successCB );
+                }
+             });
+             //showDataInTemplate();
+        }
+        
+        function getBagCountValOTO(tx,index,totalC,msgIdVal){
+              var query = "SELECT count FROM ADMIN_OTO where org_id='" + organisationID +"'and id='"+msgIdVal+"'";
+              //app.selectQuery(tx, query, bagValOTOSuccess);    
+              tx.executeSql(query, [], function(tx, results){
+                  var count = results.rows.length;
+                  var result;
+                  if (count !== 0) { 
+                    result=parseInt(results.rows.item(0).count); 
+                  }else{
+                    result=0;
+                  }  
+                  totalC = totalC - result;
+                  groupDataShow[index].showCount = totalC;    
+                  
+                  if(index===groupDataShow.length-1){
+                      showDataInTemplate();
+                  }
+              }, app.errorCB);
+        }
+        
+        function getBagCountValMsg(tx,index,totalC,msgIdVal){
+              var query = "SELECT count FROM ADMIN_MSG_MEM where org_id='" + organisationID +"'and id='"+msgIdVal+"'";
+              //app.selectQuery(tx, query, bagValMSGSuccess); 
+              tx.executeSql(query, [], function(tx, results){
+                  var count = results.rows.length;
+                  console.log(count);
+                  var totalbagVal=0;
+                  if (count !== 0) { 
+                      for(var i=0;i<count;i++){
+                        var result=parseInt(results.rows.item(i).count); 
+                        totalbagVal=parseInt(totalbagVal)+result;   
+                      }
+                  }else{
+                        totalbagVal=0;
+                  }
+                  console.log(totalbagVal);
+                  totalC = totalC - totalbagVal;
+                  groupDataShow[index].showCount = totalC;  
+                  if(index===groupDataShow.length-1){
+                      showDataInTemplate();
+                  }
+              }, app.errorCB);
+        }
+        
+        
+                
+        function showDataInTemplate(){            
             groupDataShow.sort(function(a, b) {
                 return parseFloat(b.actualDate) - parseFloat(a.actualDate);
             });
@@ -230,7 +290,7 @@ app.admNotiList = (function () {
             
             var db = app.getDb();
             db.transaction(updateBagCount, app.errorCB, setMsgCount);
-        };
+        }
         
         
         var updateBagCount = function(tx) {

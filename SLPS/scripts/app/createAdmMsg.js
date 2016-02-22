@@ -67,13 +67,13 @@ app.createAdmMsg = (function () {
                                                                     },
                                                                        schema: {               
                     data: function(data) {
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         //console.log(data);
                         return [data];                       
                     }
                 },
                                                                          error: function (e) {
-                                                                             console.log(JSON.stringify(e));
+                                                                             //console.log(JSON.stringify(e));
                                                                              //console.log(e);
                                                                              app.hideAppLoader();
                                                                              if (!app.checkConnection()) {
@@ -88,7 +88,7 @@ app.createAdmMsg = (function () {
                                                                                          }else {
                                                                                              app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                          }
-                                                                                         //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                                         app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                                      }    
                                                                          
                                                                          }  	     
@@ -146,7 +146,7 @@ app.createAdmMsg = (function () {
         });*/
                         
         var sendQueryToAdm = function(){
-         console.log('Submit clicked');
+         //console.log('Submit clicked');
          if (!app.checkConnection()) {
                if (!app.checkSimulator()) {
                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);  
@@ -160,8 +160,7 @@ app.createAdmMsg = (function () {
                 });  
 
                 var admTextMesg = $("#custSendMsgDesc").val();
-              
-                console.log(selectedCustGroup+"---"+selectedAdm+"---"+admTextMesg);
+                //console.log(selectedCustGroup+"---"+selectedAdm+"---"+admTextMesg);
 
                 if (selectedCustGroup==='' || selectedCustGroup===undefined) {
                     app.showAlert('Please select Group to send Message.', app.APP_NAME);
@@ -187,13 +186,13 @@ app.createAdmMsg = (function () {
                                                                  schema: {               
                 
                     data: function(data) {
-                        console.log(JSON.stringify(data));                                             
+                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     console.log(JSON.stringify(e));     
+                                                                     //console.log(JSON.stringify(e));     
                                                                      app.hideAppLoader(true);
 
                                                                      if (!app.checkConnection()) {
@@ -209,7 +208,7 @@ app.createAdmMsg = (function () {
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
-                                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                       }
 
                                                                  }	        
@@ -271,13 +270,13 @@ app.createAdmMsg = (function () {
                                                                  schema: {               
                 
                     data: function(data) {
-                        console.log(JSON.stringify(data));                                             
+                        //console.log(JSON.stringify(data));                                             
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
-                                                                     console.log(JSON.stringify(e));     
+                                                                     //console.log(JSON.stringify(e));     
                                                                      app.hideAppLoader(true);
 
                                                                      if (!app.checkConnection()) {
@@ -293,7 +292,7 @@ app.createAdmMsg = (function () {
                                                                                             }else {
                                                                                                 app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
                                                                                             }
-                                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
+                                                                                                app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response'+JSON.stringify(e));
                                                                       }
 
                                                                  }	        
