@@ -15,7 +15,6 @@ app.createAdmMsg = (function () {
         };
     
         var show = function(e) {
-            console.log('show');
             $(".km-scroll-container").css("-webkit-transform", ""); 
             device_type = localStorage.getItem("DEVICE_TYPE"); 
             account_Id = localStorage.getItem("ACCOUNT_ID");
@@ -136,7 +135,7 @@ app.createAdmMsg = (function () {
         
             app.hideAppLoader();
             
-            console.log(selectedCustGroup);
+            //console.log(selectedCustGroup);
             getAdminFromGroup();
         }
         

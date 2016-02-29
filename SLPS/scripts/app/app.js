@@ -106,7 +106,7 @@ var app = (function (win) {
     win.addEventListener('error', function (e) {
         e.preventDefault();        
         var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        console.log(message, 'Error');
+        //console.log(message, 'Error');
         app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
@@ -295,11 +295,10 @@ var app = (function (win) {
     //var backButtonClickCount=0;
     
     var onBackKeyDown = function(e) { 
-        if (app.mobileApp.view()['element']['0']['id']==='welcome') {    
-            e.preventDefault();           
+        e.preventDefault();
+        if (app.mobileApp.view()['element']['0']['id']==='welcome') {                           
             navigator.app.exitApp();            
         }else if (app.mobileApp.view()['element']['0']['id']==='organisationNotiList') {
-            e.preventDefault();            
             navigator.app.exitApp();
         }else if (app.mobileApp.view()['element']['0']['id']==='view-all-activities') {                 
             /*if(backButtonClickCount===0){
@@ -774,7 +773,7 @@ var app = (function (win) {
                     }
                 }, 'Message', ['View', 'Close']);   
             }else if (typeDB==='News') {
-                navigator.notification.confirm(titleDB, function (confirmed) {           
+                navigator.notification.confirm(messageDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         goToAppNewsPage();
                     }else {
@@ -782,7 +781,7 @@ var app = (function (win) {
                     }
                 }, 'News', ['View', 'Close']);  
             }else if (typeDB==='Event') {
-                navigator.notification.confirm(titleDB, function (confirmed) {           
+                navigator.notification.confirm(messageDB, function (confirmed) {           
                     if (confirmed === true || confirmed === 1) {
                         goToAppEventPage();
                     }else {
@@ -1100,24 +1099,30 @@ var app = (function (win) {
 
         return cval;
     }
-    
-    var loginStatusCheck = localStorage.getItem("loginStatusCheck");                                 
+
+    /*var os = kendo.support.mobileOS,
+     statusBarStyle = os.ios && os.flatVersion >= 700 ? 'black-translucent' : 'black';*/
+
+    var loginStatusCheck = localStorage.getItem("loginStatusCheck"); 
     
     if (loginStatusCheck==='0' || loginStatusCheck===null) {    
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#welcome",
+                                                     //statusBarStyle: statusBarStyle,
                                                      skin: 'flat'
                                                      //transition:'fade'
                                                  });
     }else if (loginStatusCheck==='1') {
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#firstScreen",
+                                                     //statusBarStyle: statusBarStyle,
                                                      skin: 'flat'
                                                      //transition:'fade'
                                                  });
     }else if (loginStatusCheck==='2') {
         mobileApp = new kendo.mobile.Application(document.body, {
                                                      initial: "#firstScreen",
+                                                     //statusBarStyle: statusBarStyle,
                                                      skin: 'flat'
                                                      //transition:'fade'
                                                  });       

@@ -132,6 +132,8 @@ app.adminUserActivity = (function () {
             $("#activityText").html(message);
             $("#userAdmNotiDate").html(date);
                                        
+
+            app.showAppLoader(true);
             var db = app.getDb();		                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -189,7 +191,7 @@ app.adminUserActivity = (function () {
         
         var commentShow = function() {            
             app.showAppLoader(); 
-            console.log("notification/chatHistory/" + account_Id + "/" + admReceiverID + "/" + org_id +"/" + lastNotiCommentID);
+            //console.log("notification/chatHistory/" + account_Id + "/" + admReceiverID + "/" + org_id +"/" + lastNotiCommentID);
             commentsDataSource = new kendo.data.DataSource({
                                                                transport: {
                     read: {
@@ -201,13 +203,13 @@ app.adminUserActivity = (function () {
                                                                schema: {
                                 
                     data: function(data) {      
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }                       
                 },
                                                                error: function (e) {
 
-                                                                   console.log(JSON.stringify(e));
+                                                                   //console.log(JSON.stringify(e));
 
                                                                    app.hideAppLoader();
                                                                               
@@ -277,6 +279,7 @@ app.adminUserActivity = (function () {
                                                             template: kendo.template($("#commentsTemplateOTO").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
+            app.hideAppLoader();
             app.mobileApp.pane.loader.hide();
             
         };
@@ -293,8 +296,16 @@ app.adminUserActivity = (function () {
                                                             dataSource: offlineDBData                                                            
                                                         });
             app.mobileApp.pane.loader.hide();
-            
-            commentShow();
+            if (!app.checkConnection()) {
+                 app.hideAppLoader();
+                    if (!app.checkSimulator()) {
+                              window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                    }else {
+                             app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                          } 
+            }else {
+                 commentShow();
+            }
         };
         
         var showAllData = function() {
@@ -307,6 +318,7 @@ app.adminUserActivity = (function () {
                                                             template: kendo.template($("#commentsTemplateOTO").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
+            app.hideAppLoader();
             app.mobileApp.pane.loader.hide();
         };
          

@@ -733,7 +733,7 @@ app.OragnisationList = (function () {
             
         var showOrgInfoPage = function(e) {
             $(".km-scroll-container").css("-webkit-transform", "");
-            
+            $("#admMsgIcon").hide();            
             orgManageID = localStorage.getItem("selectedOrgId");
             var orgName = localStorage.getItem("selectedOrgName");
             var orgDesc = localStorage.getItem("selectedOrgDesc");

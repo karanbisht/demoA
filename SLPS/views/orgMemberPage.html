@@ -87,7 +87,7 @@
 <script type="text/x-kendo-template" id="groupMemberTemplate">
     #if (orgID!=='0') {#
     <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: clickOnOrgMember }">
-        #if (photo!=="") {#
+        #if (photo!=="" && photo!=='null') {#
             <img src=${photo} class="user-avatar-img" onerror="this.onerror=null;this.src='styles/images/avatar1.png';"/>
         #}else {#
             <div class="user-avatar-img-show"></div>
@@ -138,7 +138,6 @@
 
     <div id="editOrgMemberContent">
         <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
-
             <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload" >
                 <img id="editMemberPhoto" src="" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror = null;this.src = 'styles/images/profile-img1.png';"/>
                 <div class="profilePicBack">

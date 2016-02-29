@@ -21,6 +21,7 @@ app.Activities = (function () {
     
     var activitiesViewModel = (function () {
         var init = function() {
+            
         };   
         
         var show = function(e) {                                            
@@ -35,8 +36,7 @@ app.Activities = (function () {
                 db.transaction(alterTableDB, app.errorCB, alterTableSuccess);
             }
             
-            var ADMIN_USER = localStorage.getItem("ADMIN_USER");
-            
+            var ADMIN_USER = localStorage.getItem("ADMIN_USER");            
             if (ADMIN_USER===1 || ADMIN_USER==='1') {
                 $("#goToAdmin").show();
             }else {
@@ -381,7 +381,7 @@ app.Activities = (function () {
         };    
         
         function getOrgTotalNotiData(tx, results) {            
-            totalOrgNotification = results.rows.item(0).TOTAL_DATA;                           
+            totalOrgNotification = results.rows.item(0).TOTAL_DATA;   
             if (totalOrgNotification > StartDbCount) {
                 setTimeout(function() {
                     $("#showMoreButton").show();
@@ -422,11 +422,19 @@ app.Activities = (function () {
                   var count = results.rows.length;
                   var result;
                   if (count !== 0) { 
-                    result=parseInt(results.rows.item(0).count); 
+                        result=isNaN(parseInt(results.rows.item(0).count)); 
+                        if(result===null || result===true ){
+                            result=0;
+                        }else{
+                           result=parseInt(results.rows.item(0).count);  
+                        }
                   }else{
                     result=0;
                   }  
                   totalC = totalC - result;
+                  if(totalC < 0){
+                      totalC=0;
+                  }
                   groupDataShow[index].showCount = totalC;    
                   
                   if(index===groupDataShow.length-1){

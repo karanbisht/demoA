@@ -20,15 +20,18 @@ app.Activity = (function () {
     var device_type;
     var sdcardPath;
     var msgCount;
+    var topOffset;
     
     var activityViewModel = (function () {
         var data;          
         
         var init = function () {
+            
         };
-        var show = function (e) {
+        
+        var show = function (e) {            
+            $(".km-scroll-container").css("-webkit-transform", ""); 
             app.mobileApp.pane.loader.hide();
-            $(".km-scroll-container").css("-webkit-transform", "");              
             device_type = localStorage.getItem("DEVICE_TYPE"); 
             sdcardPath = localStorage.getItem("sdCardPath");
             groupDataShow = [];  
@@ -108,7 +111,11 @@ app.Activity = (function () {
             $("#personName").html(title);
             $("#activityText").html(message);
             $("#notiDate").html(date);
-                                       
+                   
+            //topOffset = scroller.find(".km-scroll-container").position().top;
+            
+
+            app.showAppLoader(true);
             var db = app.getDb();		                 
             if (!app.checkConnection()) {
                 if (!app.checkSimulator()) {
@@ -155,8 +162,7 @@ app.Activity = (function () {
         }
         
         var storeImageClick = function() {
-            var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;   
-            
+            var fp = sdcardPath + app.SD_NAME + "/" + 'Zaffio_img_' + attachedImgFilename;               
             if (device_type==="AP") {
                 window.open(fp, '_blank' , 'EnableViewPortScale=yes');
             }else {
@@ -165,7 +171,7 @@ app.Activity = (function () {
         }
         
         var commentShow = function() {            
-            app.showAppLoader(); 
+            app.showAppLoader(true); 
             commentsDataSource = new kendo.data.DataSource({
                                                                transport: {
                     read: {
@@ -198,8 +204,7 @@ app.Activity = (function () {
                                                                        }
                                                                        app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
                                                                    }                                                                  
-                                                               }
-	        
+                                                               }	        
                                                            });         
 
             commentsDataSource.fetch(function() {
@@ -239,27 +244,29 @@ app.Activity = (function () {
             var offlineDBData = new kendo.data.DataSource({
                                                               data: groupDataShow
                                                           });                        
-            app.mobileApp.pane.loader.hide();
+            //app.mobileApp.pane.loader.hide();
 
             $("#comments-listview").kendoMobileListView({
                                                             template: kendo.template($("#commentsTemplate").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
-            app.mobileApp.pane.loader.hide();
+            //app.mobileApp.pane.loader.hide();
+            app.hideAppLoader();
+            //scrollToBottom();
         };
         
         var firstShowOfflineData = function() {
             var offlineDBData = new kendo.data.DataSource({
                                                               data: groupDataShow
                                                           });                        
-            app.mobileApp.pane.loader.hide();
+            //app.mobileApp.pane.loader.hide();
 
             $("#comments-listview").kendoMobileListView({
                                                             template: kendo.template($("#commentsTemplate").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
-            app.mobileApp.pane.loader.hide();
-            
+            //app.mobileApp.pane.loader.hide();
+            //scrollToBottom();
             commentShow();
         };
         
@@ -267,13 +274,15 @@ app.Activity = (function () {
             var offlineDBData = new kendo.data.DataSource({
                                                               data: groupDataShow
                                                           });                        
-            app.mobileApp.pane.loader.hide();
+            //app.mobileApp.pane.loader.hide();
 
             $("#comments-listview").kendoMobileListView({
                                                             template: kendo.template($("#commentsTemplate").html()),    		
                                                             dataSource: offlineDBData                                                            
                                                         });
-            app.mobileApp.pane.loader.hide();
+            //app.mobileApp.pane.loader.hide();
+            //scrollToBottom();
+            app.hideAppLoader();
         };
          
         var orgNotiCommentDataVal;
@@ -490,6 +499,24 @@ app.Activity = (function () {
             }else {
                 app.mobileApp.navigate('#view-all-activities');  
             }
+        }
+        
+        
+        function scrollToBottom() {
+            
+            /*//var listview = $("#comments-listview").data("kendoMobileListView"); 
+            //var scroller = listview.scroller();
+            var docHeight = $(document).height();
+            //$("#comments-listview").data("kendoMobileScroller").scrollTo(-30, -30);
+            var scrollHeight = $("#status-container").data("kendoMobileScroller").scrollHeight();
+            var showHeight = scrollHeight - docHeight+100;
+            console.log(showHeight);
+            
+            $("#status-container").data("kendoMobileScroller").scrollTo(0, -showHeight);
+            //$('#status-container').scrollTop($('#status-container')[0].scrollHeight);
+
+            //$(".km-scroll-container").css("-webkit-transform", "translate3d(0px, -"+showHeight+"px, 0px) scale(1)");            
+            */
         }
 		
         return {

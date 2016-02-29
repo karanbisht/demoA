@@ -241,7 +241,7 @@ app.admNotiList = (function () {
               //app.selectQuery(tx, query, bagValMSGSuccess); 
               tx.executeSql(query, [], function(tx, results){
                   var count = results.rows.length;
-                  console.log(count);
+                  //console.log(count);
                   var totalbagVal=0;
                   if (count !== 0) { 
                       for(var i=0;i<count;i++){
@@ -251,7 +251,7 @@ app.admNotiList = (function () {
                   }else{
                         totalbagVal=0;
                   }
-                  console.log(totalbagVal);
+                  //console.log(totalbagVal);
                   totalC = totalC - totalbagVal;
                   groupDataShow[index].showCount = totalC;  
                   if(index===groupDataShow.length-1){

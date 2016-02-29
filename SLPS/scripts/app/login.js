@@ -49,7 +49,8 @@ app.Login = (function () {
             }
                          
             //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
-            var device_id = localStorage.getItem("deviceTokenID");                         
+            var device_id = localStorage.getItem("deviceTokenID");
+            //console.log(device_id);
             username = $("#loginUsername").val();
 
             //console.log("--------------------");
@@ -196,8 +197,8 @@ app.Login = (function () {
                 },
                                                                                  schema: {
                     data: function(data) {     
-                        console.log("-----------------KARAN------------------");
-                        console.log(JSON.stringify(data));
+                        //console.log("-----------------KARAN------------------");
+                        //console.log(JSON.stringify(data));
                         return [data];          
 
                     }                       
@@ -205,8 +206,8 @@ app.Login = (function () {
 
                                                                                  error: function (e) {                                                                                     
                                                                                      goToHomePage();
-                                                                                     console.log("-----------------KARAN------------------");
-                                                                                     console.log(JSON.stringify(e));
+                                                                                     //console.log("-----------------KARAN------------------");
+                                                                                     //console.log(JSON.stringify(e));
                                                                                  }	        
                                                                              });        
  
@@ -232,9 +233,9 @@ app.Login = (function () {
         var admCmmt = 1;
         
         function admRecDataSuc(tx) {
-            console.log('aasdasdasdasdasdasdasdasd');
+            //console.log('aasdasdasdasdasdasdasdasd');
             var dataLength = admRecvDataLive.length;
-            console.log('aasdasdasdasdasdasdasdasd---'+dataLength);
+            //console.log('aasdasdasdasdasdasdasdasd---'+dataLength);
             admCmmt = 1
             for (var i = 0;i < dataLength;i++) {    
                   
@@ -460,12 +461,13 @@ app.Login = (function () {
                         },
                                                                         schema: {
                             data: function(data) {	
+                                //console.log(JSON.stringify(data));
                                 return [data];
                             }
                         },
                                                                         error: function (e) {
                                                                             app.hideAppLoader();    
-                                                                            
+                                                                            //console.log(JSON.stringify(e));
                                                                             if (!app.checkConnection()) {
                                                                                 if (!app.checkSimulator()) {
                                                                                     window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
