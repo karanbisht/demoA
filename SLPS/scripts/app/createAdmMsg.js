@@ -232,12 +232,20 @@ app.createAdmMsg = (function () {
                     if (!app.checkSimulator()) {
                              window.plugins.toast.showShortBottom(app.NOTIFICATION_MSG_SENT);   
                     }else {
-                             app.showAlert(app.NOTIFICATION_MSG_SENT, "Message"); 
+                             //app.showAlert(app.NOTIFICATION_MSG_SENT, "Message"); 
                     }
                     
-                    $("#custSendMsgDesc").val('');
-                    app.Activities.getAdminSentMsg();
-                }                
+                    $("#custSendMsgDesc").val('');                                   
+                            app.Activities.show();
+                            setTimeout(function(){
+                                app.Activities.show();    
+                            },200);
+                    //app.Activities.getAdminSentMsg();
+                    setTimeout(function(){
+                        app.mobileApp.navigate('#view-all-activities');
+                     },600);   
+                    //$('#activities-listview').data('kendoMobileListView').dataSource.read(); 
+               }                
 
                 app.hideAppLoader(true);
 

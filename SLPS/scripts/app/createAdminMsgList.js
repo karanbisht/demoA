@@ -458,7 +458,7 @@ app.adminUserActivity = (function () {
                     $('#uAnewComment').css('height', '35px');
                     $("#uAnewComment").val('');
 
-                    console.log('---------------------------'+senderType);
+                    //console.log('---------------------------'+senderType);
                     var jsonDatacomment = {"sender":account_Id,"receiver":admReceiverID ,"message":comment,"org_id":org_id,"sender_type":senderType};
                    
                     var saveCommentDataSource = new kendo.data.DataSource({
@@ -472,12 +472,16 @@ app.adminUserActivity = (function () {
                         },
                                                                               schema: {
                             data: function(data) {
-                                console.log(JSON.stringify(data));
+                                //console.log(JSON.stringify(data));
                                 return [data];
                             }
                         },
                                                                               error: function (e) {
-                                                                                  console.log(JSON.stringify(e));
+                                                                                  //console.log(JSON.stringify(e));
+                                                                                  $('#tryingComment').remove();
+                                                                                  $("#uAcomments-listview").append('<li id="errorMsgComment"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Error , message not sent </span></div></div></li>');                                                                                                                  
+                                                                                  document.getElementById("uAnewComment").value=comment;
+
                                                                                   app.hideAppLoader();
                                                                                   if (!app.checkConnection()) {
                                                                                       if (!app.checkSimulator()) {
@@ -511,6 +515,7 @@ app.adminUserActivity = (function () {
                                 }
                                 
                                 $('#tryingComment').remove();
+                                $('#errorMsgComment').remove();
                                 var commentDate = app.formatDate(new Date());
                                 $("#uAcomments-listview").append('<li><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span">' + commentDate + ' just now </span></div></div></li>');                                
                                  

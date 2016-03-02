@@ -1911,6 +1911,10 @@ white-space: nowrap;
     border:none;
 }
 
+#user-rep-adm-noti > li:last-child
+{
+    border:none;    
+}
 
 .textareaClass textarea
 {

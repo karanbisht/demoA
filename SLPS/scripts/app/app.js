@@ -18,7 +18,7 @@ $(document).ready(function() {
 }); 
 
 var app = (function (win) {
-    'use strict';
+   'use strict';
     var db;
     var fp;
     var userTypeDBValue = [];
@@ -30,6 +30,7 @@ var app = (function (win) {
     var CLIENT_APP_ID = "2015091076";
     var APP_NAME = "SLPS";
     var SD_NAME = "SLPS";
+    var liveBuildStatus = 0 ; // 1 for Live and 0 for local 
     var SUPPORT_MAIL="support@postifi.com";
     var SUPPORT_NO="991-015-9991";
     var BASE_COLOR = "#7FBF4D";
@@ -68,6 +69,7 @@ var app = (function (win) {
     var MEMBER_DETAIL_UPDATED_MSG = "Member detail updated successfully";
     var MEMBER_ADDED_MSG = "Member added successfully";
     var NO_GROUP_AVAILABLE = "No Group Available , Please Add Group."
+    var NO_MEMBER_AVAILABLE = "No Customer in this Organization."
     var FORGET_PASSWORD_CODE_SEND = "Code sent at your registered number.";
     var DELETE_CONFIRM = "Are you sure you want to delete this.";
     var PRESENT_CONFIRM = "Are you sure you want to marked as Present.";
@@ -266,11 +268,13 @@ var app = (function (win) {
         tx.executeSql(updateQue);
     };  
     
-    var errorCB = function(err) {        
+    var errorCB = function(err) {   
+        //console.log('error');
         app.analyticsService.viewModel.trackException(err, "Error in Sqlite local Storage processing");
     };
     
     var successCB = function() {
+        //console.log('success');
     };
     
     var checkConnection = function() {
@@ -465,6 +469,8 @@ var app = (function (win) {
     var onDeviceReady = function() {       
         app.deviceId_Not_Receive = 0;
         localStorage.setItem("gotNotification", 0);
+        localStorage.setItem("LIVEBUILD", liveBuildStatus);
+        
         //feedback.initialize('ee535990-56b4-11e5-8549-fbea17bda868');
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString('#000000');
@@ -546,10 +552,9 @@ var app = (function (win) {
     
     var onResume = function() {
         var loginStatus = localStorage.getItem("loginStatusCheck");    
-        console.log(loginStatus);
+        //console.log(loginStatus);
         if (loginStatus !== '0' && loginStatus !== 0 && loginStatus !== null && loginStatus !== 'null') {            
-             app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
-
+            app.analyticsService.viewModel.setInstallationInfo(localStorage.getItem("username"));
             if (loginStatus==='1' || loginStatus===1) {
                 app.Activities.show();
             }else if (loginStatus==='2' || loginStatus===2) {
@@ -570,12 +575,12 @@ var app = (function (win) {
                 },
                                                                 schema: {
                     data: function(data) {
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                 error: function (e) {
-                                                                    console.log(JSON.stringify(e));
+                                                                    //console.log(JSON.stringify(e));
                                                                 }               
                                                             });  
 	            
@@ -1754,6 +1759,7 @@ var app = (function (win) {
     }
     
     function updateAppTables(tx) {
+        
             var query = "DELETE FROM PROFILE_INFO";
             app.deleteQuery(tx, query);
 
@@ -1784,8 +1790,17 @@ var app = (function (win) {
             var query = "DELETE FROM ADMIN_ORG_GROUP";
             app.deleteQuery(tx, query);
                 
-            var query = 'UPDATE PROFILE_INFO SET login_status=0';
-            app.updateQuery(tx, query);
+            var query = "DELETE FROM ADMIN_OTO";
+            app.deleteQuery(tx, query);
+        
+            var query = "DELETE FROM ADMIN_MSG_RPY";
+            app.deleteQuery(tx, query);
+        
+            var query = "DELETE FROM ADMIN_MSG_MEM";
+            app.deleteQuery(tx, query);
+        
+            //var query = 'UPDATE PROFILE_INFO SET login_status=0';
+            //app.updateQuery(tx, query);
     }
 
     function updateAppTablesSuccess() {
@@ -1960,6 +1975,7 @@ var app = (function (win) {
         EVENT_DELETED_MSG:EVENT_DELETED_MSG,
         GROUP_UPDATED_MSG:GROUP_UPDATED_MSG,
         PRESENT_CONFIRM:PRESENT_CONFIRM,
+        NO_MEMBER_AVAILABLE:NO_MEMBER_AVAILABLE,
         ABSENT_CONFIRM:ABSENT_CONFIRM,
         DOWNLOAD_NOT_COMPLETE:DOWNLOAD_NOT_COMPLETE,
         NO_ADMIN_AVAILABLE_OTO:NO_ADMIN_AVAILABLE_OTO,

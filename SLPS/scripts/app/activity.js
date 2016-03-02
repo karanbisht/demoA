@@ -403,12 +403,11 @@ app.Activity = (function () {
                 var comment = $("#newComment").val(); 
                 if (comment!=='' && comment!=='Reply') {                
                     app.showAppLoader();
-                    $("#comments-listview").append('<li id="tryingComment"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Sending.. </span></div></div></li>');                                
+                    $("#comments-listview").append('<li id="tryingComment1"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Sending.. </span></div></div></li>');                                
                     $('#newComment').css('height', '35px');
                     $("#newComment").val('');
 
-                    var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id}
-                   
+                    var jsonDatacomment = {"notification_id":notiId ,"customer_id":account_Id,"comment":comment, "org_id":org_id};                   
                     var saveCommentDataSource = new kendo.data.DataSource({
                                                                               transport: {
                             read: {
@@ -425,6 +424,9 @@ app.Activity = (function () {
                         },
                                                                               error: function (e) {
                                                                                   app.hideAppLoader();
+                                                                                  $('#tryingComment1').remove();
+                                                                                  $("#comments-listview").append('<li id="errorMsgComment1"><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span"> Error , message not sent </span></div></div></li>');                                                                                                                  
+                                                                                  document.getElementById("comments-listview").value=comment;
                                                                                   if (!app.checkConnection()) {
                                                                                       if (!app.checkSimulator()) {
                                                                                           window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -455,7 +457,8 @@ app.Activity = (function () {
                                     app.showAlert(app.COMMENT_REPLY, "Notification");                                      
                                 }
                                 
-                                $('#tryingComment').remove();
+                                $('#tryingComment1').remove();
+                                $('#errorMsgComment1').remove();
                                 var commentDate = app.formatDate(new Date());
                                 $("#comments-listview").append('<li><div class="user-comment-List"  id="userCommentContainer"><div class="user-comment-content" style="padding-top:10px;"><a>' + comment + '</a><br/><span class="user-time-span">' + commentDate + ' just now </span></div></div></li>');                                
                                  
@@ -463,7 +466,7 @@ app.Activity = (function () {
                                 increaseCommentCount();
                             }else {
                                 app.hideAppLoader();
-                                $('#adminTryingComment').remove();
+                                $('#tryingComment1').remove();
                                 if (!app.checkSimulator()) {
                                     window.plugins.toast.showShortBottom(commentData.status[0].Msg);   
                                 }else {

@@ -142,8 +142,7 @@ app.Activities = (function () {
         
                     
         function getOrgLastNotiDataSuccess(tx, results) {
-            var count = results.rows.length;
-            
+            var count = results.rows.length;            
             var deviceName = app.devicePlatform();
             var device_type;             
             if (deviceName==='Android') {
@@ -385,7 +384,7 @@ app.Activities = (function () {
             if (totalOrgNotification > StartDbCount) {
                 setTimeout(function() {
                     $("#showMoreButton").show();
-                }, 500);                
+                }, 1500);                
             }else {                                
                 $("#showMoreButton").hide();
             }
@@ -468,6 +467,9 @@ app.Activities = (function () {
                         totalbagVal=0;
                   }
                   totalC = totalC - totalbagVal;
+                  if(totalC < 0){
+                      totalC=0;
+                  }
                   groupDataShow[index].showCount = totalC;  
                   if(index===groupDataShow.length-1){
                      if(goToData===1){ 
@@ -794,7 +796,6 @@ app.Activities = (function () {
                
         function getOrgNotiDataSuccess(tx, results) {
             var count = results.rows.length;
-            
             var arrayDB = [];
             for (var i = 0;i < count;i++) {
                 arrayDB.push(results.rows.item(i));
@@ -904,6 +905,7 @@ app.Activities = (function () {
                                    receiver_id : msgData.receiver_id,
                                    previousDate:previousDate,
                                    type:msgData.type,
+                                   showCount:0,
                                    attachedImg :downloadedImg,
                                    index:indexVal
                                }); 

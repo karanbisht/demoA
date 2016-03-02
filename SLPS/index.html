@@ -466,7 +466,7 @@
                 <br/>
                 <br/>
                 <div class="imageViewContainer">
-                    <img src= ${attachedImg} class="imageViewClassAdm"/>
+                    <img src= ${attachedImg} class="imageViewClass"/>
                 </div>
             #}else if (attached!=='' && attached!=='0' && upload_type==="video") {#          
                 <br/>
@@ -597,24 +597,20 @@
         </div>
 
         <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-views="['view-all-activities-GroupDetail','replyUserNotification','sendNotificationDiv','view-all-activities']">
-
             <header data-role="header">
                 <div data-role="navbar" style="width: 130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
                     <span data-role="view-title"></span>
                 </div>
             </header>
-
             <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
                 <li style="height:3.2em;border-color:#43495c;" data-role="button" data-click="goToMainPageAdmin">
                     <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-19px;height:65px;width:80px;margin-left:-10px;"/>
                 </li>
-
                 <li style="border-color:#43495c">
                     <a data-transition="none" href="#view-all-activities-GroupDetail">
                         <div id="side-admin-manageOrg-icon"></div>
                     </a>
                 </li>
-
                 <li style="border-color:#43495c">
                     <a href="#replyUserNotification" data-transition="none">
                         <div id="side-admin-message-icon">
@@ -622,13 +618,11 @@
                         </div>
                     </a>
                 </li>
-
                 <li style="border-color:#43495c">
                     <a href="#sendNotificationDiv" data-transition="none">
                         <div id="side-admin-notification-icon"></div>
                     </a>
                 </li>
-
                 <li class="clickEffect" style="border-color:#43495c">
                     <a onclick="Logout()"  data-transition="none" >
                         <div id="side-admin-user-icon"></div>
@@ -961,7 +955,6 @@
                 #if(showCount!==null && showCount!=='null' && showCount!==0){#
                     <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;margin-top:-5px;margin-right:5px;">${showCount}</div>
                 #}#
-
                 <!--#if (comment_count!=='' && comment_count!=='null' && comment_count!==null && comment_count!==0) {#
                     #if (comment_count==='1' || comment_count===1) {#
                         <span class="user-comment-count">${comment_count} Reply</span>

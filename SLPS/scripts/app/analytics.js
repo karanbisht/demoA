@@ -1,18 +1,16 @@
 (function(global){
     var AnalyticsModel,
-        app = global.app = global.app || {};
+    app = global.app = global.app || {};
     
      var productId;
-     //var loginStatusCheck = localStorage.getItem("loginStatusCheck");                                     
+     var loginStatusCheck = localStorage.getItem("LIVEBUILD");                                     
+     if (loginStatusCheck==='1'){   
+        productId = "baac21f0a525479d93e6918592b7a8cf"; // for Live Project SLPS         
+     }else{      
+        productId = "c9e67f320a5e4c2aae427468edc67704"; // for Local Project SLPS         
+     } 
     
-     /*if (loginStatusCheck==='2') {    
-        productId = "c9e67f320a5e4c2aae427468edc67704"; // for Live Project for Admin
-     }else{*/
-        productId = "baac21f0a525479d93e6918592b7a8cf"; // for Live Project for User 
-     //} 
-    
-     var version   = localStorage.getItem("AppVersion");     
-    
+     var version   = localStorage.getItem("AppVersion");         
      AnalyticsModel = kendo.data.ObservableObject.extend({
      setAnalyticMonitor:function(latitude,longitude)
        {  

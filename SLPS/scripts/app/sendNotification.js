@@ -601,7 +601,12 @@ app.sendNotification = (function () {
                 var data = this.data();
                      
                 if (data[0]['status'][0].Msg ==='No Customer in this organisation') {     
-                    noCustomer = 1;
+                    noCustomer = 1;                     
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom(app.NO_MEMBER_AVAILABLE);  
+                    }else {
+                        app.showAlert(app.NO_MEMBER_AVAILABLE , 'Offline');  
+                    }
                 }else if (data[0]['status'][0].Msg==="Session Expired") {
                     app.showAlert(app.SESSION_EXPIRE , 'Notification');
                     app.LogoutFromAdmin(); 
@@ -626,8 +631,7 @@ app.sendNotification = (function () {
                         app.showAlert(app.NO_ACCESS , 'Offline');  
                     }                                     
                     app.mobileApp.navigate('#view-all-activities-GroupDetail');
-                } 
-                     
+                }                     
                 showCustomerInTemplate();
             });
         }

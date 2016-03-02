@@ -386,16 +386,80 @@ app.Login = (function () {
             $("#selectionDiv").css("opacity", .1);	
             $("#validationRow").css("z-index", "999");
             
-            varifiCode = genRand(0, 9);
-            console.log(varifiCode);
-            varifiCode = varifiCode.toString();
-                    
+            
             if (username==='9999999999') {
                 varifiCode = '16989';  
-            }
+            }/*else{
+                
+                    var getOTPDataSource = new kendo.data.DataSource({
+                                                               transport: {
+                                                                    read: {
+                                                                           url: app.serverUrl() + "notification/getNotificationComment/" + org_id + "/" + notiId + "/" + account_Id + "/" + lastNotiCommentID,
+                                                                           type:"POST",
+                                                                           dataType: "json"                                                                                           
+                                                                       }
+                    },
+                                                               schema: {
+                                
+                        data: function(data) { 
+                            //console.log(JSON.stringify(data));
+                            return [data];
+                        }                       
+                    },
+                                                               error: function (e) {
+                                                                   app.hideAppLoader();
+                                                                   //console.log(JSON.stringify(e));                                                                              
+                                                                   if (!app.checkConnection()) {
+                                                                       if (!app.checkSimulator()) {
+                                                                           window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                       }else {
+                                                                           app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                       } 
+                                                                   }else {
+                                                                       if (!app.checkSimulator()) {
+                                                                           window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                       }else {
+                                                                           app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                       }
+                                                                       app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                   }                                                                  
+                                                               }	        
+                                                           });         
+
+                getOTPDataSource.fetch(function() {
+                    var data = this.data();
+                    var orgNotiCommentData;
+
+                    if (data[0]['status'][0].Msg ==='No Comments') { 
+                    }else if (data[0]['status'][0].Msg==='Success') {
+                        var commentLength = data[0]['status'][0].AllComment.length;                              
+                        orgNotiCommentData = data[0]['status'][0].AllComment;                               
+                        totalComment = totalComment + commentLength;
+
+                        for (var j = 0;j < commentLength;j++) {
+                            var dateString = data[0]['status'][0].AllComment[j].add_date;
+                            var split = dateString .split(' ');
+                            var commentDate = app.formatDate(split[0]);
+                            var commentTime = app.formatTime(split[1]);
+                                         
+                            groupDataShow.push({
+                                               comment: data[0]['status'][0].AllComment[j].comment,
+                                               add_date: commentDate,
+                                               add_time: commentTime,
+                                               user_id : data[0]['status'][0].AllComment[j].user_id,
+                                               user_type : data[0]['status'][0].AllComment[j].user_type
+                                           });
+                        }
+                    }
+                });
+                app.hideAppLoader();                
+            }*/
+        
             
-            var varifiCodeMsg = "Your " + app.APP_NAME + " verification code-: " + varifiCode;
-          
+            varifiCode = genRand(0, 9);
+            console.log(varifiCode);
+            varifiCode = varifiCode.toString();            
+            var varifiCodeMsg = "Your " + app.APP_NAME + " verification code-: " + varifiCode;          
             var dataSourceValidation = new kendo.data.DataSource({
                                                                      transport: {
                     read: {                     
