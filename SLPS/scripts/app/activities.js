@@ -30,10 +30,17 @@ app.Activities = (function () {
             device_type = localStorage.getItem("DEVICE_TYPE");
             localStorage.setItem("loginStatusCheck", 1);
             localStorage.setItem("gotNotification", 0);
+     
+            var showLoaderFirst = localStorage.getItem("showLoaderYN");
+            if(showLoaderFirst!=='1'){
+                 localStorage.setItem("showLoaderYN", 1);
+                 app.showAppLoader(true);   
+            }
+            
             var alterTable = localStorage.getItem("alterTableYN");            
             if(alterTable!=='1'){    
                 var db = app.getDb();
-                db.transaction(alterTableDB, app.errorCB, alterTableSuccess);
+                db.transaction(alterTableDB, app.errorCB, alterTableSuccess);                                
             }
             
             var ADMIN_USER = localStorage.getItem("ADMIN_USER");            
@@ -511,6 +518,7 @@ app.Activities = (function () {
                     db.transaction(getLastOrgNoti, app.errorCB, showUpdateLocalDB);                                  
 
                 }
+                app.hideAppLoader();
                 activeImgClick();
                 activeVidClick(); 
             }, 100);

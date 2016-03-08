@@ -442,7 +442,7 @@ app.addCustomerByAdmin = (function () {
         
         var addMoreMobileNo = function() {    
             addMoreMobile++;
-            $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" id="regMobile' + addMoreMobile + '" placeholder="Mobile Number" /></li>');
+            $("#addMemberUl").append('<li class="username"><input type="number" pattern="[0-9]*" step="0.01" id="regMobile' + addMoreMobile + '" placeholder="Mobile Number" style="padding-left:0px;margin-left:0px;"/></li>');
         }
         
         var open = 0;

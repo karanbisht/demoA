@@ -372,11 +372,13 @@ app.groupDetail = (function () {
                                                                  schema: {               
                 
                     data: function(data) {
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
+                                                                     //console.log(JSON.stringify(e));
                                                                      if (!app.checkConnection()) {
                                                                          if (!app.checkSimulator()) {
                                                                              window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
@@ -766,7 +768,7 @@ app.groupDetail = (function () {
             app.showAppLoader(true);
             $("#editOrgMemberContent").hide();
             var largeImage = document.getElementById('editMemberPhoto');
-            if (memberSelectedPhoto==="") {
+            if (memberSelectedPhoto==="" || memberSelectedPhoto=== null || memberSelectedPhoto=== 'null') {
                 largeImage.src = "styles/images/profile-img1.png";    
             }else {
                 largeImage.src = memberSelectedPhoto;
@@ -795,10 +797,12 @@ app.groupDetail = (function () {
                 },
                                                                        schema: {
                     data: function(data) {
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }
                 },
                                                                        error: function (e) {
+                                                                           //console.log(JSON.stringify(e));
                                                                            app.hideAppLoader();
                                                                            $("#editOrgMemberContent").show();
                                                                            
@@ -845,7 +849,7 @@ app.groupDetail = (function () {
                                                       org_id: data[0]['status'][0].alternate[i].orgID
                                                   });
 
-                            $("#alternateMobileList").append('<li style="color:#5992CB" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
+                            $("#alternateMobileList").append('<li style="color:#5992CB;padding-left:0px;margin-left:0px;" id="editMobileLi' + alernateMobileVal + '"><input type="number" pattern="[0-9]*" step="0.01" id="editMobile' + alernateMobileVal + '" placeholder="Mobile Number" style="padding-left:0px;margin-left:0px;"/><a data-role="button" onclick="removeAlternateNo(' + i + ')">Remove</a></li>');
                             $("#editMobile" + alernateMobileVal).val(data[0]['status'][0].alternate[i].uacc_username);  
                         }                           
                         localStorage["ALTER_ARRAY"] = JSON.stringify(alternateNumInfo);

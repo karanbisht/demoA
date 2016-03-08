@@ -135,7 +135,6 @@
             <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
         </div>
     </div>
-
     <div id="editOrgMemberContent">
         <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
             <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminMemberprofilePicUpload" >
@@ -147,23 +146,23 @@
         </div>
         <form>
             <ul data-role="listview" data-style="inset">
-                <li class="username">
-                    <input type="text" id="editFirstNameAdmin" placeholder="First Name" />
+                <li class="username" style="padding-left:0px;">
+                    <input type="text" id="editFirstNameAdmin" placeholder="First Name" style="padding-left:0px;margin-left:0px;"/>
                 </li>
-                <li class="password">
-                    <input type="text"  id="editLastNameAdmin" placeholder="Last Name" />
+                <li class="password" style="padding-left:0px;">
+                    <input type="text"  id="editLastNameAdmin" placeholder="Last Name" style="padding-left:0px;margin-left:0px;"/>
                 </li>
-                <li class="password">
-                    <input type="email" id="editEmailAdmin" placeholder="Email" />
+                <li class="password" style="padding-left:0px;">
+                    <input type="email" id="editEmailAdmin" placeholder="Email" style="padding-left:0px;margin-left:0px;"/>
                 </li>
-                <li class="password">
-                    <input type="number" pattern="[0-9]*" step="0.01" id="staticMobile" placeholder="Mobile Number"/>
+                <li class="password" style="padding-left:0px;">
+                    <input type="number" pattern="[0-9]*" step="0.01" id="staticMobile" placeholder="Mobile Number" style="padding-left:0px;margin-left:0px;"/>
                 </li>
             </ul>
             <a style="padding-left:10px;color:#e7613e;" data-role="touch" data-bind="events: { tap: addMoreMobileNoPage }">Add More Number</a>
             <div id="showAlternateList" style="padding-left:10px;padding-top:10px;">
                 Alternate Number
-                <ul  id="alternateMobileList" data-role="listview" data-style="inset"></ul>
+                <ul  id="alternateMobileList" data-role="listview" data-style="inset" style="padding-left:0px;margin-left:0px;"></ul>
             </div>
         </form>
         <label style="margin:10px;color:#e7613e;">

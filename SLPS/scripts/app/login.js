@@ -40,8 +40,7 @@ app.Login = (function () {
 
         var login = function () {		 
             var deviceName = app.devicePlatform();
-            var device_type;
-             
+            var device_type;             
             if (deviceName==='Android') {
                 device_type = 'AN';
             }else if (deviceName==='iOS') {
@@ -52,9 +51,6 @@ app.Login = (function () {
             var device_id = localStorage.getItem("deviceTokenID");
             //console.log(device_id);
             username = $("#loginUsername").val();
-
-            //console.log("--------------------");
-            //console.log(device_id);
             if (username === "Mobile Number" || username === "") {
                 app.showAlert("Please enter your mobile no.", app.APP_NAME);
             } else if (!validateMobile(username)) {
@@ -223,8 +219,7 @@ app.Login = (function () {
         };
                             
         var admRecvDataLive;
-        function saveAdmMsg(admVal){      
-            console.log('-----BISHT--------------');
+        function saveAdmMsg(admVal){                 
             admRecvDataLive=admVal;
             var db = app.getDb();
             db.transaction(admRecDataSuc, app.errorCB, goToHomePage);         
@@ -233,9 +228,7 @@ app.Login = (function () {
         var admCmmt = 1;
         
         function admRecDataSuc(tx) {
-            //console.log('aasdasdasdasdasdasdasdasd');
             var dataLength = admRecvDataLive.length;
-            //console.log('aasdasdasdasdasdasdasdasd---'+dataLength);
             admCmmt = 1
             for (var i = 0;i < dataLength;i++) {    
                   
@@ -460,17 +453,17 @@ app.Login = (function () {
             console.log(varifiCode);
             varifiCode = varifiCode.toString();            
             var varifiCodeMsg = "Your " + app.APP_NAME + " verification code-: " + varifiCode;          
-            var dataSourceValidation = new kendo.data.DataSource({
-                                                                     transport: {
-                    read: {                     
-                                                                                 url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=POSTIF"
-                                                                             }
-                },
-                                                                     schema: {
+                    var dataSourceValidation = new kendo.data.DataSource({
+                                                transport: {
+                                                read: {                     
+                                                url: "http://smsbox.in/Api.aspx?usr=spireonline&pwd=15816555&smstype=TextSMS&to=" + username + "&msg=" + varifiCodeMsg + "&rout=transactional&from=POSTIF"
+                                                      }
+                                                },
+                                                schema: {
                     data: function(data) {
                         return [data];
                     }
-                },
+                    },
                                                                      error: function (e) {
                                                                          app.hideAppLoader();                                                                         
                                                                          app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
@@ -509,6 +502,7 @@ app.Login = (function () {
                     }
 
                     localStorage.setItem("alterTableYN", 1);
+                    localStorage.setItem("showLoaderYN", 0);
 
                     //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");                          
@@ -641,6 +635,5 @@ app.Login = (function () {
             clickforRegenerateCode : clickforRegenerateCode
         };
     }());
-
     return loginViewModel;
 }());
