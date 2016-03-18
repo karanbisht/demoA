@@ -70,7 +70,6 @@ app.attendance = (function () {
                                            email:'No member in this group',  
                                            last_name : '',
                                            full_name:'', 
-                                           full_name:'', 
                                            customerID:'0',
                                            account_id:'0',
                                            orgID:'0'
