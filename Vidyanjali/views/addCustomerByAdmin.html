@@ -1,0 +1,59 @@
+<!-- 7FBF4D and color:rgb(127,191,77) with 7FBF4D-->
+<div data-role="view" id="addAdminCustomer" data-layout="default" class="activities-view" data-model="app.addCustomerByAdmin" data-init="app.addCustomerByAdmin.regInit" data-show="app.addCustomerByAdmin.addNewRegistration" data-use-native-scrolling="true">
+    <div data-role="header">
+        <div data-role="navbar">
+            Add Member
+            <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+            <a style="background:transparent; border:none;" data-icon="printer" data-align="right" data-role="button" data-click="app.callAdminOrganisationList"></a>
+        </div>
+    </div>
+
+    <div style="vertical-align:middle; text-align:left;border:none;margin-top:10px;">
+        <a style="background:transparent; border:none;margin:0px;" data-role="button" data-rel="actionsheet" data-align="center" href="#adminAddMemberprofilePic" >
+            <img id="addMemberPhoto" src="styles/images/profile-img1.png" height="100px" width="100px" style="position:relative;border-radius:3px;background-size: cover;background-position: center center; background-repeat: no-repeat;" onerror="this.onerror = null;this.src = 'styles/images/profile-img1.png';"/>
+            <div class="profilePicBack">
+                <span style="z-index:1;text-align:center;">Change</span>
+            </div>
+        </a>
+    </div>
+    <div>
+        <ul data-role="listview" data-style="inset">
+            <li class="username" style="padding-left:0px;">
+                <input type="text"  id="regFirstName" placeholder="First Name" style="padding-left:0px;margin-left:0px;"/>
+            </li>
+            <li class="password" style="padding-left:0px;">
+                <input type="text"  id="regLastName" placeholder="Last Name" style="padding-left:0px;margin-left:0px;"/>
+            </li>
+            <li class="password" style="padding-left:0px;">
+                <input type="email" id="regEmail" placeholder="Email" style="padding-left:0px;margin-left:0px;"/>
+            </li>
+            <li class="username" style="border-bottom:1px solid #eaeced;padding-left:0px;">
+                <input type="number" pattern="[0-9]*" step="0.01"  id="regMobile" placeholder="Mobile Number" style="height:35px;padding-left:0px;margin-left:0px;"/>
+            </li>
+        </ul>
+        <ul id="addMemberUl" data-role="listview" data-style="inset"></ul>
+        <a style="padding-left:15px;color:#7FBF4D" data-role="touch" data-bind="events: { tap: addMoreMobileNo }" >Add more</a>
+        <br/>
+        <li data-style="inset" data-role="listview" style="color:#7FBF4D;">
+            <span>Select Group to Add Member</span>
+            <select id="groupInAddCustomer"  multiple ></select>
+        </li>
+
+    </div>
+    <ul data-role="actionsheet" id="adminAddMemberprofilePic">
+        <li class="km-actionsheet-title">Choose an action</li>
+        <li>
+            <a href="#" data-role="button" data-bind="click: takeMemberPhoto" style="text-align:left;">
+                <span class="act_photo"></span><span style="margin-top:-20px;">Photo</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" data-role="button" data-bind="click: selectMemberPhoto" style="text-align:left;">
+                <span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span>
+            </a>
+        </li>
+    </ul>
+    <li class="defineSaveButton" data-role="touch" data-bind="events: { tap: registerR }">
+        Save
+    </li>
+</div> 

@@ -1,0 +1,1025 @@
+<!--Vidyanjali-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>html { font-family: Arial, Helvetica, sans-serif; }</style>
+        <title></title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+        <link href="kendo/styles/kendo.common-material.min.css" rel="stylesheet"/>
+        <link href="kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />
+        <link href="kendo/styles/kendo.material.min.css" rel="stylesheet"/>
+        <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
+        <link href="styles/main.css" rel="stylesheet" />
+        <script src="cordova.js"></script>
+        <script src="kendo/js/jquery.min.js"></script>
+        <script src="kendo/js/kendo.ui.core.min.js"></script>
+        <script src="scripts/app/progressbar.min.js" type="text/javascript"></script>
+    </head>
+
+    <body id="Aptifi" onload="app.onLoad()">
+        <div data-role="layout" data-id="default" class="AptifiBackImage"></div>
+        <div data-role="layout" data-id="innerPages"></div>
+        <div data-role="layout" data-id="mobile-tabstrip">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span data-role="view-title"></span>
+                    <a style="width:3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-click="app.triggerDrawer1" data-align="left" data-role="button">
+                        <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
+                    </a>                        
+                    <a id="admMsgIcon" style="display:none;width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;margin-right:-10px;" data-align="right" data-role="button" data-click="app.createMsgTOAdm">
+                        <img src="styles/images/icon-add-old.png" style="background-position: .65em 50%;width:100%;height:90%"/>
+                    </a>
+                    <a style="width: 3.5em;height:3em;margin-top:2px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-align="right" data-role="button" href="#popover-drawer" data-rel="popover">
+                        <img src="styles/images/nav.png" style="background-position: .65em 50%;width:100%;height:90%"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="loader" id="appLoader" style="display:none;">
+            <div class="ball"></div>
+        </div>
+        <div data-role="view" id="welcome" data-layout="default" class="welcome-scrn" data-model="app.Login" data-init="app.Login.init" data-after-show="app.Login.show" data-use-native-scrolling="true">
+            <div data-role="content" style="background-color:#ffffff">
+                <div class="logoImg" id="contentOuterDiv" style="margin-top:5%;">
+                    <script>
+                        if (screen.width > screen.height) {
+                            $("#contentOuterDiv").css("margin-top", "8%"); 
+                        }else {
+                            $("#contentOuterDiv").css("margin-top", "30%");
+                        }    
+                    </script>
+                    <img id="logo" src="styles/images/Vidyanjali_Logo.png"  style="width:100%;"/>
+                </div>
+            </div>
+            <div data-role="footer" id="selectionDiv" style="left:0px; right:0px;margin-right:auto; margin-left:auto;display:none;max-width:600px;margin-bottom:15px;background:#ffffff;">
+                <form id="login-form" data-bind="events: { keydown: checkEnter }" style="background:#ffffff;">
+                    <ul data-role="listview" data-style="inset" style="height:53px;">
+                        <li class="username" style="padding-left:10px;padding-top:18px;border-radius:3px;background-color:#303645;color:#ffffff;height:53px;">
+                            <input type="number" pattern="[0-9]*" step="0.01"  id="loginUsername"  placeholder="Mobile Number" maxlength=10; style="color:#ffffff;font-size: 1.6rem;margin-left:25px;height:53px;">
+                        </li>
+                    </ul>
+                    <ol class="group-wrp" style="margin-top:20px;">
+                        <li>
+                            <span id="login" data-role="touch" data-bind="events: { tap: login }">
+                                <a data-role="button" class="btn btn-login" style="font-size: 1.4rem;">Next</a>
+                            </span>
+                        </li>
+                    </ol>
+                </form>
+            </div>
+
+            <div  data-role="view" id="regenerateDiv" style=" position:absolute;right:0;background-color:#F3F3F3;display:none;border-radius:3px; padding:10% 10px 10% 10px; box-shadow: 1px 1px 10px 1px #D1D1D1;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
+                <script>
+                    if (screen.width > screen.height) {
+                        $("#regenerateDiv").css("margin", "8% auto 10px auto"); 
+                        $("#regenerateDiv").css("padding", "5% 10px 5% 10px");
+                    }else {
+                        $("#regenerateDiv").css("margin", "20% auto 10px auto");
+                        $("#regenerateDiv").css("padding", "10% 10px 10% 10px");
+                    }    
+                </script>
+                <div data-role="content" style="background-color:#f3f3f3">
+                    <div style="vertical-align:middle; text-align:center">
+                        <img src="styles/images/msgIcon.png" height="100" width="100"/>
+                    </div>
+                    <div style="vertical-align:middle; text-align:center">
+                        <span id="userRegMobNum" style="color:#7FBF4D;"></span>
+                    </div>
+                    <div style="text-align:center;color:#BCBCBC;padding-top:10px;">
+                        Verification code will be sent to this number. If you'd like to change your phone number, please select cancel.
+                    </div>
+                    <ol class="reg-group-wrp" style="margin-bottom:10px;">
+                        <li style="width:100%">
+                            <span id="registration" data-role="touch" style="float:right;border-radius:3px;width:46%;padding-top:10px;height:40px;background-color:#7FBF4D;color:#ffffff;" data-bind="events: { tap: clickforValificationCode }"> Ok </span>
+                            <span id="registration" data-role="touch" style="float:left;border-radius:3px;height:40px;padding-top:10px;width:46%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRC }"> Cancel </span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div  data-role="view"  id="validationRow" class="activities-view" style="right:0;background-color:#F3F3F3;display:none;border-radius:3px;box-shadow: 1px 1px 10px 1px #D1D1D1;height:auto;width:94%;max-width:600px;overflow:hidden;" data-use-native-scrolling="true">
+                <script>
+                    if (screen.width > screen.height) {
+                        $("#validationRow").css("margin", "8% auto 10px auto");
+                        $("#validationRow").css("padding", "5% 10px 5% 10px");
+                    }else {
+                        $("#validationRow").css("margin", "20% auto 10px auto");
+                        $("#validationRow").css("padding", "10% 10px 10% 10px");
+                    }    
+                </script>
+
+                <div data-role="content" style="background-color:#f3f3f3">
+                    <div style="background-color:#F3F3F3;color:#313C50;text-align:center;padding:10px;">
+                        Verification
+                    </div>
+                    <form id="verification-form" data-bind="events: { keydown: checkEnterCode }">
+                        <div style="text-align:center;color:#313C50;padding-top:10px;">
+                            Verification Code sent to your registered Mobile Number. Please use this Verification Code to continue with the Registration.<br/>
+                            <br/>
+                            In case multiple Verification Code are generated, use latest Verification Code.
+                            <ul data-role="listview" data-style="inset" style="border-radius:6px;text-align:center;">
+                                <li class="username" style="padding-top:15px;border:1px solid #E9E9E9;border-radius:3px;" >
+                                    <input type="number" pattern="[0-9]*" step="0.01" id="validationCodeId" placeholder="Verification Code" style="text-align:center;"/>
+                                </li>
+                            </ul>
+                            <!--<div class="inputContainer">
+                                <input id="validationCodeId" required type="text">
+                                <label alt="Verification Code" placeholder="Verification Code" data-info="Verification Code"></label>
+                            </div>-->
+                        </div>
+                        <ol class="reg-group-wrp" style="margin-bottom:25px;">
+                            <li style="width:100%">
+
+                                <span id="registration" data-role="touch" style="float:right;width:31.33%;padding-top:10px;height:40px;background-color:#7FBF4D;border-radius:3px;color:#ffffff;" data-bind="events: { tap: doneVerification }"> Ok </span>
+
+                                <span id="registration" data-role="touch" style="float:left;margin-right:2%;border-radius:3px;height:40px;padding-top:10px;width:29.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: cancelButtonRC }"> Cancel </span>
+
+                                <span id="registration" data-role="touch" style="float:left;margin-right:2%;border-radius:3px;height:40px;padding-top:10px;width:35.33%;background-color:#303645;color:#ffffff;" data-bind="events: { tap: clickforRegenerateCode }"> Regenerate </span>
+
+                            </li>
+                        </ol>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="view" id="firstScreen" data-id="innerActivity" data-layout="default" class="welcome-scrn form-view">
+            <div data-role="content" id="appNameDiv" style="   
+                 -webkit-background-size: cover;
+                 -moz-background-size: cover;
+                 -o-background-size: cover;
+                 -ms-background-size: cover;
+                 background-size: cover;background-color:#ffffff;">
+            </div>
+        </div>
+
+        <div data-role="view" id="view-all-activities"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Messages" class="activities-view-noti" data-model="app.Activities" data-init="app.Activities.init" data-show="app.Activities.show" data-after-show="app.Activities.afterShow" data-use-native-scrolling="true">
+            <span id="activities-listview" data-style="inset" data-role="listview" data-template="activityTemplate" data-bind="source: activities"></span>
+            <div id="showMoreButton" class="showMore" data-role="button" style="display:none;" data-click="app.Activities.showMoreButtonPress">LOAD MORE</div>
+        </div>
+
+        <div data-role="view" id="userOrgManage" data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization" class="activities-view"  data-model="app.OragnisationList"  data-show ="app.OragnisationList.showOrgInfoPage" data-use-native-scrolling="true">
+            <div style="z-index: 100;">
+                <ul id="manageOrgDesc" data-style="inset" data-role="listview" style="background-color: white;z-index: 100;">
+
+                    <div id="organisationLogo" class="OrgbackgroundImgShow" style="width:100%;"></div>
+
+                    <div id="OrgDescData" style="color:#838383;margin-top:20px;"></div>
+
+                    <div style="color:#7FBF4D;margin-top:20px;" id="joinedDate">
+                        Joined On : <span style="color:#838383" id="orgJoinData"></span>
+                    </div>
+                </ul>
+            </div>
+
+            <div>
+                <table style="margin:10px;">
+                    <tr>
+
+                        <td class="manageOrgDiv" data-role="touch" data-bind="events: { tap: showOrgNews }">
+                            <div id="show-news-icon"></div>
+                            News Feed
+                        </td>
+                        <td style="width:10px;"></td>
+                        <td class="manageOrgDiv" data-role="touch" data-bind="events: { tap: showCalendar }">
+                            <div id="show-calander-icon"></div>
+                            Events
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <li id="manageOrgFooter" class="defineSaveButton" style="margin-top:10%;" data-role="touch" data-bind="events: { tap: unsubscribeOrg }">
+                Leave Organization
+            </li>
+        </div>
+
+        <div data-role="view" id="organisationDiv"  data-id="innerActivity" data-layout="mobile-tabstrip" data-title="Organization List" class="activities-view" data-model="app.OragnisationList" data-show="app.OragnisationList.orgShow">
+            <div>
+                <ul id="organisation-listview1" data-style="inset" data-role="listview" data-template="orgTemplate" data-bind="source: activities"></ul>
+                <p id="no-notification-span" hidden="hidden" class="no-items-msg">
+                    <b>You have no Notification yet.</b>
+                </p>
+            </div>
+        </div>
+
+        <script type="text/x-kendo-template" id="orgTemplate"> 
+                    
+            #if (org_id!==0 && org_id!=='0') {#
+            <div class="cf" data-role="touch" data-bind="events: { tap: orgMoreInfoSelected }">				            
+                #if (imgData===null || imgData==='null') {#                                              
+                    <div class="org-img-show"></div>
+                #}else {#                  
+                    <div class="user-avatar" style="background-image: url(${imageSourceOrg});">
+                    </div>
+                #}#    
+                <div class="orgList-content">
+                    <h2 id="activityTemplateTitle" class="orgNameListFirstPage" style="margin-left:0px;" >${org_name}</h2>
+                    #if (role==='O') {#
+                        <div style="text-align:center;float:right;">
+                            <img src="styles/images/admin.png" style="width=35px;height:25px;" />
+                        </div>
+                    #}#
+                </div>
+            </div>
+            #}else {#
+                <div class="cf" >
+                    <div class="org-img-show"></div>
+                    <div class="activity-content">
+                        <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:-3px;color:rgb(107,111,116);" >${org_name}</h2>
+                        <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDesc}</a>
+                    </div>
+                </div>
+            #}#
+        </script>
+
+        <div data-role="drawer" id="left-drawer" class="leftDrawer-view" style="width:90px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);"  data-views="['view-all-activities','views/organizationNews.html?orgin=1','views/eventCalendar.html?orgin=1','userOrgManage','views/connectToUS.html','views/profile.html','views/organisationLogin.html']">
+            <header data-role="header">
+                <div data-role="navbar" style="width:90px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                    <span data-role="view-title"></span>
+                </div>
+            </header>
+
+            <ul data-role="listview" style="overflow:hidden;">
+                <li style="height:3.2em;border-color:#43495c" data-role="button" data-click="goToMainPage">
+                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-18px;margin-left:-10px;height:65px;width:100%;"/>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="#view-all-activities" data-transition="none">
+                        <div id="side-noti-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="views/organizationNews.html?orgin=1"  data-transition="none">
+                        <div id="side-org-news-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="views/eventCalendar.html?orgin=1"  data-transition="none">
+                        <div id="side-org-event-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="views/timeTable.html"  data-transition="none">
+                        <div id="side-org-timeTable-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="#userOrgManage" data-transition="none">
+                        <div id="side-org-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="views/profile.html"  data-transition="none">
+                        <div id="side-profile-icon"></div>
+                    </a>
+                </li>
+                <li id="goToAdmin" style="border-color:#43495c">
+                    <a href="views/organisationLogin.html" data-transition="none">
+                        <div id="side-admin-icon"></div>
+                    </a>
+                </li>
+            </ul>
+
+            <div data-role="popover" id="popover-drawer" data-stretch="true" data-popup='{"width": "180"}' style="position:relative;margin-right:-10px;margin-top:-14px;border-radius:0px 0px 3px 3px;z-index:100;box-shadow: 0px 4px 10px 1px #D1D1D1;">
+                <div data-role="view">
+                    <ul data-role="listview" style="margin:0px;background-color:#ffffff;z-index:1;">
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;padding:0px;border:none;" data-role="button" data-click="app.refreshBtn">
+                            <label style="float:left;padding:10px;">Refresh</label>
+                        </a>
+                        <a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.OragnisationList.openPopoverDrawer">
+                            <label style="float:left;padding:10px;">Support</label>
+                        </a>
+                        <!--<a style="width:100%;background:transparent;margin:0px 0px -3px 0px;border-radius:0px;border:none;padding:0px;" data-role="button" data-click="app.rateUs">
+                            <label style="float:left;padding:10px;">Rate Us</label>
+                        </a>-->
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!---------------------------------- ADMIN ORGANISATION LIST ---------------------------------->
+
+        <div data-role="layout" data-id="mobile-tabstrip-admin">
+            <div data-role="header" >
+                <div data-role="navbar" style="border-bottom: 1px solid #ffffff;text-align:center;">
+                    <span data-role="view-title" class="navBarClass"></span>
+                    <a style="width:3.5em;height:3.5em;margin-top:-.5px; border: 0 none;  background-position: 0 50%;background-color: transparent;" data-click="app.triggerDrawer2" data-align="left" data-role="button">
+                        <img src="styles/images/sideMenu/top-menu.png " style="background-position: .65em 50%;width:100%;height:90%"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!--<div data-role="view" id="helpView" class="activities-view" data-model="app.OragnisationList"  data-show="app.OragnisationList.appHelp">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span id="appNameBarId" class="inner_navBarClass">Help</span>
+                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+                    <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
+                </div>
+            </div>
+            <div data-role="content">
+              <ul id="" data-role="listview" style="padding:0px 10px 10px 10px;">
+               <li style="padding-top:10px;" data-role="touch" data-bind="events: { tap: appAbout }">
+                <div>
+                    <span >About</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>  
+               <li data-role="touch" data-bind="events: { tap: app.makeCall }">
+                <div data-role="touch">
+                    <span>Call us</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>
+               <li data-role="touch" data-bind="events: {tap: app.mailTo}">
+                <div>
+                    <span>Contact us</span>
+                    <span class="km-icon km-details" style="float:right;"></span>
+                </div>
+               </li>
+              </ul>
+            </div>
+        </div>-->
+        
+        <div data-role="view" id="versionView" class="activities-view" data-model="app.OragnisationList"  data-show="app.OragnisationList.appVersion">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span id="appNameBarId" class="inner_navBarClass">Version</span>
+                    <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton"></a>
+                    <a style="background:transparent; border:none;" data-align="right" data-icon="printer" data-role="button" data-click="app.callUserLogin"></a>
+                </div>
+            </div>
+            <div data-role="content">
+                <div class="loader" id="loaderVersion" style="display:none;">
+                    <div class="ball"></div>
+                </div>
+                <div>
+                    <div class="regLogoImg" style="margin-top:100px;">
+                        <img id="logo" src="styles/images/Vidyanjali_Logo.png"  style="width:100%;"/>
+                    </div>
+                    <div style="margin-top:0px;color:#7FBF4D;width:100%;font-size:20px;text-align:center;">
+                        Version : <span id="appVersionPop" style="#7FBF4D;"></span>
+                    </div>
+                </div>    
+                
+                 <div data-role="footer" style="padding-bottom:10px;background:#ffffff">
+                    <ol class="reg-group-wrp" style="margin-top:80px">
+                        <li style="width:100%">
+                            <span data-role="touch" data-bind="events: { tap: makeCall }" style="width:48%;float:left;"><img src="styles/images/callus.png" style="width:100%;"/></span>
+                            <span data-role="touch" data-bind="events: { tap: mailTo }"  style="float:right;width:48%;" ><img src="styles/images/contactus.png" style="width:100%;"/></span>
+                        </li>
+                    </ol>
+                 </div>
+                
+            </div>
+            <!--<div data-role="footer">
+               <div data-role="tabstrip" data-select="app.onSelectTabStrip">
+                  <a  data-icon="phone" >Call us</a>
+                  <a  data-icon="contacts" >Contact us</a>
+               </div>
+            </div>-->
+        </div>
+        
+
+        <div data-role="view" id="view-all-activities-GroupDetail" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.groupDetail" data-init="app.groupDetail.init" data-show="app.groupDetail.show" >
+            <div>
+                <table style="margin:10px;">
+                    <tr>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showGroupNotification }">
+                            <div id="show-admin-noti-icon"></div>
+                            Sent Messages
+                        </td>
+                        <td style="width:25px;"></td>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showGroupMembers }">
+                            <div id="show-admin-member-icon"></div>
+                            Manage Members
+                        </td>
+                    </tr>
+                    <tr style="height:5px;"></tr>
+                    <tr>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showOrgGroupView }">
+                            <div id="show-admin-group-icon"></div>
+                            Manage Groups
+                        </td>
+                        <td style="width:25px;"></td>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showOrgEvent }">
+                            <div id="show-admin-event-icon"></div>
+                            Manage Event
+                        </td>
+                    </tr>
+                    <tr style="height:5px;"></tr>
+                    <tr>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: showOrgNews }">
+                            <div id="show-admin-news-icon"></div>
+                            Manage News
+                        </td>
+                        <td style="width:5px;"></td>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: attendance }">
+                            <div id="show-admin-attendance-icon"></div>
+                            Attendance Management
+                        </td>
+                    </tr>
+                    <tr style="height:5px;"></tr>
+                    <tr>
+                        <td class="manageOrgDivAdmin" data-role="touch" data-bind="events: { tap: timeTableManage }">
+                            <div id="show-admin-timeTable-icon"></div>
+                            Manage Timetable
+                        </td>
+                        <td style="width:5px;"></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div data-role="view" id="view-all-activities-admin" data-id="innerActivity" data-title="Organization" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.adminOragnisationList" data-init="app.adminOragnisationList.init" data-show="app.adminOragnisationList.show" >
+            <div>
+                <ul id="admin-org-listview" data-style="inset" data-role="listview" data-template="adminOrganisationTemplate"  data-bind="source: activities"></ul>
+            </div>
+        </div>
+        
+        <div data-role="view" id="replyUserNotification" data-id="innerActivity" data-title="Message" data-layout="mobile-tabstrip-admin" class="activities-view" data-model="app.admNotiList" data-init="app.admNotiList.init" data-show="app.admNotiList.show">
+            <div>
+                <ul id="user-rep-adm-noti"  data-style="inset" data-role="listview"  data-template="admNotiReplyTemp" data-bind="source: admNotiList"></ul>
+            </div>
+        </div>
+               
+        
+        <script type="text/x-kendo-template" id="admNotiReplyTemp" >
+         #if (org_id!=='0') {#            
+         <div class="cf" data-role="touch" data-bind="events: { tap: admRepNotiSelected }">
+          <div class="no-notiList-content-new">                      
+                    #if (date!==0 && date!=='0') {#
+                        <div class="dateDisplay">
+                        <span id="activityTemplateDate" class="dateValue">${date}</span>
+                         #if(type!=='OTO'){#
+                            <span class="shareDataValue">
+                                <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;" data-align="right" data-role="button" data-click="app.shareMsgContent">
+                                    <img src="styles/images/share.png"/>
+                                </a>
+                            </span>
+                         #}#
+                        </div>
+                        <br/>
+                    #}#
+       		    
+                    #if (title!=='' && title!=='null' && title!==null) {#
+                        <h2 class="notiNameList" style="margin-left:0px;" >${title}</h2>
+                    #}#
+        
+                    <a class="orgContentMsg">${message}</a>
+                    #if (showCount!==0) {#
+                        <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${showCount}</div>
+                    #}#    
+                        
+            #if (attached!=='' && attached!=="0" && upload_type==="other") {#
+                <br/>
+                <br/>
+                <div class="imageViewContainer">
+                    <img src= ${attachedImg} class="imageViewClass"/>
+                </div>
+            #}else if (attached!=='' && attached!=='0' && upload_type==="video") {#          
+                <br/>
+                <br/>
+                <img src="styles/images/video.png" style="width:100%;max-height:250px;"/>
+            #}#               
+          </div>
+         </div>
+    #}else {#
+        <div class="empty-notiList-content-new">
+            <a  class="orgContentMsg">${message}</a>
+        </div>
+    #}#   
+
+        </script>
+
+
+
+        <div data-role="view" id="sendNotificationDiv" class="form-view" data-id="innerActivity" data-title="Send Message" data-layout="mobile-tabstrip-admin" data-model="app.sendNotification" data-init="app.sendNotification.init" data-show="app.sendNotification.show" data-use-native-scrolling="true">
+            <div data-role="content">
+                <div id="sendNotificationDivMsg" style="overflow:hidden;margin:10px;">
+                    <label style="margin:10px 0px 10px 0px;color:#7FBF4D">
+                        <span>Select Group</span>
+                        <select id="groupInSendMsg"  multiple ></select>
+                    </label>
+                    <br/>
+
+                    <label style="margin:10px 0px 10px 0px;color:#7FBF4D">
+                        <span>Select Member</span>
+                        <select id="memberInSendMsg"  multiple ></select>
+                    </label>
+                    <br/>
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Title</span>
+                    <input type="text"  id="notificationTitleValue" class="defineTextBox"  placeholder="Message Title"/>
+
+                    <span id="activityTemplateDate"  style="padding-right:2px;color:#7FBF4D;">Message Detail</span>
+                    <textarea  id="notificationDesc" placeholder="Write Message to Send ?" class="common"></textarea>
+
+                    <span style="color:#7FBF4D;">Message Type</span>
+                    <label>
+                        <select name="msgTypeNoti" id="notificationType">
+                            <option value="P">Promotion</option>
+                            <option value="V">Invitation</option>
+                            <option value="I">Information</option>
+                            <option value="R">Reminder</option>
+                            <option value="A">Alert</option>
+                        </select>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" id="comment_allow" name="giftwrap" data-cost="8">
+                        <em style="color:#7FBF4D;">Allow Comment</em>
+                    </label>
+
+                    <div id="selectScheduleDT" style="margin-top:10px;border-radius:6px;border:1px solid #7FBF4D;padding:10px;display:none;">
+                        <a style="float:right" data-icon="sounds" data-align="right" data-role="button" data-bind="click: closeSchedule"></a>
+
+                        <span style="color:#7FBF4D;text-align:center;">Select date and time to schedule message</span>
+                        <br/>
+                        <br/>
+                        <div style="padding:10px,10px;">
+                            <input id="scheduleDatePicker" type="date"  name="evt_date" style="float:left;" class="dataTimeCls"/>
+                            <input id="scheduleTimePicker" type="time" value="10:00" name="evt_time" style="float:right;" class="dataTimeCls"/>
+
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <span id="fileAttached" style="background-color: transparent;border:none;display:none;color:#ffffff"></span>
+
+                </div>
+
+                <ul data-role="actionsheet" id="inboxActions">
+                    <li class="km-actionsheet-title"></li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getTakePhoto" style="text-align:left;">
+                            <span class="act_photo"></span><span style="margin-top:-20px;">Photo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getPhotoVal" style="text-align:left;">
+                            <span class="act_gallery"></span><span style="margin-top:-20px;">Gallery</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: getVideoValNoti" style="text-align:left;">
+                            <span class="act_video"></span><span style="margin-top:-20px;">Video</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-role="button" data-bind="click: removeImage" style="text-align:left;">
+                            <span class="act_close"></span><span style="margin-top:-20px;">Remove</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="sendNotiDiv" data-role="footer" style="background-color: #2e2e2e;padding:5px;padding-bottom:3px; ">
+                <div style="display:inline;padding:3px;">
+
+                    <a style="background:transparent; border:none;float:left;" data-role="button" data-rel="actionsheet" data-align="left" href="#inboxActions" >
+                        <img src="styles/images/attachments.png" />
+                    </a>
+
+                    <img id="largeImage" src="" alt="" align="right"  style="height:30px; width:50px;margin-left:10px;float:left;border:none;display:none" />
+
+                    <img id="attachedVidNoti" src="" alt="" align="right"  style="height:30px; width:50px;margin-left:10px;float:left;border:none;display:none" />
+
+                    <input id="sendButton" type="button" value="Send" style="width:19%;height:30px;background-color:#7FBF4D;border:none;color:#ffffff;float:right;" data-role="button" data-bind="click: sendNotificationMessage"/>
+
+                    <input id="scheduleButton" type="button" value="Schedule" style="width:24%;height:30px;background-color:#999999;border:none;color:#ffffff;margin-right:5px;float:right;" data-role="button" data-bind="click: scheduleNotification"/>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="sendNotifcation-upload-file" class="modal-mess-Popup downloadClass" data-role="modalview" data-model="app.sendNotification">
+            <span style="position:absolute;font-weight:bold;font-size:20px;color:#7FBF4D;margin-top:28px;margin-left:-6px;" data-bind="click:transferFileAbort">X</span>
+            <div id="imgDownloaderSendNoti" style="margin:5px;width:60px;height:60px;margin:10px;"></div>
+        </div>
+
+        <div data-role="drawer" id="left-drawer1" class="leftDrawer-view" style="width:130px;overflow:hidden;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);" data-views="['view-all-activities-GroupDetail','replyUserNotification','sendNotificationDiv','view-all-activities']">
+            <header data-role="header">
+                <div data-role="navbar" style="width: 130px;background-color: #2e2e2e;color: #fff;text-shadow: 0 -1px rgba(0,0,0,.5);border-bottom: 1px solid #454545;">
+                    <span data-role="view-title"></span>
+                </div>
+            </header>
+            <ul id="drawerItemLi" data-role="listview" style="overflow:hidden;">
+                <li style="height:3.2em;border-color:#43495c;" data-role="button" data-click="goToMainPageAdmin">
+                    <img src="styles/images/Vidyanjali_Logo.png" style="margin-top:-19px;height:65px;width:80px;margin-left:-10px;"/>
+                </li>
+                <li style="border-color:#43495c">
+                    <a data-transition="none" href="#view-all-activities-GroupDetail">
+                        <div id="side-admin-manageOrg-icon"></div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="#replyUserNotification" data-transition="none">
+                        <div id="side-admin-message-icon">
+                            <div class="divBagVal" id="countToShow" style="color:rgb(255,255,255);text-align:center;">0</div>
+                        </div>
+                    </a>
+                </li>
+                <li style="border-color:#43495c">
+                    <a href="#sendNotificationDiv" data-transition="none">
+                        <div id="side-admin-notification-icon"></div>
+                    </a>
+                </li>
+                <li class="clickEffect" style="border-color:#43495c">
+                    <a onclick="Logout()"  data-transition="none" >
+                        <div id="side-admin-user-icon"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <script>           
+            function goToMainPage() {            
+                $(".km-scroll-container").css("-webkit-transform", "");
+                app.mobileApp.navigate('#view-all-activities');                    
+            }
+            
+            function goToMainPageAdmin() {
+                $(".km-scroll-container").css("-webkit-transform", "");
+                app.mobileApp.navigate('#view-all-activities-GroupDetail');                    
+            }
+            
+            function clickSelectOrg() {
+                var checkOpen = localStorage.getItem("open");
+                if (checkOpen==='0' || checkOpen==='5') {
+                    $("#dynamicLi").empty();
+                    $("#dynamicLi").hide(); 
+            
+                    localStorage.setItem("open", 1);
+            
+                    $("#drawerItemLi li:eq(0)").after('<li id="dynamicLi" style="margin:0px 0px  0px 0px;padding:0px;"></li>');
+            
+                    var adminOrgDataval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                
+                    var objectLength = Object.keys(adminOrgDataval).length;
+                                  
+                    for (i=0;i < objectLength;i++) {
+                        var orgId = adminOrgDataval[i].organisationID;
+                        var org_name = adminOrgDataval[i].org_name;
+                        $("#dynamicLi").append('<li style="border-bottom: 1px solid #f5f7f8;"><a id="ID" style="padding:15px 10px 15px 10px;" data-transition="none" data-role="button" onclick="callUrlForPermission(' + i + ')">' + org_name + '</a></li>');
+                    }
+            
+                    $("#dynamicLi").hide().slideDown({duration: 500});
+                }else {
+                    localStorage.setItem("open", 0);                  
+                    $("#dynamicLi").slideUp("slow");
+                }                                  
+            }
+            
+            function callUrlForPermission (value) {
+                var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                    
+                //console.log(arrayval);       
+        
+                var orgId = arrayval[value].id;
+                var account_Id = localStorage.getItem("ACCOUNT_ID");
+            
+                var dataSourceLogin = new kendo.data.DataSource({
+                                                                    transport: {
+                        read: {
+                                                                                url: app.serverUrl() + "customer/changeOrg/" + orgId + "/" + account_Id,
+                                                                                type:"POST",
+                                                                                dataType: "json"
+                                                                            }
+                    },
+                                                                    schema: {
+                        data: function(data) {	
+                            return [data];
+                        }
+                    },
+                                                                    error: function (e) {
+                                                                        if (!app.checkConnection()) {
+                                                                            if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                            }else {
+                                                                                app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                            } 
+                                                                        }else {
+                                                                            if (!app.checkSimulator()) {
+                                                                                window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                            }else {
+                                                                                app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                            }
+                                                                            //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                        }          
+                                                                    }               
+                                                                });  
+            
+                dataSourceLogin.fetch(function() {         	
+                    var data = this.data();
+                    if (data[0]['status'][0].Msg==='Success') {
+                        selectOrgFmDrawer(value);
+                    }else if (data[0]['status'][0].Msg==='Fail') {
+                    } 
+                });
+            }
+            
+            function selectOrgFmDrawer(data) {
+                var arrayval = JSON.parse(localStorage["ADMIN_ORG_DATA"]);                            
+                var orgId = arrayval[data].id;
+                var org_name = arrayval[data].org_name;
+                                
+                localStorage.setItem("orgSelectAdmin", orgId);                  
+                localStorage.setItem("orgNameAdmin", org_name);                  
+                       
+                var navbar = app.mobileApp.view()                
+                    .header
+                    .find(".km-navbar")
+                    .data("kendoMobileNavBar");
+                navbar.title(org_name);
+            
+                localStorage.setItem("open", 0);                  
+                $("#setOrgName").html(org_name);
+                    
+                $("#dynamicLi").slideUp("slow");
+                app.mobileApp.navigate('#view-all-activities-GroupDetail');
+            
+                getListCount();
+            }   
+            
+            
+            function getListCount() {
+                var db = app.getDb();
+                db.transaction(getDataOrg, app.errorCB, app.successCB);   
+            };
+    
+            function getDataOrg(tx) {
+                var org_id_db = localStorage.getItem("orgSelectAdmin"); 
+                var query = "SELECT * FROM ADMIN_ORG where org_id=" + org_id_db;
+                app.selectQuery(tx, query, getDataSuccess);
+            };
+            
+            
+            function getDataSuccess(tx, results) {                                   
+                var count = results.rows.length;
+                if (count !== 0) { 
+                    var bagCountData = results.rows.item(0).bagCount;                  
+                    var countData = results.rows.item(0).count;
+            
+                    if (countData===null || countData==="null") {
+                        countData = 0; 
+                    }
+                   
+                    if (bagCountData===null || bagCountData==="null") {
+                        bagCountData = 0;
+                    }
+            
+                    localStorage.setItem("incommingMsgCount", countData);                  
+            
+                    var showData = countData - bagCountData;
+            
+                    if (showData < 0) {
+                        showData = 0;
+                    }
+            
+                    $("#countToShow").html(showData);            
+                }            
+            }
+            
+            
+            function Logout() {
+                if (!app.checkConnection()) {
+                    if (!app.checkSimulator()) {
+                        window.plugins.toast.showShortBottom('Network unavailable . Please try again later');  
+                    }else {
+                        app.showAlert('Network unavailable . Please try again later' , 'Offline');  
+                    } 
+                }else { 
+                    app.showAppLoader();
+                    var dataSourceLogin = new kendo.data.DataSource({
+                                                                        transport: {
+                            read: {
+                                                                                    url: app.serverUrl() + "organisation/orgAdminLogout",
+                                                                                    type:"POST",
+                                                                                    dataType: "json"
+                                                                                }
+                        },
+                                                                        schema: {
+                            data: function(data) {
+                                return [data];
+                            }
+                        },
+                                                                        error: function (e) {
+                                                                            if (!app.checkConnection()) {
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.INTERNET_ERROR);
+                                                                                }else {
+                                                                                    app.showAlert(app.INTERNET_ERROR , 'Offline'); 
+                                                                                } 
+                                                                            }else {
+                                                                                if (!app.checkSimulator()) {
+                                                                                    window.plugins.toast.showShortBottom(app.ERROR_MESSAGE);
+                                                                                }else {
+                                                                                    app.showAlert(app.ERROR_MESSAGE , 'Offline'); 
+                                                                                }
+                                                                                //app.analyticsService.viewModel.trackException(e, 'Api Call , Unable to get response' + JSON.stringify(e));
+                                                                            }
+                                                                            app.hideAppLoader();
+                                                                        }               
+                                                                    });  
+            
+                    dataSourceLogin.fetch(function() {
+                        var loginDataView = dataSourceLogin.data();           
+                        $.each(loginDataView, function(i, loginData) {
+                            if (loginData.status[0].Msg==='You have been successfully logged out.') {
+                                app.mobileApp.navigate('#view-all-activities');
+                            }else {
+                                app.showAlert(loginData.status[0].Msg, "Notification");
+                            }
+                            app.hideAppLoader();
+                        });
+                    });
+                }
+            }
+            
+        </script>
+
+        <script type="text/x-kendo-template" id="orgNameTemplate"> 
+            <span class="deleteGroupShow1" data-role="touch" data-bind="events: { tap: sendNotificationOrg }"> ${org_name} </span>            
+        </script>
+
+        <script type="text/x-kendo-template" id="typeNameTemplate">                        	
+            <div class="sendNotiText">
+                <span id="activityTemplateTitle" style="margin:10px;">${text}</span>
+            </div>                     
+        </script>
+
+        <script type="text/x-kendo-template" id="adminOrganisationTemplate">
+            <div class="cf" data-role="touch" data-bind="events: { tap: organisationSelected }">        
+                #if (org_logo===null || org_logo==='null') {#            
+                    <div class="org-img-show"></div>
+                #}else {#
+                    <div class="user-avatar">
+                        <img src=${imageSource} />
+                    </div>
+                #}#    
+                <div class="activity-content" >
+                    <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:0px;color:rgb(107,111,116);" >${orgName}</h2>                        
+                    #if (orgDesc.length > 80) {#
+                        #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                    #}else {#
+                        #orgDescVal = orgDesc;#  
+                    #}#        
+                    <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-kendo-template" id="userReplyTemplate">
+            <div class="cf" data-role="touch" data-bind="events: { tap: clickOnUserName }" >
+                #if (org_logo===null || org_logo==='null') {#            
+                    <div class="org-img-show"></div>
+                #}else {#
+                    <div class="user-avatar">
+                        <img src=${imageSource} />
+                    </div>
+                #}#    
+                <div class="activity-content">
+
+                    <h2 id="activityTemplateTitle" class="orgNameList" style="margin-left:0px;color:rgb(107,111,116);" >${orgName}</h2>
+                
+                    #if (showCount!==0 && showCount!=="null" && showCount!==null) {#                 
+                        <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;">${showCount}</div>
+                    #}# 
+        
+                    #if (orgDesc.length > 80) {#
+                        #orgDescVal = orgDesc.substr(0, 80) + '..';#
+                    #}else {#
+                        #orgDescVal = orgDesc;#  
+                    #}#
+                    <a id="activityTemplateMessage" class="orgContentMsg" style="color:rgb(188,188,188);" >${orgDescVal}</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-kendo-template" id="activityTemplate">            
+            #if (org_id!=='0') {#
+          <div class="cf" data-role="touch" data-bind="events: { tap: getDataToPost }">
+            <div class="notiList-content-new">
+                <div class="dateDisplay">
+                    <span id="activityTemplateDate" class="dateValue">${date}</span>
+                 #if(type!=='OTO'){#
+                    <span class="shareDataValue">
+                        <a style="background:transparent; border:none;float:right;right:0;margin-right:0px;" data-align="right" data-role="button" data-click="app.shareMsgContent">
+                            <img src="styles/images/share.png"/>
+                        </a>
+                    </span>
+                 #}#
+                </div>
+                <br/>
+                #if (title!=='' && title!=='null' && title!==null) {#
+                    <span class="notiNameList" style="margin-left:0px;">${title}</span>               
+                #}#
+        
+                #if (message.length > 210) {#
+                    #messageVal = message.substr(0, 210) + '..';#
+                #}else {#
+                    #messageVal = message;#  
+                #}#
+                
+                <a id="activityTemplateMessage" class="orgContentMsg">${messageVal}</a>            			                        
+                #if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="other") {#
+                    <br/>
+                    <br/>
+                    <div class="imageViewContainer">
+                        <a class="activityImgClick" style="width:100%;padding:0px;background:transparent;border:none;">
+                            <div class="rotating progress" id="img_Div_${pid}" style="display:none;"></div>
+                            <img src=${attachedImg} id=${attached}-----${pid} onerror="this.onerror=null;this.src='';" class="imageViewClass"/>
+                        </a>
+                    </div>
+                #}else if (attached!=='' && attached!=='0' && attached!==0 && upload_type==="video") {#          
+                    <br/>
+                    <br/>
+                    <a class="activityVidClick" style="width:100%;padding:0px;background:transparent;border:none;">
+                        <div>
+                            <div id="video_Div_${pid}" style="position:absolute;right:0;height:100%;left:0;display:none;">
+                                <div class="videoDownload">
+                                    <div class="innervideoDownload">
+                                        <progress id="downloadPer_${pid}"  value="0" max="100" class="downloadBar"></progress>
+                                        <div class="progressValueClass">
+                                            <span id="progressValue_${pid}">0</span>%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="styles/images/video.png" alt=${attached}-----${pid} style="width:100%;max-height:250px;"/>
+                        </div>
+                    </a>                                
+                #}#                    
+            </div>
+                
+            <div class="notiListbelow-List" data-role="touch" data-bind="events: { tap: activitySelected }">
+                <div class="notiCommentIcon"></div>
+                <a id="activityTemplateMessage" class="notiListComment">Reply</a>
+                #if(showCount!==null && showCount!=='null' && showCount!==0){#
+                    <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;margin-top:-5px;margin-right:5px;">${showCount}</div>
+                #}#
+                <!--#if (comment_count!=='' && comment_count!=='null' && comment_count!==null && comment_count!==0) {#
+                    #if (comment_count==='1' || comment_count===1) {#
+                        <span class="user-comment-count">${comment_count} Reply</span>
+                    #}else {#
+                        <span class="user-comment-count">${comment_count} Replies</span>
+                    #}#
+                #}#-->
+            </div>
+          </div>
+            #}else {#
+                <div class="cf">
+                    <div style="padding-left:10px;">
+                        <h2 class="notiNameList" style="margin-left:0px;" >${title}</h2>
+                        <a id="activityTemplateMessage" class="orgContentMsg"  >${message}</a>
+                    </div>
+                </div>  
+            #}# 
+        </script>
+        
+        <script src="scripts/app/app.js" type="text/javascript"></script>
+        <script src="Plugins/PushNotification-master/www/PushNotification.js"></script>
+        <!--<script src="scripts/app/analytics.js"></script>-->        
+        <script src="scripts/app/login.js" type="text/javascript"></script>
+        <script src="scripts/app/createAdminMsgList.js" type="text/javascript"></script>
+        <script src="scripts/app/registration.js" type="text/javascript"></script>
+        <script src="scripts/app/groupDetail.js" type="text/javascript"></script>
+        <script src="scripts/app/groupListView.js" type="text/javascript"></script>
+        <script src="scripts/app/activity.js" type="text/javascript"></script>
+        <script src="scripts/app/activities.js" type="text/javascript"></script>
+        <script src="scripts/app/createAdmMsg.js" type="text/javascript"></script> 
+        <script src="scripts/app/adminEventCalendar.js" type="text/javascript"></script>
+        <script src="scripts/app/adminAttendance.js" type="text/javascript"></script>
+        <script src="scripts/app/sendNotification.js" type="text/javascript"></script>
+        <script src="scripts/app/userNotificationComment.js" type="text/javascript"></script>
+        <script src="scripts/app/getOrganisationList.js" type="text/javascript"></script>
+        <script src="scripts/app/adminLogin.js" type="text/javascript"></script>
+        <script src="scripts/app/adminGetOrganisation.js" type="text/javascript"></script>
+        <script src="scripts/app/adminReplyNotiList.js" type="text/javascript"></script>        
+        <script src="scripts/app/orgNotificationList.js" type="text/javascript"></script>
+        <script src="scripts/app/addCustomerByAdmin.js" type="text/javascript"></script>
+        <script src="scripts/app/subGroupDetail.js" type="text/javascript"></script>
+        <script src="scripts/app/subGroupNotification.js" type="text/javascript"></script>
+        <script src="scripts/app/userNotificationCustomer.js" type="text/javascript"></script>
+        <script src="scripts/app/eventCalendar.js" type="text/javascript"></script>
+        <script src="scripts/app/timeTable.js" type="text/javascript"></script>
+        <script src="scripts/app/adminTimeTable.js" type="text/javascript"></script>
+        <script src="scripts/app/orgNews.js" type="text/javascript"></script>
+        <script src="scripts/app/adminNews.js" type="text/javascript"></script>
+    </body>
+</html>
+
+<!--rgb(127,191,77) with  rgb(231,97,62) -->
+<!--B0D695 with 7FBF4D-->
+<!--7FBF4D 61B85C with 7FBF4D-->
