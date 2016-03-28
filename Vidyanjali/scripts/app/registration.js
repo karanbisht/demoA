@@ -283,7 +283,6 @@ app.registration = (function () {
 
                     app.showAppLoader();
                     localStorage.setItem("alterTableYN", 1);
-                    localStorage.setItem("showLoaderYN", 0);
 
                     //var device_id='APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");
@@ -367,7 +366,7 @@ app.registration = (function () {
                     });
                 }else {
                     app.showAlert(ENTER_CORRECT_V_CODE, app.APP_NAME);    
-                    $("#progressRandomCode").hide();
+                    app.hideAppLoader();
                 }
             }
         };

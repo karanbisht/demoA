@@ -31,15 +31,9 @@ app.Activities = (function () {
             localStorage.setItem("loginStatusCheck", 1);
             localStorage.setItem("gotNotification", 0);
      
-            var showLoaderFirst = localStorage.getItem("showLoaderYN");
-            if(showLoaderFirst!=='1'){
-                 localStorage.setItem("showLoaderYN", 1);
-                 app.showAppLoader(true);   
-            }
             
             var alterTable = localStorage.getItem("alterTableYN");            
             if(alterTable!=='1'){    
-                console.log('inside Alter table');
                 var db = app.getDb();
                 db.transaction(alterTableDB, app.errorCB, alterTableSuccess);                                
             }
@@ -436,13 +430,12 @@ app.Activities = (function () {
                     result=0;
                   }  
                   totalC = totalC - result;
+                  totalC = parseInt(totalC);
                   if(totalC < 0){
                       totalC=0;
                   }
                   groupDataShow[index].showCount = totalC; 
-                  console.log(typeof(totalC));
                   if(index===groupDataShow.length-1){
-                     console.log('Inside1'); 
                      if(goToData===1){ 
                           showDataInTemplate();
                      }else{
@@ -472,12 +465,11 @@ app.Activities = (function () {
                         totalbagVal=0;
                   }
                   totalC = totalC - totalbagVal;
+                  totalC = parseInt(totalC);
                   if(totalC < 0){
                       totalC=0;
-                  }
-                  groupDataShow[index].showCount = totalC;
-                  //groupDataShow[index].showCount = 1;
-                  
+                  }       
+                  groupDataShow[index].showCount = totalC;                  
                   if(index===groupDataShow.length-1){
                      if(goToData===1){                           
                           showDataInTemplate();

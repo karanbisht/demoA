@@ -1042,7 +1042,7 @@ app.OragnisationList = (function () {
                     joinedOrgData = app.formatDate(results.rows.item(x).joinedDate);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:50px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">' + 'Joined On ' + joinedOrgData + '</span></td></tr></table>' 
+                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:65px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">' + 'Joined On ' + joinedOrgData + '</span></td></tr></table>' 
                     }
                 }  
                 adminOrg = 0;
@@ -1063,7 +1063,7 @@ app.OragnisationList = (function () {
                     var joinedAdOrgData = app.formatDate(results.rows.item(x).joinedDate);
                     if (pos === -1) {
                         tempArray.push(results.rows.item(x).org_id);								                    
-                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:50px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">' + 'Joined On ' + joinedAdOrgData + '</span></td></tr></table>' 
+                        document.getElementById("orgData").innerHTML += '<table><tr><td><img src="styles/images/Vidyanjali_Logo.png" style="width:70px;height:65px;"/></td><td><span style="padding-left:10px;margin-top:-6px;">' + 'Joined On ' + joinedAdOrgData + '</span></td></tr></table>' 
                     }
                 }             
             }else {

@@ -66,13 +66,11 @@ app.createAdmMsg = (function () {
                                                                     },
                                                                        schema: {               
                     data: function(data) {
-                        //console.log(JSON.stringify(data));
                         //console.log(data);
                         return [data];                       
                     }
                 },
                                                                          error: function (e) {
-                                                                             //console.log(JSON.stringify(e));
                                                                              //console.log(e);
                                                                              app.hideAppLoader();
                                                                              if (!app.checkConnection()) {
@@ -217,7 +215,8 @@ app.createAdmMsg = (function () {
                 userAdminDataList=[];
                 if (data[0]['status'][0].Msg==='No Admin') {
                    userAdminDataList=[];
-                   app.noAdminAvailableOTO();
+                   app.hideAppLoader(true);
+                   app.noAdminAvailableOTO();                    
                    //app.callUserLogin(); 
                 }else if (data[0]['status'][0].Msg==="You don't have access") {
                     userAdminDataList=[];
@@ -226,6 +225,7 @@ app.createAdmMsg = (function () {
                     }else {
                         app.showAlert(app.NO_ACCESS , 'Offline');  
                     }
+                    app.hideAppLoader(true);
                     app.callUserLogin();
                 }else if (data[0]['status'][0].Msg==="Success") {
         
@@ -239,16 +239,14 @@ app.createAdmMsg = (function () {
                             app.Activities.show();
                             setTimeout(function(){
                                 app.Activities.show();    
-                            },200);
+                            },1200);
                     //app.Activities.getAdminSentMsg();
                     setTimeout(function(){
                         app.mobileApp.navigate('#view-all-activities');
-                     },600);   
+                     },1600);   
                     //$('#activities-listview').data('kendoMobileListView').dataSource.read(); 
+                    app.hideAppLoader(true);
                }                
-
-                app.hideAppLoader(true);
-
             });
                 
           }

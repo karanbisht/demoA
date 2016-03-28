@@ -1,7 +1,7 @@
 {
   "ProjectGuid": "003f5d01-c32e-4f2f-8a44-f2e7b1f00008",
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "AppIdentifier": "io.zaffio.vidyanjali",
+  "AppIdentifier": "io.zaff.vidyanjali",
   "ProjectName": "Vidyanjali",
   "IsRunnable": "true",
   "AndroidPermissions": [
@@ -15,7 +15,6 @@
   ],
   "CorePlugins": [
     "com.telerik.feedback@2.0.0",
-    "com.telerik.plugin.telerikanalytics@3.3.2",
     "cordova-plugin-camera",
     "cordova-plugin-console",
     "cordova-plugin-device",
@@ -35,7 +34,7 @@
   "iOSStatusBarStyle": "BlackTranslucent",
   "AndroidHardwareAcceleration": "true",
   "FrameworkVersion": "4.0.0",
-  "BundleVersion": "1.1.9",
+  "BundleVersion": "1.1.0",
   "iOSDisplayName": "",
   "iOSDeviceFamily": [
     "1",

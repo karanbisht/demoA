@@ -1,10 +1,5 @@
 {
   "CordovaPluginVariables": {
-    "com.telerik.plugin.telerikanalytics": {
-      "AUTO_TRACK_EXCEPTIONS": "True",
-      "AUTO_TRACK_KENDO_EVENTS": "True",
-      "PRODUCT_ID": "9125515f009e4688a254bad994ee51d8"
-    },
     "com.telerik.feedback": {
       "API_KEY": "dnnetstq3qbrzsqi",
       "API_URL": "https://platform.telerik.com/feedback/api/v1",

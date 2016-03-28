@@ -378,8 +378,6 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "-1");
             $("#selectionDiv").css("opacity", .1);	
             $("#validationRow").css("z-index", "999");
-            
-            
             if (username==='9999999999') {
                 varifiCode = '12345';  
             }/*else{
@@ -502,7 +500,6 @@ app.Login = (function () {
                     }
 
                     localStorage.setItem("alterTableYN", 1);
-                    localStorage.setItem("showLoaderYN", 0);
 
                     //var device_id = 'APA91bGWUuUGxBdf_xT8XJ-XrrxXq_C8Z9s3O7GlWVTitgU0bw1oYrHxshzp2rdualgIcLq696TnoBM4tPaQ-Vsqu3iM6Coio77EnKOpi0GKBdMy7E1yYLEhF2oSlo-5OkYfNpi7iAhtFQGMgzabaEnfQbis5NfaaA';
                     var device_id = localStorage.getItem("deviceTokenID");                          
@@ -568,7 +565,7 @@ app.Login = (function () {
                     });
                 }else {
                     app.showAlert(app.ENTER_CORRECT_V_CODE, app.APP_NAME);
-                    $("#progressRandomCode").hide();
+                    app.hideAppLoader();
                 }
             }
         };

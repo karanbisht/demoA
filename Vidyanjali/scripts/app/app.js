@@ -1,11 +1,11 @@
 /*  
 ANDROID
 PackageID = io.zaffio.vidyanjali
-CurrentVersion = 1.1.8
-VersionCode = 19
+CurrentVersion = 1.1.9
+VersionCode = 20
 IOS
 PackageID = io.zaff.vidyanjali
-CurrentVersion = 1.0.9
+CurrentVersion = 1.1.0
 VersionCode = 1
 */
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
             return; //Skip this error  
         }  
     }); 
-}); 
+}); 0
 
 var app = (function (win) {
    'use strict';
@@ -87,8 +87,8 @@ var app = (function (win) {
     var ONLINE_MSG ="Connected.";
     
     var serverUrl = function() {        
-        //return 'https://app.postifi.com/webservice/';  
-        return 'http://sandbox.zaff.io/webservice/';
+        return 'https://app.postifi.com/webservice/';  
+        //return 'http://sandbox.zaff.io/webservice/';
     }
 
     var showAppVersion = function() {
@@ -108,8 +108,8 @@ var app = (function (win) {
 
     win.addEventListener('error', function (e) {
         e.preventDefault();        
-        var message = e.message + "' from " + e.filename + ":" + e.lineno;
-        console.log(message, 'Error');
+        //var message = e.message + "' from " + e.filename + ":" + e.lineno;
+        //console.log(message, 'Error');
         //app.analyticsService.viewModel.trackException(e, 'Error in SLPS App -:' + message);
         return true;
     });
@@ -242,7 +242,7 @@ var app = (function (win) {
                 localStorage.setItem("loginStatusCheck", 1);
             }else if (loginStatusDBValue===1 && adminLoginStatusDBValue===1) {
                 app.mobileApp.navigate('#view-all-activities-GroupDetail');
-                localStorage.setItem("loginStatusCheck", 2);    
+                localStorage.setItem("loginStatusCheck", 2);
             } else {            
                 app.mobileApp.navigate('#welcome');
                 localStorage.setItem("loginStatusCheck", 0);
@@ -484,6 +484,8 @@ var app = (function (win) {
         document.addEventListener("offline", onOffline, false);
         document.addEventListener("online", onOnline, false);
 
+        console.log = function() {}; // Redefine console.log function in our script 
+        
         if (!app.checkSimulator()) {
             app.showAppVersion();
         }else {
