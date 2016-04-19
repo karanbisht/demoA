@@ -1,4 +1,4 @@
-<div data-role="view" id="replyedCustomerDivId" data-layout="innerActivity" class="activity-view"  data-init="app.replyedCustomer.init"  data-show="app.replyedCustomer.show" data-model="app.replyedCustomer" data-use-native-scrolling="true">
+<div data-role="view" id="replyedCustomerDivId" data-layout="innerActivity" class="activity-view"  data-init="app.replyedCustomer.init"  data-show="app.replyedCustomer.show" data-model="app.replyedCustomer" data-reload='true' data-use-native-scrolling="true">
     <div data-role="header">
         <div data-role="navbar">
             <a style="background:transparent; border:none;" data-icon="camera" data-align="left" data-role="backbutton" ></a>
@@ -13,7 +13,11 @@
  <script type="text/x-kendo-template" id="replyCustomerTemplate">        
        #if (customerID!==0) {#
                <div class="cf-clickEffect" data-role="touch" data-bind="events: { tap: customerSelected }">        
-                <div class="user-avatar-img-show" style="margin-top:5px;margin-left:5px;"></div>                           
+                #if(photo!==0 && photo!==null && photo!==''){#
+                    <img src=${photo} class="user-avatar-img" onerror="this.onerror=null;this.src='styles/images/avatar1.png';" style="margin-top:5px;margin-left:5px;"/>                 
+                #}else{#
+                    <div class="user-avatar-img-show" style="margin-top:5px;margin-left:5px;"></div>
+                #}#
                     #if (showCount!==0) {#
                         <div class="divBagVal" style="color:rgb(255,255,255);text-align:center;padding-top:5px;margin-right:10px;">${showCount}</div>
                     #}#

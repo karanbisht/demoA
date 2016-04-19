@@ -378,9 +378,8 @@ app.Login = (function () {
             $("#selectionDiv").css("z-index", "-1");
             $("#selectionDiv").css("opacity", .1);	
             $("#validationRow").css("z-index", "999");
-            if (username==='9999999999') {
-                varifiCode = '12345';  
-            }/*else{
+
+            /*else{
                 
                     var getOTPDataSource = new kendo.data.DataSource({
                                                                transport: {
@@ -449,7 +448,12 @@ app.Login = (function () {
             
             varifiCode = genRand(0, 9);
             console.log(varifiCode);
-            varifiCode = varifiCode.toString();            
+            varifiCode = varifiCode.toString();   
+             
+            if (username==='9999999999') {
+                varifiCode = '12345';  
+            }
+            
             var varifiCodeMsg = "Your " + app.APP_NAME + " verification code-: " + varifiCode;          
                     var dataSourceValidation = new kendo.data.DataSource({
                                                 transport: {

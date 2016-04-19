@@ -1,11 +1,11 @@
 /*  
 ANDROID
 PackageID = io.zaffio.vidyanjali
-CurrentVersion = 1.1.9
-VersionCode = 20
+CurrentVersion = 1.2.0
+VersionCode = 21
 IOS
 PackageID = io.zaff.vidyanjali
-CurrentVersion = 1.1.0
+CurrentVersion = 1.1.1
 VersionCode = 1
 */
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
             return; //Skip this error  
         }  
     }); 
-}); 0
+});
 
 var app = (function (win) {
    'use strict';

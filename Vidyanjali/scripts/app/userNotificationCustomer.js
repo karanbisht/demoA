@@ -41,14 +41,14 @@ app.replyedCustomer = (function () {
                                                                  schema: {
                                 
                     data: function(data) {
-                        console.log(JSON.stringify(data));
+                        //console.log(JSON.stringify(data));
                         return [data];
                     }
 
                 },
                                                                  error: function (e) {
                                                                      app.hideAppLoader();
-                                                                     console.log(JSON.stringify(e));
+                                                                     //console.log(JSON.stringify(e));
 
                                                                      $("#reply-customer-listview").show();
                                                                    
